@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<sms:annotation xmlns="http://www.example.com/er-2008-ex1" 
+  xmlns:ont1="http://www.example.com/ont1"
+  xmlns:ont2="http://www.example.com/ont2"
+  xmlns:sms="http://daks.ucdavis.edu/sms-semannot-1.0.0rc1"
+  emlPackage="package.1" dataTable="1">
+
+  <sms:observation label="o1" distinct="yes">
+    <sms:entity id="ont1:TemporalRange"/>
+    <sms:measurement label="m1" key="yes">
+      <sms:standard id="ont1:DateTime"/>
+      <sms:characteristic id="ont1:Year"/> 
+    </sms:measurement> 
+  </sms:observation>
+  
+  <sms:observation label="o2">
+    <sms:entity id="ont2:Tree"/>
+    <sms:measurement label="m2" precision="0.1">
+      <sms:standard id="ont2:Centimeter"/>
+      <sms:characteristic id="ont2:DBH"/>
+    </sms:measurement>
+    <sms:measurement label="m3" key="yes">
+      <sms:standard id="ont2:ITIS"/>
+      <sms:characteristic id="ont2:TaxanomicName"/>
+    </sms:measurement>
+    <sms:measurement label="m4">
+      <sms:standard id="ont2:XYZTreeName"/>
+      <sms:characteristic id="ont2:Name"/>
+    </sms:measurement>
+    <sms:context observation="o1">
+      <sms:relationship id="ont1:Within"/>
+    </sms:context>
+  </sms:observation>
+
+  <sms:map attribute="yr" measurement="m1"/>
+  <sms:map attribute="diam" measurement="m2" if="diam ge 0"/>
+  <sms:map attribute="tree" measurement="m3"/>
+  <sms:map attribute="spp" measurement="m4" value="Picea rubens" if="spp eq 'piru'"/>
+  <sms:map attribute="spp" measurement="m4" value="Abies balsamea" if="spp eq 'abba'"/>
+
+</sms:annotation>
