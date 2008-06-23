@@ -45,6 +45,14 @@
     
 
 
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#Acidity -->
+
+    <owl:Class rdf:about="#Acidity">
+        <rdfs:subClassOf rdf:resource="&oboe;EntityClassification"/>
+    </owl:Class>
+    
+
+
     <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#Air -->
 
     <owl:Class rdf:about="#Air">
@@ -61,10 +69,34 @@
     
 
 
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#Contains -->
+
+    <owl:Class rdf:about="#Contains">
+        <rdfs:subClassOf rdf:resource="&oboe;Relationship"/>
+    </owl:Class>
+    
+
+
     <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#DBH -->
 
     <owl:Class rdf:about="#DBH">
         <rdfs:subClassOf rdf:resource="&oboe-unit;Length"/>
+    </owl:Class>
+    
+
+
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#Depth -->
+
+    <owl:Class rdf:about="#Depth">
+        <rdfs:subClassOf rdf:resource="&oboe-unit;Length"/>
+    </owl:Class>
+    
+
+
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#FreshWater -->
+
+    <owl:Class rdf:about="#FreshWater">
+        <rdfs:subClassOf rdf:resource="#Water"/>
     </owl:Class>
     
 
@@ -85,9 +117,41 @@
     
 
 
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#LocalTransectIds -->
+
+    <owl:Class rdf:about="#LocalTransectIds">
+        <rdfs:subClassOf rdf:resource="&oboe;NominalStandard"/>
+    </owl:Class>
+    
+
+
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#LocalTreeNames -->
+
+    <owl:Class rdf:about="#LocalTreeNames">
+        <rdfs:subClassOf rdf:resource="&oboe;NominalStandard"/>
+    </owl:Class>
+    
+
+
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#LocalWaterTreatmentDepths -->
+
+    <owl:Class rdf:about="#LocalWaterTreatmentDepths">
+        <rdfs:subClassOf rdf:resource="&oboe;NominalStandard"/>
+    </owl:Class>
+    
+
+
     <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#Near -->
 
     <owl:Class rdf:about="#Near">
+        <rdfs:subClassOf rdf:resource="&oboe;Relationship"/>
+    </owl:Class>
+    
+
+
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#Overlaps -->
+
+    <owl:Class rdf:about="#Overlaps">
         <rdfs:subClassOf rdf:resource="&oboe;Relationship"/>
     </owl:Class>
     
@@ -109,10 +173,50 @@
     
 
 
-    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#TaxanomicName -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#Soil -->
 
-    <owl:Class rdf:about="#TaxanomicName">
-        <rdfs:subClassOf rdf:resource="&oboe;EntityName"/>
+    <owl:Class rdf:about="#Soil">
+        <rdfs:subClassOf rdf:resource="&oboe;Entity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#SoilTypeName -->
+
+    <owl:Class rdf:about="#SoilTypeName">
+        <rdfs:subClassOf rdf:resource="&oboe;EntityType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#StandardSoilTypes -->
+
+    <owl:Class rdf:about="#StandardSoilTypes">
+        <rdfs:subClassOf rdf:resource="&oboe;NominalStandard"/>
+    </owl:Class>
+    
+
+
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#TaxonomicTypeName -->
+
+    <owl:Class rdf:about="#TaxonomicTypeName">
+        <rdfs:subClassOf rdf:resource="&oboe;EntityType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#Transect -->
+
+    <owl:Class rdf:about="#Transect">
+        <rdfs:subClassOf rdf:resource="&oboe;Entity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#Water -->
+
+    <owl:Class rdf:about="#Water">
+        <rdfs:subClassOf rdf:resource="&oboe;Entity"/>
     </owl:Class>
     
 
@@ -125,18 +229,18 @@
     
 
 
-    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#XYZTreeName -->
-
-    <owl:Class rdf:about="#XYZTreeName">
-        <rdfs:subClassOf rdf:resource="&oboe;NominalStandard"/>
-    </owl:Class>
-    
-
-
     <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#Year -->
 
     <owl:Class rdf:about="#Year">
         <rdfs:subClassOf rdf:resource="&oboe;EntityClassification"/>
+    </owl:Class>
+    
+
+
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#pH -->
+
+    <owl:Class rdf:about="#pH">
+        <rdfs:subClassOf rdf:resource="&oboe;NumericIndex"/>
     </owl:Class>
     
 
@@ -173,15 +277,21 @@
     
 
 
-    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#EntityName -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#EntityType -->
 
-    <owl:Class rdf:about="&oboe;EntityName"/>
+    <owl:Class rdf:about="&oboe;EntityType"/>
     
 
 
     <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#NominalStandard -->
 
     <owl:Class rdf:about="&oboe;NominalStandard"/>
+    
+
+
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#NumericIndex -->
+
+    <owl:Class rdf:about="&oboe;NumericIndex"/>
     
 
 

@@ -10,24 +10,24 @@
   <sms:observation label="o1" distinct="yes">
     <sms:entity id="ont3:TemporalRange"/>
     <sms:measurement label="m1" key="yes">
-      <sms:standard id="ont1:DateTime"/>
       <sms:characteristic id="ont3:Year"/> 
+      <sms:standard id="ont1:DateTime"/>
     </sms:measurement> 
   </sms:observation>
   
   <sms:observation label="o2">
     <sms:entity id="ont3:Tree"/>
     <sms:measurement label="m2" precision="0.1">
-      <sms:standard id="ont2:Centimeter"/>
       <sms:characteristic id="ont3:DBH"/>
+      <sms:standard id="ont2:Centimeter"/>
     </sms:measurement>
     <sms:measurement label="m3">
+      <sms:characteristic id="ont3:TaxonomicTypeName"/>
       <sms:standard id="ont3:ITIS"/>
-      <sms:characteristic id="ont3:TaxanomicName"/>
     </sms:measurement>
     <sms:measurement label="m4" key="yes">
-      <sms:standard id="ont3:XYZTreeName"/>
       <sms:characteristic id="ont1:EntityName"/>
+      <sms:standard id="ont3:LocalTreeNames"/>
     </sms:measurement>
     <sms:context observation="o1">
       <sms:relationship id="ont3:Within"/>
@@ -37,7 +37,9 @@
   <sms:map attribute="yr" measurement="m1"/>
   <sms:map attribute="diam" measurement="m2" if="diam ge 0"/>
   <sms:map attribute="tree" measurement="m3"/>
-  <sms:map attribute="spp" measurement="m4" value="Picea rubens" if="spp eq 'piru'"/>
-  <sms:map attribute="spp" measurement="m4" value="Abies balsamea" if="spp eq 'abba'"/>
+  <sms:map attribute="spp" measurement="m4" value="Picea rubens" 
+	   if="spp eq 'piru'"/>
+  <sms:map attribute="spp" measurement="m4" value="Abies balsamea" 
+	   if="spp eq 'abba'"/>
 
 </sms:annotation>
