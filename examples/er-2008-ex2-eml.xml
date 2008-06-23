@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+
+<eml:eml xmlns:ds="eml://ecoinformatics.org/dataset-2.0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eml="eml://ecoinformatics.org/eml-2.0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:res="eml://ecoinformatics.org/resource-2.0.1" xmlns:doc="eml://ecoinformatics.org/documentation-2.0.1" xmlns:stmml="http://www.xml-cml.org/schema/stmml" xmlns:sw="eml://ecoinformatics.org/software-2.0.1" xmlns:prot="eml://ecoinformatics.org/protocol-2.0.1" xmlns:cit="eml://ecoinformatics.org/literature-2.0.1" xsi:schemaLocation="eml://ecoinformatics.org/eml-2.0.1 eml.xsd" packageId="er-2008-ex2.1.1" system="knb" scope="system">
+
+  <dataset scope="document">
+
+    <title>ER 2008 Example 2</title>
+
+    <creator scope="document">
+      <individualName>
+        <givenName>Shawn</givenName>
+        <surName>Bowers</surName>
+      </individualName>
+    </creator>
+
+    <pubDate>2008</pubDate>
+
+    <keywordSet>
+      <keyword>tree</keyword>
+      <keyword>plot</keyword>
+    </keywordSet>
+
+    <contact scope="document">
+      <individualName>
+        <givenName>Shawn</givenName>
+        <surName>Bowers</surName>
+      </individualName>
+    </contact>
+
+    <access authSystem="knb" order="allowFirst" scope="document">
+      <allow>
+        <principal>public</principal>
+        <permission>read</permission>
+      </allow>
+    </access>
+
+    <dataTable scope="document">
+      <entityName>er-2008-ex2-data.txt</entityName>
+      <entityDescription>2008 ER Example 2 Data</entityDescription>
+      <physical scope="document">
+        <objectName>er-2008-ex2-data.txt</objectName>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+
+      <attributeList>
+
+        <attribute id="site" scope="document">
+          <attributeName>site</attributeName>
+          <attributeLabel>site</attributeLabel>
+	  <attributeDefinition>Site id</attributeDefinition>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Number assigned to sites.</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+
+        <attribute id="plot" scope="document">
+          <attributeName>plot</attributeName>
+          <attributeLabel>plot</attributeLabel>
+	  <attributeDefinition>Plot id</attributeDefinition>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Number assigned to plot.</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+
+        <attribute id="tmp" scope="document">
+          <attributeName>tmp</attributeName>
+          <attributeLabel>tmp</attributeLabel>
+          <attributeDefinition>Air temperature</attributeDefinition>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>celsius</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+
+        <attribute id="yr" scope="document">
+          <attributeName>yr</attributeName>
+          <attributeLabel>yr</attributeLabel>
+          <attributeDefinition>Sampling Date</attributeDefinition>
+          <measurementScale>
+            <datetime>
+              <formatString>YYYY</formatString>
+            </datetime>
+          </measurementScale>
+        </attribute>
+
+        <attribute id="piru" scope="document">
+          <attributeName>piru</attributeName>
+          <attributeLabel>piru</attributeLabel>
+          <attributeDefinition>Diameter at breast height</attributeDefinition>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+
+        <attribute id="abba" scope="document">
+          <attributeName>abba</attributeName>
+          <attributeLabel>abba</attributeLabel>
+          <attributeDefinition>Diameter at breast height</attributeDefinition>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+
+      </attributeList>
+
+    </dataTable>
+  </dataset>
+
+</eml:eml>

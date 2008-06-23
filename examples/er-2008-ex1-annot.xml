@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 
-<sms:annotation xmlns="http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-ex1.xml" 
+<sms:annotation xmlns="http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-ex1-annot.xml" 
   xmlns:ont1="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl"
   xmlns:ont2="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl"
   xmlns:ont3="http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.ont"
-  xmlns:sms="http://daks.ucdavis.edu/sms-semannot-1.0.0rc1"
+  xmlns:sms="http://daks.ucdavis.edu/sms-annot-1.0.0rc1"
   emlPackage="er-2008-ex1.1.1" dataTable="1">
 
   <sms:observation label="o1" distinct="yes">
@@ -16,16 +16,16 @@
   </sms:observation>
   
   <sms:observation label="o2">
-    <sms:entity id="on3:Tree"/>
+    <sms:entity id="ont3:Tree"/>
     <sms:measurement label="m2" precision="0.1">
       <sms:standard id="ont2:Centimeter"/>
       <sms:characteristic id="ont3:DBH"/>
     </sms:measurement>
-    <sms:measurement label="m3" key="yes">
+    <sms:measurement label="m3">
       <sms:standard id="ont3:ITIS"/>
       <sms:characteristic id="ont3:TaxanomicName"/>
     </sms:measurement>
-    <sms:measurement label="m4">
+    <sms:measurement label="m4" key="yes">
       <sms:standard id="ont3:XYZTreeName"/>
       <sms:characteristic id="ont1:EntityName"/>
     </sms:measurement>

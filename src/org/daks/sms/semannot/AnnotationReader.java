@@ -642,9 +642,9 @@ public class AnnotationReader {
      */
     private static String _getElementTag(Element elem) throws Exception {
 	String ns = _getNamespace(elem);
-	if(ns == null || !ns.equals(_SMS_SEM_ANNOT_NS)) 
-	    _error("element missing '" + _SMS_SEM_ANNOT_NS + "' namespace:" + 
-		   elem.getTagName());
+	if(ns == null || !ns.equals(Annotation.ANNOTATION_NS)) 
+	    _error("element missing '" + Annotation.ANNOTATION_NS + 
+		   "' namespace:" + elem.getTagName());
 	String [] s = elem.getTagName().split(":");
 	if(s.length == 2) 
 	    return s[1].toLowerCase();
@@ -740,8 +740,5 @@ public class AnnotationReader {
 
     /* the annotation */
     private static Annotation _annotation;
-    /* the annotation namespace */
-    private static String _SMS_SEM_ANNOT_NS = 
-	"http://daks.ucdavis.edu/sms-semannot-1.0.0rc1";
 
 } 

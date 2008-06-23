@@ -220,7 +220,6 @@ public class Annotation {
     }
 
 
-
     private String _uri;
     private String _emlPackage;
     private String _dataTable;
@@ -228,11 +227,14 @@ public class Annotation {
     private List<Observation> _observations = new ArrayList();
     private List<Mapping> _mappings = new ArrayList();
 
+    public static String ANNOTATION_NS = 
+	"http://daks.ucdavis.edu/sms-annot-1.0.0rc1";
 
 
     public static void main(String [] args) throws Exception {
+	System.out.println("args[0] = " + args[0]);
 	InputStream in = 
-	    new java.io.FileInputStream(new java.io.File("examples/er-2008-ex1.xml"));
+	    new java.io.FileInputStream(new java.io.File(args[0]));
 	Annotation a = Annotation.read(in);
 	System.out.println("===============");
 	System.out.println("Annotation: " + a.getURI());
