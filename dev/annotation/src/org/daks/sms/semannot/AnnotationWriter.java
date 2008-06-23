@@ -58,7 +58,7 @@ public class AnnotationWriter {
 	s.print("<sms:annotation");
 	if(a.getURI() != null)
 	    s.print(" xmlns=\"" + a.getURI() + "\"");
-	s.print(" xmlns:sms=\"" + _SMS_SEM_ANNOT_NS + "\"");
+	s.print(" xmlns:sms=\"" + Annotation.ANNOTATION_NS + "\"");
 	for(Ontology o : a.getOntologies())
 	    s.print(" xmlns:" + o.getNamespace() + "=\"" + o.getURI() + "\"");
 	if(a.getEMLPackage() != null)
@@ -177,7 +177,7 @@ public class AnnotationWriter {
 	if(o != null && o.getLabel() != null)
 	    s.print(" observation=\"" + o.getLabel() + "\"");
 	if(c.isIdentifying())
-	    s.print(" identifying=\"true\"");
+	    s.print(" identifying=\"yes\"");
 	s.print(">\n");
 	Relationship r = c.getRelationship();
 	if(r != null && r.getOntology() != null)
@@ -193,8 +193,5 @@ public class AnnotationWriter {
     private static String _indent2 = _indent1 + _indent1;
     private static String _indent3 = _indent1 + _indent2;
 
-    /* the annotation namespace */
-    private static String _SMS_SEM_ANNOT_NS = 
-	"http://daks.ucdavis.edu/sms-semannot-1.0.0rc1";
 
 } 
