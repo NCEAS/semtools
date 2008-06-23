@@ -45,6 +45,22 @@
     
 
 
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#Air -->
+
+    <owl:Class rdf:about="#Air">
+        <rdfs:subClassOf rdf:resource="&oboe;Entity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#Average -->
+
+    <owl:Class rdf:about="#Average">
+        <rdfs:subClassOf rdf:resource="&oboe;EntityClassificationQualifier"/>
+    </owl:Class>
+    
+
+
     <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#DBH -->
 
     <owl:Class rdf:about="#DBH">
@@ -57,6 +73,38 @@
 
     <owl:Class rdf:about="#ITIS">
         <rdfs:subClassOf rdf:resource="&oboe;NominalStandard"/>
+    </owl:Class>
+    
+
+
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#LocalSiteIds -->
+
+    <owl:Class rdf:about="#LocalSiteIds">
+        <rdfs:subClassOf rdf:resource="&oboe;NominalStandard"/>
+    </owl:Class>
+    
+
+
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#Near -->
+
+    <owl:Class rdf:about="#Near">
+        <rdfs:subClassOf rdf:resource="&oboe;Relationship"/>
+    </owl:Class>
+    
+
+
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#Plot -->
+
+    <owl:Class rdf:about="#Plot">
+        <rdfs:subClassOf rdf:resource="&oboe;Entity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#Site -->
+
+    <owl:Class rdf:about="#Site">
+        <rdfs:subClassOf rdf:resource="&oboe;Entity"/>
     </owl:Class>
     
 
@@ -116,6 +164,12 @@
     <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#EntityClassification -->
 
     <owl:Class rdf:about="&oboe;EntityClassification"/>
+    
+
+
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#EntityClassificationQualifier -->
+
+    <owl:Class rdf:about="&oboe;EntityClassificationQualifier"/>
     
 
 
