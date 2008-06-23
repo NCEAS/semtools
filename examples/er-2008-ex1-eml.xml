@@ -34,10 +34,10 @@
     </access>
 
     <dataTable scope="document">
-      <entityName>er-2008-ex1.txt</entityName>
+      <entityName>er-2008-ex1-data.txt</entityName>
       <entityDescription>2008 ER Example 1 Data</entityDescription>
       <physical scope="document">
-        <objectName>er-2008-ex1.txt</objectName>
+        <objectName>er-2008-ex1-data.txt</objectName>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -48,6 +48,7 @@
           </textFormat>
         </dataFormat>
       </physical>
+
       <attributeList>
 
         <attribute id="tree" scope="document">
@@ -115,6 +116,7 @@
         </attribute>
 
       </attributeList>
+
     </dataTable>
   </dataset>
 
