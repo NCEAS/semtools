@@ -11,8 +11,8 @@
   <sms:observation label="o1" distinct="yes">
     <sms:entity id="ont3:Site"/>
     <sms:measurement label="m1" key="yes">
-      <sms:standard id="ont3:LocalSiteIDs"/>
       <sms:characteristic id="ont1:EntityName"/> 
+      <sms:standard id="ont3:LocalSiteIds"/>
     </sms:measurement> 
   </sms:observation>
 
@@ -20,9 +20,9 @@
   <sms:observation label="o2">
     <sms:entity id="ont3:Air"/>
     <sms:measurement label="m2" key="yes">
-      <sms:standard id="ont2:Celsius"/>
       <sms:characteristic id="ont3:Average"/> 
       <sms:characteristic id="ont2:Temperature"/> 
+      <sms:standard id="ont2:Celsius"/>
     </sms:measurement> 
   </sms:observation>
 
@@ -30,8 +30,8 @@
   <sms:observation label="o3" distinct="yes">
     <sms:entity id="ont3:Plot"/>
     <sms:measurement label="m3" partialKey="yes">
-      <sms:standard id="ont1:Nominal"/>
       <sms:characteristic id="ont1:EntityName"/> 
+      <sms:standard id="ont1:Nominal"/>
     </sms:measurement> 
     <sms:context observation="o1" identifying="yes">
       <sms:relationship id="ont3:Within"/>
@@ -45,8 +45,8 @@
   <sms:observation label="o4" distinct="yes">
     <sms:entity id="ont3:TemporalRange"/>
     <sms:measurement label="m4" key="yes">
-      <sms:standard id="ont1:DateTime"/>
       <sms:characteristic id="ont3:Year"/> 
+      <sms:standard id="ont1:DateTime"/>
     </sms:measurement> 
   </sms:observation>
 
@@ -54,12 +54,12 @@
   <sms:observation label="o5">
     <sms:entity id="ont3:Tree"/>
     <sms:measurement label="m5" precision="0.1">
-      <sms:standard id="ont2:Centimeter"/>
       <sms:characteristic id="ont3:DBH"/>
+      <sms:standard id="ont2:Centimeter"/>
     </sms:measurement>
     <sms:measurement label="m6" partialKey="yes">
+      <sms:characteristic id="ont3:TaxonomicTypeName"/>
       <sms:standard id="ont3:ITIS"/>
-      <sms:characteristic id="ont3:TaxanomicName"/>
     </sms:measurement>
     <sms:context observation="o3" identifying="yes">
       <sms:relationship id="ont3:Within"/>
@@ -73,12 +73,12 @@
   <sms:observation label="o6">
     <sms:entity id="ont3:Tree"/>
     <sms:measurement label="m7" precision="0.1">
-      <sms:standard id="ont2:Centimeter"/>
       <sms:characteristic id="ont3:DBH"/>
+      <sms:standard id="ont2:Centimeter"/>
     </sms:measurement>
     <sms:measurement label="m8" partialKey="yes">
+      <sms:characteristic id="ont3:TaxonomicTypeName"/>
       <sms:standard id="ont3:ITIS"/>
-      <sms:characteristic id="ont3:TaxanomicName"/>
     </sms:measurement>
     <sms:context observation="o3" identifying="yes">
       <sms:relationship id="ont3:Within"/>
