@@ -30,7 +30,7 @@
  * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-package org.daks.sms.semannot;
+package org.ecoinformatics.sms.annotation;
 
 import java.io.OutputStream;
 import java.io.PrintStream;

@@ -30,8 +30,7 @@
  * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-package org.daks.sms.semannot;
-
+package org.ecoinformatics.sms.annotation;
 
 /**
  * Objects of this class represent ontology items (entities,
