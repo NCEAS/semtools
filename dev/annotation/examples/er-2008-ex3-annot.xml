@@ -5,7 +5,7 @@
   xmlns:ont2="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl"
   xmlns:ont3="http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.ont"
   xmlns:sms="http://daks.ucdavis.edu/sms-annot-1.0.0rc1"
-  emlPackage="er-2008-ex3.1.1" dataTable="1">
+  emlPackage="eml.1.1" dataTable="1" resource="eml.1.1">
 
   <!-- Water-Treatment Observation -->
   <sms:observation label="o1" distinct="yes">

@@ -59,7 +59,7 @@
 
   <target name="run" depends="compile">
     <echo>Running with classpath: ${classpath}:${build}</echo>
-    <java classname="org.daks.sms.semannot.Annotation"
+    <java classname="org.ecoinformatics.sms.annotation.Annotation"
           classpath="${classpath}:${build}"
           fork="yes">
       <arg value="${infile}"/>
