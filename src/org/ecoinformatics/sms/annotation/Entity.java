@@ -1,5 +1,5 @@
 /**
- *    '$RCSfile: Characteristic.java,v $'
+ *    '$RCSfile: Entity.java,v $'
  *
  *     '$Author: bowers $'
  *       '$Date: 2008-06-02 19:51:10 $'
@@ -30,26 +30,27 @@
  * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-package org.daks.sms.semannot;
+package org.ecoinformatics.sms.annotation;
 
 
 /**
- * Objects of this class represent measurement characteristics
+ * Objects of this class measurement entities
  */
-public class Characteristic extends OntologyItem {
+public class Entity extends OntologyItem {
 
     /**
      * Default constructor
      */
-    public Characteristic() {
+    public Entity() {
     }
 
     /**
      * @param ontology the ontology
      * @param name the name
      */
-    public Characteristic(Ontology ontology, String name) {
+    public Entity(Ontology ontology, String name) {
 	super(ontology, name);
     }
+
 
 } 

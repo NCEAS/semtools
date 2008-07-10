@@ -1,5 +1,5 @@
 /**
- *    '$RCSfile: Entity.java,v $'
+ *    '$RCSfile: Standard.java,v $'
  *
  *     '$Author: bowers $'
  *       '$Date: 2008-06-02 19:51:10 $'
@@ -30,27 +30,26 @@
  * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-package org.daks.sms.semannot;
+package org.ecoinformatics.sms.annotation;
 
 
 /**
- * Objects of this class measurement entities
+ * Objects of this class represent measurement standards
  */
-public class Entity extends OntologyItem {
+public class Standard extends OntologyItem {
 
     /**
      * Default constructor
      */
-    public Entity() {
+    public Standard() {
     }
 
     /**
      * @param ontology the ontology
      * @param name the name
      */
-    public Entity(Ontology ontology, String name) {
+    public Standard(Ontology ontology, String name) {
 	super(ontology, name);
     }
-
 
 } 
