@@ -68,6 +68,12 @@
       <jvmarg value="-Xss5m"/>
     </java>  
   </target>
+  
+  <target name="jar" depends="compile">
+    <jar jarfile="sms.jar">
+      <fileset dir="build/"/>
+    </jar>
+  </target>
 
 
   <target name="javadoc" depends="run">
