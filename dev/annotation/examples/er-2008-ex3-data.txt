@@ -1,4 +1,0 @@
-trns,trmt,soil,pH,tree,spp,dbh
-1,hi,s,3.9,t1,piru,14.1
-1,hi,s,5.1,t2,piru,16.2
-2,lo,h,6.0,t3,abba,12.5
