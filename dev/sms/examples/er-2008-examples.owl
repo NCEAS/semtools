@@ -21,7 +21,7 @@
      xmlns:owl11xml="http://www.w3.org/2006/12/owl11-xml#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:oboe="http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#"
-     xmlns:oboe-unit="http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#"
+     xmlns:oboe-unit="http://linus.nceas.ucsb.edu/sms/metacat/ont.5.1#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:owl="http://www.w3.org/2002/07/owl#">
