@@ -8,9 +8,8 @@
     <!ENTITY owl11xml "http://www.w3.org/2006/12/owl11-xml#" >
     <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
     <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
-    <!ENTITY oboe "http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#" >
-    <!ENTITY oboe-unit "http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl#" >
-    <!ENTITY er08-ex "http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er08-ex.owl#" >
+    <!ENTITY oboe "http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#" >
+    <!ENTITY oboe-unit "http://linus.nceas.ucsb.edu/sms/metacat/ont.5.1#" >
     <!ENTITY er-2008-examples "http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#" >
 ]>
 
@@ -19,17 +18,16 @@
      xml:base="http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl"
      xmlns:er-2008-examples="http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-examples.owl#"
      xmlns:owl11="http://www.w3.org/2006/12/owl11#"
-     xmlns:er08-ex="http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er08-ex.owl#"
      xmlns:owl11xml="http://www.w3.org/2006/12/owl11-xml#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
-     xmlns:oboe="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#"
-     xmlns:oboe-unit="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl#"
+     xmlns:oboe="http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#"
+     xmlns:oboe-unit="http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:owl="http://www.w3.org/2002/07/owl#">
     <owl:Ontology rdf:about="">
-        <owl:imports rdf:resource="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl"/>
-        <owl:imports rdf:resource="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl"/>
+        <owl:imports rdf:resource="http://linus.nceas.ucsb.edu/sms/metacat/ont.5.1"/>
+        <owl:imports rdf:resource="http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1"/>
     </owl:Ontology>
     
 
@@ -247,7 +245,7 @@
 
     <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er08-ex.owl#TemporalRange -->
 
-    <owl:Class rdf:about="&er08-ex;TemporalRange">
+    <owl:Class rdf:about="#TemporalRange">
         <rdfs:subClassOf rdf:resource="&oboe;Entity"/>
     </owl:Class>
     
