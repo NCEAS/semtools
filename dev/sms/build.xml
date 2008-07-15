@@ -30,6 +30,7 @@
       <pathelement location="./"/>
       <pathelement location="./configs"/>
       <pathelement location="./lib"/>
+      <pathelement location="./build"/>
       <fileset dir="lib">
         <include name="**/*.jar"/>
       </fileset>
@@ -46,6 +47,12 @@
            debug="on"
            source="1.5"
            deprecation="true"/>
+  </target>
+  
+  <target name="test" depends="compile">
+    <java classname="org.ecoinformatics.sms.Test" classpath="${classpath}">
+      <arg value="http://linus.nceas.ucsb.edu/sms/metacat/ont.5.1"/>
+    </java>
   </target>
 
   <target name="dist" depends="compile"
