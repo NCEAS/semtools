@@ -14,6 +14,7 @@ public class Test
       OntologyManager ontologyManager = sms.getOntologyManager();
       ontologyManager.importOntology(uri);
       ontologyManager.classify();
+      System.out.println("loaded ontologies: " + ontologyManager.getOntologyIds().toString());
       System.out.println("classes: " + ontologyManager.getNamedClasses());
     }
     catch(Exception e)
