@@ -1,18 +1,16 @@
 <?xml version="1.0"?>
 
-
 <!DOCTYPE rdf:RDF [
-    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
-    <!ENTITY owl11 "http://www.w3.org/2006/12/owl11#" >
-    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
-    <!ENTITY owl11xml "http://www.w3.org/2006/12/owl11-xml#" >
-    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
-    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
-    <!ENTITY ont2 "http://linus.nceas.ucsb.edu/sms/metacat/ont.5.1#" >
-    <!ENTITY ont "http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#" >
-    <!ENTITY gce-oboe "http://code.ecoinformatics.org/semtools/trunk/dev/sms/examples/gce-oboe.owl#" >
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#">
+    <!ENTITY owl11 "http://www.w3.org/2006/12/owl11#">
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">
+    <!ENTITY owl11xml "http://www.w3.org/2006/12/owl11-xml#">
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <!ENTITY ont2 "http://linus.nceas.ucsb.edu/sms/metacat/ont.5.1#">
+    <!ENTITY ont "http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#">
+    <!ENTITY gce-oboe "http://code.ecoinformatics.org/semtools/trunk/dev/sms/examples/gce-oboe.owl#">
 ]>
-
 
 <rdf:RDF xmlns="http://code.ecoinformatics.org/semtools/trunk/dev/sms/examples/gce-oboe.owl#"
      xml:base="http://code.ecoinformatics.org/semtools/trunk/dev/sms/examples/gce-oboe.owl"
@@ -3215,32 +3213,32 @@
 
     <owl:Class rdf:about="#GramsPerSquareMeter">
         <rdfs:comment>grams per square meter</rdfs:comment>
-        <rdfs:subClassOf rdf:resource="&oboe;ComplexDerivedUnit"/>
+        <rdfs:subClassOf rdf:resource="&ont;ComplexDerivedUnit"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&oboe;forCharacteristic"/>
+                <owl:onProperty rdf:resource="&ont;forCharacteristic"/>
                 <owl:allValuesFrom rdf:resource="&ont2;ArealMassDensity"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&oboe;hasUnit"/>
+                <owl:onProperty rdf:resource="&ont;hasUnit"/>
                 <owl:someValuesFrom rdf:resource="&ont2;Gram"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&oboe;hasUnit"/>
+                <owl:onProperty rdf:resource="&ont;hasUnit"/>
                 <owl:someValuesFrom>
                     <owl:Class>
                         <owl:intersectionOf rdf:parseType="Collection">
                             <owl:Restriction>
-                                <owl:onProperty rdf:resource="&oboe;hasPower"/>
+                                <owl:onProperty rdf:resource="&ont;hasPower"/>
                                 <owl:hasValue rdf:datatype="&xsd;int">-2</owl:hasValue>
                             </owl:Restriction>
-                            <rdf:Description rdf:about="&oboe;SimpleDerivedUnit"/>
+                            <rdf:Description rdf:about="&ont;SimpleDerivedUnit"/>
                             <owl:Restriction>
-                                <owl:onProperty rdf:resource="&oboe;hasBaseUnit"/>
+                                <owl:onProperty rdf:resource="&ont;hasBaseUnit"/>
                                 <owl:allValuesFrom rdf:resource="&ont2;Meter"/>
                             </owl:Restriction>
                         </owl:intersectionOf>
@@ -3252,22 +3250,22 @@
 
     <owl:Class rdf:about="#SquareCentimeters">
         <rdfs:comment>square centimeters</rdfs:comment>
-        <rdfs:subClassOf rdf:resource="&oboe;SimpleDerivedUnit"/>
+        <rdfs:subClassOf rdf:resource="&ont;SimpleDerivedUnit"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&oboe;forCharacteristic"/>
+                <owl:onProperty rdf:resource="&ont;forCharacteristic"/>
                 <owl:allValuesFrom rdf:resource="&ont2;Area"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&oboe;hasBaseUnit"/>
+                <owl:onProperty rdf:resource="&ont;hasBaseUnit"/>
                 <owl:allValuesFrom rdf:resource="&ont2;Centimeter"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&oboe;hasPower"/>
+                <owl:onProperty rdf:resource="&ont;hasPower"/>
                 <owl:hasValue rdf:datatype="&xsd;int">2</owl:hasValue>
             </owl:Restriction>
         </rdfs:subClassOf>
