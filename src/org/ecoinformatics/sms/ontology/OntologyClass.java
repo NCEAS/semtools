@@ -45,7 +45,6 @@ public class OntologyClass {
     /* the name of the class */
     private String _className;
 
-    
     /**
      * Default constructor.
      * @param uri the uri of the ontology
@@ -101,5 +100,4 @@ public class OntologyClass {
     public String toString() {
         return getURI();
     }
-
 }

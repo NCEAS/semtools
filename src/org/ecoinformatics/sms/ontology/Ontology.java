@@ -31,6 +31,8 @@
  */
 package org.ecoinformatics.sms.ontology;
 
+import com.hp.hpl.jena.ontology.OntModel;
+
 /**
  * An annotation ontology is associated with a single uri, and
  * represents the set of classes and properties associated with that
@@ -40,16 +42,19 @@ package org.ecoinformatics.sms.ontology;
  */
 public class Ontology {
 
-    // uri of the ontology
+    /* uri of the ontology */
     private String _uri;
+    /* the backing model */
+    private OntModel _model;
 
     /**
      * Default constructor. The constructor is called from the
      * ontology catalog.
      * @param uri the uri of this ontology 
      */
-    protected Ontology(String uri) {
+    protected Ontology(String uri, OntModel model) {
         _uri = uri;
+        _model = model;
     }
 
     /**
@@ -60,6 +65,10 @@ public class Ontology {
         return _uri;
     }
 
+    public OntModel getModel() {
+        return _model;
+    }
+    
     public String toString() {
         return getURI();
     }

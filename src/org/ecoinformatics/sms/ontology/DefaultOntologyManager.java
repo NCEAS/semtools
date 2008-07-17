@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.ontology.OntClass;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 /**
@@ -70,12 +71,11 @@ public class DefaultOntologyManager implements OntologyManager {
         // make sure the ontology isn't already loaded
         if(isOntology(uri))
             return;
-        Ontology ont = new Ontology(uri);
         // load via pellet and jena
         OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
         model.read(uri);
         // add to the 
-        _models.put(ont, model);
+        _models.put(new Ontology(uri, model), model);
     }
 
     /**
@@ -140,7 +140,22 @@ public class DefaultOntologyManager implements OntologyManager {
      * @return the subclasses
      */
     public List<OntologyClass> getNamedSubclasses(OntologyClass c) {
-        return null;
+        List<OntologyClass> results = new ArrayList();
+        Ontology ont = c.getOntology();
+        if(ont == null)
+            return results;
+        OntModel model = ont.getModel();
+        if(model == null)
+            return results;
+        OntClass oc = model.getOntClass(c.toString());
+        for(Resource r : (List<Resource>)oc.listSubClasses(true).toList()) {
+            String uri = r.getNameSpace();
+            Ontology subont = getOntology(uri);
+            OntologyClass subc = new OntologyClass(subont, r.getLocalName());
+            if(subont != null && !results.contains(subc))
+                results.add(subc);
+        }
+        return results;
     }
 
     /**
