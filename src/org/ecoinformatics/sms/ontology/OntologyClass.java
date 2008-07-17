@@ -29,12 +29,7 @@
  * OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
  * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-
 package org.ecoinformatics.sms.ontology;
-
-import org.ecoinformatics.sms.OntologyManager;
-import java.util.Vector;
-import java.util.Enumeration;
 
 /**
  * An OntologyClass is a simple representation of an
@@ -43,19 +38,21 @@ import java.util.Enumeration;
  *
  * @author Shawn Bowers
  */
-
 public class OntologyClass {
 
+    /* the ontology */
+    private Ontology _ontology;
+    /* the name of the class */
+    private String _className;
+
+    
     /**
      * Default constructor.
      * @param uri the uri of the ontology
      */
-    protected OntologyClass(Ontology ontology, String className, 
-			    OntologyManager manager) 
-    {
-	_ontology = ontology;
-	_className = className;
-	_manager = manager;
+    protected OntologyClass(Ontology ontology, String className) {
+        _ontology = ontology;
+        _className = className;
     }
 
     /**
@@ -63,7 +60,7 @@ public class OntologyClass {
      * @return the class name
      */
     public String getName() {
-	return _className;
+        return _className;
     }
 
     /**
@@ -71,66 +68,28 @@ public class OntologyClass {
      * @return the class name
      */
     public String getURI() {
-	return getOntology().getURI() + getName();
+        return getOntology().getURI() + getName();
     }
-
 
     /**
      * Returns the classes ontology
      * @return the ontology
      */
     public Ontology getOntology() {
-	return _ontology;
-    }
-
-    /**
-     * Returns all subclasses in this ontology of this class
-     * @return the subclasses of this class
-     */
-    public Vector getNamedSubclasses() throws Exception {
-	Vector results = new Vector();
-	Enumeration classes = _manager.getNamedSubclasses(this).elements();
-	while(classes.hasMoreElements()) {
-	    OntologyClass c = (OntologyClass)classes.nextElement();
-	    if(c.getOntology().equals(this.getOntology()))
-		results.add(c);
-	}
-	return results;
-    }
-
-    /**
-     * Returns all superclasses in this ontology of this class
-     * @return the superclasses of this class
-     */
-    public Vector getNamedSuperclasses() throws Exception {
-	Vector results = new Vector();
-	Enumeration classes = _manager.getNamedSuperclasses(this).elements();
-	while(classes.hasMoreElements()) {
-	    OntologyClass c = (OntologyClass)classes.nextElement();
-	    if(c.getOntology().equals(this.getOntology()))
-		results.add(c);
-	}
-	return results;
-    }
-
-    /**
-     * Returns all properties in this ontology of this class
-     * @return the properties of this class
-     */
-    public Vector getNamedProperties() {
-	return null;
+        return _ontology;
     }
 
     /**
      * Checks if two annotation ontology classes have the same name.
      */
+    @Override
     public boolean equals(Object obj) {
-	if(!(obj instanceof OntologyClass))
-	    return false;
-	OntologyClass c = (OntologyClass)obj;
-	if(c.getURI().equals(getURI()))
-	    return true;
-	return false;
+        if(!(obj instanceof OntologyClass))
+            return false;
+        OntologyClass c = (OntologyClass) obj;
+        if(c.getURI().equals(getURI()))
+            return true;
+        return false;
     }
 
     /**
@@ -138,20 +97,9 @@ public class OntologyClass {
      * corresponding ontology uri followed by the class name
      * @return the string representation of this object
      */
+    @Override
     public String toString() {
-	return getURI();
+        return getURI();
     }
-
-    ////////////////////////////////////////////////////////////////////////
-    // PRIVATE DATA
-
-    /* the ontology catalog */ 
-    private OntologyManager _manager;
-
-    /* the ontology */ 
-    private Ontology _ontology;
-
-    /* the name of the class */
-    private String _className;
 
 }

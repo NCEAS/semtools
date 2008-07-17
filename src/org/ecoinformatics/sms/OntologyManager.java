@@ -29,27 +29,24 @@
  * OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
  * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-
 package org.ecoinformatics.sms;
 
-
-import java.util.Vector;
+import java.util.List;
 import org.ecoinformatics.sms.ontology.Ontology;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.ontology.OntologyProperty;
-
+import org.ecoinformatics.sms.ontology.OntologyObjectProperty;
 
 /**
  * An ontology manager maintains a "knowledge base" of OWL ontologies.
- *
  * @author Shawn Bowers
  */
-
 public interface OntologyManager {
 
     /**
-     * Adds the given owl file reference (uri) to the manager.
-     * @param uri the location of the OWL ontology file
+     * Adds an OWL ontology to the manager. The uri is assumed also to be the 
+     * namespace of the ontology.
+     * @param uri the uri and location of the OWL file ontology
      */
     public void importOntology(String uri) throws Exception;
 
@@ -57,7 +54,7 @@ public interface OntologyManager {
      * Removes the ontology from the manager
      * @param uri the location of the OWL ontology file
      */
-    public void removeOntology(String uri) throws Exception;
+    public void removeOntology(String uri);
 
     /**
      * Checks if the uri denotes an ontology in the catalog
@@ -69,19 +66,19 @@ public interface OntologyManager {
      * Returns the ontology associated with the uri
      * @return the ontology
      */
-    public Ontology getOntology(String uri) throws Exception;
+    public Ontology getOntology(String uri);
 
     /** 
      * Returns the uri's of ontologies currently managed by this manager
      * @return the ontology uri's
      */
-    public Vector getOntologyIds();
+    public List<String> getOntologyIds();
 
     /**
      * Gets the named classes for ontologies being managed by this manager
      * @returns the named classes
      */
-    public Vector getNamedClasses();
+    public List<OntologyClass> getNamedClasses();
 
     /**
      * Gets the subclasses of the given ontology class whose ontology
@@ -89,7 +86,7 @@ public interface OntologyManager {
      * @param o the ontology
      * @returns the named classes
      */
-    public Vector getNamedSubclasses(OntologyClass c) throws Exception;
+    public List<OntologyClass> getNamedSubclasses(OntologyClass c);
 
     /**
      * Returns true if the first class is a subclass of the second
@@ -107,35 +104,34 @@ public interface OntologyManager {
      */
     public boolean isEquivalentClass(OntologyClass c1, OntologyClass c2);
 
-
     /**
      * Gets the superclasses of the given ontology class whose ontology
      * is managed by this manager
      * @param o the ontology
      * @returns the named classes
      */
-    public Vector getNamedSuperclasses(OntologyClass c) throws Exception;
+    public List<OntologyClass> getNamedSuperclasses(OntologyClass c);
 
     /**
      * Gets the named properties for ontologies being managed by this
      * manager
      * @returns the named properties
      */
-    public Vector getNamedProperties();
+    public List<OntologyProperty> getNamedProperties();
 
     /**
      * Gets the named subproperties of the given property whose
      * ontology is managed by this manager
      * @returns the named properties
      */
-    public Vector getNamedSubproperties(OntologyProperty p) throws Exception;
+    public List<OntologyProperty> getNamedSubproperties(OntologyProperty p);
 
     /**
      * Gets the named superproperties of the given property whose
      * ontology is managed by this manager
      * @returns the named properties
      */
-    public Vector getNamedSuperproperties(OntologyProperty p) throws Exception;
+    public List<OntologyProperty> getNamedSuperproperties(OntologyProperty p);
 
     /**
      * Returns true if the given class is the domain of the property.
@@ -156,18 +152,12 @@ public interface OntologyManager {
      * @param p the property
      * @return the domain classes
      */
-    public Vector getDomain(OntologyProperty p);
+    public List<OntologyClass> getDomain(OntologyProperty p);
 
     /**
      * Returns the range classes of the property.
      * @param p the property
      * @return the domain classes
      */
-    public Vector getRange(OntologyProperty p);
-
-    /**
-     * Runs an OWL-DL classifier over the managed ontologies. 
-     */
-    public void classify();
-
+    public List<OntologyClass> getRange(OntologyObjectProperty p);
 }

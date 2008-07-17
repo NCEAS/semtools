@@ -13,7 +13,7 @@ public class Test
       SMS sms = new SMS();
       OntologyManager ontologyManager = sms.getOntologyManager();
       ontologyManager.importOntology(uri);
-      ontologyManager.classify();
+      //ontologyManager.classify();
       System.out.println("loaded ontologies: " + ontologyManager.getOntologyIds().toString());
       System.out.println("classes: " + ontologyManager.getNamedClasses());
     }

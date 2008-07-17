@@ -29,38 +29,27 @@
  * OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
  * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-
 package org.ecoinformatics.sms;
 
-
-import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.DefaultAnnotationManager;
 import org.ecoinformatics.sms.ontology.DefaultOntologyManager;
-import org.ecoinformatics.sms.operations.KeywordSearch;
-import org.ecoinformatics.sms.operations.KeywordSearchResult;
-import org.ecoinformatics.sms.operations.KeywordSearchResultSet;
-import org.ecoinformatics.sms.gui.KeywordSearchApp;
-import org.ecoinformatics.sms.gui.AnnotationPanel;
 //import org.apache.log4j.Logger;
 //import org.apache.log4j.Level;
-import java.util.Vector;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.FileInputStream;
-import java.io.Writer;
-import javax.swing.JFrame;
 
 /**
  * @author Shawn Bowers
  */
 public class SMS {
 
+    private AnnotationManager _annotationManager;
+    private OntologyManager _ontologyManager;
+
     /**
      * Default onstructor
      */
     public SMS() {
-	_initialize();
+        _ontologyManager = new DefaultOntologyManager();
+        _annotationManager = new DefaultAnnotationManager(this);
     }
 
     /**
@@ -68,7 +57,7 @@ public class SMS {
      * @param m the new annotation manager
      */
     public void setAnnotationManager(AnnotationManager m) {
-	_annotationManager = m;
+        _annotationManager = m;
     }
 
     /**
@@ -76,16 +65,15 @@ public class SMS {
      * @return the annotation manager
      */
     public AnnotationManager getAnnotationManager() {
-	return _annotationManager;
+        return _annotationManager;
     }
-
 
     /**
      * Sets the current ontology manager
      * @param m the ontology manager
      */
     public void setOntologyManager(OntologyManager m) {
-	_ontologyManager = m;
+        _ontologyManager = m;
     }
 
     /**
@@ -93,85 +81,6 @@ public class SMS {
      * @return the ontology manager
      */
     public OntologyManager getOntologyManager() {
-	return _ontologyManager;
+        return _ontologyManager;
     }
-
-
-    /**
-     * Perform a keyword search operation over the given list of
-     * keyword terms
-     * @param query the list of query terms
-     * @return a ranked list of keyword search results
-     */
-    public KeywordSearchResultSet keywordSearch(String[] query) 
-	throws Exception 
-    {
- 	KeywordSearch op = new KeywordSearch(query, this);
- 	return op.doSearch();
-    }
-
-    /**
-     */
-    public static void main(String [] args) {
-
-	// turn off logging
-	// Logger logger = Logger.getRootLogger(); 
-	// logger.setLevel(Level.OFF);
-	SMS sms = new SMS();
- 	try {
-	    if(args.length == 0)
-      {
-		    sms.loadConfigs();
- 	    } else if(args.length == 2) {
- 		// keyword search operation
- 		if(args[0].equals("-q"))
-		    sms.keywordQueryMode(args[1].split("\\s"));
-	    }
-	} catch(Exception e) {
-	    e.printStackTrace();
- 	}
-    }
-    
-
-    ////////////////////////////////////////////////////////////////////////
-    // PRIVATE METHODS
-
-    private void keywordQueryMode(String[] query) throws Exception {
-	loadConfigs();
-	System.out.println(">>> Starting keyword search ...");
-	System.out.println(keywordSearch(query));
-    }
-
-    
-    private void loadConfigs() throws Exception {
-	System.out.println(">>> Loading annotations ... ");
-	SMSProperties props = SMSProperties.getInstance();
-	Vector names = props.getAnnotationNames();
-	for(String name : (Vector<String>)names) {
-	    String file = props.getAnnotationFile(name);
-	    System.out.println(">>>\t Loading '" + name + "' ");
-	    File fin = new File(file);
-	    FileInputStream in = new FileInputStream(fin);
-	    getAnnotationManager().importAnnotation(in, name);
-	    //Writer w = sms.getAnnotationManager().exportAnnotation(name);
-	    //System.out.println("writer: " + w);
-	}
-    }
-
-    /**
-     * Initialization
-     */
-    private void _initialize() {
-	_ontologyManager = new DefaultOntologyManager();	
-	_annotationManager = new DefaultAnnotationManager(this);	
-    }
-
-
-    ////////////////////////////////////////////////////////////////////////
-    // PRIVATE DATA
-
-    private AnnotationManager _annotationManager;
-    private OntologyManager _ontologyManager;
-    private ResourceManager _ResourceManager;
-
 }
