@@ -29,50 +29,19 @@
  * OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
  * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-
 package org.ecoinformatics.sms.ontology;
-
-import org.ecoinformatics.sms.OntologyManager;
-import java.util.Enumeration;
-import java.util.Vector;
-
 
 /**
  *
  * @author Shawn Bowers
  */
-
 public class OntologyObjectProperty extends OntologyProperty {
 
     /**
      * Default constructor
      */
-    protected OntologyObjectProperty(Ontology ontology, String propName, 
-				     OntologyManager manager) 
-    {
-	super(ontology, propName, manager);
-    }
-
-    /**
-     * Returns true if the given object property has the same name as
-     * this object property
-     * @return true if the given object has the same name
-     */
-    public boolean equals(Object obj) {
-	if(obj instanceof OntologyObjectProperty) {
-	    if(getName().equals(((OntologyObjectProperty)obj).getName()))
-	       return true;
-	}
-	return false;
-    }
-
-    /**
-     * Gets the set of classes in this ontology that serve as possible
-     * ranges of this property.
-     * @return the set of classes
-     */ 
-    public Vector getRangeClasses() {
-	return null;
+    protected OntologyObjectProperty(Ontology ontology, String propName) {
+        super(ontology, propName);
     }
 
 }

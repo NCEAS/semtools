@@ -29,30 +29,25 @@
  * OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
  * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-
 package org.ecoinformatics.sms.ontology;
-
-import org.ecoinformatics.sms.OntologyManager;
-import java.util.Enumeration;
-import java.util.Vector;
-
 
 /**
  *
  * @author Shawn Bowers
  */
-
 public abstract class OntologyProperty {
+
+    /* the property name */
+    private String _propName;
+    /* the ontology */
+    private Ontology _ontology;
 
     /**
      * Default constructor
      */
-    protected OntologyProperty(Ontology ontology, String propName, 
-			       OntologyManager manager) 
-    {
-	_ontology = ontology;
-	_propName = propName;
-	_manager = manager;
+    protected OntologyProperty(Ontology ontology, String propName) {
+        _ontology = ontology;
+        _propName = propName;
     }
 
     /**
@@ -60,7 +55,7 @@ public abstract class OntologyProperty {
      * @return the name
      */
     public String getName() {
-	return _propName;
+        return _propName;
     }
 
     /**
@@ -68,7 +63,7 @@ public abstract class OntologyProperty {
      * @return the name
      */
     public String getURI() {
-	return getOntology().getURI() + getName();
+        return getOntology().getURI() + getName();
     }
 
     /**
@@ -76,65 +71,15 @@ public abstract class OntologyProperty {
      * @return the ontology
      */
     public Ontology getOntology() {
-	return _ontology;
-    }
-
-    /**
-     * Returns all subproperties in this ontology of this property
-     * @return the subproperty of this class
-     */
-    public Vector getNamedSubproperties() throws Exception {
-	Vector results = new Vector();
-	Enumeration props = _manager.getNamedSubproperties(this).elements();
-	while(props.hasMoreElements()) {
-	    OntologyProperty p = (OntologyProperty)props.nextElement();
-	    if(p.getOntology().equals(getOntology()))
-	       results.add(p);
-	}
-	return results;
-    }
-
-    /**
-     * Returns all superproperties in this ontology of this property
-     * @return the superproperty of this class
-     */
-    public Vector getNamedSuperproperties() throws Exception {
-	Vector results = new Vector();
-	Enumeration props = _manager.getNamedSuperproperties(this).elements();
-	while(props.hasMoreElements()) {
-	    OntologyProperty p = (OntologyProperty)props.nextElement();
-	    if(p.getOntology().equals(getOntology()))
-	       results.add(p);
-	}
-	return results;
-    }
-
-
-    /**
-     * Returns the set of classes defining the domain of this property.
-     */
-    public Vector getDomainClasses() {
-	return new Vector();
+        return _ontology;
     }
 
     /**
      * Returns a string representation of the property
      * @return the string
      */
+    @Override
     public String toString() {
-	return getURI();
+        return getURI();
     }
-
-    ////////////////////////////////////////////////////////////////////////
-    // PRIVATE DATA
-
-    /* the property name */
-    private String _propName;
-
-    /* the ontology */
-    private Ontology _ontology;
-
-    /* the ontology manager */
-    protected OntologyManager _manager;
-
 }

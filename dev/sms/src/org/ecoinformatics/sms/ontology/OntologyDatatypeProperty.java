@@ -29,46 +29,25 @@
  * OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
  * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-
 package org.ecoinformatics.sms.ontology;
-
-import org.ecoinformatics.sms.OntologyManager;
-import java.util.Vector;
-
 
 /**
  *
  * @author Shawn Bowers
  */
-
 public class OntologyDatatypeProperty extends OntologyProperty {
 
     /**
      * Default constructor
      */
-    protected OntologyDatatypeProperty(Ontology ontology, String propName, 
-				       OntologyManager manager) 
-    {
-	super(ontology, propName, manager);
+    protected OntologyDatatypeProperty(Ontology ontology, String propName) {
+        super(ontology, propName);
     }
 
     /**
      */
     public String getDatatype() {
-	return null;
-    }
-
-    /**
-     * Returns true if the given object property has the same name as
-     * this object property
-     * @return true if the given object has the same name
-     */
-    public boolean equals(Object obj) {
-	if(obj instanceof OntologyDatatypeProperty) {
-	    if(getName().equals(((OntologyDatatypeProperty)obj).getName()))
-	       return true;
-	}
-	return false;
+        return null;
     }
 
 }
