@@ -49,7 +49,7 @@ public class OntologyClass {
      * Default constructor.
      * @param uri the uri of the ontology
      */
-    protected OntologyClass(Ontology ontology, String className) {
+    public OntologyClass(Ontology ontology, String className) {
         _ontology = ontology;
         _className = className;
     }
