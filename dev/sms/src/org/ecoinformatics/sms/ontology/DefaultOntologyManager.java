@@ -132,7 +132,7 @@ public class DefaultOntologyManager implements OntologyManager {
          return null;
       return new OntologyClass(o, name);
    }
-   
+
    /**
     * Returns the named classes for ontologies defined in the
     * catalog. That is, for classes whose namespaces match a uri in
@@ -169,7 +169,8 @@ public class DefaultOntologyManager implements OntologyManager {
          OntClass oc = model.getOntClass(c.toString());
          if(oc == null)
             continue;
-         for(Resource r : (List<Resource>) oc.listSubClasses(true).toList()) {
+         // change 'false' below to 'true' to get direct subclasses only
+         for(Resource r : (List<Resource>) oc.listSubClasses(false).toList()) {
             String r_uri = r.getNameSpace();
             Ontology subont = getOntology(r_uri);
             OntologyClass subc = new OntologyClass(subont, r.getLocalName());
@@ -195,7 +196,8 @@ public class DefaultOntologyManager implements OntologyManager {
       OntClass oc = model.getOntClass(c.toString());
       if(oc == null)
          return results;
-      for(Resource r : (List<Resource>) oc.listSubClasses(true).toList()) {
+      // change 'false' below to 'true' to get direct subclasses only
+      for(Resource r : (List<Resource>) oc.listSubClasses(false).toList()) {
          String uri = r.getNameSpace();
          Ontology subont = getOntology(uri);
          OntologyClass subc = new OntologyClass(subont, r.getLocalName());
