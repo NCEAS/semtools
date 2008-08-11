@@ -1,3 +1,4 @@
+
 /**
  *    '$RCSfile: DefaultOntologyManager.java,v $'
  *
@@ -53,200 +54,247 @@ import org.mindswap.pellet.jena.PelletReasonerFactory;
  */
 public class DefaultOntologyManager implements OntologyManager {
 
-    // map from ontologies to jena ont models
-    private Map<Ontology, OntModel> _models = new HashMap();
+   // map from ontologies to jena ont models
+   private Map<Ontology, OntModel> _models = new HashMap();
 
-    /**
-     * Constructor.
-     */
-    public DefaultOntologyManager() {
-    }
+   /**
+    * Constructor.
+    */
+   public DefaultOntologyManager() {
+   }
 
-    /**
-     * Adds an OWL ontology to the manager. The uri is assumed also to be the 
-     * namespace of the ontology.
-     * @param uri the uri and location of the OWL file ontology
-     */
-    public void importOntology(String uri) throws Exception {
-        // make sure the ontology isn't already loaded
-        if(isOntology(uri))
-            return;
-        // load via pellet and jena
-        OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
-        model.read(uri);
-        // add to the 
-        _models.put(new Ontology(uri, model), model);
-    }
+   /**
+    * Adds an OWL ontology to the manager. The uri is assumed also to be the 
+    * namespace of the ontology.
+    * @param uri the uri and location of the OWL file ontology
+    */
+   public void importOntology(String uri) throws Exception {
+      // make sure the ontology isn't already loaded
+      if(isOntology(uri))
+         return;
+      // load via pellet and jena
+      OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
+      model.read(uri);
+      // add to the 
+      _models.put(new Ontology(uri, model), model);
+   }
 
-    /**
-     * Removes the ontology associated with the uri from the manager
-     * @param uri the uri
-     */
-    public void removeOntology(String uri) {
-        // TODO
-    }
+   /**
+    * Removes the ontology associated with the uri from the manager
+    * @param uri the uri
+    */
+   public void removeOntology(String uri) {
+      // TODO
+   }
 
-    /**
-     * Checks if the uri denotes an ontology in the catalog
-     * @return true if the uri is an ontology in the catalog
-     */
-    public boolean isOntology(String uri) {
-        return getOntology(uri) != null;
-    }
+   /**
+    * Checks if the uri denotes an ontology in the catalog
+    * @return true if the uri is an ontology in the catalog
+    */
+   public boolean isOntology(String uri) {
+      return getOntology(uri) != null;
+   }
 
-    /**
-     * Returns the ontology associated with the uri
-     * @return the ontology
-     */
-    public Ontology getOntology(String uri) {
-        for(Ontology ont : _models.keySet())
-            if(ont.getURI().equals(uri))
-                return ont;
-        return null;
-    }
+   /**
+    * Returns the ontology associated with the uri
+    * @return the ontology
+    */
+   public Ontology getOntology(String uri) {
+      for(Ontology ont : _models.keySet())
+         if(ont.getURI().equals(uri))
+            return ont;
+      return null;
+   }
 
-    /** 
-     * Returns the ontologies being managed by the catalog.
-     * @return the ontologies
-     */
-    public List<String> getOntologyIds() {
-        List<String> results = new ArrayList();
-        for(Ontology ont : _models.keySet())
-            results.add(ont.getURI());
-        return results;
-    }
+   /** 
+    * Returns the ontologies being managed by the catalog.
+    * @return the ontologies
+    */
+   public List<String> getOntologyIds() {
+      List<String> results = new ArrayList();
+      for(Ontology ont : _models.keySet())
+         results.add(ont.getURI());
+      return results;
+   }
 
-    /**
-     * Returns the named classes for ontologies defined in the
-     * catalog. That is, for classes whose namespaces match a uri in
-     * the catalog.
-     * @returns the classes
-     */
-    public List<OntologyClass> getNamedClasses() {
-        List<OntologyClass> results = new ArrayList();
-        for(OntModel model : _models.values())
-            for(Resource c : (List<Resource>) model.listClasses().toList()) {
-                String uri = c.getNameSpace();
-                Ontology ont = getOntology(uri);
-                OntologyClass oc = new OntologyClass(ont, c.getLocalName());
-                if(ont != null && !results.contains(oc))
-                    results.add(oc);
-            }
-        return results;
-    }
+   /**
+    * Returns the class with the given name in the ontology
+    * @param o the ontology
+    * @param name the class name
+    * @return the class (if it exists)
+    */
+   public OntologyClass getNamedClass(Ontology o, String name) {
+      OntModel model = o.getModel();
+      if(model == null)
+         return null;
+      OntClass oc = model.getOntClass(o.getURI() + name);
+      if(oc == null)
+         return null;
+      return new OntologyClass(o, name);
+   }
+   
+   /**
+    * Returns the named classes for ontologies defined in the
+    * catalog. That is, for classes whose namespaces match a uri in
+    * the catalog.
+    * @returns the classes
+    */
+   public List<OntologyClass> getNamedClasses() {
+      List<OntologyClass> results = new ArrayList();
+      for(OntModel model : _models.values())
+         for(Resource c : (List<Resource>) model.listClasses().toList()) {
+            String uri = c.getNameSpace();
+            Ontology ont = getOntology(uri);
+            OntologyClass oc = new OntologyClass(ont, c.getLocalName());
+            if(ont != null && !results.contains(oc))
+               results.add(oc);
+         }
+      return results;
+   }
 
-    /**
-     * Returns the set of named sub classes of the given ontology class.
-     * @return the subclasses
-     */
-    public List<OntologyClass> getNamedSubclasses(OntologyClass c) {
-        List<OntologyClass> results = new ArrayList();
-        Ontology ont = c.getOntology();
-        if(ont == null)
-            return results;
-        OntModel model = ont.getModel();
-        if(model == null)
-            return results;
-        OntClass oc = model.getOntClass(c.toString());
-        for(Resource r : (List<Resource>)oc.listSubClasses(true).toList()) {
-            String uri = r.getNameSpace();
-            Ontology subont = getOntology(uri);
+   /**
+    * Returns the set of named subclasses of the given ontology class.
+    * @param c the superclass to search for
+    * @return the subclasses
+    */
+   public List<OntologyClass> getNamedSubclasses(OntologyClass c) {
+      List<OntologyClass> results = new ArrayList();
+      for(String uri : getOntologyIds()) {
+         Ontology ont = getOntology(uri);
+         if(ont == null)
+            continue;
+         OntModel model = ont.getModel();
+         if(model == null)
+            continue;
+         OntClass oc = model.getOntClass(c.toString());
+         if(oc == null)
+            continue;
+         for(Resource r : (List<Resource>) oc.listSubClasses(true).toList()) {
+            String r_uri = r.getNameSpace();
+            Ontology subont = getOntology(r_uri);
             OntologyClass subc = new OntologyClass(subont, r.getLocalName());
             if(subont != null && !results.contains(subc))
-                results.add(subc);
-        }
-        return results;
-    }
+               results.add(subc);
+         }
+      }
+      return results;
+   }
 
-    /**
-     * Returns true if the first class is a subclass of the second
-     * @param sub the subclass
-     * @param sup the superclass
-     * @returns result of subclass check
-     */
-    public boolean isSubClass(OntologyClass sub, OntologyClass sup) {
-        return false;
-    }
+   /**
+    * Returns the set of named subclasses of the given class within the given
+    * given ontology
+    * @param c the super class 
+    * @param o the ontology to search
+    * @return the subclasses within the given ontology
+    */
+   public List<OntologyClass> getNamedSubclasses(OntologyClass c, Ontology o) {
+      List<OntologyClass> results = new ArrayList();
+      OntModel model = o.getModel();
+      if(model == null)
+         return results;
+      OntClass oc = model.getOntClass(c.toString());
+      if(oc == null)
+         return results;
+      for(Resource r : (List<Resource>) oc.listSubClasses(true).toList()) {
+         String uri = r.getNameSpace();
+         Ontology subont = getOntology(uri);
+         OntologyClass subc = new OntologyClass(subont, r.getLocalName());
+         if(subont != null && !results.contains(subc))
+            results.add(subc);
+      }
+      return results;
+   }
 
-    /**
-     * Returns true if classes are equivalent
-     * @param c1 the first class
-     * @param c2 the second class
-     * @returns result of equivalence check
-     */
-    public boolean isEquivalentClass(OntologyClass c1, OntologyClass c2) {
-        return false;
-    }
+   /**
+    * Returns true if the first class is a subclass of the second
+    * @param sub the subclass
+    * @param sup the superclass
+    * @returns result of subclass check
+    */
+   public boolean isSubClass(OntologyClass sub, OntologyClass sup) {
+      return false;
+   }
 
-    /**
-     * Gets the superclasses of the given ontology class whose ontology
-     * is managed by this manager
-     * @param o the ontology
-     * @returns the named classes
-     */
-    public List<OntologyClass> getNamedSuperclasses(OntologyClass c) {
-        return null;
-    }
+   /**
+    * Returns true if classes are equivalent
+    * @param c1 the first class
+    * @param c2 the second class
+    * @returns result of equivalence check
+    */
+   public boolean isEquivalentClass(OntologyClass c1, OntologyClass c2) {
+      return false;
+   }
 
-    /**
-     * Returns all named properties defined in the catalog
-     * @returns the properties
-     */
-    public List<OntologyProperty> getNamedProperties() {
-        return null;
-    }
+   /**
+    * Gets the superclasses of the given ontology class whose ontology
+    * is managed by this manager
+    * @param o the ontology
+    * @returns the named classes
+    */
+   public List<OntologyClass> getNamedSuperclasses(OntologyClass c) {
+      return null;
+   }
 
-    /**
-     * Gets the named subproperties of the given property whose
-     * ontology is managed by this manager
-     * @returns the named properties
-     */
-    public List<OntologyProperty> getNamedSubproperties(OntologyProperty p) {
-        return null;
-    }
+   /**
+    * Returns all named properties defined in the catalog
+    * @returns the properties
+    */
+   public List<OntologyProperty> getNamedProperties() {
+      return null;
+   }
 
-    /**
-     * Gets the named superproperties of the given property whose
-     * ontology is managed by this manager
-     * @returns the named properties
-     */
-    public List<OntologyProperty> getNamedSuperproperties(OntologyProperty p) {
-        return null;
-    }
+   /**
+    * Gets the named subproperties of the given property whose
+    * ontology is managed by this manager
+    * @returns the named properties
+    */
+   public List<OntologyProperty> getNamedSubproperties(OntologyProperty p) {
+      return null;
+   }
 
-    /**
-     * Returns true if the given class is the domain of the property.
-     * @param p the property
-     * @param c the class
-     */
-    public boolean hasDomain(OntologyProperty p, OntologyClass c) {
-        return false;
-    }
+   /**
+    * Gets the named superproperties of the given property whose
+    * ontology is managed by this manager
+    * @returns the named properties
+    */
+   public List<OntologyProperty> getNamedSuperproperties(OntologyProperty p) {
+      return null;
+   }
 
-    /**
-     * Returns true if the given class is a range of the property.
-     * @param p the property
-     * @param c the class
-     */
-    public boolean hasRange(OntologyProperty p, OntologyClass c) {
-        return false;
-    }
+   /**
+    * Returns true if the given class is the domain of the property.
+    * @param p the property
+    * @param c the class
+    */
+   public boolean hasDomain(OntologyProperty p, OntologyClass c) {
+      return false;
+   }
 
-    /**
-     * Returns the domain classes of the property.
-     * @param p the property
-     * @return the domain classes
-     */
-    public List<OntologyClass> getDomain(OntologyProperty p) {
-        return null;
-    }
+   /**
+    * Returns true if the given class is a range of the property.
+    * @param p the property
+    * @param c the class
+    */
+   public boolean hasRange(OntologyProperty p, OntologyClass c) {
+      return false;
+   }
 
-    /**
-     * Returns the range classes of the property.
-     * @param p the property
-     * @return the domain classes
-     */
-    public List<OntologyClass> getRange(OntologyObjectProperty p) {
-        return null;
-    }
+   /**
+    * Returns the domain classes of the property.
+    * @param p the property
+    * @return the domain classes
+    */
+   public List<OntologyClass> getDomain(OntologyProperty p) {
+      return null;
+   }
+
+   /**
+    * Returns the range classes of the property.
+    * @param p the property
+    * @return the domain classes
+    */
+   public List<OntologyClass> getRange(OntologyObjectProperty p) {
+      return null;
+   }
+
 }

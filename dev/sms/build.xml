@@ -52,6 +52,7 @@
 <!--      <arg value="http://linus.nceas.ucsb.edu/sms/metacat/ont.5.1#"/> -->
   <target name="test" depends="compile">
     <java classname="org.ecoinformatics.sms.Test" classpath="${classpath}" fork="yes">
+      <arg value="http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#"/>
       <arg value="http://linus.nceas.ucsb.edu/sms/metacat/ont.7.1#"/>
       <jvmarg value="-DSMS=${pwd}"/>
       <jvmarg value="-Xmx1024m"/>
