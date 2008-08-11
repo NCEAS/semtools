@@ -159,6 +159,8 @@ public class DefaultOntologyManager implements OntologyManager {
     */
    public List<OntologyClass> getNamedSubclasses(OntologyClass c) {
       List<OntologyClass> results = new ArrayList();
+      if(c == null)
+         return results;
       for(String uri : getOntologyIds()) {
          Ontology ont = getOntology(uri);
          if(ont == null)
@@ -190,6 +192,8 @@ public class DefaultOntologyManager implements OntologyManager {
     */
    public List<OntologyClass> getNamedSubclasses(OntologyClass c, Ontology o) {
       List<OntologyClass> results = new ArrayList();
+      if(c == null)
+         return results;
       OntModel model = o.getModel();
       if(model == null)
          return results;
