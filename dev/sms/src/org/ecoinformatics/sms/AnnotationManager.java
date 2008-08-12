@@ -1,3 +1,4 @@
+
 /**
  *    '$RCSfile: AnnotationManager.java,v $'
  *
@@ -29,66 +30,74 @@
  * OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
  * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-
 package org.ecoinformatics.sms;
 
 import org.ecoinformatics.sms.annotation.Annotation;
-import java.util.Vector;
-import java.io.Reader;
-import java.io.Writer;
+import java.util.List;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 
 /**
  */
 public interface AnnotationManager {
 
-    /**
-     * Import an annotation into the manager
-     * @param r the semantic annotation 
-     * @param id the identifier to assign to the annotation
-     */
-    public void importAnnotation(InputStream is, String id) throws Exception;
+   /**
+    * Import an annotation into the manager
+    * @param r the semantic annotation 
+    * @param id the identifier to assign to the annotation
+    */
+   public void importAnnotation(InputStream is, String id) throws Exception;
 
-    /**
-     * Export an annotation from the manager
-     * @param the identiifer of the annotation
-     * @param w the writer to write to
-     */
-    public void exportAnnotation(String id, OutputStream os) throws Exception;
+   /**
+    * Export an annotation from the manager
+    * @param the identiifer of the annotation
+    * @param w the writer to write to
+    */
+   public void exportAnnotation(String id, OutputStream os) throws Exception;
 
-    /**
-     * Update an existing annotation in the manager
-     * @param r the new semantic annotation 
-     * @param id the identifier of the annotation to update
-     */
-    public void updateAnnotation(InputStream is, String id) throws Exception;
+   /**
+    * Update an existing annotation in the manager
+    * @param r the new semantic annotation 
+    * @param id the identifier of the annotation to update
+    */
+   public void updateAnnotation(InputStream is, String id) throws Exception;
 
-    /**
-     * Remove an annotation from the manager
-     * @param id the identifier of the annotation
-     */
-    public void removeAnnotation(String id) throws Exception;
+   /**
+    * Remove an annotation from the manager
+    * @param id the identifier of the annotation
+    */
+   public void removeAnnotation(String id) throws Exception;
 
-    /**
-     * Check if the identifier is assigned to an annotation in the
-     * manager
-     * @return true if the id is assigned to an annotation in the manager
-     * @param id the annotation identifier
-     */
-    public boolean isAnnotation(String id);
+   /**
+    * Check if the identifier is assigned to an annotation in the
+    * manager
+    * @return true if the id is assigned to an annotation in the manager
+    * @param id the annotation identifier
+    */
+   public boolean isAnnotation(String id);
 
-    /**
-     * Get an annotation from the manager
-     * @param the identiifer of the annotation
-     */
-    public Annotation getAnnotation(String id) throws Exception;
+   /**
+    * Get an annotation from the manager
+    * @param the identiifer of the annotation
+    */
+   public Annotation getAnnotation(String id) throws Exception;
 
-    /**
-     * Get the annotation identifiers from the manager
-     * @return the set of annotation identifiers
-     */
-    public Vector<String> getAnnotationIds();
+   /**
+    * Get the annotation identifiers from the manager
+    * @return the set of annotation identifiers
+    */
+   public List<String> getAnnotationIds();
+
+   /**
+    * Get annotations that contain an entity in the given list and a 
+    * measurement with a characteristic and standard in the given lists
+    * @param entities the entity class URI's to search for
+    * @param characteristics the characteristic class URI's to search for
+    * @param standards the measurement standard class URI's to search for
+    * @return the matching annotations
+    */
+   public List<Annotation> getMatchingAnnotations(List<String> entities,
+      List<String> characteristics, List<String> standards);
+   
 
 }

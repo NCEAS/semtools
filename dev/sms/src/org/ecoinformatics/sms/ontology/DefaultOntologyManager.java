@@ -202,10 +202,10 @@ public class DefaultOntologyManager implements OntologyManager {
          return results;
       // change 'false' below to 'true' to get direct subclasses only
       for(Resource r : (List<Resource>) oc.listSubClasses(false).toList()) {
-         String uri = r.getNameSpace();
-         Ontology subont = getOntology(uri);
-         OntologyClass subc = new OntologyClass(subont, r.getLocalName());
-         if(subont != null && !results.contains(subc))
+         if(!o.getURI().equals(r.getNameSpace()))
+            continue;
+         OntologyClass subc = new OntologyClass(o, r.getLocalName());
+         if(!results.contains(subc))
             results.add(subc);
       }
       return results;
