@@ -29,24 +29,29 @@
  * OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
  * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-
 package org.ecoinformatics.sms.annotation;
 
 import java.util.List;
 import java.util.ArrayList;
-
 
 /**
  * Objects of this class represent observation ameasurements
  */
 public class Measurement {
 
+    private String _label;
+    private List<Characteristic> _characteristics = new ArrayList();
+    private Standard _standard;
+    private double _precision = 1.0;
+    private String _value;
+    private boolean _isKey;
+
     /** 
      * Set the label of the measurement
      * @param label the measurement label
      */
     public void setLabel(String label) {
-	_label = label;
+        _label = label;
     }
 
     /** 
@@ -54,7 +59,7 @@ public class Measurement {
      * @return the label
      */
     public String getLabel() {
-	return _label;
+        return _label;
     }
 
     /**
@@ -62,7 +67,7 @@ public class Measurement {
      * @param standard the standard
      */
     public void setStandard(Standard standard) {
-	_standard = standard;
+        _standard = standard;
     }
 
     /**
@@ -70,7 +75,7 @@ public class Measurement {
      * @return the standard
      */
     public Standard getStandard() {
-	return _standard;
+        return _standard;
     }
 
     /** 
@@ -78,7 +83,7 @@ public class Measurement {
      * @param precision the precision
      */
     public void setPrecision(double precision) {
-	_precision = precision;
+        _precision = precision;
     }
 
     /** 
@@ -86,7 +91,7 @@ public class Measurement {
      * @return the precision
      */
     public double getPrecision() {
-	return _precision;
+        return _precision;
     }
 
     /** 
@@ -94,7 +99,7 @@ public class Measurement {
      * @param value the value 
      */
     public void setValue(String value) {
-	_value = value;
+        _value = value;
     }
 
     /** 
@@ -102,7 +107,7 @@ public class Measurement {
      * @return the value
      */
     public String getValue() {
-	return _value;
+        return _value;
     }
 
     /** 
@@ -110,8 +115,8 @@ public class Measurement {
      * @param characteristic the characteristic
      */
     public void addCharacteristic(Characteristic characteristic) {
-	if(characteristic != null && !_characteristics.contains(characteristic))
-	    _characteristics.add(characteristic);
+        if(characteristic != null && !_characteristics.contains(characteristic))
+            _characteristics.add(characteristic);
     }
 
     /**
@@ -119,7 +124,7 @@ public class Measurement {
      * @param characteristic the characteristic to remove
      */
     public void removeCharacteristic(Characteristic characteristic) {
-	_characteristics.remove(characteristic);
+        _characteristics.remove(characteristic);
     }
 
     /**
@@ -127,7 +132,7 @@ public class Measurement {
      * @return the set of characteristics
      */
     public List<Characteristic> getCharacteristics() {
-	return _characteristics;
+        return _characteristics;
     }
 
     /**
@@ -145,31 +150,4 @@ public class Measurement {
     public boolean isKey() {
         return _isKey;
     }
-
-    /**
-     * Set whether this is a partial key for the observation
-     * @param isPartialKey if true, this is a partial key for the
-     * observation
-     */
-    public void setPartialKey(boolean isPartialKey) {
-        _isPartialKey = isPartialKey;
-    }
-
-    /**
-     * Get the partial key status of this measurement
-     * @return true if this measurement is a partial key of the observation
-     */
-    public boolean isPartialKey() {
-        return _isPartialKey;
-    }
-
-
-    private String _label;
-    private List<Characteristic> _characteristics = new ArrayList();    
-    private Standard _standard;
-    private double _precision = 1.0;
-    private String _value;
-    private boolean _isKey;
-    private boolean _isPartialKey;
-
 } 

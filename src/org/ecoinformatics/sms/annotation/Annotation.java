@@ -37,6 +37,9 @@ import java.util.ArrayList;
 import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import org.ecoinformatics.sms.ontology.Ontology;
+import org.ecoinformatics.sms.ontology.OntologyClass;
+
 
 /**
  * Objects of this class represent semantic annotations of a specific
@@ -168,11 +171,11 @@ public class Annotation {
    }
 
    /**
-    * Get the ontology items used in this annotation
-    * @return the set of ontology items
+    * Get the ontology classes used in this annotation
+    * @return the set of ontology classes
     */
-   public List<OntologyItem> getOntologyItems() {
-      List<OntologyItem> result = new ArrayList();
+   public List<OntologyClass> getOntologyClasses() {
+      List<OntologyClass> result = new ArrayList();
       for(Observation o : getObservations()) {
          Entity e = o.getEntity();
          if(e != null && !result.contains(e))
@@ -211,6 +214,11 @@ public class Annotation {
       return AnnotationReader.read(s);
    }
 
+   /**
+    * Get the XML representation of this annotation
+    * @return XML string
+    */
+   @Override
    public String toString() {
       ByteArrayOutputStream s = new ByteArrayOutputStream();
       AnnotationWriter.write(this, s);
@@ -236,9 +244,8 @@ public class Annotation {
       System.out.println("===============");
       System.out.println(a);
       System.out.println("===============");
-      for(OntologyItem item : a.getOntologyItems())
+      for(OntologyClass item : a.getOntologyClasses())
          System.out.println(item.getURI());
-
    }
 
 } 

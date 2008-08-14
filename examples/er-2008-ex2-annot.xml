@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-
 <sms:annotation xmlns="http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-ex2-annot.xml" 
   xmlns:ont1="http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1"
   xmlns:ont2="http://linus.nceas.ucsb.edu/sms/metacat/ont.5.1"
@@ -8,94 +7,93 @@
   emlPackage="eml.2.1" dataTable="1">
 
   <!-- Site Observation -->
-  <sms:observation label="o1" distinct="yes">
-    <sms:entity id="ont3:Site"/>
-    <sms:measurement label="m1" key="yes">
-      <sms:characteristic id="ont1:EntityName"/> 
-      <sms:standard id="ont3:LocalSiteIds"/>
-    </sms:measurement> 
-  </sms:observation>
+    <sms:observation label="o1" distinct="yes">
+        <sms:entity id="ont3:Site"/>
+        <sms:measurement label="m1" key="yes">
+            <sms:characteristic id="ont1:EntityName"/>
+            <sms:standard id="ont3:LocalSiteIds"/>
+        </sms:measurement>
+    </sms:observation>
 
   <!-- Air Observation -->
-  <sms:observation label="o2">
-    <sms:entity id="ont3:Air"/>
-    <sms:measurement label="m2" key="yes">
-      <sms:characteristic id="ont3:Average"/> 
-      <sms:characteristic id="ont2:Temperature"/> 
-      <sms:standard id="ont2:Celsius"/>
-    </sms:measurement> 
-  </sms:observation>
+    <sms:observation label="o2">
+        <sms:entity id="ont3:Air"/>
+        <sms:measurement label="m2" key="yes">
+            <sms:characteristic id="ont3:Average"/>
+            <sms:characteristic id="ont2:Temperature"/>
+            <sms:standard id="ont2:Celsius"/>
+        </sms:measurement>
+    </sms:observation>
 
   <!-- Plot Observation -->
-  <sms:observation label="o3" distinct="yes">
-    <sms:entity id="ont3:Plot"/>
-    <sms:measurement label="m3" partialKey="yes">
-      <sms:characteristic id="ont1:EntityName"/> 
-      <sms:standard id="ont1:Nominal"/>
-    </sms:measurement> 
-    <sms:context observation="o1" identifying="yes">
-      <sms:relationship id="ont3:Within"/>
-    </sms:context>
-    <sms:context observation="o2">
-      <sms:relationship id="ont3:Near"/>
-    </sms:context>
-  </sms:observation>  
+    <sms:observation label="o3" distinct="yes">
+        <sms:entity id="ont3:Plot"/>
+        <sms:measurement label="m3" key="yes">
+            <sms:characteristic id="ont1:EntityName"/>
+            <sms:standard id="ont1:Nominal"/>
+        </sms:measurement>
+        <sms:context observation="o1" identifying="yes">
+            <sms:relationship id="ont3:Within"/>
+        </sms:context>
+        <sms:context observation="o2">
+            <sms:relationship id="ont3:Near"/>
+        </sms:context>
+    </sms:observation>  
   
   <!-- TemporalRange Observation -->
-  <sms:observation label="o4" distinct="yes">
-    <sms:entity id="ont3:TemporalRange"/>
-    <sms:measurement label="m4" key="yes">
-      <sms:characteristic id="ont3:Year"/> 
-      <sms:standard id="ont1:DateTime"/>
-    </sms:measurement> 
-  </sms:observation>
+    <sms:observation label="o4" distinct="yes">
+        <sms:entity id="ont3:TemporalRange"/>
+        <sms:measurement label="m4" key="yes">
+            <sms:characteristic id="ont3:Year"/>
+            <sms:standard id="ont1:DateTime"/>
+        </sms:measurement>
+    </sms:observation>
 
   <!-- P. rubens Tree Observation -->
-  <sms:observation label="o5">
-    <sms:entity id="ont3:Tree"/>
-    <sms:measurement label="m5" precision="0.1">
-      <sms:characteristic id="ont3:DBH"/>
-      <sms:standard id="ont2:Centimeter"/>
-    </sms:measurement>
-    <sms:measurement label="m6" partialKey="yes">
-      <sms:characteristic id="ont3:TaxonomicTypeName"/>
-      <sms:standard id="ont3:ITIS"/>
-    </sms:measurement>
-    <sms:context observation="o3" identifying="yes">
-      <sms:relationship id="ont3:Within"/>
-    </sms:context>
-    <sms:context observation="o4">
-      <sms:relationship id="ont3:Within"/>
-    </sms:context>
-  </sms:observation>
+    <sms:observation label="o5">
+        <sms:entity id="ont3:Tree"/>
+        <sms:measurement label="m5" precision="0.1">
+            <sms:characteristic id="ont3:DBH"/>
+            <sms:standard id="ont2:Centimeter"/>
+        </sms:measurement>
+        <sms:measurement label="m6" key="yes">
+            <sms:characteristic id="ont3:TaxonomicTypeName"/>
+            <sms:standard id="ont3:ITIS"/>
+        </sms:measurement>
+        <sms:context observation="o3" identifying="yes">
+            <sms:relationship id="ont3:Within"/>
+        </sms:context>
+        <sms:context observation="o4">
+            <sms:relationship id="ont3:Within"/>
+        </sms:context>
+    </sms:observation>
 
   <!-- A. balsamea Tree Observation -->
-  <sms:observation label="o6">
-    <sms:entity id="ont3:Tree"/>
-    <sms:measurement label="m7" precision="0.1">
-      <sms:characteristic id="ont3:DBH"/>
-      <sms:standard id="ont2:Centimeter"/>
-    </sms:measurement>
-    <sms:measurement label="m8" partialKey="yes">
-      <sms:characteristic id="ont3:TaxonomicTypeName"/>
-      <sms:standard id="ont3:ITIS"/>
-    </sms:measurement>
-    <sms:context observation="o3" identifying="yes">
-      <sms:relationship id="ont3:Within"/>
-    </sms:context>
-    <sms:context observation="o4">
-      <sms:relationship id="ont3:Within"/>
-    </sms:context>
-  </sms:observation>
+    <sms:observation label="o6">
+        <sms:entity id="ont3:Tree"/>
+        <sms:measurement label="m7" precision="0.1">
+            <sms:characteristic id="ont3:DBH"/>
+            <sms:standard id="ont2:Centimeter"/>
+        </sms:measurement>
+        <sms:measurement label="m8" key="yes">
+            <sms:characteristic id="ont3:TaxonomicTypeName"/>
+            <sms:standard id="ont3:ITIS"/>
+        </sms:measurement>
+        <sms:context observation="o3" identifying="yes">
+            <sms:relationship id="ont3:Within"/>
+        </sms:context>
+        <sms:context observation="o4">
+            <sms:relationship id="ont3:Within"/>
+        </sms:context>
+    </sms:observation>
 
   <!-- attribute mappings -->
-  <sms:map attribute="site" measurement="m1"/>
-  <sms:map attribute="plot" measurement="m3"/>
-  <sms:map attribute="tmp" measurement="m2"/>
-  <sms:map attribute="yr" measurement="m4"/>
-  <sms:map attribute="piru" measurement="m5"/>
-  <sms:map attribute="piru" measurement="m6" value="Picea rubens"/>
-  <sms:map attribute="abba" measurement="m7"/>
-  <sms:map attribute="abba" measurement="m8" value="Abies balsamea"/>
-
+    <sms:map attribute="site" measurement="m1"/>
+    <sms:map attribute="plot" measurement="m3"/>
+    <sms:map attribute="tmp" measurement="m2"/>
+    <sms:map attribute="yr" measurement="m4"/>
+    <sms:map attribute="piru" measurement="m5"/>
+    <sms:map attribute="piru" measurement="m6" value="Picea rubens"/>
+    <sms:map attribute="abba" measurement="m7"/>
+    <sms:map attribute="abba" measurement="m8" value="Abies balsamea"/>
 </sms:annotation>

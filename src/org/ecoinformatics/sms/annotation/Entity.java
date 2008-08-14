@@ -32,16 +32,20 @@
 
 package org.ecoinformatics.sms.annotation;
 
+import org.ecoinformatics.sms.ontology.OntologyClass;
+import org.ecoinformatics.sms.ontology.Ontology;
+
 
 /**
  * Objects of this class measurement entities
  */
-public class Entity extends OntologyItem {
+public class Entity extends OntologyClass {
 
     /**
      * Default constructor
      */
     public Entity() {
+        super();
     }
 
     /**
@@ -49,7 +53,7 @@ public class Entity extends OntologyItem {
      * @param name the name
      */
     public Entity(Ontology ontology, String name) {
-	super(ontology, name);
+        super(ontology, name);
     }
 
 

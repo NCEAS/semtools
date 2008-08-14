@@ -29,19 +29,21 @@
  * OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
  * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-
 package org.ecoinformatics.sms.annotation;
 
+import org.ecoinformatics.sms.ontology.OntologyClass;
+import org.ecoinformatics.sms.ontology.Ontology;
 
 /**
  * Objects of this class represent measurement characteristics
  */
-public class Characteristic extends OntologyItem {
+public class Characteristic extends OntologyClass {
 
     /**
      * Default constructor
      */
     public Characteristic() {
+        super();
     }
 
     /**
@@ -49,7 +51,6 @@ public class Characteristic extends OntologyItem {
      * @param name the name
      */
     public Characteristic(Ontology ontology, String name) {
-	super(ontology, name);
+        super(ontology, name);
     }
-
 } 
