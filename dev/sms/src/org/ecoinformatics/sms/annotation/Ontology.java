@@ -29,9 +29,7 @@
  * OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
  * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-
 package org.ecoinformatics.sms.annotation;
-
 
 /**
  * Objects of this class represent ontologies used in semantic annotations
@@ -49,8 +47,8 @@ public class Ontology {
      * @param uri the ontology uri
      */
     public Ontology(String namespace, String uri) {
-	_namespace = namespace;
-	_uri = uri;
+        _namespace = namespace;
+        _uri = uri;
     }
 
     /** 
@@ -58,7 +56,7 @@ public class Ontology {
      * @param uri the uri 
      */
     public void setURI(String uri) {
-	_uri = uri;
+        _uri = uri;
     }
 
     /** 
@@ -66,7 +64,7 @@ public class Ontology {
      * @return the uri
      */
     public String getURI() {
-	return _uri;
+        return _uri;
     }
 
     /**
@@ -86,19 +84,29 @@ public class Ontology {
         return _namespace;
     }
 
-  
-    public boolean equals(Object obj) {
-	if(!(obj instanceof Ontology))
-	    return false;
-	Ontology ont = (Ontology)obj;
-	String uri = ont.getURI();
-	if(uri != null && !uri.equals(getURI()))
-	    return false;
-	return true;
+    /**
+     * Returns a string representation of the ontology 
+     * @return uri of the ontology
+     */
+    @Override
+    public String toString() {
+        return getURI();
     }
 
-  
+    /**
+     * Check if two ontologies are equal
+     * @param obj the object to check
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Ontology))
+            return false;
+        Ontology ont = (Ontology) obj;
+        String uri = ont.getURI();
+        if(uri != null && !uri.equals(getURI()))
+            return false;
+        return true;
+    }
     private String _uri;
     private String _namespace;
-
 } 
