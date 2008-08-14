@@ -33,6 +33,7 @@
 package org.ecoinformatics.sms;
 
 import org.ecoinformatics.sms.annotation.Annotation;
+import org.ecoinformatics.sms.ontology.OntologyClass;
 import java.util.List;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -96,8 +97,8 @@ public interface AnnotationManager {
     * @param standards the measurement standard class URI's to search for
     * @return the matching annotations
     */
-   public List<Annotation> getMatchingAnnotations(List<String> entities,
-      List<String> characteristics, List<String> standards);
+   public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
+      List<OntologyClass> characteristics, List<OntologyClass> standards);
    
 
 }

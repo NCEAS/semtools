@@ -46,6 +46,12 @@ public class OntologyClass {
     private String _className;
 
     /**
+     * 
+     */
+    public OntologyClass() {
+    }
+
+    /**
      * Default constructor.
      * @param uri the uri of the ontology
      */
@@ -55,7 +61,15 @@ public class OntologyClass {
     }
 
     /**
-     * Returns the name of the class
+     * Set the local name of the class
+     * @param className the name of the class
+     */
+    public void setName(String className) {
+        _className = className;
+    }
+    
+    /**
+     * Return the name of the class
      * @return the class name
      */
     public String getName() {
@@ -63,7 +77,7 @@ public class OntologyClass {
     }
 
     /**
-     * Returns the name of the class
+     * Return the name of the class
      * @return the class name
      */
     public String getURI() {
@@ -71,13 +85,21 @@ public class OntologyClass {
     }
 
     /**
-     * Returns the classes ontology
+     * Set the ontology of the class
+     * @param ontology the ontology
+     */
+    public void setOntology(Ontology ontology) {
+        _ontology = ontology;
+    }
+    
+    /**
+     * Return the ontology of the class
      * @return the ontology
      */
     public Ontology getOntology() {
         return _ontology;
     }
-
+    
     /**
      * Checks if two annotation ontology classes have the same name.
      */

@@ -44,17 +44,39 @@ public class Ontology {
 
     /* uri of the ontology */
     private String _uri;
-    /* the backing model */
-    private OntModel _model;
+    /* optional prefix */
+    private String _prefix;
 
     /**
-     * Default constructor. The constructor is called from the
-     * ontology catalog.
+     */
+    public Ontology() {
+        // do nothing
+    }
+
+    /**
+     * Create an ontology reference from a uri
      * @param uri the uri of this ontology 
      */
-    protected Ontology(String uri, OntModel model) {
+    public Ontology(String uri) {
         _uri = uri;
-        _model = model;
+    }
+
+    /**
+     * Create an ontology reference from a prefix and uri
+     * @param prefix the uri of this ontology
+     * @param uri the uri of this ontology
+     */
+    public Ontology(String prefix, String uri) {
+        _prefix = prefix;
+        _uri = uri;
+    }
+    
+    /**
+     * Set the uri of the ontology
+     * @param uri
+     */
+    public void setURI(String uri) {
+        _uri = uri;
     }
 
     /**
@@ -65,16 +87,33 @@ public class Ontology {
         return _uri;
     }
 
-    public OntModel getModel() {
-        return _model;
+    /**
+     * Set the prefix of for the ontology uri
+     * @param prefix
+     */
+    public void setPrefix(String prefix) {
+        _prefix = prefix;
     }
     
+    /**
+     * Get the prefix for the ontology uri
+     * @return the prefix string
+     */
+    public String getPrefix() {
+        return _prefix;
+    }
+    
+    /**
+     * Get a string representation of the ontology
+     * @return the ontology uri
+     */
     public String toString() {
         return getURI();
     }
 
     /** 
-     * Returns true if the given ontology has the same uri
+     * Check if two ontologies are the equal
+     * @return true if ontologies have same uri
      */
     public boolean equals(Object obj) {
         if(obj instanceof Ontology) {

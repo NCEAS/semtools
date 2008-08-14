@@ -29,7 +29,6 @@
  * OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
  * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-
 package org.ecoinformatics.sms.annotation;
 
 /**
@@ -49,9 +48,9 @@ public class Context {
      * @param isIdentifying the identifying status
      */
     public Context(Observation obs, Relationship rel, boolean isIdentifying) {
-	_observation = obs;
-	_relationship = rel;
-	_isIdentifying = isIdentifying;
+        _observation = obs;
+        _relationship = rel;
+        _isIdentifying = isIdentifying;
     }
 
     /** 
@@ -59,7 +58,7 @@ public class Context {
      * @param observation the observation
      */
     public void setObservation(Observation observation) {
-	_observation = observation;
+        _observation = observation;
     }
 
     /** 
@@ -67,7 +66,7 @@ public class Context {
      * @return the observation
      */
     public Observation getObservation() {
-	return _observation;
+        return _observation;
     }
 
     /**
@@ -102,10 +101,7 @@ public class Context {
     public boolean isIdentifying() {
         return _isIdentifying;
     }
-
-
     private Observation _observation;
     private Relationship _relationship;
     private boolean _isIdentifying;
-
 } 

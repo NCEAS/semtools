@@ -1,5 +1,4 @@
-<?xml version="1.0"?> 
-
+<?xml version="1.0"?>
 <sms:annotation
    xmlns="plt-gced-0409-1-1-annot.xml"
    xmlns:sms="http://daks.ucdavis.edu/sms-annot-1.0.0rc1"
@@ -10,122 +9,121 @@
    dataTable="1">
 
   <!-- observation: Spatial Location -->
-  <sms:observation label="o1" distinct="yes">
-    <sms:entity id="gce:SpatialLocation"/>
-    <sms:measurement label="m1" key="yes">
-      <sms:characteristic id="oboe:EntityName"/> 
-      <sms:standard id="gce:GCESiteNames"/>
-    </sms:measurement> 
-  </sms:observation>
+    <sms:observation label="o1" distinct="yes">
+        <sms:entity id="gce:SpatialLocation"/>
+        <sms:measurement label="m1" key="yes">
+            <sms:characteristic id="oboe:EntityName"/>
+            <sms:standard id="gce:GCESiteNames"/>
+        </sms:measurement>
+    </sms:observation>
 
   <!-- mapping: Site -->
-  <sms:map attribute="att.1" measurement="m1"/>
+    <sms:map attribute="att.1" measurement="m1"/>
 
   <!-- observation: Treatment -->
-  <sms:observation label="o2" distinct="yes">
-    <sms:entity id="gce:PelletizedFertilizationTreatment"/>
-    <sms:measurement label="m2" key="yes">
-      <sms:characteristic id="oboe:EntityType"/> 
-      <sms:standard id="gce:PelletizedFertilizationTreatmentTypeNames"/>
-    </sms:measurement> 
-  </sms:observation>
+    <sms:observation label="o2" distinct="yes">
+        <sms:entity id="gce:PelletizedFertilizationTreatment"/>
+        <sms:measurement label="m2" key="yes">
+            <sms:characteristic id="oboe:EntityType"/>
+            <sms:standard id="gce:PelletizedFertilizationTreatmentTypeNames"/>
+        </sms:measurement>
+    </sms:observation>
 
   <!-- mapping: Treatment -->
-  <sms:map attribute="att.3" measurement="m2"/>
+    <sms:map attribute="att.3" measurement="m2"/>
 
   <!-- observation: Community -->
-  <sms:observation label="o3" distinct="yes">
-    <sms:entity id="gce:Community"/>
-    <sms:measurement label="m3" key="yes">
-      <sms:characteristic id="oboe:EntityType"/> 
-      <sms:standard id="gce:CommunityTypeNames"/>
-    </sms:measurement> 
-  </sms:observation>
+    <sms:observation label="o3" distinct="yes">
+        <sms:entity id="gce:Community"/>
+        <sms:measurement label="m3" key="yes">
+            <sms:characteristic id="oboe:EntityType"/>
+            <sms:standard id="gce:CommunityTypeNames"/>
+        </sms:measurement>
+    </sms:observation>
 
   <!-- mapping: Community -->
-  <sms:map attribute="att.2" measurement="m3"/>
+    <sms:map attribute="att.2" measurement="m3"/>
 
   <!-- observation: Plot -->
-  <sms:observation label="o4" distinct="yes">
-    <sms:entity id="gce:ReplicatePlot"/>
-    <sms:measurement label="m4a" key="yes">
-      <sms:characteristic id="oboe:EntityName"/> 
-      <sms:standard id="oboe:OrdinalStandard"/>
-    </sms:measurement> 
-    <sms:measurement label="m4b" key="no" value="1">
-      <sms:characteristic id="unit:Area"/> 
-      <sms:standard id="unit:SquareMeter"/>
-    </sms:measurement> 
-    <sms:measurement label="m4c" key="no" value="1">
-      <sms:characteristic id="unit:Length"/> 
-      <sms:standard id="unit:Meter"/>
-    </sms:measurement> 
-    <sms:measurement label="m4d" key="no" value="1">
-      <sms:characteristic id="gce:Width"/> 
-      <sms:standard id="unit:Meter"/>
-    </sms:measurement> 
-    <sms:context observation="o1" identifying="yes">
-      <sms:relationship id="gce:Within"/>
-    </sms:context>
-    <sms:context observation="o2" identifying="yes">
-      <sms:relationship id="gce:Within"/>
-    </sms:context>
-    <sms:context observation="o3" identifying="no">
-      <sms:relationship id="gce:Within"/>
-    </sms:context>
-  </sms:observation>
+    <sms:observation label="o4" distinct="yes">
+        <sms:entity id="gce:ReplicatePlot"/>
+        <sms:measurement label="m4a" key="yes">
+            <sms:characteristic id="oboe:EntityName"/>
+            <sms:standard id="oboe:OrdinalStandard"/>
+        </sms:measurement>
+        <sms:measurement label="m4b" key="no" value="1">
+            <sms:characteristic id="unit:Area"/>
+            <sms:standard id="unit:SquareMeter"/>
+        </sms:measurement>
+        <sms:measurement label="m4c" key="no" value="1">
+            <sms:characteristic id="unit:Length"/>
+            <sms:standard id="unit:Meter"/>
+        </sms:measurement>
+        <sms:measurement label="m4d" key="no" value="1">
+            <sms:characteristic id="gce:Width"/>
+            <sms:standard id="unit:Meter"/>
+        </sms:measurement>
+        <sms:context observation="o1" identifying="yes">
+            <sms:relationship id="gce:Within"/>
+        </sms:context>
+        <sms:context observation="o2" identifying="yes">
+            <sms:relationship id="gce:Within"/>
+        </sms:context>
+        <sms:context observation="o3" identifying="no">
+            <sms:relationship id="gce:Within"/>
+        </sms:context>
+    </sms:observation>
 
   <!-- mapping: Plot (Replicate)-->
-  <sms:map attribute="att.4" measurement="m4a"/>
+    <sms:map attribute="att.4" measurement="m4a"/>
   
   <!-- observation: Subplot -->
-  <sms:observation label="o5" distinct="yes">
-    <sms:entity id="gce:CentralSubplot"/>
-    <sms:measurement label="m5a" key="no">
-      <sms:characteristic id="unit:Length" value="0.5"/> 
-      <sms:standard id="unit:Meter"/>
-    </sms:measurement> 
-    <sms:measurement label="m5b" key="no">
-      <sms:characteristic id="gce:Width" value="0.5"/> 
-      <sms:standard id="unit:Meter"/>
-    </sms:measurement> 
-    <sms:context observation="o4" identifying="yes">
-      <sms:relationship id="gce:Within"/>
-    </sms:context>
-  </sms:observation>  
+    <sms:observation label="o5" distinct="yes">
+        <sms:entity id="gce:CentralSubplot"/>
+        <sms:measurement label="m5a" key="no">
+            <sms:characteristic id="unit:Length" value="0.5"/>
+            <sms:standard id="unit:Meter"/>
+        </sms:measurement>
+        <sms:measurement label="m5b" key="no">
+            <sms:characteristic id="gce:Width" value="0.5"/>
+            <sms:standard id="unit:Meter"/>
+        </sms:measurement>
+        <sms:context observation="o4" identifying="yes">
+            <sms:relationship id="gce:Within"/>
+        </sms:context>
+    </sms:observation>  
 
   <!-- observation: Dry weight -->
-  <sms:observation label="o6" distinct="yes">
-    <sms:entity id="gce:Plant"/>
-    <sms:measurement label="m6a" key="yes">
-      <sms:characteristic id="oboe:EntityType"/> 
-      <sms:standard id="gce:TaxonomicTypeNames"/>
-    </sms:measurement> 
-    <sms:measurement label="m6b" precision="0.01" key="no">
-      <sms:characteristic id="gce:DryWeight"/> 
-      <sms:standard id="gce:GramsPerSquareMeter"/>
-    </sms:measurement> 
-    <sms:context observation="o5" identifying="yes">
-      <sms:relationship id="gce:Within"/>
-    </sms:context>
-  </sms:observation>  
+    <sms:observation label="o6" distinct="yes">
+        <sms:entity id="gce:Plant"/>
+        <sms:measurement label="m6a" key="yes">
+            <sms:characteristic id="oboe:EntityType"/>
+            <sms:standard id="gce:TaxonomicTypeNames"/>
+        </sms:measurement>
+        <sms:measurement label="m6b" precision="0.01" key="no">
+            <sms:characteristic id="gce:DryWeight"/>
+            <sms:standard id="gce:GramsPerSquareMeter"/>
+        </sms:measurement>
+        <sms:context observation="o5" identifying="yes">
+            <sms:relationship id="gce:Within"/>
+        </sms:context>
+    </sms:observation>  
   
   <!-- mapping: Dry weight -->
   <!-- species_code -->
-  <sms:map attribute="att.5" measurement="m6a" 
-	   if="att.5 eq 'JROM'" value="Juncus_roemerianus"/> 
-  <sms:map attribute="att.5" measurement="m6a" 
+    <sms:map attribute="att.5" measurement="m6a" 
+	   if="att.5 eq 'JROM'" value="Juncus_roemerianus"/>
+    <sms:map attribute="att.5" measurement="m6a" 
 	   if="att.5 eq 'BFRU'" value="Borrichia_frutescens"/>
-  <sms:map attribute="att.5" measurement="m6a" 
+    <sms:map attribute="att.5" measurement="m6a" 
 	   if="att.5 eq 'BMAR'" value="Batis_maritima"/>
-  <sms:map attribute="att.5" measurement="m6a" 
+    <sms:map attribute="att.5" measurement="m6a" 
 	   if="att.5 eq 'SALT'" value="Spartina_alterniflora"/>
-  <sms:map attribute="att.5" measurement="m6a" 
+    <sms:map attribute="att.5" measurement="m6a" 
 	   if="att.5 eq 'DSPI'" value="Distichlis_spicata"/>
-  <sms:map attribute="att.5" measurement="m6a" 
+    <sms:map attribute="att.5" measurement="m6a" 
 	   if="att.5 eq 'SVIR'" value="Salicornia_virginica"/>
   <!-- plant_mass_m2 -->
-  <sms:map attribute="att.8" measurement="m6b"/>
-
+    <sms:map attribute="att.8" measurement="m6b"/>
 </sms:annotation>
 
