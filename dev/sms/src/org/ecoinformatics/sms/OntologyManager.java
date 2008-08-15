@@ -1,4 +1,3 @@
-
 /**
  *    '$RCSfile: OntologyManager.java,v $'
  *
@@ -44,138 +43,146 @@ import org.ecoinformatics.sms.ontology.OntologyObjectProperty;
  */
 public interface OntologyManager {
 
-   /**
-    * Adds an OWL ontology to the manager. The uri is assumed also to be the 
-    * namespace of the ontology.
-    * @param uri the uri and location of the OWL file ontology
-    */
-   public void importOntology(String uri) throws Exception;
+    /**
+     * Adds an OWL ontology to the manager. The uri is assumed also to be the 
+     * namespace of the ontology.
+     * @param uri the uri and location of the OWL file ontology
+     */
+    public void importOntology(String uri) throws Exception;
 
-   /**
-    * Removes the ontology from the manager
-    * @param uri the location of the OWL ontology file
-    */
-   public void removeOntology(String uri);
+    /**
+     * Removes the ontology from the manager
+     * @param uri the location of the OWL ontology file
+     */
+    public void removeOntology(String uri);
 
-   /**
-    * Checks if the uri denotes an ontology in the catalog
-    * @return true if the uri is an ontology in the catalog
-    */
-   public boolean isOntology(String uri);
+    /**
+     * Checks if the uri denotes an ontology in the catalog
+     * @return true if the uri is an ontology in the catalog
+     */
+    public boolean isOntology(String uri);
 
-   /**
-    * Returns the ontology associated with the uri
-    * @return the ontology
-    */
-   public Ontology getOntology(String uri);
+    /**
+     * Returns the ontology associated with the uri
+     * @return the ontology
+     */
+    public Ontology getOntology(String uri);
 
-   /** 
-    * Returns the uri's of ontologies currently managed by this manager
-    * @return the ontology uri's
-    */
-   public List<String> getOntologyIds();
+    /** 
+     * Returns the uri's of ontologies currently managed by this manager
+     * @return the ontology uri's
+     */
+    public List<String> getOntologyIds();
 
-   /**
-    * Returns the class with the given name in the ontology
-    * @param o the ontology
-    * @param name the class name
-    * @return the class (if it exists)
-    */
-   public OntologyClass getNamedClass(Ontology o, String name);
-   
-   /**
-    * Gets the named classes for ontologies being managed by this manager
-    * @returns the named classes
-    */
-   public List<OntologyClass> getNamedClasses();
+    /**
+     * Returns the class with the given name in the ontology
+     * @param o the ontology
+     * @param name the class name
+     * @return the class (if it exists)
+     */
+    public OntologyClass getNamedClass(Ontology o, String name);
 
-   /**
-    * Returns the set of named subclasses of the given ontology class.
-    * @param c the superclass to search for
-    * @return the subclasses
-    */
-   public List<OntologyClass> getNamedSubclasses(OntologyClass c);
+    /**
+     * Gets the named classes for ontologies being managed by this manager
+     * @returns the named classes
+     */
+    public List<OntologyClass> getNamedClasses();
 
-   /**
-    * Returns the set of named subclasses of the given class within the given
-    * given ontology
-    * @param o the ontology to search
-    * @param c the super class 
-    * @return the subclasses within the given ontology
-    */
-   public List<OntologyClass> getNamedSubclasses(OntologyClass c, Ontology o);
+    /**
+     * Returns the set of named subclasses of the given ontology class.
+     * @param c the superclass to search for
+     * @return the subclasses
+     */
+    public List<OntologyClass> getNamedSubclasses(OntologyClass c);
 
-   /**
-    * Returns true if the first class is a subclass of the second
-    * @param sub the subclass
-    * @param sup the superclass
-    * @returns result of subclass check
-    */
-   public boolean isSubClass(OntologyClass sub, OntologyClass sup);
+    /**
+     * Returns the set of named subclasses of the given class within the given
+     * given ontology
+     * @param o the ontology to search
+     * @param c the super class 
+     * @return the subclasses within the given ontology
+     */
+    public List<OntologyClass> getNamedSubclasses(OntologyClass c, Ontology o);
 
-   /**
-    * Returns true if classes are equivalent
-    * @param c1 the first class
-    * @param c2 the second class
-    * @returns result of equivalence check
-    */
-   public boolean isEquivalentClass(OntologyClass c1, OntologyClass c2);
+    /**
+     * Returns true if the first class is a subclass of the second
+     * @param sub the subclass
+     * @param sup the superclass
+     * @returns result of subclass check
+     */
+    public boolean isSubClass(OntologyClass sub, OntologyClass sup);
 
-   /**
-    * Gets the superclasses of the given ontology class whose ontology
-    * is managed by this manager
-    * @param o the ontology
-    * @returns the named classes
-    */
-   public List<OntologyClass> getNamedSuperclasses(OntologyClass c);
+    /**
+     * Returns true if classes are equivalent
+     * @param c1 the first class
+     * @param c2 the second class
+     * @returns result of equivalence check
+     */
+    public boolean isEquivalentClass(OntologyClass c1, OntologyClass c2);
 
-   /**
-    * Gets the named properties for ontologies being managed by this
-    * manager
-    * @returns the named properties
-    */
-   public List<OntologyProperty> getNamedProperties();
+    /**
+     * Gets the superclasses of the given ontology class whose ontology
+     * is managed by this manager
+     * @param o the ontology
+     * @returns the named classes
+     */
+    public List<OntologyClass> getNamedSuperclasses(OntologyClass c);
 
-   /**
-    * Gets the named subproperties of the given property whose
-    * ontology is managed by this manager
-    * @returns the named properties
-    */
-   public List<OntologyProperty> getNamedSubproperties(OntologyProperty p);
+    /**
+     * Get the superclases of the given ontology class that are also within 
+     * the given ontology
+     * @param c the subclass 
+     * @param o the ontology to search
+     * @return the superclasses within the given ontology
+     */
+    public List<OntologyClass> getNamedSuperclasses(OntologyClass c, Ontology o);
 
-   /**
-    * Gets the named superproperties of the given property whose
-    * ontology is managed by this manager
-    * @returns the named properties
-    */
-   public List<OntologyProperty> getNamedSuperproperties(OntologyProperty p);
+    /**
+     * Gets the named properties for ontologies being managed by this
+     * manager
+     * @returns the named properties
+     */
+    public List<OntologyProperty> getNamedProperties();
 
-   /**
-    * Returns true if the given class is the domain of the property.
-    * @param p the property
-    * @param c the class
-    */
-   public boolean hasDomain(OntologyProperty p, OntologyClass c);
+    /**
+     * Gets the named subproperties of the given property whose
+     * ontology is managed by this manager
+     * @returns the named properties
+     */
+    public List<OntologyProperty> getNamedSubproperties(OntologyProperty p);
 
-   /**
-    * Returns true if the given class is the range of the property.
-    * @param p the property
-    * @param c the class
-    */
-   public boolean hasRange(OntologyProperty p, OntologyClass c);
+    /**
+     * Gets the named superproperties of the given property whose
+     * ontology is managed by this manager
+     * @returns the named properties
+     */
+    public List<OntologyProperty> getNamedSuperproperties(OntologyProperty p);
 
-   /**
-    * Returns the domain classes of the property.
-    * @param p the property
-    * @return the domain classes
-    */
-   public List<OntologyClass> getDomain(OntologyProperty p);
+    /**
+     * Returns true if the given class is the domain of the property.
+     * @param p the property
+     * @param c the class
+     */
+    public boolean hasDomain(OntologyProperty p, OntologyClass c);
 
-   /**
-    * Returns the range classes of the property.
-    * @param p the property
-    * @return the domain classes
-    */
-   public List<OntologyClass> getRange(OntologyObjectProperty p);
+    /**
+     * Returns true if the given class is the range of the property.
+     * @param p the property
+     * @param c the class
+     */
+    public boolean hasRange(OntologyProperty p, OntologyClass c);
 
+    /**
+     * Returns the domain classes of the property.
+     * @param p the property
+     * @return the domain classes
+     */
+    public List<OntologyClass> getDomain(OntologyProperty p);
+
+    /**
+     * Returns the range classes of the property.
+     * @param p the property
+     * @return the domain classes
+     */
+    public List<OntologyClass> getRange(OntologyObjectProperty p);
 }

@@ -146,13 +146,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
     public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
             List<OntologyClass> characteristics, List<OntologyClass> standards) {
         List<Annotation> results = new ArrayList();
-        for(String id : getAnnotationIds()) {
-            Annotation annot = null;
-            try {
-                annot = getAnnotation(id);
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
+        for(Annotation annot : getAnnotations()) {
             boolean match = false;
             for(Observation o : annot.getObservations()) {
                 if(entities != null && entities.size() != 0) {
@@ -189,6 +183,169 @@ public class DefaultAnnotationManager implements AnnotationManager {
         }
         return results;
     }
-}
-   
- 
+
+    /**
+     * Get entities used in managed annotations
+     * @return list of entities
+     */
+    public List<OntologyClass> getActiveEntities() {
+        List<OntologyClass> results = new ArrayList();
+        for(Annotation a : getAnnotations())
+            for(OntologyClass c : a.getOntologyClasses())
+                if(c instanceof Entity && !results.contains(c))
+                    results.add(c);
+        return results;
+    }
+
+    /**
+     * Get characteristics used in managed annotations
+     * @return list of characteristics
+     */
+    public List<OntologyClass> getActiveCharacteristics() {
+        List<OntologyClass> results = new ArrayList();
+        for(Annotation a : getAnnotations())
+            for(OntologyClass c : a.getOntologyClasses())
+                if(c instanceof Characteristic && !results.contains(c))
+                    results.add(c);
+        return results;
+    }
+
+    /**
+     * Get measurement standards used in managed annotations
+     * @return list of measurement standards
+     */
+    public List<OntologyClass> getActiveStandards() {
+        List<OntologyClass> results = new ArrayList();
+        for(Annotation a : getAnnotations())
+            for(OntologyClass c : a.getOntologyClasses())
+                if(c instanceof Standard && !results.contains(c))
+                    results.add(c);
+        return results;
+    }
+
+    /**
+     * Get entities used in managed annotations having a measurement with a 
+     * characteristic and standard in the given characteristics and standards
+     * @param characteristics characteristics to look for
+     * @param standards
+     * @return list of matching entities
+     */
+    public List<OntologyClass> getActiveEntities(
+            List<OntologyClass> characteristics, List<OntologyClass> standards) {
+        // check if both args are missing
+        if((characteristics == null || characteristics.isEmpty()) &&
+                (standards == null || standards.isEmpty()))
+            return getActiveEntities();
+        List<OntologyClass> results = new ArrayList();
+        for(Annotation a : getAnnotations())
+            for(Observation o : a.getObservations()) {
+                Entity e = o.getEntity();
+                if(results.contains(e))
+                    continue;
+                boolean found = false;
+                for(Measurement m : o.getMeasurements()) {
+                    if(standards != null && !standards.contains(m.getStandard()))
+                        continue;
+                    if(characteristics == null || characteristics.isEmpty()) {
+                        found = true;
+                        break;
+                    }
+                    for(Characteristic c : m.getCharacteristics())
+                        if(characteristics.contains(c)) {
+                            found = true;
+                            break;
+                        }
+                    if(found)
+                        break;
+                }
+                if(found)
+                    results.add(e);
+            }
+        return results;
+    }
+
+    /**
+     * Get characteristics used in managed annotations having a measurement 
+     * with an entity and standard in the given entities and standards
+     * @param entities entities to look for
+     * @param standards standards to look for
+     * @return list of matching characteristics
+     */
+    public List<OntologyClass> getActiveCharacteristics(
+            List<OntologyClass> entities, List<OntologyClass> standards) {
+        // check if both args are missing
+        if((entities == null || entities.isEmpty()) &&
+                (standards == null || standards.isEmpty()))
+            return getActiveCharacteristics();
+        List<OntologyClass> results = new ArrayList();
+        for(Annotation a : getAnnotations())
+            for(Observation o : a.getObservations()) {
+                if(entities != null && !entities.contains(o.getEntity()))
+                    continue;
+                for(Measurement m : o.getMeasurements()) {
+                    if(standards != null && !standards.contains(m.getStandard()))
+                        continue;
+                    // found a match
+                    for(Characteristic c : m.getCharacteristics())
+                        if(!results.contains(c))
+                            results.add(c);
+                }
+            }
+        return results;
+    }
+
+    /**
+     * Get standards used in managed annotations having a measurement 
+     * with an entity and characteristic in the given entities and 
+     * characteristics
+     * @param entities entities to look for
+     * @param characteristics characteristics to look for
+     * @return list of matching standards
+     */
+    public List<OntologyClass> getActiveStandards(
+            List<OntologyClass> entities, List<OntologyClass> characteristics) {
+        // check if both args are missing
+        if((entities == null || entities.isEmpty()) &&
+                (characteristics == null || characteristics.isEmpty()))
+            return getActiveStandards();
+        List<OntologyClass> results = new ArrayList();
+        for(Annotation a : getAnnotations())
+            for(Observation o : a.getObservations()) {
+                if(entities != null && !entities.contains(o.getEntity()))
+                    continue;
+                for(Measurement m : o.getMeasurements()) {
+                    boolean found = false;
+                    if(characteristics != null) {
+                        for(Characteristic c : m.getCharacteristics())
+                            if(characteristics.contains(c)) {
+                                found = true;
+                                break;
+                            }
+                    } else
+                        found = true;
+                    Standard s = m.getStandard();
+                    if(found && !results.contains(s))
+                        results.add(s);
+                }
+            }
+        return results;
+    }
+
+    /**
+     * Helper method to get all annotations
+     * @return annotations
+     */
+    private List<Annotation> getAnnotations() {
+        List<Annotation> results = new ArrayList();
+        for(String id : getAnnotationIds()) {
+            Annotation a = null;
+            try {
+                a = getAnnotation(id);
+                results.add(a);
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return results;
+    }
+} 
