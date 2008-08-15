@@ -127,7 +127,7 @@ public class DefaultOntologyManager implements OntologyManager {
         OntModel model = getModel(o);
         if(model == null)
             return null;
-        OntClass oc = model.getOntClass(o.getURI() + name);
+        OntClass oc = model.getOntClass(o.getURI() + "#" + name);
         if(oc == null)
             return null;
         return new OntologyClass(o, name);
@@ -143,6 +143,8 @@ public class DefaultOntologyManager implements OntologyManager {
         for(OntModel model : getModels())
             for(Resource c : (List<Resource>) model.listClasses().toList()) {
                 String uri = c.getNameSpace();
+                if(uri != null && uri.endsWith("#"))
+                    uri = uri.substring(0, uri.length() - 1);
                 Ontology ont = getOntology(uri);
                 OntologyClass oc = new OntologyClass(ont, c.getLocalName());
                 if(ont != null && !results.contains(oc))
@@ -173,6 +175,8 @@ public class DefaultOntologyManager implements OntologyManager {
             // change 'false' below to 'true' to get direct subclasses only
             for(Resource r : (List<Resource>) oc.listSubClasses(false).toList()) {
                 String r_uri = r.getNameSpace();
+                if(r_uri != null && r_uri.endsWith("#"))
+                    r_uri = r_uri.substring(0, r_uri.length() - 1);
                 Ontology subont = getOntology(r_uri);
                 OntologyClass subc = new OntologyClass(subont, r.getLocalName());
                 if(subont != null && !results.contains(subc))
@@ -201,7 +205,10 @@ public class DefaultOntologyManager implements OntologyManager {
             return results;
         // change 'false' below to 'true' to get direct subclasses only
         for(Resource r : (List<Resource>) oc.listSubClasses(false).toList()) {
-            if(!o.getURI().equals(r.getNameSpace()))
+            String r_uri = r.getNameSpace();
+            if(r_uri != null && r_uri.endsWith("#"))
+                r_uri = r_uri.substring(0, r_uri.length() - 1);
+            if(!o.getURI().equals(r_uri))
                 continue;
             OntologyClass subc = new OntologyClass(o, r.getLocalName());
             if(!results.contains(subc))
@@ -233,14 +240,68 @@ public class DefaultOntologyManager implements OntologyManager {
     }
 
     /**
-     * Gets the superclasses of the given ontology class whose ontology
+     * Get the superclasses of the given ontology class whose ontology
      * is managed by this manager
-     * @param o the ontology
+     * @param c the subclass
      * @returns the named classes
      */
     public List<OntologyClass> getNamedSuperclasses(OntologyClass c) {
-        // TODO
-        return null;
+        List<OntologyClass> results = new ArrayList();
+        if(c == null)
+            return results;
+        for(String uri : getOntologyIds()) {
+            Ontology ont = getOntology(uri);
+            if(ont == null)
+                continue;
+            OntModel model = getModel(ont);
+            if(model == null)
+                continue;
+            OntClass oc = model.getOntClass(c.toString());
+            if(oc == null)
+                continue;
+            // change 'false' below to 'true' to get direct subclasses only
+            for(Resource r : (List<Resource>) oc.listSuperClasses(false).toList()) {
+                String r_uri = r.getNameSpace();
+                if(r_uri != null && r_uri.endsWith("#"))
+                    r_uri = r_uri.substring(0, r_uri.length() - 1);
+                Ontology supont = getOntology(r_uri);
+                OntologyClass supc = new OntologyClass(supont, r.getLocalName());
+                if(supont != null && !results.contains(supc))
+                    results.add(supc);
+            }
+        }
+        return results;
+    }
+
+    /**
+     * Get the superclases of the given ontology class that are also within 
+     * the given ontology
+     * @param c the subclass 
+     * @param o the ontology to search
+     * @return the superclasses within the given ontology
+     */
+    public List<OntologyClass> getNamedSuperclasses(OntologyClass c, Ontology o) {
+        List<OntologyClass> results = new ArrayList();
+        if(c == null)
+            return results;
+        OntModel model = getModel(o);
+        if(model == null)
+            return results;
+        OntClass oc = model.getOntClass(c.toString());
+        if(oc == null)
+            return results;
+        // change 'false' below to 'true' to get direct subclasses only
+        for(Resource r : (List<Resource>) oc.listSuperClasses(false).toList()) {
+            String r_uri = r.getNameSpace();
+            if(r_uri != null && r_uri.endsWith("#"))
+                r_uri = r_uri.substring(0, r_uri.length() - 1);
+            if(!o.getURI().equals(r_uri))
+                continue;
+            OntologyClass supc = new OntologyClass(o, r.getLocalName());
+            if(!results.contains(supc))
+                results.add(supc);
+        }
+        return results;
     }
 
     /**
@@ -318,8 +379,8 @@ public class DefaultOntologyManager implements OntologyManager {
      */
     private List<OntModel> getModels() {
         List<OntModel> results = new ArrayList();
-        for(String uri : getOntologyIds()) {
-            OntModel m = _models.get(new Ontology(uri));
+        for(Ontology ont : _models.keySet()) {
+            OntModel m = getModel(ont);
             if(m != null)
                 results.add(m);
         }
@@ -334,5 +395,4 @@ public class DefaultOntologyManager implements OntologyManager {
     private OntModel getModel(Ontology o) {
         return _models.get(o);
     }
-
 }

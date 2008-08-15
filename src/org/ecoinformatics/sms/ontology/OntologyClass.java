@@ -81,7 +81,7 @@ public class OntologyClass {
      * @return the class name
      */
     public String getURI() {
-        return getOntology().getURI() + getName();
+        return getOntology().getURI() + "#" + getName();
     }
 
     /**
