@@ -140,6 +140,26 @@ public class Test {
             for(OntologyClass c : entityActiveDom)
                 System.out.println("    " + c);
 
+            // build up another active domain query
+            entities = new ArrayList();
+            OntologyClass plant = new OntologyClass(gceOnt, "Plant");
+            entities.add(plant);
+            chars = new ArrayList();
+            OntologyClass dryweight = new OntologyClass(gceOnt, "DryWeight");
+            chars.add(dryweight);
+            System.out.println("\nSearch for active standards of entity 'Plant' and characteristic 'DryWeight':");
+            List<OntologyClass> standardActiveDom = new ArrayList();
+            for(OntologyClass c : annotationManager.getActiveStandards(entities, chars)) {
+                if(!standardActiveDom.contains(c))
+                    standardActiveDom.add(c);
+                for(OntologyClass s : ontologyManager.getNamedSuperclasses(c))
+                    if(!standardActiveDom.contains(s))
+                        standardActiveDom.add(s);
+            }
+            for(OntologyClass c : standardActiveDom)
+                System.out.println("    " + c);
+               
+            
         } catch(Exception e) {
             System.out.println("Error: " + e.getMessage());
             e.printStackTrace();
