@@ -42,6 +42,8 @@
 		  minOccurs="0" maxOccurs="1"/>
       <xs:element name="characteristic" type="CharacteristicType" 
 		  minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="domain" type="DomainType" 
+	          minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
     <xs:attribute name="label" type="xs:ID" use="optional"/>
     <xs:attribute name="precision" type="xs:float" use="optional"/>
@@ -65,6 +67,14 @@
   <!-- standards --> 
   <xs:complexType name="StandardType">
     <xs:attribute name="id" type="xs:QName" use="required"/>
+  </xs:complexType>
+
+
+  <!-- domains --> 
+  <xs:complexType name="DomainType">
+    <xs:attribute name="values" type="xs:string" use="optional"/>
+    <xs:attribute name="min" type="xs:string" use="optional"/>
+    <xs:attribute name="max" type="xs:string" use="optional"/>
   </xs:complexType>
 
 

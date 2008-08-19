@@ -1,3 +1,4 @@
+
 /**
  *    '$RCSfile: Measurement.java,v $'
  *
@@ -39,115 +40,143 @@ import java.util.ArrayList;
  */
 public class Measurement {
 
-    private String _label;
-    private List<Characteristic> _characteristics = new ArrayList();
-    private Standard _standard;
-    private double _precision = 1.0;
-    private String _value;
-    private boolean _isKey;
+   private String _label;
+   private List<Characteristic> _characteristics = new ArrayList();
+   private Standard _standard;
+   private List<String> _domainValues = new ArrayList();
+   private double _precision = 1.0;
+   private String _value;
+   private boolean _isKey;
 
-    /** 
-     * Set the label of the measurement
-     * @param label the measurement label
-     */
-    public void setLabel(String label) {
-        _label = label;
-    }
+   /** 
+    * Set the label of the measurement
+    * @param label the measurement label
+    */
+   public void setLabel(String label) {
+      _label = label;
+   }
 
-    /** 
-     * Get the measurement label
-     * @return the label
-     */
-    public String getLabel() {
-        return _label;
-    }
+   /** 
+    * Get the measurement label
+    * @return the label
+    */
+   public String getLabel() {
+      return _label;
+   }
 
-    /**
-     * Set the measurement standard
-     * @param standard the standard
-     */
-    public void setStandard(Standard standard) {
-        _standard = standard;
-    }
+   /**
+    * Set the measurement standard
+    * @param standard the standard
+    */
+   public void setStandard(Standard standard) {
+      _standard = standard;
+   }
 
-    /**
-     * Get the measurement standard
-     * @return the standard
-     */
-    public Standard getStandard() {
-        return _standard;
-    }
+   /**
+    * Get the measurement standard
+    * @return the standard
+    */
+   public Standard getStandard() {
+      return _standard;
+   }
 
-    /** 
-     * Set the measurement precision
-     * @param precision the precision
-     */
-    public void setPrecision(double precision) {
-        _precision = precision;
-    }
+   /** 
+    * Set the measurement precision
+    * @param precision the precision
+    */
+   public void setPrecision(double precision) {
+      _precision = precision;
+   }
 
-    /** 
-     * Get the measurement precision
-     * @return the precision
-     */
-    public double getPrecision() {
-        return _precision;
-    }
+   /** 
+    * Get the measurement precision
+    * @return the precision
+    */
+   public double getPrecision() {
+      return _precision;
+   }
 
-    /** 
-     * Set the measurement value
-     * @param value the value 
-     */
-    public void setValue(String value) {
-        _value = value;
-    }
+   /** 
+    * Set the measurement value
+    * @param value the value 
+    */
+   public void setValue(String value) {
+      _value = value;
+   }
 
-    /** 
-     * Get the measurement value 
-     * @return the value
-     */
-    public String getValue() {
-        return _value;
-    }
+   /** 
+    * Get the measurement value 
+    * @return the value
+    */
+   public String getValue() {
+      return _value;
+   }
 
-    /** 
-     * Add a characteristic to the measurement
-     * @param characteristic the characteristic
-     */
-    public void addCharacteristic(Characteristic characteristic) {
-        if(characteristic != null && !_characteristics.contains(characteristic))
-            _characteristics.add(characteristic);
-    }
+   /** 
+    * Add a characteristic to the measurement
+    * @param characteristic the characteristic
+    */
+   public void addCharacteristic(Characteristic characteristic) {
+      if(characteristic != null && !_characteristics.contains(characteristic))
+         _characteristics.add(characteristic);
+   }
 
-    /**
-     * Remove a characteristic form this measurement
-     * @param characteristic the characteristic to remove
-     */
-    public void removeCharacteristic(Characteristic characteristic) {
-        _characteristics.remove(characteristic);
-    }
+   /**
+    * Remove a characteristic form this measurement
+    * @param characteristic the characteristic to remove
+    */
+   public void removeCharacteristic(Characteristic characteristic) {
+      _characteristics.remove(characteristic);
+   }
 
-    /**
-     * Get the characteristics of the measurement
-     * @return the set of characteristics
-     */
-    public List<Characteristic> getCharacteristics() {
-        return _characteristics;
-    }
+   /**
+    * Get the characteristics of the measurement
+    * @return the set of characteristics
+    */
+   public List<Characteristic> getCharacteristics() {
+      return _characteristics;
+   }
 
-    /**
-     * Set whether this is a key for the observation
-     * @param isKey if true, this is a key for the observation
-     */
-    public void setKey(boolean isKey) {
-        _isKey = isKey;
-    }
+   /**
+    * Get the set of possible (i.e., domain) values associated with the 
+    * measurement
+    * @return the possible values
+    */
+   public List<String> getDomainValues() {
+      return _domainValues;
+   }
 
-    /**
-     * Get the key status of this measurement
-     * @return true if this measurement is a key of the observation
-     */
-    public boolean isKey() {
-        return _isKey;
-    }
+   /**
+    * Add a possible domain value to the measurement
+    * @param value the new domain value
+    */
+   public void addDomainValue(String value) {
+      if(!_domainValues.contains(value))
+         _domainValues.add(value);
+   }
+
+   /**
+    * Remove a domain value from the measurement
+    * @param value the domain value to remove
+    */
+   public void removeDomainValue(String value) {
+      _domainValues.remove(value);
+   }
+
+   /**
+    * Set whether this is a key for the observation
+    * @param isKey if true, this is a key for the observation
+    */
+   public void setKey(boolean isKey) {
+      _isKey = isKey;
+   }
+
+   /**
+    * Get the key status of this measurement
+    * @return true if this measurement is a key of the observation
+    */
+   public boolean isKey() {
+      return _isKey;
+   }
+
 } 
