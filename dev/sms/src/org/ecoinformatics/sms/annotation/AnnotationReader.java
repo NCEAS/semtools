@@ -356,13 +356,14 @@ public class AnnotationReader {
     * @param e the element
     */
    private static void _parseDomain(Measurement m, Element e) throws Exception {
-      // TODO: generalize to allow single-quoted values
-      Attr att = _getAttribute(e, "values");
-      if(att == null)
-         return;
-      String values = att.getValue().trim();
-      for(String val : values.split("\\s"))
-         m.addDomainValue(val);
+      for(Element elem : _getElements(e, "entity")) {
+         Attr att1 = _getAttribute(elem, "id");
+         if(att1 == null)
+            _error("entity domain value missing 'id' attribute");
+         Entity entity = new Entity();
+         _getQName(elem, entity, att1.getValue().trim());
+         m.addDomainValue(entity);
+      }
    }
 
    /**

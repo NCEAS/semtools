@@ -43,7 +43,7 @@ public class Measurement {
    private String _label;
    private List<Characteristic> _characteristics = new ArrayList();
    private Standard _standard;
-   private List<String> _domainValues = new ArrayList();
+   private List<Entity> _domainValues = new ArrayList();
    private double _precision = 1.0;
    private String _value;
    private boolean _isKey;
@@ -142,7 +142,7 @@ public class Measurement {
     * measurement
     * @return the possible values
     */
-   public List<String> getDomainValues() {
+   public List<Entity> getDomainValues() {
       return _domainValues;
    }
 
@@ -150,7 +150,7 @@ public class Measurement {
     * Add a possible domain value to the measurement
     * @param value the new domain value
     */
-   public void addDomainValue(String value) {
+   public void addDomainValue(Entity value) {
       if(!_domainValues.contains(value))
          _domainValues.add(value);
    }
@@ -159,7 +159,7 @@ public class Measurement {
     * Remove a domain value from the measurement
     * @param value the domain value to remove
     */
-   public void removeDomainValue(String value) {
+   public void removeDomainValue(Entity value) {
       _domainValues.remove(value);
    }
 

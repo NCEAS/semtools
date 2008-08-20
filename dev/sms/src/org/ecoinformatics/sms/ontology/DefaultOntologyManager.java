@@ -402,6 +402,17 @@ public class DefaultOntologyManager implements OntologyManager {
         return null;
     }
 
+    /**
+     * Get the range of the given property for the given domain class, if one 
+     * exists
+     * @param c the domain class
+     * @param p the property
+     * @return the range class
+     */
+    public OntologyClass getRange(OntologyClass c, OntologyObjectProperty p) {
+       return null;
+    }
+    
     /** 
      * Get the Jena OntModels being managed
      * @return the ontology models

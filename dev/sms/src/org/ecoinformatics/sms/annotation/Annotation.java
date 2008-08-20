@@ -187,6 +187,9 @@ public class Annotation {
             for(Characteristic c : m.getCharacteristics())
                if(!result.contains(c))
                   result.add(c);
+            for(Entity v : m.getDomainValues())
+               if(!result.contains(v))
+                  result.add(v);
          }
          for(Context x : o.getContexts()) {
             Relationship r = x.getRelationship();
