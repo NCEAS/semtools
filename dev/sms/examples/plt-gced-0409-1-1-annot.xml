@@ -14,7 +14,11 @@
       <sms:measurement label="m1" key="yes">
          <sms:characteristic id="oboe:EntityName"/>
          <sms:standard id="gce:GCESiteNames"/>
-         <sms:domain values="GCE6 UGAMI ML"/>
+         <sms:domain>
+            <entity id="gce:DeanCreek"/>
+            <entity id="gce:UGAMarineInstitute"/>
+            <entity id="gce:MarshLanding"/>
+         </sms:domain>
       </sms:measurement>
    </sms:observation>
 
@@ -27,7 +31,10 @@
       <sms:measurement label="m2" key="yes">
          <sms:characteristic id="oboe:EntityType"/>
          <sms:standard id="gce:PelletizedFertilizationTreatmentTypeNames"/>
-         <sms:domain values="N C"/>
+         <sms:domain>
+            <entity id="gce:PelletizedFertilizationNitrogenTreatment"/>
+            <entity id="gce:PelletizedFertlizationTreatmentControl"/>
+         </sms:domain>
       </sms:measurement>
    </sms:observation>
 
@@ -40,7 +47,13 @@
       <sms:measurement label="m3" key="yes">
          <sms:characteristic id="oboe:EntityType"/>
          <sms:standard id="gce:CommunityTypeNames"/>
-         <sms:domain values="BorJun SpaBor SpaJun SpaDis SpaSal"/>
+         <sms:domain>
+            <entity id="gce:BorJun"/>
+            <entity id="gce:SpaBor"/>
+            <entity id="gce:SpaJun"/>
+            <entity id="gce:SpaDis"/>
+            <entity id="gce:SpaSal"/>
+         </sms:domain>
       </sms:measurement>
    </sms:observation>
 
@@ -102,7 +115,14 @@
       <sms:measurement label="m6a" key="yes">
          <sms:characteristic id="oboe:EntityType"/>
          <sms:standard id="gce:TaxonomicTypeNames"/>
-         <sms:domain values="JuncusRoemerianus BorrichiaFrutescens BatisMaritima SpartinaAlterniflora DistichlisSpicata SalicorniaVirginica"/>
+         <sms:domain>
+            <entity id="gce:JuncusRoemerianus"/>
+            <entity id="gce:BorrichiaFrutescens"/>
+            <entity id="gce:BatisMaritima"/>
+            <entity id="gce:SpartinaAlterniflora"/>
+            <entity id="gce:DistichlisSpicata"/>
+            <entity id="gce:SalicorniaVirginica"/>
+         </sms:domain>
       </sms:measurement>
       <sms:measurement label="m6b" precision="0.01" key="no">
          <sms:characteristic id="gce:DryWeight"/>
