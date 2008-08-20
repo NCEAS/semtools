@@ -8,7 +8,7 @@ import org.ecoinformatics.sms.ontology.OntologyClass;
 //import java.util.ArrayList;
 //import java.net.URL;
 //import java.net.URLConnection;
-public class MyTest {
+public class Test2 {
 
    public static void main(String[] args) {
       try {
@@ -36,15 +36,15 @@ public class MyTest {
             System.out.println("   '" + lbl + "' (" + c + ")");
          }
 
-            // print the loaded classes, and their labels
+      // print the loaded classes, and their labels
 
-            // print all subclasses
-            //System.out.println("\n*** Subclasses: ***");
-            //for(OntologyClass c : ontologyManager.getNamedClasses()) {
-            //    System.out.println("   subclasses of '" + c + "': ");
-            //    for(OntologyClass s : ontologyManager.getNamedSubclasses(c))
-            //        System.out.println("      " + s);
-            //}
+      // print all subclasses
+      //System.out.println("\n*** Subclasses: ***");
+      //for(OntologyClass c : ontologyManager.getNamedClasses()) {
+      //    System.out.println("   subclasses of '" + c + "': ");
+      //    for(OntologyClass s : ontologyManager.getNamedSubclasses(c))
+      //        System.out.println("      " + s);
+      //}
 
 
 

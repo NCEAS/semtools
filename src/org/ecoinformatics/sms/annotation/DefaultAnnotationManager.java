@@ -237,7 +237,6 @@ public class DefaultAnnotationManager implements AnnotationManager {
                 (standards == null || standards.isEmpty()))
             return getActiveEntities();
         List<OntologyClass> results = new ArrayList();
-System.out.println(">>> HERE");
         for(Annotation a : getAnnotations())
             for(Observation o : a.getObservations()) {
                 Entity e = o.getEntity();
