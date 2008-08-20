@@ -207,43 +207,150 @@ public class DefaultAnnotationManager implements AnnotationManager {
     */
    public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
            List<OntologyClass> characteristics, List<OntologyClass> standards) {
+      // find matches
       List<Annotation> results = new ArrayList();
       for(Annotation annot : getAnnotations()) {
-         boolean match = false;
-         for(Observation o : annot.getObservations()) {
-            if(entities != null && entities.size() != 0) {
-               if(o.getEntity() == null)
-                  continue;
-               if(!entities.contains(o.getEntity()))
-                  continue;
-            }
-            if((characteristics == null || characteristics.size() == 0) &&
-                    (standards == null || standards.size() == 0)) {
-               match = true;
-               break;
-            }
-            for(Measurement m : o.getMeasurements()) {
-               if(standards != null && standards.size() != 0)
-                  if(m.getStandard() == null)
-                     continue;
-                  else if(!standards.contains(m.getStandard()))
-                     continue;
-               if(characteristics == null || characteristics.size() == 0) {
-                  match = true;
-                  break;
-               }
-               for(Characteristic c : m.getCharacteristics())
-                  if(characteristics.contains(c)) {
-                     match = true;
-                     break;
-                  }
-            }
-         }
-         if(match)
+         if(!hasMatchingEntity(annot, entities))
+            continue;
+         if(!hasMatchingCharacteristic(annot, characteristics))
+            continue;
+         if(!hasMatchingStandard(annot, standards))
+            continue;
+         if(!results.contains(annot))
             results.add(annot);
-
       }
       return results;
+   }
+
+   /**
+    * Get annotations that contain an entity in the given list and a 
+    * measurement with a characteristic and standard in the given lists
+    * @param entities the entity classes to search for
+    * @param characteristics the characteristic classes to search for
+    * @param standards the measurement standard classes to search for
+    * @param searchSubclasses if true, search subclasses of the given classes
+    * @return the matching annotations
+    */
+   public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
+           List<OntologyClass> characteristics, List<OntologyClass> standards,
+           boolean searchSubclasses) {
+      if(!searchSubclasses)
+         return getMatchingAnnotations(entities, characteristics, standards);
+      // get the subclasses of each set
+      OntologyManager mgr = _sms.getOntologyManager();
+      List<OntologyClass> tmp = new ArrayList(entities);
+      for(OntologyClass c : tmp)
+         for(OntologyClass s : mgr.getNamedSubclasses(c))
+            if(!entities.contains(s))
+               entities.add(s);
+      tmp = new ArrayList(characteristics);
+      for(OntologyClass c : tmp)
+         for(OntologyClass s : mgr.getNamedSubclasses(c))
+            if(!characteristics.contains(s))
+               characteristics.add(s);
+      tmp = new ArrayList(standards);
+      for(OntologyClass c : tmp)
+         for(OntologyClass s : mgr.getNamedSubclasses(c))
+            if(!standards.contains(s))
+               standards.add(s);
+      return getMatchingAnnotations(entities, characteristics, standards);
+   }
+
+   /**
+    * Get annotations that contain the given entity, characteristic, and standard
+    * @param entity the entity class to search for
+    * @param characteristic the characteristic classto search for
+    * @param standard the measurement standard class to search for
+    * @return the matching annotations
+    */
+   public List<Annotation> getMatchingAnnotations(OntologyClass entity,
+           OntologyClass characteristic, OntologyClass standard) {
+      List<OntologyClass> entities = new ArrayList();
+      if(entity != null)
+         entities.add(entity);
+      List<OntologyClass> characteristics = new ArrayList();
+      if(characteristic != null)
+         characteristics.add(characteristic);
+      List<OntologyClass> standards = new ArrayList();
+      if(standard != null)
+         standards.add(standard);
+      return getMatchingAnnotations(entities, characteristics, standards);
+   }
+
+   /**
+    * Get annotations that contain the given entity, characteristic, and standard
+    * @param entity the entity class to search for
+    * @param characteristic the characteristic classto search for
+    * @param standard the measurement standard class to search for
+    * @param searchSubclasses if true, search subclasses of the given classes
+    * @return the matching annotations
+    */
+   public List<Annotation> getMatchingAnnotations(OntologyClass entity,
+           OntologyClass characteristic, OntologyClass standard,
+           boolean searchSubclasses) {
+      List<OntologyClass> entities = new ArrayList();
+      if(entity != null)
+         entities.add(entity);
+      List<OntologyClass> characteristics = new ArrayList();
+      if(characteristic != null)
+         characteristics.add(characteristic);
+      List<OntologyClass> standards = new ArrayList();
+      if(standard != null)
+         standards.add(standard);
+      return getMatchingAnnotations(entities, characteristics, standards, searchSubclasses);
+   }
+
+   /**
+    * Helper method to check if an annotation has a matching entity
+    * @param a the annotation
+    * @param entities entities to check
+    * @return true if annotation contains an entity in given list
+    */
+   private boolean hasMatchingEntity(Annotation a, List<OntologyClass> entities) {
+      if(entities == null || entities.size() == 0)
+         return true;
+      for(Observation o : a.getObservations())
+         if(entities.contains(o.getEntity()))
+            return true;
+      for(Observation o : a.getObservations())
+         for(Measurement m : o.getMeasurements())
+            for(Entity v : m.getDomainValues())
+               if(entities.contains(v))
+                  return true;
+      return false;
+   }
+
+   /**
+    * Helper method to check if an annotation has a matching characteristic
+    * @param a the annotation
+    * @param chars the characteristics to check
+    * @return true if annotation contains a characteristic in given list
+    */
+   private boolean hasMatchingCharacteristic(Annotation a, List<OntologyClass> chars) {
+      if(chars == null || chars.size() == 0)
+         return true;
+      for(Observation o : a.getObservations())
+         for(Measurement m : o.getMeasurements())
+            for(Characteristic c : m.getCharacteristics())
+               if(chars.contains(c))
+                  return true;
+      return false;
+   }
+
+   /**
+    * Helper method to check if an annotation has a matching standard
+    * @param a the annotation
+    * @param standards the standards to check
+    * @return true if annotation contains a standard in the given list
+    */
+   private boolean hasMatchingStandard(Annotation a, List<OntologyClass> standards) {
+      if(standards == null || standards.size() == 0)
+         return true;
+      for(Observation o : a.getObservations())
+         for(Measurement m : o.getMeasurements())
+            if(standards.contains(m.getStandard()))
+               return true;
+      return false;
    }
 
    /**
@@ -392,6 +499,5 @@ public class DefaultAnnotationManager implements AnnotationManager {
          }
       return results;
    }
-
 
 } 

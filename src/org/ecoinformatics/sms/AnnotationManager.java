@@ -94,7 +94,7 @@ public interface AnnotationManager {
     * @return the annotations
     */
    public List<Annotation> getAnnotations();
-   
+
    /**
     * Get all ontology classes used for a specific annotation
     * @param a the annotation
@@ -115,13 +115,48 @@ public interface AnnotationManager {
    /**
     * Get annotations that contain an entity in the given list and a 
     * measurement with a characteristic and standard in the given lists
-    * @param entities the entity class URI's to search for
-    * @param characteristics the characteristic class URI's to search for
-    * @param standards the measurement standard class URI's to search for
+    * @param entities the entity classes to search for
+    * @param characteristics the characteristic classes to search for
+    * @param standards the measurement standard classes to search for
     * @return the matching annotations
     */
    public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
            List<OntologyClass> characteristics, List<OntologyClass> standards);
+
+   /**
+    * Get annotations that contain an entity in the given list and a 
+    * measurement with a characteristic and standard in the given lists
+    * @param entities the entity classes to search for
+    * @param characteristics the characteristic classes to search for
+    * @param standards the measurement standard classes to search for
+    * @param searchSubclasses if true, search subclasses of the given classes
+    * @return the matching annotations
+    */
+   public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
+           List<OntologyClass> characteristics, List<OntologyClass> standards,
+           boolean searchSubclasses);
+
+   /**
+    * Get annotations that contain the given entity, characteristic, and standard
+    * @param entity the entity class to search for
+    * @param characteristic the characteristic classto search for
+    * @param standard the measurement standard class to search for
+    * @return the matching annotations
+    */
+   public List<Annotation> getMatchingAnnotations(OntologyClass entity, 
+           OntologyClass characteristic, OntologyClass standard);
+
+   /**
+    * Get annotations that contain the given entity, characteristic, and standard
+    * @param entity the entity class to search for
+    * @param characteristic the characteristic classto search for
+    * @param standard the measurement standard class to search for
+    * @param searchSubclasses if true, search subclasses of the given classes
+    * @return the matching annotations
+    */
+   public List<Annotation> getMatchingAnnotations(OntologyClass entity, 
+           OntologyClass characteristic, OntologyClass standard,
+           boolean searchSubclasses);
 
    /**
     * Get entities used in managed annotations

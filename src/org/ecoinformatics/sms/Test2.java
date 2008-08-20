@@ -13,13 +13,13 @@ public class Test2 {
 
    public static void main(String[] args) {
       try {
-         String uri = "http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl";
+         String ontUri = "http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl";
 
          SMS sms = new SMS();
 
          // get the ontology manager
          OntologyManager ontMgr = sms.getOntologyManager();
-         ontMgr.importOntology(uri);
+         ontMgr.importOntology(ontUri);
 
          // print the loaded ontologies and their labels
          System.out.println("\n*** Loaded ontologies: ***");
@@ -44,20 +44,17 @@ public class Test2 {
                System.out.println("      " + s.getURI());
          }
 
-         uri = "http://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/plt-gced-0409-1-1-annot.xml";
-         URL url = new URL(uri);
+         String annUri = "http://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/plt-gced-0409-1-1-annot.xml";
+         URL url = new URL(annUri);
          URLConnection connection = url.openConnection();
 
-         // get annotation manager
          AnnotationManager annMgr = sms.getAnnotationManager();
          annMgr.importAnnotation(connection.getInputStream(), "annot1");
 
          // print the loaded annotations 
          System.out.println("\n*** Loaded annotations: ***");
-         for(Annotation a : annMgr.getAnnotations()) {
+         for(Annotation a : annMgr.getAnnotations())
             System.out.println("   '" + a.getURI() + "'");
-            a.write(System.out);
-         }
 
          System.out.println("\n*** Annotation classes: ***");
          for(Annotation a : annMgr.getAnnotations()) {
@@ -66,18 +63,18 @@ public class Test2 {
                System.out.println("      " + c.getURI());
          }
 
-         
-         
-      // print the loaded classes, and their labels
+         // search for a matching annotation
+         Ontology gceOnt = ontMgr.getOntology(ontUri);
+         OntologyClass entity = ontMgr.getNamedClass(gceOnt, "JuncusRoemerianus");
+         OntologyClass characteristic = ontMgr.getNamedClass(gceOnt, "Biomass");
 
-      // print all subclasses
-      //System.out.println("\n*** Subclasses: ***");
-      //for(OntologyClass c : ontologyManager.getNamedClasses()) {
-      //    System.out.println("   subclasses of '" + c + "': ");
-      //    for(OntologyClass s : ontologyManager.getNamedSubclasses(c))
-      //        System.out.println("      " + s);
-      //}
+         System.out.println("\nEntity: " + entity);
+         System.out.println("\nCharacteristic: " + characteristic);
 
+         // get query results         
+         System.out.println("\n*** Search for matching annotation: ***");
+         for(Annotation a : annMgr.getMatchingAnnotations(null, characteristic, null, true))
+            System.out.println("   match: " + a.getURI());
 
 
       }catch(Exception e) {
