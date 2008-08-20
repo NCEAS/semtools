@@ -72,7 +72,9 @@
 
   <!-- domains --> 
   <xs:complexType name="DomainType">
-    <xs:attribute name="values" type="xs:string" use="optional"/>
+    <xs:sequence>
+       <xs:element name="entity" type="EntityType" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
     <xs:attribute name="min" type="xs:string" use="optional"/>
     <xs:attribute name="max" type="xs:string" use="optional"/>
   </xs:complexType>

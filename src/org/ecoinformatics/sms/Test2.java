@@ -3,11 +3,12 @@ package org.ecoinformatics.sms;
 
 import org.ecoinformatics.sms.ontology.Ontology;
 import org.ecoinformatics.sms.ontology.OntologyClass;
-//import org.ecoinformatics.sms.annotation.Annotation;
+import org.ecoinformatics.sms.annotation.Annotation;
 //import java.util.List;
 //import java.util.ArrayList;
-//import java.net.URL;
-//import java.net.URLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+
 public class Test2 {
 
    public static void main(String[] args) {
@@ -16,10 +17,9 @@ public class Test2 {
 
          SMS sms = new SMS();
 
-         // get a ontology manager
+         // get the ontology manager
          OntologyManager ontMgr = sms.getOntologyManager();
          ontMgr.importOntology(uri);
-         Ontology ont = ontMgr.getOntology(uri);
 
          // print the loaded ontologies and their labels
          System.out.println("\n*** Loaded ontologies: ***");
@@ -36,6 +36,38 @@ public class Test2 {
             System.out.println("   '" + lbl + "' (" + c + ")");
          }
 
+         // print the subclasses of loaded classes
+         System.out.println("\n*** Subclasses: ***");
+         for(OntologyClass c : ontMgr.getNamedClasses()) {
+            System.out.println("   " + c.getURI() + ":");
+            for(OntologyClass s : ontMgr.getNamedSubclasses(c))
+               System.out.println("      " + s.getURI());
+         }
+
+         uri = "http://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/plt-gced-0409-1-1-annot.xml";
+         URL url = new URL(uri);
+         URLConnection connection = url.openConnection();
+
+         // get annotation manager
+         AnnotationManager annMgr = sms.getAnnotationManager();
+         annMgr.importAnnotation(connection.getInputStream(), "annot1");
+
+         // print the loaded annotations 
+         System.out.println("\n*** Loaded annotations: ***");
+         for(Annotation a : annMgr.getAnnotations()) {
+            System.out.println("   '" + a.getURI() + "'");
+            a.write(System.out);
+         }
+
+         System.out.println("\n*** Annotation classes: ***");
+         for(Annotation a : annMgr.getAnnotations()) {
+            System.out.println("   '" + a.getURI() + "'");
+            for(OntologyClass c : annMgr.getOntologyClasses(a, false, false))
+               System.out.println("      " + c.getURI());
+         }
+
+         
+         
       // print the loaded classes, and their labels
 
       // print all subclasses

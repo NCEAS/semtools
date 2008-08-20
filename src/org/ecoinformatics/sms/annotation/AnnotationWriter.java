@@ -162,12 +162,12 @@ public class AnnotationWriter {
                     c.getOntology().getPrefix() + ":" +
                     c.getName() + "\"/>\n");
       if(m.getDomainValues().size() > 1) {
-         s.print(_indent3 + "<sms:domain values=\"");
-         String vals = "";
-         for(String val : m.getDomainValues())
-            vals += val + " ";
-         vals = vals.trim();
-         s.print(vals + "\"/>\n");
+         s.print(_indent3 + "<sms:domain>\n");
+         for(Entity v : m.getDomainValues())
+            s.print(_indent4 + "<sms:entity id=\"" +
+                    v.getOntology().getPrefix() + ":" +
+                    v.getName() + "\">\n");
+         s.print(_indent3 + "</sms:domain>\n");
       }
       s.print(_indent2 + "</sms:measurement>\n");
    }
@@ -197,4 +197,5 @@ public class AnnotationWriter {
    private static String _indent1 = "   ";
    private static String _indent2 = _indent1 + _indent1;
    private static String _indent3 = _indent1 + _indent2;
+   private static String _indent4 = _indent1 + _indent3;
 } 

@@ -1,3 +1,4 @@
+
 /**
  *    '$RCSfile: AnnotationManager.java,v $'
  *
@@ -41,110 +42,134 @@ import java.io.OutputStream;
  */
 public interface AnnotationManager {
 
-    /**
-     * Import an annotation into the manager
-     * @param r the semantic annotation 
-     * @param id the identifier to assign to the annotation
-     */
-    public void importAnnotation(InputStream is, String id) throws Exception;
+   /**
+    * Import an annotation into the manager
+    * @param r the semantic annotation 
+    * @param id the identifier to assign to the annotation
+    */
+   public void importAnnotation(InputStream is, String id) throws Exception;
 
-    /**
-     * Export an annotation from the manager
-     * @param the identiifer of the annotation
-     * @param w the writer to write to
-     */
-    public void exportAnnotation(String id, OutputStream os) throws Exception;
+   /**
+    * Export an annotation from the manager
+    * @param the identiifer of the annotation
+    * @param w the writer to write to
+    */
+   public void exportAnnotation(String id, OutputStream os) throws Exception;
 
-    /**
-     * Update an existing annotation in the manager
-     * @param r the new semantic annotation 
-     * @param id the identifier of the annotation to update
-     */
-    public void updateAnnotation(InputStream is, String id) throws Exception;
+   /**
+    * Update an existing annotation in the manager
+    * @param r the new semantic annotation 
+    * @param id the identifier of the annotation to update
+    */
+   public void updateAnnotation(InputStream is, String id) throws Exception;
 
-    /**
-     * Remove an annotation from the manager
-     * @param id the identifier of the annotation
-     */
-    public void removeAnnotation(String id) throws Exception;
+   /**
+    * Remove an annotation from the manager
+    * @param id the identifier of the annotation
+    */
+   public void removeAnnotation(String id) throws Exception;
 
-    /**
-     * Check if the identifier is assigned to an annotation in the
-     * manager
-     * @return true if the id is assigned to an annotation in the manager
-     * @param id the annotation identifier
-     */
-    public boolean isAnnotation(String id);
+   /**
+    * Check if the identifier is assigned to an annotation in the
+    * manager
+    * @return true if the id is assigned to an annotation in the manager
+    * @param id the annotation identifier
+    */
+   public boolean isAnnotation(String id);
 
-    /**
-     * Get an annotation from the manager
-     * @param the identiifer of the annotation
-     */
-    public Annotation getAnnotation(String id) throws Exception;
+   /**
+    * Get an annotation from the manager
+    * @param the identiifer of the annotation
+    */
+   public Annotation getAnnotation(String id) throws Exception;
 
-    /**
-     * Get the annotation identifiers from the manager
-     * @return the set of annotation identifiers
-     */
-    public List<String> getAnnotationIds();
+   /**
+    * Get the annotation identifiers from the manager
+    * @return the set of annotation identifiers
+    */
+   public List<String> getAnnotationIds();
 
-    /**
-     * Get annotations that contain an entity in the given list and a 
-     * measurement with a characteristic and standard in the given lists
-     * @param entities the entity class URI's to search for
-     * @param characteristics the characteristic class URI's to search for
-     * @param standards the measurement standard class URI's to search for
-     * @return the matching annotations
-     */
-    public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
-            List<OntologyClass> characteristics, List<OntologyClass> standards);
+   /**
+    * Get the annotations from the manager
+    * @return the annotations
+    */
+   public List<Annotation> getAnnotations();
+   
+   /**
+    * Get all ontology classes used for a specific annotation
+    * @param a the annotation
+    * @return the ontology classes used in an annotation
+    */
+   public List<OntologyClass> getOntologyClasses(Annotation a);
 
-    /**
-     * Get entities used in managed annotations
-     * @return list of entities
-     */
-    public List<OntologyClass> getActiveEntities();
+   /**
+    * Get all ontology classes used for a specific annotation
+    * @param a the annotation
+    * @param addSubclasses if true, add all subclasses to result
+    * @param addSuperclasses if true, add all superclasses to result
+    * @return the ontology classes used in an annotation
+    */
+   public List<OntologyClass> getOntologyClasses(Annotation a,
+           boolean addSubclasses, boolean addSuperclasses);
 
-    /**
-     * Get entities used in managed annotations having a measurement with a 
-     * characteristic and standard in the given characteristics and standards
-     * @param characteristics characteristics to look for
-     * @param standards standards to look for
-     * @return list of matching entities
-     */
-    public List<OntologyClass> getActiveEntities(
-            List<OntologyClass> characteristics, List<OntologyClass> standards);
+   /**
+    * Get annotations that contain an entity in the given list and a 
+    * measurement with a characteristic and standard in the given lists
+    * @param entities the entity class URI's to search for
+    * @param characteristics the characteristic class URI's to search for
+    * @param standards the measurement standard class URI's to search for
+    * @return the matching annotations
+    */
+   public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
+           List<OntologyClass> characteristics, List<OntologyClass> standards);
 
-    /**
-     * Get characteristics used in managed annotations
-     * @return list of characteristics
-     */
-    public List<OntologyClass> getActiveCharacteristics();
+   /**
+    * Get entities used in managed annotations
+    * @return list of entities
+    */
+   public List<OntologyClass> getActiveEntities();
 
-    /**
-     * Get characteristics used in managed annotations having a measurement 
-     * with an entity and standard in the given entities and standards
-     * @param entities entities to look for
-     * @param standards standards to look for
-     * @return list of matching characteristics
-     */
-    public List<OntologyClass> getActiveCharacteristics(
-            List<OntologyClass> entities, List<OntologyClass> standards);
+   /**
+    * Get entities used in managed annotations having a measurement with a 
+    * characteristic and standard in the given characteristics and standards
+    * @param characteristics characteristics to look for
+    * @param standards standards to look for
+    * @return list of matching entities
+    */
+   public List<OntologyClass> getActiveEntities(
+           List<OntologyClass> characteristics, List<OntologyClass> standards);
 
-    /**
-     * Get measurement standards used in managed annotations
-     * @return list of measurement standards
-     */
-    public List<OntologyClass> getActiveStandards();
+   /**
+    * Get characteristics used in managed annotations
+    * @return list of characteristics
+    */
+   public List<OntologyClass> getActiveCharacteristics();
 
-    /**
-     * Get standards used in managed annotations having a measurement 
-     * with an entity and characteristic in the given entities and 
-     * characteristics
-     * @param entities entities to look for
-     * @param characteristics characteristics to look for
-     * @return list of matching standards
-     */
-    public List<OntologyClass> getActiveStandards(
-            List<OntologyClass> entities, List<OntologyClass> characteristics);
+   /**
+    * Get characteristics used in managed annotations having a measurement 
+    * with an entity and standard in the given entities and standards
+    * @param entities entities to look for
+    * @param standards standards to look for
+    * @return list of matching characteristics
+    */
+   public List<OntologyClass> getActiveCharacteristics(
+           List<OntologyClass> entities, List<OntologyClass> standards);
+
+   /**
+    * Get measurement standards used in managed annotations
+    * @return list of measurement standards
+    */
+   public List<OntologyClass> getActiveStandards();
+
+   /**
+    * Get standards used in managed annotations having a measurement 
+    * with an entity and characteristic in the given entities and 
+    * characteristics
+    * @param entities entities to look for
+    * @param characteristics characteristics to look for
+    * @return list of matching standards
+    */
+   public List<OntologyClass> getActiveStandards(
+           List<OntologyClass> entities, List<OntologyClass> characteristics);
+
 }
