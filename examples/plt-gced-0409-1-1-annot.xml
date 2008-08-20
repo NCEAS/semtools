@@ -2,9 +2,9 @@
 <sms:annotation
    xmlns="plt-gced-0409-1-1-annot.xml"
    xmlns:sms="http://daks.ucdavis.edu/sms-annot-1.0.0rc1"
-   xmlns:oboe="http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1"
-   xmlns:unit="http://linus.nceas.ucsb.edu/sms/metacat/ont.5.1"
-   xmlns:gce="http://linus.nceas.ucsb.edu/sms/metacat/ont.7.1"
+   xmlns:oboe="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl"
+   xmlns:unit="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl"
+   xmlns:gce="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl"
    emlPackage="eml.11.1"
    dataTable="1">
 
@@ -52,7 +52,7 @@
       <sms:entity id="gce:ReplicatePlot"/>
       <sms:measurement label="m4a" key="yes">
          <sms:characteristic id="oboe:EntityName"/>
-         <sms:standard id="oboe:OrdinalStandard"/>
+         <sms:standard id="oboe:Ordinal"/>
       </sms:measurement>
       <sms:measurement label="m4b" key="no" value="1">
          <sms:characteristic id="unit:Area"/>
@@ -102,7 +102,7 @@
       <sms:measurement label="m6a" key="yes">
          <sms:characteristic id="oboe:EntityType"/>
          <sms:standard id="gce:TaxonomicTypeNames"/>
-         <sms:domain values="Juncus_roemerianus Borrichia_frutescens Batis_maritima Spartina_alterniflora Distichlis_spicata Salicornia_virginica"/>
+         <sms:domain values="JuncusRoemerianus BorrichiaFrutescens BatisMaritima SpartinaAlterniflora DistichlisSpicata SalicorniaVirginica"/>
       </sms:measurement>
       <sms:measurement label="m6b" precision="0.01" key="no">
          <sms:characteristic id="gce:DryWeight"/>
@@ -113,21 +113,21 @@
       </sms:context>
    </sms:observation>  
   
-  <!-- mapping: Dry weight -->
-  <!-- species_code -->
+   <!-- mapping: species_code -->
    <sms:map attribute="att.5" measurement="m6a" 
-	   if="att.5 eq 'JROM'" value="Juncus_roemerianus"/>
+	   if="att.5 eq 'JROM'" value="JuncusRoemerianus"/>
    <sms:map attribute="att.5" measurement="m6a" 
-	   if="att.5 eq 'BFRU'" value="Borrichia_frutescens"/>
+	   if="att.5 eq 'BFRU'" value="BorrichiaFrutescens"/>
    <sms:map attribute="att.5" measurement="m6a" 
-	   if="att.5 eq 'BMAR'" value="Batis_maritima"/>
+	   if="att.5 eq 'BMAR'" value="BatisMaritima"/>
    <sms:map attribute="att.5" measurement="m6a" 
-	   if="att.5 eq 'SALT'" value="Spartina_alterniflora"/>
+	   if="att.5 eq 'SALT'" value="SpartinaAlterniflora"/>
    <sms:map attribute="att.5" measurement="m6a" 
-	   if="att.5 eq 'DSPI'" value="Distichlis_spicata"/>
+	   if="att.5 eq 'DSPI'" value="DistichlisSpicata"/>
    <sms:map attribute="att.5" measurement="m6a" 
-	   if="att.5 eq 'SVIR'" value="Salicornia_virginica"/>
-  <!-- plant_mass_m2 -->
+	   if="att.5 eq 'SVIR'" value="SalicorniaVirginica"/>
+
+  <!-- mapping: plant_mass_m2 -->
    <sms:map attribute="att.8" measurement="m6b"/>
 </sms:annotation>
 
