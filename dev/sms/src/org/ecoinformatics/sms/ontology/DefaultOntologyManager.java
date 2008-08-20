@@ -105,6 +105,20 @@ public class DefaultOntologyManager implements OntologyManager {
                 return ont;
         return null;
     }
+    
+    /**
+     * Get the label for the ontology, if one exists
+     * @param ont the ontology
+     * @return the label
+     */
+    public String getOntologyLabel(Ontology ont) {
+       OntModel m = getModel(ont);
+       if(m == null)
+          return null;
+       if(m.getOntology(ont.getURI()) == null)
+          return "null (getOntology failed)";
+       return m.getOntology(ont.getURI()).getLabel(null);
+    }
 
     /** 
      * Returns the ontologies being managed by the catalog.
@@ -133,6 +147,21 @@ public class DefaultOntologyManager implements OntologyManager {
         return new OntologyClass(o, name);
     }
 
+    /**
+     * Get the label of a named class, if one exists
+     * @param c the class
+     * @return the label
+     */
+    public String getNamedClassLabel(OntologyClass c) {
+       OntModel model = getModel(c.getOntology());
+       if(model == null)
+          return null;
+       OntClass oc = model.getOntClass(c.getURI());
+       if(oc == null)
+          return null;
+       return oc.getLabel(null);
+    }
+    
     /**
      * Returns the named classes for ontologies in the catalog
      * catalog

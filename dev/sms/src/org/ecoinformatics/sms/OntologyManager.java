@@ -68,6 +68,14 @@ public interface OntologyManager {
      */
     public Ontology getOntology(String uri);
 
+   /**
+     * Get the label for the ontology, if one exists
+     * @param ont the ontology
+     * @return the label
+     */
+    public String getOntologyLabel(Ontology ont);
+
+    
     /** 
      * Returns the uri's of ontologies currently managed by this manager
      * @return the ontology uri's
@@ -82,6 +90,14 @@ public interface OntologyManager {
      */
     public OntologyClass getNamedClass(Ontology o, String name);
 
+   /**
+     * Get the label of a named class, if one exists
+     * @param c the class
+     * @return the label
+     */
+    public String getNamedClassLabel(OntologyClass c);
+
+    
     /**
      * Gets the named classes for ontologies being managed by this manager
      * @returns the named classes
