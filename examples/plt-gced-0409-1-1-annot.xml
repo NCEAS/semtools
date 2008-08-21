@@ -48,11 +48,11 @@
          <sms:characteristic id="oboe:EntityType"/>
          <sms:standard id="gce:CommunityTypeNames"/>
          <sms:domain>
-            <entity id="gce:BorJun"/>
-            <entity id="gce:SpaBor"/>
-            <entity id="gce:SpaJun"/>
-            <entity id="gce:SpaDis"/>
-            <entity id="gce:SpaSal"/>
+            <entity id="gce:BorJunCommunity"/>
+            <entity id="gce:SpaBorCommunity"/>
+            <entity id="gce:SpaJunCommunity"/>
+            <entity id="gce:SpaDisCommunity"/>
+            <entity id="gce:SpaSalCommunity"/>
          </sms:domain>
       </sms:measurement>
    </sms:observation>
