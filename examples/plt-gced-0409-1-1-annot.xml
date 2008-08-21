@@ -33,7 +33,7 @@
          <sms:standard id="gce:PelletizedFertilizationTreatmentTypeNames"/>
          <sms:domain>
             <entity id="gce:PelletizedFertilizationNitrogenTreatment"/>
-            <entity id="gce:PelletizedFertlizationTreatmentControl"/>
+            <entity id="gce:PelletizedFertilizationTreatmentControl"/>
          </sms:domain>
       </sms:measurement>
    </sms:observation>
