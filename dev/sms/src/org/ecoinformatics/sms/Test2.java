@@ -4,8 +4,8 @@ package org.ecoinformatics.sms;
 import org.ecoinformatics.sms.ontology.Ontology;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.annotation.Annotation;
-//import java.util.List;
-//import java.util.ArrayList;
+import java.util.List;
+import java.util.ArrayList;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -14,13 +14,16 @@ public class Test2 {
    public static void main(String[] args) {
       try {
          String ontUri = "http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl";
-
+         
          SMS sms = new SMS();
 
          // get the ontology manager
          OntologyManager ontMgr = sms.getOntologyManager();
          ontMgr.importOntology(ontUri);
 
+         ontMgr.importOntology("http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl");
+         ontMgr.importOntology("http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl");
+         
          // print the loaded ontologies and their labels
          System.out.println("\n*** Loaded ontologies: ***");
          for(String ontId : ontMgr.getOntologyIds()) {
@@ -76,6 +79,14 @@ public class Test2 {
          for(Annotation a : annMgr.getMatchingAnnotations(null, characteristic, null, true))
             System.out.println("   match: " + a.getURI());
 
+         System.out.println("\n*** Search for active characteristic entities: ***");
+         for(OntologyClass c : annMgr.getActiveCharacteristics())
+            System.out.println("   entity: " + ontMgr.getNamedClassLabel(c));
+         
+         System.out.println("\n*** Search for active domain of '" + ontMgr.getNamedClassLabel(characteristic) + "': ***");
+         for(OntologyClass c : annMgr.getActiveStandards(null, characteristic, true, true))
+            System.out.println("   standard: " + ontMgr.getNamedClassLabel(c));
+         
 
       }catch(Exception e) {
          System.out.println("Error: " + e.getMessage());

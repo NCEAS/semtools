@@ -143,7 +143,7 @@ public interface AnnotationManager {
     * @param standard the measurement standard class to search for
     * @return the matching annotations
     */
-   public List<Annotation> getMatchingAnnotations(OntologyClass entity, 
+   public List<Annotation> getMatchingAnnotations(OntologyClass entity,
            OntologyClass characteristic, OntologyClass standard);
 
    /**
@@ -154,7 +154,7 @@ public interface AnnotationManager {
     * @param searchSubclasses if true, search subclasses of the given classes
     * @return the matching annotations
     */
-   public List<Annotation> getMatchingAnnotations(OntologyClass entity, 
+   public List<Annotation> getMatchingAnnotations(OntologyClass entity,
            OntologyClass characteristic, OntologyClass standard,
            boolean searchSubclasses);
 
@@ -165,20 +165,70 @@ public interface AnnotationManager {
    public List<OntologyClass> getActiveEntities();
 
    /**
+    * Get entities used in managed annotations
+    * @param addSuperclasses if true, include all superclasses of active 
+    * entities
+    * @return list of entities
+    */
+   public List<OntologyClass> getActiveEntities(boolean addSuperclasses);
+
+   /**
     * Get entities used in managed annotations having a measurement with a 
     * characteristic and standard in the given characteristics and standards
     * @param characteristics characteristics to look for
     * @param standards standards to look for
     * @return list of matching entities
     */
-   public List<OntologyClass> getActiveEntities(
-           List<OntologyClass> characteristics, List<OntologyClass> standards);
+   public List<OntologyClass> getActiveEntities(List<OntologyClass> characteristics,
+           List<OntologyClass> standards);
+
+   /**
+    * Get entities used in managed annotations having a measurement with a 
+    * characteristic and standard in the given characteristics and standards
+    * @param characteristics characteristics to look for
+    * @param standards standards to look for
+    * @param searchSubclasses search using subclasses of the given classes
+    * @param addSuperclasses add superclasses to found entities
+    * @return list of matching entities
+    */
+   public List<OntologyClass> getActiveEntities(List<OntologyClass> characteristics,
+           List<OntologyClass> standards, boolean searchSubclasses, boolean addSuperclasses);
+
+   /**
+    * Get entities used in managed annotations having a measurement with the 
+    * give characteristic and standard 
+    * @param characteristic the characteristic to look for
+    * @param standard the standard to look for
+    * @return list of matching entities
+    */
+   public List<OntologyClass> getActiveEntities(OntologyClass characteristic,
+           OntologyClass standard);
+
+   /**
+    * Get entities used in managed annotations having a measurement with the 
+    * give characteristic and standard 
+    * @param characteristic the characteristic to look for
+    * @param standard the standard to look for
+    * @param searchSubclasses search using subclasses of the given classes
+    * @param addSuperclasses add superclasses to found entities
+    * @return list of matching entities
+    */
+   public List<OntologyClass> getActiveEntities(OntologyClass characteristic,
+           OntologyClass standard, boolean searchSubclasses, boolean addSuperclasses);
 
    /**
     * Get characteristics used in managed annotations
     * @return list of characteristics
     */
    public List<OntologyClass> getActiveCharacteristics();
+
+   /**
+    * Get characteristics used in managed annotations
+    * @param addSuperclasses if true, include all superclasses of active 
+    * characteristics
+    * @return list of characteristics
+    */
+   public List<OntologyClass> getActiveCharacteristics(boolean addSuperclasses);
 
    /**
     * Get characteristics used in managed annotations having a measurement 
@@ -191,10 +241,54 @@ public interface AnnotationManager {
            List<OntologyClass> entities, List<OntologyClass> standards);
 
    /**
+    * Get characteristics used in managed annotations having a measurement 
+    * with an entity and standard in the given entities and standards
+    * @param entities entities to look for
+    * @param standards standards to look for
+    * @param searchSubclasses search using subclasses of the given classes
+    * @param addSuperclasses add superclasses to found entities
+    * @return list of matching characteristics
+    */
+   public List<OntologyClass> getActiveCharacteristics(
+           List<OntologyClass> entities, List<OntologyClass> standards,
+           boolean searchSubclasses, boolean addSuperclasses);
+
+   /**
+    * Get characteristics used in managed annotations with a measurement having 
+    * the given entity and standard 
+    * @param entity the entity to look for
+    * @param standard the standard to look for
+    * @return list of matching characteristics
+    */
+   public List<OntologyClass> getActiveCharacteristics(OntologyClass entity,
+           OntologyClass standard);
+
+   /**
+    * Get characteristics used in managed annotations with a measurement having 
+    * the given entity and standard 
+    * @param entity the entity to look for
+    * @param standard the standard to look for
+    * @param searchSubclasses search using subclasses of the given classes
+    * @param addSuperclasses add superclasses to found entities
+    * @return list of matching characteristics
+    */
+   public List<OntologyClass> getActiveCharacteristics(OntologyClass entity,
+           OntologyClass standard, boolean searchSubclasses,
+           boolean addSuperclasses);
+
+   /**
     * Get measurement standards used in managed annotations
     * @return list of measurement standards
     */
    public List<OntologyClass> getActiveStandards();
+
+   /**
+    * Get standards used in managed annotations
+    * @param addSuperclasses if true, include all superclasses of active 
+    * standards
+    * @return list of standards
+    */
+   public List<OntologyClass> getActiveStandards(boolean addSuperclasses);
 
    /**
     * Get standards used in managed annotations having a measurement 
@@ -206,5 +300,42 @@ public interface AnnotationManager {
     */
    public List<OntologyClass> getActiveStandards(
            List<OntologyClass> entities, List<OntologyClass> characteristics);
+
+   /**
+    * Get standards used in managed annotations having a measurement 
+    * with an entity and characteristic in the given entities and 
+    * characteristics
+    * @param entities entities to look for
+    * @param characteristics characteristics to look for
+    * @param searchSubclasses search using subclasses of the given classes
+    * @param addSuperclasses add superclasses to found entities
+    * @return list of matching standards
+    */
+   public List<OntologyClass> getActiveStandards(
+           List<OntologyClass> entities, List<OntologyClass> characteristics,
+           boolean searchSubclasses, boolean addSuperclasses);
+
+   /**
+    * Get standards used in managed annotations with an observation having
+    * the given entity and measurement characteristic
+    * @param entity the entity to look for
+    * @param characteristic the characteristic to look for
+    * @return list of matching standards
+    */
+   public List<OntologyClass> getActiveStandards(OntologyClass entity,
+           OntologyClass characteristic);
+
+   /**
+    * Get standards used in managed annotations with an observation having
+    * the given entity and measurement characteristic
+    * @param entity the entity to look for
+    * @param characteristic the characteristic to look for
+    * @param searchSubclasses search using subclasses of the given classes
+    * @param addSuperclasses add superclasses to found entities
+    * @return list of matching standards
+    */
+   public List<OntologyClass> getActiveStandards(OntologyClass entity,
+           OntologyClass characteristic, boolean searchSubclasses, 
+           boolean addSuperclasses);
 
 }

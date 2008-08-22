@@ -402,16 +402,6 @@ public class DefaultOntologyManager implements OntologyManager {
         return null;
     }
 
-    /**
-     * Get the range of the given property for the given domain class, if one 
-     * exists
-     * @param c the domain class
-     * @param p the property
-     * @return the range class
-     */
-    public OntologyClass getRange(OntologyClass c, OntologyObjectProperty p) {
-       return null;
-    }
     
     /** 
      * Get the Jena OntModels being managed
@@ -420,7 +410,7 @@ public class DefaultOntologyManager implements OntologyManager {
     private List<OntModel> getModels() {
         List<OntModel> results = new ArrayList();
         for(Ontology ont : _models.keySet()) {
-            OntModel m = getModel(ont);
+            OntModel m = _models.get(ont);
             if(m != null)
                 results.add(m);
         }
@@ -433,6 +423,7 @@ public class DefaultOntologyManager implements OntologyManager {
      * @return the ontology model
      */
     private OntModel getModel(Ontology o) {
-        return _models.get(o);
+       Ontology onto = getOntology(o.getURI());
+       return _models.get(onto);
     }
 }
