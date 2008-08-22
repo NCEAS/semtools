@@ -23,6 +23,8 @@ public class Test2 {
 
          ontMgr.importOntology("http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl");
          ontMgr.importOntology("http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl");
+         ontMgr.importOntology("http://linus.nceas.ucsb.edu/sms/metacat/oboeunit.1.1");
+
          
          // print the loaded ontologies and their labels
          System.out.println("\n*** Loaded ontologies: ***");
