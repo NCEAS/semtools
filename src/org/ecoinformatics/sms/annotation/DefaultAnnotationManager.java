@@ -174,20 +174,11 @@ public class DefaultAnnotationManager implements AnnotationManager {
     */
    public List<OntologyClass> getOntologyClasses(Annotation a,
            boolean addSubclasses, boolean addSuperclasses) {
-      OntologyManager mgr = _sms.getOntologyManager();
       List<OntologyClass> result = getOntologyClasses(a);
-      List<OntologyClass> subclasses = new ArrayList();
-      if(addSubclasses)
-         for(OntologyClass c : result)
-            for(OntologyClass s : mgr.getNamedSubclasses(c))
-               if(!subclasses.contains(s))
-                  subclasses.add(s);
-      List<OntologyClass> superclasses = new ArrayList();
-      if(addSuperclasses)
-         for(OntologyClass c : result)
-            for(OntologyClass s : mgr.getNamedSuperclasses(c))
-               if(!superclasses.contains(s))
-                  superclasses.add(s);
+      List<OntologyClass> subclasses = new ArrayList(result);
+      addSubclasses(subclasses);
+      List<OntologyClass> superclasses = new ArrayList(result);
+      addSuperclasses(superclasses);
       for(OntologyClass c : subclasses)
          if(!result.contains(c))
             result.add(c);
@@ -236,24 +227,13 @@ public class DefaultAnnotationManager implements AnnotationManager {
            boolean searchSubclasses) {
       if(!searchSubclasses)
          return getMatchingAnnotations(entities, characteristics, standards);
-      // get the subclasses of each set
-      OntologyManager mgr = _sms.getOntologyManager();
-      List<OntologyClass> tmp = new ArrayList(entities);
-      for(OntologyClass c : tmp)
-         for(OntologyClass s : mgr.getNamedSubclasses(c))
-            if(!entities.contains(s))
-               entities.add(s);
-      tmp = new ArrayList(characteristics);
-      for(OntologyClass c : tmp)
-         for(OntologyClass s : mgr.getNamedSubclasses(c))
-            if(!characteristics.contains(s))
-               characteristics.add(s);
-      tmp = new ArrayList(standards);
-      for(OntologyClass c : tmp)
-         for(OntologyClass s : mgr.getNamedSubclasses(c))
-            if(!standards.contains(s))
-               standards.add(s);
-      return getMatchingAnnotations(entities, characteristics, standards);
+      List<OntologyClass> entSubs = new ArrayList(entities);
+      List<OntologyClass> charSubs = new ArrayList(characteristics);
+      List<OntologyClass> stdSubs = new ArrayList(standards);
+      addSubclasses(entSubs);
+      addSubclasses(charSubs);
+      addSubclasses(stdSubs);
+      return getMatchingAnnotations(entSubs, charSubs, stdSubs);
    }
 
    /**
@@ -298,6 +278,434 @@ public class DefaultAnnotationManager implements AnnotationManager {
       if(standard != null)
          standards.add(standard);
       return getMatchingAnnotations(entities, characteristics, standards, searchSubclasses);
+   }
+
+   /**
+    * Get entities used in managed annotations
+    * @return list of entities
+    */
+   public List<OntologyClass> getActiveEntities() {
+      List<OntologyClass> results = new ArrayList();
+      for(Annotation a : getAnnotations())
+         for(OntologyClass c : a.getOntologyClasses())
+            if(c instanceof Entity && !results.contains(c))
+               results.add(c);
+      return results;
+   }
+
+   /**
+    * Get entities used in managed annotations
+    * @param addSuperclasses if true, include all superclasses of active 
+    * entities
+    * @return list of entities
+    */
+   public List<OntologyClass> getActiveEntities(boolean addSuperclasses) {
+      List<OntologyClass> results = getActiveEntities();
+      if(!addSuperclasses)
+         return results;
+      addSuperclasses(results);
+      return results;
+   }
+
+   /**
+    * Get characteristics used in managed annotations
+    * @return list of characteristics
+    */
+   public List<OntologyClass> getActiveCharacteristics() {
+      List<OntologyClass> results = new ArrayList();
+      for(Annotation a : getAnnotations())
+         for(OntologyClass c : a.getOntologyClasses())
+            if(c instanceof Characteristic && !results.contains(c))
+               results.add(c);
+      return results;
+   }
+
+   /**
+    * Get characteristics used in managed annotations
+    * @param addSuperclasses if true, include all superclasses of active 
+    * characteristics
+    * @return list of characteristics
+    */
+   public List<OntologyClass> getActiveCharacteristics(boolean addSuperclasses) {
+      List<OntologyClass> results = getActiveCharacteristics();
+      if(!addSuperclasses)
+         return results;
+      addSuperclasses(results);
+      return results;
+   }
+
+   /**
+    * Get measurement standards used in managed annotations
+    * @return list of measurement standards
+    */
+   public List<OntologyClass> getActiveStandards() {
+      List<OntologyClass> results = new ArrayList();
+      for(Annotation a : getAnnotations())
+         for(OntologyClass c : a.getOntologyClasses())
+            if(c instanceof Standard && !results.contains(c))
+               results.add(c);
+      return results;
+   }
+
+   /**
+    * Get standards used in managed annotations
+    * @param addSuperclasses if true, include all superclasses of active 
+    * standards
+    * @return list of standards
+    */
+   public List<OntologyClass> getActiveStandards(boolean addSuperclasses) {
+      List<OntologyClass> results = getActiveStandards();
+      if(!addSuperclasses)
+         return results;
+      addSuperclasses(results);
+      return results;
+   }
+
+   /**
+    * Get entities used in managed annotations having a measurement with a 
+    * characteristic and standard in the given characteristics and standards
+    * @param characteristics characteristics to look for
+    * @param standards
+    * @return list of matching entities
+    */
+   public List<OntologyClass> getActiveEntities(
+           List<OntologyClass> characteristics, List<OntologyClass> standards) {
+      // check if both args are missing
+      if((characteristics == null || characteristics.isEmpty()) &&
+              (standards == null || standards.isEmpty()))
+         return getActiveEntities();
+      List<OntologyClass> results = new ArrayList();
+      for(Annotation a : getAnnotations())
+         for(Observation o : a.getObservations()) {
+            Entity e = o.getEntity();
+            if(results.contains(e))
+               continue;
+            boolean found = false;
+            for(Measurement m : o.getMeasurements()) {
+               if(standards != null && !standards.isEmpty() 
+                       && !standards.contains(m.getStandard()))
+                  continue;
+               if(characteristics == null || characteristics.isEmpty()) {
+                  found = true;
+                  break;
+               }
+               for(Characteristic c : m.getCharacteristics())
+                  if(characteristics.contains(c)) {
+                     found = true;
+                     break;
+                  }
+               if(found)
+                  break;
+            }
+            if(found)
+               results.add(e);
+         }
+      return results;
+   }
+
+   /**
+    * Get entities used in managed annotations having a measurement with the 
+    * give characteristic and standard 
+    * @param characteristic the characteristic to look for
+    * @param standard the standard to look for
+    * @return list of matching entities
+    */
+   public List<OntologyClass> getActiveEntities(OntologyClass characteristic,
+           OntologyClass standard) {
+      List<OntologyClass> characteristics = new ArrayList();
+      if(characteristic != null)
+         characteristics.add(characteristic);
+      List<OntologyClass> standards = new ArrayList();
+      if(standard != null)
+         standards.add(standard);
+      return getActiveEntities(characteristics, standards);
+   }
+
+   /**
+    * Get entities used in managed annotations having a measurement with a 
+    * characteristic and standard in the given characteristics and standards
+    * @param characteristics characteristics to look for
+    * @param standards standards to look for
+    * @param searchSubclasses search using subclasses of the given classes
+    * @param addSuperclasses add superclasses to found entities
+    * @return list of matching entities
+    */
+   public List<OntologyClass> getActiveEntities(List<OntologyClass> characteristics,
+           List<OntologyClass> standards, boolean searchSubclasses,
+           boolean addSuperclasses) {
+      List<OntologyClass> result = new ArrayList();
+      if(!searchSubclasses)
+         result = getActiveEntities(characteristics, standards);
+      else {
+         List<OntologyClass> charSubs = new ArrayList(characteristics);
+         addSubclasses(charSubs);
+         List<OntologyClass> stdSubs = new ArrayList(standards);
+         addSubclasses(stdSubs);
+         result = getActiveEntities(charSubs, stdSubs);
+      }
+      if(!addSuperclasses)
+         return result;
+      addSuperclasses(result);
+      return result;
+   }
+
+   /**
+    * Get entities used in managed annotations having a measurement with the 
+    * give characteristic and standard 
+    * @param characteristic the characteristic to look for
+    * @param standard the standard to look for
+    * @param searchSubclasses search using subclasses of the given classes
+    * @param addSuperclasses add superclasses to found entities
+    * @return list of matching entities
+    */
+   public List<OntologyClass> getActiveEntities(OntologyClass characteristic,
+           OntologyClass standard, boolean searchSubclasses,
+           boolean addSuperclasses) {
+      List<OntologyClass> result = new ArrayList();
+      if(!searchSubclasses)
+         result = getActiveEntities(characteristic, standard);
+      else {
+         List<OntologyClass> charSubs = new ArrayList();
+         if(characteristic != null)
+            charSubs.add(characteristic);
+         addSubclasses(charSubs);
+         List<OntologyClass> stdSubs = new ArrayList();
+         if(standard != null)
+            stdSubs.add(standard);
+         addSubclasses(stdSubs);
+         result = getActiveEntities(charSubs, stdSubs);
+      }
+      if(!addSuperclasses)
+         return result;
+      addSuperclasses(result);
+      return result;
+   }
+
+   /**
+    * Get characteristics used in managed annotations having a measurement 
+    * with an entity and standard in the given entities and standards
+    * @param entities entities to look for
+    * @param standards standards to look for
+    * @return list of matching characteristics
+    */
+   public List<OntologyClass> getActiveCharacteristics(
+           List<OntologyClass> entities, List<OntologyClass> standards) {
+      // check if both args are missing
+      if((entities == null || entities.isEmpty()) &&
+              (standards == null || standards.isEmpty()))
+         return getActiveCharacteristics();
+      List<OntologyClass> results = new ArrayList();
+      for(Annotation a : getAnnotations())
+         for(Observation o : a.getObservations()) {
+            if(entities != null && !entities.isEmpty() && 
+                    !entities.contains(o.getEntity()))
+               continue;
+            for(Measurement m : o.getMeasurements()) {
+               if(standards != null && !standards.isEmpty() && 
+                       !standards.contains(m.getStandard()))
+                  continue;
+               // found a match
+               for(Characteristic c : m.getCharacteristics())
+                  if(!results.contains(c))
+                     results.add(c);
+            }
+         }
+      return results;
+   }
+
+   /**
+    * Get characteristics used in managed annotations having a measurement 
+    * with an entity and standard in the given entities and standards
+    * @param entities entities to look for
+    * @param standards standards to look for
+    * @param searchSubclasses search using subclasses of the given classes
+    * @param addSuperclasses add superclasses to found entities
+    * @return list of matching characteristics
+    */
+   public List<OntologyClass> getActiveCharacteristics(
+           List<OntologyClass> entities, List<OntologyClass> standards,
+           boolean searchSubclasses, boolean addSuperclasses) {
+      List<OntologyClass> result = new ArrayList();
+      if(!searchSubclasses)
+         result = getActiveCharacteristics(entities, standards);
+      else {
+         List<OntologyClass> entSubs = new ArrayList(entities);
+         addSubclasses(entSubs);
+         List<OntologyClass> stdSubs = new ArrayList(standards);
+         addSubclasses(stdSubs);
+         result = getActiveCharacteristics(entSubs, stdSubs);
+      }
+      if(!addSuperclasses)
+         return result;
+      addSuperclasses(result);
+      return result;
+   }
+
+   /**
+    * Get characteristics used in managed annotations with a measurement having 
+    * the given entity and standard 
+    * @param entity the entity to look for
+    * @param standard the standard to look for
+    * @return list of matching characteristics
+    */
+   public List<OntologyClass> getActiveCharacteristics(OntologyClass entity,
+           OntologyClass standard) {
+      List<OntologyClass> entities = new ArrayList();
+      if(entity != null)
+         entities.add(entity);
+      List<OntologyClass> standards = new ArrayList();
+      if(standard != null)
+         standards.add(standard);
+      return getActiveCharacteristics(entities, standards);
+   }
+
+   /**
+    * Get characteristics used in managed annotations with a measurement having 
+    * the given entity and standard 
+    * @param entity the entity to look for
+    * @param standard the standard to look for
+    * @param searchSubclasses search using subclasses of the given classes
+    * @param addSuperclasses add superclasses to found entities
+    * @return list of matching characteristics
+    */
+   public List<OntologyClass> getActiveCharacteristics(OntologyClass entity,
+           OntologyClass standard, boolean searchSubclasses,
+           boolean addSuperclasses) {
+      List<OntologyClass> result = new ArrayList();
+      if(!searchSubclasses)
+         result = getActiveCharacteristics(entity, standard);
+      else {
+         List<OntologyClass> entSubs = new ArrayList();
+         if(entity != null)
+            entSubs.add(entity);
+         addSubclasses(entSubs);
+         List<OntologyClass> stdSubs = new ArrayList();
+         if(standard != null)
+            stdSubs.add(standard);
+         addSubclasses(stdSubs);
+         result = getActiveCharacteristics(entSubs, stdSubs);
+      }
+      if(!addSuperclasses)
+         return result;
+      addSuperclasses(result);
+      return result;
+   }
+
+   /**
+    * Get standards used in managed annotations having a measurement 
+    * with an entity and characteristic in the given entities and 
+    * characteristics
+    * @param entities entities to look for
+    * @param characteristics characteristics to look for
+    * @return list of matching standards
+    */
+   public List<OntologyClass> getActiveStandards(
+           List<OntologyClass> entities, List<OntologyClass> characteristics) {
+      // check if both args are missing
+      if((entities == null || entities.isEmpty()) &&
+              (characteristics == null || characteristics.isEmpty()))
+         return getActiveStandards();
+      List<OntologyClass> results = new ArrayList();
+      for(Annotation a : getAnnotations())
+         for(Observation o : a.getObservations()) {
+            if(entities != null && !entities.isEmpty() && 
+                    !entities.contains(o.getEntity()))
+               continue;
+            for(Measurement m : o.getMeasurements()) {
+               boolean found = false;
+               if(characteristics != null && !characteristics.isEmpty()) {
+                  for(Characteristic c : m.getCharacteristics())
+                     if(characteristics.contains(c)) {
+                        found = true;
+                        break;
+                     }
+               }else
+                  found = true;
+               Standard s = m.getStandard();
+               if(found && !results.contains(s))
+                  results.add(s);
+            }
+         }
+      return results;
+   }
+
+   /**
+    * Get standards used in managed annotations having a measurement 
+    * with an entity and characteristic in the given entities and 
+    * characteristics
+    * @param entities entities to look for
+    * @param characteristics characteristics to look for
+    * @param searchSubclasses search using subclasses of the given classes
+    * @param addSuperclasses add superclasses to found entities
+    * @return list of matching standards
+    */
+   public List<OntologyClass> getActiveStandards(
+           List<OntologyClass> entities, List<OntologyClass> characteristics,
+           boolean searchSubclasses, boolean addSuperclasses) {
+      List<OntologyClass> result = new ArrayList();
+      if(!searchSubclasses)
+         result = getActiveStandards(entities, characteristics);
+      else {
+         List<OntologyClass> entSubs = new ArrayList(entities);
+         addSubclasses(entSubs);
+         List<OntologyClass> charSubs = new ArrayList(characteristics);
+         addSubclasses(charSubs);
+         result = getActiveStandards(entSubs, charSubs);
+      }
+      if(!addSuperclasses)
+         return result;
+      addSuperclasses(result);
+      return result;
+   }
+
+   /**
+    * Get standards used in managed annotations with an observation having
+    * the given entity and measurement characteristic
+    * @param entity the entity to look for
+    * @param characteristic the characteristic to look for
+    * @return list of matching standards
+    */
+   public List<OntologyClass> getActiveStandards(OntologyClass entity,
+           OntologyClass characteristic) {
+      List<OntologyClass> entities = new ArrayList();
+      if(entity != null)
+         entities.add(entity);
+      List<OntologyClass> characteristics = new ArrayList();
+      if(characteristic != null)
+         characteristics.add(characteristic);
+      return getActiveStandards(entities, characteristics);
+   }
+
+   /**
+    * Get standards used in managed annotations with an observation having
+    * the given entity and measurement characteristic
+    * @param entity the entity to look for
+    * @param characteristic the characteristic to look for
+    * @param searchSubclasses search using subclasses of the given classes
+    * @param addSuperclasses add superclasses to found entities
+    * @return list of matching standards
+    */
+   public List<OntologyClass> getActiveStandards(OntologyClass entity,
+           OntologyClass characteristic, boolean searchSubclasses,
+           boolean addSuperclasses) {
+      List<OntologyClass> result = new ArrayList();
+      if(!searchSubclasses)
+         result = getActiveStandards(entity, characteristic);
+      else {
+         List<OntologyClass> entSubs = new ArrayList();
+         if(entity != null)
+            entSubs.add(entity);
+         addSubclasses(entSubs);
+         List<OntologyClass> charSubs = new ArrayList();
+         if(characteristic != null)
+            charSubs.add(characteristic);
+         addSubclasses(charSubs);
+         result = getActiveStandards(entSubs, charSubs);
+      }
+      if(!addSuperclasses)
+         return result;
+      addSuperclasses(result);
+      return result;
    }
 
    /**
@@ -353,151 +761,36 @@ public class DefaultAnnotationManager implements AnnotationManager {
       return false;
    }
 
-   /**
-    * Get entities used in managed annotations
-    * @return list of entities
+   /** 
+    * Helper class to add all superclasses of the given classes
+    * @param classes the class list being added to
     */
-   public List<OntologyClass> getActiveEntities() {
-      List<OntologyClass> results = new ArrayList();
-      for(Annotation a : getAnnotations())
-         for(OntologyClass c : a.getOntologyClasses())
-            if(c instanceof Entity && !results.contains(c))
-               results.add(c);
-      return results;
+   private void addSuperclasses(List<OntologyClass> classes) {
+      OntologyManager ontMgr = _sms.getOntologyManager();
+      List<OntologyClass> superclasses = new ArrayList();
+      for(OntologyClass c : classes)
+         for(OntologyClass s : ontMgr.getNamedSuperclasses(c))
+            if(!superclasses.contains(s))
+               superclasses.add(s);
+      for(OntologyClass c : superclasses)
+         if(!classes.contains(c))
+            classes.add(c);
    }
 
-   /**
-    * Get characteristics used in managed annotations
-    * @return list of characteristics
+   /** 
+    * Helper class to add all subclasses of the given classes
+    * @param classes the class list being added to
     */
-   public List<OntologyClass> getActiveCharacteristics() {
-      List<OntologyClass> results = new ArrayList();
-      for(Annotation a : getAnnotations())
-         for(OntologyClass c : a.getOntologyClasses())
-            if(c instanceof Characteristic && !results.contains(c))
-               results.add(c);
-      return results;
-   }
-
-   /**
-    * Get measurement standards used in managed annotations
-    * @return list of measurement standards
-    */
-   public List<OntologyClass> getActiveStandards() {
-      List<OntologyClass> results = new ArrayList();
-      for(Annotation a : getAnnotations())
-         for(OntologyClass c : a.getOntologyClasses())
-            if(c instanceof Standard && !results.contains(c))
-               results.add(c);
-      return results;
-   }
-
-   /**
-    * Get entities used in managed annotations having a measurement with a 
-    * characteristic and standard in the given characteristics and standards
-    * @param characteristics characteristics to look for
-    * @param standards
-    * @return list of matching entities
-    */
-   public List<OntologyClass> getActiveEntities(
-           List<OntologyClass> characteristics, List<OntologyClass> standards) {
-      // check if both args are missing
-      if((characteristics == null || characteristics.isEmpty()) &&
-              (standards == null || standards.isEmpty()))
-         return getActiveEntities();
-      List<OntologyClass> results = new ArrayList();
-      for(Annotation a : getAnnotations())
-         for(Observation o : a.getObservations()) {
-            Entity e = o.getEntity();
-            if(results.contains(e))
-               continue;
-            boolean found = false;
-            for(Measurement m : o.getMeasurements()) {
-               if(standards != null && !standards.contains(m.getStandard()))
-                  continue;
-               if(characteristics == null || characteristics.isEmpty()) {
-                  found = true;
-                  break;
-               }
-               for(Characteristic c : m.getCharacteristics())
-                  if(characteristics.contains(c)) {
-                     found = true;
-                     break;
-                  }
-               if(found)
-                  break;
-            }
-            if(found)
-               results.add(e);
-         }
-      return results;
-   }
-
-   /**
-    * Get characteristics used in managed annotations having a measurement 
-    * with an entity and standard in the given entities and standards
-    * @param entities entities to look for
-    * @param standards standards to look for
-    * @return list of matching characteristics
-    */
-   public List<OntologyClass> getActiveCharacteristics(
-           List<OntologyClass> entities, List<OntologyClass> standards) {
-      // check if both args are missing
-      if((entities == null || entities.isEmpty()) &&
-              (standards == null || standards.isEmpty()))
-         return getActiveCharacteristics();
-      List<OntologyClass> results = new ArrayList();
-      for(Annotation a : getAnnotations())
-         for(Observation o : a.getObservations()) {
-            if(entities != null && !entities.contains(o.getEntity()))
-               continue;
-            for(Measurement m : o.getMeasurements()) {
-               if(standards != null && !standards.contains(m.getStandard()))
-                  continue;
-               // found a match
-               for(Characteristic c : m.getCharacteristics())
-                  if(!results.contains(c))
-                     results.add(c);
-            }
-         }
-      return results;
-   }
-
-   /**
-    * Get standards used in managed annotations having a measurement 
-    * with an entity and characteristic in the given entities and 
-    * characteristics
-    * @param entities entities to look for
-    * @param characteristics characteristics to look for
-    * @return list of matching standards
-    */
-   public List<OntologyClass> getActiveStandards(
-           List<OntologyClass> entities, List<OntologyClass> characteristics) {
-      // check if both args are missing
-      if((entities == null || entities.isEmpty()) &&
-              (characteristics == null || characteristics.isEmpty()))
-         return getActiveStandards();
-      List<OntologyClass> results = new ArrayList();
-      for(Annotation a : getAnnotations())
-         for(Observation o : a.getObservations()) {
-            if(entities != null && !entities.contains(o.getEntity()))
-               continue;
-            for(Measurement m : o.getMeasurements()) {
-               boolean found = false;
-               if(characteristics != null) {
-                  for(Characteristic c : m.getCharacteristics())
-                     if(characteristics.contains(c)) {
-                        found = true;
-                        break;
-                     }
-               }else
-                  found = true;
-               Standard s = m.getStandard();
-               if(found && !results.contains(s))
-                  results.add(s);
-            }
-         }
-      return results;
+   private void addSubclasses(List<OntologyClass> classes) {
+      OntologyManager ontMgr = _sms.getOntologyManager();
+      List<OntologyClass> subclasses = new ArrayList();
+      for(OntologyClass c : classes)
+         for(OntologyClass s : ontMgr.getNamedSubclasses(c))
+            if(!subclasses.contains(s))
+               subclasses.add(s);
+      for(OntologyClass c : subclasses)
+         if(!classes.contains(c))
+            classes.add(c);
    }
 
 } 
