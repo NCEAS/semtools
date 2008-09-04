@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
+
 <sms:annotation
    xmlns="plt-gced-0409-1-1-annot.xml"
    xmlns:sms="http://daks.ucdavis.edu/sms-annot-1.0.0rc1"
-   xmlns:oboe="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl"
-   xmlns:unit="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl"
-   xmlns:gce="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl"
+   xmlns:oboe="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl"
+   xmlns:unit="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl"
+   xmlns:gce="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl"
    emlPackage="eml.11.1"
    dataTable="1">
 
