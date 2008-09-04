@@ -4,8 +4,6 @@ package org.ecoinformatics.sms;
 import org.ecoinformatics.sms.ontology.Ontology;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.annotation.Annotation;
-import java.util.List;
-import java.util.ArrayList;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -13,18 +11,22 @@ public class Test2 {
 
    public static void main(String[] args) {
       try {
-         String ontUri = "http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl";
+         
+//         String gceURI = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl";
+//         String oboeURI = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl";
+//         String unitURI = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl";
+         String gceURI = "http://linus.nceas.ucsb.edu/sms/metacat/oboegce.1";
+         String oboeURI = "http://linus.nceas.ucsb.edu/sms/metacat/oboe.1";
+         String unitURI = "http://linus.nceas.ucsb.edu/sms/metacat/oboeunit.1";
          
          SMS sms = new SMS();
 
          // get the ontology manager
          OntologyManager ontMgr = sms.getOntologyManager();
-         ontMgr.importOntology(ontUri);
-
-         ontMgr.importOntology("http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl");
-         ontMgr.importOntology("http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl");
-
-         
+         ontMgr.importOntology(oboeURI);
+         ontMgr.importOntology(unitURI);
+         ontMgr.importOntology(gceURI);
+        
          // print the loaded ontologies and their labels
          System.out.println("\n*** Loaded ontologies: ***");
          for(String ontId : ontMgr.getOntologyIds()) {
@@ -32,14 +34,13 @@ public class Test2 {
             String lbl = ontMgr.getOntologyLabel(o);
             System.out.println("   '" + lbl + "' (" + ontId + ") ");
          }
-
+/*
          // print the loaded classes and their labels
          System.out.println("\n*** Loaded classes: ***");
          for(OntologyClass c : ontMgr.getNamedClasses()) {
             String lbl = ontMgr.getNamedClassLabel(c);
             System.out.println("   '" + lbl + "' (" + c + ")");
          }
-
          // print the subclasses of loaded classes
          System.out.println("\n*** Subclasses: ***");
          for(OntologyClass c : ontMgr.getNamedClasses()) {
@@ -47,9 +48,12 @@ public class Test2 {
             for(OntologyClass s : ontMgr.getNamedSubclasses(c))
                System.out.println("      " + s.getURI());
          }
+*/
 
-         String annUri = "http://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/plt-gced-0409-1-1-annot.xml";
-         URL url = new URL(annUri);
+         String annURI = "http://linus.nceas.ucsb.edu/sms/metacat/annot.1";
+//         String annURI = "file:///Users/sbowers/svn/semtools/trunk/dev/sms/examples/plt-gced-0409-1-1-annot.1.1.xml";
+         // String annUri = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/plt-gced-0409-1-1-annot.xml";
+         URL url = new URL(annURI);
          URLConnection connection = url.openConnection();
 
          AnnotationManager annMgr = sms.getAnnotationManager();
@@ -57,8 +61,15 @@ public class Test2 {
 
          // print the loaded annotations 
          System.out.println("\n*** Loaded annotations: ***");
-         for(Annotation a : annMgr.getAnnotations())
+         for(Annotation a : annMgr.getAnnotations()) {
+            try {
+               annMgr.validateAnnotation(a);
+            } catch(Exception e) {
+               e.printStackTrace();
+               System.exit(-1);
+            } 
             System.out.println("   '" + a.getURI() + "'");
+         }
 
          System.out.println("\n*** Annotation classes: ***");
          for(Annotation a : annMgr.getAnnotations()) {
@@ -68,8 +79,9 @@ public class Test2 {
          }
 
          // search for a matching annotation
-         Ontology gceOnt = ontMgr.getOntology(ontUri);
-         OntologyClass entity = ontMgr.getNamedClass(gceOnt, "JuncusRoemerianus");
+         Ontology gceOnt = ontMgr.getOntology(gceURI);
+//         OntologyClass entity = ontMgr.getNamedClass(gceOnt, "JuncusRoemerianus");
+         OntologyClass entity = ontMgr.getNamedClass(gceOnt, "Organism");
          OntologyClass characteristic = ontMgr.getNamedClass(gceOnt, "Biomass");
 
          System.out.println("\nEntity: " + entity);
@@ -84,10 +96,15 @@ public class Test2 {
          for(OntologyClass c : annMgr.getActiveCharacteristics())
             System.out.println("   entity: " + ontMgr.getNamedClassLabel(c));
          
-         System.out.println("\n*** Search for active domain of '" + ontMgr.getNamedClassLabel(characteristic) + "': ***");
-         for(OntologyClass c : annMgr.getActiveStandards(null, characteristic, true, true))
+         System.out.println("\n*** Search for active domain of entity='" + 
+                 ontMgr.getNamedClassLabel(entity) + "' characteristic='" + 
+                 ontMgr.getNamedClassLabel(characteristic) + "': ***");
+         java.util.List<OntologyClass> ents = new java.util.ArrayList();
+         ents.add(entity);
+         java.util.List<OntologyClass> chars = new java.util.ArrayList();
+         chars.add(characteristic);
+         for(OntologyClass c : annMgr.getActiveStandards(ents, chars, true, true))
             System.out.println("   standard: " + ontMgr.getNamedClassLabel(c));
-         
 
       }catch(Exception e) {
          System.out.println("Error: " + e.getMessage());
