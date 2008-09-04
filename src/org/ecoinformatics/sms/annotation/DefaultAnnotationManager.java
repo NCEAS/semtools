@@ -131,6 +131,35 @@ public class DefaultAnnotationManager implements AnnotationManager {
    }
 
    /**
+    * Ensure that the annotation is valid.
+    * @param a the annotation
+    * @throws java.lang.Exception
+    */
+   public void validateAnnotation(Annotation a) throws Exception {
+      String msg = "ERROR: annotation";
+      OntologyManager mgr = _sms.getOntologyManager();
+      if(a == null)
+         throw new Exception(msg + " is null");
+      for(OntologyClass c : a.getOntologyClasses()) {
+         if(c == null)
+            throw new Exception(msg + " contains null class");
+         if(c.getOntology() == null)
+            throw new Exception(msg + " class with null ontology: " +
+                    c.toString());
+         String ont_uri = c.getOntology().getURI();
+         if(!mgr.isOntology(ont_uri))
+            throw new Exception(msg + " class with unknown ontology: " +
+                    ont_uri);
+         if(c.getName() == null)
+            throw new Exception(msg + " class with unknown name: " +
+                    c.toString());
+         String name = c.getName();
+         if(mgr.getNamedClass(c.getOntology(), name) == null)
+            throw new Exception(msg + " with unknown class: " + c.toString());
+      }
+   }
+
+   /**
     * Get the annotation identifiers from the manager
     * @return the set of annotation identifiers
     */
@@ -382,8 +411,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
                continue;
             boolean found = false;
             for(Measurement m : o.getMeasurements()) {
-               if(standards != null && !standards.isEmpty() 
-                       && !standards.contains(m.getStandard()))
+               if(standards != null && !standards.isEmpty() && !standards.contains(m.getStandard()))
                   continue;
                if(characteristics == null || characteristics.isEmpty()) {
                   found = true;
@@ -497,11 +525,11 @@ public class DefaultAnnotationManager implements AnnotationManager {
       List<OntologyClass> results = new ArrayList();
       for(Annotation a : getAnnotations())
          for(Observation o : a.getObservations()) {
-            if(entities != null && !entities.isEmpty() && 
+            if(entities != null && !entities.isEmpty() &&
                     !entities.contains(o.getEntity()))
                continue;
             for(Measurement m : o.getMeasurements()) {
-               if(standards != null && !standards.isEmpty() && 
+               if(standards != null && !standards.isEmpty() &&
                        !standards.contains(m.getStandard()))
                   continue;
                // found a match
@@ -608,7 +636,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
       List<OntologyClass> results = new ArrayList();
       for(Annotation a : getAnnotations())
          for(Observation o : a.getObservations()) {
-            if(entities != null && !entities.isEmpty() && 
+            if(entities != null && !entities.isEmpty() &&
                     !entities.contains(o.getEntity()))
                continue;
             for(Measurement m : o.getMeasurements()) {

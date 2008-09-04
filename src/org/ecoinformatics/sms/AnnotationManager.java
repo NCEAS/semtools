@@ -83,6 +83,14 @@ public interface AnnotationManager {
     */
    public Annotation getAnnotation(String id) throws Exception;
 
+   
+   /**
+    * Ensure that the annotation is valid.
+    * @param a the annotation
+    * @throws java.lang.Exception
+    */
+   public void validateAnnotation(Annotation a) throws Exception;
+   
    /**
     * Get the annotation identifiers from the manager
     * @return the set of annotation identifiers
