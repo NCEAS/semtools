@@ -355,7 +355,8 @@ public class DefaultAnnotationManager implements AnnotationManager {
     * characteristics
     * @return list of characteristics
     */
-   public List<OntologyClass> getActiveCharacteristics(boolean addSuperclasses) {
+   public List<OntologyClass> getActiveCharacteristics(
+           boolean addSuperclasses) {
       List<OntologyClass> results = getActiveCharacteristics();
       if(!addSuperclasses)
          return results;
@@ -406,9 +407,6 @@ public class DefaultAnnotationManager implements AnnotationManager {
       List<OntologyClass> results = new ArrayList();
       for(Annotation a : getAnnotations())
          for(Observation o : a.getObservations()) {
-            Entity e = o.getEntity();
-            if(results.contains(e))
-               continue;
             boolean found = false;
             for(Measurement m : o.getMeasurements()) {
                if(standards != null && !standards.isEmpty() && !standards.contains(m.getStandard()))
@@ -426,7 +424,9 @@ public class DefaultAnnotationManager implements AnnotationManager {
                   break;
             }
             if(found)
-               results.add(e);
+               for(Entity e : getAllEntities(o))
+                  if(!results.contains(e))
+                     results.add(e);
          }
       return results;
    }
@@ -461,6 +461,10 @@ public class DefaultAnnotationManager implements AnnotationManager {
    public List<OntologyClass> getActiveEntities(List<OntologyClass> characteristics,
            List<OntologyClass> standards, boolean searchSubclasses,
            boolean addSuperclasses) {
+      if(characteristics == null)
+         characteristics = new ArrayList();
+      if(standards == null)
+         standards = new ArrayList();
       List<OntologyClass> result = new ArrayList();
       if(!searchSubclasses)
          result = getActiveEntities(characteristics, standards);
@@ -525,8 +529,8 @@ public class DefaultAnnotationManager implements AnnotationManager {
       List<OntologyClass> results = new ArrayList();
       for(Annotation a : getAnnotations())
          for(Observation o : a.getObservations()) {
-            if(entities != null && !entities.isEmpty() &&
-                    !entities.contains(o.getEntity()))
+            if(entities != null && !entities.isEmpty() && 
+                    !overlaps(entities, getAllEntities(o))) 
                continue;
             for(Measurement m : o.getMeasurements()) {
                if(standards != null && !standards.isEmpty() &&
@@ -554,6 +558,10 @@ public class DefaultAnnotationManager implements AnnotationManager {
            List<OntologyClass> entities, List<OntologyClass> standards,
            boolean searchSubclasses, boolean addSuperclasses) {
       List<OntologyClass> result = new ArrayList();
+      if(entities == null)
+         entities = new ArrayList();
+      if(standards == null)
+         standards = new ArrayList();
       if(!searchSubclasses)
          result = getActiveCharacteristics(entities, standards);
       else {
@@ -636,8 +644,8 @@ public class DefaultAnnotationManager implements AnnotationManager {
       List<OntologyClass> results = new ArrayList();
       for(Annotation a : getAnnotations())
          for(Observation o : a.getObservations()) {
-            if(entities != null && !entities.isEmpty() &&
-                    !entities.contains(o.getEntity()))
+            if(entities != null && !entities.isEmpty() && 
+                    !overlaps(entities, getAllEntities(o))) 
                continue;
             for(Measurement m : o.getMeasurements()) {
                boolean found = false;
@@ -671,6 +679,10 @@ public class DefaultAnnotationManager implements AnnotationManager {
            List<OntologyClass> entities, List<OntologyClass> characteristics,
            boolean searchSubclasses, boolean addSuperclasses) {
       List<OntologyClass> result = new ArrayList();
+      if(entities == null)
+         entities = new ArrayList();
+      if(characteristics == null)
+         characteristics = new ArrayList();
       if(!searchSubclasses)
          result = getActiveStandards(entities, characteristics);
       else {
@@ -790,7 +802,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
    }
 
    /** 
-    * Helper class to add all superclasses of the given classes
+    * Helper method to add all superclasses of the given classes
     * @param classes the class list being added to
     */
    private void addSuperclasses(List<OntologyClass> classes) {
@@ -806,7 +818,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
    }
 
    /** 
-    * Helper class to add all subclasses of the given classes
+    * Helper method to add all subclasses of the given classes
     * @param classes the class list being added to
     */
    private void addSubclasses(List<OntologyClass> classes) {
@@ -821,4 +833,34 @@ public class DefaultAnnotationManager implements AnnotationManager {
             classes.add(c);
    }
 
+   /** 
+    * Helper method to get all entities of an observation
+    * @param o the observation
+    */
+   private List<Entity> getAllEntities(Observation o) {
+      List<Entity> result = new ArrayList();
+      if(o.getEntity() != null)
+         result.add(o.getEntity());
+      for(Measurement m : o.getMeasurements())
+         for(Entity d : m.getDomainValues())
+            if(!result.contains(d))
+               result.add(d);
+      return result;
+   }
+
+   /**
+    * Helper method to check if two lists overlap
+    * @param first first list
+    * @param second second list
+    * @return
+    */
+   private boolean overlaps(List first, List second) {
+      if(first == null || second == null)
+         return false;
+      for(Object x : first) 
+         if(second.contains(x))
+            return true;
+      return false;
+   }
+   
 } 

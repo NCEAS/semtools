@@ -80,8 +80,8 @@ public class Test2 {
 
          // search for a matching annotation
          Ontology gceOnt = ontMgr.getOntology(gceURI);
-//         OntologyClass entity = ontMgr.getNamedClass(gceOnt, "JuncusRoemerianus");
-         OntologyClass entity = ontMgr.getNamedClass(gceOnt, "Organism");
+         OntologyClass entity = ontMgr.getNamedClass(gceOnt, "JuncusRoemerianus");
+//         OntologyClass entity = ontMgr.getNamedClass(gceOnt, "Organism");
          OntologyClass characteristic = ontMgr.getNamedClass(gceOnt, "Biomass");
 
          System.out.println("\nEntity: " + entity);
@@ -92,9 +92,14 @@ public class Test2 {
          for(Annotation a : annMgr.getMatchingAnnotations(null, characteristic, null, true))
             System.out.println("   match: " + a.getURI());
 
-         System.out.println("\n*** Search for active characteristic entities: ***");
+         System.out.println("\n*** Search for active characteristics: ***");
          for(OntologyClass c : annMgr.getActiveCharacteristics())
-            System.out.println("   entity: " + ontMgr.getNamedClassLabel(c));
+            System.out.println("   characteristic: " + ontMgr.getNamedClassLabel(c));
+
+         System.out.println("\n*** Search for active characteristics of entity: '" +
+                 ontMgr.getNamedClassLabel(entity) + "' ***");
+         for(OntologyClass c : annMgr.getActiveCharacteristics(entity, null, true, true))
+            System.out.println("   characteristic: " + ontMgr.getNamedClassLabel(c));
          
          System.out.println("\n*** Search for active domain of entity='" + 
                  ontMgr.getNamedClassLabel(entity) + "' characteristic='" + 
@@ -106,6 +111,12 @@ public class Test2 {
          for(OntologyClass c : annMgr.getActiveStandards(ents, chars, true, true))
             System.out.println("   standard: " + ontMgr.getNamedClassLabel(c));
 
+         System.out.println("\n*** Search for active domain of characteristic='" +
+                 ontMgr.getNamedClassLabel(characteristic) + "': ***");
+         chars.add(characteristic);
+         for(OntologyClass c : annMgr.getActiveEntities(chars, null, true, true))
+            System.out.println("   entity: " + ontMgr.getNamedClassLabel(c));
+         
       }catch(Exception e) {
          System.out.println("Error: " + e.getMessage());
          e.printStackTrace();
