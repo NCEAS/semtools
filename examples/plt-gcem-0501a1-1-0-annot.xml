@@ -136,8 +136,8 @@
          </sms:domain>
       </sms:measurement>
       <sms:measurement label="m5b" precision="1" key="no">
-         <sms:characteristic id="gce:ArealDensity"/>
-         <sms:standard id="gce:NumberPerMeterSquare"/>
+         <sms:characteristic id="unit:ArealDensity"/>
+         <sms:standard id="unit:NumberPerMeterSquared"/>
       </sms:measurement>
       <sms:measurement label="m5c" precision="1" key="no">
          <sms:characteristic id="unit:Count"/>
