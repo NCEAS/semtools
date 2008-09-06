@@ -173,7 +173,7 @@
   <!-- observation: LeafCollection -->
    <sms:observation label="o6" distinct="no">
       <sms:entity id="gce:LeafCollection"/>
-      <sms:measurement label="m5" precision="1" key="no">
+      <sms:measurement label="m6" precision="1" key="no">
          <sms:characteristic id="unit:Count"/>
          <sms:standard id="unit:Number"/>
       </sms:measurement>
@@ -183,6 +183,6 @@
    </sms:observation>
 
   <!-- mapping: PlantShoot -->
-   <sms:map attribute="att.9" measurement="m5"/>
+   <sms:map attribute="att.9" measurement="m6"/>
 </sms:annotation>
 
