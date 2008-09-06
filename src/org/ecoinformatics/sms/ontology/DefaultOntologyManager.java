@@ -148,7 +148,7 @@ public class DefaultOntologyManager implements OntologyManager {
     }
 
     /**
-     * Get the label of a named class, if one exists
+     * Get the first label of a named class, if one exists
      * @param c the class
      * @return the label
      */
@@ -161,6 +161,26 @@ public class DefaultOntologyManager implements OntologyManager {
           return null;
        return oc.getLabel(null);
     }
+
+   /**
+     * Get the label of a named class, if one exists
+     * @param c the class
+     * @return the label
+     */
+    public List<String> getNamedClassLabels(OntologyClass c) {
+       List<String> result = new ArrayList();
+       OntModel model = getModel(c.getOntology());
+       if(model == null)
+          return result;
+       OntClass oc = model.getOntClass(c.getURI());
+       if(oc == null)
+          return null;
+       for(String label : (List<String>)oc.listLabels(null).toList()) 
+          if(!result.contains(label))
+             result.add(label);
+       return result;
+    }
+
     
     /**
      * Returns the named classes for ontologies in the catalog

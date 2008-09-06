@@ -75,6 +75,12 @@ public interface OntologyManager {
      */
     public String getOntologyLabel(Ontology ont);
 
+   /**
+     * Get the label of a named class, if one exists
+     * @param c the class
+     * @return the label
+     */
+    public List<String> getNamedClassLabels(OntologyClass c);
     
     /** 
      * Returns the uri's of ontologies currently managed by this manager
