@@ -41,6 +41,16 @@ import org.ecoinformatics.sms.ontology.DefaultOntologyManager;
  */
 public class SMS {
 
+   /* TODO: 
+    *   1. Add an OBOE_URI hook. 
+    *   2. Revise annotation syntax:
+    *      a. use uri's to identify data
+    *      b. nest mappings under measurements
+    *      c. ??? 
+    *   3. Support part-of expansions
+    */ 
+   
+   
     private AnnotationManager _annotationManager;
     private OntologyManager _ontologyManager;
 
