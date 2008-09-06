@@ -44,7 +44,7 @@
 
   <!-- observation: Community -->
    <sms:observation label="o3" distinct="yes">
-      <sms:entity id="gce:Community"/>
+      <sms:entity id="gce:EcologicalCommunity"/>
       <sms:measurement label="m3" key="yes">
          <sms:characteristic id="oboe:EntityType"/>
          <sms:standard id="gce:CommunityTypeNames"/>
