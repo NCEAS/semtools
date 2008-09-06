@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<sms:annotation
+   xmlns="plt-gcem-0211b-2-1-annot.xml"
+   xmlns:sms="http://daks.ucdavis.edu/sms-annot-1.0.0rc1"
+   xmlns:oboe="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl"
+   xmlns:unit="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl"
+   xmlns:gce="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl"
+   emlPackage="eml.1.1"
+   dataTable="1">
+
+  <!-- observation: Spatial Location -->
+   <sms:observation label="o1" distinct="yes">
+      <sms:entity id="gce:SpatialLocation"/>
+      <sms:measurement label="m1" key="yes">
+         <sms:characteristic id="oboe:EntityName"/>
+         <sms:standard id="gce:GCESiteNames"/>
+         <sms:domain>
+            <entity id="gce:Eulonia"/>
+            <entity id="gce:FourMileIsland"/>
+            <entity id="gce:NorthSapelo"/>
+            <entity id="gce:Meridian"/>
+            <entity id="gce:FollyRiver"/>
+            <entity id="gce:DeanCreek"/>
+            <entity id="gce:CarrsIsland"/>
+            <entity id="gce:AlligatorCreek"/>
+            <entity id="gce:RockdedundyIsland"/>
+            <entity id="gce:HuntCamp"/>
+         </sms:domain>
+      </sms:measurement>
+   </sms:observation>
+
+  <!-- mapping: Spatial Location -->
+   <sms:map attribute="att.4" measurement="m1"
+      if="att.4 eq 1" value="GCE1"/>
+   <sms:map attribute="att.4" measurement="m1"
+      if="att.4 eq 2" value="GCE2"/>
+   <sms:map attribute="att.4" measurement="m1"
+      if="att.4 eq 3" value="GCE3"/>
+   <sms:map attribute="att.4" measurement="m1"
+      if="att.4 eq 4" value="GCE4"/>
+   <sms:map attribute="att.4" measurement="m1"
+      if="att.4 eq 5" value="GCE5"/>
+   <sms:map attribute="att.4" measurement="m1"
+      if="att.4 eq 6" value="GCE6"/>
+   <sms:map attribute="att.4" measurement="m1"
+      if="att.4 eq 7" value="GCE7"/>
+   <sms:map attribute="att.4" measurement="m1"
+      if="att.4 eq 8" value="GCE8"/>
+   <sms:map attribute="att.4" measurement="m1"
+      if="att.4 eq 9" value="GCE9"/>
+   <sms:map attribute="att.4" measurement="m1"
+      if="att.4 eq 10" value="GCE10"/>
+
+
+  <!-- observation: Temporal Point -->
+   <sms:observation label="o2" distinct="yes">
+      <sms:entity id="gce:TemporalPoint"/>
+      <sms:measurement label="m2a" key="yes">
+         <sms:characteristic id="gce:Year"/>
+         <sms:standard id="gce:DateTimeYYYY"/>
+      </sms:measurement>
+      <sms:measurement label="m2b" key="yes">
+         <sms:characteristic id="gce:Month"/>
+         <sms:standard id="gce:DateTimeMM"/>
+      </sms:measurement>
+      <sms:measurement label="m2c" key="yes">
+         <sms:characteristic id="gce:Day"/>
+         <sms:standard id="gce:DateTimeDD"/>
+      </sms:measurement>
+   </sms:observation>
+
+  <!-- mapping: Temporal Point -->
+   <sms:map attribute="att.1" measurement="m2a"/>
+   <sms:map attribute="att.2" measurement="m2b"/>
+   <sms:map attribute="att.3" measurement="m2c"/>
+   
+  <!-- observation: Zone -->
+   <sms:observation label="o3" distinct="yes">
+      <sms:entity id="gce:Zone"/>
+      <sms:measurement label="m3" key="yes">
+         <sms:characteristic id="oboe:EntityType"/>
+         <sms:standard id="gce:ZoneTypeNames"/>
+         <sms:domain>
+            <entity id="gce:CreekBankZone"/>
+            <entity id="gce:HighMarshZone"/>
+            <entity id="gce:AdditionalJuncusZoneInHighMarsh"/>
+         </sms:domain>
+      </sms:measurement>
+   </sms:observation>
+
+  <!-- mapping: Zone -->
+   <sms:map attribute="att.5" measurement="m3"/>
+
+  <!-- observation: Plant -->
+   <sms:observation label="o4" distinct="no">
+      <sms:entity id="gce:Plant"/>
+      <sms:measurement label="m4a" key="no">
+         <sms:characteristic id="oboe:EntityType"/>
+         <sms:standard id="gce:TaxonomicTypeNames"/>
+         <sms:domain>
+            <entity id="gce:SpartinaAlterniflora"/>
+            <entity id="gce:SpartinaCynosuroides"/>
+            <entity id="gce:JuncusRoemerianus"/>
+            <entity id="gce:ZizaniopsisMiliacea"/>
+            <entity id="gce:Scirpus"/>
+            <entity id="gce:Panicum"/>
+            <entity id="gce:Typha"/>
+         </sms:domain>
+      </sms:measurement>
+      <sms:measurement label="m4b" precision="0.01" key="no">
+         <sms:characteristic id="gce:DryWeight"/>
+         <sms:standard id="gce:GramsPerSquareMeter"/>
+      </sms:measurement>
+      <sms:measurement label="m4c" precision="0.01" key="no">
+         <sms:characteristic id="gce:FloweringStatus"/>
+         <sms:standard id="gce:FloweringStatusCodes"/>
+      </sms:measurement>
+      <sms:context observation="o1" identifying="no">
+         <sms:relationship id="gce:Within"/>
+      </sms:context>
+      <sms:context observation="o2" identifying="no">
+         <sms:relationship id="gce:Within"/>
+      </sms:context>
+      <sms:context observation="o3" identifying="no">
+         <sms:relationship id="gce:Within"/>
+      </sms:context>
+      <sms:context observation="o5" identifying="no">
+         <sms:relationship id="gce:HasPart"/>
+      </sms:context>
+      <sms:context observation="o6" identifying="no">
+         <sms:relationship id="gce:HasPart"/>
+      </sms:context>
+   </sms:observation>  
+  
+   <!-- mapping: Plant -->
+   <sms:map attribute="att.6" measurement="m4a" 
+	   if="att.5 eq 'A1'" value="SpartinaAlterniflora"/>
+   <sms:map attribute="att.6" measurement="m4a" 
+	   if="att.5 eq 'A2'" value="SpartinaCynosuroides"/>
+   <sms:map attribute="att.6" measurement="m4a" 
+	   if="att.5 eq 'A3'" value="JuncusRoemerianus"/>
+   <sms:map attribute="att.6" measurement="m4a" 
+	   if="att.5 eq 'A4'" value="ZizaniopsisMiliacea"/>
+   <sms:map attribute="att.6" measurement="m4a" 
+	   if="att.5 eq 'A5'" value="Scirpus"/>
+   <sms:map attribute="att.6" measurement="m4a" 
+	   if="att.5 eq 'A6'" value="Panicum"/>
+   <sms:map attribute="att.6" measurement="m4a" 
+	   if="att.5 eq 'A7'" value="Typha"/>
+   <sms:map attribute="att.10" measurement="m4b"/>
+   <sms:map attribute="att.8" measurement="m4c"
+      if="att.8 eq 1" value="Flowering"/>
+   <sms:map attribute="att.8" measurement="m4c"
+      if="att.8 eq 0" value="NotFlowering"/>
+
+
+  <!-- observation: PlantShoot -->
+   <sms:observation label="o5" distinct="no">
+      <sms:entity id="gce:PlantShoot"/>
+      <sms:measurement label="m5" precision="1" key="no">
+         <sms:characteristic id="gce:Height"/>
+         <sms:standard id="unit:Centimeter"/>
+      </sms:measurement>
+      <sms:context observation="o4" identifying="no">
+         <sms:relationship id="gce:PartOf"/>
+      </sms:context>
+   </sms:observation>
+
+  <!-- mapping: PlantShoot -->
+   <sms:map attribute="att.7" measurement="m5"/>
+
+
+  <!-- observation: LeafCollection -->
+   <sms:observation label="o6" distinct="no">
+      <sms:entity id="gce:LeafCollection"/>
+      <sms:measurement label="m5" precision="1" key="no">
+         <sms:characteristic id="unit:Count"/>
+         <sms:standard id="unit:Number"/>
+      </sms:measurement>
+      <sms:context observation="o4" identifying="no">
+         <sms:relationship id="gce:PartOf"/>
+      </sms:context>
+   </sms:observation>
+
+  <!-- mapping: PlantShoot -->
+   <sms:map attribute="att.9" measurement="m5"/>
+</sms:annotation>
+
