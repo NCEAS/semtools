@@ -111,7 +111,7 @@
          <sms:characteristic id="gce:DryWeight"/>
          <sms:standard id="gce:GramsPerSquareMeter"/>
       </sms:measurement>
-      <sms:measurement label="m4c" precision="0.01" key="no">
+      <sms:measurement label="m4c" key="no">
          <sms:characteristic id="gce:FloweringStatus"/>
          <sms:standard id="gce:FloweringStatusCodes"/>
       </sms:measurement>
