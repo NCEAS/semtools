@@ -184,7 +184,7 @@
 
   <!-- observation: PlantShoot -->
    <sms:observation label="o6" distinct="no">
-      <sms:entity id="gce:PlantShoot"/>
+      <sms:entity id="gce:Shoot"/>
       <sms:measurement label="m6" precision="1" key="no">
          <sms:characteristic id="gce:Height"/>
          <sms:standard id="unit:Centimeter"/>
