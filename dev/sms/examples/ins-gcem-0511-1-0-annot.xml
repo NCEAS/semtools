@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <sms:annotation
-   xmlns="inv-gcem-0511-1-0-annot.xml"
+   xmlns="ins-gcem-0511-1-0-annot.xml"
    xmlns:sms="http://daks.ucdavis.edu/sms-annot-1.0.0rc1"
    xmlns:oboe="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl"
    xmlns:unit="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl"
