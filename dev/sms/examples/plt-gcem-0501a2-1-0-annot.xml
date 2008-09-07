@@ -5,7 +5,7 @@
    xmlns:oboe="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl"
    xmlns:unit="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl"
    xmlns:gce="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl"
-   emlPackage="eml.3.1"
+   emlPackage="eml.4.1"
    dataTable="1">
 
   <!-- observation: Spatial Location -->
@@ -102,10 +102,6 @@
          <sms:characteristic id="oboe:EntityName"/>
          <sms:standard id="oboe:Nominal"/>
       </sms:measurement>
-      <sms:measurement label="m4b" precision="0.0001" key="no">
-         <sms:characteristic id="unit:Area"/>
-         <sms:standard id="unit:SquareMeter"/>
-      </sms:measurement>
       <sms:context observation="o1" identifying="yes">
          <sms:relationship id="gce:Within"/>
       </sms:context>
@@ -114,15 +110,14 @@
       </sms:context>
    </sms:observation>
    
-  <!-- mapping: Zone -->
+  <!-- mapping: ReplicatePlot -->
    <sms:map attribute="att.6" measurement="m4a"/>
-   <sms:map attribute="att.9" measurement="m4b"/>
 
 
-  <!-- observation: MolluscPopulation -->
-   <sms:observation label="o5" distinct="yes">
-      <sms:entity id="gce:MolluscPopulation"/>
-      <sms:measurement label="m5a" key="yes">
+  <!-- observation: Mollusc -->
+   <sms:observation label="o5" distinct="no">
+      <sms:entity id="gce:Mollusc"/>
+      <sms:measurement label="m5a" key="no">
          <sms:characteristic id="oboe:EntityType"/>
          <sms:standard id="gce:PopulationTypeNames"/>
          <sms:domain>
@@ -135,23 +130,22 @@
             <entity id="gce:GemmaGemma"/>            
          </sms:domain>
       </sms:measurement>
-      <sms:measurement label="m5b" precision="1" key="no">
-         <sms:characteristic id="unit:ArealDensity"/>
-         <sms:standard id="unit:NumberPerMeterSquared"/>
+      <sms:measurement label="m5b" precision="0.01" key="no">
+         <sms:characteristic id="unit:Length"/>
+         <sms:standard id="unit:Millimeter"/>
       </sms:measurement>
-      <sms:measurement label="m5c" precision="1" key="no">
-         <sms:characteristic id="unit:Count"/>
-         <sms:standard id="unit:Number"/>
-      </sms:measurement>      
       <sms:context observation="o4" identifying="no">
          <sms:relationship id="gce:Within"/>
       </sms:context>
       <sms:context observation="o2" identifying="no">
+         <sms:relationship id="gce:Within"/>
+      </sms:context>
+      <sms:context observation="o6" identifying="no">
          <sms:relationship id="gce:HasPart"/>
       </sms:context>
    </sms:observation>  
   
-   <!-- mapping: Plant -->
+   <!-- mapping: Mollusc -->
    <sms:map attribute="att.7" measurement="m5a" 
 	   if="att.7 eq 'Littoraria'" value="LittorariaIrrorata"/>
    <sms:map attribute="att.7" measurement="m5a" 
@@ -166,8 +160,24 @@
 	   if="att.7 eq 'Polymesoda'" value="PolymesodaCaroliniana"/>
    <sms:map attribute="att.7" measurement="m5a" 
 	   if="att.7 eq 'Gemma'" value="GemmaGemma"/>
-   <sms:map attribute="att.10" measurement="m5b"/>
-   <sms:map attribute="att.8" measurement="m5c"/>
+   <sms:map attribute="att.8" measurement="m5b"/>
+
+  <!-- observation: MolluscShell -->
+   <sms:observation label="o6" distinct="no">
+      <sms:entity id="gce:MolluscShell"/>
+      <sms:measurement label="m6a" key="no">
+         <sms:characteristic id="gce:ShellCondition"/>
+         <sms:standard id="gce:ShellConditionCodes"/>
+      </sms:measurement>
+      <sms:context observation="o4" identifying="no">
+         <sms:relationship id="gce:PartOf"/>
+      </sms:context>
+   </sms:observation>  
+
+   <sms:map attribute="att.9" measurement="m6a"
+      if="att.9 eq 0" value="ShellUndamagedCode"/>
+   <sms:map attribute="att.9" measurement="m6a"
+      if="att.9 eq 1" value="ShellDamagedCode"/>
 
 </sms:annotation>
 

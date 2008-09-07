@@ -126,12 +126,12 @@
          <sms:characteristic id="oboe:EntityType"/>
          <sms:standard id="gce:PopulationTypeNames"/>
          <sms:domain>
-            <entity id="gce:LittorariaIrrorata"/>
-            <entity id="gce:MelampusBidentatus"/>
-            <entity id="gce:DetraciaFloridana"/>            
-            <entity id="gce:Hydrobiidae"/>            
-            <entity id="gce:GeukensiaDemissa"/>            
-            <entity id="gce:PolymesodaCaroliniana"/>            
+            <entity id="gce:LittorariaIrrorataPopulation"/>
+            <entity id="gce:MelampusBidentatusPopulation"/>
+            <entity id="gce:DetraciaFloridanaPopulation"/>            
+            <entity id="gce:HydrobiidaePopulation"/>            
+            <entity id="gce:GeukensiaDemissaPopulation"/>            
+            <entity id="gce:PolymesodaCarolinianaPopulation"/>            
             <entity id="gce:GemmaGemma"/>            
          </sms:domain>
       </sms:measurement>
@@ -153,19 +153,19 @@
   
    <!-- mapping: Plant -->
    <sms:map attribute="att.7" measurement="m5a" 
-	   if="att.7 eq 'Littoraria'" value="LittorariaIrrorata"/>
+	   if="att.7 eq 'Littoraria'" value="LittorariaIrrorataPopulation"/>
    <sms:map attribute="att.7" measurement="m5a" 
-	   if="att.7 eq 'Melampus'" value="MelampusBidentatus"/>
+	   if="att.7 eq 'Melampus'" value="MelampusBidentatusPopulation"/>
    <sms:map attribute="att.7" measurement="m5a" 
-	   if="att.7 eq 'Detracia'" value="DetraciaFloridana"/>
+	   if="att.7 eq 'Detracia'" value="DetraciaFloridanaPopulation"/>
    <sms:map attribute="att.7" measurement="m5a" 
-	   if="att.7 eq 'Hydrobiidae'" value="Hydrobiidae"/>
+	   if="att.7 eq 'Hydrobiidae'" value="HydrobiidaePopulation"/>
    <sms:map attribute="att.7" measurement="m5a" 
-	   if="att.7 eq 'Geukensia'" value="GeukensiaDemissa"/>
+	   if="att.7 eq 'Geukensia'" value="GeukensiaDemissaPopulation"/>
    <sms:map attribute="att.7" measurement="m5a" 
-	   if="att.7 eq 'Polymesoda'" value="PolymesodaCaroliniana"/>
+	   if="att.7 eq 'Polymesoda'" value="PolymesodaCarolinianaPopulation"/>
    <sms:map attribute="att.7" measurement="m5a" 
-	   if="att.7 eq 'Gemma'" value="GemmaGemma"/>
+	   if="att.7 eq 'Gemma'" value="GemmaGemmaPopulation"/>
    <sms:map attribute="att.10" measurement="m5b"/>
    <sms:map attribute="att.8" measurement="m5c"/>
 
