@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <sms:annotation
-   xmlns="plt-gcem-0501a1-1-0-annot.xml"
+   xmlns="inv-gcem-0511-2-0-annot.xml"
    xmlns:sms="http://daks.ucdavis.edu/sms-annot-1.0.0rc1"
    xmlns:oboe="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl"
    xmlns:unit="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl"
    xmlns:gce="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl"
-   emlPackage="eml.3.1"
+   emlPackage="eml.5.1"
    dataTable="1">
 
   <!-- observation: Spatial Location -->
@@ -102,9 +102,9 @@
          <sms:characteristic id="oboe:EntityName"/>
          <sms:standard id="oboe:Nominal"/>
       </sms:measurement>
-      <sms:measurement label="m4b" precision="0.0001" key="no">
+      <sms:measurement label="m4b" precision="1" key="no">
          <sms:characteristic id="unit:Area"/>
-         <sms:standard id="unit:SquareMeter"/>
+         <sms:standard id="gce:SquareCentimeter"/>
       </sms:measurement>
       <sms:context observation="o1" identifying="yes">
          <sms:relationship id="gce:Within"/>
@@ -114,60 +114,30 @@
       </sms:context>
    </sms:observation>
    
-  <!-- mapping: Zone -->
+  <!-- mapping: ReplicatePlot -->
    <sms:map attribute="att.6" measurement="m4a"/>
-   <sms:map attribute="att.9" measurement="m4b"/>
+   <sms:map attribute="att.7" measurement="m4b"/>
 
 
-  <!-- observation: MolluscPopulation -->
+  <!-- observation: CrabHolePopulation -->
    <sms:observation label="o5" distinct="yes">
-      <sms:entity id="gce:MolluscPopulation"/>
-      <sms:measurement label="m5a" key="yes">
-         <sms:characteristic id="oboe:EntityType"/>
-         <sms:standard id="gce:PopulationTypeNames"/>
-         <sms:domain>
-            <entity id="gce:LittorariaIrrorataPopulation"/>
-            <entity id="gce:MelampusBidentatusPopulation"/>
-            <entity id="gce:DetraciaFloridanaPopulation"/>            
-            <entity id="gce:HydrobiidaePopulation"/>            
-            <entity id="gce:GeukensiaDemissaPopulation"/>            
-            <entity id="gce:PolymesodaCarolinianaPopulation"/>            
-            <entity id="gce:GemmaGemma"/>            
-         </sms:domain>
-      </sms:measurement>
-      <sms:measurement label="m5b" precision="1" key="no">
+      <sms:entity id="gce:CrabHolePopulation"/>
+      <sms:measurement label="m5a" precision="1" key="no">
          <sms:characteristic id="unit:ArealDensity"/>
          <sms:standard id="unit:NumberPerMeterSquared"/>
       </sms:measurement>
-      <sms:measurement label="m5c" precision="1" key="no">
+      <sms:measurement label="m5b" precision="1" key="no">
          <sms:characteristic id="unit:Count"/>
          <sms:standard id="unit:Number"/>
       </sms:measurement>      
       <sms:context observation="o4" identifying="no">
          <sms:relationship id="gce:Within"/>
       </sms:context>
-      <sms:context observation="o2" identifying="no">
-         <sms:relationship id="gce:HasPart"/>
-      </sms:context>
    </sms:observation>  
   
-   <!-- mapping: Plant -->
-   <sms:map attribute="att.7" measurement="m5a" 
-	   if="att.7 eq 'Littoraria'" value="LittorariaIrrorataPopulation"/>
-   <sms:map attribute="att.7" measurement="m5a" 
-	   if="att.7 eq 'Melampus'" value="MelampusBidentatusPopulation"/>
-   <sms:map attribute="att.7" measurement="m5a" 
-	   if="att.7 eq 'Detracia'" value="DetraciaFloridanaPopulation"/>
-   <sms:map attribute="att.7" measurement="m5a" 
-	   if="att.7 eq 'Hydrobiidae'" value="HydrobiidaePopulation"/>
-   <sms:map attribute="att.7" measurement="m5a" 
-	   if="att.7 eq 'Geukensia'" value="GeukensiaDemissaPopulation"/>
-   <sms:map attribute="att.7" measurement="m5a" 
-	   if="att.7 eq 'Polymesoda'" value="PolymesodaCarolinianaPopulation"/>
-   <sms:map attribute="att.7" measurement="m5a" 
-	   if="att.7 eq 'Gemma'" value="GemmaGemmaPopulation"/>
-   <sms:map attribute="att.10" measurement="m5b"/>
-   <sms:map attribute="att.8" measurement="m5c"/>
+   <!-- mapping: CrabHolePopulation -->
+   <sms:map attribute="att.9" measurement="m5a"/>
+   <sms:map attribute="att.8" measurement="m5b"/>
 
 </sms:annotation>
 
