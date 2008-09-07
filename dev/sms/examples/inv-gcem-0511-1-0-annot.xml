@@ -5,7 +5,7 @@
    xmlns:oboe="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl"
    xmlns:unit="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl"
    xmlns:gce="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl"
-   emlPackage="eml.5.1"
+   emlPackage="eml.8.1"
    dataTable="1">
 
   <!-- observation: Spatial Location -->
@@ -30,26 +30,26 @@
    </sms:observation>
 
   <!-- mapping: Spatial Location -->
-   <sms:map attribute="att.4" measurement="m1"
-      if="att.4 eq 1" value="GCE1"/>
-   <sms:map attribute="att.4" measurement="m1"
-      if="att.4 eq 2" value="GCE2"/>
-   <sms:map attribute="att.4" measurement="m1"
-      if="att.4 eq 3" value="GCE3"/>
-   <sms:map attribute="att.4" measurement="m1"
-      if="att.4 eq 4" value="GCE4"/>
-   <sms:map attribute="att.4" measurement="m1"
-      if="att.4 eq 5" value="GCE5"/>
-   <sms:map attribute="att.4" measurement="m1"
-      if="att.4 eq 6" value="GCE6"/>
-   <sms:map attribute="att.4" measurement="m1"
-      if="att.4 eq 7" value="GCE7"/>
-   <sms:map attribute="att.4" measurement="m1"
-      if="att.4 eq 8" value="GCE8"/>
-   <sms:map attribute="att.4" measurement="m1"
-      if="att.4 eq 9" value="GCE9"/>
-   <sms:map attribute="att.4" measurement="m1"
-      if="att.4 eq 10" value="GCE10"/>
+   <sms:map attribute="att.1" measurement="m1"
+      if="att.1 eq 1" value="GCE1"/>
+   <sms:map attribute="att.1" measurement="m1"
+      if="att.1 eq 2" value="GCE2"/>
+   <sms:map attribute="att.1" measurement="m1"
+      if="att.1 eq 3" value="GCE3"/>
+   <sms:map attribute="att.1" measurement="m1"
+      if="att.1 eq 4" value="GCE4"/>
+   <sms:map attribute="att.1" measurement="m1"
+      if="att.1 eq 5" value="GCE5"/>
+   <sms:map attribute="att.1" measurement="m1"
+      if="att.1 eq 6" value="GCE6"/>
+   <sms:map attribute="att.1" measurement="m1"
+      if="att.1 eq 7" value="GCE7"/>
+   <sms:map attribute="att.1" measurement="m1"
+      if="att.1 eq 8" value="GCE8"/>
+   <sms:map attribute="att.1" measurement="m1"
+      if="att.1 eq 9" value="GCE9"/>
+   <sms:map attribute="att.1" measurement="m1"
+      if="att.1 eq 10" value="GCE10"/>
 
 
   <!-- observation: Temporal Point -->
@@ -70,74 +70,80 @@
    </sms:observation>
 
   <!-- mapping: Temporal Point -->
-   <sms:map attribute="att.1" measurement="m2a"/>
-   <sms:map attribute="att.2" measurement="m2b"/>
-   <sms:map attribute="att.3" measurement="m2c"/>
+   <sms:map attribute="att.2" measurement="m2a"/>
+   <sms:map attribute="att.3" measurement="m2b"/>
+   <sms:map attribute="att.4" measurement="m2c"/>
 
    
-  <!-- observation: Zone -->
+
+  <!-- observation: ReplicateBeltTransect -->
    <sms:observation label="o3" distinct="yes">
-      <sms:entity id="gce:Zone"/>
-      <sms:measurement label="m3" key="yes">
-         <sms:characteristic id="oboe:EntityType"/>
-         <sms:standard id="gce:ZoneTypeNames"/>
-         <sms:domain>
-            <entity id="gce:CreekBankZone"/>
-            <entity id="gce:HighMarshZone"/>
-         </sms:domain>
-      </sms:measurement>
-   </sms:observation>
-
-  <!-- mapping: Zone -->
-   <sms:map attribute="att.5" measurement="m3"
-      if="att.5 eq 1" value="CreekBank"/>
-   <sms:map attribute="att.5" measurement="m3"
-      if="att.5 eq 2" value="HighMarsh"/>
-
-
-  <!-- observation: ReplicatePlot -->
-   <sms:observation label="o4" distinct="yes">
-      <sms:entity id="gce:ReplicatePlot"/>
-      <sms:measurement label="m4a" key="yes">
+      <sms:entity id="gce:ReplicateBeltTransect"/>
+      <sms:measurement label="m3a" key="yes">
          <sms:characteristic id="oboe:EntityName"/>
          <sms:standard id="oboe:Nominal"/>
       </sms:measurement>
-      <sms:measurement label="m4b" precision="1" key="no">
-         <sms:characteristic id="unit:Area"/>
-         <sms:standard id="gce:SquareCentimeter"/>
+      <sms:measurement precision="1" value="10" key="no">
+         <sms:characteristic id="unit:Length"/>
+         <sms:standard id="unit:Meter"/>
+      </sms:measurement>
+      <sms:measurement precision="1" value="2" key="no">
+         <sms:characteristic id="gce:Width"/>
+         <sms:standard id="unit:Meter"/>
       </sms:measurement>
       <sms:context observation="o1" identifying="yes">
          <sms:relationship id="gce:Within"/>
       </sms:context>
-      <sms:context observation="o3" identifying="yes">
-         <sms:relationship id="gce:Within"/>
-      </sms:context>
    </sms:observation>
    
-  <!-- mapping: ReplicatePlot -->
-   <sms:map attribute="att.6" measurement="m4a"/>
-   <sms:map attribute="att.7" measurement="m4b"/>
+  <!-- mapping: ReplicateBeltTransect -->
+   <sms:map attribute="att.5" measurement="m3a"/>
 
 
-  <!-- observation: CrabHolePopulation -->
-   <sms:observation label="o5" distinct="yes">
-      <sms:entity id="gce:CrabHolePopulation"/>
-      <sms:measurement label="m5a" precision="1" key="no">
-         <sms:characteristic id="unit:ArealDensity"/>
-         <sms:standard id="unit:NumberPerMeterSquared"/>
+  <!-- observation: GrasshopperPopulation -->
+   <sms:observation label="o4" distinct="yes">
+      <sms:entity id="gce:GrasshopperPopulation"/>
+      <sms:measurement label="m4a" precision="1" key="no">
+         <sms:characteristic id="oboeEntityName"/>
+         <sms:standard id="gce:PopulationTypeNames"/>
+         <sms:domain>
+            <sms:entity id="gce:RomaleaGuttatusPopulation"/>
+            <sms:entity id="gce:SchistocercaObscuraPopulation"/>
+            <sms:entity id="gce:MermiriaIntertextaPopulation"/>
+            <sms:entity id="gce:OrphulellaPelidnaPopulation"/>
+            <sms:entity id="gce:ParoxyaClavuligerPopulation"/>
+            <sms:entity id="gce:OrchelimumPopulation"/>
+            <sms:entity id="gce:OtherGrasshoppersPopulation"/>
+         </sms:domain>
       </sms:measurement>
-      <sms:measurement label="m5b" precision="1" key="no">
+      <sms:measurement label="m4b" precision="1" key="no">
          <sms:characteristic id="unit:Count"/>
          <sms:standard id="unit:Number"/>
       </sms:measurement>      
-      <sms:context observation="o4" identifying="no">
+      <sms:context observation="o3" identifying="yes">
+         <sms:relationship id="gce:Within"/>
+      </sms:context>
+      <sms:context observation="o2" identifying="yes">
          <sms:relationship id="gce:Within"/>
       </sms:context>
    </sms:observation>  
   
    <!-- mapping: CrabHolePopulation -->
-   <sms:map attribute="att.9" measurement="m5a"/>
-   <sms:map attribute="att.8" measurement="m5b"/>
+   <sms:map attribute="att.6" measurement="m4a"
+      if="att.6 eq 'G0'" value="OtherGrasshoppers"/>
+   <sms:map attribute="att.6" measurement="m4a"
+      if="att.6 eq 'G1'" value="Orchelimum"/>
+   <sms:map attribute="att.6" measurement="m4a"
+      if="att.6 eq 'G2'" value="ParoxyaClavuliger"/>
+   <sms:map attribute="att.6" measurement="m4a"
+      if="att.6 eq 'G3'" value="OrphulellaPelidna"/>
+   <sms:map attribute="att.6" measurement="m4a"
+      if="att.6 eq 'G4'" value="MermiriaIntertexta"/>
+   <sms:map attribute="att.6" measurement="m4a"
+      if="att.6 eq 'G5'" value="SchistocercaObscura"/>
+   <sms:map attribute="att.6" measurement="m4a"
+      if="att.6 eq 'G6'" value="RomaleaGuttatus"/>
+   <sms:map attribute="att.7" measurement="m4b"/>
 
 </sms:annotation>
 
