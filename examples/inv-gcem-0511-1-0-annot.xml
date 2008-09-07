@@ -104,7 +104,7 @@
    <sms:observation label="o4" distinct="yes">
       <sms:entity id="gce:GrasshopperPopulation"/>
       <sms:measurement label="m4a" precision="1" key="no">
-         <sms:characteristic id="oboeEntityName"/>
+         <sms:characteristic id="oboe:EntityName"/>
          <sms:standard id="gce:PopulationTypeNames"/>
          <sms:domain>
             <sms:entity id="gce:RomaleaGuttatusPopulation"/>
