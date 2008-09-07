@@ -83,11 +83,11 @@
          <sms:characteristic id="oboe:EntityName"/>
          <sms:standard id="oboe:Nominal"/>
       </sms:measurement>
-      <sms:measurement precision="1" value="10" key="no">
+      <sms:measurement label="m3b" precision="1" value="10" key="no">
          <sms:characteristic id="unit:Length"/>
          <sms:standard id="unit:Meter"/>
       </sms:measurement>
-      <sms:measurement precision="1" value="2" key="no">
+      <sms:measurement label="m3c" precision="1" value="2" key="no">
          <sms:characteristic id="gce:Width"/>
          <sms:standard id="unit:Meter"/>
       </sms:measurement>
