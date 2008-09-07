@@ -49,26 +49,36 @@ public class Test2 {
          System.out.println("      " + s.getURI());
          }
           */
-
+         // /*
          String annURI1 = "http://linus.nceas.ucsb.edu/sms/metacat/annotation.3";
          String annURI2 = "http://linus.nceas.ucsb.edu/sms/metacat/annotation.4";
-         String annURI3 = "http://linus.nceas.ucsb.edu/sms/metacat/annotation.5";
-         String annURI4 = "http://linus.nceas.ucsb.edu/sms/metacat/annotation.6";
-         String annURI5 = "http://linus.nceas.ucsb.edu/sms/metacat/annotation.7";
-
-//         String annURI1 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/plt-gced-0409-1-1-annot.xml";
-//         String annURI2 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/plt-gcem-0211b-2-1-annot.xml";
-//         String annURI3 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/plt-gcem-0511a-1-0-annot.xml";
-//         String annURI4 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/plt-gcem-0511b-2-0-annot.xml";
-//         String annURI5 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/plt-gcem-0501a1-1-0-annot.xml";
-
+         String annURI3 = "http://linus.nceas.ucsb.edu/sms/metacat/annotation.6";
+         String annURI4 = "http://linus.nceas.ucsb.edu/sms/metacat/annotation.7";
+         String annURI5 = "http://linus.nceas.ucsb.edu/sms/metacat/annotation.8";
+         String annURI6 = "http://linus.nceas.ucsb.edu/sms/metacat/annotation.9";
+         String annURI7 = "http://linus.nceas.ucsb.edu/sms/metacat/annotation.10";
+         String annURI8 = "http://linus.nceas.ucsb.edu/sms/metacat/annotation.11";
+         // */
+         /*
+         String annURI1 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/plt-gced-0409-1-1-annot.xml";
+         String annURI2 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/plt-gcem-0211b-2-1-annot.xml";
+         String annURI3 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/plt-gcem-0511a-1-0-annot.xml";
+         String annURI4 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/plt-gcem-0511b-2-0-annot.xml";
+         String annURI5 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/inv-gcem-0501a1-1-0-annot.xml";
+         String annURI6 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/inv-gcem-0501a2-1-0-annot.xml";         
+         String annURI7 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/inv-gcem-0511-2-0-annot.xml";
+         String annURI8 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/ins-gcem-0511-1-0-annot.xml";
+          */
          AnnotationManager annMgr = sms.getAnnotationManager();
          addAnnotation(annURI1, annMgr);
          addAnnotation(annURI2, annMgr);
          addAnnotation(annURI3, annMgr);
          addAnnotation(annURI4, annMgr);
          addAnnotation(annURI5, annMgr);
-
+         addAnnotation(annURI6, annMgr);
+         addAnnotation(annURI7, annMgr);
+         addAnnotation(annURI8, annMgr);
+         
          // print the loaded annotations 
          System.out.println("\n*** Loaded annotations: ***");
          for(Annotation a : annMgr.getAnnotations()) {
