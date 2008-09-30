@@ -346,7 +346,7 @@ Entity}</string>
 			<integer>1583</integer>
 			<key>Points</key>
 			<array>
-				<string>{381.377, 251.034}</string>
+				<string>{381.363, 251.534}</string>
 				<string>{382.335, 217.811}</string>
 			</array>
 			<key>Style</key>
@@ -3926,7 +3926,7 @@ standard}</string>
 				<string>{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf480
 {\fonttbl\f0\fswiss\fcharset77 Helvetica-Bold;}
 {\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
 \f0\b\fs22 \cf0 Ontology}</string>
 			</dict>
@@ -4026,7 +4026,7 @@ standard}</string>
 				<string>{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf480
 {\fonttbl\f0\fswiss\fcharset77 Helvetica-Bold;}
 {\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
 \f0\b\fs22 \cf0 OBOE Annotation}</string>
 			</dict>
@@ -4539,7 +4539,7 @@ N\
 				<string>{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf480
 {\fonttbl\f0\fswiss\fcharset77 Helvetica-Bold;}
 {\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
 \f0\b\fs22 \cf0 Metadata}</string>
 			</dict>
@@ -4763,7 +4763,7 @@ N\
 				<string>{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf480
 {\fonttbl\f0\fswiss\fcharset77 Helvetica-Bold;}
 {\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
 \f0\b\fs22 \cf0 Data}</string>
 			</dict>
@@ -4970,7 +4970,7 @@ N\
 		</dict>
 	</array>
 	<key>ModificationDate</key>
-	<string>2008-09-29 23:49:03 -0700</string>
+	<string>2008-09-30 11:51:18 -0700</string>
 	<key>Modifier</key>
 	<string>Shawn Bowers</string>
 	<key>NotesVisible</key>
@@ -5051,7 +5051,7 @@ N\
 		<key>ShowStatusBar</key>
 		<true/>
 		<key>VisibleRegion</key>
-		<string>{{0, 19}, {514.5, 377.5}}</string>
+		<string>{{0, 0}, {514.5, 377.5}}</string>
 		<key>Zoom</key>
 		<string>2</string>
 	</dict>
