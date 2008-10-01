@@ -721,7 +721,7 @@ Entity}</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{172.132, 149.801}, {35, 8}}</string>
+			<string>{{174.812, 149.801}, {35, 8}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -1539,7 +1539,7 @@ Entity}</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{229.698, 66}, {26, 8}}</string>
+			<string>{{222.984, 75.5303}, {26, 8}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -1611,8 +1611,8 @@ Entity}</string>
 			<integer>185</integer>
 			<key>Points</key>
 			<array>
-				<string>{267.45, 86.2308}</string>
-				<string>{211.668, 68.9021}</string>
+				<string>{272.539, 85.784}</string>
+				<string>{235.755, 69.3489}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -1647,7 +1647,7 @@ Entity}</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{167.4, 56.245}, {48.5734, 12.8999}}</string>
+			<string>{{196.576, 56.245}, {48.5734, 12.8999}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -3882,7 +3882,7 @@ standard}</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{87.7591, 56.245}, {76.8738, 13}}</string>
+			<string>{{86.2591, 53.5}, {106.872, 26}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -3904,8 +3904,15 @@ standard}</string>
 			<dict>
 				<key>fill</key>
 				<dict>
-					<key>Draws</key>
-					<string>NO</string>
+					<key>Color</key>
+					<dict>
+						<key>b</key>
+						<string>0.901961</string>
+						<key>g</key>
+						<string>0.901961</string>
+						<key>r</key>
+						<string>0.901961</string>
+					</dict>
 				</dict>
 				<key>shadow</key>
 				<dict>
@@ -3928,7 +3935,8 @@ standard}</string>
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
-\f0\b\fs22 \cf0 Ontology}</string>
+\f0\b\fs22 \cf0 Domain-Specific \
+Ontology}</string>
 			</dict>
 		</dict>
 		<dict>
@@ -3982,7 +3990,7 @@ standard}</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{91.2591, 153.186}, {72.2409, 26}}</string>
+			<string>{{86.2591, 152.914}, {119.614, 26}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -4004,8 +4012,15 @@ standard}</string>
 			<dict>
 				<key>fill</key>
 				<dict>
-					<key>Draws</key>
-					<string>NO</string>
+					<key>Color</key>
+					<dict>
+						<key>b</key>
+						<string>0.901961</string>
+						<key>g</key>
+						<string>0.901961</string>
+						<key>r</key>
+						<string>0.901961</string>
+					</dict>
 				</dict>
 				<key>shadow</key>
 				<dict>
@@ -4028,7 +4043,8 @@ standard}</string>
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
-\f0\b\fs22 \cf0 OBOE Annotation}</string>
+\f0\b\fs22 \cf0 OBOE Semantic\
+Annotation}</string>
 			</dict>
 		</dict>
 		<dict>
@@ -4495,7 +4511,7 @@ N\
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{91.2591, 250.127}, {64.0073, 13}}</string>
+			<string>{{86.2591, 250.127}, {64.0073, 26}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -4517,8 +4533,15 @@ N\
 			<dict>
 				<key>fill</key>
 				<dict>
-					<key>Draws</key>
-					<string>NO</string>
+					<key>Color</key>
+					<dict>
+						<key>b</key>
+						<string>0.901961</string>
+						<key>g</key>
+						<string>0.901961</string>
+						<key>r</key>
+						<string>0.901961</string>
+					</dict>
 				</dict>
 				<key>shadow</key>
 				<dict>
@@ -4541,7 +4564,7 @@ N\
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
-\f0\b\fs22 \cf0 Metadata}</string>
+\f0\b\fs22 \cf0 Structural Metadata}</string>
 			</dict>
 		</dict>
 		<dict>
@@ -4719,7 +4742,7 @@ N\
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{91.2591, 329.886}, {64.0073, 13}}</string>
+			<string>{{86.2591, 329.886}, {64.0073, 13}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -4741,8 +4764,15 @@ N\
 			<dict>
 				<key>fill</key>
 				<dict>
-					<key>Draws</key>
-					<string>NO</string>
+					<key>Color</key>
+					<dict>
+						<key>b</key>
+						<string>0.901961</string>
+						<key>g</key>
+						<string>0.901961</string>
+						<key>r</key>
+						<string>0.901961</string>
+					</dict>
 				</dict>
 				<key>shadow</key>
 				<dict>
@@ -4970,7 +5000,7 @@ N\
 		</dict>
 	</array>
 	<key>ModificationDate</key>
-	<string>2008-09-30 11:51:18 -0700</string>
+	<string>2008-10-01 15:07:08 -0700</string>
 	<key>Modifier</key>
 	<string>Shawn Bowers</string>
 	<key>NotesVisible</key>
@@ -5051,7 +5081,7 @@ N\
 		<key>ShowStatusBar</key>
 		<true/>
 		<key>VisibleRegion</key>
-		<string>{{0, 0}, {514.5, 377.5}}</string>
+		<string>{{0, 39.5}, {514.5, 377.5}}</string>
 		<key>Zoom</key>
 		<string>2</string>
 	</dict>
