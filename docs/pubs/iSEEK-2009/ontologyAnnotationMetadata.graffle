@@ -36,7 +36,7 @@
 	<array>
 		<dict>
 			<key>Bounds</key>
-			<string>{{138.5, 43.5}, {151, 13}}</string>
+			<string>{{209.85, 56.1444}, {235.202, 20.8275}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -89,7 +89,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{140.625, 225.945}, {167.875, 12.3912}}</string>
+			<string>{{213.255, 348.442}, {268.955, 19.8521}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -142,7 +142,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{200.5, 114.5}, {125.5, 13}}</string>
+			<string>{{309.181, 169.894}, {201.065, 20.8275}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -195,7 +195,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{113.5, 175.609}, {157.375, 12.3912}}</string>
+			<string>{{165.798, 267.798}, {235.202, 19.8521}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -248,7 +248,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{25.875, 46}, {320.125, 89}}</string>
+			<string>{{29.4125, 60.1496}, {512.876, 142.588}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -292,7 +292,7 @@
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
-\f0\b\fs18 \cf0 &lt;owl:Class rdf:about="#RomaleaGuttatusPopulation"&gt;\
+\f0\b\fs28 \cf0 &lt;owl:Class rdf:about="#RomaleaGuttatusPopulation"&gt;\
   &lt;rdfs:label&gt;Romalea guttatus Population&lt;/rdfs:label&gt;\
   &lt;owl:equivalentClass&gt;\
     &lt;owl:Restriction&gt;\
@@ -308,7 +308,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{152.746, 27}, {64.0073, 13}}</string>
+			<string>{{232.674, 29.7095}, {102.547, 19}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -352,12 +352,12 @@
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc\pardirnatural
 
-\f0\b\fs22 \cf0 Ontology}</string>
+\f0\b\fs32 \cf0 Ontology}</string>
 			</dict>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{20, 22.5}, {329.5, 119}}</string>
+			<string>{{20, 22.5}, {527.896, 190.651}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -406,7 +406,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{160.311, 186}, {27.1893, 12.3912}}</string>
+			<string>{{238.794, 285.445}, {43.5603, 19.8521}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -459,7 +459,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{233, 285.564}, {32.9667, 12.3912}}</string>
+			<string>{{353.25, 442.958}, {52.8164, 19.8521}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -512,7 +512,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{128, 285.564}, {39.5, 12.3912}}</string>
+			<string>{{193.028, 443.958}, {63.2835, 19.8521}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -565,7 +565,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{103.5, 341.804}, {39.5, 12.3912}}</string>
+			<string>{{142.553, 533.577}, {63.2835, 19.8521}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -618,7 +618,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{148.498, 154.5}, {72.5037, 13}}</string>
+			<string>{{225.868, 233.979}, {116.159, 19}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -662,12 +662,12 @@
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc\pardirnatural
 
-\f0\b\fs22 \cf0 Annotation}</string>
+\f0\b\fs32 \cf0 Annotation}</string>
 			</dict>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{153.934, 330.5}, {64.0073, 13}}</string>
+			<string>{{234.577, 515.951}, {102.547, 19}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -711,12 +711,12 @@
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc\pardirnatural
 
-\f0\b\fs22 \cf0 Metadata}</string>
+\f0\b\fs32 \cf0 Metadata}</string>
 			</dict>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{26, 167.5}, {323.5, 144}}</string>
+			<string>{{29.6128, 254.806}, {518.283, 230.704}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -760,7 +760,7 @@
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
-\f0\b\fs18 \cf0 &lt;sms:observation label="o4" distinct="yes"&gt;\
+\f0\b\fs28 \cf0 &lt;sms:observation label="o4" distinct="yes"&gt;\
   &lt;sms:entity id="gce:GrasshopperPopulation"/&gt;\
   &lt;sms:measurement label="m4a" precision="1" key="no"&gt;\
     &lt;sms:characteristic id="oboe:EntityName"/&gt;\
@@ -781,7 +781,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{20, 150}, {329.5, 165.5}}</string>
+			<string>{{20, 226.769}, {527.896, 265.15}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -830,7 +830,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{26.25, 342.75}, {323.25, 89}}</string>
+			<string>{{30.0134, 535.577}, {517.883, 142.588}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -874,7 +874,7 @@
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
-\f0\b\fs18 \cf0 &lt;attribute id="att.6" scope="document"&gt;\
+\f0\b\fs28 \cf0 &lt;attribute id="att.6" scope="document"&gt;\
  &lt;attributeName&gt;Species_Code&lt;/attributeName&gt;\
  &lt;attributeDefinition&gt;\
     Coded species name\
@@ -891,7 +891,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{20, 326}, {329.5, 122.5}}</string>
+			<string>{{20, 508.741}, {527.896, 196.259}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -1042,7 +1042,7 @@
 		</dict>
 	</array>
 	<key>ModificationDate</key>
-	<string>2008-10-03 13:48:53 -0700</string>
+	<string>2008-10-07 10:05:24 -0700</string>
 	<key>Modifier</key>
 	<string>Chad Berkley</string>
 	<key>NotesVisible</key>
@@ -1108,13 +1108,13 @@
 		<key>DrawerWidth</key>
 		<real>209</real>
 		<key>Frame</key>
-		<string>{{128, 36}, {1183, 842}}</string>
+		<string>{{60, 36}, {1183, 842}}</string>
 		<key>ShowRuler</key>
 		<true/>
 		<key>VisibleRegion</key>
-		<string>{{0, 0}, {576, 341}}</string>
+		<string>{{-288, 0}, {1152, 682}}</string>
 		<key>Zoom</key>
-		<real>2</real>
+		<real>1</real>
 	</dict>
 </dict>
 </plist>
