@@ -1,0 +1,298 @@
+\documentclass[11pt,onecolumn]{article}
+
+\usepackage{fullpage}
+
+\newcommand{\owlifier}{\textsf{owlifier}}
+
+\title{\textsf{Owlifier}: An Application for Creating Simple OWL
+  Ontologies from Spreadsheet-Based Knowledge Descriptions}
+
+\author{Shawn Bowers \and Mark Schildhauer \and Joshua Madin \and
+  Mathew Jones}
+
+\date{}
+
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+\end{abstract}
+
+\section{Introduction}
+
+
+\section{\textsf{Owlifier} Syntax}
+
+An \owlifier\ table defines an OWL-DL \cite{owl} ontology through a
+set of \emph{blocks}.  Each non-empty row in an \owlifier\ table
+corresponds to a block. The type of the block is given in the first
+column of the row. The types of blocks supported by \owlifier\ are as
+follows.  It is assumed below that if any of the properties or
+concepts used in a block are defined, i.e., are not imported from
+another ontology, then they are added to the current ontology.
+
+
+\paragraph{Import Block.} Import blocks assign namespace labels to
+external ontologies. Each external ontology is imported into the
+current ontology. We refer to the ontologies of import blocks as
+\emph{imported ontologies}.  Using import blocks, concepts and
+properties of imported ontologies can be used within other blocks of
+the table.  An import block has the form
+\begin{itemize}
+\item[]
+  \begin{tabular}{|l|l|l|}\hline
+    \texttt{import} & $\textit{NS}$ & $\textit{URI}$ \\ \hline
+  \end{tabular}
+\end{itemize}
+where $\textit{NS}$ is a namespace label and $\textit{URI}$ is an OWL
+ontology URI. Concepts and properties from imported ontologies are
+referenced by prefixing the namespace label $\textit{NS}$ to the
+corresponding concept or property name in the normal way.
+
+
+\paragraph{Concept Block.} Concept blocks specify concept and
+subconcept relationships. A concept block has the form
+\begin{itemize}
+\item[] 
+  \begin{tabular}{|l|l|l|l|l|}\hline
+    \texttt{concept} & $C_1$ & $C_2$ & \dots & $C_n$ \\ \hline 
+  \end{tabular} \hfill ($n \ge 1$)
+\end{itemize}
+where each concept $C_i$ is asserted in the current ontology to
+subsume a concept $C_{i+1}$, for $1 \le i < n$. Each $C_i$ in a
+concept block induces a DL axiom \[C_i \sqsubseteq C_{i+1}\] If both
+$C_i$ and $C_{i+1}$ are imported concepts, we say that the block
+defines an ``articulation'' (i.e., mapping) between them.
+
+
+\paragraph{Synonym Block.} Synonym blocks define an equivalence
+relationship between concepts.  A synonym block has the form
+\begin{itemize}
+\item[] 
+  \begin{tabular}{|l|l|l|l|l|}\hline
+    \texttt{synonym} & $C_1$ & $C_2$ & \dots & $C_n$ \\ \hline 
+  \end{tabular} \hfill ($n \ge 2$)
+\end{itemize}
+where each concept $C_i$ is asserted as being equivalent to concept
+$C_{i+1}$ in the current ontology, for $1 \le i < n$. 
+
+
+\paragraph{Overlap Block.} Except in certain situations (described
+further below), defined concepts are assumed to be disjoint.  Overlap
+blocks explicitly relax this assumption for a given set of
+concepts. An overlap block has the form
+\begin{itemize}
+\item[] 
+  \begin{tabular}{|l|l|l|l|l|}\hline
+    \texttt{overlap} & $C_1$ & $C_2$ & \dots & $C_n$ \\ \hline 
+  \end{tabular} \hfill ($n \ge 2$)
+\end{itemize}
+where each concept $C_i$ is allowed to share instances with each
+concept $C_j$, for $1 \le i,j \le n$. In particular, $C_i$ and $C_j$
+are not defined to be disjoint concepts in the current ontology. 
+
+\paragraph{Property Block.} Property blocks define the required
+\emph{object} properties of concepts. A property block has the form
+\begin{itemize}
+\item[]
+  \begin{tabular}{|l|l|l|l|l|l|}\hline \texttt{property} & $P$ & $C_1$
+& $C_2$ & \dots & $C_n$ \\ \hline
+\end{tabular} \hfill ($n \ge 2$)
+\end{itemize}
+where $P$ is an object property and each $C_i$ is a concept, for $1
+\le i \le n$.  For every concept $C_i$, the property block induces the
+DL axiom \[C_i \sqsubseteq \exists P . C_{i+1} \] stating that each
+instance of $C_i$ has, amongst possibly other things, a relationship
+through $P$ to some instance of $C_{i+1}$.  For example, the block
+\begin{quote}\texttt{property} \texttt{hasPart} \texttt{Body}
+  \texttt{Head} \texttt{Eye} \texttt{Retina}
+\end{quote} states that a body has at least one head, a head has at
+least one eye, and an eye has at least one retina.
+
+\paragraph{Attribute Block.} Attribute blocks are used to define the
+required \emph{datatype} properties of concepts. An attribute block
+has the form
+\begin{itemize}
+\item[]
+  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \texttt{attribute} & $P$ & $D$ & $C_1$
+    & $C_2$ & \dots & $C_n$ \\ \hline
+\end{tabular} \hfill ($n \ge 1$)
+\end{itemize}
+where $P$ is a datatype property, each $C_i$ is a concept for $1 \le i
+\le n$, and $D$ is a datatype (\texttt{anyValueType}, \texttt{string},
+\texttt{int}, etc.). For every concept $C_i$, the property block
+induces the DL axiom \[C_i \sqsubseteq (\exists P . D) \sqcap (\le 1 ~
+P)\] stating that each instance of $C_i$ has, amongst possibly other
+things, a relationship through $P$ to exactly one data value of type
+$D$. 
+
+
+\paragraph{Value Block.} Value blocks define required datatype
+property \emph{constant values} for concepts. A value block has the
+form
+\begin{itemize}
+\item[]
+  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \texttt{value} & $P$ & $V$ & $C_1$
+    & $C_2$ & \dots & $C_n$ \\ \hline
+  \end{tabular} \hfill ($n \ge 1$)
+\end{itemize}
+where $P$ is a datatype property, $C_i$ is a concept for $1 \le i \le
+n$, and $V$ is a datatype value. For each concept $C_i$, the value
+block induces the DL axiom \[C_i \sqsubseteq (V \in P)\] stating that
+each instance of $C_i$ has a value $V$ for property $P$.  The value
+restrictions stated by value blocks are often used for defining
+so-called \emph{value partitions} \cite{co-ode}.
+
+\paragraph{Inverse Block.} Inverse blocks state that two object
+properties are inverses of each other. That is, for inverse properties
+$P_1$ and $P_2$ and concept instances $O_1$ and $O_2$, if $P_1(O_1) =
+O_2$, then $P_2(O_2) = O_1$.  An inverse block has the form
+\begin{itemize}
+\item[]
+  \begin{tabular}{|l|l|l|}\hline \texttt{inverse} & $P_1$ & $P_2$
+\\ \hline
+  \end{tabular}
+\end{itemize}
+where $P_1$ and $P_2$ are object properties. 
+
+\paragraph{Transitive Block.} Transitive blocks state that a property
+is transitive. That is, if $P$ is transitive and a concept instance
+$O_1$ is related to an instance $O_2$ by $P$, and $O_2$ is related to
+an instance $O_3$ by $P$, then $O_1$ is also by definition related to
+$O_3$ by $P$. A transitive block has the form
+\begin{itemize}
+\item[]
+  \begin{tabular}{|l|l|}\hline \texttt{transitive} & $P$ 
+\\ \hline
+  \end{tabular}
+\end{itemize}
+where $P$ is an object property. 
+
+
+\paragraph{Cardinality Block.} Cardinality blocks state the maximum
+number of properties $P$ an instance of a concept may have.
+Cardinality blocks have the form
+\begin{itemize}
+\item[]
+  \begin{tabular}{|l|l|l|l|l|}\hline \texttt{cardinality} & $N$ & $P$ & 
+    $C_1$ & $C_2$ 
+    \\ \hline
+  \end{tabular}
+\end{itemize}
+where $N$ is the maximum number of properties $P$ that instances of
+concept $C_1$ may have to instances of concept $C_2$. A cardinality
+block induces the DL axiom \[C_1 \sqsubseteq (\le N P.C_2)\] stating
+that each instance of $C_1$ can be related to at most $N$ unique
+instances of $C_2$ via $P$. For example, the blocks
+\begin{quote}
+\texttt{cardinality} 1 \texttt{hasPart} \texttt{Body} \texttt{Head} \\
+\texttt{cardinality} 2 \texttt{hasPart} \texttt{Head} \texttt{Eye}
+\end{quote}
+states that a body has at most one head and a head has at most two
+eyes.
+
+
+\paragraph{Sufficient Block.} Sufficient blocks state that any
+instance having a property $P$ to an instance of a concept $C_2$ is a
+sufficient condition for being an instance of a concept $C_1$. A
+sufficient block has the form
+\begin{itemize}
+\item[]
+  \begin{tabular}{|l|l|l|l|}\hline \texttt{sufficient} & $P$ & $C_1$ & $C_2$
+    \\ \hline
+  \end{tabular}
+\end{itemize}
+where $C_1$ is the target concept (i.e., denoting the concept
+definition), $P$ is the sufficient property, and $C_2$ is the
+sufficient concept. A sufficient block induces the DL axiom \[C_1
+\equiv \exists P.C_2\] Sufficient blocks provide a mechansism to
+construct simple class definitions (i.e., classes defined precisely by
+other classes), primarily for use with value partitions.
+
+\paragraph{Description Block.} Description blocks assign plain-text
+definitions to concepts and properties. A description block has the
+form
+\begin{itemize}
+\item[]
+  \begin{tabular}{|l|l|l|}\hline \texttt{description} & $T$ & $S$
+\\ \hline
+  \end{tabular}
+\end{itemize}
+where $T$ is either a property or a concept and $S$ is a description
+string.
+
+\paragraph{Note Block.} Note blocks add comments to the current
+ontology, and are ignored by \owlifier.  A note block has the form
+\begin{itemize}
+\item[]
+  \begin{tabular}{|l|l|l|}\hline \texttt{note} & $S$
+\\ \hline
+  \end{tabular}
+\end{itemize}
+where $S$ is a comment string.
+
+*** Say something about relaxing block syntax ... to make it easier to
+specify ontologies. Also, allow blocks to be given in any order.
+
+\section{\textsf{Owlifier} Reasoning}
+
+e.g., Disjoint Concept Inference. Need to describe here when we say
+two concepts are disjoint. Other inferences are now possible as well.
+
+Errors:
+\begin{itemize}
+\item Blocks with syntactic errors
+\item Inverse properties can be between at most two properties. For
+  instance, inverse(P1,P2) and inverse(P1,P3) is not allowed.
+\item At most one description is allowed per property or concept.
+\item Property and concept names must be disjoint
+\end{itemize}
+
+Warnings: 
+\begin{itemize}
+\item Cyclic concept hierarchies
+\item Re-definition of imported concepts (have to define what this means)
+\item Introduction of an inconsistency (can we show that this will
+  never happen in a fully defined ontology, i.e., one without imports)? 
+\item ...
+\end{itemize}
+
+\section{\textsf{Owlifier} Examples}
+
+\begin{itemize}
+\item Simple example, no imports, no warnings
+\item Extension example
+\item Articulation example
+\end{itemize}
+
+\subsection{\textsf{Owlifier} for OBOE}
+
+How it works with OBOE.
+
+
+\section{\textsf{Owlifier} API}
+
+Flags:
+\begin{itemize}
+\item Turn on/off consistency checking/validation
+\item Output format (OWL/RDF, 
+\item Output inferred axioms
+\item Ontology URI to use
+\end{itemize}
+
+
+\section{Discussion}
+
+Implementation, etc.
+
+
+\bibliographystyle{abbrv}
+\bibliography{main}
+
+
+\end{document}
+
+
+
