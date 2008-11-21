@@ -123,10 +123,9 @@ has the form
 where $P$ is a datatype property, each $C_i$ is a concept for $1 \le i
 \le n$, and $D$ is a datatype (\texttt{anyValueType}, \texttt{string},
 \texttt{int}, etc.). For every concept $C_i$, the property block
-induces the DL axiom \[C_i \sqsubseteq (\exists P . D) \sqcap (\le 1 ~
-P)\] stating that each instance of $C_i$ has, amongst possibly other
-things, a relationship through $P$ to exactly one data value of type
-$D$. 
+induces the DL axiom \[C_i \sqsubseteq (\exists P . D)\] stating that
+each instance of $C_i$ has, amongst possibly other things, a
+relationship through $P$ to a data value of type $D$.
 
 
 \paragraph{Value Block.} Value blocks define required datatype
