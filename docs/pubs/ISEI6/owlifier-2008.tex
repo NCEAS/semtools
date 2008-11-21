@@ -164,34 +164,56 @@ an instance $O_3$ by $P$, then $O_1$ is also by definition related to
 $O_3$ by $P$. A transitive block has the form
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|}\hline \texttt{transitive} & $P$ 
+  \begin{tabular}{|l|l|l|l|}\hline \texttt{transitive} & $P_1$ &
+    $\dots$ & $P_n$
 \\ \hline
   \end{tabular}
 \end{itemize}
 where $P$ is an object property. 
 
+[others?, e.g., associatiave
 
-\paragraph{Cardinality Block.} Cardinality blocks state the maximum
+\paragraph{Minimum Block.} Minimum blocks state the minimum
 number of properties $P$ an instance of a concept may have.
-Cardinality blocks have the form
+Minimum blocks have the form
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|l|l|l|}\hline \texttt{cardinality} & $N$ & $P$ & 
-    $C_1$ & $C_2$ 
+  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \texttt{minimum} & $P$ & $N$ & 
+    $C_1$ & $C_2$ & $\dots$ & $C_m$
+    \\ \hline
+  \end{tabular}
+\end{itemize}
+where $N$ is the minimum number of properties $P$ that instances of
+concept $C_1$ may have to instances of concept $C_2$, $C_2$ to $C_3$,
+and so on. A cardinality block induces the DL axiom \[C_i \sqsubseteq
+(\le N P.C_{i+1})\] stating that each instance of $C_i$ must be related to
+at least $N$ unique instances of $C_{i+1}$ via $P$. For example, the blocks
+\begin{quote}
+\texttt{minimum} \texttt{hasPart} 1 \texttt{Body} \texttt{Head} \\
+\texttt{minimum} \texttt{hasPart} 2 \texttt{Head} \texttt{Eye}
+\end{quote}
+states that a body has at least one head and at least two eyes.
+
+\paragraph{Maximum Block.} Maximum blocks state the maximum
+number of properties $P$ an instance of a concept may have.
+Maximum blocks have the form
+\begin{itemize}
+\item[]
+  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \texttt{maximum} & $P$ & $N$ & 
+    $C_1$ & $C_2$ & $\dots$ & $C_m$
     \\ \hline
   \end{tabular}
 \end{itemize}
 where $N$ is the maximum number of properties $P$ that instances of
-concept $C_1$ may have to instances of concept $C_2$. A cardinality
-block induces the DL axiom \[C_1 \sqsubseteq (\le N P.C_2)\] stating
-that each instance of $C_1$ can be related to at most $N$ unique
-instances of $C_2$ via $P$. For example, the blocks
+concept $C_1$ may have to instances of concept $C_2$, $C_2$ to $C_3$,
+and so on. A cardinality block induces the DL axiom \[C_i \sqsubseteq
+(\ge N P.C_{i+1})\] stating that each instance of $C_i$ may be related to
+at most $N$ unique instances of $C_{i+1}$ via $P$. For example, the blocks
 \begin{quote}
-\texttt{cardinality} 1 \texttt{hasPart} \texttt{Body} \texttt{Head} \\
-\texttt{cardinality} 2 \texttt{hasPart} \texttt{Head} \texttt{Eye}
+\texttt{maximum} \texttt{hasPart} 1 \texttt{Body} \texttt{Head} \\
+\texttt{maximum} \texttt{hasPart} 2 \texttt{Head} \texttt{Eye}
 \end{quote}
-states that a body has at most one head and a head has at most two
-eyes.
+states that a body has at least one head and at least two eyes.
 
 
 \paragraph{Sufficient Block.} Sufficient blocks state that any
@@ -200,7 +222,7 @@ sufficient condition for being an instance of a concept $C_1$. A
 sufficient block has the form
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|l|l|}\hline \texttt{sufficient} & $P$ & $C_1$ & $C_2$
+  \begin{tabular}{|l|l|l|l|}\hline \texttt{sufficient} & $C_1$ & $P$ & $C_2$
     \\ \hline
   \end{tabular}
 \end{itemize}
@@ -209,7 +231,8 @@ definition), $P$ is the sufficient property, and $C_2$ is the
 sufficient concept. A sufficient block induces the DL axiom \[C_1
 \equiv \exists P.C_2\] Sufficient blocks provide a mechansism to
 construct simple class definitions (i.e., classes defined precisely by
-other classes), primarily for use with value partitions.
+other classes), primarily for use with value partitions. [NOTE: these
+should be anded together?]
 
 \paragraph{Description Block.} Description blocks assign plain-text
 definitions to concepts and properties. A description block has the
