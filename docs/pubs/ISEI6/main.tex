@@ -98,6 +98,19 @@ application enabled them to quickly and easily comprehend and
 construct ontologies.
 
 
+Notes: 
+\begin{itemize}
+\item we generally follow the guidelines in ontology creation of
+  Rector et al. in \cite{rector04:_owl_pizzas}.
+\item we also try to simplify certain aspects, e.g., disjoint classes
+  and open-world reasoning, which can be confusing for non-experts
+\item we try to use more meaningful terms, when applicable (e.g., instead of datatype property, attribute, etc.)
+\item our goal is to not support all constructs in OWL-DL, but to
+  provide the most commonly used ones for defining typical ontologies,
+  but still allow experts to refine the ontology in ontology editing
+  tools if necessary
+\end{itemize}
+
 
 \section{\owlifier\ Syntax and Semantics}
 
@@ -371,6 +384,34 @@ where $S$ is a comment string.
 
 *** Say something about relaxing block syntax ... to make it easier to
 specify ontologies. Also, allow blocks to be given in any order.
+
+
+\section{\owlifier\ Properties and Reasoning}
+\label{sec:properties}
+
+
+Some desirable properties: 
+\begin{itemize}
+\item non-ambiguous (no block leads to ambiguous DL axioms)
+\item ``reasonable'' (not everything has to be explicitly stated)
+\item ???
+\end{itemize}
+
+\section{\owlifier\ Implementation}
+\label{sec:implementation}
+
+Flags: 
+\begin{itemize}
+\item delimeter characters 
+\item perform classification
+\item warnings
+\item owlifier to owl and owl to owlifier
+\item ??? 
+\end{itemize}
+
+
+\section{Conclusion}
+\label{sec:conclusion}
 
 
 
