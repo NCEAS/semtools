@@ -4,7 +4,7 @@
 % other options: times
 
 
-\newcommand{\owlifier}{Owlifier}
+\newcommand{\owlifier}{\textsf{Owlifier}}
 \newcommand{\mypara}[1]{\vspace{12pt}\noindent\textbf{#1}}
 
 \title{Owlifier: Creating OWL-DL Ontologies from Simple
@@ -34,7 +34,12 @@
 \begin{document}
 
 \begin{abstract}
-abstract here...
+  Formal ontlogies promise to provide many added advantages to
+  ecological data management ... Most ontology editing frameworks and
+  tools, however, are design for knowledge-representation experts and
+  those with considerable understanding of the complexities of
+  ontology languages (i.e., description logics). This paper proposes
+  an approach for ontology creation based on ...
 \end{abstract}
 
 \maketitle
@@ -47,64 +52,69 @@ abstract here...
 
 The use of formal ontologies can significantly enhance metadata
 descriptions of ecological data by providing richer and more
-consistent terminologies. Annotating data with ontology terms can both
-help users interpret data as well as enable advanced capabilities for
-data discovery and integration, e.g., by exploiting subsumption and
-part-of hierarchies as well as more formal constraints such as
-cardinality restrictions on properties and term equivalence. Many
-efforts are underway to engage scientists in the development of
-ontologies to represent common ecological and biodiversity
-concepts. Most of these projects leverage OWL (the W3C Web Ontology
-Language) as a standard XML syntax for representing and sharing
-ontologies. A key advantage of OWL is that it is supported by a wide
-range of generic tools, including editors, reasoning systems, query
-languages, and storage technologies. These tools, however, are
-primarily targeted at experts in knowledge engineering and software
-development. This is especially true with ontology editors (such as
-Prot?g?, OWLed, SWOOP, etc.), which allow for very detailed ontology
-specifications, but at the same time require a considerable amount of
-understanding of the underlying ontology formalisms and syntax. Thus,
-we see the lack of suitable ontology editing tools for scientists as
-one of the major barriers for more wide-scale adoption of ontologies
-in ecology.
+consistent terminologies \cite{tree,arees,parr}. Annotating data with
+ontology terms can both help users interpret data as well as enable
+advanced capabilities for data discovery and integration, e.g., by
+exploiting subsumption and part-of hierarchies as well as more formal
+constraints such as cardinality restrictions on properties and term
+equivalence \cite{ecoinf,other?}. Many efforts are underway to engage
+scientists in the development of ontologies to represent common
+ecological and biodiversity concepts. Most of these projects leverage
+the W3C Web Ontology Language (OWL) as a standard XML syntax for
+representing and sharing ontologies. A key advantage of OWL is that it
+is supported by a wide range of generic tools, including editors
+\cite{protege,swoop}, reasoning systems \cite{pellet,fact++}, query
+languages \cite{???}, and storage technologies \cite{jena,???}. Most
+of these tools, however, are primarily targeted at experts in
+knowledge engineering and software development. This is especially
+true with ontology editors (such as Protege, OWLed, SWOOP, etc.),
+which allow for very detailed ontology specifications, but at the same
+time require a considerable amount of understanding of the underlying
+ontology formalisms and syntax. Thus, we see the lack of suitable
+ontology editing tools for scientists as one of the major barriers for
+more wide-scale adoption of ontologies in ecology.
 
 Here, we present a novel approach for ontology creation that aims at
 being more intuitive for ecologists and that can be used to rapidly
 construct large ontologies for describing scientific data. Our
-approach is to allow scientists to use common spreadsheet tools to
-describe, in an intuitive way, different aspects of an ontology, and
-then to take these descriptions and convert them into full-fledged OWL
-ontologies using a software application called owlifier. An owlifier
-spreadsheet consists of a set of "blocks" that have a predefined
-template structure for users to fill in. Each non-empty row in an
-owlifier table constitutes a block, where blocks can be used to define
-ontology concepts (including sub-concepts), concept synonyms,
-overlapping concepts (i.e., that by definition are not disjoint),
-properties (including their domain and range), and inverse
-properties. We also provide blocks for plain-text descriptions of
-concepts and properties, and for referencing one or more existing
-ontologies (e.g., to extend an ontology or to define ontology
-articulations). Blocks can be sparse (inheriting from previous
-blocks), which simplifies the creation of large ontologies. Although
-not as expressive as full-fledged OWL ontologies, our approach can
-produce ontology structures essential for enhanced data discovery and
-integration, while at the same time providing a more accessible user
-interface for ecologists. Further, compared to many existing editors,
-our approach can be used to rapidly construct concept hierarchies,
-e.g., from long lists of keywords, within familiar spreadsheet
-software. We have field-tested the owlifier approach with ecologists
-and evolutionary biologists working with trait data, and found this
-application enabled them to quickly and easily comprehend and
-construct ontologies.
+approach is to allow scientists to use common spreadsheet-based tools
+to describe, in an intuitive way, different aspects of an ontology,
+and then to take these descriptions and convert them into full-fledged
+OWL ontologies using a software application called \owlifier. 
 
+An \owlifier\ spreadsheet consists of a set of \emph{blocks} that have
+a predefined template structure for users to fill in. Each non-empty
+row in an owlifier table constitutes a block, where blocks can be used
+to define ontology classes (including subclasses), class synonyms,
+data- and object-type properties (and constraints), etc.  We also
+provide blocks for plain-text descriptions of concepts and properties,
+and for referencing one or more existing ontologies (e.g., to extend
+an existing ontology or to define ontology articulations). Blocks can
+be sparse (inheriting from previous blocks), which simplifies the
+creation of large ontologies. 
 
-Notes: 
+Although not as expressive as full-fledged OWL ontologies, our
+approach can produce ontology structures essential for enhanced data
+discovery and integration, while at the same time providing a more
+accessible user interface for ecologists. Further, compared to many
+existing editors, our approach can be used to rapidly construct
+concept hierarchies, e.g., from long lists of keywords, within
+familiar spreadsheet software. We have field-tested the owlifier
+approach with ecologists and evolutionary biologists working with
+trait data, and found this application enabled them to quickly and
+easily comprehend and construct ontologies.
+
+In this paper, we describe the syntax and semantics of \owlifier. We
+consider a set of blocks that generally follow the ... 
+
+Notes:
 \begin{itemize}
 \item we generally follow the guidelines in ontology creation of
   Rector et al. in \cite{rector04:_owl_pizzas}.
 \item we also try to simplify certain aspects, e.g., disjoint classes
   and open-world reasoning, which can be confusing for non-experts
-\item we try to use more meaningful terms, when applicable (e.g., instead of datatype property, attribute, etc.)
+\item we try to use more meaningful terms, when applicable (e.g.,
+  instead of datatype property, attribute, etc.)
 \item our goal is to not support all constructs in OWL-DL, but to
   provide the most commonly used ones for defining typical ontologies,
   but still allow experts to refine the ontology in ontology editing
@@ -124,14 +134,12 @@ any of the properties or concepts used in a block are defined, i.e.,
 are not imported from another ontology, then they are added to the
 ontology being defined by the \owlifier\ table.
 
-\mypara{Import Block}  
-
-\mypara{}Import blocks assign namespace labels to external
-ontologies. Each external ontology is imported into the current
-ontology. We refer to the ontologies of import blocks as
-\emph{imported ontologies}.  Using import blocks, concepts and
+\mypara{Import Block.} Import blocks assign namespace labels to
+external ontologies. Each external ontology is imported into the
+current ontology. We refer to the ontologies of import blocks as
+\emph{imported ontologies}.  Using import blocks, classes and
 properties of imported ontologies can be used within other blocks of
-the table.  Import blocks take the form
+an \owlifier\ table.  Import blocks take the form
 \begin{itemize}
 \item[]
   \begin{tabular}{|l|l|l|}\hline
@@ -143,42 +151,43 @@ ontology URI. Classes and properties from imported ontologies are
 referenced by prefixing the namespace label $\textit{N}$ to the
 corresponding class or property name in the normal way. The following
 block imports the ``earth realm'' ontology from the set of SWEET
-ontologies \cite{raskin:_seman_web_for_earth_and}.
+ontologies \cite{raskin:_seman_web_for_earth_and}
 \begin{tabbing}
   ~~\texttt{import sweet
     http://sweet.jpl.nasa.gov/ontology/earthrealm.owl}
 \end{tabbing}
 where the ontology class denoting marine ecosystems can be refered to
-from within the corresponding \owlifier\ table using the syntax
-\texttt{sweet:MarineEcosystem}. This class is referred to an an
-``imported'' class.
+from within the corresponding \owlifier\ table using the syntax, e.g.,
+\sloppy\texttt{sweet:MarineEcosystem}. Because this class refers to a
+class in another ontology, we call it an ``imported'' class.
 
-\mypara{Class Block}  
-
-\mypara{}Class blocks specify class and subclass relationships. Class
-blocks take the form
+\mypara{Concept Block.} Concept blocks introduce new OWL classes and
+specify subclass relationships. Imported classes may also be used
+within a concept block by prefixing the class name with a namespace
+label, e.g., when an ontology is being extended.  We use the term
+`concept' to avoid confusion with the use of the term 'class' in
+biological taxonomies and because `concept' is often more intuitive
+for users. Concept blocks take the form
 \begin{itemize}
 \item[] 
   \begin{tabular}{|l|l|l|l|l|}\hline
-    \texttt{class} & $C_1$ & $C_2$ & \dots & $C_n$ \\ \hline 
+    \texttt{concept} & $C_1$ & $C_2$ & \dots & $C_n$ \\ \hline 
   \end{tabular} \hfill ($n \ge 1$)
 \end{itemize}
 where each class $C_i$ is asserted in the current ontology to subsume
-a class $C_{i+1}$, for $1 \le i < n$. Each $C_i$ in an entity block
-induces a DL axiom \[C_i \sqsubseteq C_{i+1}.\] If both $C_i$ and
+a class $C_{i+1}$, for $1 \le i < n$. Each $C_i$ in a concept block
+induces the DL axiom \[C_i \sqsubseteq C_{i+1}.\] If both $C_i$ and
 $C_{i+1}$ are imported classes, we say that the block defines an
-``articulation'' (i.e., mapping) between them. The following class
-block defines a simple subclass hierarchy
+``articulation'' (i.e., mapping) between the two classes. The
+following concept block defines a simple subclass hierarchy
 \begin{tabbing}
-~~\texttt{class PhysicalFeature AquaticPhysicalFeature River}
+  ~~\texttt{concept PhysicalFeature AquaticPhysicalFeature River}
 \end{tabbing}
-stating that a river is a subclass of aquatic physical features and
-that aquatic physical features are a type of physical feature.
+which states that river is a subclass of aquatic physical feature and
+that aquatic physical feature is a subclass of physical feature.
 
-\mypara{Synonym Block}
-
-\mypara{}Synonym blocks define an equivalence relationship between
-classes.  A synonym block has the form
+\mypara{Synonym Block.} Synonym blocks define an equivalence
+relationship between classes.  A synonym block has the form
 \begin{itemize}
 \item[] 
   \begin{tabular}{|l|l|l|l|l|}\hline
