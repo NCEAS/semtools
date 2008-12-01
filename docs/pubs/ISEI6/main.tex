@@ -34,45 +34,74 @@
 \begin{document}
 
 \begin{abstract}
-  Formal ontlogies promise to provide many added advantages to
-  ecological data management ... Most ontology editing frameworks and
-  tools, however, are design for knowledge-representation experts and
-  those with considerable understanding of the complexities of
-  ontology languages (i.e., description logics). This paper proposes
-  an approach for ontology creation based on ...
+  Data discovery and integration is important in many ecological
+  studies, especially those that concern broad-scale ecological
+  questions. While important, the discovery and integration of
+  ecological data is often a complex and time-consuming task for
+  researchers. This situation is often due to the use of informal,
+  ambiguous, and sometimes inconsistent terms for describing
+  ecological data.  Ontologies can help address this problem by
+  providing a mechanism to formally define ecological concepts that
+  can be used to more consistently annotate, relate, and search for
+  data sets.
+
+  Unlike in molecular biology or biomedicine, however, few ontology
+  development efforts exist within ecology. These efforts often
+  require considerable expertise in ontology languages and development
+  tools that limits the creation of ontologies by ecologists.  This
+  paper addresses this problem by allowing ecologists to use common
+  spreadsheet tools to describe different aspects of an ontology. We
+  introduce novel conventions for creating, relating, and constraining
+  concepts through spreadsheets, and provide software tools for
+  converting ontologies created in this way into equivalent OWL-DL
+  representations. We also consider inverse translations, i.e., that
+  convert ontologies represented using OWL-DL into our spreadsheet
+  format. Our approach allows large lists of terms to be easily
+  related and organized into concept hierarchies, and generally
+  provides a more intuitive and natural interface for ontology
+  creation by ecologists.
 \end{abstract}
 
 \maketitle
 
-
-
-
 \section{Introduction}
 
-
+Within the fields of molecular biology and biomedicine considerable
+effort has gone into developing ontologies for improving data
+discovery and integration
+\cite{bard04:_ontol_in_biolog,ashburner00:_gene_ontol}. While similar
+benefits can be obtained for ecological data, far fewer efforts exist
+to develop richer and more consistent terminologies of ecology
+concepts
+\cite{madin08:_advan_ecolog_resear_with_ontol,parr20:_data_sharin_in_ecolog_and_evolut}.
 The use of formal ontologies can significantly enhance metadata
-descriptions of ecological data by providing richer and more
-consistent terminologies \cite{tree,arees,parr}. Annotating data with
-ontology terms can both help users interpret data as well as enable
-advanced capabilities for data discovery and integration, e.g., by
-exploiting subsumption and part-of hierarchies as well as more formal
-constraints such as cardinality restrictions on properties and term
-equivalence \cite{ecoinf,other?}. Many efforts are underway to engage
-scientists in the development of ontologies to represent common
-ecological and biodiversity concepts. Most of these projects leverage
-the W3C Web Ontology Language (OWL) as a standard XML syntax for
-representing and sharing ontologies. A key advantage of OWL is that it
-is supported by a wide range of generic tools, including editors
-\cite{protege,swoop}, reasoning systems \cite{pellet,fact++}, query
-languages \cite{???}, and storage technologies \cite{jena,???}. Most
-of these tools, however, are primarily targeted at experts in
-knowledge engineering and software development. This is especially
-true with ontology editors (such as Protege, OWLed, SWOOP, etc.),
-which allow for very detailed ontology specifications, but at the same
-time require a considerable amount of understanding of the underlying
-ontology formalisms and syntax. Thus, we see the lack of suitable
-ontology editing tools for scientists as one of the major barriers for
-more wide-scale adoption of ontologies in ecology.
+descriptions of ecological data. Annotating data with ontology terms
+can both help users interpret data as well as enable advanced
+capabilities for data discovery and integration, e.g., by exploiting
+subsumption and part-of hierarchies as well as more formal constraints
+such as cardinality restrictions on properties and term
+equivalence. Many efforts are underway to engage scientists in the
+development of ontologies to represent common ecological and
+biodiversity concepts. Most of these projects leverage the W3C Web
+Ontology Language (OWL) \cite{smith04:_owl_web_ontol_languag_guide} as
+a standard XML syntax for representing and sharing ontologies. A key
+advantage of OWL is that it is supported by a wide range of generic
+tools, including editors
+\cite{knublauch04:_editin_descr_logic_ontol_with,kalyanpur05:_swoop},
+reasoning systems
+\cite{sirin07:_pellet,tsarkov06:_fact_descr_logic_reason}, query
+languages
+\cite{prudhommeaux08:_sparq_query_languag_for_rdf,motik05:_query_answer_for_owl_dl_with_rules},
+and storage technologies
+\cite{carroll04:_jena,broekstra02:_sesam}. Most of these tools,
+however, are primarily targeted at experts in knowledge engineering
+and software development. This is especially true with ontology
+editors (such as Protege, SWOOP, etc.), which allow for very detailed
+ontology specifications, but at the same time require a considerable
+amount of understanding of the underlying ontology formalisms and
+syntax. Thus, we see the lack of suitable ontology editing tools for
+scientists as one of the major barriers for more wide-scale adoption
+of ontologies in ecology.
 
 Here, we present a novel approach for ontology creation that aims at
 being more intuitive for ecologists and that can be used to rapidly
