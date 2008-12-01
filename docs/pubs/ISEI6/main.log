@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.30.4-2.2 (Web2C 7.5.5) (format=pdflatex 2006.6.8)  28 NOV 2008 15:00
+This is pdfeTeX, Version 3.141592-1.30.4-2.2 (Web2C 7.5.5) (format=pdflatex 2006.6.8)  1 DEC 2008 12:10
 entering extended mode
 **\input main.tex
 (./main.tex (./elsarticle.cls
@@ -66,78 +66,82 @@ LaTeX Info: Redefining \cite on input line 518.
 (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 65.
+(Font)              <8> on input line 68.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 65.
+(Font)              <6> on input line 68.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 65.
+(Font)              <5> on input line 68.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <14.4> on input line 65.
+(Font)              <14.4> on input line 68.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 65.
+(Font)              <7> on input line 68.
  [1
 
 
-{/usr/local/teTeX/share/texmf.local/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 141.
-
- (/usr/local/teTeX/share/texmf.local/tex/latex/base/omscmr.fd
-File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 141.
- [2]
-Underfull \hbox (badness 3199) in paragraph at lines 188--192
+{/usr/local/teTeX/share/texmf.local/fonts/map/pdftex/updmap/pdftex.map}] [2]
+Underfull \hbox (badness 3199) in paragraph at lines 198--202
 \OT1/cmr/m/n/10 where the on-tol-ogy class de-not-ing ma-rine ecosys-tems can b
 e ref-ered
  []
 
 
-Underfull \hbox (badness 1259) in paragraph at lines 188--192
-\OT1/cmr/m/n/10 to from within the cor-re-spond-ing \OT1/cmss/m/n/10 Owli-fier 
+Underfull \hbox (badness 1527) in paragraph at lines 198--202
+\OT1/cmr/m/n/10 to from within the cor-re-spond-ing \OT1/cmss/m/n/10 owli-fier 
 \OT1/cmr/m/n/10 ta-ble us-ing the syn-tax, e.g.,
  []
 
+
+Package natbib Warning: Citation `oboe' on page 3 undefined on input line 208.
+
 [3] [4]
 
-Package natbib Warning: Citation `co-ode' on page 5 undefined on input line 326
+Package natbib Warning: Citation `co-ode' on page 5 undefined on input line 336
 .
 
-[5] [6] (./main.bbl [7] [8])
+[5] [6]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 443.
+
+ (/usr/local/teTeX/share/texmf.local/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 443.
+
+(./main.bbl [7] [8])
 
 Package natbib Warning: There were undefined citations.
 
 [9] (./main.aux) ) 
 Here is how much of TeX's memory you used:
- 804 strings out of 95125
- 9268 string characters out of 1182970
+ 810 strings out of 95125
+ 9321 string characters out of 1182970
  2056246 words of memory out of 4510999
- 4004 multiletter control sequences out of 10000+50000
+ 4010 multiletter control sequences out of 10000+50000
  9188 words of font info for 32 fonts, out of 2000000 for 2000
  58 hyphenation exceptions out of 5000
- 30i,9n,30p,160b,211s stack positions out of 5000i,500n,6000p,200000b,40000s
+ 30i,9n,30p,159b,211s stack positions out of 5000i,500n,6000p,200000b,40000s
 PDF statistics:
  80 PDF objects out of 300000
  0 named destinations out of 131072
  1 words of extra memory for PDF output out of 10000
 </usr/local/teTeX/share/texmf.tetex/fonts/type1/bluesky/cm/cm
-mi7.pfb></usr/local/teTeX/share/texmf.tetex/fonts/type1/bluesky/cm/cmmi10.pfb><
-/usr/local/teTeX/share/texmf.tetex/fonts/type1/bluesky/cm/cmtt10.pfb></usr/loca
-l/teTeX/share/texmf.tetex/fonts/type1/bluesky/cm/cmssbx10.pfb></usr/local/teTeX
-/share/texmf.tetex/fonts/type1/bluesky/cm/cmsy10.pfb></usr/local/teTeX/share/te
+sy10.pfb></usr/local/teTeX/share/texmf.tetex/fonts/type1/bluesky/cm/cmmi7.pfb><
+/usr/local/teTeX/share/texmf.tetex/fonts/type1/bluesky/cm/cmmi10.pfb></usr/loca
+l/teTeX/share/texmf.tetex/fonts/type1/bluesky/cm/cmtt10.pfb></usr/local/teTeX/s
+hare/texmf.tetex/fonts/type1/bluesky/cm/cmssbx10.pfb></usr/local/teTeX/share/te
 xmf.tetex/fonts/type1/bluesky/cm/cmti10.pfb></usr/local/teTeX/share/texmf.tetex
 /fonts/type1/bluesky/cm/cmss10.pfb></usr/local/teTeX/share/texmf.tetex/fonts/ty
 pe1/bluesky/cm/cmr8.pfb></usr/local/teTeX/share/texmf.tetex/fonts/type1/bluesky
@@ -149,4 +153,4 @@ exmf.tetex/fonts/type1/bluesky/cm/cmr7.pfb></usr/local/teTeX/share/texmf.tetex/
 fonts/type1/bluesky/cm/cmr10.pfb></usr/local/teTeX/share/texmf.tetex/fonts/type
 1/urw/zapfding/uzdr.pfb></usr/local/teTeX/share/texmf.tetex/fonts/type1/bluesky
 /cm/cmr12.pfb>
-Output written on main.pdf (9 pages, 132158 bytes).
+Output written on main.pdf (9 pages, 133560 bytes).
