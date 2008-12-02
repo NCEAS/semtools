@@ -172,14 +172,14 @@ of the block is given in the first column of the row. We describe each
 type of block supported by \owlifier\ below. Here we assume that if
 any properties or classes used in a block are undefined, i.e., are not
 imported from another ontology, then they are added to the ontology
-being specified via the \owlifier\ table. In general, we name blocks
+being specified by the \owlifier\ table. In general, we name blocks
 according to the more generic terms used in
 \cite{bowers08:_concep_model_framew_for_expres,madina07:_ontol_for_descr_and_synth}
 instead of those of OWL-DL. This allows \owlifier\ to generate
 ontologies that extend the observational model of
-\cite{madina07:_ontol_for_descr_and_synth} for data annotation, and in
-certain cases avoids confusion with established terms used within
-biology.
+\cite{bowers08:_concep_model_framew_for_expres,madina07:_ontol_for_descr_and_synth}
+for data annotation, and in certain cases avoids confusion with
+established terms used within biology.
 
 \myblock{Import Blocks.} Import blocks assign namespace labels to
 external ontologies. Each external ontology is imported into the
@@ -196,25 +196,27 @@ an \owlifier\ table.  Rows containing import blocks take the form
 where $n$ is a namespace label and $u$ is an OWL ontology URI. Classes
 and properties from imported ontologies are referenced by prefixing
 the namespace label $n$ to the corresponding class or property name in
-the normal way. The following example block imports the ``earth
+the normal way. As an example, the following block imports the ``earth
 realm'' ontology from the set of SWEET ontologies
 \cite{raskin:_seman_web_for_earth_and}
 \begin{tabbing}
-  ~~\texttt{import sweet
-    http://sweet.jpl.nasa.gov/ontology/earthrealm.owl}
+  ~~\texttt{import}  \texttt{sweet} 
+  \texttt{http://sweet.jpl.nasa.gov/ontology/earthrealm.owl}
 \end{tabbing}
-With this import block the class denoting marine ecosystems can be
-referred to from within an \owlifier\ table using the expression
+With this import block the class denoting Marine Ecosystems (a class
+defined in the above ontology) can be referred to from within an
+\owlifier\ table using the expression
 \texttt{sweet:MarineEcosystem}. Because this class refers to a class
 in another ontology, we refer to it as an \emph{imported class}.
 
 
-\myblock{Entity Blocks.} Entity blocks introduce new OWL classes and
-specify subclass relationships. Imported classes may also be used
+\myblock{Entity Blocks.} Entity blocks are the primary blocks used to
+define ontologies. An entity block introduces new OWL classes and
+specifies subclass relationships. Imported classes may also be used
 within entity blocks by prefixing class names with namespace labels
-(see above).  We use the term `entity' to conform to the observational
-model of \cite{bowers08:_concep_model_framew_for_expres} and to avoid
-confusion with the term 'class' used within biological
+(as described above).  We use the term `entity' to conform to the
+observational model of \cite{bowers08:_concep_model_framew_for_expres}
+and to avoid confusion with the term `class' used within biological
 taxonomies. Rows containing entity blocks take the form
 \begin{itemize}
 \item[] 
@@ -230,7 +232,8 @@ we say that the block defines an ``articulation'' (i.e., mapping)
 between the two classes. The following concept block defines a simple
 subclass hierarchy
 \begin{tabbing}
-  ~~\texttt{entity PhysicalFeature AquaticPhysicalFeature River}
+  ~~\texttt{entity} \texttt{PhysicalFeature} 
+    \texttt{AquaticPhysicalFeature} \texttt{River}
 \end{tabbing}
 stating that Physical Feature, Aquatic Physical Feature, and River are
 classes, and that River is a subclass of Aquatic Physical Feature, and
@@ -251,16 +254,16 @@ current ontology, for $1 \le i < n$. Each $c_i$ in a synonym blocks
 induces a description logic axiom of the form $c_i \equiv c_{i+1}$. As
 an example, the block
 \begin{tabbing}
-~~\texttt{synonym Maize Corn}
+  ~~\texttt{synonym} \texttt{Maize} \texttt{Corn}
 \end{tabbing}
-defines Maize and Corn as synonym (i.e., equivalent) classes.
+defines Maize and Corn as synonyms, i.e., as equivalent classes.
 
 
 \myblock{Overlap Blocks.} Except in certain situations (see
-\secref{sec:properties}), classes are assumed to be disjoint.  Overlap
-blocks explicitly relax this assumption by stating that a set of
-classes may have overlapping instances. Rows containing overlap blocks
-take the form
+\secref{sec:properties}), classes are assumed to be disjoint in
+\owlifier.  Overlap blocks explicitly relax this assumption by stating
+that a set of classes may have overlapping instances. Rows containing
+overlap blocks take the form
 \begin{itemize}
 \item[] 
   \begin{tabular}{|l|l|l|l|l|}\hline
@@ -273,80 +276,94 @@ $c_j$ in an overlap block are not defined to be disjoint classes in
 the current ontology. As an example, consider the following entity
 blocks that define the classes Estuary, Lagoon, and Marsh as
 subclasses of Ecological Habitats.
+begin
 \begin{tabbing}
-\begin{tabular}{lll}
-  \texttt{entity} & \texttt{EcologicalHabitat} & \texttt{Estuary} \\ 
-  \texttt{entity} & \texttt{EcologicalHabitat} & \texttt{Lagoon} \\ 
-  \texttt{entity} & \texttt{EcologicalHabitat} & \texttt{Marsh} \\ 
-\end{tabular}
+  ~~\texttt{entity} \texttt{EcologicalHabitat} \texttt{Estuary} \\ 
+  ~~\texttt{entity} \texttt{EcologicalHabitat} \texttt{Lagoon} \\ 
+  ~~\texttt{entity} \texttt{EcologicalHabitat} \texttt{Marsh} \\ 
 \end{tabbing}
 Given only these blocks, \owlifier\ treats Estuary, Lagoon, and Marsh
-as disjoint classes. To relax this assumption and allow Lagoons to
-also be kinds of Estuaries, we explicitly define the overlap block
+as disjoint classes. To relax this assumption and allow, e.g., types
+of Lagoons to also be types of Estuaries, we explicitly add the
+following overlap block
 \begin{tabbing}
-\begin{tabular}{lll}
-  \texttt{overlap} & \texttt{Estuary} & \texttt{Lagoon}
-\end{tabular}
+  ~~\texttt{overlap} \texttt{Estuary} \texttt{Lagoon}
 \end{tabbing}
 In general, overlap blocks are rarely used but provide a mechanism to
 override the default behavior of \owlifier\ in asserting disjoint
 classes.
 
 
-\myblock{Relationship Blocks.} Relationship blocks define required
-\emph{object} properties of classes. A property block has the form
+\myblock{Relationship Blocks.} Relationship blocks define
+\emph{required} object properties of classes. An object property
+within OWL is a property defined between two class instances. Rows
+containing relationship blocks take the form
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|l|l|l|l|}\hline \texttt{relationship} & $R$ & $C_1$
-    & $C_2$ & \dots & $C_n$ \\ \hline
+  \begin{tabular}{|l|l|l|l|l|l|}\hline \texttt{relationship} & $p$ & $c_1$
+    & $c_2$ & \dots & $c_n$ \\ \hline
   \end{tabular} \hfill ($n \ge 2$)
 \end{itemize}
-where $R$ is an object property and each $C_i$ is a class, for $1 \le
-i \le n$.  For every class $C_i$, the property block induces the DL
-axiom \[C_i \sqsubseteq \exists R . C_{i+1} \] stating that each
-instance of $C_i$ has, amongst possibly other things, a relationship
-through $R$ to some instance of $C_{i+1}$.  The following example
+where $p$ is an object property and each $c_i$ is a class, for $1 \le
+i \le n$.  For every class $c_i$, the relationship block induces the
+DL axiom $c_i \sqsubseteq \exists p . c_{i+1}$ stating that each
+instance of $c_i$ has, amongst possibly other things, a relationship
+through $p$ to some instance of $c_{i+1}$.  For example, the following
+block states that the class California Voles live in Grassy Areas.
 \begin{tabbing}
-   ~~need example here
+  ~~\texttt{relationship} \texttt{livesIn} \texttt{CaliforniaVole} 
+    \texttt{GrassyArea}
 \end{tabbing}
+In some cases, a particular property can apply to a sequence of
+classes, and for convenience, each such class can be specified in a
+single block. For example, consider the following block.
+\begin{tabbing}
+  ~~\texttt{relationship} \texttt{directlyBelow} \texttt{Hypolimnion} 
+    \texttt{Thermocline} \texttt{Epilimnion} 
+\end{tabbing}
+This block states that, e.g., within a thermally stratified lake, the
+Hypolimnion layer is directly below the Thermocline layer, and the
+Thermocline layer is directly below the Epilimnion layer. 
 
-
-
-
-\myblock{Transitive Blocks.} Transitive blocks state that a property
-is transitive. That is, if $P$ is transitive and a concept instance
-$O_1$ is related to an instance $O_2$ by $P$, and $O_2$ is related to
-an instance $O_3$ by $P$, then $O_1$ is also by definition related to
-$O_3$ by $P$. A transitive block has the form
+\myblock{Transitive Blocks.} Transitive blocks are special cases of
+relationship blocks in which the object property is asserted to be
+transitive. That is, if $p$ is a transitive property from individuals
+$o_1$ to $o_2$ and from $o_2$ to $o_3$, then $p$ is also assumed to be
+from $o_1$ to $o_3$. Rows containing transitive blocks take the form
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|l|l|l|l|}\hline \texttt{transitive} & $R$ & $C_1$
-    & $C_2$ & \dots & $C_n$ \\ \hline
+  \begin{tabular}{|l|l|l|l|l|l|}\hline \texttt{transitive} & $p$ & $c_1$
+    & $c_2$ & \dots & $c_n$ \\ \hline
   \end{tabular} \hfill ($n \ge 2$)
 \end{itemize}
-where $P$ is an object property. For example, the block
-\begin{quote}\texttt{transitive} \texttt{hasPart} \texttt{Body}
+where $p$ is an object property and each $c_i$ is a class, for $1 \le
+i \le n$. As a simple example, the following transitive block
+\begin{tabbing}
+  ~~\texttt{transitive} \texttt{hasPart} \texttt{Body}
   \texttt{Head} \texttt{Eye} \texttt{Retina}
-\end{quote} states that a body has at least one head, a head has at
-least one eye, and an eye has at least one retina.
+\end{tabbing} 
+states that every Body has a Head as a part, every Head has an Eye as
+a part, and every Eye has a Retina as a part. Moreover, because the
+part-of property here is defined to be transitive, it is possible to
+infer that every Body also has an Eye and a Retina.
 
 
-
-\myblock{Attribute Blocks.} Attribute blocks are used to define the
-required \emph{datatype} properties of concepts. An attribute block
-has the form
+\myblock{Attribute Blocks.} Attribute blocks define required
+\emph{datatype} properties of concepts. Unlike object properties, a
+datatype property within OWL is a property defined between a class
+instance and a literal value (e.g., string, integer, etc.). Rows
+containing attribute blocks take the form
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \texttt{attribute} & $P$ & $D$ & $C_1$
-    & $C_2$ & \dots & $C_n$ \\ \hline
+  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \texttt{attribute} & $p$ & $c_1$
+    & $c_2$ & \dots & $c_n$ \\ \hline
   \end{tabular} \hfill ($n \ge 1$)
 \end{itemize}
-where $P$ is a datatype property, each $C_i$ is a concept for $1 \le i
-\le n$, and $D$ is a datatype (\texttt{anyValueType}, \texttt{string},
-\texttt{int}, etc.). For every concept $C_i$, the property block
-induces the DL axiom \[C_i \sqsubseteq (\exists P . D)\] stating that
-each instance of $C_i$ has, amongst possibly other things, a
-relationship through $P$ to a data value of type $D$.
+where $p$ is a datatype property and $c_i$ is a class, for $1 \le i
+\le n$. For each concept $c_i$, the attribute block induces the
+description logic axiom $c_i \sqsubseteq \exists p$ stating that each
+instance of $c_i$ has, amongst possibly other things, a property $p$
+with a literal value. As an example, the following ...
 
 
 \myblock{Value Blocks.} Value blocks define required datatype property
