@@ -46,24 +46,22 @@
   ambiguous, and sometimes inconsistent terms are used to describe
   data semantics.  Ontologies can help address this problem by
   providing a means to define ecological concepts to more consistently
-  annotate, relate, and search for data sets.
-  %
-  However, unlike in molecular biology or biomedicine, few ontology
-  development efforts exist within ecology. Ontology development often
-  requires considerable expertise in ontology languages and
-  development tools, which is often a barrier for ontology creation in
-  ecology. In this paper we address this problem by providing an
-  approach for ontology creation that allows ecologists to use common
-  spreadsheet tools to describe different aspects of an ontology.  We
-  present conventions for creating, relating, and constraining
-  concepts through spreadsheets, and provide software tools for
-  converting these ontologies into equivalent OWL-DL
-  representations. We also consider inverse translations, i.e., to
-  convert ontologies represented using OWL-DL into our spreadsheet
-  format. Our approach allows large lists of terms to be easily
-  related and organized into concept hierarchies, and generally
-   provides a more intuitive and natural interface for ontology
-  development by ecologists.
+  annotate, relate, and search for data sets.  However, unlike in
+  molecular biology or biomedicine, few ontology development efforts
+  exist within ecology. Ontology development often requires
+  considerable expertise in ontology languages and development tools,
+  which is often a barrier for ontology creation in ecology. In this
+  paper we address this problem by providing an approach for ontology
+  creation that allows ecologists to use common spreadsheet tools to
+  describe different aspects of an ontology.  We present conventions
+  for creating, relating, and constraining concepts through
+  spreadsheets, and provide software tools for converting these
+  ontologies into equivalent OWL-DL representations. We also consider
+  inverse translations, i.e., to convert ontologies represented using
+  OWL-DL into our spreadsheet format. Our approach allows large lists
+  of terms to be easily related and organized into concept
+  hierarchies, and generally provides a more intuitive and natural
+  interface for ontology development by ecologists.
 \end{abstract}
 
 \maketitle
@@ -223,7 +221,7 @@ within entity blocks by prefixing class names with namespace labels
 \end{itemize}
 where each class $c_i$ is asserted in the current ontology to subsume
 $c_{i+1}$, for $1 \le i < n$. That is, each $c_i$ in an entity block
-induces the description-logic axiom $c_{i+1} \sqsubseteq c_i$.  If
+induces the description logic axiom $c_{i+1} \sqsubseteq c_i$.  If
 both $c_i$ and $c_{i+1}$ are imported classes, we say that the block
 defines an ``articulation'' (i.e., mapping) between the two
 classes. The following entity block defines a simple subclass
@@ -309,9 +307,23 @@ In general, overlap blocks are rarely used but provide a mechanism to
 override the default behavior of \owlifier\ in asserting disjoint
 classes.
 
+% \myblock{Property Blocks.} Property blocks define basic object property
+% domain and range constraints. , where the domain of an
+% object property denotes the set of individuals that can have the
+% property, and the range denotes the set of individuals that can be
+% related to domain individuals through the property. Rows containing
+% relationship blocks take the form 
+% \begin{itemize}
+% \item[]
+%   \begin{tabular}{|l|l|l|l|}\hline \textsf{property} & $p$ & $c_1$
+%     & $c_2$ \\ \hline
+%   \end{tabular} \hfill ($n \ge 2$)
+% \end{itemize}
+% where $p$ is the object property, class $c_1$ is the property domain,
+% and class $c_2$ is the property range. 
 
 \myblock{Relationship Blocks.} Relationship blocks define
-\emph{required} object properties of classes. An object property
+\emph{required} object properties of classes.  An object property
 within OWL is a property defined between two class instances. Rows
 containing relationship blocks take the form
 \begin{itemize}
@@ -320,12 +332,12 @@ containing relationship blocks take the form
     & $c_2$ & \dots & $c_n$ \\ \hline
   \end{tabular} \hfill ($n \ge 2$)
 \end{itemize}
-where $p$ is an object property and each $c_i$ is a class, for $1 \le
-i \le n$.  For every class $c_i$, the relationship block induces the
-DL axiom $c_i \sqsubseteq \exists p . c_{i+1}$ stating that each
-instance of $c_i$ has, amongst possibly other things, a relationship
-through $p$ to some instance of $c_{i+1}$.  For example, the following
-block states that the class California Voles live in Grassy Areas.
+where $p$ is an object property and each $c$ is a class.  For every
+class $c_i$, the relationship block induces the DL axiom $c_i
+\sqsubseteq \exists p . c_{i+1}$ stating that each instance of $c_i$
+is $p$-related to some instance of $c_{i+1}$, for $1 \le i < n$.  For
+example, the following block states that instances of the class
+California Voles live in Grassy Areas.
 \begin{tabbing}
   ~~\textsf{relationship} \textsf{livesIn} \textsf{CaliforniaVole} 
     \textsf{GrassyArea}
@@ -353,28 +365,107 @@ relate $o_1$ to $o_3$. Rows containing transitive blocks take the form
     & $c_2$ & \dots & $c_n$ \\ \hline
   \end{tabular} \hfill ($n \ge 2$)
 \end{itemize}
-where $p$ is an object property and each $c_i$ is a class, for $1 \le
-i \le n$. The following block is a simple example of a transitive
-relationship. 
+where $p$ is an object property and each $c$ is a class.  The
+following block is a simple example of a transitive relationship.
 \begin{tabbing}
   ~~\textsf{transitive} \textsf{hasPart} \textsf{Body}
   \textsf{Head} \textsf{Eye} \textsf{Retina}
 \end{tabbing} 
-This block states that every Body has a Head as a part, every Head has
-an Eye as a part, and every Eye has a Retina as a part. Moreover,
-because the part-of property here is defined to be transitive, it is
-possible to infer that every Body also has an Eye and a Retina through
-the corresponding relationship restrictiosn, i.e., $\textsf{Body}
-\sqsubseteq \exists \textsf{hasPart} . \textsf{Head}$, $\textsf{Head}
-\sqsubseteq \exists \textsf{hasPart} . \textsf{Eye}$, and
-$\textsf{Eye} \sqsubseteq \exists \textsf{hasPart} . \textsf{Retina}$.
+This block states that every instance of the class Body has a Head as
+a part, every instance of the class Head has an Eye as a part, and
+every instance of the class Eye has a Retina as a part. Moreover,
+because the \textsf{hasPart} property above is defined to be
+transitive, it is possible to infer that every instance of Body also
+has an Eye and a Retina as a part through the implied relationship
+restrictions $\textsf{Body} \sqsubseteq \exists \textsf{hasPart}
+. \textsf{Head}$, $\textsf{Head} \sqsubseteq \exists \textsf{hasPart}
+. \textsf{Eye}$, and $\textsf{Eye} \sqsubseteq \exists
+\textsf{hasPart} . \textsf{Retina}$.
 
+
+\myblock{Cardinality Blocks.} Cardinality blocks are also similar to
+relationship blocks.  We consider three types of cardinality blocks
+for defining minimum, maximum, and exact cardinality restrictions. A
+minimum block states the smallest number of properties $p$ to distinct
+individuals that an individual of a class may have.  Rows containing
+minimum blocks take the form
+\begin{itemize}
+\item[]
+  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \textsf{min} & $p$ & $m$ & 
+    $c_1$ & $c_2$ & $\dots$ & $c_n$
+    \\ \hline 
+  \end{tabular} \hfill $(n \ge 2)$
+\end{itemize}
+where $m$ is the minimum number of properties $p$ that instances of
+class $c_i$ must have to instances of concept $c_{i+1}$, for $1 \le i
+< n$.  For each class $c_i$, a minimum cardinality block induces the
+description logic axiom $c_{i} \sqsubseteq \; (\le m) \; p.c_{i+1}$
+stating that each instance of $c_i$ must be $p$-related to at least
+$m$ unique instances of $c_{i+1}$. The following two blocks
+demonstrate simple minimum cardinality constraints.
+\begin{tabbing}
+  ~~\textsf{min} \textsf{hasPart} 1 \textsf{Body} \textsf{Head} 
+  \textsf{Nose} \\
+  ~~\textsf{min} \textsf{hasPart} 2 \textsf{Head} \textsf{Eye}
+\end{tabbing}
+The first block states that instances of the class Body have at least
+one Head as a part, which in turn have at least one Nose as a
+part.\footnote{Cardinality restrictions ensuring participation to at
+  least one property are typically not given through minimum
+  cardinality blocks since they are also implied by relationship
+  blocks.} The second block states that instances of the class Head
+have at least two Eyes as parts. 
+
+A maximum block states the largest number of properties $p$ to
+distinct individuals that an individual of a class may have.  Rows
+containing maximum blocks take the form
+\begin{itemize}
+\item[]
+  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \textsf{max} & $p$ & $m$ & 
+    $c_1$ & $c_2$ & $\dots$ & $c_n$
+    \\ \hline
+  \end{tabular} \hfill $(n \ge 2)$
+\end{itemize}
+where $m$ is the maximum number of properties $p$ that instances of
+concept $c_i$ may have to instances of concept $c_{i+1}$, for $1 \le i
+< n$.  For each class $c_i$, a maximum cardinality block induces the
+description logic axiom $c_i \sqsubseteq \; (\ge m) \; p.c_{i+1}$
+stating that each instance of $c_i$ may be $p$-related to at most $m$
+unique instances of $c_{i+1}$. The following two blocks demonstrate
+simple maximum cardinality constraints.
+\begin{tabbing}
+  ~~\textsf{max} \textsf{hasPart} 1 \textsf{Body} \textsf{Head} 
+  \textsf{Nose} \\
+  ~~\textsf{max} \textsf{hasPart} 2 \textsf{Head} \textsf{Eye}
+\end{tabbing}
+The first block states that instances of the class Body have at most
+one Head as a part, which in turn has at most one Nose as a part. The
+second block states that instances of the class Head have at most two
+Eyes as parts. 
+
+An exact block ensures both a minimum and maximum number $m$ of
+properties $p$ to distinct individuals that an individual of a class
+must have. Rows containing exact blocks take the form
+\begin{itemize}
+\item[]
+  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \textsf{exact} & $p$ & $m$ & 
+    $c_1$ & $c_2$ & $\dots$ & $c_n$
+    \\ \hline
+  \end{tabular} \hfill $(n \ge 2)$
+\end{itemize}
+where $m$ is the number of properties $p$ that instances of concept
+$c_i$ must have to instances of concept $c_{i+1}$, for $1 \le i < n$.
+For each class $c_i$, an exactly block induces the description logic
+axiom $c_i \sqsubseteq \; (= m) \; p.c_{i+1}$ stating that each
+instance of $c_i$ must be $p$-related to at $m$ unique instances of
+$c_{i+1}$.
 
 \myblock{Inverse Blocks.} Inverse blocks state that two object
 properties are inverses of each other. If $p_1$ and $p_2$ are defined
 to be inverse properties, whenever $p_1$ relates an individual $o_1$
-to an individual $o_2$ then $p_2$ is assumd to relate $o_2$ to $o_1$.
-Rows containing inverse blocks take the form
+to an individual $o_2$ then $p_2$ (as the inverse of $p_1$) is assumed
+to relate $o_2$ to $o_1$.  Rows containing inverse blocks take the
+form
 \begin{itemize}
 \item[]
   \begin{tabular}{|l|l|l|}\hline \textsf{inverse} & $p_1$ & $p_2$
@@ -382,106 +473,103 @@ Rows containing inverse blocks take the form
   \end{tabular}
 \end{itemize}
 where $p_1$ and $p_2$ are object properties. A common example of
-inverse properties are \texttt{partOf} and \texttt{hasPart}.
+inverse properties are \texttt{hasPart} and \texttt{partOf}, i.e., if
+an individual $o_1$ has an individual $o_2$ as a part, then $o_2$ is
+by definition a part of $o_1$.
 
-\myblock{}*** HERE *** 
 
-\myblock{Attribute Blocks.} Attribute blocks define required
-\emph{datatype} properties of concepts. Unlike object properties, a
-datatype property within OWL is a property defined between a class
-instance and a literal value (e.g., string, integer, etc.). Rows
-containing attribute blocks take the form
+% \myblock{Attribute Blocks.} Attribute blocks define required
+% \emph{datatype} properties of classes. Unlike object properties, a
+% datatype property within OWL is a property defined between a class
+% instance and a literal value (e.g., a string or integer). Rows
+% containing attribute blocks take the form
+% \begin{itemize}
+% \item[]
+%   \begin{tabular}{|l|l|l|l|l|l|l|}\hline \textsf{attribute} & $p$ & $c_1$
+%     & $c_2$ & \dots & $c_n$ \\ \hline
+%   \end{tabular} \hfill ($n \ge 1$)
+% \end{itemize}
+% where $p$ is a datatype property and $c_i$ is a class, for $1 \le i
+% \le n$. For each concept $c_i$, the attribute block induces the
+% description logic axiom $c_i \sqsubseteq \exists p$ stating that
+% each instance of $c_i$ has, amongst possibly other things, a
+% property $p$ with a literal value. Attributes are often useful for
+% As an example, the following ...
+
+
+% \myblock{Value Blocks.} Value blocks define required datatype property
+% \emph{constant values} for concepts. A value block has the form
+% \begin{itemize}
+% \item[]
+%   \begin{tabular}{|l|l|l|l|l|l|l|}\hline \textsf{value} & $P$ & $V$ & $C_1$
+%     & $C_2$ & \dots & $C_n$ \\ \hline
+%   \end{tabular} \hfill ($n \ge 1$)
+% \end{itemize}
+% where $P$ is a datatype property, $C_i$ is a concept for $1 \le i \le
+% n$, and $V$ is a datatype value. For each concept $C_i$, the value
+% block induces the DL axiom \[C_i \sqsubseteq (V \in P)\] stating that
+% each instance of $C_i$ has a value $V$ for property $P$.  The value
+% restrictions stated by value blocks are often used for defining
+% so-called \emph{value partitions} \cite{co-ode}.
+
+
+\myblock{Sufficient Blocks.} Sufficient blocks are similar to synonym
+blocks in that they state equivalences between classes. However,
+equivalence relationships are defined in sufficient blocks through
+property restrictions (i.e., via anonymous classes). We consider two
+main types of sufficient blocks. Rows containing sufficient blocks
+take one of the following forms.
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \textsf{attribute} & $p$ & $c_1$
-    & $c_2$ & \dots & $c_n$ \\ \hline
-  \end{tabular} \hfill ($n \ge 1$)
-\end{itemize}
-where $p$ is a datatype property and $c_i$ is a class, for $1 \le i
-\le n$. For each concept $c_i$, the attribute block induces the
-description logic axiom $c_i \sqsubseteq \exists p$ stating that each
-instance of $c_i$ has, amongst possibly other things, a property $p$
-with a literal value. As an example, the following ...
-
-
-\myblock{Value Blocks.} Value blocks define required datatype property
-\emph{constant values} for concepts. A value block has the form
-\begin{itemize}
+  \begin{tabular}{|l|l|l|l|l|l|}\hline 
+    \textsf{sufficient} & \textsf{min}, \textsf{max}, or 
+    \textsf{exact} & $m$ & $c_1$ & $p$ & $c_2$\\ \hline
+  \end{tabular}
 \item[]
-  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \textsf{value} & $P$ & $V$ & $C_1$
-    & $C_2$ & \dots & $C_n$ \\ \hline
-  \end{tabular} \hfill ($n \ge 1$)
-\end{itemize}
-where $P$ is a datatype property, $C_i$ is a concept for $1 \le i \le
-n$, and $V$ is a datatype value. For each concept $C_i$, the value
-block induces the DL axiom \[C_i \sqsubseteq (V \in P)\] stating that
-each instance of $C_i$ has a value $V$ for property $P$.  The value
-restrictions stated by value blocks are often used for defining
-so-called \emph{value partitions} \cite{co-ode}.
-
-
-
-\myblock{Minimum Blocks.} Minimum blocks state the minimum number of
-properties $P$ an instance of a concept may have.  Minimum blocks have
-the form
-\begin{itemize}
-\item[]
-  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \textsf{minimum} & $P$ & $N$ & 
-    $C_1$ & $C_2$ & $\dots$ & $C_m$
-    \\ \hline
+  \begin{tabular}{|l|l|l|l|l|}\hline 
+    \textsf{sufficient} & \textsf{only} & $c_1$ & $p$ & \{\textsf{not}\} $c_2$\\ \hline
   \end{tabular}
 \end{itemize}
-where $N$ is the minimum number of properties $P$ that instances of
-concept $C_1$ may have to instances of concept $C_2$, $C_2$ to $C_3$,
-and so on. A cardinality block induces the DL axiom \[C_i \sqsubseteq
-(\le N P.C_{i+1})\] stating that each instance of $C_i$ must be related to
-at least $N$ unique instances of $C_{i+1}$ via $P$. For example, the blocks
-\begin{quote}
-\textsf{minimum} \textsf{hasPart} 1 \textsf{Body} \textsf{Head} \textsf{Nose}\\
-\textsf{minimum} \textsf{hasPart} 2 \textsf{Head} \textsf{Eye}
-\end{quote}
-states that a body has at least one head and at least two eyes.
+The first form states that individuals that are $p$-related to at
+least, at most, or exactly $m$ individuals of class $c_2$ are by
+definition individuals of the class $c_1$. Sufficient blocks of this
+form induce either the description logic axiom $c_1 \equiv \; (\le m)
+\; p . c_2$, $c_1 \equiv \; (\ge m) \; p . c_2$, or $c_1 \equiv \; (=
+m) \; p . c_2$ depending on whether the qualifier \textsf{min},
+\textsf{max}, or \textsf{exact} is used, respectively. The second form
+states that individuals that are $p$-related to only individuals of
+class $c_2$ are by definition individuals of the class
+$c_1$. Sufficient blocks of this form induce description logic axioms
+$c_1 \equiv \forall p . c_2$. The complement of $c_2$ may also be used
+within these blocks via the expression \textsf{not $c_2$}. Sufficient
+blocks of this form induce description logic axioms $c_1 \equiv
+\forall p . \neg c_2$ stating that individuals that are $p$-related to
+only individual that are not of class $c_2$ (i.e., the complement of
+$c_2$) are by definition individuals of class $c_1$.  Multiple
+sufficient blocks for a class $c_1$ are treated as a single
+description logic axiom, e.g., if each of the above blocks are defined
+for $c_1$ we have $c_1 \equiv \; (\le m \; p .  c_2) \sqcap (\ge m \;
+p . c_2) \sqcap (\forall p.c_2)$. The following blocks are simple
+examples of sufficient conditions.
+\begin{tabbing}
+  ~~\textsf{sufficient} \textsf{mimimum} 1 \textsf{MammalProper} 
+  \textsf{hasPart} \textsf{MammalProperEar}
+  ~~\textsf{sufficient} \textsf{maximum} 2 \textsf{MammalProper} 
+  \textsf{hasPart} \textsf{MammalProperEar}
+  ~~\textsf{sufficient} \textsf{mimimum} 1 \textsf{MammalProper} 
+  \textsf{hasPart} \textsf{Hair}
+
+  ~~\textsf{sufficient} \textsf{mimimum} 3 \textsf{MammalProper} 
+  \textsf{hasPart} \textsf{MiddleEarBone}
+\end{tabbing}
 
 
-\myblock{Maximum Blocks.} Maximum blocks state the maximum
-number of properties $P$ an instance of a concept may have.
-Maximum blocks have the form
-\begin{itemize}
-\item[]
-  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \textsf{maximum} & $P$ & $N$ & 
-    $C_1$ & $C_2$ & $\dots$ & $C_m$
-    \\ \hline
-  \end{tabular}
-\end{itemize}
-where $N$ is the maximum number of properties $P$ that instances of
-concept $C_1$ may have to instances of concept $C_2$, $C_2$ to $C_3$,
-and so on. A cardinality block induces the DL axiom \[C_i \sqsubseteq
-(\ge N P.C_{i+1})\] stating that each instance of $C_i$ may be related to
-at most $N$ unique instances of $C_{i+1}$ via $P$. For example, the blocks
-\begin{quote}
-\textsf{maximum} \textsf{hasPart} 1 \textsf{Body} \textsf{Head} \\
-\textsf{maximum} \textsf{hasPart} 2 \textsf{Head} \textsf{Eye}
-\end{quote}
-states that a body has at least one head and at least two eyes.
+\begin{tabbing}
+  ~~\textsf{sufficient} \textsf{relationship} \textsf{MammalProper} \textsf{hasPart} \textsf{SweatGland} \\
+  ~~\textsf{sufficient} \textsf{MammalProper} \textsf{hasPart} \textsf{Hair}
+\end{tabbing}
+These blocks state that 
 
-
-\myblock{Sufficient Blocks.} Sufficient blocks state that any instance
-having a property $P$ to an instance of a concept $C_2$ is a
-sufficient condition for being an instance of a concept $C_1$. A
-sufficient block has the form
-\begin{itemize}
-\item[]
-  \begin{tabular}{|l|l|l|l|}\hline \textsf{sufficient} & $C_1$ & $P$ & $C_2$
-    \\ \hline
-  \end{tabular}
-\end{itemize}
-where $C_1$ is the target concept (i.e., denoting the concept
-definition), $P$ is the sufficient property, and $C_2$ is the
-sufficient concept. A sufficient block induces the DL axiom \[C_1
-\equiv \exists P.C_2\] Sufficient blocks provide a mechansism to
-construct simple class definitions (i.e., classes defined precisely by
-other classes), primarily for use with value partitions. [NOTE: these
-should be anded together?]
 
 
 \myblock{Description Blocks.} Description blocks assign plain-text
@@ -520,6 +608,9 @@ Some desirable properties:
 \item ???
 \end{itemize}
 
+*** Using owlifier to represent values, value types, and untangling
+from owl-pizzas ***
+
 
 *** Say something about relaxing block syntax ... to make it easier to
 specify ontologies. Also, allow blocks to be given in any order.
@@ -541,6 +632,9 @@ Flags:
 \label{sec:conclusion}
 
 
+related work: similar to dave's work on ``global taxonomic
+constraints'', which assume certain structures of hierarchies, e.g.,
+disjoint siblings. 
 
 %\bibliographystyle{elsarticle-num}
 \bibliographystyle{abbrv}
