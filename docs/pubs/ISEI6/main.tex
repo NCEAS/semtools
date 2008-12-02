@@ -9,8 +9,8 @@
 
 \newcommand{\myblock}[1]{\vspace{12pt}\noindent\textbf{#1}}
 
-\newcommand{\secref}[1]{Sect.~\ref{#1}}
-\newcommand{\figref}[1]{Fig.~\ref{#1}}
+\newcommand{\secref}[1]{Section~\ref{#1}}
+\newcommand{\figref}[1]{Figure~\ref{#1}}
 
 \title{Owlifier: Creating OWL-DL Ontologies from Simple
   Spreadsheet-Based Knowledge Descriptions\tnoteref{t1}}
@@ -102,11 +102,11 @@ however, are primarily targeted at experts in knowledge engineering
 and software development familiar with the underlying description
 logic semantics of OWL-DL \cite{grau08:_owl}. This is especially true
 with ontology editors (such as Protege, SWOOP, etc.), which allow for
-very detailed ontology specifications, but at the same time require a
-considerable amount of understanding of the underlying ontology
-formalisms and syntax. Thus, we see the lack of suitable ontology
-editing tools for scientists as one of the major barriers for more
-wide-scale adoption of ontologies in ecology.
+very detailed ontology specifications, but at the same time require
+considerable understanding of the underlying ontology formalisms and
+syntax. Thus, we see the lack of suitable ontology editing tools for
+scientists as one of the major barriers for more wide-scale adoption
+of ontologies in ecology.
 
 
 This paper presents a novel approach for ontology creation that aims
@@ -128,16 +128,17 @@ from previous blocks), which can further simplify the creation of
 large ontologies.
 
 While not as expressive as OWL-DL, our approach can produce ontology
-structures essential for enhanced data discovery and integration,
-while at the same time provide a more accessible user interface for
-ecologists. Further, our approach can be used to rapidly construct
-class hierarchies from long lists of keywords using familiar
-spreadsheet software. For instance, an ecologist can easily list (or
-import) a set of terms, and then incrementally organize these into a
-class hierarchy, define properties and constraints, etc. We have used
-the \owlifier\ approach with ecologists and evolutionary biologists
-working with trait data, and found that it enabled them to quickly and
-easily comprehend and construct ontologies.
+structures essential for enhanced data discovery and integration
+\cite{madin07:_ontol_for_descr_and_synth}, while at the same time
+provide a more accessible user interface for ecologists. Further, our
+approach can be used to rapidly construct class hierarchies from long
+lists of keywords using familiar spreadsheet software. For instance,
+an ecologist can easily list (or import) a set of terms, and then
+incrementally organize these into class hierarchies, and define
+relevant properties and their constraints. Based on our experiences
+using \owlifier\ with ecologists and evolutionary biologists studying
+trait data, we found that this approach can enable them to quickly and
+easily comprehend and construct useful ontologies.
 
 The rest of this paper is organized as follows. In
 \secref{sec:owlifier} we describe the basic syntax and semantics of
@@ -147,7 +148,7 @@ that also generally follow the ontology creation guidelines defined in
 ontology creation using OWL-DL, e.g., by assuming classes are disjoint
 by default (unless specified otherwise) and by applying implicit
 property restriction closures \cite{rector04:_owl_pizzas}. In
-\secref{sec:properties} we describe additional characteristics of
+\secref{sec:characteristics} we describe additional characteristics of
 \owlifier\ and discuss issues with respect to classification and
 reasoning. In \secref{sec:implementation} we briefly describe the
 \owlifier\ implementation, and conlcude in \secref{sec:conclusion}
@@ -161,7 +162,7 @@ the ontology using more advanced ontology editing tools if necessary.
 
 
 
-\section{\Owlifier\ Syntax and Semantics}
+\section{The Syntax and Semantics of \Owlifier}
 \label{sec:owlifier}
 
 An \owlifier\ table defines an OWL-DL
@@ -170,16 +171,16 @@ An \owlifier\ table defines an OWL-DL
 non-empty row in an \owlifier\ table corresponds to a block. The type
 of the block is given in the first column of the row. We describe each
 type of block supported by \owlifier\ below. Here we assume that if
-any properties or classes used in a block are undefined, i.e., are not
-imported from another ontology, then they are added to the ontology
-being specified by the \owlifier\ table. In general, we name blocks
+any properties or classes used in a block are not imported from
+another ontology, then they are to be added to the ontology being
+specified by the \owlifier\ table. In general, we name blocks
 according to the more generic terms used in
-\cite{bowers08:_concep_model_framew_for_expres,madina07:_ontol_for_descr_and_synth}
+\cite{bowers08:_concep_model_framew_for_expres,madin07:_ontol_for_descr_and_synth}
 instead of those of OWL-DL. This allows \owlifier\ to generate
 ontologies that extend the observational model of
-\cite{bowers08:_concep_model_framew_for_expres,madina07:_ontol_for_descr_and_synth}
+\cite{bowers08:_concep_model_framew_for_expres,madin07:_ontol_for_descr_and_synth}
 for data annotation, and in certain cases avoids confusion with
-established terms used within biology.
+established terms commonly used within ecology.
 
 \myblock{Import Blocks.} Import blocks assign namespace labels to
 external ontologies. Each external ontology is imported into the
@@ -190,23 +191,22 @@ an \owlifier\ table.  Rows containing import blocks take the form
 \begin{itemize}
 \item[]
   \begin{tabular}{|l|l|l|}\hline
-    \texttt{import} & $n$ & $u$ \\ \hline 
+    \textsf{import} & $n$ & $u$ \\ \hline 
   \end{tabular} 
 \end{itemize}
 where $n$ is a namespace label and $u$ is an OWL ontology URI. Classes
 and properties from imported ontologies are referenced by prefixing
 the namespace label $n$ to the corresponding class or property name in
-the normal way. As an example, the following block imports the ``earth
-realm'' ontology from the set of SWEET ontologies
-\cite{raskin:_seman_web_for_earth_and}
+the normal way. As an example, the following block imports the SWEET
+``Earth Realm'' ontology \cite{raskin:_seman_web_for_earth_and}
 \begin{tabbing}
-  ~~\texttt{import}  \texttt{sweet} 
-  \texttt{http://sweet.jpl.nasa.gov/ontology/earthrealm.owl}
+  ~~\textsf{import}  \textsf{sweet} 
+  \textsf{http://sweet.jpl.nasa.gov/ontology/earthrealm.owl}
 \end{tabbing}
 With this import block the class denoting Marine Ecosystems (a class
-defined in the above ontology) can be referred to from within an
+defined in the SWEET ontology) can be referred to from within an
 \owlifier\ table using the expression
-\texttt{sweet:MarineEcosystem}. Because this class refers to a class
+\textsf{sweet:MarineEcosystem}. Because this class refers to a class
 in another ontology, we refer to it as an \emph{imported class}.
 
 
@@ -214,31 +214,44 @@ in another ontology, we refer to it as an \emph{imported class}.
 define ontologies. An entity block introduces new OWL classes and
 specifies subclass relationships. Imported classes may also be used
 within entity blocks by prefixing class names with namespace labels
-(as described above).  We use the term `entity' to conform to the
-observational model of \cite{bowers08:_concep_model_framew_for_expres}
-and to avoid confusion with the term `class' used within biological
-taxonomies. Rows containing entity blocks take the form
+(as described above).  Rows containing entity blocks take the form
 \begin{itemize}
 \item[] 
   \begin{tabular}{|l|l|l|l|l|}\hline
-    \texttt{entity} & $c_1$ & $c_2$ & \dots & $c_n$ \\ \hline 
+    \textsf{entity} & $c_1$ & $c_2$ & \dots & $c_n$ \\ \hline 
   \end{tabular} \hfill ($n \ge 1$)
 \end{itemize}
-where each $c$ is a class, and each $c_i$ is asserted in the current
-ontology to subsume $c_{i+1}$, for $1 \le i < n$. That is, each $c_i$
-in a concept block induces the description-logic axiom $c_{i+1}
-\sqsubseteq c_i$.  If both $c_i$ and $c_{i+1}$ are imported classes,
-we say that the block defines an ``articulation'' (i.e., mapping)
-between the two classes. The following concept block defines a simple
-subclass hierarchy
+where each class $c_i$ is asserted in the current ontology to subsume
+$c_{i+1}$, for $1 \le i < n$. That is, each $c_i$ in an entity block
+induces the description-logic axiom $c_{i+1} \sqsubseteq c_i$.  If
+both $c_i$ and $c_{i+1}$ are imported classes, we say that the block
+defines an ``articulation'' (i.e., mapping) between the two
+classes. The following entity block defines a simple subclass
+hierarchy.
 \begin{tabbing}
-  ~~\texttt{entity} \texttt{PhysicalFeature} 
-    \texttt{AquaticPhysicalFeature} \texttt{River}
+  ~~\textsf{entity} \textsf{PhysicalFeature} 
+    \textsf{AquaticPhysicalFeature} \textsf{River}
 \end{tabbing}
-stating that Physical Feature, Aquatic Physical Feature, and River are
-classes, and that River is a subclass of Aquatic Physical Feature, and
-Aquatic Physical Feature is a subclass of Physical Feature.
-
+This block states that Physical Feature, Aquatic Physical Feature, and
+River are classes; River is a subclass of Aquatic Physical Feature;
+and Aquatic Physical Feature is a subclass of Physical Feature. The
+following entity block introduces a new class via an imported class.
+\begin{tabbing}
+  ~~\textsf{entity} \textsf{sweet:MarineEcosystem} 
+    \textsf{IntertidalEcosystem}
+\end{tabbing}
+This block states that Intertidal Ecosystem is a subclass of the
+Marine Ecosystem class imported from the SWEET ontology. Similarly,
+assuming ``marine'' denotes an existing ontology of marine ecosystem
+concepts, the following entity block defines a simple class
+articulation.
+\begin{tabbing}
+  ~~\textsf{entity} \textsf{sweet:MarineEcosystem} 
+    \textsf{marine:DeapSeaEcosystem}
+\end{tabbing}
+This block states that the Deap Sea Ecosystem class of the marine
+ontology is a subclass of the Marine Ecosystem class of the SWEET
+ontology.
 
 \myblock{Synonym Blocks.} Synonym blocks define equivalence
 relationships between ontology classes.  Rows containing synonym
@@ -246,48 +259,51 @@ blocks take the form
 \begin{itemize}
 \item[] 
   \begin{tabular}{|l|l|l|l|l|}\hline
-    \texttt{synonym} & $c_1$ & $c_2$ & \dots & $c_n$ \\ \hline 
+    \textsf{synonym} & $c_1$ & $c_2$ & \dots & $c_n$ \\ \hline 
   \end{tabular} \hfill ($n \ge 2$)
 \end{itemize}
-stating that each class $c_i$ is equivalent to class $c_{i+1}$ in the
-current ontology, for $1 \le i < n$. Each $c_i$ in a synonym blocks
-induces a description logic axiom of the form $c_i \equiv c_{i+1}$. As
-an example, the block
+where each class $c_i$ is equivalent to class $c_{i+1}$ in the current
+ontology, for $1 \le i < n$. That is, each $c_i$ in a synonym blocks
+induces a description logic axiom of the form $c_i \equiv
+c_{i+1}$. The following synonym block defines a simple equivalence
+relationship.
 \begin{tabbing}
-  ~~\texttt{synonym} \texttt{Maize} \texttt{Corn}
+  ~~\textsf{synonym} \textsf{Maize} \textsf{Corn}
 \end{tabbing}
-defines Maize and Corn as synonyms, i.e., as equivalent classes.
+This block states that the Maize and Corn classes are synonyms, i.e.,
+equivalent classes. Similar to entity blocks, synonym blocks often
+contain imported classes, e.g., to extend an existing ontology or to
+define ontology articulations.
 
 
-\myblock{Overlap Blocks.} Except in certain situations (see
-\secref{sec:properties}), classes are assumed to be disjoint in
-\owlifier.  Overlap blocks explicitly relax this assumption by stating
-that a set of classes may have overlapping instances. Rows containing
-overlap blocks take the form
+\myblock{Overlap Blocks.} Except in certain situations (described
+further in \secref{sec:characteristics}), classes are generally
+assumed to be disjoint in \owlifier.  Overlap blocks explicitly relax
+this assumption by stating that a give set of classes may have
+overlapping instances. Rows containing overlap blocks take the form
 \begin{itemize}
 \item[] 
   \begin{tabular}{|l|l|l|l|l|}\hline
-    \texttt{overlap} & $c_1$ & $c_2$ & \dots & $c_n$ \\ \hline 
+    \textsf{overlap} & $c_1$ & $c_2$ & \dots & $c_n$ \\ \hline 
   \end{tabular} \hfill ($n \ge 2$)
 \end{itemize}
-stating that each class $c_i$ is allowed to share instances with each
-class $c_j$, for $1 \le i,j \le n$. In particular, a given $c_i$ and
-$c_j$ in an overlap block are not defined to be disjoint classes in
-the current ontology. As an example, consider the following entity
-blocks that define the classes Estuary, Lagoon, and Marsh as
-subclasses of Ecological Habitats.
-begin
+where each class $c_i$ is allowed to share instances with each class
+$c_j$, for $1 \le i,j \le n$. In particular, a given $c_i$ and $c_j$
+in an overlap block are not defined to be disjoint classes in the
+current ontology. As an example, consider the following entity blocks
+that define the classes Estuary, Lagoon, and Marsh as subclasses of
+Ecological Habitats.
 \begin{tabbing}
-  ~~\texttt{entity} \texttt{EcologicalHabitat} \texttt{Estuary} \\ 
-  ~~\texttt{entity} \texttt{EcologicalHabitat} \texttt{Lagoon} \\ 
-  ~~\texttt{entity} \texttt{EcologicalHabitat} \texttt{Marsh} \\ 
+  ~~\textsf{entity} \textsf{EcologicalHabitat} \textsf{Estuary} \\ 
+  ~~\textsf{entity} \textsf{EcologicalHabitat} \textsf{Lagoon} \\ 
+  ~~\textsf{entity} \textsf{EcologicalHabitat} \textsf{Marsh} 
 \end{tabbing}
 Given only these blocks, \owlifier\ treats Estuary, Lagoon, and Marsh
 as disjoint classes. To relax this assumption and allow, e.g., types
 of Lagoons to also be types of Estuaries, we explicitly add the
 following overlap block
 \begin{tabbing}
-  ~~\texttt{overlap} \texttt{Estuary} \texttt{Lagoon}
+  ~~\textsf{overlap} \textsf{Estuary} \textsf{Lagoon}
 \end{tabbing}
 In general, overlap blocks are rarely used but provide a mechanism to
 override the default behavior of \owlifier\ in asserting disjoint
@@ -300,7 +316,7 @@ within OWL is a property defined between two class instances. Rows
 containing relationship blocks take the form
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|l|l|l|l|}\hline \texttt{relationship} & $p$ & $c_1$
+  \begin{tabular}{|l|l|l|l|l|l|}\hline \textsf{relationship} & $p$ & $c_1$
     & $c_2$ & \dots & $c_n$ \\ \hline
   \end{tabular} \hfill ($n \ge 2$)
 \end{itemize}
@@ -311,42 +327,64 @@ instance of $c_i$ has, amongst possibly other things, a relationship
 through $p$ to some instance of $c_{i+1}$.  For example, the following
 block states that the class California Voles live in Grassy Areas.
 \begin{tabbing}
-  ~~\texttt{relationship} \texttt{livesIn} \texttt{CaliforniaVole} 
-    \texttt{GrassyArea}
+  ~~\textsf{relationship} \textsf{livesIn} \textsf{CaliforniaVole} 
+    \textsf{GrassyArea}
 \end{tabbing}
 In some cases, a particular property can apply to a sequence of
 classes, and for convenience, each such class can be specified in a
 single block. For example, consider the following block.
 \begin{tabbing}
-  ~~\texttt{relationship} \texttt{directlyBelow} \texttt{Hypolimnion} 
-    \texttt{Thermocline} \texttt{Epilimnion} 
+  ~~\textsf{relationship} \textsf{directlyBelow} \textsf{Hypolimnion} 
+    \textsf{Thermocline} \textsf{Epilimnion} 
 \end{tabbing}
 This block states that, e.g., within a thermally stratified lake, the
 Hypolimnion layer is directly below the Thermocline layer, and the
 Thermocline layer is directly below the Epilimnion layer. 
 
 \myblock{Transitive Blocks.} Transitive blocks are special cases of
-relationship blocks in which the object property is asserted to be
-transitive. That is, if $p$ is a transitive property from individuals
-$o_1$ to $o_2$ and from $o_2$ to $o_3$, then $p$ is also assumed to be
-from $o_1$ to $o_3$. Rows containing transitive blocks take the form
+relationship blocks where the object property is asserted to be
+transitive. If a property $p$ is declared to be transitive, whenever
+$p$ relates an individual $o_1$ to an individual $o_2$, and an
+individual $o_2$ to an individual $o_3$, then $p$ is also assumed to
+relate $o_1$ to $o_3$. Rows containing transitive blocks take the form
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|l|l|l|l|}\hline \texttt{transitive} & $p$ & $c_1$
+  \begin{tabular}{|l|l|l|l|l|l|}\hline \textsf{transitive} & $p$ & $c_1$
     & $c_2$ & \dots & $c_n$ \\ \hline
   \end{tabular} \hfill ($n \ge 2$)
 \end{itemize}
 where $p$ is an object property and each $c_i$ is a class, for $1 \le
-i \le n$. As a simple example, the following transitive block
+i \le n$. The following block is a simple example of a transitive
+relationship. 
 \begin{tabbing}
-  ~~\texttt{transitive} \texttt{hasPart} \texttt{Body}
-  \texttt{Head} \texttt{Eye} \texttt{Retina}
+  ~~\textsf{transitive} \textsf{hasPart} \textsf{Body}
+  \textsf{Head} \textsf{Eye} \textsf{Retina}
 \end{tabbing} 
-states that every Body has a Head as a part, every Head has an Eye as
-a part, and every Eye has a Retina as a part. Moreover, because the
-part-of property here is defined to be transitive, it is possible to
-infer that every Body also has an Eye and a Retina.
+This block states that every Body has a Head as a part, every Head has
+an Eye as a part, and every Eye has a Retina as a part. Moreover,
+because the part-of property here is defined to be transitive, it is
+possible to infer that every Body also has an Eye and a Retina through
+the corresponding relationship restrictiosn, i.e., $\textsf{Body}
+\sqsubseteq \exists \textsf{hasPart} . \textsf{Head}$, $\textsf{Head}
+\sqsubseteq \exists \textsf{hasPart} . \textsf{Eye}$, and
+$\textsf{Eye} \sqsubseteq \exists \textsf{hasPart} . \textsf{Retina}$.
 
+
+\myblock{Inverse Blocks.} Inverse blocks state that two object
+properties are inverses of each other. If $p_1$ and $p_2$ are defined
+to be inverse properties, whenever $p_1$ relates an individual $o_1$
+to an individual $o_2$ then $p_2$ is assumd to relate $o_2$ to $o_1$.
+Rows containing inverse blocks take the form
+\begin{itemize}
+\item[]
+  \begin{tabular}{|l|l|l|}\hline \textsf{inverse} & $p_1$ & $p_2$
+\\ \hline
+  \end{tabular}
+\end{itemize}
+where $p_1$ and $p_2$ are object properties. A common example of
+inverse properties are \texttt{partOf} and \texttt{hasPart}.
+
+\myblock{}*** HERE *** 
 
 \myblock{Attribute Blocks.} Attribute blocks define required
 \emph{datatype} properties of concepts. Unlike object properties, a
@@ -355,7 +393,7 @@ instance and a literal value (e.g., string, integer, etc.). Rows
 containing attribute blocks take the form
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \texttt{attribute} & $p$ & $c_1$
+  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \textsf{attribute} & $p$ & $c_1$
     & $c_2$ & \dots & $c_n$ \\ \hline
   \end{tabular} \hfill ($n \ge 1$)
 \end{itemize}
@@ -370,7 +408,7 @@ with a literal value. As an example, the following ...
 \emph{constant values} for concepts. A value block has the form
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \texttt{value} & $P$ & $V$ & $C_1$
+  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \textsf{value} & $P$ & $V$ & $C_1$
     & $C_2$ & \dots & $C_n$ \\ \hline
   \end{tabular} \hfill ($n \ge 1$)
 \end{itemize}
@@ -382,24 +420,13 @@ restrictions stated by value blocks are often used for defining
 so-called \emph{value partitions} \cite{co-ode}.
 
 
-\myblock{Inverse Blocks.} Inverse blocks state that two object
-properties are inverses of each other. That is, for inverse properties
-$P_1$ and $P_2$ and concept instances $O_1$ and $O_2$, if $P_1(O_1) =
-O_2$, then $P_2(O_2) = O_1$.  An inverse block has the form
-\begin{itemize}
-\item[]
-  \begin{tabular}{|l|l|l|}\hline \texttt{inverse} & $P_1$ & $P_2$
-\\ \hline
-  \end{tabular}
-\end{itemize}
-where $P_1$ and $P_2$ are object properties. 
 
 \myblock{Minimum Blocks.} Minimum blocks state the minimum number of
 properties $P$ an instance of a concept may have.  Minimum blocks have
 the form
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \texttt{minimum} & $P$ & $N$ & 
+  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \textsf{minimum} & $P$ & $N$ & 
     $C_1$ & $C_2$ & $\dots$ & $C_m$
     \\ \hline
   \end{tabular}
@@ -410,8 +437,8 @@ and so on. A cardinality block induces the DL axiom \[C_i \sqsubseteq
 (\le N P.C_{i+1})\] stating that each instance of $C_i$ must be related to
 at least $N$ unique instances of $C_{i+1}$ via $P$. For example, the blocks
 \begin{quote}
-\texttt{minimum} \texttt{hasPart} 1 \texttt{Body} \texttt{Head} \\
-\texttt{minimum} \texttt{hasPart} 2 \texttt{Head} \texttt{Eye}
+\textsf{minimum} \textsf{hasPart} 1 \textsf{Body} \textsf{Head} \textsf{Nose}\\
+\textsf{minimum} \textsf{hasPart} 2 \textsf{Head} \textsf{Eye}
 \end{quote}
 states that a body has at least one head and at least two eyes.
 
@@ -421,7 +448,7 @@ number of properties $P$ an instance of a concept may have.
 Maximum blocks have the form
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \texttt{maximum} & $P$ & $N$ & 
+  \begin{tabular}{|l|l|l|l|l|l|l|}\hline \textsf{maximum} & $P$ & $N$ & 
     $C_1$ & $C_2$ & $\dots$ & $C_m$
     \\ \hline
   \end{tabular}
@@ -432,8 +459,8 @@ and so on. A cardinality block induces the DL axiom \[C_i \sqsubseteq
 (\ge N P.C_{i+1})\] stating that each instance of $C_i$ may be related to
 at most $N$ unique instances of $C_{i+1}$ via $P$. For example, the blocks
 \begin{quote}
-\texttt{maximum} \texttt{hasPart} 1 \texttt{Body} \texttt{Head} \\
-\texttt{maximum} \texttt{hasPart} 2 \texttt{Head} \texttt{Eye}
+\textsf{maximum} \textsf{hasPart} 1 \textsf{Body} \textsf{Head} \\
+\textsf{maximum} \textsf{hasPart} 2 \textsf{Head} \textsf{Eye}
 \end{quote}
 states that a body has at least one head and at least two eyes.
 
@@ -444,7 +471,7 @@ sufficient condition for being an instance of a concept $C_1$. A
 sufficient block has the form
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|l|l|}\hline \texttt{sufficient} & $C_1$ & $P$ & $C_2$
+  \begin{tabular}{|l|l|l|l|}\hline \textsf{sufficient} & $C_1$ & $P$ & $C_2$
     \\ \hline
   \end{tabular}
 \end{itemize}
@@ -462,7 +489,7 @@ definitions to concepts and properties. A description block has the
 form
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|l|}\hline \texttt{description} & $T$ & $S$
+  \begin{tabular}{|l|l|l|}\hline \textsf{description} & $T$ & $S$
     \\ \hline
   \end{tabular}
 \end{itemize}
@@ -474,19 +501,16 @@ string.
 ontology, and are ignored by \owlifier.  A note block has the form
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|l|}\hline \texttt{note} & $S$
+  \begin{tabular}{|l|l|l|}\hline \textsf{note} & $S$
 \\ \hline
   \end{tabular}
 \end{itemize}
 where $S$ is a comment string.
 
 
-*** Say something about relaxing block syntax ... to make it easier to
-specify ontologies. Also, allow blocks to be given in any order.
 
-
-\section{\owlifier\ Properties and Reasoning}
-\label{sec:properties}
+\section{Additional Characteristics of \Owlifier}
+\label{sec:characteristics}
 
 
 Some desirable properties: 
@@ -496,7 +520,11 @@ Some desirable properties:
 \item ???
 \end{itemize}
 
-\section{\owlifier\ Implementation}
+
+*** Say something about relaxing block syntax ... to make it easier to
+specify ontologies. Also, allow blocks to be given in any order.
+
+\section{Implementation of \Owlifier}
 \label{sec:implementation}
 
 Flags: 
