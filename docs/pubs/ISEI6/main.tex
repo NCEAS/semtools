@@ -2,7 +2,7 @@
 % other options: preprint, review, 1p, 3p, 5p, 
 % bib options: authoryear, number, longtitle,
 % other options: times
-
+\usepackage{graphicx}
 
 \newcommand{\Owlifier}{\textsf{Owlifier}}
 \newcommand{\owlifier}{\textsf{owlifier}}
@@ -147,9 +147,9 @@ The rest of this paper is organized as follows. In
 that also generally follow the ontology creation guidelines defined in
 \cite{rector04:_owl_pizzas}. We also simplify certain aspects of
 ontology creation using OWL-DL, e.g., by assuming classes are disjoint
-by default (unless specified otherwise) and by applying implicit
-property restriction closures \cite{rector04:_owl_pizzas}. In
-\secref{sec:characteristics} we describe additional characteristics of
+by default (unless specified otherwise) and supporting sufficient
+restrictions \cite{rector04:_owl_pizzas}. In
+\secref{sec:features} we describe additional characteristics of
 \owlifier\ and discuss issues with respect to classification and
 reasoning. In \secref{sec:implementation} we briefly describe the
 \owlifier\ implementation, and conlcude in \secref{sec:conclusion}
@@ -283,7 +283,7 @@ ontology mappings.
 
 
 \myblock{Overlap Blocks.} Except in certain situations (described
-further in \secref{sec:characteristics}), classes are generally
+further in \secref{sec:features}), classes are generally
 assumed to be disjoint in \owlifier.  Overlap blocks explicitly relax
 this assumption by stating that a given set of classes may have
 overlapping instances. Rows containing overlap blocks take the form
@@ -572,31 +572,30 @@ where $s$ is a comment string.
 
 
 \section{Additional Features of \Owlifier}
-\label{sec:characteristics}
+\label{sec:features}
 
 In this section, we briefly describe some of the additional features
 of \owlifier, specifically focusing on the use of disjoint classes,
-property closures, \owlifier\ reasoning, and additional block syntax.
+\owlifier\ reasoning, and additional block syntax.
  
 \subsection{Disjoint Class Inference}
 
 OWL is based on the open world assumption, which can lead to a number
 of ontology development ``pitfalls'' for those new to the language
 \cite{smith04:_owl_web_ontol_languag_guide,rector04:_owl_pizzas}. One
-example is in the creation of disjoint classes (another concerns
-property closures, described below). In particular, unless explicitly
-stated, distinct classes within an OWL-DL ontology are never assumed
-to be disjoint. However, in many ontologies a large number of classes
-are typically defined as being disjoint (e.g., sibling classes), and
-stating these disjoint constraints is often time-consuming since each
-pair of classes must be given an explicit disjoint assertion. Editors
-such as Protege \cite{knublauch04:_editin_descr_logic_ontol_with}
-provide shortcuts via the user interface to create specific sets of
-disjoint assertions, e.g., by allowing a user to define all children
-of a particular class as disjoint. In general, however, many users
-expect such classes to be disjoint by default
-\cite{rector04:_owl_pizzas} and this expectation often leads to
-modeling errors.
+example is in the creation of disjoint classes.  In particular, unless
+explicitly stated, distinct classes within an OWL-DL ontology are
+never assumed to be disjoint. However, in many ontologies a large
+number of classes are typically defined as being disjoint (e.g.,
+sibling classes), and stating these disjoint constraints is often
+time-consuming since each pair of classes must be given an explicit
+disjoint assertion. Editors such as Protege
+\cite{knublauch04:_editin_descr_logic_ontol_with} provide shortcuts
+via the user interface to create specific sets of disjoint assertions,
+e.g., by allowing a user to define all children of a particular class
+as disjoint. In general, however, many users expect such classes to be
+disjoint by default \cite{rector04:_owl_pizzas} and this expectation
+often leads to modeling errors.
 
 Alternatively, the default assumption in \owlifier\ is that distinct
 classes are disjoint. Specifically, as an \owlifier\ table is
@@ -615,45 +614,140 @@ case, which in general should lead to a more intuitive ontology
 editing environment and an overall fewer number of modeling mistakes.
 
 
-\subsection{Object Property Closure}
+\subsection{Reasoning in \Owlifier}
 
-Another common mistake for new users of OWL-DL concerns the user of
-universal rather than existential property restrictions
-\cite{rector04:_owl_pizzas}. In particular, an expression such as
-$\texttt{Body} \sqsubseteq \forall \textsf{hasPart}$
+Blocks in \owlifier\ are unambiguous, i.e., for every \owlifier\ block
+(or set of blocks in the case of sufficient blocks) there is a
+well-defined set of corresponding OWL-DL axioms. This property is
+important because it implies that reasoning can be performed over
+ontologies defined in \owlifier\ using standard OWL-DL reasoners.  We
+use this capability in our current \owlifier\ implementation
+(described further in \secref{sec:implementation}) to verify
+ontologies defined using \owlifier\ and report possible errors to
+users.
 
-\subsection{Reasoning in \owlifier}
+In general, new axioms are inferred from an \owlifier\ ontology
+primarily from the use of synonym blocks, sufficient blocks, and
+transitive blocks (whose inferences are described in the previous
+section). For instance, let $A$, $B$, and $C$ be classes and $P$ be an
+object property. From an axiom $A \equiv B$ generated from a synonym
+block, and an axiom $B \sqsubseteq \exists P.C$ generated from a
+relationship block, the axiom $A \sqsubseteq \exists P.B$ would be
+inferred. Thus, the axioms of a particular class are ``inherited'' by
+all of the synonyms of the class. Similarly, from an axiom $A \equiv
+\exists P. C$ generated from a sufficent block, and an axiom $B
+\sqsubseteq \exists P.C$ generated from a relationship block, the axiom
+$B \sqsubseteq A$ would be inferred. For both the case of synonym and
+sufficient blocks, the use of equivalence permits a number of
+additional inferences to be made via an OWL-DL reasoner.
 
-4. is reasonable, e.g., it is possible to define values, value types,
-and untangling
+As described in \cite{rector04:_owl_pizzas} additional reasoning can
+occur within OWL-DL ontologies when domain and range axioms are
+providedq (as well as, e.g., property closure axioms).  We explicitly
+do not consider these constraints in the current version of \owlifier\
+because they also often result in modeling errors for inexperienced
+OWL-DL users \cite{rector04:_owl_pizzas}. Instead, we adopt the more
+traditional description-logic approaches that do not have explicit
+domain and range axioms.  Although not currently supported in
+\owlifier, domain and range constraints could be inferred from given
+relationship blocks as well as property closure axioms. 
 
 \subsection{Sparse Blocks} 
 
-1. non-ambiguous blocks (no block leads to an ambiguous DL axiom)
+To help simplify the creation of class hierarchies and property
+sequences (including transitive, cardinality, and sufficient blocks),
+we allow for ``sparse'' blocks that inherit missing information from
+their closest proceeding block. For instance the following entity
+blocks
+\begin{tabbing}
+  ~~\textsf{entity} \= \textsf{EcologicalHabitat} \= \textsf{Estuary} \= \kill
+  ~~\textsf{entity} \> \textsf{EcologicalHabitat} \> \textsf{Estuary} \> 
+  \textsf{Bay}\\
+  ~~\textsf{entity} \> \textsf{EcologicalHabitat} \> \textsf{Estuary} \>
+  \textsf{Fjord} \\
+  ~~\textsf{entity} \> \textsf{EcologicalHabitat} \> \textsf{Marsh} \>
+  \textsf{TidalMarsh} \\ 
+  ~~\textsf{entity} \> \textsf{EcologicalHabitat} \> \textsf{Marsh} \>
+  \textsf{SaltMarsh}
+\end{tabbing}
+can be equivalently represented in \owlifier\ using the following
+sparse blocks.
+\begin{tabbing}
+  ~~\textsf{entity} \= \textsf{EcologicalHabitat} \= \textsf{Estuary} \= \kill
+  ~~\textsf{entity} \> \textsf{EcologicalHabitat} \> \textsf{Estuary} \> 
+  \textsf{Bay}\\
+  \> \> \> \textsf{Fjord} \\
+  \> \> \textsf{Marsh} \> \textsf{TidalMarsh} \\ 
+  \> \> \> \textsf{SaltMarsh}
+\end{tabbing}
+In general, the use of sparse blocks simplifies ontology creation by
+not requiring users to enter every (redundant, leading) field to be
+explicitly given, which in turn can simplify the overall layout of the
+ontology within a spreadsheet.  Additionaly, \owlifier\ does not place
+constraints on the order of blocks within a spreadsheet. Classes also
+do not need to explicitly be defined within an entity block, e.g.,
+classes without corresponding entity blocks can be introduced simply
+through synonym and relationship blocks. This typically occurs when a
+particular class does not participate as a subclass or superclass of
+another class in the current ontology. Overall, one of our goals is
+for \owlifier\ to allow minimal information to be entered by limitting
+redundancy as well as by supporting a range of inferences, while at
+the same time reducing the number of errors commonly made in ontology
+development by non-experts.
 
-5. we allow sparse blocks, and blocks can be given in any order
-
-
-
-\section{Implementation of \Owlifier}
+\section{The \Owlifier Application}
 \label{sec:implementation}
 
-figure showing basics owlifier interaction, description.
+\figref{fig:owlifier} shows the general architecture of the \owlifier\
+application. A scientist or researcher first creates a spreadsheet
+containing a set of ontology definitions using \owlifier\ conventions.
+The spreadsheet is then exported as a plain-text file containing the
+\owlifier\ table, e.g., using a CSV or tab-delimited format. The
+\owlifier\ table is then sent to the \owlifier\ application, which
+performs a number of steps that include: (i) parsing the file; (ii)
+generating the corresponding OWL-DL representation (e.g., in the
+current implementation, the Jena API is used \cite{carroll04:_jena});
+(iii) validating the ontology and ensuring it is consistent via an
+OWL-DL reasoner (e.g., the current implementation uses Pellet
+\cite{sirin07:_pellet}); and (iv) outputing the corresponding OWL-DL
+file. The resulting OWL file can then be refined and extended via
+existing OWL tools (e.g., Protege or SWOOP). It is possible that the
+refined ontology is converted back to a corresponding \owlifier\
+representation (shown using dashed lines in
+\figref{fig:owlifier}). While simple to perform, this last conversion
+is not information preserving since not all OWL-DL constructs are
+represented through \owlifier\ blocks.
 
-current status of implementation (subset of the syntax described here), perform classification via pellet/jena, performs disjoint check
- 
-ongoing extensions: additional syntax; specify delimeter characters;
-perform inverse translations (easy to perform, e.g., ...); perform
-closure computation (again, easy). 
+The current implementation of the \owlifier\ application is written in
+Java and supports a subset of the blocks defined in
+\secref{sec:owlifier}. In particular, we are currently extending
+\owlifier\ to support cardinality and sufficient blocks as well as to
+perform the above conversion from OWL-DL files to corresponding
+\owlifier\ blocks. As noted above, the current implementation,
+although it does not support all of the blocks defined here, is being
+used within a project focused on supporting trait data and many of the
+extensions outlined here are based on these experiences. In addition,
+\owlifier\ has been used to construct term hierarchies from large sets
+of keywords (harvested from existing metadata documents) as well as to
+define articulations into the observation ontology defined in
+\cite{madin07:_ontol_for_descr_and_synth}. 
 
+\begin{figure}
+  \centering
+  \includegraphics[scale=.5]{architecture.pdf}
+  \caption{The basic \owlifier\ application and relation to other
+    technologies.}
+  \label{fig:owlifier}
+\end{figure}
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-
-related work: similar to dave's work on ``global taxonomic
-constraints'', which assume certain structures of hierarchies, e.g.,
-disjoint siblings. protege approach/plugin
+We describe a new To address barriers for ontology development and adoption within
+ecology, we have presented a new approach that allows the \owlifier,
+which consists of a set orelated work: similar to dave's work on
+``global taxonomic constraints'', which assume certain structures of
+hierarchies, e.g., disjoint siblings. protege approach/plugin
 
 future work: the ongoing extensions described above, support seamless
 conversion into and out of owlifier, e.g., if someone extends owlifier

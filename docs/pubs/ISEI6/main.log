@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2007.2.11)  2 DEC 2008 20:31
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2007.2.11)  2 DEC 2008 22:44
 entering extended mode
  %&-line parsing enabled.
 **\input main.tex
@@ -61,6 +61,31 @@ Package: natbib 2007/02/05 8.0 (PWD)
 LaTeX Info: Redefining \cite on input line 602.
 \c@NAT@ctr=\count92
 ))
+(/usr/local/texlive/2007/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2007/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks16
+)
+(/usr/local/texlive/2007/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2006/02/20 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2007/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/local/texlive/2007/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: pdftex.def on input line 90.
+
+(/usr/local/texlive/2007/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2007/01/08 v0.04d Graphics/color for pdfTeX
+\Gread@gobject=\count93
+))
+\Gin@req@height=\dimen106
+\Gin@req@width=\dimen107
+)
 \emailauthor{sbowers@ucdavis.edu}{Shawn Bowers\corref {cor1}}
 \emailauthor{jmadin@bio.mq.edu.au}{Joshua S. Madin}
 \urlauthor{schild@nceas.ucsb.edu}{Mark P. Schildhauer}
@@ -79,6 +104,18 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 39.
 LaTeX Font Info:    ... okay on input line 39.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 39.
 LaTeX Font Info:    ... okay on input line 39.
+ (/usr/local/texlive/2007/texmf-dist/tex/context/base/supp-pdf.tex
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count94
+\scratchdimen=\dimen108
+\scratchbox=\box30
+\nofMPsegments=\count95
+\nofMParguments=\count96
+\MPscratchCnt=\count97
+\MPscratchDim=\dimen109
+\MPnumerator=\count98
+\everyMPtoPDFconversion=\toks17
+)
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 68.
 LaTeX Font Info:    External font `cmex10' loaded for size
@@ -92,43 +129,46 @@ LaTeX Font Info:    External font `cmex10' loaded for size
  [1
 
 
-{/usr/local/texlive/2007/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
- [4] [5] [6] [7] [8]
+{/usr/local/texlive/2007/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+[2] [3] [4] [5] [6] [7] [8]
 
 LaTeX Font Warning: Font shape `OT1/cmss/m/it' in size <10> not available
-(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 625.
+(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 617.
 
 
-(./main.bbl [9] [10]) [11] (./main.aux) ) 
+[9] <architecture.pdf, id=48, 675.52374pt x 266.9975pt>
+File: architecture.pdf Graphic file (type pdf)
+ <use architecture.pdf>
+[10] (./main.bbl [11 <./architecture.pdf>]) [12] (./main.aux) ) 
 Here is how much of TeX's memory you used:
- 812 strings out of 94073
- 9309 string characters out of 1162984
- 62990 words of memory out of 1500000
- 4140 multiletter control sequences out of 10000+50000
- 9544 words of font info for 33 fonts, out of 1200000 for 2000
+ 1455 strings out of 94073
+ 17844 string characters out of 1162984
+ 72242 words of memory out of 1500000
+ 4758 multiletter control sequences out of 10000+50000
+ 9676 words of font info for 33 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
- 30i,8n,30p,159b,223s stack positions out of 5000i,500n,6000p,200000b,5000s
-</usr/local/texlive/2007/texmf-dist/fo
-nts/type1/bluesky/cm/cmbx10.pfb></usr/local/texlive/2007/texmf-dist/fonts/type1
-/bluesky/cm/cmmi10.pfb></usr/local/texlive/2007/texmf-dist/fonts/type1/bluesky/
-cm/cmmi7.pfb></usr/local/texlive/2007/texmf-dist/fonts/type1/bluesky/cm/cmr10.p
-fb></usr/local/texlive/2007/texmf-dist/fonts/type1/bluesky/cm/cmr12.pfb></usr/l
-ocal/texlive/2007/texmf-dist/fonts/type1/bluesky/cm/cmr6.pfb></usr/local/texliv
-e/2007/texmf-dist/fonts/type1/bluesky/cm/cmr7.pfb></usr/local/texlive/2007/texm
-f-dist/fonts/type1/bluesky/cm/cmr8.pfb></usr/local/texlive/2007/texmf-dist/font
-s/type1/bluesky/cm/cmss10.pfb></usr/local/texlive/2007/texmf-dist/fonts/type1/b
-luesky/cm/cmssbx10.pfb></usr/local/texlive/2007/texmf-dist/fonts/type1/bluesky/
-cm/cmssi10.pfb></usr/local/texlive/2007/texmf-dist/fonts/type1/bluesky/cm/cmsy1
-0.pfb></usr/local/texlive/2007/texmf-dist/fonts/type1/bluesky/cm/cmsy6.pfb></us
-r/local/texlive/2007/texmf-dist/fonts/type1/bluesky/cm/cmsy7.pfb></usr/local/te
-xlive/2007/texmf-dist/fonts/type1/bluesky/cm/cmti10.pfb></usr/local/texlive/200
-7/texmf-dist/fonts/type1/bluesky/cm/cmti7.pfb></usr/local/texlive/2007/texmf-di
-st/fonts/type1/bluesky/cm/cmti8.pfb></usr/local/texlive/2007/texmf-dist/fonts/t
-ype1/bluesky/cm/cmtt10.pfb></usr/local/texlive/2007/texmf-dist/fonts/type1/urw/
-zapfding/uzdr.pfb>
-Output written on main.pdf (11 pages, 142887 bytes).
+ 30i,8n,30p,195b,209s stack positions out of 5000i,500n,6000p,200000b,5000s
+</usr/local/texl
+ive/2007/texmf-dist/fonts/type1/bluesky/cm/cmbx10.pfb></usr/local/texlive/2007/
+texmf-dist/fonts/type1/bluesky/cm/cmmi10.pfb></usr/local/texlive/2007/texmf-dis
+t/fonts/type1/bluesky/cm/cmmi7.pfb></usr/local/texlive/2007/texmf-dist/fonts/ty
+pe1/bluesky/cm/cmr10.pfb></usr/local/texlive/2007/texmf-dist/fonts/type1/bluesk
+y/cm/cmr12.pfb></usr/local/texlive/2007/texmf-dist/fonts/type1/bluesky/cm/cmr6.
+pfb></usr/local/texlive/2007/texmf-dist/fonts/type1/bluesky/cm/cmr7.pfb></usr/l
+ocal/texlive/2007/texmf-dist/fonts/type1/bluesky/cm/cmr8.pfb></usr/local/texliv
+e/2007/texmf-dist/fonts/type1/bluesky/cm/cmss10.pfb></usr/local/texlive/2007/te
+xmf-dist/fonts/type1/bluesky/cm/cmss8.pfb></usr/local/texlive/2007/texmf-dist/f
+onts/type1/bluesky/cm/cmssbx10.pfb></usr/local/texlive/2007/texmf-dist/fonts/ty
+pe1/bluesky/cm/cmssi10.pfb></usr/local/texlive/2007/texmf-dist/fonts/type1/blue
+sky/cm/cmsy10.pfb></usr/local/texlive/2007/texmf-dist/fonts/type1/bluesky/cm/cm
+sy6.pfb></usr/local/texlive/2007/texmf-dist/fonts/type1/bluesky/cm/cmsy7.pfb></
+usr/local/texlive/2007/texmf-dist/fonts/type1/bluesky/cm/cmti10.pfb></usr/local
+/texlive/2007/texmf-dist/fonts/type1/bluesky/cm/cmti7.pfb></usr/local/texlive/2
+007/texmf-dist/fonts/type1/bluesky/cm/cmti8.pfb></usr/local/texlive/2007/texmf-
+dist/fonts/type1/urw/zapfding/uzdr.pfb>
+Output written on main.pdf (12 pages, 347847 bytes).
 PDF statistics:
- 114 PDF objects out of 1000 (max. 8388607)
+ 145 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 131072)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
