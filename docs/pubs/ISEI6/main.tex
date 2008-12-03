@@ -41,27 +41,28 @@
 \begin{abstract}
   Discovery and integration of data is important in many ecological
   studies, especially those that concern broad-scale ecological
-  questions. Discovery and integration is often a difficult and
-  time-consuming task for researchers, in part because informal,
-  ambiguous, and sometimes inconsistent terms are used to describe
-  data semantics.  Ontologies can help address this problem by
-  providing a means to define ecological concepts to more consistently
-  annotate, relate, and search for data sets.  However, unlike in
-  molecular biology or biomedicine, few ontology development efforts
-  exist within ecology. Ontology development often requires
-  considerable expertise in ontology languages and development tools,
-  which is often a barrier for ontology creation in ecology. In this
-  paper we address this problem by providing an approach for ontology
-  creation that allows ecologists to use common spreadsheet tools to
-  describe different aspects of an ontology.  We present conventions
-  for creating, relating, and constraining concepts through
-  spreadsheets, and provide software tools for converting these
-  ontologies into equivalent OWL-DL representations. We also consider
-  inverse translations, i.e., to convert ontologies represented using
-  OWL-DL into our spreadsheet format. Our approach allows large lists
-  of terms to be easily related and organized into concept
-  hierarchies, and generally provides a more intuitive and natural
-  interface for ontology development by ecologists.
+  questions. Data discovery and integration is often a difficult and
+  time-consuming task for researchers, which is due in part to the use
+  of informal, ambiguous, and sometimes inconsistent terms for
+  describing data content.  Ontologies offer a solution to this
+  problem by providing consistent definitions of ecological concepts
+  that in turn can be used to annotate, relate, and search for data
+  sets.  However, unlike in molecular biology or biomedicine, few
+  ontology development efforts exist within ecology. Ontology
+  development often requires considerable expertise in ontology
+  languages and development tools, which is often a barrier for
+  ontology creation in ecology. In this paper we describe an approach
+  for ontology creation that allows ecologists to use common
+  spreadsheet tools to describe different aspects of an ontology.  We
+  present conventions for creating, relating, and constraining
+  concepts through spreadsheets, and provide software tools for
+  converting these ontologies into equivalent OWL-DL
+  representations. We also consider inverse translations, i.e., to
+  convert ontologies represented using OWL-DL into our spreadsheet
+  format. Our approach allows large lists of terms to be easily
+  related and organized into concept hierarchies, and generally
+  provides a more intuitive and natural interface for ontology
+  development by ecologists.
 \end{abstract}
 
 \maketitle
@@ -71,17 +72,17 @@
 Within the fields of molecular biology and biomedicine considerable
 effort has gone into developing ontologies for improving data
 discovery and integration
-\cite{bard04:_ontol_in_biolog,ashburner00:_gene_ontol}. While similar
+\cite{ashburner00:_gene_ontol,bard04:_ontol_in_biolog}. While similar
 benefits can be obtained for ecological data, far fewer efforts exist
-to develop richer and more consistent terminologies of ecology
-concepts
+to develop broad and consistent terminologies within ecology
 \cite{madin08:_advan_ecolog_resear_with_ontol,parr20:_data_sharin_in_ecolog_and_evolut}.
 The use of formal ontologies can significantly enhance metadata
-descriptions of ecological data. Annotating data with ontology terms
-can both help users interpret data as well as enable advanced
-capabilities for data discovery and integration, e.g., by exploiting
-subsumption and part-of hierarchies as well as more formal constraints
-such as cardinality restrictions on properties and term equivalence.
+descriptions of ecological data. For instance, annotating data with
+ontology terms can both help users interpret data as well as enable
+advanced capabilities for data discovery and integration, e.g., by
+exploiting subsumption and part-of hierarchies as well as more formal
+constraints such as cardinality restrictions on properties and term
+equivalence \cite{madin08:_advan_ecolog_resear_with_ontol}.
 
 Efforts to engage scientists in the development of ontologies
 typically leverage the W3C Web Ontology Language (OWL)
@@ -102,9 +103,9 @@ logic semantics of OWL-DL \cite{grau08:_owl}. This is especially true
 with ontology editors (such as Protege, SWOOP, etc.), which allow for
 very detailed ontology specifications, but at the same time require
 considerable understanding of the underlying ontology formalisms and
-syntax. Thus, we see the lack of suitable ontology editing tools for
-scientists as one of the major barriers for more wide-scale adoption
-of ontologies in ecology.
+syntax. We see the lack of suitable ontology editing tools for
+scientists without expertise in knowledge representation as one of the
+major barriers for more wide-scale adoption of ontologies in ecology.
 
 
 This paper presents a novel approach for ontology creation that aims
@@ -126,17 +127,19 @@ from previous blocks), which can further simplify the creation of
 large ontologies.
 
 While not as expressive as OWL-DL, our approach can produce ontology
-structures essential for enhanced data discovery and integration
-\cite{madin07:_ontol_for_descr_and_synth}, while at the same time
-provide a more accessible user interface for ecologists. Further, our
-approach can be used to rapidly construct class hierarchies from long
-lists of keywords using familiar spreadsheet software. For instance,
-an ecologist can easily list (or import) a set of terms, and then
-incrementally organize these into class hierarchies, and define
-relevant properties and their constraints. Based on our experiences
-using \owlifier\ with ecologists and evolutionary biologists studying
-trait data, we found that this approach can enable them to quickly and
-easily comprehend and construct useful ontologies.
+structures that are essential for improved data discovery and
+integration \cite{madin07:_ontol_for_descr_and_synth}. Just as
+important, because spreadsheet tools are frequently used by ecologists
+to store and analyze data, \owlifier\ can provide ecologists with a
+familiar and accessible user interface for ontology creation. This
+approach also leverages the ability of spreadsheet tools to organize
+and manipulate tabular data, e.g., allowing users to rapidly construct
+class hierarchies from long lists of keywords.  In this way, an
+ecologist can easily construct (or import) a set of terms, and then
+incrementally organize these into class hierarchies, properties, and
+constraints. In initial experiments with ecologists and evolutionary
+biologists studying trait data, we found that \owlifier\ enabled them
+to quickly and easily comprehend and construct useful ontologies.
 
 The rest of this paper is organized as follows. In
 \secref{sec:owlifier} we describe the basic syntax and semantics of
@@ -163,22 +166,27 @@ the ontology using more advanced ontology editing tools if necessary.
 \section{The Syntax and Semantics of \Owlifier}
 \label{sec:owlifier}
 
-An \owlifier\ table defines an OWL-DL
+As described above, an \owlifier\ table defines an OWL-DL
 \cite{smith04:_owl_web_ontol_languag_guide} ontology through a set of
 \emph{blocks} representing one or more ontology definitions.  Each
 non-empty row in an \owlifier\ table corresponds to a block. The type
-of the block is given in the first column of the row. We describe each
-type of block supported by \owlifier\ below. Here we assume that if
-any properties or classes used in a block are not imported from
-another ontology, then they are to be added to the ontology being
-specified by the \owlifier\ table. In general, we name blocks
-according to the more generic terms used in
+of the block is given in the first column of the row. 
+% This section describes in detail each type of block supported by
+% \owlifier.
+We assume that if any properties or classes used in a block are not
+imported from another ontology, then they are to be added to the
+ontology being specified by the \owlifier\ table (i.e., the
+``current'' ontology). In general, we name blocks according to the
+terms used in
 \cite{bowers08:_concep_model_framew_for_expres,madin07:_ontol_for_descr_and_synth}
-instead of those of OWL-DL. This allows \owlifier\ to generate
-ontologies that extend the observational model of
-\cite{bowers08:_concep_model_framew_for_expres,madin07:_ontol_for_descr_and_synth}
-for data annotation, and in certain cases avoids confusion with
-established terms commonly used within ecology.
+as opposed to the names used for corresponding constructs in
+OWL-DL. This choice of block names helps to simplify terminology
+(e.g., we use ``relation'' below instead of ``object property''),
+allows \owlifier\ to easilty generate ontologies that extend the
+observational model of
+\cite{bowers08:_concep_model_framew_for_expres,madin07:_ontol_for_descr_and_synth},
+and avoids confusion with established terms commonly used within
+ecology (e.g., ``class''). 
 
 \myblock{Import Blocks.} Import blocks assign namespace labels to
 external ontologies. Each external ontology is imported into the
@@ -241,15 +249,15 @@ following entity block introduces a new class via an imported class.
 This block states that Intertidal Ecosystem is a subclass of the
 Marine Ecosystem class imported from the SWEET ontology. Similarly,
 assuming ``marine'' denotes an existing ontology of marine ecosystem
-concepts, the following entity block defines a simple class
-articulation.
+concepts, the following block defines a simple class articulation.
 \begin{tabbing}
   ~~\textsf{entity} \textsf{sweet:MarineEcosystem} 
     \textsf{marine:DeapSeaEcosystem}
 \end{tabbing}
 This block states that the Deap Sea Ecosystem class of the marine
 ontology is a subclass of the Marine Ecosystem class of the SWEET
-ontology.
+ontology (thus defining a mapping between these two ontologies).
+
 
 \myblock{Synonym Blocks.} Synonym blocks define equivalence
 relationships between ontology classes.  Rows containing synonym
@@ -261,23 +269,23 @@ blocks take the form
   \end{tabular} \hfill ($n \ge 2$)
 \end{itemize}
 where each class $c_i$ is equivalent to class $c_{i+1}$ in the current
-ontology, for $1 \le i < n$. That is, each $c_i$ in a synonym blocks
+ontology, for $1 \le i < n$. That is, each $c_i$ in a synonym block
 induces a description logic axiom of the form $c_i \equiv
-c_{i+1}$. The following synonym block defines a simple equivalence
+c_{i+1}$. The following synonym block creates a simple equivalence
 relationship.
 \begin{tabbing}
   ~~\textsf{synonym} \textsf{Maize} \textsf{Corn}
 \end{tabbing}
-This block states that the Maize and Corn classes are synonyms, i.e.,
-equivalent classes. Similar to entity blocks, synonym blocks often
-contain imported classes, e.g., to extend an existing ontology or to
-define ontology articulations.
+This block states that the Maize and Corn classes are synonyms
+(equivalent classes). Similar to entity blocks, synonym blocks often
+contain imported classes for extending existing ontologies or defining
+ontology mappings.
 
 
 \myblock{Overlap Blocks.} Except in certain situations (described
 further in \secref{sec:characteristics}), classes are generally
 assumed to be disjoint in \owlifier.  Overlap blocks explicitly relax
-this assumption by stating that a give set of classes may have
+this assumption by stating that a given set of classes may have
 overlapping instances. Rows containing overlap blocks take the form
 \begin{itemize}
 \item[] 
@@ -286,10 +294,10 @@ overlapping instances. Rows containing overlap blocks take the form
   \end{tabular} \hfill ($n \ge 2$)
 \end{itemize}
 where each class $c_i$ is allowed to share instances with each class
-$c_j$, for $1 \le i,j \le n$. In particular, a given $c_i$ and $c_j$
-in an overlap block are not defined to be disjoint classes in the
-current ontology. As an example, consider the following entity blocks
-that define the classes Estuary, Lagoon, and Marsh as subclasses of
+$c_j$, for $1 \le i,j \le n$. That is, a given $c_i$ and $c_j$ in an
+overlap block are not defined to be disjoint classes in the current
+ontology. As an example, consider the following entity blocks that
+define the classes Estuary, Lagoon, and Marsh as subclasses of
 Ecological Habitats.
 \begin{tabbing}
   ~~\textsf{entity} \textsf{EcologicalHabitat} \textsf{Estuary} \\ 
@@ -323,9 +331,9 @@ classes.
 % and class $c_2$ is the property range. 
 
 \myblock{Relationship Blocks.} Relationship blocks define
-\emph{required} object properties of classes.  An object property
-within OWL is a property defined between two class instances. Rows
-containing relationship blocks take the form
+\emph{required} class object properties.  An object property within
+OWL is a property defined between two class instances. Rows containing
+relationship blocks take the form
 \begin{itemize}
 \item[]
   \begin{tabular}{|l|l|l|l|l|l|}\hline \textsf{relationship} & $p$ & $c_1$
@@ -333,7 +341,7 @@ containing relationship blocks take the form
   \end{tabular} \hfill ($n \ge 2$)
 \end{itemize}
 where $p$ is an object property and each $c$ is a class.  For every
-class $c_i$, the relationship block induces the DL axiom $c_i
+class $c_i$, the relationship block induces the description logic axiom $c_i
 \sqsubseteq \exists p . c_{i+1}$ stating that each instance of $c_i$
 is $p$-related to some instance of $c_{i+1}$, for $1 \le i < n$.  For
 example, the following block states that instances of the class
@@ -343,8 +351,9 @@ California Voles live in Grassy Areas.
     \textsf{GrassyArea}
 \end{tabbing}
 In some cases, a particular property can apply to a sequence of
-classes, and for convenience, each such class can be specified in a
-single block. For example, consider the following block.
+classes, and for convenience, each such class can be specified in
+\owlifier\ using a single block. For example, consider the following
+block.
 \begin{tabbing}
   ~~\textsf{relationship} \textsf{directlyBelow} \textsf{Hypolimnion} 
     \textsf{Thermocline} \textsf{Epilimnion} 
@@ -356,9 +365,9 @@ Thermocline layer is directly below the Epilimnion layer.
 \myblock{Transitive Blocks.} Transitive blocks are special cases of
 relationship blocks where the object property is asserted to be
 transitive. If a property $p$ is declared to be transitive, whenever
-$p$ relates an individual $o_1$ to an individual $o_2$, and an
-individual $o_2$ to an individual $o_3$, then $p$ is also assumed to
-relate $o_1$ to $o_3$. Rows containing transitive blocks take the form
+$p$ relates an individual $x$ to an individual $y$, and an
+individual $y$ to an individual $z$, then $p$ is also assumed to
+relate $x$ to $z$. Rows containing transitive blocks take the form
 \begin{itemize}
 \item[]
   \begin{tabular}{|l|l|l|l|l|l|}\hline \textsf{transitive} & $p$ & $c_1$
@@ -376,7 +385,7 @@ a part, every instance of the class Head has an Eye as a part, and
 every instance of the class Eye has a Retina as a part. Moreover,
 because the \textsf{hasPart} property above is defined to be
 transitive, it is possible to infer that every instance of Body also
-has an Eye and a Retina as a part through the implied relationship
+has an Eye and a Retina as a part through the inherited relationship
 restrictions $\textsf{Body} \sqsubseteq \exists \textsf{hasPart}
 . \textsf{Head}$, $\textsf{Head} \sqsubseteq \exists \textsf{hasPart}
 . \textsf{Eye}$, and $\textsf{Eye} \sqsubseteq \exists
@@ -455,16 +464,16 @@ must have. Rows containing exact blocks take the form
 \end{itemize}
 where $m$ is the number of properties $p$ that instances of concept
 $c_i$ must have to instances of concept $c_{i+1}$, for $1 \le i < n$.
-For each class $c_i$, an exactly block induces the description logic
+For each class $c_i$, an exact block induces the description logic
 axiom $c_i \sqsubseteq \; (= m) \; p.c_{i+1}$ stating that each
-instance of $c_i$ must be $p$-related to at $m$ unique instances of
+instance of $c_i$ must be $p$-related to $m$ unique instances of
 $c_{i+1}$.
 
 \myblock{Inverse Blocks.} Inverse blocks state that two object
 properties are inverses of each other. If $p_1$ and $p_2$ are defined
-to be inverse properties, whenever $p_1$ relates an individual $o_1$
-to an individual $o_2$ then $p_2$ (as the inverse of $p_1$) is assumed
-to relate $o_2$ to $o_1$.  Rows containing inverse blocks take the
+to be inverse properties, whenever $p_1$ relates an individual $x$
+to an individual $y$ then $p_2$ (as the inverse of $p_1$) is assumed
+to relate $y$ to $x$.  Rows containing inverse blocks take the
 form
 \begin{itemize}
 \item[]
@@ -473,9 +482,9 @@ form
   \end{tabular}
 \end{itemize}
 where $p_1$ and $p_2$ are object properties. A common example of
-inverse properties are \texttt{hasPart} and \texttt{partOf}, i.e., if
-an individual $o_1$ has an individual $o_2$ as a part, then $o_2$ is
-by definition a part of $o_1$.
+inverse properties are \textsf{hasPart} and \textsf{partOf}, i.e., if
+an individual $x$ has an individual $y$ as a part, then $y$ is
+by definition a part of $x$.
 
 
 % \myblock{Attribute Blocks.} Attribute blocks define required
@@ -521,111 +530,111 @@ main types of sufficient blocks. Rows containing sufficient blocks
 take one of the following forms.
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|l|l|l|l|}\hline 
+  \begin{tabular}{|l|l|l|l|l|l|l|l|}\hline 
     \textsf{sufficient} & \textsf{min}, \textsf{max}, or 
-    \textsf{exact} & $m$ & $c_1$ & $p$ & $c_2$\\ \hline
-  \end{tabular}
+    \textsf{exact} & $m$ & $p$ & $c_1$ & $c_2$ & \dots & $c_n$\\ \hline
+  \end{tabular} \hfill $(n \ge 2)$
 \item[]
-  \begin{tabular}{|l|l|l|l|l|}\hline 
-    \textsf{sufficient} & \textsf{only} & $c_1$ & $p$ & \{\textsf{not}\} $c_2$\\ \hline
-  \end{tabular}
+  \begin{tabular}{|l|l|l|l|l|l|l|}\hline 
+    \textsf{sufficient} & \textsf{only} & $p$ & $c_1$ & $c_2$ & \dots & 
+    \{\textsf{not}\} $c_n$\\ \hline
+  \end{tabular} \hfill $(n \ge 2)$
 \end{itemize}
-The first form states that individuals that are $p$-related to at
-least, at most, or exactly $m$ individuals of class $c_2$ are by
-definition individuals of the class $c_1$. Sufficient blocks of this
-form induce either the description logic axiom $c_1 \equiv \; (\le m)
-\; p . c_2$, $c_1 \equiv \; (\ge m) \; p . c_2$, or $c_1 \equiv \; (=
-m) \; p . c_2$ depending on whether the qualifier \textsf{min},
-\textsf{max}, or \textsf{exact} is used, respectively. The second form
-states that individuals that are $p$-related to only individuals of
-class $c_2$ are by definition individuals of the class
-$c_1$. Sufficient blocks of this form induce description logic axioms
-$c_1 \equiv \forall p . c_2$. The complement of $c_2$ may also be used
-within these blocks via the expression \textsf{not $c_2$}. Sufficient
-blocks of this form induce description logic axioms $c_1 \equiv
-\forall p . \neg c_2$ stating that individuals that are $p$-related to
-only individual that are not of class $c_2$ (i.e., the complement of
-$c_2$) are by definition individuals of class $c_1$.  Multiple
-sufficient blocks for a class $c_1$ are treated as a single
-description logic axiom, e.g., if each of the above blocks are defined
-for $c_1$ we have $c_1 \equiv \; (\le m \; p .  c_2) \sqcap (\ge m \;
-p . c_2) \sqcap (\forall p.c_2)$. The following blocks are simple
-examples of sufficient conditions.
+The first form states that individuals $p$-related to at least, at
+most, or exactly $m$ individuals of class $c_{i+1}$ are by definition
+individuals of the class $c_i$, for $1 \le i < n$. Each class $c_i$ of
+a sufficient block of this form induces either the description logic
+axiom $c_i \equiv \; (\le m) \; p . c_{i+1}$, $c_i \equiv \; (\ge m)
+\; p . c_{i+1}$, or $c_i \equiv \; (= m) \; p . c_{i+1}$ depending on
+whether the qualifier \textsf{min}, \textsf{max}, or \textsf{exact} is
+used, respectively.
+
+The second form states that individuals $p$-related to only
+individuals of class $c_{i+1}$ are by definition individuals of the
+class $c_i$, for $1 \le i < n$. For each $c_i$ a sufficient block of
+this form induces the description logic axiom $c_i \equiv \forall p
+. c_{i+1}$. The complement of the last class in a sequence may also be
+used within these blocks via the expression \textsf{not
+  $c_n$}. Sufficient blocks of this form induce description logic
+axioms $c_{n-1} \equiv \forall p . \neg c_n$ stating that individuals
+that are $p$-related to only individuals that are not of class $c_n$
+(i.e., the complement of $c_n$) are by definition individuals of class
+$c_{n-1}$.  Multiple sufficient blocks for a class are treated as a
+single description logic axiom through intersection. For example, the
+blocks
 \begin{tabbing}
-  ~~\textsf{sufficient} \textsf{mimimum} 1 \textsf{MammalProper} 
-  \textsf{hasPart} \textsf{MammalProperEar}
-  ~~\textsf{sufficient} \textsf{maximum} 2 \textsf{MammalProper} 
-  \textsf{hasPart} \textsf{MammalProperEar}
-  ~~\textsf{sufficient} \textsf{mimimum} 1 \textsf{MammalProper} 
-  \textsf{hasPart} \textsf{Hair}
-
-  ~~\textsf{sufficient} \textsf{mimimum} 3 \textsf{MammalProper} 
-  \textsf{hasPart} \textsf{MiddleEarBone}
+  ~~\textsf{sufficient} \= \textsf{only} \= $m$ \= $c_1$ \= $c_2$ \= \kill
+  ~~\textsf{sufficient} \> \textsf{min} \> $m$ \> $p$ \> $c_1$ \> $c_2$ \\ 
+  ~~\textsf{sufficient} \> \textsf{max} \> $m$ \> $p$ \> $c_1$ \> $c_2$ \\ 
+  ~~\textsf{sufficient} \> \textsf{only} \> $p$ \> $c_1$ \> $c_2$
 \end{tabbing}
-
-
+result in the single axiom $c_1 \equiv \; (\le m \; p .  c_2) \sqcap
+(\ge m \; p . c_2) \sqcap (\forall p.c_2)$. The following blocks are
+simple examples of sufficient conditions.
 \begin{tabbing}
-  ~~\textsf{sufficient} \textsf{relationship} \textsf{MammalProper} \textsf{hasPart} \textsf{SweatGland} \\
-  ~~\textsf{sufficient} \textsf{MammalProper} \textsf{hasPart} \textsf{Hair}
+  ~~\textsf{sufficient} \textsf{exact} \= \kill
+  ~~\textsf{sufficient} \textsf{min} \> 1 \textsf{hasPart} 
+  \textsf{Mammal} \textsf{Hair} \\
+  ~~\textsf{sufficient} \textsf{exact} \> 2  \textsf{hasPart} 
+  \textsf{Mammal} \textsf{MammalianEar} \\
+  ~~\textsf{sufficient} \textsf{only} \> \textsf{feedsYoungWith} 
+  \textsf{Mammal} \textsf{MammaryGland}\\
+  ~~\textsf{sufficient} \textsf{exact} \> 3 \textsf{hasPart} 
+  \textsf{MammalianEar} \textsf{MiddleEarBone}
 \end{tabbing}
-These blocks state that 
+The first three blocks state that individuals that have Hair as a
+part, that have exactly two Mammalian Ears as parts, and that feed
+their young via Mammary Glands are Mammals. The last block states
+individuals that have exactly three Middle Ear Bones are Mammalian
+Ears.
 
-
-
-\myblock{Description Blocks.} Description blocks assign plain-text
-definitions to concepts and properties. A description block has the
-form
+\myblock{Comment Blocks.} Comment blocks provide a mechanisms to add
+plain-text comments to \owlifier\ tables. A description block attaches
+a plain-text comment to classes and properties. Rows containing
+description blocks take the form
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|l|}\hline \textsf{description} & $T$ & $S$
+  \begin{tabular}{|l|l|l|}\hline \textsf{description} & $c$ or $p$ & $s$
     \\ \hline
   \end{tabular}
 \end{itemize}
-where $T$ is either a property or a concept and $S$ is a description
-string.
-
-
-\myblock{Note Blocks.} Note blocks add comments to the current
-ontology, and are ignored by \owlifier.  A note block has the form
+where the string $s$ is associated as a comment to the class $c$ or
+property $p$. A note block allows attaches comments to the current
+ontology. Rows containing note blocks take the form
 \begin{itemize}
 \item[]
-  \begin{tabular}{|l|l|l|}\hline \textsf{note} & $S$
+  \begin{tabular}{|l|l|l|}\hline \textsf{note} & $s$
 \\ \hline
   \end{tabular}
 \end{itemize}
-where $S$ is a comment string.
+where $s$ is a comment string.
 
 
-
-\section{Additional Characteristics of \Owlifier}
+\section{Additional Features of \Owlifier}
 \label{sec:characteristics}
 
+1. non-ambiguous blocks (no block leads to an ambiguous DL axiom)
 
-Some desirable properties: 
-\begin{itemize}
-\item non-ambiguous (no block leads to ambiguous DL axioms)
-\item ``reasonable'' (not everything has to be explicitly stated)
-\item ???
-\end{itemize}
+2. disjoint classes are computed by default
 
-*** Using owlifier to represent values, value types, and untangling
-from owl-pizzas ***
+3. property closures
 
+4. is reasonable, e.g., it is possible to define values, value types,
+and untangling
 
-*** Say something about relaxing block syntax ... to make it easier to
-specify ontologies. Also, allow blocks to be given in any order.
+5. we allow sparse blocks, and blocks can be given in any order
+
 
 \section{Implementation of \Owlifier}
 \label{sec:implementation}
 
-Flags: 
-\begin{itemize}
-\item delimeter characters 
-\item perform classification
-\item warnings
-\item owlifier to owl and owl to owlifier
-\item ??? 
-\end{itemize}
+figure showing basics owlifier interaction, description.
+
+current status of implementation (subset of the syntax described here), perform classification via pellet/jena, performs disjoint check
+ 
+ongoing extensions: additional syntax; specify delimeter characters;
+perform inverse translations (easy to perform, e.g., ...); perform
+closure computation (again, easy).
 
 
 \section{Conclusion}
@@ -634,7 +643,14 @@ Flags:
 
 related work: similar to dave's work on ``global taxonomic
 constraints'', which assume certain structures of hierarchies, e.g.,
-disjoint siblings. 
+disjoint siblings. protege approach/plugin
+
+future work: the ongoing extensions described above, support seamless
+conversion into and out of owlifier, e.g., if someone extends owlifier
+ontology, re-apply extensions after new owlifier changes. Also,
+support translation to oboe.
+
+
 
 %\bibliographystyle{elsarticle-num}
 \bibliographystyle{abbrv}
