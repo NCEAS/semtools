@@ -523,70 +523,31 @@ by definition a part of $x$.
 
 
 \myblock{Sufficient Blocks.} Sufficient blocks are similar to synonym
-blocks in that they state equivalences between classes. However,
-equivalence relationships are defined in sufficient blocks through
-property restrictions (i.e., via anonymous classes). We consider two
-main types of sufficient blocks. Rows containing sufficient blocks
-take one of the following forms.
-\begin{itemize}
-\item[]
-  \begin{tabular}{|l|l|l|l|l|l|l|l|}\hline 
-    \textsf{sufficient} & \textsf{min}, \textsf{max}, or 
-    \textsf{exact} & $m$ & $p$ & $c_1$ & $c_2$ & \dots & $c_n$\\ \hline
-  \end{tabular} \hfill $(n \ge 2)$
-\item[]
-  \begin{tabular}{|l|l|l|l|l|l|l|}\hline 
-    \textsf{sufficient} & \textsf{only} & $p$ & $c_1$ & $c_2$ & \dots & 
-    \{\textsf{not}\} $c_n$\\ \hline
-  \end{tabular} \hfill $(n \ge 2)$
-\end{itemize}
-The first form states that individuals $p$-related to at least, at
-most, or exactly $m$ individuals of class $c_{i+1}$ are by definition
-individuals of the class $c_i$, for $1 \le i < n$. Each class $c_i$ of
-a sufficient block of this form induces either the description logic
-axiom $c_i \equiv \; (\le m) \; p . c_{i+1}$, $c_i \equiv \; (\ge m)
-\; p . c_{i+1}$, or $c_i \equiv \; (= m) \; p . c_{i+1}$ depending on
-whether the qualifier \textsf{min}, \textsf{max}, or \textsf{exact} is
-used, respectively.
+blocks in that they state equivalences between classes. A sufficient
+block serves as a modifier to entity blocks, relationship blocks
+(including transitive blocks), and cardinality blocks, modifying the
+associated description logic axioms by using equivalence ($\equiv$) in
+place of sublass ($\sqsubseteq$). For example the block
+\begin{tabbing}
+  ~~\textsf{sufficient} \textsf{relationship} \textsf{hasPart} \textsf{Mammal} \textsf{Hair} 
+\end{tabbing}
+induces the description logic axiom $\textsf{Mammal} \equiv \exists
+\textsf{hasPart}.\textsf{Hair}$ stating that \emph{any} individual
+that has Hair as a part is a Mammal. Additionally, we allow
+relationship blocks within a sufficient block to be extended with
+\textsf{not} to state that absense of the property is a defining
+characteristic of the class. For example the following blocks
+\begin{tabbing}
+  ~~\textsf{sufficient} \textsf{entity} \textsf{Mammal} \textsf{Eutheria} \\
+  ~~\textsf{sufficient} \textsf{relationship not} \textsf{hasPart} \textsf{Eutheria} \textsf{EpipubicBone} 
+\end{tabbing}
+induces the axiom $\textsf{Eutheria} \equiv \textsf{Mammal} \sqcap
+\neg \exists \textsf{hasPart} . \textsf{EpipubicBone}$ stating that
+any Mammal that does not have an Epipubic Bone as a part is a
+Eutheria. Note also that multiple sufficient blocks for a particular
+class result in a single axiom in which each constraint is combined
+via conjunction ($\sqcap$).
 
-The second form states that individuals $p$-related to only
-individuals of class $c_{i+1}$ are by definition individuals of the
-class $c_i$, for $1 \le i < n$. For each $c_i$ a sufficient block of
-this form induces the description logic axiom $c_i \equiv \forall p
-. c_{i+1}$. The complement of the last class in a sequence may also be
-used within these blocks via the expression \textsf{not
-  $c_n$}. Sufficient blocks of this form induce description logic
-axioms $c_{n-1} \equiv \forall p . \neg c_n$ stating that individuals
-that are $p$-related to only individuals that are not of class $c_n$
-(i.e., the complement of $c_n$) are by definition individuals of class
-$c_{n-1}$.  Multiple sufficient blocks for a class are treated as a
-single description logic axiom through intersection. For example, the
-blocks
-\begin{tabbing}
-  ~~\textsf{sufficient} \= \textsf{only} \= $m$ \= $c_1$ \= $c_2$ \= \kill
-  ~~\textsf{sufficient} \> \textsf{min} \> $m$ \> $p$ \> $c_1$ \> $c_2$ \\ 
-  ~~\textsf{sufficient} \> \textsf{max} \> $m$ \> $p$ \> $c_1$ \> $c_2$ \\ 
-  ~~\textsf{sufficient} \> \textsf{only} \> $p$ \> $c_1$ \> $c_2$
-\end{tabbing}
-result in the single axiom $c_1 \equiv \; (\le m \; p .  c_2) \sqcap
-(\ge m \; p . c_2) \sqcap (\forall p.c_2)$. The following blocks are
-simple examples of sufficient conditions.
-\begin{tabbing}
-  ~~\textsf{sufficient} \textsf{exact} \= \kill
-  ~~\textsf{sufficient} \textsf{min} \> 1 \textsf{hasPart} 
-  \textsf{Mammal} \textsf{Hair} \\
-  ~~\textsf{sufficient} \textsf{exact} \> 2  \textsf{hasPart} 
-  \textsf{Mammal} \textsf{MammalianEar} \\
-  ~~\textsf{sufficient} \textsf{only} \> \textsf{feedsYoungWith} 
-  \textsf{Mammal} \textsf{MammaryGland}\\
-  ~~\textsf{sufficient} \textsf{exact} \> 3 \textsf{hasPart} 
-  \textsf{MammalianEar} \textsf{MiddleEarBone}
-\end{tabbing}
-The first three blocks state that individuals that have Hair as a
-part, that have exactly two Mammalian Ears as parts, and that feed
-their young via Mammary Glands are Mammals. The last block states
-individuals that have exactly three Middle Ear Bones are Mammalian
-Ears.
 
 \myblock{Comment Blocks.} Comment blocks provide a mechanisms to add
 plain-text comments to \owlifier\ tables. A description block attaches
@@ -613,16 +574,65 @@ where $s$ is a comment string.
 \section{Additional Features of \Owlifier}
 \label{sec:characteristics}
 
-1. non-ambiguous blocks (no block leads to an ambiguous DL axiom)
+In this section, we briefly describe some of the additional features
+of \owlifier, specifically focusing on the use of disjoint classes,
+property closures, \owlifier\ reasoning, and additional block syntax.
+ 
+\subsection{Disjoint Class Inference}
 
-2. disjoint classes are computed by default
+OWL is based on the open world assumption, which can lead to a number
+of ontology development ``pitfalls'' for those new to the language
+\cite{smith04:_owl_web_ontol_languag_guide,rector04:_owl_pizzas}. One
+example is in the creation of disjoint classes (another concerns
+property closures, described below). In particular, unless explicitly
+stated, distinct classes within an OWL-DL ontology are never assumed
+to be disjoint. However, in many ontologies a large number of classes
+are typically defined as being disjoint (e.g., sibling classes), and
+stating these disjoint constraints is often time-consuming since each
+pair of classes must be given an explicit disjoint assertion. Editors
+such as Protege \cite{knublauch04:_editin_descr_logic_ontol_with}
+provide shortcuts via the user interface to create specific sets of
+disjoint assertions, e.g., by allowing a user to define all children
+of a particular class as disjoint. In general, however, many users
+expect such classes to be disjoint by default
+\cite{rector04:_owl_pizzas} and this expectation often leads to
+modeling errors.
 
-3. property closures
+Alternatively, the default assumption in \owlifier\ is that distinct
+classes are disjoint. Specifically, as an \owlifier\ table is
+converted to an OWL-DL ontology, the system analyzes the class
+hierarchy structure and identifies pairs of classes that are: (1) not
+related via subclass relations (either direct or indirect subclasses);
+(2) not defined as synonyms; and (3) not explicitly defined to overlap
+via an overlap block. Each such pair of classes is then asserted by
+\owlifier\ in the resulting ontology as being disjoint. As described
+in \cite{rector04:_owl_pizzas}, undeclared disjoint classes are a
+common problem in ontology development using OWL-DL and often limit
+the utility of reasoning systems (by limiting the inferences that can
+be obtained). The approach employed in \owlifier\ for handling
+disjoint classes makes the common expectations of users the default
+case, which in general should lead to a more intuitive ontology
+editing environment and an overall fewer number of modeling mistakes.
+
+
+\subsection{Object Property Closure}
+
+Another common mistake for new users of OWL-DL concerns the user of
+universal rather than existential property restrictions
+\cite{rector04:_owl_pizzas}. In particular, an expression such as
+$\texttt{Body} \sqsubseteq \forall \textsf{hasPart}$
+
+\subsection{Reasoning in \owlifier}
 
 4. is reasonable, e.g., it is possible to define values, value types,
 and untangling
 
+\subsection{Sparse Blocks} 
+
+1. non-ambiguous blocks (no block leads to an ambiguous DL axiom)
+
 5. we allow sparse blocks, and blocks can be given in any order
+
 
 
 \section{Implementation of \Owlifier}
@@ -634,7 +644,7 @@ current status of implementation (subset of the syntax described here), perform 
  
 ongoing extensions: additional syntax; specify delimeter characters;
 perform inverse translations (easy to perform, e.g., ...); perform
-closure computation (again, easy).
+closure computation (again, easy). 
 
 
 \section{Conclusion}
@@ -648,7 +658,7 @@ disjoint siblings. protege approach/plugin
 future work: the ongoing extensions described above, support seamless
 conversion into and out of owlifier, e.g., if someone extends owlifier
 ontology, re-apply extensions after new owlifier changes. Also,
-support translation to oboe.
+support translation to oboe. Additional testing and evaulation.
 
 
 
