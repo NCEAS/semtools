@@ -148,18 +148,19 @@ that also generally follow the ontology creation guidelines defined in
 \cite{rector04:_owl_pizzas}. We also simplify certain aspects of
 ontology creation using OWL-DL, e.g., by assuming classes are disjoint
 by default (unless specified otherwise) and supporting sufficient
-restrictions \cite{rector04:_owl_pizzas}. In
-\secref{sec:features} we describe additional characteristics of
-\owlifier\ and discuss issues with respect to classification and
-reasoning. In \secref{sec:implementation} we briefly describe the
-\owlifier\ implementation, and conlcude in \secref{sec:conclusion}
-with related and future work. In general, the goal of \owlifier\ is
-not to support all constructs in OWL-DL, but instead to provide a
-higher-level ontology syntax (via spreadsheet blocks) that is easy for
-ecologists to use and understand while also providing the necessary
-constructs for developing typical ecological ontologies. By compiling
-\owlifier\ to OWL-DL, we also allow for experts to refine and extend
-the ontology using more advanced ontology editing tools if necessary.
+restrictions \cite{rector04:_owl_pizzas}. In \secref{sec:features} we
+describe additional characteristics of \owlifier\ and discuss issues
+with respect to classification and reasoning. In
+\secref{sec:implementation} we briefly describe the \owlifier\
+implementation, and conclude in \secref{sec:conclusion} with related
+and future work. In general, the goal of \owlifier\ is not to support
+all constructs in OWL-DL, but instead to provide a higher-level
+ontology syntax (via spreadsheet blocks) that is easy for ecologists
+to use and understand while also providing the necessary constructs
+for developing typical ecological ontologies. By compiling \owlifier\
+to OWL-DL, we also allow for experts to refine and extend the ontology
+using more advanced ontology editing tools if necessary
+(cf.~\figref{fig:owlifier}).
 
 
 
@@ -182,7 +183,7 @@ terms used in
 as opposed to the names used for corresponding constructs in
 OWL-DL. This choice of block names helps to simplify terminology
 (e.g., we use ``relation'' below instead of ``object property''),
-allows \owlifier\ to easilty generate ontologies that extend the
+allows \owlifier\ to easily generate ontologies that extend the
 observational model of
 \cite{bowers08:_concep_model_framew_for_expres,madin07:_ontol_for_descr_and_synth},
 and avoids confusion with established terms commonly used within
@@ -252,9 +253,9 @@ assuming ``marine'' denotes an existing ontology of marine ecosystem
 concepts, the following block defines a simple class articulation.
 \begin{tabbing}
   ~~\textsf{entity} \textsf{sweet:MarineEcosystem} 
-    \textsf{marine:DeapSeaEcosystem}
+    \textsf{marine:DeepSeaEcosystem}
 \end{tabbing}
-This block states that the Deap Sea Ecosystem class of the marine
+This block states that the Deep Sea Ecosystem class of the marine
 ontology is a subclass of the Marine Ecosystem class of the SWEET
 ontology (thus defining a mapping between these two ontologies).
 
@@ -527,7 +528,7 @@ blocks in that they state equivalences between classes. A sufficient
 block serves as a modifier to entity blocks, relationship blocks
 (including transitive blocks), and cardinality blocks, modifying the
 associated description logic axioms by using equivalence ($\equiv$) in
-place of sublass ($\sqsubseteq$). For example the block
+place of subclass ($\sqsubseteq$). For example the block
 \begin{tabbing}
   ~~\textsf{sufficient} \textsf{relationship} \textsf{hasPart} \textsf{Mammal} \textsf{Hair} 
 \end{tabbing}
@@ -535,7 +536,7 @@ induces the description logic axiom $\textsf{Mammal} \equiv \exists
 \textsf{hasPart}.\textsf{Hair}$ stating that \emph{any} individual
 that has Hair as a part is a Mammal. Additionally, we allow
 relationship blocks within a sufficient block to be extended with
-\textsf{not} to state that absense of the property is a defining
+\textsf{not} to state that absence of the property is a defining
 characteristic of the class. For example the following blocks
 \begin{tabbing}
   ~~\textsf{sufficient} \textsf{entity} \textsf{Mammal} \textsf{Eutheria} \\
@@ -635,7 +636,7 @@ block, and an axiom $B \sqsubseteq \exists P.C$ generated from a
 relationship block, the axiom $A \sqsubseteq \exists P.B$ would be
 inferred. Thus, the axioms of a particular class are ``inherited'' by
 all of the synonyms of the class. Similarly, from an axiom $A \equiv
-\exists P. C$ generated from a sufficent block, and an axiom $B
+\exists P. C$ generated from a sufficient block, and an axiom $B
 \sqsubseteq \exists P.C$ generated from a relationship block, the axiom
 $B \sqsubseteq A$ would be inferred. For both the case of synonym and
 sufficient blocks, the use of equivalence permits a number of
@@ -643,7 +644,7 @@ additional inferences to be made via an OWL-DL reasoner.
 
 As described in \cite{rector04:_owl_pizzas} additional reasoning can
 occur within OWL-DL ontologies when domain and range axioms are
-providedq (as well as, e.g., property closure axioms).  We explicitly
+provided (as well as, e.g., property closure axioms).  We explicitly
 do not consider these constraints in the current version of \owlifier\
 because they also often result in modeling errors for inexperienced
 OWL-DL users \cite{rector04:_owl_pizzas}. Instead, we adopt the more
@@ -683,14 +684,14 @@ sparse blocks.
 In general, the use of sparse blocks simplifies ontology creation by
 not requiring users to enter every (redundant, leading) field to be
 explicitly given, which in turn can simplify the overall layout of the
-ontology within a spreadsheet.  Additionaly, \owlifier\ does not place
+ontology within a spreadsheet.  Additionally, \owlifier\ does not place
 constraints on the order of blocks within a spreadsheet. Classes also
 do not need to explicitly be defined within an entity block, e.g.,
 classes without corresponding entity blocks can be introduced simply
 through synonym and relationship blocks. This typically occurs when a
 particular class does not participate as a subclass or superclass of
 another class in the current ontology. Overall, one of our goals is
-for \owlifier\ to allow minimal information to be entered by limitting
+for \owlifier\ to allow minimal information to be entered by limiting
 redundancy as well as by supporting a range of inferences, while at
 the same time reducing the number of errors commonly made in ontology
 development by non-experts.
@@ -709,7 +710,7 @@ generating the corresponding OWL-DL representation (e.g., in the
 current implementation, the Jena API is used \cite{carroll04:_jena});
 (iii) validating the ontology and ensuring it is consistent via an
 OWL-DL reasoner (e.g., the current implementation uses Pellet
-\cite{sirin07:_pellet}); and (iv) outputing the corresponding OWL-DL
+\cite{sirin07:_pellet}); and (iv) outputting the corresponding OWL-DL
 file. The resulting OWL file can then be refined and extended via
 existing OWL tools (e.g., Protege or SWOOP). It is possible that the
 refined ontology is converted back to a corresponding \owlifier\
@@ -743,18 +744,53 @@ define articulations into the observation ontology defined in
 \section{Conclusion}
 \label{sec:conclusion}
 
-We describe a new To address barriers for ontology development and adoption within
-ecology, we have presented a new approach that allows the \owlifier,
-which consists of a set orelated work: similar to dave's work on
-``global taxonomic constraints'', which assume certain structures of
-hierarchies, e.g., disjoint siblings. protege approach/plugin
+In this paper, we have presented a new approach for developing
+ontologies to address barriers in ontology development and adoption by
+ecologists. Our approach allows scientists to use familiar spreadsheet
+software (frequently used, e.g., by ecologists for storing and
+analyzing data) to create ontologies by filling in a set of templates,
+or blocks, that generate OWL-DL class hierarchies, properties, and
+constraints via the \owlifier\ application.  This approach can provide
+a more intuitive and accessible ontology editing environment for
+ecologists, especially compared to existing OWL-based tools that
+require considerable expertise in the underlying logical formalisms.
 
-future work: the ongoing extensions described above, support seamless
-conversion into and out of owlifier, e.g., if someone extends owlifier
-ontology, re-apply extensions after new owlifier changes. Also,
-support translation to oboe. Additional testing and evaulation.
+Protege provides a variety of ontology editing plug-ins, including a
+simple interface for text-based editing of class hierarchies. In
+\cite{kola07:_impor_spread_data_into_proteg}, an approach is described
+for importing spreadsheet-based ontology descriptions into
+Protege. However, this approach aims at supporting \emph{ad-hoc}
+spreadsheet structures and then provides an intermediate step and
+interface for mapping these structures into ontology axioms. This
+approach is similar to others (e.g.,
+\cite{han08:_rdf12,bizer03:_d2r_map,an06:_discov_seman_of_relat_tables_throug_mappin})
+for defining mappings from relational data to RDF and OWL ontology
+class and instance data. To the best of our knowledge, however, our
+approach is the first to consider a detailed set of templates that can
+support a large subset of existing OWL constructs. In addition, we
+define a number of shortcuts for creating \owlifier\ tables, including
+sparse blocks, as well as default semantics (e.g., disjoint classes,
+which is a form of global taxonomic constraint defined in
+\cite{thau07:_reason_about_taxon_in_first_order_logi}) that further
+simplify ontology creation for end users.
 
-
+As future work, we intend to extend our current \owlifier\
+implementation to support the full set of blocks defined above. We
+also intend to explore approaches to fully support conversions between
+\owlifier\ tables and OWL-DL ontologies. In particular, we want to
+extend \owlifier\ to re-apply changes made by knowledge representation
+experts that previously modified the OWL-DL ontology generated by
+\owlifier. For instance, if an OWL-DL ontology generated from an
+\owlifier\ table is refined and extended by a knowledge representation
+expert, then converted back into an \owlifier\ ontology that is
+further edited and extended by a scientist, and then converted again
+into an OWL-DL ontology, we want to maintain (i.e., re-apply) the
+original extensions and edits created by the knowledge representation
+expert that are still relevant. We are also developing extensions to
+\owlifier\ to support conversion into the observation ontology
+framework presented in \cite{bowers08:_concep_model_framew_for_expres}
+and intend to perform additional testing and evaluation of the
+\owlifier\ approach with ecologists.
 
 %\bibliographystyle{elsarticle-num}
 \bibliographystyle{abbrv}
