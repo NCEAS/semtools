@@ -24,9 +24,31 @@
 
 package org.ecoinformatics.owlifier;
 
-public class Owlifier {
+public class OwlifierColumn {
 
-    public static void main(String [] args) {
-	System.out.println("USAGE: owlifier ...");
+    private String value;
+
+    /**
+     * Set the value of this column
+     * @param value the value
+     */
+    public void setValue(String value) {
+	this.value = value;
     }
+
+    /**
+     * Get the value of this column
+     * @return the value
+     */
+    public String getValue() {
+	return value;
+    }
+
+
+    public Object clone() {
+	OwlifierColumn c = new OwlifierColumn();
+	c.setValue(new String(getValue()));
+	return c;
+    }
+
 }

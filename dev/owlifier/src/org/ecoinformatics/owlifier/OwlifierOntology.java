@@ -24,9 +24,19 @@
 
 package org.ecoinformatics.owlifier;
 
-public class Owlifier {
 
-    public static void main(String [] args) {
-	System.out.println("USAGE: owlifier ...");
+/**
+ */
+public class OwlifierOntology {
+
+    private OwlifierSpreadsheet spreadsheet;
+
+    /**
+     * Add the row to the end of this spreadsheet
+     * @param row the row
+     */
+    public void setSpreadsheet(OwlifierSpreadsheet spreadsheet) {
+	this.spreadsheet = spreadsheet;
     }
+
 }

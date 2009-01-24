@@ -24,9 +24,21 @@
 
 package org.ecoinformatics.owlifier;
 
-public class Owlifier {
-
-    public static void main(String [] args) {
-	System.out.println("USAGE: owlifier ...");
-    }
+/**
+ * Simple Enum of Owlifier block types
+ */
+public enum OwlifierBlockType {
+    IMPORT,
+    ENTITY,
+    SYNONYM,
+    OVERLAP,
+    RELATIONSHIP,
+    TRANSITIVE,
+    MAX,
+    MIN,
+    EXACT,
+    INVERSE,
+    SUFFICIENT,
+    DESCRIPTION,
+    NOTE
 }
