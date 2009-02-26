@@ -7,8 +7,7 @@
    <property name="build" location="build"/>
    <property name="dist"  location="dist"/>
    <property name="config"  location="config"/>
-   <property name="infile"  value="..."/>
-   <property name="outfile"  value="..."/>
+   <property name="args"  value=""/>
 
    <target name="init">
       <!-- Create the time stamp -->
@@ -53,12 +52,16 @@
       <java classname="org.ecoinformatics.owlifier.Owlifier"
           classpath="${classpath}:${build}"
           fork="yes">
-         <arg value="${infile}"/>
+         <arg value="-ant"/>
+         <arg value="${args}"/>
          <jvmarg value="-DSMS=${pwd}"/>
          <jvmarg value="-Xmx512m"/>
          <jvmarg value="-Xss5m"/>
       </java>
    </target>
+
+
+
 
    <target name="jar" depends="compile">
       <jar jarfile="sms.jar">

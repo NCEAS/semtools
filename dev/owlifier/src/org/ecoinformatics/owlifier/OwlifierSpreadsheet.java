@@ -102,10 +102,14 @@ public class OwlifierSpreadsheet {
 
     /**
      * TODO: Fill in the missing columns implied from previous columns
-     * @return a spreadsheet that is not "sparse"
      */
-    public OwlifierSpreadsheet complete() {
-	return (OwlifierSpreadsheet)this.clone();
+    public void complete() {
+	OwlifierSpreadsheet osc = (OwlifierSpreadsheet)this.clone();
+	for(int i = 0; i < osc.getRows() - 1; i++) {
+	    OwlifierRow r1 = osc.getRow(i);
+	    OwlifierRow r2 = osc.getRow(i+1);
+	}
+	return osc;
     }
 
     /**
@@ -123,6 +127,13 @@ public class OwlifierSpreadsheet {
 	for(OwlifierRow r : getRows()) 
 	    s.addRow((OwlifierRow)r.clone());
 	return s;
+    }
+
+    public String toString() {
+	String str = "";
+	for(OwlifierRow row : getRows()) 
+	    str += row + "\n";
+	return str;
     }
 
 }

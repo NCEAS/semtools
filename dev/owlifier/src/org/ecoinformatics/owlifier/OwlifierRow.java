@@ -126,4 +126,11 @@ public class OwlifierRow {
 	return r;
     }
 
+    public String toString() {
+	String str = "| ";
+	for(OwlifierColumn col : getColumns()) 
+	    str += col.getValue() + " | ";
+	return str;
+    }
+
 }
