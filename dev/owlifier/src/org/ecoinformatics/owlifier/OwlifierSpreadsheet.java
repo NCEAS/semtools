@@ -104,12 +104,25 @@ public class OwlifierSpreadsheet {
      * TODO: Fill in the missing columns implied from previous columns
      */
     public void complete() {
-	OwlifierSpreadsheet osc = (OwlifierSpreadsheet)this.clone();
-	for(int i = 0; i < osc.getRows() - 1; i++) {
-	    OwlifierRow r1 = osc.getRow(i);
-	    OwlifierRow r2 = osc.getRow(i+1);
-	}
-	return osc;
+ 	for(int i = 0; i < getLength() - 1; i++) {
+ 	    OwlifierRow r1 = getRow(i);
+ 	    OwlifierRow r2 = getRow(i+1);
+	    if(r1.getBlockType() == r2.getBlockType()) {
+		for(int j = 0; j < r1.getLength(); j++) {
+		    OwlifierColumn c = (OwlifierColumn)r1.getColumn(j).clone();
+		    if(r2.getLength() < j) 
+			r2.addColumn(c);
+		    else if(r2.getColumn(j).getValue() == null) 
+			r2.replaceColumn(j, c);
+		    else
+			break;
+		}
+	    }
+ 	}
+    }
+
+    public void validate() {
+	// TODO ensure that it is well-formed
     }
 
     /**

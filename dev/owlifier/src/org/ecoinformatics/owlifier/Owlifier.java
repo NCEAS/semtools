@@ -50,15 +50,14 @@ public class Owlifier {
 	}
 	else {
 	    System.out.println("Reading file: " + infile);
-	    System.out.println("Writing to file: " + outfile);
 	    try {
-		OwlifierSpreadsheet os = read(new FileInputStream(infile));
-		System.out.println(os);
-		OwlifierSpreadsheet osc = sheet.complete();
-		System.out.println(osc);
+		OwlifierSpreadsheet sheet = read(new FileInputStream(infile));
+		sheet.complete();
+		System.out.println(sheet);
 	    } catch(Exception e) {
 		e.printStackTrace();
 	    }
+	    System.out.println("Writing to file: " + outfile);
 	}
 
     }
@@ -136,15 +135,25 @@ public class Owlifier {
     public static OwlifierSpreadsheet read(InputStream in) throws IOException {
 	OwlifierSpreadsheet sheet = new OwlifierSpreadsheet();
 	BufferedReader r = new BufferedReader(new InputStreamReader(in));
+	OwlifierBlockType currBlockType = null;
 	String line = ""; 
 	while((line = r.readLine()) != null) {
 	    String [] vals = line.split(getSeparator());
-	    if(vals.length > 0) {
+	    if(vals.length > 0 && !isEmptyRow(vals)) {
 		OwlifierRow row = new OwlifierRow();
-		for(String val : vals) {
+		String strType = vals[0].trim();
+		if(!strType.equals(""))
+		    currBlockType = getBlockType(strType);
+		if(currBlockType == null) {
+		    String msg = "ERROR: invalid block type '" + vals[0] + "'";
+		    throw new IOException(msg);
+		}
+		row.setBlockType(currBlockType);
+		for(int i = 1; i < vals.length; i++) {
+		    String val = vals[i].trim();
 		    OwlifierColumn column = new OwlifierColumn();
-		    if(!val.trim().equals(""))
-			column.setValue(val.trim());
+		    if(!val.equals(""))
+			column.setValue(val);
 		    row.addColumn(column);
 		}
 		sheet.addRow(row);
@@ -153,6 +162,42 @@ public class Owlifier {
 	return sheet;
     }
 
+    private static boolean isEmptyRow(String [] row) {
+	for(String val : row) 
+	    if(!val.trim().equals(""))
+		return false;
+	return true;
+    }
 
+    private static OwlifierBlockType getBlockType(String type) {
+	type = type.trim().toLowerCase();
+	if(type.equals("import"))
+	    return OwlifierBlockType.IMPORT;
+	else if(type.equals("entity"))
+	    return OwlifierBlockType.ENTITY;
+	else if(type.equals("synonym"))
+	    return OwlifierBlockType.SYNONYM;
+	else if(type.equals("overlap"))
+	    return OwlifierBlockType.OVERLAP;
+	else if(type.equals("relationship"))
+	    return OwlifierBlockType.RELATIONSHIP;
+	else if(type.equals("transitive"))
+	    return OwlifierBlockType.TRANSITIVE;
+	else if(type.equals("max"))
+	    return OwlifierBlockType.MAX;
+	else if(type.equals("min"))
+	    return OwlifierBlockType.MIN;
+	else if(type.equals("exact"))
+	    return OwlifierBlockType.EXACT;
+	else if(type.equals("inverse"))
+	    return OwlifierBlockType.INVERSE;
+	else if(type.equals("sufficient"))
+	    return OwlifierBlockType.SUFFICIENT;
+	else if(type.equals("description"))
+	    return OwlifierBlockType.DESCRIPTION;
+	else if(type.equals("note"))
+	    return OwlifierBlockType.NOTE;
+	return null;
+    }
     
 }

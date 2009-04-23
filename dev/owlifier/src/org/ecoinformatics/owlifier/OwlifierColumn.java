@@ -45,9 +45,14 @@ public class OwlifierColumn {
     }
 
 
+    public String toString() {
+	return value;
+    }
+
     public Object clone() {
 	OwlifierColumn c = new OwlifierColumn();
-	c.setValue(new String(getValue()));
+	if(getValue() != null) 
+	    c.setValue(new String(getValue()));
 	return c;
     }
 

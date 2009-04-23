@@ -127,9 +127,9 @@ public class OwlifierRow {
     }
 
     public String toString() {
-	String str = "| ";
+	String str = getBlockType() + " || ";
 	for(OwlifierColumn col : getColumns()) 
-	    str += col.getValue() + " | ";
+	    str += col + " | ";
 	return str;
     }
 
