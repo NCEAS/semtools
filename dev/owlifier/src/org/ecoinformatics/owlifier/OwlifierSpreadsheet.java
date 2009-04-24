@@ -27,11 +27,13 @@ package org.ecoinformatics.owlifier;
 import java.util.List;
 import java.util.ArrayList;
 
+
 /**
  */
 public class OwlifierSpreadsheet {
 
     private List<OwlifierRow> rows = new ArrayList();
+
 
     /**
      * Add the row to the end of this spreadsheet
@@ -101,7 +103,8 @@ public class OwlifierSpreadsheet {
     }
 
     /**
-     * TODO: Fill in the missing columns implied from previous columns
+     * Fill in the missing columns implied from previous columns in
+     * the spreadsheet
      */
     public void complete() {
  	for(int i = 0; i < getLength() - 1; i++) {
@@ -121,8 +124,16 @@ public class OwlifierSpreadsheet {
  	}
     }
 
-    public void validate() {
-	// TODO ensure that it is well-formed
+    /**
+     * TODO Ensure that the spreadsheet is well-formed, assuming the
+     * spreadsheet has been completed
+     */
+    public void validate() throws Exception {
+	// no null columns
+	// spaces in terms
+	// entity and relationship with same name
+	// transitive and relationship with same name
+	// what else? 
     }
 
     /**

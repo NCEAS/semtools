@@ -24,6 +24,7 @@
 
 package org.ecoinformatics.owlifier;
 
+import java.io.OutputStream;
 
 /**
  */
@@ -32,11 +33,37 @@ public class OwlifierOntology {
     private OwlifierSpreadsheet spreadsheet;
 
     /**
-     * Add the row to the end of this spreadsheet
-     * @param row the row
+     * Set the owlifier spreadsheet backing this ontology
+     * @param spreadsheet the spreadsheet
      */
     public void setSpreadsheet(OwlifierSpreadsheet spreadsheet) {
 	this.spreadsheet = spreadsheet;
+    }
+
+    /**
+     * Get the owlifier spreadsheet backing this ontology
+     * @return the spreadsheet
+     */
+    public OwlifierSpreadsheet getSpreadsheet() {
+	return spreadsheet;
+    }
+
+    /**
+     * TODO Classify the ontology prior to writing it out
+     */
+    public void classify() {
+    }
+
+    /**
+     * TODO Check whether the ontology is consistent
+     */
+    public void checkConsistency() throws Exception {
+    }
+
+    /**
+     * TODO Write the ontology to RDF/XML OWL representation
+     */
+    public void writeAsRDFXML(OutputStream out) {
     }
 
 }
