@@ -24,20 +24,48 @@
 
 package org.ecoinformatics.owlifier;
 
-import java.io.OutputStream;
+import java.net.URI;
+import java.util.List;
+import java.util.ArrayList;
+import org.semanticweb.owl.apibinding.OWLManager;
+import org.semanticweb.owl.model.AddAxiom;
+import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLDataFactory;
+import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.OWLOntologyManager;
 
 /**
+ * TODO Add constructor with type (oboe/standard), then add back the
+ * classify operation? 
  */
 public class OwlifierOntology {
 
-    private OwlifierSpreadsheet spreadsheet;
+    private OwlifierSpreadsheet sheet;
+    private boolean oboe;
+    private URI uri;
+    private OWLOntologyManager manager;
+    private OWLOntology ontology;
 
     /**
-     * Set the owlifier spreadsheet backing this ontology
-     * @param spreadsheet the spreadsheet
+     * Create an owlifier ontology from an owlifier spreadsheet
+     * @param sheet the spreadsheet
+     * @param uri the ontology uri
+     * @param oboe if true, model as an oboe extension ontology
      */
-    public void setSpreadsheet(OwlifierSpreadsheet spreadsheet) {
-	this.spreadsheet = spreadsheet;
+    public OwlifierOntology(OwlifierSpreadsheet sheet, URI uri, boolean oboe) 
+	throws Exception
+    {
+	this.sheet = sheet;
+	this.uri = uri;
+	this.oboe = oboe;
+	// set up the manager and create the ontology
+	manager = OWLManager.createOWLOntologyManager();
+	ontology = manager.createOntology(uri);
+	// build up the ontology
+	if(oboe)
+	    buildOboeOntology();
+	else
+	    buildOntology();
     }
 
     /**
@@ -45,14 +73,32 @@ public class OwlifierOntology {
      * @return the spreadsheet
      */
     public OwlifierSpreadsheet getSpreadsheet() {
-	return spreadsheet;
+	return sheet;
     }
 
     /**
-     * TODO Classify the ontology prior to writing it out
+     * Check if this is an OBOE extension ontology
+     * @return true if this is an OBOE extension ontology
      */
-    public void classify() {
+    public boolean isOboeExtension() {
+	return oboe;
     }
+
+    /**
+     * Get the uri assigned to the ontology
+     * @return the uri
+     */
+    public URI getURI() {
+	return uri;
+    }
+
+
+    /**
+     * TODO Classify the ontology
+     */
+    public void clasify() {
+    }
+
 
     /**
      * TODO Check whether the ontology is consistent
@@ -61,9 +107,48 @@ public class OwlifierOntology {
     }
 
     /**
-     * TODO Write the ontology to RDF/XML OWL representation
+     * Write the ontology to RDF/XML OWL representation
      */
-    public void writeAsRDFXML(OutputStream out) {
+    public void writeAsRDFXML() throws Exception {
+	// save the ontology
+	manager.saveOntology(ontology);
+    }
+
+
+    /**
+     */
+    private void buildOntology() throws Exception {
+	OWLDataFactory factory = manager.getOWLDataFactory();
+	OWLAxiom axiom = null;
+	// get imports
+	for(URI importURI : getImports()) {
+	    axiom = factory.getOWLImportsDeclarationAxiom(ontology, importURI); 	    manager.applyChange(new AddAxiom(ontology, axiom));
+	}
+	// get subclasses
+    }
+
+    /**
+     */
+    private void buildOboeOntology() throws Exception {
+    }
+
+    /**
+     * Get the list of imports
+     */
+    private List<URI> getImports() throws Exception {
+	List<URI> result = new ArrayList();
+	if(sheet == null)
+	    return result;
+	for(OwlifierRow r : sheet.getRows()) {
+	    if(r.getBlockType() == OwlifierBlockType.IMPORT) {
+		if(r.getLength() < 2) 
+		    throw new Exception("ERROR: invalid IMPORT statement");
+		URI uri = new URI(r.getColumn(1).getValue());
+		if(!result.contains(uri))
+		    result.add(uri);
+	    }
+	}
+	return result;
     }
 
 }

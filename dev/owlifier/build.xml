@@ -39,6 +39,7 @@
    <target name="compile" depends="init,setclasspath"
         description="compile the source " >
       <!-- Compile the java code from ${src} into ${build} -->
+      <echo>Compiling with classpath: ${classpath}</echo>
       <javac srcdir="${src}" 
            destdir="${build}"
            classpath="${classpath}"

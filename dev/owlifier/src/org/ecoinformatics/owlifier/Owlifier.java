@@ -24,11 +24,14 @@
 
 package org.ecoinformatics.owlifier;
 
+import java.net.URI;
 import java.io.InputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+
 
 /**
  */
@@ -49,18 +52,63 @@ public class Owlifier {
 	    System.out.println("Starting Owlifier UI");
 	}
 	else {
-	    System.out.println("Reading file: " + infile);
 	    try {
+		System.out.println(">>> Reading file: " + infile);
 		OwlifierSpreadsheet sheet = read(new FileInputStream(infile));
 		sheet.complete();
 		System.out.println(sheet);
+		URI uri = new File(outfile).toURL().toURI();
+		System.out.println(">>> Writing to file: " + uri);
+		OwlifierOntology ont = null;
+		ont = new OwlifierOntology(sheet, uri, oboeFlag);
+		if(warnFlag)
+		    printWarnings(ont);
+		ont.writeAsRDFXML();
 	    } catch(Exception e) {
 		e.printStackTrace();
 	    }
-	    System.out.println("Writing to file: " + outfile);
 	}
-
     }
+
+
+    /**
+     */
+    public static OwlifierSpreadsheet read(InputStream in) throws IOException {
+	OwlifierSpreadsheet sheet = new OwlifierSpreadsheet();
+	BufferedReader r = new BufferedReader(new InputStreamReader(in));
+	OwlifierBlockType currBlockType = null;
+	String line = ""; 
+	while((line = r.readLine()) != null) {
+	    String [] vals = line.split(getSeparator());
+	    if(vals.length > 0 && !isEmptyRow(vals)) {
+		OwlifierRow row = new OwlifierRow();
+		String strType = vals[0].trim();
+		if(!strType.equals(""))
+		    currBlockType = getBlockType(strType);
+		if(currBlockType == null) {
+		    String msg = "ERROR: invalid block type '" + vals[0] + "'";
+		    throw new IOException(msg);
+		}
+		row.setBlockType(currBlockType);
+		for(int i = 1; i < vals.length; i++) {
+		    String val = vals[i].trim();
+		    OwlifierColumn column = new OwlifierColumn();
+		    if(!val.equals(""))
+			column.setValue(val);
+		    row.addColumn(column);
+		}
+		sheet.addRow(row);
+	    }
+	}
+	return sheet;
+    }
+
+
+    /**
+     */
+    private static void printWarnings(OwlifierOntology ont) {
+    }
+
 
     /**
      */
@@ -130,37 +178,6 @@ public class Owlifier {
 	return ",";
     }
 
-    /**
-     */
-    public static OwlifierSpreadsheet read(InputStream in) throws IOException {
-	OwlifierSpreadsheet sheet = new OwlifierSpreadsheet();
-	BufferedReader r = new BufferedReader(new InputStreamReader(in));
-	OwlifierBlockType currBlockType = null;
-	String line = ""; 
-	while((line = r.readLine()) != null) {
-	    String [] vals = line.split(getSeparator());
-	    if(vals.length > 0 && !isEmptyRow(vals)) {
-		OwlifierRow row = new OwlifierRow();
-		String strType = vals[0].trim();
-		if(!strType.equals(""))
-		    currBlockType = getBlockType(strType);
-		if(currBlockType == null) {
-		    String msg = "ERROR: invalid block type '" + vals[0] + "'";
-		    throw new IOException(msg);
-		}
-		row.setBlockType(currBlockType);
-		for(int i = 1; i < vals.length; i++) {
-		    String val = vals[i].trim();
-		    OwlifierColumn column = new OwlifierColumn();
-		    if(!val.equals(""))
-			column.setValue(val);
-		    row.addColumn(column);
-		}
-		sheet.addRow(row);
-	    }
-	}
-	return sheet;
-    }
 
     private static boolean isEmptyRow(String [] row) {
 	for(String val : row) 
