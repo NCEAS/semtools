@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.model.AddAxiom;
 import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLDataFactory;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyManager;
@@ -120,11 +121,21 @@ public class OwlifierOntology {
     private void buildOntology() throws Exception {
 	OWLDataFactory factory = manager.getOWLDataFactory();
 	OWLAxiom axiom = null;
+	OWLClass class1 = null, class2= null;
 	// get imports
 	for(URI importURI : getImports()) {
 	    axiom = factory.getOWLImportsDeclarationAxiom(ontology, importURI); 	    manager.applyChange(new AddAxiom(ontology, axiom));
 	}
+	// get entities
+	for(String entity : getEntities()) {
+	    class1 = factory.getOWLThing();
+	    class2 = factory.getOWLClass(URI.create(uri + "#" + entity));
+	    axiom = factory.getOWLSubClassAxiom(class1, class2);
+	    manager.applyChange(new AddAxiom(ontology, axiom));
+	}
 	// get subclasses
+	// get disjoint classes
+	// ...
     }
 
     /**
@@ -143,9 +154,30 @@ public class OwlifierOntology {
 	    if(r.getBlockType() == OwlifierBlockType.IMPORT) {
 		if(r.getLength() < 2) 
 		    throw new Exception("ERROR: invalid IMPORT statement");
-		URI uri = new URI(r.getColumn(1).getValue());
-		if(!result.contains(uri))
-		    result.add(uri);
+		URI importURI = new URI(r.getColumn(1).getValue());
+		if(!result.contains(importURI))
+		    result.add(importURI);
+	    }
+	}
+	return result;
+    }
+
+    /**
+     * Get the list of entities
+     */
+    private List<String> getEntities() throws Exception {
+	List<String> result = new ArrayList();
+	if(sheet == null)
+	    return result;
+	for(OwlifierRow r : sheet.getRows()) {
+	    if(r.getBlockType() == OwlifierBlockType.ENTITY) {
+		if(r.getLength() < 2) 
+		    throw new Exception("ERROR: invalid ENTITY statement");
+		for(int i = 1; i < r.getLength(); i++) {
+		    String entity = r.getColumn(i).getValue();
+		    if(!result.contains(entity))
+			result.add(entity);
+		}
 	    }
 	}
 	return result;
