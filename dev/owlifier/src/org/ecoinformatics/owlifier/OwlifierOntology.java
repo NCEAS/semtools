@@ -25,8 +25,10 @@
 package org.ecoinformatics.owlifier;
 
 import java.net.URI;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.model.AddAxiom;
 import org.semanticweb.owl.model.OWLAxiom;
@@ -134,6 +136,15 @@ public class OwlifierOntology {
 	    manager.applyChange(new AddAxiom(ontology, axiom));
 	}
 	// get subclasses
+	Map<String,List<String>> subclasses = getSubclasses();
+	for(String parentEntity : subclasses.keySet()) {
+	    class1 = factory.getOWLClass(URI.create(uri + "#" + parentEntity));
+	    for(String childEntity : subclasses.get(parentEntity)) {
+		class2 = factory.getOWLClass(URI.create(uri+"#"+childEntity));
+		axiom = factory.getOWLSubClassAxiom(class1, class2);
+		manager.applyChange(new AddAxiom(ontology, axiom));
+	    }
+	}
 	// get disjoint classes
 	// ...
     }
@@ -182,5 +193,35 @@ public class OwlifierOntology {
 	}
 	return result;
     }
+
+    /**
+     * Get the subclass relationships
+     */
+    private Map<String,List<String>> getSubclasses() throws Exception {
+	Map<String,List<String>> result = new HashMap();
+	if(sheet == null)
+	    return result;
+	for(OwlifierRow r : sheet.getRows()) {
+	    if(r.getBlockType() == OwlifierBlockType.ENTITY) {
+		for(int i = 1; i+1 < r.getLength(); i++) {
+		    String parentEntity = r.getColumn(i).getValue();
+		    String childEntity = r.getColumn(i+1).getValue();
+		    if(result.containsKey(parentEntity)) {
+			List<String> children = result.get(parentEntity);
+			if(!children.contains(childEntity))
+			    children.add(childEntity);
+		    }
+		    else {
+			List<String> children = new ArrayList();
+			children.add(childEntity);
+			result.put(parentEntity, children);
+		    }
+		}
+	    }
+	}
+	return result;
+    }
+
+
 
 }
