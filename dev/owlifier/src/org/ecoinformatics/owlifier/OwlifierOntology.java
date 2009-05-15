@@ -26,11 +26,15 @@ package org.ecoinformatics.owlifier;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.Set;
+
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.model.AddAxiom;
+import org.semanticweb.owl.model.OWLAnnotation;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLDataFactory;
@@ -99,7 +103,7 @@ public class OwlifierOntology {
     /**
      * TODO Classify the ontology
      */
-    public void clasify() {
+    public void classify() {
     }
 
 
@@ -130,23 +134,49 @@ public class OwlifierOntology {
 	}
 	// get entities
 	for(String entity : getEntities()) {
-	    class1 = factory.getOWLThing();
-	    class2 = factory.getOWLClass(URI.create(uri + "#" + entity));
-	    axiom = factory.getOWLSubClassAxiom(class1, class2);
+	    class1 = factory.getOWLClass(getURI(entity));
+	    axiom = factory.getOWLDeclarationAxiom(class1);
 	    manager.applyChange(new AddAxiom(ontology, axiom));
 	}
 	// get subclasses
 	Map<String,List<String>> subclasses = getSubclasses();
 	for(String parentEntity : subclasses.keySet()) {
-	    class1 = factory.getOWLClass(URI.create(uri + "#" + parentEntity));
+	    class1 = factory.getOWLClass(getURI(parentEntity));
 	    for(String childEntity : subclasses.get(parentEntity)) {
-		class2 = factory.getOWLClass(URI.create(uri+"#"+childEntity));
+		class2 = factory.getOWLClass(getURI(childEntity));
 		axiom = factory.getOWLSubClassAxiom(class1, class2);
 		manager.applyChange(new AddAxiom(ontology, axiom));
 	    }
 	}
-	// get disjoint classes
-	// ...
+	// get synonyms
+	for(List<String> synonyms : getSynonyms()) {
+	    Set<OWLClass> classes = new HashSet();
+	    for(String entity : synonyms) {
+		OWLClass c = factory.getOWLClass(getURI(entity));
+		if(!classes.contains(c))
+		    classes.add(c);
+	    }
+	    axiom = factory.getOWLEquivalentClassesAxiom(classes);
+	    manager.applyChange(new AddAxiom(ontology, axiom));
+	}
+	// get description comments
+	Map<String,List<String>> descriptions = getDescriptions();
+	for(String entity : descriptions.keySet()) {
+	    for(String desc : descriptions.get(entity)) {
+		class1 = factory.getOWLClass(getURI(entity));
+		OWLAnnotation a = factory.getCommentAnnotation(desc, "en");
+		axiom = factory.getOWLEntityAnnotationAxiom(class1, a);
+		manager.applyChange(new AddAxiom(ontology, axiom));
+	    }
+	}
+ 	// TODO get disjoint classes
+
+    }
+
+    /**
+     */
+    private URI getURI(String str) {
+	return URI.create(uri + "#" + str);
     }
 
     /**
@@ -199,8 +229,6 @@ public class OwlifierOntology {
      */
     private Map<String,List<String>> getSubclasses() throws Exception {
 	Map<String,List<String>> result = new HashMap();
-	if(sheet == null)
-	    return result;
 	for(OwlifierRow r : sheet.getRows()) {
 	    if(r.getBlockType() == OwlifierBlockType.ENTITY) {
 		for(int i = 1; i+1 < r.getLength(); i++) {
@@ -222,6 +250,42 @@ public class OwlifierOntology {
 	return result;
     }
 
+    /**
+     * Get synonym classes
+     */
+    private List<List<String>> getSynonyms() throws Exception {
+	List<List<String>> result = new ArrayList();
+	for(OwlifierRow r : sheet.getRows()) {
+	    if(r.getBlockType() == OwlifierBlockType.SYNONYM) {
+		List<String> synonyms = new ArrayList();
+		for(int i = 0; i < r.getLength(); i++) {
+		    String entity = r.getColumn(i).getValue();
+		    if(!synonyms.contains(entity))
+			synonyms.add(entity);
+		}
+		result.add(synonyms);
+	    }
+	}
+	return result;
+    }
 
+    /**
+     * Get description comments
+     */
+    private Map<String,List<String>> getDescriptions() throws Exception {
+	Map<String,List<String>> result = new HashMap();
+	for(OwlifierRow r : sheet.getRows()) {
+	    if(r.getBlockType() == OwlifierBlockType.DESCRIPTION) {
+		String entity = r.getColumn(0).getValue();
+		List<String> descs = new ArrayList();
+		if(result.containsKey(entity))
+		    descs = result.get(entity);
+		else
+		    result.put(entity, descs);
+		descs.add(r.getColumn(1).getValue());
+	    }
+	}
+	return result;
+    }
 
 }

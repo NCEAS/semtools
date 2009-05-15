@@ -41,12 +41,13 @@ public class Owlifier {
     private static boolean warnFlag = false;
     private static boolean oboeFlag = false;
     private static boolean tabFlag = false;
+    private static boolean classifyFlag = false;
     private static String infile;
     private static String outfile;
 
+
     public static void main(String [] args) {
 	parseArgs(args);
-	
 	if(guiFlag) {
 	    // start in gui mode
 	    System.out.println("Starting Owlifier UI");
@@ -55,14 +56,17 @@ public class Owlifier {
 	    try {
 		System.out.println(">>> Reading file: " + infile);
 		OwlifierSpreadsheet sheet = read(new FileInputStream(infile));
+		if(sheet == null) 
+		    throw new Exception("Unable to read: " + infile);
 		sheet.complete();
 		System.out.println(sheet);
 		URI uri = new File(outfile).toURL().toURI();
-		System.out.println(">>> Writing to file: " + uri);
 		OwlifierOntology ont = null;
 		ont = new OwlifierOntology(sheet, uri, oboeFlag);
 		if(warnFlag)
 		    printWarnings(ont);
+		if(classifyFlag)
+		    ont.classify();
 		ont.writeAsRDFXML();
 	    } catch(Exception e) {
 		e.printStackTrace();
@@ -124,6 +128,7 @@ public class Owlifier {
 	str += "\n";
 	str += "and options are:\n";
 	str += " -oboe            output as oboe ontology\n";
+	str += " -classify        classify ontology before writing\n";
 	str += " -warn            include warnings (verbose)\n";
 	str += " -tab             tab-delimited input file\n";
 	str += " -csv             csv input file (default)\n";
@@ -158,6 +163,8 @@ public class Owlifier {
 		    oboeFlag = true;
 		if(args[i].contains("-tab"))
 		    tabFlag = true;
+		if(args[i].contains("-classify"))
+		    classifyFlag = true;
 		if(args[i].equals("-in"))
 		    x_in = i;
 		if(args[i].equals("-out"))
