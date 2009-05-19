@@ -21,39 +21,44 @@
  * OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
  * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-
 package org.ecoinformatics.owlifier;
 
 public class OwlifierColumn {
 
-    private String value;
+   private String value;
 
-    /**
-     * Set the value of this column
-     * @param value the value
-     */
-    public void setValue(String value) {
-	this.value = value;
-    }
+   /**
+    * Set the value of this column
+    * @param value the value
+    */
+   public void setValue(String value) {
+      this.value = value;
+   }
 
-    /**
-     * Get the value of this column
-     * @return the value
-     */
-    public String getValue() {
-	return value;
-    }
+   /**
+    * Get the value of this column
+    * @return the value
+    */
+   public String getValue() {
+      return value;
+   }
 
+   /**
+    * Get the value without surrounding spaces
+    * @return the value
+    */
+   public String getTrimmedValue() {
+      return value.trim();
+   }
 
-    public String toString() {
-	return value;
-    }
+   public String toString() {
+      return getTrimmedValue();
+   }
 
-    public Object clone() {
-	OwlifierColumn c = new OwlifierColumn();
-	if(getValue() != null) 
-	    c.setValue(new String(getValue()));
-	return c;
-    }
-
+   public Object clone() {
+      OwlifierColumn c = new OwlifierColumn();
+      if(getValue() != null)
+         c.setValue(new String(getValue()));
+      return c;
+   }
 }
