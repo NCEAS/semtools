@@ -83,8 +83,6 @@ public class OwlifierRelationshipBlock extends OwlifierBlock {
       OWLOntologyManager m = ont.getOWLOntologyManager();
       OWLOntology o = ont.getOWLOntology();
       OWLDataFactory f = m.getOWLDataFactory();
-      // TODO: add relationship constraints
-      // add each relationship
       OWLObjectProperty r = f.getOWLObjectProperty(ont.getURI(getRelationship()));
       OWLAxiom a = f.getOWLDeclarationAxiom(r);
       m.applyChange(new AddAxiom(o, a));

@@ -23,12 +23,14 @@
  */
 package org.ecoinformatics.owlifier;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
 import org.semanticweb.owl.model.AddAxiom;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLDataFactory;
+import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLObjectProperty;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyManager;
 
@@ -38,6 +40,9 @@ import org.semanticweb.owl.model.OWLOntologyManager;
  */
 public class OwlifierTransitiveBlock extends OwlifierBlock {
 
+   private String relationship;
+   private List<String> entities;
+
    /**
     * Create a transitive block
     * @param row the row representing this block
@@ -45,10 +50,32 @@ public class OwlifierTransitiveBlock extends OwlifierBlock {
     */
    public OwlifierTransitiveBlock(OwlifierRow row) throws Exception {
       super(row);
+      if(row.getLength() < 2)
+         throw new Exception("Illegal relationship block: " + row);
+      relationship = row.getColumn(1).getTrimmedValue();
+      entities = new ArrayList();
+      for(int i = 2; i < row.getLength(); i++)
+         entities.add(row.getColumn(i).getTrimmedValue());
    }
 
    public String getBlockType() {
       return "Transitive";
+   }
+
+   /**
+    * Get the relationship name
+    * @return the relationship name
+    */
+   public String getRelationship() {
+      return relationship;
+   }
+
+   /**
+    * Get the list of entities
+    * @return the entity list
+    */
+   public List<String> getEntities() {
+      return entities;
    }
 
    @Override
@@ -56,7 +83,16 @@ public class OwlifierTransitiveBlock extends OwlifierBlock {
       OWLOntologyManager m = ont.getOWLOntologyManager();
       OWLOntology o = ont.getOWLOntology();
       OWLDataFactory f = m.getOWLDataFactory();
-   // TODO: add transitive axioms
+      OWLObjectProperty r = f.getOWLObjectProperty(ont.getURI(getRelationship()));
+      OWLAxiom a = f.getOWLTransitiveObjectPropertyAxiom(r);
+      m.applyChange(new AddAxiom(o, a));
+      // add the domain and range constraints
+      for(int i = 0; i < getEntities().size() - 1; i++) {
+         OWLClass c1 = f.getOWLClass(ont.getURI(getEntities().get(i)));
+         OWLClass c2 = f.getOWLClass(ont.getURI(getEntities().get(i + 1)));
+         OWLDescription d = f.getOWLObjectSomeRestriction(r, c2);
+         a = f.getOWLSubClassAxiom(c1, d);
+         m.applyChange(new AddAxiom(o, a));
+      }
    }
-
 }

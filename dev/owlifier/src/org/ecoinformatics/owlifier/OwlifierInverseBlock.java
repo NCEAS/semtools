@@ -23,20 +23,21 @@
  */
 package org.ecoinformatics.owlifier;
 
-import java.util.Set;
-import java.util.HashSet;
 import org.semanticweb.owl.model.AddAxiom;
 import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLDataFactory;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owl.model.OWLObjectProperty;
 
 /**
  *
  * @author sbowers
  */
 public class OwlifierInverseBlock extends OwlifierBlock {
+
+   private String relationship1;
+   private String relationship2;
 
    /**
     * Create a inverse block
@@ -45,6 +46,18 @@ public class OwlifierInverseBlock extends OwlifierBlock {
     */
    public OwlifierInverseBlock(OwlifierRow row) throws Exception {
       super(row);
+      if(row.getLength() != 3)
+         throw new Exception("Illegal inverse block: " + row);
+      relationship1 = row.getColumn(1).getTrimmedValue();
+      relationship2 = row.getColumn(2).getTrimmedValue();
+   }
+
+   public String getRelationship1() {
+      return relationship1;
+   }
+
+   public String getRelationship2() {
+      return relationship2;
    }
 
    public String getBlockType() {
@@ -56,7 +69,15 @@ public class OwlifierInverseBlock extends OwlifierBlock {
       OWLOntologyManager m = ont.getOWLOntologyManager();
       OWLOntology o = ont.getOWLOntology();
       OWLDataFactory f = m.getOWLDataFactory();
-   // TODO: add transitive axioms
+      // create the properties and add them
+      OWLObjectProperty r1 = f.getOWLObjectProperty(ont.getURI(getRelationship1()));
+      OWLObjectProperty r2 = f.getOWLObjectProperty(ont.getURI(getRelationship2()));
+      OWLAxiom a = f.getOWLDeclarationAxiom(r1);
+      m.applyChange(new AddAxiom(o, a));
+      a = f.getOWLDeclarationAxiom(r2);
+      m.applyChange(new AddAxiom(o, a));
+      // create the inverse axiom
+      a = f.getOWLInverseObjectPropertiesAxiom(r1, r2);
+      m.applyChange(new AddAxiom(o, a));
    }
-
 }

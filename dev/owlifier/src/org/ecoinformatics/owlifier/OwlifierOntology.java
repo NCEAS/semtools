@@ -175,31 +175,6 @@ public class OwlifierOntology {
 //            }
 //            manager.applyChange(new AddAxiom(ontology, axiom));
 //         }
-//      // get relationships
-//      for(List<String> propRow : getRelationships()) {
-//         rel = factory.getOWLObjectProperty(getURI(propRow.get(0)));
-//         for(int i = 1; i + 1 < propRow.size(); i++) {
-//            class1 = factory.getOWLClass(getURI(propRow.get(i)));
-//            class2 = factory.getOWLClass(getURI(propRow.get(i + 1)));
-//            OWLDescription d = factory.getOWLObjectSomeRestriction(rel, class2);
-//            axiom = factory.getOWLSubClassAxiom(class1, d);
-//            manager.applyChange(new AddAxiom(ontology, axiom));
-//         }
-//      }
-//      // get transitive relationships
-//      for(List<String> propRow : getTransitives()) {
-//         rel = factory.getOWLObjectProperty(getURI(propRow.get(0)));
-//         axiom = factory.getOWLTransitiveObjectPropertyAxiom(rel);
-//         manager.applyChange(new AddAxiom(ontology, axiom));
-//         // add the property defintion
-//         for(int i = 1; i + 1 < propRow.size(); i++) {
-//            class1 = factory.getOWLClass(getURI(propRow.get(i)));
-//            class2 = factory.getOWLClass(getURI(propRow.get(i + 1)));
-//            OWLDescription d = factory.getOWLObjectSomeRestriction(rel, class2);
-//            axiom = factory.getOWLSubClassAxiom(class1, d);
-//            manager.applyChange(new AddAxiom(ontology, axiom));
-//         }
-//      }
 //      // min cardinality
 //      for(List<String> maxRow : getMaxProperties()) {
 //         rel = factory.getOWLObjectProperty(getURI(maxRow.get(0)));
