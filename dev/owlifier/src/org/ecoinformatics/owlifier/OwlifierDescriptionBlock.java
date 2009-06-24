@@ -21,24 +21,42 @@
  * OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
  * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-
 package org.ecoinformatics.owlifier;
 
+import java.util.Set;
+import java.util.HashSet;
+import org.semanticweb.owl.model.AddAxiom;
+import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLClass;
+import org.semanticweb.owl.model.OWLDataFactory;
+import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.OWLOntologyManager;
+
 /**
- * Simple Enum of Owlifier block types
+ *
+ * @author sbowers
  */
-public enum OwlifierBlockType {
-    IMPORT,
-    ENTITY,
-    SYNONYM,
-    OVERLAP,
-    RELATIONSHIP,
-    TRANSITIVE,
-    MAX,
-    MIN,
-    EXACT,
-    INVERSE,
-    SUFFICIENT,
-    DESCRIPTION,
-    NOTE
+public class OwlifierDescriptionBlock extends OwlifierBlock {
+
+   /**
+    * Create a max block
+    * @param row the row representing this block
+    * @throws Exception if row is not well-formed
+    */
+   public OwlifierDescriptionBlock(OwlifierRow row) throws Exception {
+      super(row);
+   }
+
+   public String getBlockType() {
+      return "Max";
+   }
+
+   @Override
+   public void addToOntology(OwlifierOntology ont) throws Exception {
+      OWLOntologyManager m = ont.getOWLOntologyManager();
+      OWLOntology o = ont.getOWLOntology();
+      OWLDataFactory f = m.getOWLDataFactory();
+   // TODO: add transitive axioms
+   }
+
 }

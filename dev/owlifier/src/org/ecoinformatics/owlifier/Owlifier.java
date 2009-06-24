@@ -76,21 +76,12 @@ public class Owlifier {
    public static OwlifierSpreadsheet read(InputStream in) throws IOException {
       OwlifierSpreadsheet sheet = new OwlifierSpreadsheet();
       BufferedReader r = new BufferedReader(new InputStreamReader(in));
-      OwlifierBlockType currBlockType = null;
       String line = "";
       while((line = r.readLine()) != null) {
          String[] vals = line.split(getSeparator());
          if(vals.length > 0 && !isEmptyRow(vals)) {
             OwlifierRow row = new OwlifierRow();
-            String strType = vals[0].trim();
-            if(!strType.equals(""))
-               currBlockType = getBlockType(strType);
-            if(currBlockType == null) {
-               String msg = "ERROR: invalid block type '" + vals[0] + "'";
-               throw new IOException(msg);
-            }
-            row.setBlockType(currBlockType);
-            for(int i = 1; i < vals.length; i++) {
+            for(int i = 0; i < vals.length; i++) {
                String val = vals[i].trim();
                OwlifierColumn column = new OwlifierColumn();
                if(!val.equals(""))
@@ -190,39 +181,4 @@ public class Owlifier {
       return true;
    }
 
-   /**
-    * Get the type of block from the block string
-    * @param type the given bock type
-    * @return the parsed block type
-    */
-   private static OwlifierBlockType getBlockType(String type) {
-      type = type.trim().toLowerCase();
-      if(type.equals("import"))
-         return OwlifierBlockType.IMPORT;
-      else if(type.equals("entity"))
-         return OwlifierBlockType.ENTITY;
-      else if(type.equals("synonym"))
-         return OwlifierBlockType.SYNONYM;
-      else if(type.equals("overlap"))
-         return OwlifierBlockType.OVERLAP;
-      else if(type.equals("relationship"))
-         return OwlifierBlockType.RELATIONSHIP;
-      else if(type.equals("transitive"))
-         return OwlifierBlockType.TRANSITIVE;
-      else if(type.equals("max"))
-         return OwlifierBlockType.MAX;
-      else if(type.equals("min"))
-         return OwlifierBlockType.MIN;
-      else if(type.equals("exact"))
-         return OwlifierBlockType.EXACT;
-      else if(type.equals("inverse"))
-         return OwlifierBlockType.INVERSE;
-      else if(type.equals("sufficient"))
-         return OwlifierBlockType.SUFFICIENT;
-      else if(type.equals("description"))
-         return OwlifierBlockType.DESCRIPTION;
-      else if(type.equals("note"))
-         return OwlifierBlockType.NOTE;
-      return null;
-   }
 }
