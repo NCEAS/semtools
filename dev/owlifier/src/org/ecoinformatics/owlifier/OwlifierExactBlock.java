@@ -23,12 +23,14 @@
  */
 package org.ecoinformatics.owlifier;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
 import org.semanticweb.owl.model.AddAxiom;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLDataFactory;
+import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLObjectProperty;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyManager;
 
@@ -38,6 +40,10 @@ import org.semanticweb.owl.model.OWLOntologyManager;
  */
 public class OwlifierExactBlock extends OwlifierBlock {
 
+   public int exactCardinality;
+   public String relationship;
+   public List<String> entities;
+
    /**
     * Create a exact block
     * @param row the row representing this block
@@ -45,18 +51,62 @@ public class OwlifierExactBlock extends OwlifierBlock {
     */
    public OwlifierExactBlock(OwlifierRow row) throws Exception {
       super(row);
+           if(row.getLength() < 5)
+         throw new Exception("Illegal exact block: " + row);
+      relationship = row.getColumn(1).getTrimmedValue();
+      try {
+         String val = row.getColumn(2).getTrimmedValue();
+         exactCardinality = (new Integer(val)).intValue();
+      } catch(Exception e) {
+         throw new Exception("Illegal exact block: " + row);
+      }
+      entities = new ArrayList();
+      for(int i = 3; i < row.getLength(); i++)
+         entities.add(row.getColumn(i).getTrimmedValue());
    }
 
    public String getBlockType() {
       return "Exact";
    }
 
-   @Override
-   public void addToOntology(OwlifierOntology ont) throws Exception {
-      OWLOntologyManager m = ont.getOWLOntologyManager();
-      OWLOntology o = ont.getOWLOntology();
-      OWLDataFactory f = m.getOWLDataFactory();
-   // TODO: add exact axioms
+     /**
+    * Get the relationship being constrained
+    * @return the relationship
+    */
+   public String getRelationship() {
+      return relationship;
    }
 
+   /**
+    * Get the exact cardinality value
+    * @return the relationship
+    */
+   public int getExactCardinality() {
+      return exactCardinality;
+   }
+
+   /**
+    * Get the entities being constrained/related
+    * @return the entities
+    */
+   public List<String> getEntities() {
+      return entities;
+   }
+
+
+   @Override
+   public void addToOntology(OwlifierOntology ont) throws Exception {
+     OWLOntologyManager m = ont.getOWLOntologyManager();
+      OWLOntology o = ont.getOWLOntology();
+      OWLDataFactory f = m.getOWLDataFactory();
+      OWLObjectProperty r = f.getOWLObjectProperty(ont.getURI(getRelationship()));
+      for(int i = 0; i < entities.size() - 1; i++) {
+         OWLClass c1 = f.getOWLClass(ont.getURI(entities.get(i)));
+         OWLClass c2 = f.getOWLClass(ont.getURI(entities.get(i+1)));
+         OWLDescription d =
+               f.getOWLObjectExactCardinalityRestriction(r, getExactCardinality(), c2);
+         OWLAxiom a = f.getOWLSubClassAxiom(c1, d);
+         m.applyChange(new AddAxiom(o, a));
+      }
+    }
 }

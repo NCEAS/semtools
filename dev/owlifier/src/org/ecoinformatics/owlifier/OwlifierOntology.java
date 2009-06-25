@@ -229,17 +229,6 @@ public class OwlifierOntology {
 //            manager.applyChange(new AddAxiom(ontology, axiom));
 //         }
 //      }
-//      // inverse
-//      Map<String, Set<String>> inverses = getInverses();
-//      for(String prop : inverses.keySet()) {
-//         rel = factory.getOWLObjectProperty(getURI(prop));
-//         for(String inv : inverses.get(prop)) {
-//            OWLObjectProperty irel = factory.getOWLObjectProperty(getURI(inv));
-//            axiom = factory.getOWLInverseObjectPropertiesAxiom(rel, irel);
-//            manager.applyChange(new AddAxiom(ontology, axiom));
-//         }
-//
-//      }
 //      // sufficient relationship
 //      for(List<String> propRow : getSufficientRelationships()) {
 //         rel = factory.getOWLObjectProperty(getURI(propRow.get(0)));

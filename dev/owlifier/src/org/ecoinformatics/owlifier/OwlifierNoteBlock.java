@@ -23,9 +23,9 @@
  */
 package org.ecoinformatics.owlifier;
 
-import java.net.URI;
 import org.semanticweb.owl.model.AddAxiom;
 import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLCommentAnnotation;
 import org.semanticweb.owl.model.OWLDataFactory;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyManager;
@@ -48,7 +48,7 @@ public class OwlifierNoteBlock extends OwlifierBlock {
       super(row);
       if(row.getLength() != 2)
          throw new Exception("Illegal note block: " + row);
-      note = row.getColumn(0).getTrimmedValue();
+      note = row.getColumn(1).getTrimmedValue();
    }
 
    public String getBlockType() {
@@ -67,6 +67,9 @@ public class OwlifierNoteBlock extends OwlifierBlock {
    public void addToOntology(OwlifierOntology ont) throws Exception {
       OWLOntologyManager m = ont.getOWLOntologyManager();
       OWLOntology o = ont.getOWLOntology();
-   // TODO: add note to ontology
+      OWLDataFactory f = m.getOWLDataFactory();
+      OWLCommentAnnotation c = f.getCommentAnnotation(getNote());
+      OWLAxiom	a = f.getOWLOntologyAnnotationAxiom(o, c);
+      m.applyChange(new AddAxiom(o, a));
    }
 }
