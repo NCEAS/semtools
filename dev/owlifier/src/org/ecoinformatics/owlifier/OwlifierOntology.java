@@ -26,15 +26,8 @@ package org.ecoinformatics.owlifier;
 import java.net.URI;
 
 import org.semanticweb.owl.apibinding.OWLManager;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAnnotation;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDescription;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.model.OWLObjectProperty;
 
 /**
  * 
@@ -129,134 +122,115 @@ public class OwlifierOntology {
    }
 
    /**
+    * Check if the given item is a class
+    * @param item the item
+    * @return true if the item is a class
+    * @throws java.lang.Exception
+    */
+   public boolean isClass(String item) throws Exception {
+      for(OwlifierRow row : getSpreadsheet().getRows()) {
+         OwlifierBlock b = row.getBlock();
+         if(b instanceof OwlifierEntityBlock)
+            if(((OwlifierEntityBlock) b).getBlockType().equals(item))
+               return true;
+         if(b instanceof OwlifierSynonymBlock)
+            if(((OwlifierSynonymBlock) b).getSynonyms().contains(item))
+               return true;
+         if(b instanceof OwlifierExactBlock)
+            if(((OwlifierExactBlock) b).getEntities().contains(item))
+               return true;
+         if(b instanceof OwlifierMaxBlock)
+            if(((OwlifierMaxBlock) b).getEntities().contains(item))
+               return true;
+         if(b instanceof OwlifierMinBlock)
+            if(((OwlifierMinBlock) b).getEntities().contains(item))
+               return true;
+         if(b instanceof OwlifierExactBlock)
+            if(((OwlifierExactBlock) b).getEntities().contains(item))
+               return true;
+         if(b instanceof OwlifierOverlapBlock)
+            if(((OwlifierOverlapBlock) b).getOverlap().contains(item))
+               return true;
+         if(b instanceof OwlifierRelationshipBlock)
+            if(((OwlifierRelationshipBlock) b).getEntities().contains(item))
+               return true;
+         if(b instanceof OwlifierTransitiveBlock)
+            if(((OwlifierTransitiveBlock) b).getEntities().contains(item))
+               return true;
+         if(b instanceof OwlifierSufficientBlock) {
+            if(((OwlifierSufficientBlock) b).getEntity().equals(item))
+               return true;
+            else if(((OwlifierSufficientBlock) b).getEntities().contains(item))
+               return true;
+         }
+      }
+      return false;
+   }
+
+   /**
+    * Check if the item is a property (relationship)
+    * @param item the item
+    * @return true if the item is a property (relationship)
+    */
+   public boolean isProperty(String item) throws Exception {
+      for(OwlifierRow row : getSpreadsheet().getRows()) {
+         OwlifierBlock b = row.getBlock();
+         if(b instanceof OwlifierExactBlock)
+            if(((OwlifierExactBlock) b).getRelationship().equals(item))
+               return true;
+         if(b instanceof OwlifierMaxBlock)
+            if(((OwlifierMaxBlock) b).getRelationship().equals(item))
+               return true;
+         if(b instanceof OwlifierMinBlock)
+            if(((OwlifierMinBlock) b).getRelationship().equals(item))
+               return true;
+         if(b instanceof OwlifierExactBlock)
+            if(((OwlifierExactBlock) b).getRelationship().equals(item))
+               return true;
+         if(b instanceof OwlifierRelationshipBlock)
+            if(((OwlifierRelationshipBlock) b).getRelationship().equals(item))
+               return true;
+         if(b instanceof OwlifierTransitiveBlock)
+            if(((OwlifierTransitiveBlock) b).getRelationship().equals(item))
+               return true;
+         if(b instanceof OwlifierInverseBlock) {
+            if(((OwlifierInverseBlock) b).getRelationship1().equals(item))
+               return true;
+            if(((OwlifierInverseBlock) b).getRelationship2().equals(item))
+               return true;
+         }
+         if(b instanceof OwlifierSufficientBlock) {
+            OwlifierSufficientBlock s = (OwlifierSufficientBlock)b;
+            if(s.hasProperty() && s.getProperty().equals(item))
+               return true;
+         }
+      }
+      return false;
+   }
+
+   /**
+    * Construct the ontology
     */
    private void buildStandardOntology() throws Exception {
+      // add the non-description blocks
       for(OwlifierRow row : getSpreadsheet().getRows()) {
          OwlifierBlock block = row.getBlock();
-         block.addToOntology(this);
+         if(!(block instanceof OwlifierDescriptionBlock) &&
+               !(block instanceof OwlifierOverlapBlock))
+            block.addToOntology(this);
       }
-//      OWLDataFactory factory = manager.getOWLDataFactory();
-//      OWLAxiom axiom = null;
-//      OWLClass class1 = null, class2 = null;
-//      OWLObjectProperty rel = null;
-//      // get classes
-//      for(String entity : getClasses()) {
-//         class1 = factory.getOWLClass(getURI(entity));
-//         axiom = factory.getOWLDeclarationAxiom(class1);
-//         manager.applyChange(new AddAxiom(ontology, axiom));
-//      }
-//      // get subclasses
-//      Map<String, Set<String>> subclasses = getSubclasses();
-//      for(String parentEntity : subclasses.keySet()) {
-//         class1 = factory.getOWLClass(getURI(parentEntity));
-//         for(String childEntity : subclasses.get(parentEntity)) {
-//            class2 = factory.getOWLClass(getURI(childEntity));
-//            axiom = factory.getOWLSubClassAxiom(class2, class1);
-//            manager.applyChange(new AddAxiom(ontology, axiom));
-//         }
-//      }
-//      // get relationships
-//      for(String prop : getObjectProperties()) {
-//         rel = factory.getOWLObjectProperty(getURI(prop));
-//         axiom = factory.getOWLDeclarationAxiom(rel);
-//         manager.applyChange(new AddAxiom(ontology, axiom));
-//      }
-//      // get description comments
-//      Map<String, Set<String>> descriptions = getDescriptions();
-//      for(String item : descriptions.keySet())
-//         for(String desc : descriptions.get(item)) {
-//            OWLAnnotation a = factory.getCommentAnnotation(desc, "en");
-//            if(getClasses().contains(item)) {
-//               class1 = factory.getOWLClass(getURI(item));
-//               axiom = factory.getOWLEntityAnnotationAxiom(class1, a);
-//            } else if(getObjectProperties().contains(item)) {
-//               rel = factory.getOWLObjectProperty(getURI(item));
-//               axiom = factory.getOWLEntityAnnotationAxiom(rel, a);
-//            }
-//            manager.applyChange(new AddAxiom(ontology, axiom));
-//         }
-//      // min cardinality
-//      for(List<String> maxRow : getMaxProperties()) {
-//         rel = factory.getOWLObjectProperty(getURI(maxRow.get(0)));
-//         int n;
-//         try {
-//            n = (new Integer(maxRow.get(1))).intValue();
-//         } catch(Exception e) {
-//            throw new Exception("Invalid max cardinality: " + maxRow.get(1));
-//         }
-//         for(int i = 2; i + 1 < maxRow.size(); i++) {
-//            class1 = factory.getOWLClass(getURI(maxRow.get(i)));
-//            class2 = factory.getOWLClass(getURI(maxRow.get(i + 1)));
-//            OWLDescription d =
-//                  factory.getOWLObjectMaxCardinalityRestriction(rel, n, class2);
-//            axiom = factory.getOWLSubClassAxiom(class1, d);
-//            manager.applyChange(new AddAxiom(ontology, axiom));
-//         }
-//      }
-//      // min cardinality
-//      for(List<String> minRow : getMinProperties()) {
-//         rel = factory.getOWLObjectProperty(getURI(minRow.get(0)));
-//         int n;
-//         try {
-//            n = (new Integer(minRow.get(1))).intValue();
-//         } catch(Exception e) {
-//            throw new Exception("Invalid min cardinality: " + minRow.get(1));
-//         }
-//         for(int i = 2; i + 1 < minRow.size(); i++) {
-//            class1 = factory.getOWLClass(getURI(minRow.get(i)));
-//            class2 = factory.getOWLClass(getURI(minRow.get(i + 1)));
-//            OWLDescription d =
-//                  factory.getOWLObjectMinCardinalityRestriction(rel, n, class2);
-//            axiom = factory.getOWLSubClassAxiom(class1, d);
-//            manager.applyChange(new AddAxiom(ontology, axiom));
-//         }
-//      }
-//      // exact cardinality
-//      for(List<String> exactRow : getMinProperties()) {
-//         rel = factory.getOWLObjectProperty(getURI(exactRow.get(0)));
-//         int n;
-//         try {
-//            n = (new Integer(exactRow.get(1))).intValue();
-//         } catch(Exception e) {
-//            throw new Exception("Invalid exact cardinality: " + exactRow.get(1));
-//         }
-//         for(int i = 2; i + 1 < exactRow.size(); i++) {
-//            class1 = factory.getOWLClass(getURI(exactRow.get(i)));
-//            class2 = factory.getOWLClass(getURI(exactRow.get(i + 1)));
-//            OWLDescription d =
-//                  factory.getOWLObjectExactCardinalityRestriction(rel, n, class2);
-//            axiom = factory.getOWLSubClassAxiom(class1, d);
-//            manager.applyChange(new AddAxiom(ontology, axiom));
-//         }
-//      }
-//      // sufficient relationship
-//      for(List<String> propRow : getSufficientRelationships()) {
-//         rel = factory.getOWLObjectProperty(getURI(propRow.get(0)));
-//         // add the property defintion
-//         for(int i = 1; i + 1 < propRow.size(); i++) {
-//            class1 = factory.getOWLClass(getURI(propRow.get(i)));
-//            class2 = factory.getOWLClass(getURI(propRow.get(i + 1)));
-//            OWLDescription d = factory.getOWLObjectSomeRestriction(rel, class2);
-//            axiom = factory.getOWLEquivalentClassesAxiom(class1, d);
-//            manager.applyChange(new AddAxiom(ontology, axiom));
-//         }
-//      }
-//      // sufficient not-relationship
-//      for(List<String> propRow : getSufficientNotRelationships()) {
-//         rel = factory.getOWLObjectProperty(getURI(propRow.get(0)));
-//         // add the property defintion
-//         for(int i = 1; i + 1 < propRow.size(); i++) {
-//            class1 = factory.getOWLClass(getURI(propRow.get(i)));
-//            class2 = factory.getOWLClass(getURI(propRow.get(i + 1)));
-//            OWLDescription d = factory.getOWLObjectSomeRestriction(rel, class2);
-//            OWLDescription d2 = factory.getOWLObjectComplementOf(d);
-//            axiom = factory.getOWLEquivalentClassesAxiom(class1, d2);
-//            manager.applyChange(new AddAxiom(ontology, axiom));
-//         }
-//      }
+      // add the description blocks
+      for(OwlifierRow row : getSpreadsheet().getRows()) {
+         OwlifierBlock block = row.getBlock();
+         if(block instanceof OwlifierDescriptionBlock)
+            block.addToOntology(this);
+      }
 
-      // sufficient blocks ...
-      // TODO get disjoint classes
+      // TODO:
+      // 1. assert disjoint axioms
+      // 2. remove overlaps blocks
+      // 3. combine per entity the sufficient block axioms
+
    }
 
    /**

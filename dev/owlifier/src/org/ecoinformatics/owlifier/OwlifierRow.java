@@ -37,7 +37,15 @@ public class OwlifierRow {
    private List<OwlifierColumn> row = new ArrayList();
    private OwlifierBlock block;
 
+   /**
+    * Get the block associated with this row
+    * @return the block
+    * @throws java.lang.Exception
+    */
    public OwlifierBlock getBlock() throws Exception {
+      if(this.getLength() < 1)
+         throw new Exception("Illegal block: " + this);
+      // get the type of the row
       String type = getColumn(0).getTrimmedValue().toLowerCase();
       if(type.equals("entity"))
          return new OwlifierEntityBlock(this);
@@ -65,7 +73,6 @@ public class OwlifierRow {
          return new OwlifierSufficientBlock(this);
       else if(type.equals("description"))
          return new OwlifierDescriptionBlock(this);
-
       else
          throw new Exception("Undefined block type: " + type);
    }

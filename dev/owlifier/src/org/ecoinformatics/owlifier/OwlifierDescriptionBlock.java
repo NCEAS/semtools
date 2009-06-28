@@ -23,11 +23,11 @@
  */
 package org.ecoinformatics.owlifier;
 
-import java.util.Set;
-import java.util.HashSet;
 import org.semanticweb.owl.model.AddAxiom;
+import org.semanticweb.owl.model.OWLAnnotation;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLClass;
+import org.semanticweb.owl.model.OWLObjectProperty;
 import org.semanticweb.owl.model.OWLDataFactory;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyManager;
@@ -38,6 +38,9 @@ import org.semanticweb.owl.model.OWLOntologyManager;
  */
 public class OwlifierDescriptionBlock extends OwlifierBlock {
 
+   private String item;
+   private String description;
+
    /**
     * Create a max block
     * @param row the row representing this block
@@ -45,10 +48,22 @@ public class OwlifierDescriptionBlock extends OwlifierBlock {
     */
    public OwlifierDescriptionBlock(OwlifierRow row) throws Exception {
       super(row);
+      if(row.getLength() != 3)
+         throw new Exception("Illegal description block: " + row);
+      item = row.getColumn(1).getTrimmedValue();
+      description = row.getColumn(2).getTrimmedValue();
    }
 
    public String getBlockType() {
-      return "Max";
+      return "Description";
+   }
+
+   public String getDescription() {
+      return description;
+   }
+
+   public String getItem() {
+      return item;
    }
 
    @Override
@@ -56,7 +71,16 @@ public class OwlifierDescriptionBlock extends OwlifierBlock {
       OWLOntologyManager m = ont.getOWLOntologyManager();
       OWLOntology o = ont.getOWLOntology();
       OWLDataFactory f = m.getOWLDataFactory();
-   // TODO: add transitive axioms
+      OWLAnnotation n = f.getCommentAnnotation(getDescription());
+      if(ont.isClass(getItem())) {
+         OWLClass c = f.getOWLClass(ont.getURI(getItem()));
+         OWLAxiom a = f.getOWLEntityAnnotationAxiom(c, n);
+         m.applyChange(new AddAxiom(o, a));
+      }
+      if(ont.isProperty(getItem())) {
+         OWLObjectProperty p = f.getOWLObjectProperty(ont.getURI(getItem()));
+         OWLAxiom a = f.getOWLEntityAnnotationAxiom(p, n);
+         m.applyChange(new AddAxiom(o, a));
+      }
    }
-
 }
