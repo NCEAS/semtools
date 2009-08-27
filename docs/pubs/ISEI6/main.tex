@@ -14,7 +14,8 @@
 
 \title{Owlifier: Creating OWL-DL Ontologies from Simple
   Spreadsheet-Based Knowledge Descriptions\tnoteref{t1}}
-%\tnotetext[t1]{This work supported in part by NSF grants ...}
+\tnotetext[t1]{This work supported in part by NSF grants DBI-0743429
+  and DBI-0753144.}
 
 \author[smb]{Shawn Bowers\corref{cor1}}
 \ead{sbowers@ucdavis.edu}
@@ -27,7 +28,8 @@
 
 \cortext[cor1]{Corresponding author}
 
-\address[smb]{UC Davis Genome Center}
+\address[smb]{UC Davis Genome Center \& Dept. of Computer Science,
+  Gonzaga University}
 
 \address[jsm]{Dept. of Biological Sciences, Macquarie University, Australia}
 
@@ -66,6 +68,7 @@
 \end{abstract}
 
 \maketitle
+
 
 \section{Introduction}
 
@@ -107,24 +110,38 @@ syntax. We see the lack of suitable ontology editing tools for
 scientists without expertise in knowledge representation as one of the
 major barriers for more wide-scale adoption of ontologies in ecology.
 
-
 This paper presents a novel approach for ontology creation that aims
 at being more intuitive for ecologists and that can be used to rapidly
-construct large ontologies for describing scientific data. Our
-approach is to allow scientists to use common spreadsheet-based tools
-to describe, in an intuitive way, different aspects of an ontology,
-and then to take these descriptions and convert them into full-fledged
-OWL ontologies using a software application called \owlifier. An
-\owlifier\ spreadsheet consists of a set of \emph{blocks} that have a
-predefined template structure for users to fill in. Each non-empty row
-in an \owlifier\ table constitutes a block. Each block defines
+construct large ontologies for describing scientific data.  Our
+approach is to allow scientists to use common and familiar
+spreadsheet-based tools (e.g., Microsoft Excel, Apple Numbers, Open
+Office Spreadsheet) to describe, in an intuitive way, different
+aspects of an ontology, and then to take these descriptions and
+convert them into full-fledged OWL ontologies using a software
+application called \owlifier. The use of a familiar editing
+environment can improve the speed and understanding of ontology
+construction and avoid locating, downloading, and interpreting
+additional software packages and add-ons (e.g., CMAP-COE
+\cite{hayes05:_collab_knowl_captur_in_ontol}).  Many spreadsheet
+applications also contain easy-to-use features that support scientists
+with the structuring process (e.g., cut/copy/paste, search/replace,
+sort, split-window, annotation, track-changes, freeze panes, and so
+on).
+
+An \owlifier\ spreadsheet consists of a set of \emph{blocks} that have
+a predefined template structure for users to fill in. Each non-empty
+row in an \owlifier\ table constitutes a block. Each block defines
 different aspects of an ontology including ontology classes,
 subclasses, synonyms, and properties.  We also provide blocks for
 plain-text descriptions of classes and properties, and for referencing
 one or more existing ontologies (e.g., to extend an existing ontology
 or to define ontology articulations). Blocks can be sparse (inheriting
 from previous blocks), which can further simplify the creation of
-large ontologies.
+large ontologies. We omit several OWL features associated with
+properties (e.g., role inclusion axioms, domain and range property
+restrictions, and data-type properties among others) as these can be
+confusing to construct for non-experts and are more suitable for
+experienced knowledge modelers.
 
 While not as expressive as OWL-DL, our approach can produce ontology
 structures that are essential for improved data discovery and
@@ -206,11 +223,13 @@ where $n$ is a namespace label and $u$ is an OWL ontology URI. Classes
 and properties from imported ontologies are referenced by prefixing
 the namespace label $n$ to the corresponding class or property name in
 the normal way. As an example, the following block imports the SWEET
-``Earth Realm'' ontology \cite{raskin:_seman_web_for_earth_and}
+``Earth Realm'' ontology \cite{raskin05}
+\begin{small}
 \begin{tabbing}
   ~~\textsf{import}  \textsf{sweet} 
   \textsf{http://sweet.jpl.nasa.gov/ontology/earthrealm.owl}
 \end{tabbing}
+\end{small}
 With this import block the class denoting Marine Ecosystems (a class
 defined in the SWEET ontology) can be referred to from within an
 \owlifier\ table using the expression
@@ -546,10 +565,10 @@ class result in a single axiom in which each constraint (i.e., class
 constructor) is combined via intersection ($\sqcap$).
 
 
-\myblock{Comment Blocks.} Comment blocks provide a mechanism to add
-plain-text comments to \owlifier\ tables. A description block attaches
-a plain-text comment to classes and properties. Rows containing
-description blocks take the form
+\myblock{Comment Blocks.} There are two types of comment blocks that
+each provide a mechanism to add plain-text comments to \owlifier\
+tables. A description block attaches a plain-text comment to classes
+and properties. Rows containing description blocks take the form
 \begin{itemize}
 \item[]
   \begin{tabular}{|l|l|l|}\hline \textsf{description} & $c$ or $p$ & $s$
@@ -558,14 +577,15 @@ description blocks take the form
 \end{itemize}
 where the string $s$ is associated as a comment to the class $c$ or
 property $p$. A note block attaches comments to the current
-ontology. Rows containing note blocks take the form
+ontology. Rows containing note blocks can occur anywhere within an
+\owlifier\ table, and take the form
 \begin{itemize}
 \item[]
   \begin{tabular}{|l|l|l|}\hline \textsf{note} & $s$
 \\ \hline
   \end{tabular}
 \end{itemize}
-where $s$ is a comment string.
+where $s$ is a comment string. 
 
 
 \section{Additional Features of \Owlifier}
@@ -691,6 +711,16 @@ enter minimal information by limiting redundancy and by supporting a
 range of inferences, while at the same time reducing the causes of
 many errors commonly made in ontology development by non-experts.
 
+
+\begin{figure*}
+  \centering
+  \includegraphics[scale=.75]{architecture.pdf}
+  \caption{The basic \owlifier\ application and relation to other
+    technologies.}
+  \label{fig:owlifier}
+\end{figure*}
+
+
 \section{The \Owlifier\ Implementation}
 \label{sec:implementation}
 
@@ -714,24 +744,20 @@ representation (shown using dashed lines in
 conversion is not information preserving since not all OWL-DL
 constructs are represented through \owlifier\ blocks.
 
-\begin{figure}
-  \centering
-  \includegraphics[scale=.5]{architecture.pdf}
-  \caption{The basic \owlifier\ application and relation to other
-    technologies.}
-  \label{fig:owlifier}
-\end{figure}
-
 The current implementation of the \owlifier\ application is written in
 Java and supports a subset of the blocks defined in
 \secref{sec:owlifier}. In particular, we are currently extending
 \owlifier\ to support cardinality and sufficient blocks as well as to
-perform the above conversion from OWL-DL files to corresponding
-\owlifier\ blocks. As noted above, the current implementation,
-although it does not support all of the blocks defined here, is being
-used within a project focused on supporting trait data and many of the
-extensions outlined here are based on these experiences. In addition,
-\owlifier\ has been used to construct term hierarchies from large sets
+perform the (potentially lossy) back conversion from OWL-DL files to
+corresponding \owlifier\ blocks. The current implementation of
+\owlifier\ is being used within a project focused on integrating
+vegetation trait data.  As noted above, not all the blocks described
+here are yet supported, however, these priority needs are clearly
+emerging from our interactions with the vegetation scientists.
+Nevertheless, these scientists were able to rapidly prototype and
+revise their trait ontologies using \owlifier, with little to no
+instruction in formal logic or knowledge modeling.  In addition,
+\owlifier\ is being used to construct term hierarchies from large sets
 of keywords (harvested from existing metadata documents) as well as to
 define articulations between existing ontologies and the observation
 ontology defined in \cite{madin07:_ontol_for_descr_and_synth}.
