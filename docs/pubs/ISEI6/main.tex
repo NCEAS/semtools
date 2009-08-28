@@ -75,58 +75,74 @@
 Within the fields of molecular biology and biomedicine considerable
 effort has gone into developing ontologies for improving data
 discovery and integration
-\cite{ashburner00:_gene_ontol,bard04:_ontol_in_biolog}. While similar
+\citep{ashburner00:_gene_ontol,bard04:_ontol_in_biolog}. While similar
 benefits can be obtained for ecological data, far fewer efforts exist
 to develop broad and consistent terminologies within ecology
-\cite{madin08:_advan_ecolog_resear_with_ontol,parr20:_data_sharin_in_ecolog_and_evolut}.
+\citep{madin08:_advan_ecolog_resear_with_ontol,parr20:_data_sharin_in_ecolog_and_evolut}.
 The use of formal ontologies can significantly enhance metadata
 descriptions of ecological data. For instance, annotating data with
 ontology terms can both help users interpret data as well as enable
 advanced capabilities for data discovery and integration, e.g., by
 exploiting subsumption and part-of hierarchies as well as more formal
 constraints such as cardinality restrictions on properties and term
-equivalence \cite{madin08:_advan_ecolog_resear_with_ontol}.
+equivalence \citep{madin08:_advan_ecolog_resear_with_ontol}.
 
 Efforts to engage scientists in the development of ontologies
 typically leverage the W3C Web Ontology Language (OWL)
-\cite{smith04:_owl_web_ontol_languag_guide} as a standard XML syntax
+\citep{smith04:_owl_web_ontol_languag_guide} as a standard XML syntax
 for representing and sharing ontologies. A key advantage of OWL is
 that it is supported by a wide range of generic tools, including
 editors
-\cite{knublauch04:_editin_descr_logic_ontol_with,kalyanpur05:_swoop},
+\citep{knublauch04:_editin_descr_logic_ontol_with,kalyanpur05:_swoop},
 reasoning systems
-\cite{sirin07:_pellet,tsarkov06:_fact_descr_logic_reason}, query
+\citep{sirin07:_pellet,tsarkov06:_fact_descr_logic_reason}, query
 languages
-\cite{prudhommeaux08:_sparq_query_languag_for_rdf,motik05:_query_answer_for_owl_dl_with_rules},
+\citep{prudhommeaux08:_sparq_query_languag_for_rdf,motik05:_query_answer_for_owl_dl_with_rules},
 and storage technologies
-\cite{carroll04:_jena,broekstra02:_sesam}. Most of these tools,
+\citep{carroll04:_jena,broekstra02:_sesam}. Most of these tools,
 however, are primarily targeted at experts in knowledge engineering
 and software development familiar with the underlying description
-logic semantics of OWL-DL \cite{grau08:_owl}. This is especially true
+logic semantics of OWL-DL \citep{grau08:_owl}. This is especially true
 with ontology editors (such as Protege, SWOOP, etc.), which allow for
 very detailed ontology specifications, but at the same time require
 considerable understanding of the underlying ontology formalisms and
-syntax. We see the lack of suitable ontology editing tools for
-scientists without expertise in knowledge representation as one of the
-major barriers for more wide-scale adoption of ontologies in ecology.
+syntax.  A well-funded ontology development effort, the Gene Ontology
+(GO), has been underway for over a decade within the molecular biology
+community, and has led to some major successes enriching genomic and
+biomedical data resources with annotations to community-based
+ontologies. A major lesson learned from these efforts was the
+importance of keeping the ontology focused, and indeed GO has a highly
+delimited scope \citep{bada04:_short_study_succes_of_gene_ontol}
+Ecology, on the other hand, encompasses an extremely broad range of
+scales and disciplines, such that a coordinated ontology development
+effort would need to involve a large number of experts to cover the
+diverse types of information relevant to ecological investigations.
+At this point, we believe that ecological researchers need to begin
+constructing ontologies for their own specialized subdisciplines.
+Most ontology editing tools, however, typically require substantial
+expertise in formal knowledge representation, and present a major
+barrier for more wide-scale creation and adoption of ontologies in
+ecology.
 
 This paper presents a novel approach for ontology creation that aims
 at being more intuitive for ecologists and that can be used to rapidly
-construct large ontologies for describing scientific data.  Our
-approach is to allow scientists to use common and familiar
-spreadsheet-based tools (e.g., Microsoft Excel, Apple Numbers, Open
-Office Spreadsheet) to describe, in an intuitive way, different
-aspects of an ontology, and then to take these descriptions and
-convert them into full-fledged OWL ontologies using a software
-application called \owlifier. The use of a familiar editing
-environment can improve the speed and understanding of ontology
-construction and avoid locating, downloading, and interpreting
-additional software packages and add-ons (e.g., CMAP-COE
-\cite{hayes05:_collab_knowl_captur_in_ontol}).  Many spreadsheet
+construct large ontologies of ecological terms (classes) and the
+subsequent annotation of scientific data (instances).  Our approach is
+to allow scientists to use common and familiar spreadsheet-based tools
+(e.g., Microsoft Excel, Apple Numbers, Open Office Spreadsheet) to
+describe, in an intuitive way, different aspects of an ontology, and
+then to take these descriptions and convert them into full-fledged OWL
+ontologies using a software application called \owlifier. The use of a
+\emph{familiar} editing environment can improve the speed and
+understanding of ontology construction and can help users avoid the
+often time-consuming task of locating, downloading, installing, and
+learning fundamentally new software applications and interfaces (e.g.,
+CMAP-COE \citep{hayes05:_collab_knowl_captur_in_ontol}, Protege
+\citep{knublauch04:_editin_descr_logic_ontol_with}).  Many spreadsheet
 applications also contain easy-to-use features that support scientists
-with the structuring process (e.g., cut/copy/paste, search/replace,
-sort, split-window, annotation, track-changes, freeze panes, and so
-on).
+in the process of editing and managing \owlifier\ ontology documents
+(e.g., via cut/copy/paste, search/replace, sort, split-window,
+track-changes, freeze panes, and so on).
 
 An \owlifier\ spreadsheet consists of a set of \emph{blocks} that have
 a predefined template structure for users to fill in. Each non-empty
@@ -145,7 +161,7 @@ experienced knowledge modelers.
 
 While not as expressive as OWL-DL, our approach can produce ontology
 structures that are essential for improved data discovery and
-integration \cite{madin07:_ontol_for_descr_and_synth}. Just as
+integration \citep{madin07:_ontol_for_descr_and_synth}. Just as
 important, because spreadsheet tools are frequently used by ecologists
 to store and analyze data, \owlifier\ can provide ecologists with a
 familiar and accessible user interface for ontology creation. This
@@ -163,10 +179,10 @@ The rest of this paper is organized as follows. In
 \secref{sec:owlifier} we describe the basic syntax and semantics of
 \owlifier. We define blocks that support a large subset of OWL-DL and
 that also generally follow the ontology creation guidelines defined in
-\cite{rector04:_owl_pizzas}. We also simplify certain aspects of
+\citep{rector04:_owl_pizzas}. We also simplify certain aspects of
 ontology creation using OWL-DL, e.g., by assuming classes are disjoint
 by default (unless specified otherwise)
-\cite{rector04:_owl_pizzas}. In \secref{sec:features} we describe
+\citep{rector04:_owl_pizzas}. In \secref{sec:features} we describe
 additional characteristics of \owlifier\ and discuss issues with
 respect to classification and reasoning. In
 \secref{sec:implementation} we briefly describe the \owlifier\
@@ -186,7 +202,7 @@ using more advanced ontology editing tools if necessary
 \label{sec:owlifier}
 
 As described above, an \owlifier\ table defines an OWL-DL
-\cite{smith04:_owl_web_ontol_languag_guide} ontology through a set of
+\citep{smith04:_owl_web_ontol_languag_guide} ontology through a set of
 \emph{blocks} representing one or more ontology definitions.  Each
 non-empty row in an \owlifier\ table corresponds to a block. The type
 of the block is given in the first column of the row. 
@@ -197,13 +213,13 @@ imported from another ontology, then they are to be added to the
 ontology being specified by the \owlifier\ table (i.e., the
 ``current'' ontology). In general, we name blocks according to the
 terms used in
-\cite{bowers08:_concep_model_framew_for_expres,madin07:_ontol_for_descr_and_synth}
+\citep{bowers08:_concep_model_framew_for_expres,madin07:_ontol_for_descr_and_synth}
 as opposed to the names used for corresponding constructs in
 OWL-DL. This choice of block names helps to simplify terminology
 (e.g., we use ``relation'' below instead of ``object property''),
 allows \owlifier\ to easily generate ontologies that extend the
 observational model of
-\cite{bowers08:_concep_model_framew_for_expres,madin07:_ontol_for_descr_and_synth},
+\citep{bowers08:_concep_model_framew_for_expres,madin07:_ontol_for_descr_and_synth},
 and avoids confusion with established terms commonly used within
 ecology (e.g., ``class''). 
 
@@ -223,7 +239,7 @@ where $n$ is a namespace label and $u$ is an OWL ontology URI. Classes
 and properties from imported ontologies are referenced by prefixing
 the namespace label $n$ to the corresponding class or property name in
 the normal way. As an example, the following block imports the SWEET
-``Earth Realm'' ontology \cite{raskin05}
+``Earth Realm'' ontology \citep{raskin05}
 \begin{small}
 \begin{tabbing}
   ~~\textsf{import}  \textsf{sweet} 
@@ -535,7 +551,7 @@ by definition a part of $x$.
 % block induces the DL axiom \[C_i \sqsubseteq (V \in P)\] stating that
 % each instance of $C_i$ has a value $V$ for property $P$.  The value
 % restrictions stated by value blocks are often used for defining
-% so-called \emph{value partitions} \cite{co-ode}.
+% so-called \emph{value partitions} \citep{co-ode}.
 
 
 \myblock{Sufficient Blocks.} Sufficient blocks are similar to synonym
@@ -599,7 +615,7 @@ reasoning, and additional block syntax.
 
 OWL is based on the open world assumption, which can lead to a number
 of ontology development ``pitfalls'' for those new to the language
-\cite{smith04:_owl_web_ontol_languag_guide,rector04:_owl_pizzas}. One
+\citep{smith04:_owl_web_ontol_languag_guide,rector04:_owl_pizzas}. One
 example is in the creation of disjoint classes.  In particular, unless
 explicitly asserted, distinct classes within an OWL-DL ontology are
 not assumed to be disjoint. However, in many ontologies a large number
@@ -607,11 +623,11 @@ of classes are typically defined as being disjoint (e.g., sibling
 classes), and stating these disjoint constraints is often
 time consuming since each pair of classes must be given an explicit
 disjoint assertion. Editors such as Protege
-\cite{knublauch04:_editin_descr_logic_ontol_with} provide shortcuts
+\citep{knublauch04:_editin_descr_logic_ontol_with} provide shortcuts
 via the user interface to create specific sets of disjoint assertions,
 e.g., by allowing a user to define all children of a particular class
 as disjoint. In general, however, many users expect such classes to be
-disjoint by default \cite{rector04:_owl_pizzas} and this expectation
+disjoint by default \citep{rector04:_owl_pizzas} and this expectation
 often leads to modeling errors.
 
 Alternatively, the default assumption in \owlifier\ is that distinct
@@ -622,7 +638,7 @@ related via subclass relations (either direct or indirect subclasses);
 (2) not defined as synonyms; and (3) not explicitly defined to overlap
 via an overlap block. Each such pair of classes is then asserted by
 \owlifier\ in the resulting ontology as being disjoint. As described
-in \cite{rector04:_owl_pizzas}, undeclared disjoint classes are a
+in \citep{rector04:_owl_pizzas}, undeclared disjoint classes are a
 common problem in ontology development using OWL-DL and often limit
 the utility of reasoning systems (by limiting the inferences that can
 be obtained). The approach employed in \owlifier\ for handling
@@ -658,12 +674,12 @@ $B \sqsubseteq A$ would be inferred. For both the case of synonym and
 sufficient blocks, the use of equivalence permits a number of
 additional inferences to be made via an OWL-DL reasoner.
 
-As described in \cite{rector04:_owl_pizzas} additional reasoning can
+As described in \citep{rector04:_owl_pizzas} additional reasoning can
 occur within OWL-DL ontologies when domain and range axioms are
 provided (as well as, e.g., property closure axioms).  We explicitly
 do not consider these constraints in the current version of \owlifier\
 because they also often result in modeling errors for inexperienced
-OWL-DL users \cite{rector04:_owl_pizzas}. Instead, we adopt the
+OWL-DL users \citep{rector04:_owl_pizzas}. Instead, we adopt the
 approach of more traditional description logics, which do not have
 explicit domain and range axioms.  Although not currently supported in
 \owlifier, domain and range constraints as well as property closure
@@ -706,7 +722,7 @@ be explicitly defined within an entity block, e.g., classes without
 corresponding entity blocks can be introduced simply through synonym
 and relationship blocks. This typically occurs when a particular class
 does not participate as a subclass or superclass of another class in
-the current ontology. Taken together, these appraoches allow users to
+the current ontology. Taken together, these approaches allow users to
 enter minimal information by limiting redundancy and by supporting a
 range of inferences, while at the same time reducing the causes of
 many errors commonly made in ontology development by non-experts.
@@ -732,17 +748,17 @@ The spreadsheet is then exported as a plain-text file containing the
 \owlifier\ table is then sent to the \owlifier\ application, which
 performs a number of steps that include: (i) parsing the file; (ii)
 generating the corresponding OWL-DL representation (e.g., in the
-current implementation, the Jena API is used \cite{carroll04:_jena});
+current implementation, the Jena API is used \citep{carroll04:_jena});
 (iii) validating the ontology and ensuring it is consistent via an
 OWL-DL reasoner (e.g., the current implementation uses Pellet
-\cite{sirin07:_pellet}); and (iv) outputting the corresponding OWL-DL
+\citep{sirin07:_pellet}); and (iv) outputting the corresponding OWL-DL
 file. The resulting OWL file can then be refined and extended via
 existing OWL tools (e.g., Protege or SWOOP). It is possible that the
 refined ontology is converted back to a corresponding \owlifier\
 representation (shown using dashed lines in
-\figref{fig:owlifier}). While straightforward to perform, this last
+\figref{fig:owlifier}). While straightforward to perform, this back
 conversion is not information preserving since not all OWL-DL
-constructs are represented through \owlifier\ blocks.
+statements can be represented through \owlifier\ blocks.
 
 The current implementation of the \owlifier\ application is written in
 Java and supports a subset of the blocks defined in
@@ -760,7 +776,7 @@ instruction in formal logic or knowledge modeling.  In addition,
 \owlifier\ is being used to construct term hierarchies from large sets
 of keywords (harvested from existing metadata documents) as well as to
 define articulations between existing ontologies and the observation
-ontology defined in \cite{madin07:_ontol_for_descr_and_synth}.
+ontology defined in \citep{madin07:_ontol_for_descr_and_synth}.
 
 
 \section{Conclusion}
@@ -779,13 +795,13 @@ require considerable expertise in the underlying logic formalisms.
 
 Protege provides a variety of ontology editing plug-ins, including a
 simple interface for text-based editing of class hierarchies. In
-\cite{kola07:_impor_spread_data_into_proteg}, an approach is described
+\citep{kola07:_impor_spread_data_into_proteg}, an approach is described
 for importing spreadsheet-based ontology descriptions into
 Protege. However, this approach aims at supporting \emph{ad-hoc}
 spreadsheet structures by providing an intermediate interface for
 mapping these structures into ontology axioms. This approach is
 similar to others (e.g.,
-\cite{han08:_rdf12,bizer03:_d2r_map,an06:_discov_seman_of_relat_tables_throug_mappin})
+\citep{han08:_rdf12,bizer03:_d2r_map,an06:_discov_seman_of_relat_tables_throug_mappin})
 for defining mappings from relational data to RDF and OWL ontology
 class and instance data. To the best of our knowledge, however, our
 approach is the first to consider a detailed set of templates that can
@@ -793,7 +809,7 @@ support a large subset of existing OWL constructs. In addition, we
 define a number of shortcuts for creating \owlifier\ tables, including
 sparse blocks and default semantics (e.g., disjoint classes, which is
 a form of global taxonomic constraint defined in
-\cite{thau07:_reason_about_taxon_in_first_order_logi}) that further
+\citep{thau07:_reason_about_taxon_in_first_order_logi}) that further
 simplify ontology creation for end users.
 
 As future work, we intend to extend our current \owlifier\
@@ -810,7 +826,7 @@ into an OWL-DL ontology, we want to maintain (i.e., re-apply) the
 original extensions and edits created by the knowledge representation
 expert that are still relevant. We are also developing extensions to
 \owlifier\ to support conversion into the observation ontology
-framework presented in \cite{bowers08:_concep_model_framew_for_expres}
+framework presented in \citep{bowers08:_concep_model_framew_for_expres}
 and intend to perform additional testing and evaluation of the
 \owlifier\ approach with ecologists.
 

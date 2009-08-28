@@ -152,6 +152,11 @@ without reference about what is and is not difficult. See p.2 end of
 support the statements? If not, then noting that these are
 suppositions would be useful for the reader."
 
+To address this issue we added additional text on the need for new
+tools in ontology development for ecologists (e.g., compared with ...)
+Also, much of the motivation for the work is based on our work with
+ecologists and information managers, which we refer to in the paper.
+
 [josh]: Honestly, I don't find a problem here.  I think paragraph 2 is
 fine and obvious to anyone who's used Protege (we could potential say
 "based on our experience in an ecological informatics project
@@ -218,6 +223,12 @@ instances?  Are these part of the use case or not? If not, this really
 needs to be stated.  An ontology without instances has limited
 application."
 
+Our main goal is to provide a mechanism for describing ecological
+concepts, and then to allow additional tools to use these concepts for
+annotating scientific data (which represents the instances/values). We
+briefly mention this now in the introduction, and also elaborate on
+the scope of owlifier later in the paper.
+
 [josh]: Maybe at the start of third paragraph of introduction: This
 paper presents a novel approach for ontology creation that aims at
 being more intuitive for ecologists that can be used to rapidly
@@ -230,6 +241,11 @@ but in fact it is not. How does the present formulation represent to
 scientiest what gets dropped in the back conversion from OWL to the
 spreadsheet format?"
 
+We reworded the implementation section to make it clearer that the
+conversion is not information preserving. ... the owlifier tool will
+notify the user of this situation, but at this time no additional
+support is provided.
+
 [josh]: I guess we need be a bit more transparent in the last sentence
 of the bottom paragraph, page 10; something like:
    While straightforward to perform, this last conversion will only
@@ -238,7 +254,6 @@ preserve OWL-DL constructs that are represented by owlifier blocks.
 [mark]: Substitute term "back conversion" instead of "last
 conversion", and "that are" to "that can be"
 
-Note misspelling of "appraoches" on p. 10.
 
 ----------------------------------------------------------------------
 10). "Most of all, there is almost no (or none at all) description of
