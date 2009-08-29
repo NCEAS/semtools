@@ -1,358 +1,70 @@
-Mark's Revisions: 
 
-On p. 7, the "sufficient blocks" are not given a template
-representation, whereas all the other blocks are...
+We thank the reviewers for their excellent comments and suggestions for improvements to the paper.  We revised the paper to address each of the suggestions. Below we describe the changes we made that were requested by the reviewers as well as answers to the questions of the reviewers.
 
-Also on p. 7, you describe how the relationship block can be negated
-in a sufficient block.  Is negation also allowed in the relationship
-block itself?  This would be nice, and if permissible, should be
-described in the relationship block section.  
+---------------------------------------------------------------------- Reviewer #1: ---------------------------------------------------------------------- 1). "Not mentioned is the list of OWL features not supported."
 
-==> add to possible future extensions
+We added a sentence to the implementation section clarifying this, and also a brief description of what is not supported to the introduction (along with some motivation for why we consider only a subset of constructs).
 
-Section 3.2 on reasoning is where some additional explanation could be
-provided about difficulties of adding domain/range constraints to an
-"advanced owlifier" .  Also, does the relationship block
-simultaneously imply both someValuesFrom AND allValuesFrom (in
-Manchester syntax)?  If not, it would be nice to provide a closure
-axiom as an option on the relationship block.  Is this low-hanging
-fruit?
+---------------------------------------------------------------------- 2). "Overriding the OWL open world assumption should be fine, so long as that assumption is made clear to the users in the documentation."
 
-==> add to possible future extensions
+We primarily provide a different approach (e.g., than Protege) for specifying disjoint classes, as opposed to a general override of the OWA. However, we agree that describing this feature will be particularly important to users of owlifier that are familiar with OWL-DL. We also describe this in Section 3.1.
 
-In second paragraph of conclusion, last sentence, I am not sure why
-you refer to "disjoint classes" as a form of global taxonomic
-constraint defined in [22]-- I would think it is more the converse
-that global taxonomic constraints often require disjoint classes.
+---------------------------------------------------------------------- 3). "There is no mention of the competing CMAP-COE tool that makes it easy to create ontologies visually, with help from drop-down lists.  It would be helpful to include a line that compares your approach to CMAP (which also supports only a subset of OWL)."
 
-==> add to possible future extensions
+We added additional text in the introduction that further describes our motivation for the spreadsheet-based approach and some of its advantages for ecologists/scientists over CMAP-COE. This is also now briefly mentioned in the conclusion (which lists additional related work).
 
-It would be nice to clearly say what currently DOES or DOES NOT YET
-exist in owlifier, either in the Conclusion, or the preceding
-paragraph.
+---------------------------------------------------------------------- 4). "Something that might be pointed out - the tool could be used to help enforce some community standards (e.g., a common use of a "part-of" relation)."
 
-==> add to implementation part, along with a url to the OWLifier webpage
+We added two sentences to the conclusion that highlights this feature of owlifier. 
 
-----------------------------------------------------------------------
-Reviewer #1: 
-----------------------------------------------------------------------
-1). "Not mentioned is the list of OWL features not supported."
+---------------------------------------------------------------------- 5). "In the references: Usually, the word "pages" is abbreviated to pp. Ref 18: should be to a journal article, not a web site - perhaps Raskin and Pan (2005) in Computers & Geosciences. Ref 19: to EKAW?  What is that?  Compare Refs 4 and 7 - different wordings are used to describe the same conference."
 
-- Probably add a list to the implementation?
+We fixed each of these.
 
-[josh]: 
-Features not supported:
-  - Data-type properties
-  - Property domains and ranges
-  - Symmetric properties
-  - Others?
-  I would say at page 2, third full paragraph, after first sentence:
-  Primarily, we omit much of the complexities associated with
-  properties (e.g., domains and ranges, data-type properties) that are
-  often redundant and should be implemented where necessary, by more
-  experienced knowledge modellers.
+---------------------------------------------------------------------- Reviewer #2: ---------------------------------------------------------------------- 6). "In the early stages of the paper there are some assertions without reference about what is and is not difficult. See p.2 end of 2nd, 3rd and 4th paragraphs.  Can a little more detail be added to support the statements? If not, then noting that these are suppositions would be useful for the reader."
 
-[mark]: I'd amend Josh's sentence slightly, and place it as the last
-sentence of the preceding paragraph (para. 2; before paragraph
-starting with "While not as expressive") rather than second sentence
-of following para:
+To address this issue we added additional text in the introduction on why there is a need for new tools familiar to ecological scientists for ontology development, comparing our approach to CMAP-COE and Protege as well as efforts such as OBO.  Also, much of the motivation for the work is based on our work with ecologists and information managers, which we refer to in the paper (in the implementation section).
 
-"We omit several OWL features associated with properties (e.g.,
-domains and ranges, data-type properties) as these can be confusing to
-construct, and more suitable for experienced knowledge modelers."
+---------------------------------------------------------------------- 7). "Was there any quantifiable basis for choosing the predicates?  In particular, the statement" "While not as expressive as OWL-DL, our approach can produce ontology structures that are essential for improved data discovery and integration [14]."  indicates some level of decision in the reduced description but without any details, especially in terms for DL-expressivity, it is SHIQ, SHOIN, or what?"
 
+As far as we are aware, the arrangement of DL constructs used in owlifier does not directly map to any previously named DL sublanguage, however, it does provide only OWL-DL based constructs, and thus can be considered best as a sublanguage of SHOIN(D). Note that although many of the OWL-DL constructs can be used, they can only be used in certain contexts. Also, some of the more foundational constructs of DLs are not considered, e.g., value restrictions and concept disjunction. While additional blocks can easily be added to owlifier spreadsheet conventions, the proposed set of blocks were chosen to provide a simplified syntax (for a novice DL user) while leading to a "natural" or "intuitive" semantics of blocks for these users.
 
-----------------------------------------------------------------------
-2). "Overriding the OWL open world assumption should be fine, so long as
-that assumption is made clear to the users int eh documentation."
+---------------------------------------------------------------------- 8). "There are no mention of instances, that I could find, at all of instances?  Are these part of the use case or not? If not, this really needs to be stated.  An ontology without instances has limited application."
 
-We primarily provide a different approach for specifying disjoint
-classes, as opposed to overriding the OWA in general. However, we
-agree that describing this feature will be particularly important to
-users of OWLifier that are familiar with OWL-DL.
+Our main goal is to provide a mechanism for describing ecological concepts, and then to allow additional tools to use these concepts for annotating scientific data (which represents the instances/values). We briefly mention this now in the introduction, and also elaborate on the scope of owlifier later in the paper. Also see our response to (14) below.
 
-[josh]:
-- This is currently made clear in section 3.1 Disjoint Class Inference
-- Maybe there should be a brief mention of this in the introduction?
+---------------------------------------------------------------------- 9). "Fig.1 suggests a round-trip approach to knowledge engineering, but in fact it is not. How does the present formulation represent to scientist what gets dropped in the back conversion from OWL to the spreadsheet format?"
 
-[mark]: I think it is fine as is. Hard to be brief about this without
-being confusing.
+We reworded the implementation section to make it clearer that the conversion is not information preserving.  In general, the owlifier tool will only notify the user of this situation, but at this time no additional support is provided. We also tried to better clarify and describe the extensions to owlifier needed to better support the round trip conversion in the conclusion (as part of our future work).
 
+---------------------------------------------------------------------- 10). "Most of all, there is almost no (or none at all) description of the implementation or any evaluation, i.e. the how, why, etc.  What has this application been applied to?"
 
-----------------------------------------------------------------------
-3). "There is no mention of the competing CMAP-COE tool that makes it
-easy to create ontologies visually, with help from drop-down lists.
-It would be helpful to include a line that compares your approach to
-CMAP (which also supports only a subset of OWL)."
+The areas the owlifier application has been applied to is described in the implementation section, as well as in the introduction (briefly). In particular, we are applying owlifier to the Traitnet project (ecologists studying/using biological trait data) and to an LTER project that is attempting to impose structure over a large list of keywords extracted from existing metadata documents. We have not performed a formal evaluation of the owlifier application, which we state in the paper as future work, however, we have received positive (informal) feedback on the tool and we briefly describe this at the end of the implementation section.
 
-We added additional text in the introduction that further describes
-our motivation for the spreadsheet-based approach and some of its
-advantages for ecologists/sciencts over CMAP-COE.
+---------------------------------------------------------------------- 11). "It seems that it would be easy to generate complex blocks. How are moderate size ontologies developed?"
 
-[josh]: 
+Our use of owlifier has included both small and moderate sized ontologies.  Ecologists often create spreadsheets with large amounts of data, and similarly owlifier can be used in this way. In addition, sparse blocks significantly simplify the size of large hierarchies, since not all information needs to be repeated per row. In the LTER project mentioned above, there are thousands of terms (organized into a flat list) that are easily imported into Excel, and then using the Excel editing features, have been fairly easily organized into hiearchies (i.e., entity blocks and property blocks).  In general, using a combination of tools (e.g., that could show a portion of the spreadsheet visually) would also probably be extremely useful, however, we have not developed this type of technology for owlifier.
 
-- Even installing and using this tool is too complicated and a pain
-for people. Introduction, third paragraph, second sentence, maybe
-change to something like:
+---------------------------------------------------------------------- 12). "What is the rationale for the proposed extensions later in the paper, i.e. what are the use cases or evaluation-driven itersations?"
 
-Our approach is to allow scientists to use common and familiar
-spreadsheet-based tools (e.g., Microsoft Excel, Apple Numbers, Open
-Office Spreadsheet) to describe, in an intuitive way, different
-aspects of an ontology, and then to take these descriptions and
-convert them into full-fledged OWL ontologies using a software
-application called owlifier.  The use of a familiar editing
-environment will improve the speed and understanding of ontology
-construction and avoid locating, downloading, and interpreting
-additional software packages and add-ons (e.g., CMAP-COE).  Many
-spread-sheet applications also contain easy-to-use features that
-support scientists with the structuring process (e.g., cut / copy /
-paste, search / replace, sort, split-window, annotation,
-track-changes, freeze panes, and so on).
-
-[mark]: Above sounds good to me.
-
-
-----------------------------------------------------------------------
-4). "Something that might be pointed out - the tool could be used to
-help enforce some community standards (e.g., a common use of a
-"part-of" relation)."
-
-[josh]:
-- It would be nice to say something like (although I not sure where it
-  would be placed):
-
-Furthermore, blocks can be reused (e.g., relationship blocks) to
-ensure that future ontology development adheres to any community
-agreed-upon representations, and will result in the smoother ontology
-integration within ecology.
-
-[mark]: Nice
-
-[shawn]: Because owlifier spreadsheets can be converted to owl
-ontologies, these can be further imported in owlifier spreadsheets
-(e.g., for extension).  This follows the basic OWL infrastructure.
-
-
-
-----------------------------------------------------------------------
-5). "In the references: Usually, the word "pages" is abbreviated to
-pp. Ref 18: should be to a journal article, not a web site - perhaps
-Raskin and Pan (2005) in Computers & Geosciences. Ref 19: to EKAW?
-What is that?  Compare Refs 4 and 7 - different wordings are used to
-describe the same conference."
-
-FIXED
-
-----------------------------------------------------------------------
-Reviewer #2:
-----------------------------------------------------------------------
-6). "In the early stages of the paper there are some assertions
-without reference about what is and is not difficult. See p.2 end of
-2nd, 3rd and 4th paragraphs.  Can a little more detail be added to
-support the statements? If not, then noting that these are
-suppositions would be useful for the reader."
-
-To address this issue we added additional text on the need for new
-tools in ontology development for ecologists (e.g., compared with ...)
-Also, much of the motivation for the work is based on our work with
-ecologists and information managers, which we refer to in the paper.
-
-[josh]: Honestly, I don't find a problem here.  I think paragraph 2 is
-fine and obvious to anyone who's used Protege (we could potential say
-"based on our experience in an ecological informatics project
-constructing ontologies [SEEK]").  I can't find anything not
-referenced in paragraph 3.  And the example used by the reviewer in
-paragraph 4 IS referenced and not so much about the level of logical
-description, and basically says "you can capture the level of
-description shown in this cited paper as necessary for improved
-discovery and integration".
-
-[mark]: I think the assertion about "lack of suitable ontology editing
-tools is a major barrier for widescale adoption in ecology" is the
-issue, and begs the question as to why this isn't the case in other
-domains.  So, I suggest we delete the last sentence of paragraph 2 on
-pg 2, and add a following paragraph that elaborates and clarifies that
-point:
-
-"A well-funded ontology development effort, Gene Ontology (GO) has
-been underway for over a decade within the molecular biology
-community, and has led to some major successes enriching genomic and
-biomedical data resources with annotations to a community-based
-knowledge representation. A major lesson learned from these efforts
-was the importance of keeping the ontology focused, and indeed GO has
-a highly delimited scope (Bada et al.)  Ecology, on the other hand,
-encompasses an extremely broad range of scales and disciplines, such
-that a coordinated ontology development effort would need to involve a
-large number of experts to cover the diverse types of information
-relevant to ecological investigations.  At this point, we believe that
-ecological researchers need to begin constructing knowledge
-representations for their own specialized subdisciplines.  Most
-ontology editing tools, however, typically require substantial
-expertise in formal knowled ge representation, and present a major
-barrier for more wide-scale creation and adoption of ontologies in
-ecology."
-
-[Bada, Michael, Robert Stevens, Carol Goble, A. Gil, Michael
-Ashburner, Judith A. Blake, J. Michael Cherry, Midori Harris, Suzanna
-Lewis.  2004. A short study on the success of the gene ontology.
-Journal of Web Semantics, vol 1: 235-240.]
-
-----------------------------------------------------------------------
-7). "Was there any quantifiable basis for choosing the predicates?  In
-particular, the statement" "While not as expressive as OWL-DL, our
-approach can produce ontology structures that are essential for
-improved data discovery and integration [14]."  indicates some level
-of decision in the reduced description but without any details,
-especially in terms for DL-expressivity, it is SHIQ, SHOIN, or what?"
-
-As far as I am aware, the arrangement of DL constructs used in
-OWLifier does not directly map to any previously named DL sublanguage,
-however, it does provides only OWL-DL based constructs, and thus can
-be considered best as a sublanguage of SHOIN(D). Note that although
-many of the OWL-DL constructs can be used, they can only be used in
-certain contexts. Also, some of the more foundational constructs of
-DLs are not considered, e.g., value restrictions and concept
-disjunction. While additional blocks can easily be added to OWLifier
-spreadsheet conventions, the proposed set of blocks were chosen to
-provide a simplified syntax (for a novice DL user) while leading to a
-"natural" or "intuitive" semantics of blocks for these users.
-
-----------------------------------------------------------------------
-8). "There are no mention of instances, that I could find, at all of
-instances?  Are these part of the use case or not? If not, this really
-needs to be stated.  An ontology without instances has limited
-application."
-
-Our main goal is to provide a mechanism for describing ecological
-concepts, and then to allow additional tools to use these concepts for
-annotating scientific data (which represents the instances/values). We
-briefly mention this now in the introduction, and also elaborate on
-the scope of owlifier later in the paper.
-
-[josh]: Maybe at the start of third paragraph of introduction: This
-paper presents a novel approach for ontology creation that aims at
-being more intuitive for ecologists that can be used to rapidly
-construct large ontologies of ecological terms (classes) and the
-subsequent annotation of scientific data (instances).
-
-----------------------------------------------------------------------
-9). "Fig.1 suggests a round-trip approach to knowledge engineering,
-but in fact it is not. How does the present formulation represent to
-scientiest what gets dropped in the back conversion from OWL to the
-spreadsheet format?"
-
-We reworded the implementation section to make it clearer that the
-conversion is not information preserving. ... the owlifier tool will
-notify the user of this situation, but at this time no additional
-support is provided.
-
-[josh]: I guess we need be a bit more transparent in the last sentence
-of the bottom paragraph, page 10; something like:
-   While straightforward to perform, this last conversion will only
-preserve OWL-DL constructs that are represented by owlifier blocks.
-
-[mark]: Substitute term "back conversion" instead of "last
-conversion", and "that are" to "that can be"
-
-
-----------------------------------------------------------------------
-10). "Most of all, there is almost no (or none at all) description of
-the implemenation or any evaluation, i.e. the how, why, etc.  What has
-this application been applied to?"
-
-[josh]: We could mention that current efforts are underway using
-owlifier to structure list of keywords from the US LTER program.  And
-that the spread-sheet approach works well for these kind of mid-level
-term sorting exercises (e.g., 50-5000) terms.  Nonetheless, (from
-experience) larger numbers of terms does get difficult to navigate and
-structure, although the use of blocks means that you can focus on
-tractable chunks of terms and properties.  Furthermore, the use of
-spread-sheet software features greatly improve navigation, commenting,
-and editing capabilities (e.g., sort, freeze panes, split window,
-search, multiple worksheets / windows, comments, track-changes).
-
-----------------------------------------------------------------------
-11). "It seems that it would be easy to generate complex blocks. How
-are moderate size ontologies developed?"
-
-
-----------------------------------------------------------------------
-12). "What is the rationale for the proposed extensions later in the
-paper, i.e. what are the use cases or evaluation-driven itersations?"
-
+The point of these extensions are primarily for round-trip support of owlifier to OWL-DL and back. We added and revised the last paragraph to better articulate the goals and motivation of this work.
 
 ----------------------------------------------------------------------
 Reviewer #3:
 ----------------------------------------------------------------------
 
-----------------------------------------------------------------------
-13). "Possibly the authors could signal at the end of section 1
-something like "Readers unfamiliar with logic notation may safely
-ignore the small amount they may encounter in what follows.""
+---------------------------------------------------------------------- 13). "Possibly the authors could signal at the end of section 1 something like "Readers unfamiliar with logic notation may safely ignore the small amount they may encounter in what follows.""
 
-[josh]: I like the reviewer's idea about a sentence at the end of
-section 1 saying that "Readers unfamiliar with logic notation may
-safely ignore the small amount they may encounter in what follows" and
-focus on the examples accompanying each block description.
+We added a sentence stating this.
 
-[mark]: I agree
+---------------------------------------------------------------------- 14). "Although not enough to recommend required additions, I am left a little puzzled as to why the authors seem to be silent on two issues: OWL data type properties and owlifier instance entities. Both of these would seem easy to represent in their owlifier syntax. I would also imagine that both could arise in representing and reasoning about both dataset metadata and record-level metadata on biodiversity databases. So I am left wondering whether I am wrong about the ease of representing them in spreadsheets and attaching DL axioms, or whether instead, the authors believe that these two OWL constructs are better treated in as data for reasoners or elsewhere."
 
-----------------------------------------------------------------------
-14). "Although not enough to recommend required additions, I am left a
-little puzzled as to why the authors seem to be silent on two issues:
-OWL data type properties and owlifier instance entities. Both of these
-would seem easy to represent in their owlifier syntax. I would also
-imagine that both could arise in representing and reasoning about both
-dataset metadata and record-level metadata on biodiversity
-databases. So I am left wondering whether I am wrong about the ease of
-representing them in spreadsheets and attaching DL axioms, or whether
-instead, the authors believe that these two OWL constructs are better
-treated in as data for reasoners or elsewhere."
+Our use cases are largely driven by separating the specification of conceptual information (i.e., t-box assertions) from instance-level information.  In particular, in our applications instance level information is provided through "semantic annotations" that map data sets to ontology instances.  In this way, too, multiple data sets can be mapped to the same ontologies. Our decision also is inspired in part by the work of Rector et al.  that state in the OWL Pizza's paper: "this paper only concerns issues in defining OWL classes, since this is the strength of OWL-DL, and most existing classifiers deal with individuals completely or not at all."  However, we may extend owlifier in the future to include datatype properties, which would be a natural and simple extension.
 
-[josh]: I think we might need to be clearer that we are talking about
-class / term structuring and not instantiating with data (class
-instantiating comes later, after the formal conversion to OWL and by
-the knowledge engineer).  Maybe this could be added to the figure in
-some way.
+---------------------------------------------------------------------- 15). "On page 4 (Subsection "Overlap blocks", the second sentence has a small English ambiguity: "[...]a given set of classes may have overlapping instances." could reasonably be understood to mean that some instances overlap one another, whereas I believe the clause means "several classes may have common instances." [Grammatically, the overlapping instances do not belong to the collective "set of classes" but rather to each of the members of that collective]"
 
-I admit data-type properties are an obvious exclusion and should be
-justified.  This could be done by simply stating that owlifier is a
-mechanism for structuring classes with no additional, complicating
-information at this stage (although we do allow for cardinality...).
+We fixed this, which now reads: "Overlap blocks explicitly relax this assumption by stating that a given set of classes may share common instances."
 
-[mark]: Yes, it is hard to convey the reason for this focus on
-Classes.  Well, I feel that our use case is driven by using these
-ontologies to annotate data-- values of which become the
-instances. Maybe this is not a proper understanding.  But also even
-Rector et al. OWL Pizzas paper states: "this paper only concerns
-issues in defining OWL classes, since this is the strength of OWL-DL,
-and most existing classifiers deal with individuals completely or not
-at all." So we are in good company by just advancing capability to
-work with classes and relationships.
+---------------------------------------------------------------------- 16). "Reference 22 is missing 'c' in the article title.  "logi" should be "logic"."
 
-Would such support for data-type properties be low-hanging fruit for
-extending owlifier?  Especially the ability to capture enumerated
-lists might be very useful in the future.
-
-
-----------------------------------------------------------------------
-15). "On page 4 (Subsection "Overlap blocks", the second sentence has a
-small English ambiguity: "[...]a given set of classes may have
-overlapping instances." could reasonably be understood to mean that
-some instances overlap one another, whereas I believe the clause means
-"several classes may have common instances." [Grammatically, the
-overlapping instances do not belong to the collective "set of classes"
-but rather to each of the members of that collective]"
-
-[josh]: I agree with the grammatical comment to help the lay
-reader. overlapping --> common
-
-[mark]: ow about "Overlap blocks explicitly relax this assumption by
-stating that a given set of classes may share common instances" (2nd
-sent in para on Overlap blocks)
-
-----------------------------------------------------------------------
-16). "Reference 22 is missing 'c' in the article title.  "logi" should
-be "logic"."
-
-FIXED
+We fixed this.
