@@ -31,8 +31,6 @@
  */
 package org.ecoinformatics.sms.ontology;
 
-import com.hp.hpl.jena.ontology.OntModel;
-
 /**
  * An annotation ontology is associated with a single uri, and
  * represents the set of classes and properties associated with that
