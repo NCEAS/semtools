@@ -1,0 +1,61 @@
+Overview of deliverables
+------------------------
+DROPPED 1.  Develop and ratify a community-driven core ontology for representing observational data.
+DROPPED 2.  Develop an open-source reference implementation for the core observation ontology (i.e., a concrete OWL representation and associated software services) to facilitate its use in informatics projects and frameworks (including those of the Observation Ontology Workshop). 
+3.  Revise and extend the structure of EML so that it is capable of storing
+semantic annotations that ref-erence the core observation ontology, as part
+of the reference implementation.
+4.  Demonstrate new capabilities enabled by the reference implementation by
+extending existing software already in use by the ecological community: the
+EML storage system, Metacat, to provide annotation storage and ontology
+reasoning services; and the metadata editor, Morpho, for semantic annotation
+and a range of semantically enhanced services (e.g., searching, summarizing,
+visualization, etc.).
+5.  Engage the community through workshops to solicit use cases to drive
+research and development, and to evaluate the effectiveness of the semantic
+extensions to Morpho, Metacat, and EML.
+
+Prioritized deliverables
+------------------------
+* Metacat semantic extensions
+    Open-source and generic services to support the core observation
+    ontology reference implementation:
+    a. Extensions to Metacat for (a) ontology storage and access, 
+    b. Extensions to Metacat for (a) annotation storage and access, 
+    c. Extensions to Metacat for (b) ontology-based keyword and advanced
+    searches
+    d. Hierarchical browsing and navigation of Metacat collections
+
+* EML/Annotation language integration
+    a. Develop new EML modules that support semantic annotation to the core
+    observation ontology that reduces the redundancies between existing EML
+    descriptions and those captured formally within the core ontology (such
+    as those currently existing between EML and OBOE). Provide tools and
+    guidelines for migrating legacy EML metadata to this new EML approach.
+
+* Morpho annotation extensions
+    a. Design and implement graphical user interfaces within Morpho for
+    annotation of ecological data, and integrate these facilities with
+    existing metadata generation within Morpho to streamline the data
+    publishing process.  Develop mechanisms to automate the annotation
+    process, as well as mechanisms to create, apply, and edit annotation
+    templates.
+
+* Sensible summarization
+    a. Design and implement a concept browser in Morpho for selecting
+    relevant concepts from one or more ontologies for data browsing and
+    summarization.  Link this browser to the existing data view in Morpho so
+    that the data view adjusts as concepts are selected, calculating
+    aggregated statistics based on user preferences as needed by particular
+    semantic views of the data.  Design and implement these data
+    summarization algorithms in an efficient system building on existing
+    capabilities in relational and multi-dimensional database systems.
+    Incorporate graphical data exploration tools into Morpho. 
+
+* Morpho semantic search
+    a. Design and implement graphical user interfaces within Morpho for
+    semantic searching, and allow a user to refine their intended semantic
+    search concepts based on textual search terms.  Integrate these semantic
+    search extensions with the existing text-based searches in Morpho.
+    b. New Morpho interfaces for searching and browsing Metacat and local 
+    collections, which will leverage many of the Metacat extensions.
