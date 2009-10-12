@@ -7,25 +7,25 @@
     <!ENTITY owl11xml "http://www.w3.org/2006/12/owl11-xml#">
     <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
     <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-    <!ENTITY ont2 "http://linus.nceas.ucsb.edu/sms/metacat/ont.5.1#">
-    <!ENTITY ont "http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#">
+    <!ENTITY ont2 "http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl#">
+    <!ENTITY ont "http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#">
     <!ENTITY gce-oboe "http://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/gce-oboe.owl#">
 ]>
 
 <rdf:RDF xmlns="http://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/gce-oboe.owl#"
      xml:base="http://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/gce-oboe.owl"
-     xmlns:ont="http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#"
+     xmlns:ont="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#"
      xmlns:owl11="http://www.w3.org/2006/12/owl11#"
      xmlns:owl11xml="http://www.w3.org/2006/12/owl11-xml#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
-     xmlns:ont2="http://linus.nceas.ucsb.edu/sms/metacat/ont.5.1#"
+     xmlns:ont2="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl#"
      xmlns:gce-oboe="http://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/gce-oboe.owl#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:owl="http://www.w3.org/2002/07/owl#">
     <owl:Ontology rdf:about="">
-        <owl:imports rdf:resource="http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1"/>
-        <owl:imports rdf:resource="http://linus.nceas.ucsb.edu/sms/metacat/ont.5.1"/>
+        <owl:imports rdf:resource="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl"/>
+        <owl:imports rdf:resource="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl"/>
         <rdfs:comment>GCE OBOE Domain Extension</rdfs:comment>
     </owl:Ontology>
     
@@ -42,43 +42,43 @@
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#forCharacteristic -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#forCharacteristic -->
 
     <owl:ObjectProperty rdf:about="&ont;forCharacteristic"/>
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#hasCharacteristic -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#hasCharacteristic -->
 
     <owl:ObjectProperty rdf:about="&ont;hasCharacteristic"/>
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#hasCharacteristicValue -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#hasCharacteristicValue -->
 
     <owl:ObjectProperty rdf:about="&ont;hasCharacteristicValue"/>
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#hasEntityRelationship -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#hasEntityRelationship -->
 
     <owl:ObjectProperty rdf:about="&ont;hasEntityRelationship"/>
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#hasRelationshipEntity -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#hasRelationshipEntity -->
 
     <owl:ObjectProperty rdf:about="&ont;hasRelationshipEntity"/>
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#hasStandardValue -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#hasStandardValue -->
 
     <owl:ObjectProperty rdf:about="&ont;hasStandardValue"/>
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#hasUnit -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#hasUnit -->
 
     <owl:ObjectProperty rdf:about="&ont;hasUnit"/>
     
@@ -3381,79 +3381,79 @@
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#ComplexDerivedUnit -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#ComplexDerivedUnit -->
 
     <owl:Class rdf:about="&ont;ComplexDerivedUnit"/>
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#DateTime -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#DateTime -->
 
     <owl:Class rdf:about="&ont;DateTime"/>
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#Entity -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#Entity -->
 
     <owl:Class rdf:about="&ont;Entity"/>
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#EntityClassification -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#EntityClassification -->
 
     <owl:Class rdf:about="&ont;EntityClassification"/>
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#EntityName -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#EntityName -->
 
     <owl:Class rdf:about="&ont;EntityName"/>
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#EntityType -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#EntityType -->
 
     <owl:Class rdf:about="&ont;EntityType"/>
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#NominalStandard -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#NominalStandard -->
 
     <owl:Class rdf:about="&ont;NominalStandard"/>
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#Relationship -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#Relationship -->
 
     <owl:Class rdf:about="&ont;Relationship"/>
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1#StandardValue -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#StandardValue -->
 
     <owl:Class rdf:about="&ont;StandardValue"/>
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.5.1#ArealMassDensity -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl#ArealMassDensity -->
 
     <owl:Class rdf:about="&ont2;ArealMassDensity"/>
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.5.1#Kilogram -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl#Kilogram -->
 
     <owl:Class rdf:about="&ont2;Kilogram"/>
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.5.1#Length -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl#Length -->
 
     <owl:Class rdf:about="&ont2;Length"/>
     
 
 
-    <!-- http://linus.nceas.ucsb.edu/sms/metacat/ont.5.1#Mass -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl#Mass -->
 
     <owl:Class rdf:about="&ont2;Mass"/>
 
