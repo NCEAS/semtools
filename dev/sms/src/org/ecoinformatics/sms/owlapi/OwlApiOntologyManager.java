@@ -21,6 +21,7 @@ import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owl.util.SimpleURIMapper;
 
 /**
  * @author leinfelder
@@ -235,10 +236,25 @@ public class OwlApiOntologyManager implements OntologyManager {
 	 * @see org.ecoinformatics.sms.OntologyManager#importOntology(java.lang.String)
 	 */
 	public void importOntology(String uri) throws Exception {
-		OWLOntology ont = manager.loadOntology(new URI(uri));
+		// load from physical URI - this is an assumption for OntologyManager
+        manager.loadOntologyFromPhysicalURI(new URI(uri));
+		//manager.loadOntology(new URI(uri));
 
 	}
 
+	/* (non-Javadoc)
+	 * @see org.ecoinformatics.sms.OntologyManager#importOntology(java.lang.String, java.lang.String)
+	 */
+	public void importOntology(String url, String uri) throws Exception {
+		if (uri != null) {
+            SimpleURIMapper mapper = new SimpleURIMapper(new URI(uri), new URI(url));
+            manager.addURIMapper(mapper);
+            manager.loadOntology(new URI(uri));
+		} else {
+            manager.loadOntologyFromPhysicalURI(new URI(url));
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.ecoinformatics.sms.OntologyManager#isEquivalentClass(org.ecoinformatics.sms.ontology.OntologyClass, org.ecoinformatics.sms.ontology.OntologyClass)
 	 */
@@ -277,7 +293,11 @@ public class OwlApiOntologyManager implements OntologyManager {
 	public static void main(String[] args) {
 		try {
 			OntologyManager man = new OwlApiOntologyManager();
-			man.importOntology(args[0]);
+			if (args.length > 1) {
+				man.importOntology(args[0], args[1]);
+			} else {
+				man.importOntology(args[0]);
+			}
 			List<OntologyClass> allClasses = man.getNamedClasses();
 			for (OntologyClass oc: allClasses) {
 				log.warn(oc);

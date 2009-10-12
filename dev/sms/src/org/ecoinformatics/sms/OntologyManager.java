@@ -49,6 +49,18 @@ public interface OntologyManager {
      * @param uri the uri and location of the OWL file ontology
      */
     public void importOntology(String uri) throws Exception;
+    
+    /**
+     * Adds an OWL ontology to the manager. 
+     * 
+     * The URL is required for loading the ontology, 
+     * The URI may or may not be same as the URL and is optional.
+     * This allows ontologies to be loaded from different sources but to have the same
+     * consistent URI
+     * @param url the url (physical location) of the OWL file ontology
+     * @param uri the uri (optional) of the ontology
+     */
+    public void importOntology(String url, String uri) throws Exception;
 
     /**
      * Removes the ontology from the manager

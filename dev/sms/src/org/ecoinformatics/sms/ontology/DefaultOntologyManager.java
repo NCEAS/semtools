@@ -78,6 +78,16 @@ public class DefaultOntologyManager implements OntologyManager {
         // add to the 
         _models.put(new Ontology(uri), model);
     }
+    
+    /**
+     * Adds an OWL ontology to the manager. 
+     * This particular implementation does not support URL != URI use
+     * @param url the url and location of the OWL file ontology
+     * @param uri the uri and location of the OWL file ontology
+     */
+    public void importOntology(String url, String uri) throws Exception {
+    	this.importOntology(url);
+    }
 
     /**
      * Removes the ontology associated with the uri from the manager
