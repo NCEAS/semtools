@@ -55,8 +55,9 @@ public class Test {
                 System.out.println("   " + c.toString());
 
             // get a test annotation
-            String metacat = "http://linus.nceas.ucsb.edu/sms/metacat/";
-            String annot1 = metacat + "annot.5.1";
+            //String metacat = "http://fred.msi.ucsb.edu:8080/sms/metacat/";
+            //String annot1 = metacat + "annot.1.1";
+            String annot1 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/gce-er-2008-ex1-annot.xml";
             URL url = new URL(annot1);
             URLConnection connection = url.openConnection();
 
@@ -65,7 +66,8 @@ public class Test {
             annotationManager.importAnnotation(connection.getInputStream(), "annot1");
 
             // build up simple query
-            Ontology gceOnt = new Ontology(metacat + "ont.7.1");
+            //Ontology gceOnt = new Ontology(metacat + "gce.1.1");
+            Ontology gceOnt = new Ontology("http://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/gce-oboe.owl");
             List<OntologyClass> entities = new ArrayList();
             entities.add(new OntologyClass(gceOnt, "SpatialLocation"));
             entities.add(new OntologyClass(gceOnt, "Plant"));
