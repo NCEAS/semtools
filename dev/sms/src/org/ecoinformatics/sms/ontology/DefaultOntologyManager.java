@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntClass;
@@ -185,9 +186,9 @@ public class DefaultOntologyManager implements OntologyManager {
        OntClass oc = model.getOntClass(c.getURI());
        if(oc == null)
           return null;
-       for(String label : (List<String>)oc.listLabels(null).toList()) 
+       for(RDFNode label : (List<RDFNode>)oc.listLabels(null).toList()) 
           if(!result.contains(label))
-             result.add(label);
+             result.add(label.toString());
        return result;
     }
 
@@ -200,7 +201,7 @@ public class DefaultOntologyManager implements OntologyManager {
     public List<OntologyClass> getNamedClasses() {
         List<OntologyClass> results = new ArrayList();
         for(OntModel model : getModels())
-            for(Resource c : (List<Resource>) model.listClasses().toList()) {
+            for(OntClass c : (List<OntClass>) model.listClasses().toList()) {
                 String uri = c.getNameSpace();
                 if(uri != null && uri.endsWith("#"))
                     uri = uri.substring(0, uri.length() - 1);
@@ -232,7 +233,7 @@ public class DefaultOntologyManager implements OntologyManager {
             if(oc == null)
                 continue;
             // change 'false' below to 'true' to get direct subclasses only
-            for(Resource r : (List<Resource>) oc.listSubClasses(false).toList()) {
+            for(Resource r : (List<OntClass>) oc.listSubClasses(false).toList()) {
                 String r_uri = r.getNameSpace();
                 if(r_uri != null && r_uri.endsWith("#"))
                     r_uri = r_uri.substring(0, r_uri.length() - 1);
@@ -263,7 +264,7 @@ public class DefaultOntologyManager implements OntologyManager {
         if(oc == null)
             return results;
         // change 'false' below to 'true' to get direct subclasses only
-        for(Resource r : (List<Resource>) oc.listSubClasses(false).toList()) {
+        for(Resource r : (List<OntClass>) oc.listSubClasses(false).toList()) {
             String r_uri = r.getNameSpace();
             if(r_uri != null && r_uri.endsWith("#"))
                 r_uri = r_uri.substring(0, r_uri.length() - 1);
@@ -319,7 +320,7 @@ public class DefaultOntologyManager implements OntologyManager {
             if(oc == null)
                 continue;
             // change 'false' below to 'true' to get direct subclasses only
-            for(Resource r : (List<Resource>) oc.listSuperClasses(false).toList()) {
+            for(Resource r : (List<OntClass>) oc.listSuperClasses(false).toList()) {
                 String r_uri = r.getNameSpace();
                 if(r_uri != null && r_uri.endsWith("#"))
                     r_uri = r_uri.substring(0, r_uri.length() - 1);
@@ -350,7 +351,7 @@ public class DefaultOntologyManager implements OntologyManager {
         if(oc == null)
             return results;
         // change 'false' below to 'true' to get direct subclasses only
-        for(Resource r : (List<Resource>) oc.listSuperClasses(false).toList()) {
+        for(Resource r : (List<OntClass>) oc.listSuperClasses(false).toList()) {
             String r_uri = r.getNameSpace();
             if(r_uri != null && r_uri.endsWith("#"))
                 r_uri = r_uri.substring(0, r_uri.length() - 1);
