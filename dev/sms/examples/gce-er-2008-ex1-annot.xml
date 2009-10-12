@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<sms:annotation xmlns="http://code.ecoinformatics.org/code/semtools/trunk/dev/examples/gce-er-2008-ex1-annot.xml" 
+<sms:annotation xmlns="http://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/gce-er-2008-ex1-annot.xml" 
   xmlns:ont1="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl"
   xmlns:ont2="http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl"
-  xmlns:ont3="http://code.ecoinformatics.org/code/semtools/trunk/dev/examples/gce-oboe.owl"
+  xmlns:ont3="http://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/gce-oboe.owl"
   xmlns:sms="http://daks.ucdavis.edu/sms-annot-1.0.0rc1"
   emlPackage="eml.1.1" dataTable="1">
     <sms:observation label="o1" distinct="yes">
