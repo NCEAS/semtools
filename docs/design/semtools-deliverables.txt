@@ -1,7 +1,9 @@
 Overview of deliverables
 ------------------------
 DROPPED 1.  Develop and ratify a community-driven core ontology for representing observational data.
-DROPPED 2.  Develop an open-source reference implementation for the core observation ontology (i.e., a concrete OWL representation and associated software services) to facilitate its use in informatics projects and frameworks (including those of the Observation Ontology Workshop). 
+DROPPED 2.  Develop an open-source reference implementation for the core observation ontology (i.e., a concrete OWL
+representation and associated software services) to facilitate its use in informatics projects and frameworks (including
+those of the Observation Ontology Workshop). 
 3.  Revise and extend the structure of EML so that it is capable of storing
 semantic annotations that ref-erence the core observation ontology, as part
 of the reference implementation.
@@ -20,11 +22,26 @@ Prioritized deliverables
 * Metacat semantic extensions
     Open-source and generic services to support the core observation
     ontology reference implementation:
-    a. Extensions to Metacat for (a) ontology storage and access, 
-    b. Extensions to Metacat for (a) annotation storage and access, 
-    c. Extensions to Metacat for (b) ontology-based keyword and advanced
-    searches
-    d. Hierarchical browsing and navigation of Metacat collections
+
+    Phase I: emphasis on dataset-level annotations and results
+    a. Build advanced search that can navigate the observation structure and produce a structured query; then
+       reapply the UI to building an annotation; emphasis on usability and understandability of the UI
+    b. Use existing structured search mechanism as a way to drill down through the ontologies to
+       create an annotation, that gets tagged to the overall data set instead of being bound
+       directly to the attributes (updaide: constrains annotation appropriately; allows structured search;
+       downside: limits searches to annotation/ontology, can't use data in search because it is not bound 
+       to the annotation)
+
+    c. Extensions to Metacat fo ontology storage and access (assume this is here, except IDs and versions)
+    d. Extensions to Metacat for annotation storage and access (assume this is here, except IDs and versions)
+
+    e. Hierarchical browsing and navigation of Metacat collections
+    f. Visualize/display annotations over data (extend eml attribute display with semantics)
+    g. Simple web-based interface for tagging EML document with ontology term (not so useful)
+
+    Phase II: focus on matching annotations to attribute structure
+      -- allows data-driven queries
+      -- enables sensible summarization features
 
 * EML/Annotation language integration
     a. Develop new EML modules that support semantic annotation to the core
@@ -59,3 +76,14 @@ Prioritized deliverables
     search extensions with the existing text-based searches in Morpho.
     b. New Morpho interfaces for searching and browsing Metacat and local 
     collections, which will leverage many of the Metacat extensions.
+
+
+
+TODO
+----
+* Ben: create canonical repository for OBOE, delete others, update web to point there
+* Ben: agree on namespace for OBOE and versioning approach for ontology and annotations, update owl files
+* Ben: develop scenarios that describe the emain ways in which the metacat advanced structure search/annotaiton tool would
+be used
+* Ben: develop proposal for how IDs and namespaces for ontologies and annotations will be handled
+* Mark: Examine the Morpho term browser with the NBII vocabulary
