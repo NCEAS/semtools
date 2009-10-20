@@ -1,0 +1,110 @@
+Metacat semantic extensions
+---------------------------
+actions:
+-CRUD actions (mainly import) for ontology documents
+	-namespace URI need not match the physical URL:
+		"semtools://sms/ontology.1.1" might map to "http://fred.msi.ucsb.edu:8080/sms/metacat/ontology.1.1"
+	-the URI ends up being slightly more server-agnostic, maybe we should even exclude the "sms" (context)?
+-CRUD actions for annotation documents - "Semantic Annotation Language" (SAL)
+	-ontology is referenced by logical URI ("semtools://sms/ontology.1.1") when used in annotations
+-logical/physical mapping
+	-look up physical by logical URI
+-list available ontologies managed in Metacat
+	-provide both physical and logical URIs
+-list available classes 
+	-in a given ontology
+	-across all ontologies
+-term expansion
+	-get subclasses (to n-depth)
+	-get superclasses (to n-height)
+	
+ID considerations:	
+-ontology namespace should be relatively static even though there may be minor changes (revisions) to the managed ontology. This is especially true during development.
+	-if we store an ontology in Metacat, say "ontology.1.1", but then realize there is a typo it would be nice to fix that but not have to re-annotate SAL documents that reference the "ontology.1.1"
+	-if we omit the revision number from the ontology URI, is that enough? "semtools://sms/ontology.1"
+-annotations can import/reference ontology URIs:
+	-ontologies that may reside on some other server (i.e. "http://ecoinformatics.org/oboe/oboe-1.0.owl")
+	-ontologies that may reside in the same Metacat (i.e. "semtools://sms/ontology.1")
+	-anything else?
+	
+	
+Structured Searches	
+--------------------
+Different combinations:
+
+(
+Entity
+	= (x AND/OR y AND/OR z)
+Characteristic
+	= (x AND/OR y AND/OR z)
+Standard
+	= (x AND/OR y AND/OR z)
+)
+
+Example:
+"Entity is a 'Tree' or a 'Fish' or a 'Bird'"
+and
+"Characteristic is 'Height' or 'Weight' or 'Wingspan'"
+and
+"Standard is 'Meter' or 'Gram' or 'Hands'"
+--> could return data for tree, fish and bird weights and also tree heights (etc) 
+
+(
+	(
+	Entity = x
+	Characteristic = x
+	Standard = x
+	)
+		AND/OR
+	(	
+	Entity = y
+	Characteristic = y
+	Standard = y
+	)
+		AND/OR
+	(	
+	Entity = z
+	Characteristic = z
+	Standard = z
+	)
+)
+
+Example:
+"Entity is a 'Tree' and Characteristic is 'Height' and Standard is 'Meter'"
+and
+"Entity is a 'Tree' and Characteristic is 'Diameter' and Standard is 'Centimeter'"
+and
+"Entity is a 'Tree' and Characteristic is 'Species' and Standard is 'ITIS'"
+-->returns only data sets with observations of Tree height, diameter and species
+
+TODO list (10/12/2009)
+----
+* Ben: create canonical repository for OBOE, delete others, update web to point there
+* Ben: agree on namespace for OBOE and versioning approach for ontology and annotations, update owl files
+* Ben: develop scenarios that describe the emain ways in which the metacat advanced structure search/annotaiton tool would
+be used
+* Ben: develop proposal for how IDs and namespaces for ontologies and annotations will be handled
+* Mark: Examine the Morpho term browser with the NBII vocabulary
+
+
+As identified in "semtools-deliverables.txt"
+----------------------------------------------------
+Phase I: emphasis on dataset-level annotations and results
+a. Build advanced search that can navigate the observation structure and produce a structured query; then
+   reapply the UI to building an annotation; emphasis on usability and understandability of the UI
+b. Use existing structured search mechanism as a way to drill down through the ontologies to
+   create an annotation, that gets tagged to the overall data set instead of being bound
+   directly to the attributes (updaide: constrains annotation appropriately; allows structured search;
+   downside: limits searches to annotation/ontology, can't use data in search because it is not bound 
+   to the annotation)
+
+c. Extensions to Metacat fo ontology storage and access (assume this is here, except IDs and versions)
+d. Extensions to Metacat for annotation storage and access (assume this is here, except IDs and versions)
+
+e. Hierarchical browsing and navigation of Metacat collections
+f. Visualize/display annotations over data (extend eml attribute display with semantics)
+g. Simple web-based interface for tagging EML document with ontology term (not so useful)
+
+Phase II: focus on matching annotations to attribute structure
+  -- allows data-driven queries
+  -- enables sensible summarization features
