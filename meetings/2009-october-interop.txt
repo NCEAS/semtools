@@ -1,0 +1,301 @@
+SONet meeting - Interop Worksho
+
+Wed.
+----
+Schildhauer intro
+-bathrooms, coffee, tea, keys, logistics
+-introductions, PIs
+-Schildhauer on NCEAS, synthesis/integration motivated by ecologists
+-Gries on LTER, data collection w/ various protocols for collection. only agreed on EM as standard
+-McGuinness, "semantic guru", OWL
+-Dibner, OGC - exchanging data (spatial content). variety of protocols/models. advertise and garner input from scientific community. ecologist background w/ interest in integration of broad sets of data.
+-Jones, ecoinformatics director. sematics issues on prior projects (OBOE). development of metadata standards (EML) - adoption of tools in the [ecological] community. balance internal needs of data collectors with larger community of data consumers. NCEAS not in the business of producing data - we consume it. Morpho/Metacat for managing metadata in ecology. Semtools - extend metadata tools with semantics features. dovetails with SONet.
+-Bermudez, semantics in the marine domain. OGC->OWL conversion at Drexel, etc.
+-Cao, new postdoc on SONet project. starting in Nov. CS background - data[mining|base] and integration. archeology+data+CS prior to joining SONet.
+-Gessler, semantic web architect. informatics background. iPLANT - plant sciences. SWAP for semantic we services.
+-Bertrand, SERONTO
+-O'Brien, IM for SBC-LTER (kelp forests). semtools project, EML development/release. data provider
+-Blumenthal, "consumer end" of things [data]. manipulate data w/o details of how it is stored. faceted search. serve data to many communities in many formats. very good at: simple transformation w/o semantics. metadata has evolved over time - now have interop problem between those standards. OPENDAP - build semantic bridge to gridded data. 
+-Cox, sensors/observation OGC. "Sensor web enablement". O&M editor -> headed to ISO standard. worked in geology domain, water resources domain (water ML)
+-Kelling, Cornell Ornithology lab. User rather than developer. organize bird monitoring data. Observation model focused mostly on birds. Using Darwin Core with extensions as needed for domain.
+-Raskin, JPL. satellite data.
+-Kennedy, Scottland. SEEK project prior to this. taxonomic concepts schema - problems around naming any kind of species. naming standards work.
+-Valentine, CUAHSI. hydrology observation model. translation/exchange format (waterML) to be OGC-compliant. 
+-Leinfelder, semtools. augmented by Schildhauer. "USE SONet!"
+--------
+-lack of the "plain old domain scientist"
+-tried to bring some phenotype people (PATO), evolutionary community. hope to engage with those groups.
+-are there big gaps in terms of the representation here (domain)? 
+--------
+<slides>
+SONet project overview (slides)
+-complex questions to answer (climate change, overfishing, deforestation, urban dev, trade, agriculture). impact of those activities
+-data accumulation - getting more and more data.
+-locating the data you need is VERY difficult. lot of cruft. quality data? relevant data? useable in analysis? ends up being ad hoc/arduous
+-data we deal with is heterogenous - structurally/semantically.
+-relevant data encompasses both biotic and abiotic data. not just a "life science"
+-need for interoperability.
+-many many semantic efforts - observational construct to unify data within discipline. fruitful to do it across domains.
+-details force us to specialize our models - end up with too many different models.
+-SONet to provide interop between domains
+-funded from NSF OCI INTEROP. "many types/many sources". "robust data and metadata, ontologies and taxonomies". implementation tools and resources.
+-address semantic interop between env/earth sciences with domain scientists, computer scientists, IMs. build solutions.
+-build "core model"
+Working groups:
+1. core data model (Bowers) - collect interop requirements
+2. catalog of common field observations (Gries) - ID common observation types
+3. term-organization (Schildhauer/Madin) - general extension ontologies
+4. demonstration projects (McGuinness) - prototype project and ensure compatibility between other groups.
+Community workshops:
+1. detailed requirements. begin defining core model. "interoperability challenge" planning
+2. discuss various data models WRT how they address interop. refine core model
+3. operational prototype. evaluation/feedback
+4. training. more evaluation. plan for future sustainability of SONet.
+Project Timeline
+-started in late 2008. but a bit behind schedule - just officially started. [some participants] hope to complete by aug 2011 (on schedule)
+-needed this first community workshop to get things chugging. we are key participants in this community-driven effort.
+-post doc starting Nov. 1. 
+-Collaborative website up: http://sonet.ecoinformatics.org. Wiki, discussion forum, public/private areas, file sharing. Mostly want transparent content: publicly readable. Avoid discussion hidden in email. Logo discussion...ongoing.
+Modis Operandi for SONet:
+-collaboration/discussion
+-brainstorming
+-semantics-based approach
+----
+Examples of "raw" observational data
+-EML, Darwin Core, NOAA buoy data (OGC?), Paleobiological database
+----
+"Observations" - definitions
+-(OBOE) any measurement of some characteristic. a measurement is a realized value of some characteristic
+-(OGC) action w/ result. modeled as a feature. feature binds the result to the feature of interest.
+-sure there is a gestalt captured by both definitions, but formalism is missing between the two.
+-compare OBOE (OWL) and OGC (UML) formalized observation models. when to use which and what is better when?
+-Jones and Bowers have done a fair amount of high-level comparison/correspondence. overlapping concept classes, etc. (been quick exercises w/o rigor or formality).
+Prospective Observation Models:
+-TDWD/OSR (biodiversity)
+-VSTO (atmospheric)
+-ODM (hydrological)
+-SERONTO (socioecological)
+-OGC's O&M (geological)
+-SEEK's OBOE (ecological)
+----
+Developing a Core Model (unify the disparate models)
+-ID the key models used in earth/env sci
+-easily reconciled
+-special capabilities?
+-services around these OMs?
+----
+Articulate use cases for integration tasks across disciplines.
+-clarify specific short-term tools that can help assist teams w/ interop task
+-plan to publish results in journal _________ (TBD).
+</slides>
+
+<discussion>
+-for SONet - primary focus on data whereas modeling and analysis is more on the Kepler/workflow side of NCEAS' world.
+-we don't have much socioecologic/econmic data to the table.
+-data models mostly for in situ data. remote sensing was considered (Cox). satellite/geospatial data were in fact considered.
+-Interop Challenge summary (slide content from website)
+-data discovery and integration.
+-what is possible in the future using these models.
+-how can we challenge these models when developing the use cases.
+-work has been done to compare the different models. 
+-McGuinness proposes that Cao draft a white paper comparing them.
+-start in natural language->then move into a tool (OWL or UML). McGuinness prefers OWL. Dibner champions a mathematical perspective.
+-Jones: compare strengths and weaknesses of using different languages.
+-how are we to communicate this to the "scientists" (OWL, Protege, spreadsheets, diagrams)
+-Bermudez: no need to write a paper about what tool to use. Then work with the model. Move along with whichever is more natural/comfortable to those that are working on it most closely.
+-Cao: model tied to the usefulness WRT to use cases.
+-Schildhauer: spare the scientists from the details of the underlying technologies.
+-Cox: "instances" are good (graphs). tangible. steer away from abstractions.
+-McGuinness: you lose something when you do translations between different technologies for capturing the model.
+-Kennedy: are we moving toward a common model/best model? or are we understanding the different models available in the world? 
+-general consensus: define modes of translating among different models.
+-focus on the semantics - overlay that on specific storage formats.
+-common model to query across different models. are there potential incompatibilities?
+-Gessler: layered approach. "map up" to a common ontology
+-Kelling: hard enough to synthesize data collected using different protocols (birds). cross-domain synthesis is different - takes time (many years). can't dilute the data model - must be concrete/comprehensive. end use of domain science needs to be kept in forefront of our minds. 
+</discussion>
+
+<slides>
+Use case tasks
+-"Teams" based on various observation models
+SEEK model:
+-data (raw tabular)
+-structural metadata (EML)
+-semantic annotation (OBOE)
+-domain-specific annotation (OBOE-extension)
+*discussion on the notion of "Identity" ensues...then is punted.
+Metacat implementation
+-ontology/annotation/reasoning features added in the prototype (iSEEK)
+-layered atop metadata store. enable semantic queries
+</slides>
+
+<break />
+
+Steve Kelling - Biodiversity domain
+<slides>
+-organizing data (bird observations) based on description used in natural history museums. "Occurrence of a species at a location"
+-Darwin Core: GUID, date, dateLastModified, CollectionCode, taxonConceptID, georeference. still focused on natural history collections. not that useful for observation-specifc needs.
+-"evidence of the presence/absence of an organism". link multiple observations - protocol, time, place, co-occurring organisms.
+-Extending darwin core - add whatever fields you need. great when isolated to your own domain. Bird Monitoring Data Exchange (BMDE).
+BMDE:
+-interoperable data exchange based on Darwin Core. but extended.
+-added ~130 variables to DC's existing 80 (~385 for the Banding-specifc datasets)
+-extending schemas is a challenge for this [SONet] group. new schemas are not compatible.
+Avian Knowledge Network (AKN)
+-observations linked to time/location/climate. Observation-Environment-Climate-Frag. Stats
+-exploratory analysis. extend across data sets. trends in species occurrence based on location/time/landuse, etc.
+</slides>
+<discussion>
+-who is filling out all those fields (385 extra variables)?
+-variables: "values that _can_ be provided"
+-kept the schemas quite open - but then they become incompatible with each other (with more extensions/complexity)
+</discussion>
+
+McGuinness - VSTO
+-Virtual Solar Terrestrial observatory
+-long term observatory
+-reused in different domains (volcanology, plate tectonics). more broad than initially planned.
+-semantic eScience framework (SESF) - using the non-domain-specific aspects (refactored ontology).
+VSTO 1.0: "use-case driven ontology" - pretty much the only way to go about that.
+-instruments, observatories, parameters, data products. OWL-DL. balanced expressivity w/ implementation. used/re-used in several communities.
+VSTO 2.0:
+-remodularization around major first class objects
+-time modeling - interval and time reasoning.
+-reengineering, taking into account: WHOI, MMI, SWEET
+-release mid-oct 2009
+-evaluation of/encoding in OWL 2 profiles.
+SESF 1.0
+-separate domain-neutral classes and properties for reuse across domains. (keep VSTO-specific classes in their own module)
+-imports with extensions etc.
+
+David Valentine
+<slides>
+Observation Data models for hydrological science (ODM)
+-scientist define the data model
+-ODM patterned after existing source data.
+-scientists see flat spreadsheet.
+-excludes remote sensing/grid data
+-store raw observations and simple derived info
+-Basic/generic: value, datetime, variable, location, units, interval, accuracy
+-"point observations information model" - data values centric.
+-"series catalog": observation values at a site over time
+-controlled vocabulary (maintained by domain scientist)
+-"what-where-when"
+-"Data Series"/SeriesCatalog - collections of data values (generated from source values).
+-tag variables to the ontology (then available in "hydroseek")
+-ArcHydro data model (ESRI). extensible. successful.
+-Water web services/WaterML. Environmental Data Model (schema). Ontology. Controlled vocabularies.
+</slides>
+<discussion>
+Units. where are they defined? which standard
+-STMML
+-NIST
+-SI (chaotic website, but ought to be derivable from metric standards)
+-what do do when standards are not published in a useable way: collaborate, but it _with_ the institution.
+-like an ontology repository. contact person. versioning. revisions. SONet can offer services for units.
+-not one-stop repo for all our ontologies (units or otherwise).
+-NIST is good with units. but what about currencies (for example)?
+-model after Mozilla or Eclipse in terms of governance + plugins + incubating projects. (Open Source model).
+</discussion>
+
+Bertrand - SERONTO
+<slides>
+-Model domains covered by LTER-Europe/ ATER-Net
+-aid data integration. set of OWL-DL ontologies (Core+domains)
+-taxonomy, landscape, biodiversity, socioeconomics, landscape, ecosystem
+-core: parameter, method, parameter-method, value-sets, unit
+-reference lists/vocabularies for value sets
+-ALTER-net integration pilot for testing ontologies in real world (ecological relational DBs) - "Ontoprise (F-logic)". Expose RDB as OWL ontology
+-integrate biodiversity data at different scales
+</slides>
+
+Simon Cox - O&M
+<slides>
+Observations and Measurements 
+-OGC standard as of 2007
+-to be ISO standard ~2011
+-OGC will publish it. available for anyone/everyone.
+"Observation"
+-procdure applied at a specific time
+-feature, propertyType, process <- surround an "observation"
+-feature <- samplingFeature/domainFeature
+-separate the key "feature of interest" from the "result" / "result" separates outcome from process of observation action
+-FOI used for remote, in-situ, ex-situ observations
+-sampling features: specimen, point, curve, surface, solid (a mine)
+-sampling features have their own identity, but only interesting in the context of observations. established to sample a known feature/phenomenon
+As an ontology:
+-classes: domain feature, obs, specialized observation
+-properties: foi, observed property, observation-procedure, result, phenomenon-time, result-time, valid-time
+-add ontologies for the featuretype, procedures for different domains
+</slides>
+<discussion>
+Could we use this. Stripped down? Core module is very simple - remove excess "baggage"
+Anyone's data could be fit into any model. But what have we learned from that?
+-querying, extracting "results", blending with other data.
+-but what about at the domain scientist level? not convinced that this model will be useful for them.
+-"standardization train has left" - but what if we used this as a starting point? could we make fundamental changes to the model at this point? can SONet use O&M but not use the sampling feature module.
+-be tempted to "hold the ISO process up to get it 'right'" (McGuinness)
+</discussion>
+
+Bowers - OBOE
+Ecological data challenges
+-many terms used. formalize the terms in ontologies
+-use the ontologies for enabling semantic searches.
+-an ontology of domain-specific terms is just not enough (hence OBOE).
+-starting from tabular datasets (often simple, missing typical constraints, metadata).
+-EML is first step. natural-lanuage descriptive metadata. but not that useful for the integration actions we're looking at. structure can be described, but not the semantics.
+OBOE
+-core model
+-annotate a data set to enhance the structural metadata. columns -> concepts.
+-extensible with various domain extensions (domain specific that inherit/import core Observation model)
+-Annotation is glue between ontology and eml
+-separate "measurement" from "what" was observed.
+-Observation: assertion that something was observed.
+-every observation is of an Entity (aka 'feature of interest' in O&M)
+-Entity is an extension point in OBOE (for domain specific ontology)
+-Measurement is of some Characteristic (of an Entity that was Observed)
+-Characteristic is an extension point as well (i.e. for Units - length isa height)
+-Values are assigned to Characteristics, with a Precision.
+-Unit extension points and conversion capabilities.
+-Observations occur within a Context.
+-Context is given by _other_ Observations. Context is transitive (tree's branch is still in a site)
+---
+-*agnostic about protocol/procedures/methods. Context might give some protocol hints.
+-Context can also be "treatment" - not necessarily spatial/temporal - becomes more of a "protocol"
+-what about "phenomenonTime" when the observation is itself a time (re: O&M)
+-what about "time since"? It was in Spring, but it was also 3 months after the burn. maybe need two observations.
+---
+-do annotations linking EML attributes to specialized OBOE models
+-Metacat with annotation-based queries increases precision of search results. future development to include more fine-grained search criteria.
+
+--------
+Insights from the day
+-this is "OUR project" - build a community. useful presence in earth sciences.
+-potential for crosswalking among the different OMs
+-Cao to have immediate goal to formalize the comparison between OMs
+-didn't get to Use Case development. drill into the specifics of different observations etc.
+-add Damian Gessler to the agenda. SWAP presentation.
+-"scoping" the Core Observation Model. seems to be spatially focused, but not all observations are driven heavily by location. No dodging geospatial, but how broad should the model be for capturing "earth sciences"
+-regularity of observations - timescale/series. continuous/discreet/accumulative? periodicity that should be captured?
+-ownership/governance for different parts/domains of the model. useful to have agreement on those areas.
+-stability at the core (standards): good. but for extensions we'd want more rapid development/change schedule. 1 year, 5 year? Extensibility is presupposed, but what if the extension can't support the extensions needed?
+-should have concrete/formal representation of model (query with SPARQL, say)
+-who is the audience? machines/humans? need machine interoperability layer. dealing with a "stupid machine" is really what we want for broad scale synthesis.
+-integreation/aggregationg requires any dataset to be mapped into a broader context (this is a tree)
+-core model is for tool providers/implementors
+-take the KR expert out of the loop (after 5-10 years?). let the domain people (scientists) use the tools and the frameworks that are created.
+
+
+Day 2
+------
+Damian Gessler
+-SSWAP (http://sswap.info)
+-evidence decision making.
+-science driven by need to integrate information. machines require semantics to perform this automated integration.
+-decades old (1980s) middle layer between data/services. low-throughput process to get data.
+-900 hp charger allegory for limiting factors
+-semantic annotation/mediation becomes the new middle layer for data discovery - put the humans further down the chain
+-map local schema to OWL-DL description/ontologies. web resources describe themselves and offerings.
+-providers<->discovery servers<->clients
+-high level superclasses... sonet:Observation <-isa- oboe:Observation. act at/query across high-level
+-allow groups to have different notions of "observations" but to provide some linking between those notions.
