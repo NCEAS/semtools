@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	   targetNamespace="http://daks.ucdavis.edu/sms-semannot-1.0.0rc1"
-	   xmlns="http://daks.ucdavis.org/2008/annotation"
+	   targetNamespace="http://ecoinformatics.org/sms/annotation.0.9"
+	   xmlns="http://ecoinformatics.org/sms/annotation.0.9"
 	   elementFormDefault="qualified">
 
 
@@ -38,12 +38,12 @@
   <!-- measurements --> 
   <xs:complexType name="MeasurementType">
     <xs:sequence>
-      <xs:element name="standard" type="StandardType"
-		  minOccurs="0" maxOccurs="1"/>
-      <xs:element name="characteristic" type="CharacteristicType" 
-		  minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="domain" type="DomainType" 
-	          minOccurs="0" maxOccurs="1"/>
+		<xs:element name="characteristic" type="CharacteristicType" 
+			minOccurs="0" maxOccurs="unbounded"/>
+		<xs:element name="standard" type="StandardType"
+			minOccurs="0" maxOccurs="1"/>
+		<xs:element name="domain" type="DomainType" 
+			minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
     <xs:attribute name="label" type="xs:ID" use="optional"/>
     <xs:attribute name="precision" type="xs:float" use="optional"/>
@@ -73,7 +73,7 @@
   <!-- domains --> 
   <xs:complexType name="DomainType">
     <xs:sequence>
-       <xs:element name="entity" type="EntityType" minOccurs="0" maxOccurs="1"/>
+       <xs:element name="entity" type="EntityType" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute name="min" type="xs:string" use="optional"/>
     <xs:attribute name="max" type="xs:string" use="optional"/>
