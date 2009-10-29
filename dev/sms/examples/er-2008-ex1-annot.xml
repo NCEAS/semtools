@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
-<sms:annotation xmlns="http://code.ecoinformatics.org/code/semtools/trunk/dev/annotation/examples/er-2008-ex1-annot.xml" 
+<sms:annotation 
+  xmlns="http://ecoinformatics.org/sms/annotation.0.9"
   xmlns:ont1="http://linus.nceas.ucsb.edu/sms/metacat/ont.3.1"
   xmlns:ont2="http://linus.nceas.ucsb.edu/sms/metacat/ont.5.1"
   xmlns:ont3="http://linus.nceas.ucsb.edu/sms/metacat/ont.6.1"
-  xmlns:sms="http://daks.ucdavis.edu/sms-annot-1.0.0rc1"
+  xmlns:sms="http://ecoinformatics.org/sms/annotation.0.9"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://ecoinformatics.org/sms/annotation.0.9 sms-semannot.xsd"
   emlPackage="eml.1.1" dataTable="1">
     <sms:observation label="o1" distinct="yes">
         <sms:entity id="ont3:TemporalRange"/>
