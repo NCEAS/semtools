@@ -26,12 +26,12 @@ public class Test {
             Ontology ont2 = ontologyManager.getOntology(uri2);
 
             // print the loaded ontologies
-            System.out.println("\nLoaded ontologies: ");
+            System.out.println("\nLoaded ontologies: " + ontologyManager.getOntologyIds().size());
             for(String ontId : ontologyManager.getOntologyIds())
                 System.out.println("   " + ontId);
 
             // print the loaded classes
-            System.out.println("\nLoaded classes: ");
+            System.out.println("\nLoaded classes: " + ontologyManager.getNamedClasses().size());
             for(OntologyClass c : ontologyManager.getNamedClasses())
                 System.out.println("   " + c);
 
@@ -45,12 +45,12 @@ public class Test {
             }
 
             // print subclasses of oboe:Entity in ont2
-            System.out.println("\nSubclasses of oboe.Entity:");
             OntologyClass ent = ontologyManager.getNamedClass(ont1, "Entity");
             if(ent == null) {
                 System.out.println("couldn't find oboe.Entity!");
                 return;
             }
+            System.out.println("\nSubclasses of oboe.Entity: " + ontologyManager.getNamedSubclasses(ent, ont2).size());
             for(OntologyClass c : ontologyManager.getNamedSubclasses(ent, ont2))
                 System.out.println("   " + c.toString());
 
