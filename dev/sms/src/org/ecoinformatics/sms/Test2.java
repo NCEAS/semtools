@@ -19,7 +19,7 @@ public class Test2 {
          String oboeURI = "http://linus.nceas.ucsb.edu/sms/metacat/oboe.1";
          String unitURI = "http://linus.nceas.ucsb.edu/sms/metacat/oboeunit.1";
 
-         SMS sms = new SMS();
+         SMS sms = new SMS(null);
 
          // get the ontology manager
          OntologyManager ontMgr = sms.getOntologyManager();

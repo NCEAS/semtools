@@ -32,9 +32,6 @@
 package org.ecoinformatics.sms;
 
 import org.ecoinformatics.sms.annotation.DefaultAnnotationManager;
-import org.ecoinformatics.sms.ontology.DefaultOntologyManager;
-//import org.apache.log4j.Logger;
-//import org.apache.log4j.Level;
 
 /**
  * @author Shawn Bowers
@@ -50,15 +47,29 @@ public class SMS {
     *   3. Support part-of expansions
     */ 
    
-   
+	public static final String DEFAULT_ONTOLOGY_MANAGER_CLASS = "org.ecoinformatics.sms.ontology.DefaultOntologyManager";
+	public static final String OWL_ONTOLOGY_MANAGER_CLASS = "org.ecoinformatics.sms.owlapi.OwlApiOntologyManager";
+
     private AnnotationManager _annotationManager;
     private OntologyManager _ontologyManager;
 
     /**
-     * Default onstructor
+     * Default constructor
      */
-    public SMS() {
-        _ontologyManager = new DefaultOntologyManager();
+    public SMS(String ontologyManagerClassName) {
+    	// determine the implementation to use
+    	String className = OWL_ONTOLOGY_MANAGER_CLASS;
+    	if (ontologyManagerClassName != null) {
+    		className = ontologyManagerClassName;
+    	}
+    	
+    	// instantiate the ontology manager
+		try {
+			_ontologyManager = (OntologyManager) Class.forName(className).newInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
         _annotationManager = new DefaultAnnotationManager(this);
     }
 

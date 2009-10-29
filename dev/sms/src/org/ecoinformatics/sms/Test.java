@@ -16,7 +16,7 @@ public class Test {
             String uri1 = args[0];
             String uri2 = args[1];
 
-            SMS sms = new SMS();
+            SMS sms = new SMS(null);
 
             // get a ontology manager
             OntologyManager ontologyManager = sms.getOntologyManager();
