@@ -102,7 +102,7 @@
     <!-- https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-examples.owl#ITIS -->
 
     <owl:Class rdf:about="#ITIS">
-        <rdfs:subClassOf rdf:resource="&oboe;NominalStandard"/>
+        <rdfs:subClassOf rdf:resource="&oboe;Nominal"/>
     </owl:Class>
     
 
@@ -110,7 +110,7 @@
     <!-- https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-examples.owl#LocalSiteIds -->
 
     <owl:Class rdf:about="#LocalSiteIds">
-        <rdfs:subClassOf rdf:resource="&oboe;NominalStandard"/>
+        <rdfs:subClassOf rdf:resource="&oboe;Nominal"/>
     </owl:Class>
     
 
@@ -118,7 +118,7 @@
     <!-- https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-examples.owl#LocalTransectIds -->
 
     <owl:Class rdf:about="#LocalTransectIds">
-        <rdfs:subClassOf rdf:resource="&oboe;NominalStandard"/>
+        <rdfs:subClassOf rdf:resource="&oboe;Nominal"/>
     </owl:Class>
     
 
@@ -126,7 +126,7 @@
     <!-- https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-examples.owl#LocalTreeNames -->
 
     <owl:Class rdf:about="#LocalTreeNames">
-        <rdfs:subClassOf rdf:resource="&oboe;NominalStandard"/>
+        <rdfs:subClassOf rdf:resource="&oboe;Nominal"/>
     </owl:Class>
     
 
@@ -134,7 +134,7 @@
     <!-- https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-examples.owl#LocalWaterTreatmentDepths -->
 
     <owl:Class rdf:about="#LocalWaterTreatmentDepths">
-        <rdfs:subClassOf rdf:resource="&oboe;NominalStandard"/>
+        <rdfs:subClassOf rdf:resource="&oboe;Nominal"/>
     </owl:Class>
     
 
@@ -190,7 +190,7 @@
     <!-- https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-examples.owl#StandardSoilTypes -->
 
     <owl:Class rdf:about="#StandardSoilTypes">
-        <rdfs:subClassOf rdf:resource="&oboe;NominalStandard"/>
+        <rdfs:subClassOf rdf:resource="&oboe;Nominal"/>
     </owl:Class>
     
 
@@ -281,9 +281,9 @@
     
 
 
-    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#NominalStandard -->
+    <!-- http://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl#Nominal -->
 
-    <owl:Class rdf:about="&oboe;NominalStandard"/>
+    <owl:Class rdf:about="&oboe;Nominal"/>
     
 
 
