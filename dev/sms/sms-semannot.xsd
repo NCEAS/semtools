@@ -61,6 +61,7 @@
   <!-- characteristics --> 
   <xs:complexType name="CharacteristicType">
     <xs:attribute name="id" type="xs:QName" use="required"/>
+    <xs:attribute name="value" type="xs:string" use="optional"/>
   </xs:complexType>
 
 
