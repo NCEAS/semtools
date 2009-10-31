@@ -57,6 +57,12 @@
         <rdfs:subClassOf rdf:resource="&oboe;Entity"/>
     </owl:Class>
     
+    <!-- https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-examples.owl#Tree -->
+
+    <owl:Class rdf:about="#Tree">
+        <rdfs:subClassOf rdf:resource="&oboe;Entity"/>
+    </owl:Class>
+    
 
 
     <!-- https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-examples.owl#Average -->
