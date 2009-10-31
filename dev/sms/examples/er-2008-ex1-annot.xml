@@ -2,7 +2,7 @@
 <sms:annotation 
   xmlns="http://ecoinformatics.org/sms/annotation.0.9"
   xmlns:oboe="http://ecoinformatics.org/oboe/oboe.0.9"
-  xmlns:oboe-unit="http://ecoinformatics.org/oboe/oboe-unit.0.9"
+  xmlns:oboe-units="http://ecoinformatics.org/oboe/oboe-units.0.9"
   xmlns:gce="https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-examples.owl"
   xmlns:sms="http://ecoinformatics.org/sms/annotation.0.9"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -19,7 +19,7 @@
         <sms:entity id="gce:Tree"/>
         <sms:measurement label="m2" precision="0.1">
             <sms:characteristic id="gce:DBH"/>
-            <sms:standard id="oboe-unit:Centimeter"/>
+            <sms:standard id="oboe-units:Centimeter"/>
         </sms:measurement>
         <sms:measurement label="m3">
             <sms:characteristic id="gce:TaxonomicTypeName"/>
