@@ -59,6 +59,11 @@ public class OntologyClass {
         _ontology = ontology;
         _className = className;
     }
+    
+    public OntologyClass(String uri) {
+        _ontology = new Ontology(uri.substring(0, uri.indexOf("#")));
+        _className = uri.substring(uri.indexOf("#") + 1);
+    }
 
     /**
      * Set the local name of the class
