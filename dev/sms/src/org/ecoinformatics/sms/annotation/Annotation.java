@@ -235,7 +235,7 @@ public class Annotation {
    private List<Observation> _observations = new ArrayList();
    private List<Mapping> _mappings = new ArrayList();
    public static String ANNOTATION_NS =
-      "http://daks.ucdavis.edu/sms-annot-1.0.0rc1";
+      "http://ecoinformatics.org/sms/annotation.0.9";
 
    public static void main(String[] args) throws Exception {
       System.out.println("args[0] = " + args[0]);
