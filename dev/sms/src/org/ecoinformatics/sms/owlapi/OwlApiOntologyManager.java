@@ -114,14 +114,10 @@ public class OwlApiOntologyManager implements OntologyManager {
 				Iterator<OWLClass> classIter = ontology.getReferencedClasses().iterator();
 				while (classIter.hasNext()) {
 					OWLClass owlClass = classIter.next();
-					
-					OntologyClass ontologyClass = new OntologyClass();
-					String name = owlClass.getURI().toString();
-					name = name.substring(name.indexOf("#") + 1);
-					ontologyClass.setName(name);
-					ontologyClass.setOntology(o);
-					
-					allClasses.add(ontologyClass);
+					OntologyClass ontologyClass = new OntologyClass(owlClass.getURI().toString());
+					if (!allClasses.contains(ontologyClass)) {
+						allClasses.add(ontologyClass);
+					}
 						
 				}
 			}
@@ -161,14 +157,11 @@ public class OwlApiOntologyManager implements OntologyManager {
 			Iterator<OWLDescription> subClassIter = subClasses.iterator();
 			while (subClassIter.hasNext()) {
 				OWLDescription subclass = subClassIter.next();
-				OntologyClass ontologyClass = new OntologyClass();
+				
 				
 				// add the subclass when appropriate
 				if (!subclass.isAnonymous()) {
-					String name = subclass.asOWLClass().getURI().toString();
-					name = name.substring(name.indexOf("#") + 1);
-					ontologyClass.setName(name);
-					ontologyClass.setOntology(o);
+					OntologyClass ontologyClass = new OntologyClass(subclass.asOWLClass().getURI().toString());
 					// include in the return list
 					classes.add(ontologyClass);
 				}
@@ -199,14 +192,11 @@ public class OwlApiOntologyManager implements OntologyManager {
 		Iterator<OWLDescription> subClassIter = subClasses.iterator();
 		while (subClassIter.hasNext()) {
 			OWLDescription subclass = subClassIter.next();
-			OntologyClass ontologyClass = new OntologyClass();
+			
 			
 			// add the subclass when appropriate
 			if (!subclass.isAnonymous()) {
-				String name = subclass.asOWLClass().getURI().toString();
-				name = name.substring(name.indexOf("#") + 1);
-				ontologyClass.setName(name);
-				ontologyClass.setOntology(o);
+				OntologyClass ontologyClass = new OntologyClass(subclass.asOWLClass().getURI().toString());
 				// include in the return list
 				classes.add(ontologyClass);
 			}
@@ -237,22 +227,17 @@ public class OwlApiOntologyManager implements OntologyManager {
 		Iterator<OWLOntology> ontologyIter = ontologies.iterator();
 		while (ontologyIter.hasNext()) {
 			OWLOntology ontology = ontologyIter.next();
-			Ontology o = new Ontology(ontology.getURI().toString());
 			
 			// iterate over the superclasses of the class in this ontology
 			Set<OWLDescription> superClasses = owlClass.getSuperClasses(ontology);
 			Iterator<OWLDescription> superClassIter = superClasses.iterator();
 			while (superClassIter.hasNext()) {
 				OWLDescription superclassDesc = superClassIter.next();
-				OntologyClass ontologyClass = new OntologyClass();
 				
 				// add the superclass when appropriate
 				if (!superclassDesc.isAnonymous()) {
 					OWLClass superclass = superclassDesc.asOWLClass();
-					String name = superclass.getURI().toString();
-					name = name.substring(name.indexOf("#") + 1);
-					ontologyClass.setName(name);
-					ontologyClass.setOntology(o);
+					OntologyClass ontologyClass = new OntologyClass(superclass.getURI().toString());
 					// include in the return list
 					classes.add(ontologyClass);
 				}
@@ -282,14 +267,10 @@ public class OwlApiOntologyManager implements OntologyManager {
 		Iterator<OWLDescription> superClassIter = superClasses.iterator();
 		while (superClassIter.hasNext()) {
 			OWLDescription superclass = superClassIter.next();
-			OntologyClass ontologyClass = new OntologyClass();
 			
 			// add the superclass when appropriate
 			if (!superclass.isAnonymous()) {
-				String name = superclass.asOWLClass().getURI().toString();
-				name = name.substring(name.indexOf("#") + 1);
-				ontologyClass.setName(name);
-				ontologyClass.setOntology(o);
+				OntologyClass ontologyClass = new OntologyClass(superclass.asOWLClass().getURI().toString());
 				// include in the return list
 				classes.add(ontologyClass);
 			}
