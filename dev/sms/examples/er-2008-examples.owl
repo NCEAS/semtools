@@ -60,6 +60,21 @@
     <!-- https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-examples.owl#Tree -->
 
     <owl:Class rdf:about="#Tree">
+        <rdfs:subClassOf rdf:resource="#Plant"/>
+    </owl:Class>
+    
+    <!-- https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-examples.owl#Plant -->
+
+    <owl:Class rdf:about="#Plant">
+        <rdfs:label>Plant</rdfs:label>
+        <rdfs:label>Plantae</rdfs:label>
+        <rdfs:subClassOf rdf:resource="#Organism"/>
+    </owl:Class>
+    
+    <!-- https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-examples.owl#Organism -->
+
+    <owl:Class rdf:about="#Organism">
+        <rdfs:label>Organism</rdfs:label>
         <rdfs:subClassOf rdf:resource="&oboe;Entity"/>
     </owl:Class>
     
