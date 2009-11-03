@@ -218,5 +218,5 @@ public interface OntologyManager {
      * @param p the property
      * @return the domain classes
      */
-    public List<OntologyClass> getRange(OntologyObjectProperty p);
+    public List<OntologyClass> getRange(OntologyProperty p);
 }

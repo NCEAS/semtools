@@ -428,7 +428,7 @@ public class DefaultOntologyManager implements OntologyManager {
      * @param p the property
      * @return the domain classes
      */
-    public List<OntologyClass> getRange(OntologyObjectProperty p) {
+    public List<OntologyClass> getRange(OntologyProperty p) {
         // TODO
         return null;
     }

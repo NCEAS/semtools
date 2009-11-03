@@ -335,9 +335,9 @@ public class OwlApiOntologyManager implements OntologyManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.ecoinformatics.sms.OntologyManager#getRange(org.ecoinformatics.sms.ontology.OntologyObjectProperty)
+	 * @see org.ecoinformatics.sms.OntologyManager#getRange(org.ecoinformatics.sms.ontology.OntologyProperty)
 	 */
-	public List<OntologyClass> getRange(OntologyObjectProperty p) {
+	public List<OntologyClass> getRange(OntologyProperty p) {
 		// TODO Auto-generated method stub
 		return null;
 	}
