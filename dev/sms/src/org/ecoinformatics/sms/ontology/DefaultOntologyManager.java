@@ -212,6 +212,25 @@ public class DefaultOntologyManager implements OntologyManager {
             }
         return results;
     }
+    
+    /**
+     * Returns the named classes for given ontology
+     * catalog
+     * @returns the named ontology classes
+     */
+    public List<OntologyClass> getNamedClasses(Ontology ont) {
+        List<OntologyClass> results = new ArrayList();
+        OntModel model = getModel(ont);
+            for(OntClass c : (List<OntClass>) model.listClasses().toList()) {
+                String uri = c.getNameSpace();
+                if(uri != null && uri.endsWith("#"))
+                    uri = uri.substring(0, uri.length() - 1);
+                OntologyClass oc = new OntologyClass(ont, c.getLocalName());
+                if(ont != null && !results.contains(oc))
+                    results.add(oc);
+            }
+        return results;
+    }
 
     /**
      * Returns the set of named subclasses of the given ontology class.

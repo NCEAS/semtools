@@ -129,6 +129,30 @@ public class OwlApiOntologyManager implements OntologyManager {
 		}
 		return allClasses;
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.ecoinformatics.sms.OntologyManager#getNamedClasses()
+	 */
+	public List<OntologyClass> getNamedClasses(Ontology o) {
+		List<OntologyClass> allClasses = new ArrayList<OntologyClass>();
+		try {
+			
+			OWLOntology ontology = manager.getOntology(new URI(o.getURI()));
+			Iterator<OWLClass> classIter = ontology.getReferencedClasses().iterator();
+			while (classIter.hasNext()) {
+				OWLClass owlClass = classIter.next();
+				OntologyClass ontologyClass = new OntologyClass(owlClass.getURI().toString());
+				if (!allClasses.contains(ontologyClass)) {
+					allClasses.add(ontologyClass);
+				}		
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return allClasses;
+	}
 
 	/* (non-Javadoc)
 	 * @see org.ecoinformatics.sms.OntologyManager#getNamedProperties()

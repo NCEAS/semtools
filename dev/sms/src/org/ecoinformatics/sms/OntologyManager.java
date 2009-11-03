@@ -121,6 +121,12 @@ public interface OntologyManager {
      * @returns the named classes
      */
     public List<OntologyClass> getNamedClasses();
+    
+    /**
+     * Gets the named classes for given ontology
+     * @returns the named classes for the given ontology
+     */
+    public List<OntologyClass> getNamedClasses(Ontology ontology);
 
     /**
      * Returns the set of named subclasses of the given ontology class.
