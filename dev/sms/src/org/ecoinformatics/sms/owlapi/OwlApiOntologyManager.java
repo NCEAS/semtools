@@ -80,6 +80,7 @@ public class OwlApiOntologyManager implements OntologyManager {
 			e.printStackTrace();
 		}
 		
+		log.error("No class found for: " + ontologyClass.getURI());
 		return null;
 			
 	}
@@ -144,26 +145,28 @@ public class OwlApiOntologyManager implements OntologyManager {
 		List<OntologyClass> classes = new ArrayList<OntologyClass>();
 		
 		OWLClass owlClass = getOWLClass(c);
+		if (owlClass != null) {
 		
-		// iterate over all ontologies
-		Set<OWLOntology> ontologies = manager.getOntologies();
-		Iterator<OWLOntology> ontologyIter = ontologies.iterator();
-		while (ontologyIter.hasNext()) {
-			OWLOntology ontology = ontologyIter.next();
-			Ontology o = new Ontology(ontology.getURI().toString());
-			
-			// iterate over the subclasses of the class in this ontology
-			Set<OWLDescription> subClasses = owlClass.getSubClasses(ontology);
-			Iterator<OWLDescription> subClassIter = subClasses.iterator();
-			while (subClassIter.hasNext()) {
-				OWLDescription subclass = subClassIter.next();
+			// iterate over all ontologies
+			Set<OWLOntology> ontologies = manager.getOntologies();
+			Iterator<OWLOntology> ontologyIter = ontologies.iterator();
+			while (ontologyIter.hasNext()) {
+				OWLOntology ontology = ontologyIter.next();
+				Ontology o = new Ontology(ontology.getURI().toString());
 				
-				
-				// add the subclass when appropriate
-				if (!subclass.isAnonymous()) {
-					OntologyClass ontologyClass = new OntologyClass(subclass.asOWLClass().getURI().toString());
-					// include in the return list
-					classes.add(ontologyClass);
+				// iterate over the subclasses of the class in this ontology
+				Set<OWLDescription> subClasses = owlClass.getSubClasses(ontology);
+				Iterator<OWLDescription> subClassIter = subClasses.iterator();
+				while (subClassIter.hasNext()) {
+					OWLDescription subclass = subClassIter.next();
+					
+					
+					// add the subclass when appropriate
+					if (!subclass.isAnonymous()) {
+						OntologyClass ontologyClass = new OntologyClass(subclass.asOWLClass().getURI().toString());
+						// include in the return list
+						classes.add(ontologyClass);
+					}
 				}
 			}
 		}
@@ -178,27 +181,28 @@ public class OwlApiOntologyManager implements OntologyManager {
 		List<OntologyClass> classes = new ArrayList<OntologyClass>();
 
 		OWLClass owlClass = getOWLClass(c);
-		
-		OWLOntology ontology = null;
-		try {
-			ontology = manager.getOntology(new URI(o.getURI()));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+		if (owlClass != null) {
+			OWLOntology ontology = null;
+			try {
+				ontology = manager.getOntology(new URI(o.getURI()));
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+					
+			// iterate over the subclasses of the class for the given ontology
+			Set<OWLDescription> subClasses = owlClass.getSubClasses(ontology);
+			Iterator<OWLDescription> subClassIter = subClasses.iterator();
+			while (subClassIter.hasNext()) {
+				OWLDescription subclass = subClassIter.next();
 				
-		// iterate over the subclasses of the class for the given ontology
-		Set<OWLDescription> subClasses = owlClass.getSubClasses(ontology);
-		Iterator<OWLDescription> subClassIter = subClasses.iterator();
-		while (subClassIter.hasNext()) {
-			OWLDescription subclass = subClassIter.next();
-			
-			
-			// add the subclass when appropriate
-			if (!subclass.isAnonymous()) {
-				OntologyClass ontologyClass = new OntologyClass(subclass.asOWLClass().getURI().toString());
-				// include in the return list
-				classes.add(ontologyClass);
+				
+				// add the subclass when appropriate
+				if (!subclass.isAnonymous()) {
+					OntologyClass ontologyClass = new OntologyClass(subclass.asOWLClass().getURI().toString());
+					// include in the return list
+					classes.add(ontologyClass);
+				}
 			}
 		}
 		
@@ -221,25 +225,26 @@ public class OwlApiOntologyManager implements OntologyManager {
 		
 		//get the class
 		OWLClass owlClass = getOWLClass(c);
-		
-		// iterate over all ontologies
-		Set<OWLOntology> ontologies = manager.getOntologies();
-		Iterator<OWLOntology> ontologyIter = ontologies.iterator();
-		while (ontologyIter.hasNext()) {
-			OWLOntology ontology = ontologyIter.next();
-			
-			// iterate over the superclasses of the class in this ontology
-			Set<OWLDescription> superClasses = owlClass.getSuperClasses(ontology);
-			Iterator<OWLDescription> superClassIter = superClasses.iterator();
-			while (superClassIter.hasNext()) {
-				OWLDescription superclassDesc = superClassIter.next();
+		if (owlClass != null) {
+			// iterate over all ontologies
+			Set<OWLOntology> ontologies = manager.getOntologies();
+			Iterator<OWLOntology> ontologyIter = ontologies.iterator();
+			while (ontologyIter.hasNext()) {
+				OWLOntology ontology = ontologyIter.next();
 				
-				// add the superclass when appropriate
-				if (!superclassDesc.isAnonymous()) {
-					OWLClass superclass = superclassDesc.asOWLClass();
-					OntologyClass ontologyClass = new OntologyClass(superclass.getURI().toString());
-					// include in the return list
-					classes.add(ontologyClass);
+				// iterate over the superclasses of the class in this ontology
+				Set<OWLDescription> superClasses = owlClass.getSuperClasses(ontology);
+				Iterator<OWLDescription> superClassIter = superClasses.iterator();
+				while (superClassIter.hasNext()) {
+					OWLDescription superclassDesc = superClassIter.next();
+					
+					// add the superclass when appropriate
+					if (!superclassDesc.isAnonymous()) {
+						OWLClass superclass = superclassDesc.asOWLClass();
+						OntologyClass ontologyClass = new OntologyClass(superclass.getURI().toString());
+						// include in the return list
+						classes.add(ontologyClass);
+					}
 				}
 			}
 		}
@@ -254,25 +259,26 @@ public class OwlApiOntologyManager implements OntologyManager {
 		List<OntologyClass> classes = new ArrayList<OntologyClass>();
 		
 		OWLClass owlClass = getOWLClass(c);
-		
-		OWLOntology ontology;
-		try {
-			ontology = manager.getOntology(new URI(o.getURI()));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		// iterate over the superclasses of the class
-		Set<OWLDescription> superClasses = owlClass.getSuperClasses(ontology);
-		Iterator<OWLDescription> superClassIter = superClasses.iterator();
-		while (superClassIter.hasNext()) {
-			OWLDescription superclass = superClassIter.next();
-			
-			// add the superclass when appropriate
-			if (!superclass.isAnonymous()) {
-				OntologyClass ontologyClass = new OntologyClass(superclass.asOWLClass().getURI().toString());
-				// include in the return list
-				classes.add(ontologyClass);
+		if (owlClass != null) {
+			OWLOntology ontology;
+			try {
+				ontology = manager.getOntology(new URI(o.getURI()));
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+			// iterate over the superclasses of the class
+			Set<OWLDescription> superClasses = owlClass.getSuperClasses(ontology);
+			Iterator<OWLDescription> superClassIter = superClasses.iterator();
+			while (superClassIter.hasNext()) {
+				OWLDescription superclass = superClassIter.next();
+				
+				// add the superclass when appropriate
+				if (!superclass.isAnonymous()) {
+					OntologyClass ontologyClass = new OntologyClass(superclass.asOWLClass().getURI().toString());
+					// include in the return list
+					classes.add(ontologyClass);
+				}
 			}
 		}
 		
