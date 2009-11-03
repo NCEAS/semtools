@@ -16,6 +16,7 @@ public class Test {
             String uri1 = args[0];
             String uri2 = args[1];
 
+            //SMS sms = new SMS(SMS.DEFAULT_ONTOLOGY_MANAGER_CLASS);
             SMS sms = new SMS(null);
 
             // get a ontology manager
@@ -57,7 +58,7 @@ public class Test {
             // get a test annotation
             //String metacat = "http://fred.msi.ucsb.edu:8080/sms/metacat/";
             //String annot1 = metacat + "annot.1.1";
-            String annot1 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/gce-er-2008-ex1-annot.xml";
+            String annot1 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-ex1-annot.xml";
             URL url = new URL(annot1);
             URLConnection connection = url.openConnection();
 
@@ -67,7 +68,7 @@ public class Test {
 
             // build up simple query
             //Ontology gceOnt = new Ontology(metacat + "gce.1.1");
-            Ontology gceOnt = new Ontology("http://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/gce-oboe.owl");
+            Ontology gceOnt = new Ontology("https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-examples.owl");
             List<OntologyClass> entities = new ArrayList();
             entities.add(new OntologyClass(gceOnt, "SpatialLocation"));
             entities.add(new OntologyClass(gceOnt, "Plant"));
@@ -144,14 +145,17 @@ public class Test {
 
             // build up another active domain query
             entities = new ArrayList();
-            OntologyClass plant = new OntologyClass(gceOnt, "Plant");
-            entities.add(plant);
+            OntologyClass entity = new OntologyClass(gceOnt, "Plant");
+            entities.add(entity);
+//            for(OntologyClass c : ontologyManager.getNamedSubclasses(entity))
+//                if(!entities.contains(c))
+//                	entities.add(c);
             chars = new ArrayList();
-            OntologyClass dryweight = new OntologyClass(gceOnt, "DryWeight");
-            chars.add(dryweight);
-            System.out.println("\nSearch for active standards of entity 'Plant' and characteristic 'DryWeight':");
+            OntologyClass characteristic = new OntologyClass(gceOnt, "DBH");
+            chars.add(characteristic);
+            System.out.println("\nSearch for active standards of entity: " + entity + " and characteristic: " + characteristic);
             List<OntologyClass> standardActiveDom = new ArrayList();
-            for(OntologyClass c : annotationManager.getActiveStandards(entities, chars)) {
+            for(OntologyClass c : annotationManager.getActiveStandards(entities, chars, true, false)) {
                 if(!standardActiveDom.contains(c))
                     standardActiveDom.add(c);
                 for(OntologyClass s : ontologyManager.getNamedSuperclasses(c))
