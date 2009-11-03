@@ -125,6 +125,7 @@ public class OntologyClass {
      */
     @Override
     public String toString() {
-        return getURI();
+        //return getURI();
+        return getName();
     }
 }
