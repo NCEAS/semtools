@@ -52,6 +52,7 @@ import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -74,6 +75,7 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.ListModel;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -178,7 +180,8 @@ public class OntoClassSelectionJPanel extends JPanel {
 	 */
 	private void init(boolean libraryOnly, int length, int height) {
 		try {
-			sms.getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe.0.9");
+			//sms.getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe.0.9");
+			sms.getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe-units.0.9");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -300,11 +303,14 @@ public class OntoClassSelectionJPanel extends JPanel {
 			DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(m);
 			rootNode.add(childNode);
 			// get each root class of the model
-			Iterator<OntologyClass> rootClasses = sms.getOntologyManager().getNamedClasses().iterator();
+			Iterator<OntologyClass> rootClasses = sms.getOntologyManager().getNamedClasses(m).iterator();
 			while (rootClasses.hasNext()) {
-				// build tree from the root
+				// build tree from the roots
 				OntologyClass root = rootClasses.next();
-				buildTree(root, childNode);
+				List<OntologyClass> superclasses = sms.getOntologyManager().getNamedSuperclasses(root, m);
+				if (superclasses == null || superclasses.isEmpty()) {
+					buildTree(root, childNode);
+				}
 			}
 		}
 
@@ -973,7 +979,8 @@ public class OntoClassSelectionJPanel extends JPanel {
 		frame.getContentPane().add(new OntoClassSelectionJPanel());
 		frame.setTitle("Test Frame");
 		frame.pack();
-		frame.show();
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame.setVisible(true);
 	}// testing
 
 }
