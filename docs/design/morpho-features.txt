@@ -1,31 +1,59 @@
 Morpho semantic plugin
 ---------------------------
-Plugin enables:
+
+Plugin generally enables:
+----
 -creating/editing annotation doc (indirectly when working with EML package)
 -saving annotation doc (local/network)
 	-independent from EML saving
--structured (annotation-based) search for EML packages
+-structured annotation-based search (returns EML packages)
 
-Annotation steps
+Annotation steps:
+-----
 -Invoke the annotation wizard dialog
-	-Data->Annotate current column...
-	-right-click on data table column, select "Annotate column..."
--Dialog shows contextual information (DP/table/attribute)
--Dialog allows user to specify Entity+Characteristic+Standard for the column/attribute
-	-selected from an ontology tree browser
--Dialog may also need to show any/all annotations for (editing/augmentation purposes):
-	-EML package
-	-data table within said EML package
+	1. Data->Annotate current column... (or right-click on data table column, select "Annotate...")
+	2. If there are no other existing annotations for this datatable:
+		a. Present annotation 'wizard'
+	3. If there are existing annotations for the this data table:
+		a. Prompt to edit existing or to create a new one, then go to (2a)
+	4. For the selected package/table/attribute select the Entity+Characteristic_+Standard classes for the column
+		a. Each class entry field allows an expanded ontology browser dialog to pop up in order to assist in finding the appropriate class
+	5. 'Ok'
+		a. Save annotation locally?
+		b. Save to network?
+	6. 'Cancel'
+		a. Discards the annotation for the attribute
+		7. Or do we wait to save when the whole EML datapackage is actually saved?
+
+UI Notes:
+-----		
+-Annotation dialog shows contextual information (DP/table/attribute)
+-Annotation dialog allows user to specify Entity+Characteristic+Standard for the selected column/attribute
+	-selected from an ontology tree browser (popup)
+-Open dialog may need to show any/all existing annotations for (editing/augmentation purposes):
+	-for the EML package
+	-for the given data table within said EML package
 	
 Annotation considerations:
--Most commonly, annotations will be 1 per EML datatable but there are some permutations:
+----
+-Most commonly, annotations will be 1 per EML datatable but there are other cases:
 	-1 annotation: 1 data table (1+ per EML)
 	-n annotations: 1 data table 
-		-say I have different interpretations of what is being observed
+		-say I have different interpretations of what is being observed or how to classify it
 		-say someone else (network) has annotated this already and I want a different annotation for it
--Annotations can be edited (revision is incremented)
--Annotations can be deleted
+-Annotation documents can be edited (revision is incremented, locally/network)
+-Annotations can be deleted (locally/network)
+-Annotations can be searched 
+	-initially locally
+	-then extend to network-based search where the annotations and SMS manager is on the Metacat side of things
 
+Ontology considerations:
+----
 -Ontologies used for annotation and for searching will be "retrieved" from Metacat store
-	-annotations will reference OBOE and OBOE-Units by default and then 0+ OBOE-Extensions
+	-only those ontologies registered with the [current] Metacat server will be available for annotation editing
+	-annotations will reference:
+		 1. OBOE (default)
+		 2. OBOE-Units (default)
+		 3. 0+ OBOE-Extensions (optionally)
+-Ontologies will be available locally in the SMS Ontology Manager for use in the Morpho annotation UI (tree browser)
 
