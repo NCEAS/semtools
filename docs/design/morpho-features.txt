@@ -1,0 +1,31 @@
+Morpho semantic plugin
+---------------------------
+Plugin enables:
+-creating/editing annotation doc (indirectly when working with EML package)
+-saving annotation doc (local/network)
+	-independent from EML saving
+-structured (annotation-based) search for EML packages
+
+Annotation steps
+-Invoke the annotation wizard dialog
+	-Data->Annotate current column...
+	-right-click on data table column, select "Annotate column..."
+-Dialog shows contextual information (DP/table/attribute)
+-Dialog allows user to specify Entity+Characteristic+Standard for the column/attribute
+	-selected from an ontology tree browser
+-Dialog may also need to show any/all annotations for (editing/augmentation purposes):
+	-EML package
+	-data table within said EML package
+	
+Annotation considerations:
+-Most commonly, annotations will be 1 per EML datatable but there are some permutations:
+	-1 annotation: 1 data table (1+ per EML)
+	-n annotations: 1 data table 
+		-say I have different interpretations of what is being observed
+		-say someone else (network) has annotated this already and I want a different annotation for it
+-Annotations can be edited (revision is incremented)
+-Annotations can be deleted
+
+-Ontologies used for annotation and for searching will be "retrieved" from Metacat store
+	-annotations will reference OBOE and OBOE-Units by default and then 0+ OBOE-Extensions
+
