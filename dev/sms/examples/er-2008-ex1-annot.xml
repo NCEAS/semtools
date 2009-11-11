@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <sms:annotation 
   xmlns="http://ecoinformatics.org/sms/annotation.0.9"
-  xmlns:oboe="http://ecoinformatics.org/oboe/oboe.0.9"
-  xmlns:oboe-units="http://ecoinformatics.org/oboe/oboe-units.0.9"
+  xmlns:oboe="http://ecoinformatics.org/oboe/oboe.1.0beta"
+  xmlns:oboe-units="http://ecoinformatics.org/oboe/oboe-units.1.0beta"
   xmlns:gce="https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-examples.owl"
   xmlns:sms="http://ecoinformatics.org/sms/annotation.0.9"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

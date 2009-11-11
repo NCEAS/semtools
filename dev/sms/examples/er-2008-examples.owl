@@ -8,8 +8,8 @@
     <!ENTITY owl11xml "http://www.w3.org/2006/12/owl11-xml#" >
     <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
     <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
-    <!ENTITY oboe "http://ecoinformatics.org/oboe/oboe.0.9#" >
-    <!ENTITY oboe-units "http://ecoinformatics.org/oboe/oboe-units.0.9#" >
+    <!ENTITY oboe "http://ecoinformatics.org/oboe/oboe.1.0beta#" >
+    <!ENTITY oboe-units "http://ecoinformatics.org/oboe/oboe-units.1.0beta#" >
     <!ENTITY er-2008-examples "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-examples.owl#" >
 ]>
 
@@ -20,14 +20,14 @@
      xmlns:owl11="http://www.w3.org/2006/12/owl11#"
      xmlns:owl11xml="http://www.w3.org/2006/12/owl11-xml#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
-     xmlns:oboe="http://ecoinformatics.org/oboe/oboe.0.9#"
-     xmlns:oboe-units="http://ecoinformatics.org/oboe/oboe-units.0.9#"
+     xmlns:oboe="http://ecoinformatics.org/oboe/oboe.1.0beta#"
+     xmlns:oboe-units="http://ecoinformatics.org/oboe/oboe-units.1.0beta#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:owl="http://www.w3.org/2002/07/owl#">
     <owl:Ontology rdf:about="">
-        <owl:imports rdf:resource="http://ecoinformatics.org/oboe/oboe.0.9"/>
-        <owl:imports rdf:resource="http://ecoinformatics.org/oboe/oboe-units.0.9"/>
+        <owl:imports rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0beta"/>
+        <owl:imports rdf:resource="http://ecoinformatics.org/oboe/oboe-units.1.0beta"/>
     </owl:Ontology>
     
 
