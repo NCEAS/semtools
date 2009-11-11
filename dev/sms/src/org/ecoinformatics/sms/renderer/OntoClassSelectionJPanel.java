@@ -180,8 +180,9 @@ public class OntoClassSelectionJPanel extends JPanel {
 	 */
 	private void init(boolean libraryOnly, int length, int height) {
 		try {
-			//sms.getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe.0.9");
-			sms.getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe-units.0.9");
+			//sms.getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe.1.0beta");
+			//sms.getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe-units.1.0beta");
+			sms.getOntologyManager().importOntology("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -233,34 +234,11 @@ public class OntoClassSelectionJPanel extends JPanel {
 		panel3.add(Box.createRigidArea(new Dimension(0, 5)));
 		panel3.add(panel2);
 
-		// add and remove button panel
-		JPanel panel4 = new JPanel();
-		panel4.setLayout(new BoxLayout(panel4, BoxLayout.Y_AXIS));
-		panel4.add(_addBtn);
-		panel4.add(Box.createRigidArea(new Dimension(0, 5)));
-		panel4.add(_removeBtn);
-
-		// class list label
-		JPanel panel5 = new JPanel();
-		panel5.setLayout(new BoxLayout(panel5, BoxLayout.X_AXIS));
-		panel5.add(new JLabel("Selected Categories:", SwingConstants.LEFT));
-		panel5.add(Box.createHorizontalGlue());
-
-		// class list panel
-		JPanel panel6 = new JPanel();
-		panel6.setLayout(new BoxLayout(panel6, BoxLayout.Y_AXIS));
-		panel6.add(panel5);
-		panel6.add(Box.createRigidArea(new Dimension(0, 2)));
-
 		// top portion
 		JPanel panel7 = new JPanel();
 		panel7.setLayout(new BoxLayout(panel7, BoxLayout.X_AXIS));
 		panel7.add(panel3);
-		panel7.add(Box.createRigidArea(new Dimension(5, 0)));
-		panel7.add(panel4);
-		panel7.add(Box.createRigidArea(new Dimension(5, 0)));
-		panel7.add(panel6);
-
+		
 		// comment/description label
 		JPanel panel8 = new JPanel();
 		panel8.setLayout(new BoxLayout(panel8, BoxLayout.X_AXIS));
