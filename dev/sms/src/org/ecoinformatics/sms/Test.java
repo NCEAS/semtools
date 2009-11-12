@@ -17,10 +17,10 @@ public class Test {
             String uri2 = args[1];
 
             //SMS sms = new SMS(SMS.DEFAULT_ONTOLOGY_MANAGER_CLASS);
-            SMS sms = new SMS(null);
+            
 
             // get a ontology manager
-            OntologyManager ontologyManager = sms.getOntologyManager();
+            OntologyManager ontologyManager = SMS.getInstance().getOntologyManager();
             ontologyManager.importOntology(uri1);
             ontologyManager.importOntology(uri2);
             Ontology ont1 = ontologyManager.getOntology(uri1);
@@ -63,7 +63,7 @@ public class Test {
             URLConnection connection = url.openConnection();
 
             // get annotation manager
-            AnnotationManager annotationManager = sms.getAnnotationManager();
+            AnnotationManager annotationManager = SMS.getInstance().getAnnotationManager();
             annotationManager.importAnnotation(connection.getInputStream(), "annot1");
 
             // build up simple query

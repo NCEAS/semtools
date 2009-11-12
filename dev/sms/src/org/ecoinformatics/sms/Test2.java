@@ -19,10 +19,8 @@ public class Test2 {
          String oboeURI = "http://linus.nceas.ucsb.edu/sms/metacat/oboe.1";
          String unitURI = "http://linus.nceas.ucsb.edu/sms/metacat/oboeunit.1";
 
-         SMS sms = new SMS(null);
-
          // get the ontology manager
-         OntologyManager ontMgr = sms.getOntologyManager();
+         OntologyManager ontMgr = SMS.getInstance().getOntologyManager();
          ontMgr.importOntology(oboeURI);
          ontMgr.importOntology(unitURI);
          ontMgr.importOntology(gceURI);
@@ -69,7 +67,7 @@ public class Test2 {
          String annURI7 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/inv-gcem-0511-2-0-annot.xml";
          String annURI8 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/ins-gcem-0511-1-0-annot.xml";
           */
-         AnnotationManager annMgr = sms.getAnnotationManager();
+         AnnotationManager annMgr = SMS.getInstance().getAnnotationManager();
          addAnnotation(annURI1, annMgr);
          addAnnotation(annURI2, annMgr);
          addAnnotation(annURI3, annMgr);

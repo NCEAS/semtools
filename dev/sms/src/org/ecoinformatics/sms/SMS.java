@@ -53,10 +53,12 @@ public class SMS {
     private AnnotationManager _annotationManager;
     private OntologyManager _ontologyManager;
 
+    private static SMS instance = null;
+    
     /**
      * Default constructor
      */
-    public SMS(String ontologyManagerClassName) {
+    private SMS(String ontologyManagerClassName) {
     	// determine the implementation to use
     	String className = OWL_ONTOLOGY_MANAGER_CLASS;
     	if (ontologyManagerClassName != null) {
@@ -71,6 +73,13 @@ public class SMS {
 		}
 
         _annotationManager = new DefaultAnnotationManager(this);
+    }
+    
+    public static SMS getInstance() {
+    	if (instance == null) {
+    		instance = new SMS(null);
+    	}
+    	return instance;
     }
 
     /**

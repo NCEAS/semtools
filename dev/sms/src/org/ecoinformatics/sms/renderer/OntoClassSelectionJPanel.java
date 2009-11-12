@@ -182,7 +182,7 @@ public class OntoClassSelectionJPanel extends JPanel {
 		try {
 			//sms.getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe.1.0beta");
 			//sms.getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe-units.1.0beta");
-			sms.getOntologyManager().importOntology("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl");
+			SMS.getInstance().getOntologyManager().importOntology("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -272,20 +272,20 @@ public class OntoClassSelectionJPanel extends JPanel {
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("");
 
 		// get each ont model for the library
-		Iterator<String> ontModels = sms.getOntologyManager().getOntologyIds().iterator();
+		Iterator<String> ontModels = SMS.getInstance().getOntologyManager().getOntologyIds().iterator();
 
 		while (ontModels.hasNext()) {
 			// add ontologies to root
 			String uri = ontModels.next();
-			Ontology m = sms.getOntologyManager().getOntology(uri);
+			Ontology m = SMS.getInstance().getOntologyManager().getOntology(uri);
 			DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(m);
 			rootNode.add(childNode);
 			// get each root class of the model
-			Iterator<OntologyClass> rootClasses = sms.getOntologyManager().getNamedClasses(m).iterator();
+			Iterator<OntologyClass> rootClasses = SMS.getInstance().getOntologyManager().getNamedClasses(m).iterator();
 			while (rootClasses.hasNext()) {
 				// build tree from the roots
 				OntologyClass root = rootClasses.next();
-				List<OntologyClass> superclasses = sms.getOntologyManager().getNamedSuperclasses(root, m);
+				List<OntologyClass> superclasses = SMS.getInstance().getOntologyManager().getNamedSuperclasses(root, m);
 				if (superclasses == null || superclasses.isEmpty()) {
 					buildTree(root, childNode);
 				}
@@ -321,7 +321,7 @@ public class OntoClassSelectionJPanel extends JPanel {
 		DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(c);
 		parentNode.add(childNode);
 		// get subclasses
-		Iterator<OntologyClass> subclasses = sms.getOntologyManager().getNamedSubclasses(c).iterator();
+		Iterator<OntologyClass> subclasses = SMS.getInstance().getOntologyManager().getNamedSubclasses(c).iterator();
 		while (subclasses.hasNext()) {
 			OntologyClass subclass = subclasses.next();
 			buildTree(subclass, childNode);
@@ -700,12 +700,12 @@ public class OntoClassSelectionJPanel extends JPanel {
 			// configure popup
 			initPopup();
 			OntologyClass cls = (OntologyClass) node.getUserObject();
-			Iterator<OntologyProperty> props = sms.getOntologyManager().getNamedProperties().iterator();
+			Iterator<OntologyProperty> props = SMS.getInstance().getOntologyManager().getNamedProperties().iterator();
 			while (props.hasNext()) {
 				OntologyProperty p = props.next();
 				JMenu submenu = new JMenu(p.getName());
 				popup.add(submenu);
-				Iterator<OntologyClass> ranges = sms.getOntologyManager().getRange(p).iterator();
+				Iterator<OntologyClass> ranges = SMS.getInstance().getOntologyManager().getRange(p).iterator();
 				while (ranges.hasNext()) {
 					OntologyClass range = ranges.next();
 					JMenuItem rangeitem = new JMenuItem(range.getName());
@@ -938,8 +938,7 @@ public class OntoClassSelectionJPanel extends JPanel {
 	private JButton _searchBtn = new JButton("Search");
 	private JButton _addBtn = new JButton(">>");
 	private JButton _removeBtn = new JButton("<<");
-	private SMS sms = new SMS(null);
-
+	
 	// private String KEPLER = System.getProperty("KEPLER");
 	private final String CLASS_ICON = "";
 	// KEPLER + "/configs/ptolemy/configs/kepler/sms/class.png";
