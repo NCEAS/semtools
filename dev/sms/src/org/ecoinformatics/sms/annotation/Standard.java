@@ -53,4 +53,11 @@ public class Standard extends OntologyClass {
     public Standard(Ontology ontology, String name) {
         super(ontology, name);
     }
+    
+    /**
+     * @param uri the uri
+     */
+    public Standard(String uri) {
+        super(uri);
+    }
 } 

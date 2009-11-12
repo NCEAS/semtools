@@ -55,6 +55,13 @@ public class Entity extends OntologyClass {
     public Entity(Ontology ontology, String name) {
         super(ontology, name);
     }
+    
+    /**
+     * @param the uri
+     */
+    public Entity(String uri) {
+        super(uri);
+    }
 
 
 } 

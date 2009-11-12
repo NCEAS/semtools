@@ -53,4 +53,11 @@ public class Characteristic extends OntologyClass {
     public Characteristic(Ontology ontology, String name) {
         super(ontology, name);
     }
+    
+    /**
+     * @param uri the uri
+     */
+    public Characteristic(String uri) {
+        super(uri);
+    }
 } 
