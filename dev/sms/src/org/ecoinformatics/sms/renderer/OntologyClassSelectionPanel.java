@@ -100,13 +100,13 @@ import org.ecoinformatics.sms.ontology.OntologyProperty;
  * 
  * @author Shawn Bowers
  */
-public class OntoClassSelectionJPanel extends JPanel {
+public class OntologyClassSelectionPanel extends JPanel {
 
 	/**
 	 * Default constructor that initializes the panel, accepting all ontologies
 	 * and having a default width and height.
 	 */
-	public OntoClassSelectionJPanel() {
+	public OntologyClassSelectionPanel() {
 		init(false, 525, 350);
 	}
 
@@ -116,7 +116,7 @@ public class OntoClassSelectionJPanel extends JPanel {
 	 * @param libraryOnly
 	 *            if true, only loads the library indexed ontologies
 	 */
-	public OntoClassSelectionJPanel(boolean libraryOnly) {
+	public OntologyClassSelectionPanel(boolean libraryOnly) {
 		init(libraryOnly, 525, 350);
 	}
 
@@ -128,7 +128,7 @@ public class OntoClassSelectionJPanel extends JPanel {
 	 * @param height
 	 *            the height of the component
 	 */
-	public OntoClassSelectionJPanel(int width, int height) {
+	public OntologyClassSelectionPanel(int width, int height) {
 		init(false, width, height);
 	}
 
@@ -142,7 +142,7 @@ public class OntoClassSelectionJPanel extends JPanel {
 	 * @param height
 	 *            the height of the component
 	 */
-	public OntoClassSelectionJPanel(boolean libraryOnly, int width, int height) {
+	public OntologyClassSelectionPanel(boolean libraryOnly, int width, int height) {
 		init(libraryOnly, width, height);
 	}
 
@@ -953,7 +953,7 @@ public class OntoClassSelectionJPanel extends JPanel {
 	 */
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
-		frame.getContentPane().add(new OntoClassSelectionJPanel());
+		frame.getContentPane().add(new OntologyClassSelectionPanel());
 		frame.setTitle("Test Frame");
 		frame.pack();
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
