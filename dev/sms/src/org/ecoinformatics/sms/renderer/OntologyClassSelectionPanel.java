@@ -50,6 +50,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -58,13 +59,11 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -73,11 +72,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTree;
-import javax.swing.ListModel;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -151,27 +147,20 @@ public class OntologyClassSelectionPanel extends JPanel {
 	 * 
 	 * @return the current set of selections in the panel
 	 */
-	public Vector getOntologyClasses() {
-		return getListAsVector();
+	public List<OntologyClass> getOntologyClasses() {
+		List<OntologyClass> returnList = new ArrayList<OntologyClass>();
+		TreePath[] paths = _ontoTree.getSelectionPaths();
+		for (int i = 0; i < paths.length; i++) {
+			DefaultMutableTreeNode node = 
+				(DefaultMutableTreeNode) paths[i].getLastPathComponent();
+			if (node.getUserObject() instanceof OntologyClass) {
+				OntologyClass cls = (OntologyClass) node.getUserObject();
+				returnList.add(cls);
+			}
+		}
+		return returnList;
 	}
 
-	/**
-	 * adds the given OntologyClass objects to the panel.
-	 * 
-	 * @param ontClass
-	 *            the ontology class to add
-	 */
-	public void addOntologyClass(OntologyClass ontClass) {
-		if (!getOntologyClasses().contains(ontClass))
-			addToList(ontClass);
-	}
-
-	/**
-	 * Remove all selected classes.
-	 */
-	public void clear() {
-		clearList();
-	}
 
 	// PRIVATE METHODS
 
@@ -180,9 +169,11 @@ public class OntologyClassSelectionPanel extends JPanel {
 	 */
 	private void init(boolean libraryOnly, int length, int height) {
 		try {
-			//sms.getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe.1.0beta");
-			//sms.getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe-units.1.0beta");
-			SMS.getInstance().getOntologyManager().importOntology("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl");
+			//SMS.getInstance().getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe.1.0beta");
+			//SMS.getInstance().getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe.0.9");
+			//SMS.getInstance().getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe-units.1.0beta");
+			SMS.getInstance().getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe-units.0.9");
+			//SMS.getInstance().getOntologyManager().importOntology("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -193,12 +184,6 @@ public class OntologyClassSelectionPanel extends JPanel {
 		// set up search button
 		_searchBtn.addActionListener(new ClassSearchButtonListener());
 		_searchTxt.addActionListener(new ClassSearchButtonListener());
-
-		// initialize the buttons
-		_addBtn.addActionListener(new AddButtonListener());
-		_addBtn.setEnabled(false);
-		_removeBtn.addActionListener(new RemoveButtonListener());
-		_removeBtn.setEnabled(false);
 
 		// the description text area
 		_commentTxt = new JTextArea();
@@ -328,51 +313,6 @@ public class OntologyClassSelectionPanel extends JPanel {
 		}
 	}
 
-	/**
-	 * Private method to add ont classes to the list
-	 * 
-	 * @param ontClass
-	 *            the OntologyClass to add to the list
-	 */
-	private void addToList(OntologyClass ontClass) {
-		DefaultListModel mdl = (DefaultListModel) _classList.getModel();
-		if (!mdl.contains(ontClass)) {
-			// String txt = ontClass.getOntologyName();
-			mdl.addElement(ontClass);
-		}
-	}
-
-	/**
-	 * Private method to clear the list
-	 */
-	private void clearList() {
-		DefaultListModel mdl = (DefaultListModel) _classList.getModel();
-		mdl.removeAllElements();
-	}
-
-	/**
-	 * Private method to return all items in the class list
-	 * 
-	 * @return a list of the selected OntologyClasses
-	 */
-	private Vector getListAsVector() {
-		DefaultListModel mdl = (DefaultListModel) _classList.getModel();
-		Vector result = new Vector();
-		for (int i = 0; i < mdl.getSize(); i++)
-			result.add(mdl.getElementAt(i));
-		return result;
-	}
-
-	/**
-	 * Private method to return all items in the class list
-	 * 
-	 * @param ontClass
-	 *            the OntologyClass to remove from the list
-	 */
-	private void removeFromList(OntologyClass ontClass) {
-		DefaultListModel mdl = (DefaultListModel) _classList.getModel();
-		mdl.removeElement(ontClass);
-	}
 
 	/**
 	 * Private method that returns tree nodes containing OntTreeNodes
@@ -605,37 +545,6 @@ public class OntologyClassSelectionPanel extends JPanel {
 		}
 	};
 
-	/**
-	 * Private class for implementing a listener for add button
-	 */
-	private class AddButtonListener implements ActionListener {
-		public void actionPerformed(ActionEvent ev) {
-			TreePath[] paths = _ontoTree.getSelectionPaths();
-			if (paths.length < 1)
-				return;
-			for (int i = 0; i < paths.length; i++) {
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[i]
-						.getLastPathComponent();
-				if (node.getUserObject() instanceof OntologyClass) {
-					OntologyClass cls = (OntologyClass) node.getUserObject();
-					addToList(cls);
-				}
-			}
-		}
-	};
-
-	/**
-	 * Private class for implementing a listener for remove button
-	 */
-	private class RemoveButtonListener implements ActionListener {
-		public void actionPerformed(ActionEvent ev) {
-			Object[] vals = _classList.getSelectedValues();
-			for (int i = 0; i < vals.length; i++) {
-				OntologyClass cls = (OntologyClass) vals[i];
-				removeFromList(cls);
-			}
-		}
-	};
 
 	/**
 	 * Private class that extends JTree for icons and drag and drop
@@ -725,7 +634,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 					.getLastPathComponent();
 			OntologyClass cls = (OntologyClass) node.getUserObject();
 			if (ae.getActionCommand().equals("__SELECT")) {
-				addToList(cls);
+				//addToList(cls);
 			} else {
 				String searchStr = ae.getActionCommand();
 				//TODO: fuzzy match for search class
@@ -794,84 +703,6 @@ public class OntologyClassSelectionPanel extends JPanel {
 	};
 
 	/**
-	 * Private class that extends JList for right click menus
-	 */
-	private class OntoClassSelectionJList extends JList implements
-			ActionListener {
-		private JPopupMenu popup;
-		private JMenuItem navigate;
-		private JMenuItem remove;
-
-		public OntoClassSelectionJList(ListModel model) {
-			super(model);
-			popup = new JPopupMenu();
-			popup.setOpaque(true);
-			popup.setLightWeightPopupEnabled(true);
-			initPopup();
-			MouseAdapter mouseAdapter = new MouseAdapter() {
-				public void mouseReleased(MouseEvent e) {
-					if (e.isPopupTrigger())
-						doPopup(e);
-				}
-
-				public void mousePressed(MouseEvent e) {
-					if (e.isPopupTrigger())
-						doPopup(e);
-				}
-
-				public void mouseClicked(MouseEvent ev) {
-					// double click
-					if (ev.getClickCount() == 2) {
-						Object[] items = _classList.getSelectedValues();
-						OntologyClass cls = (OntologyClass) items[0];
-						doSelect(cls);
-					}
-				}
-			};
-			addMouseListener(mouseAdapter);
-		}
-
-		private void initPopup() {
-			navigate = new JMenuItem("Show in Class Browser", KeyEvent.VK_S);
-			navigate.addActionListener(this);
-			navigate.setActionCommand("__NAVIGATE");
-			popup.add(navigate);
-			remove = new JMenuItem("Remove Selection", KeyEvent.VK_R);
-			remove.addActionListener(this);
-			remove.setActionCommand("__REMOVE");
-			popup.add(remove);
-		}
-
-		private void doPopup(MouseEvent e) {
-			// clear selection
-			_classList.clearSelection();
-			// figure out which item
-			int index = _classList
-					.locationToIndex(new Point(e.getX(), e.getY()));
-			if (index == -1
-					|| !_classList.getCellBounds(index, index).contains(
-							e.getX(), e.getY()))
-				return;
-			// select the item
-			_classList.setSelectedIndex(index);
-			// show popup
-			popup.show((JComponent) e.getSource(), e.getX(), e.getY());
-		}
-
-		public void actionPerformed(ActionEvent ae) {
-			Object[] items = _classList.getSelectedValues();
-			if (items == null || items.length < 1)
-				return;
-			OntologyClass cls = (OntologyClass) items[0];
-
-			if (ae.getActionCommand().equals("__REMOVE"))
-				removeFromList(cls);
-			else if (ae.getActionCommand().equals("__NAVIGATE"))
-				doSelect(cls);
-		}
-	};
-
-	/**
 	 * Private class for handling tree selections. On selection, displays the
 	 * comment for the selected class (if a comment exists).
 	 */
@@ -900,44 +731,14 @@ public class OntologyClassSelectionPanel extends JPanel {
 					_commentTxt.setText(cls.getURI());
 				}
 			}
-
-			// check if the only path is Ontology
-			_addBtn.setEnabled(false);
-			for (int i = 0; i < paths.length; i++) {
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[i]
-						.getLastPathComponent();
-				if (node.getUserObject() instanceof OntologyClass)
-					_addBtn.setEnabled(true);
-			}
 		}
 	};
 
-	/**
-	 * Private class for handling class list selections. On selection, enables
-	 * remove button.
-	 */
-	private class ClassListSelectionListener implements ListSelectionListener {
-		public void valueChanged(ListSelectionEvent ev) {
-			if (!ev.getValueIsAdjusting()) {
-				Object[] selections = _classList.getSelectedValues();
-				if (selections.length < 1)
-					_removeBtn.setEnabled(false);
-				else
-					_removeBtn.setEnabled(true);
-			}
-
-		}
-	};
-
-	private Vector _semTypes = new Vector();
 	private JPopupMenu popup;
 	private OntoClassSelectionJTree _ontoTree;
-	private OntoClassSelectionJList _classList;
 	private JTextField _searchTxt = new JTextField(14);
 	private JTextArea _commentTxt;
 	private JButton _searchBtn = new JButton("Search");
-	private JButton _addBtn = new JButton(">>");
-	private JButton _removeBtn = new JButton("<<");
 	
 	// private String KEPLER = System.getProperty("KEPLER");
 	private final String CLASS_ICON = "";
