@@ -40,6 +40,10 @@
       <property name="classpath" refid="project.class.path"/>
    </target>
 
+	<target name="config-init" depends="morpho.config-init">
+		<copy todir="${build.lib}" filtering="no" file="./lib/config.xml" overwrite="true" />
+	</target>
+	
    <target name="compile" depends="morpho.compile,init,setclasspath"
         description="compile the source " >
       <!-- Compile the java code from ${src} into ${build} -->
@@ -89,12 +93,20 @@
       </java>
    </target>
 
-   <target name="jar" depends="compile">
+   <target name="jar" depends="morpho.jar,compile">
       <jar jarfile="sms.jar">
          <fileset dir="build/"/>
       </jar>
    </target>
 
+	<!-- we need runtime jars in the morpho build somehow -->
+	<target name="install" depends="morpho.install">
+	      <copy todir="${build.lib}" >
+	      	<fileset dir="./lib" includes="*.jar"/>	      	
+	      	</copy>
+	      <echo message="Install complete. Added SMS jars to lib. Use the morpho script to run it." />
+	   </target>
+	
    <target name="javadoc" depends="run">
       <javadoc sourcepath="src"
              destdir="doc/javadoc"
@@ -108,7 +120,7 @@
    </target>
 
    <target name="clean"
-        description="clean up" >
+        description="clean up" depends="morpho.clean">
     <!-- Delete the ${build} and ${dist} directory trees -->
       <delete dir="${build}"/>
       <delete dir="${dist}"/>
