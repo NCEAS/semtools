@@ -40,7 +40,7 @@
       <property name="classpath" refid="project.class.path"/>
    </target>
 
-	<target name="config-init" depends="morpho.config-init">
+	<target name="prepare-lib" depends="morpho.prepare-lib">
 		<copy todir="${build.lib}" filtering="no" file="./lib/config.xml" overwrite="true" />
 	</target>
 	
@@ -103,7 +103,9 @@
 	<target name="install" depends="morpho.install">
 	      <copy todir="${build.lib}" >
 	      	<fileset dir="./lib" includes="*.jar"/>	      	
-	      	</copy>
+	      </copy>
+			<copy todir="${build.lib}" file="${basedir}/sms.jar" overwrite="true">
+	      </copy>
 	      <echo message="Install complete. Added SMS jars to lib. Use the morpho script to run it." />
 	   </target>
 	
