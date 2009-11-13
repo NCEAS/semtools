@@ -172,8 +172,8 @@ public class OntologyClassSelectionPanel extends JPanel {
 			//SMS.getInstance().getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe.1.0beta");
 			//SMS.getInstance().getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe.0.9");
 			//SMS.getInstance().getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe-units.1.0beta");
-			SMS.getInstance().getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe-units.0.9");
-			//SMS.getInstance().getOntologyManager().importOntology("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl");
+			//SMS.getInstance().getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe-units.0.9");
+			SMS.getInstance().getOntologyManager().importOntology("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
