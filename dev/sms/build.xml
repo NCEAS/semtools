@@ -2,6 +2,8 @@
 <project name="sms-tools" default="run" basedir=".">
    <description>simple sms-tools ant build file </description>
    
+	<import file="../../../morpho/build.xml" />
+	
    <!-- set global properties for this build -->
    <property name="src" location="src"/>
    <property name="build" location="build"/>
@@ -10,7 +12,7 @@
    <property name="infile"  value="examples/test-annotation1.xml"/>
    <property name="outfile"  value=""/>
 
-   <target name="init">
+   <target name="init" depends="morpho.init">
       <!-- Create the time stamp -->
       <tstamp/>
       <!-- Create the build directory structure used by compile -->
@@ -33,11 +35,12 @@
          <fileset dir="lib">
             <include name="**/*.jar"/>
          </fileset>
+      	<path path="${cpath}" />
       </path>
       <property name="classpath" refid="project.class.path"/>
    </target>
 
-   <target name="compile" depends="init,setclasspath"
+   <target name="compile" depends="morpho.compile,init,setclasspath"
         description="compile the source " >
       <!-- Compile the java code from ${src} into ${build} -->
       <javac srcdir="${src}" 
