@@ -40,11 +40,10 @@ import javax.swing.JTextField;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Entity;
+import org.ecoinformatics.sms.annotation.Mapping;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Standard;
-
-import com.sun.tools.doclets.formats.html.resources.standard;
 
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
 import edu.ucsb.nceas.morpho.framework.ModalDialog;
@@ -73,7 +72,7 @@ public class AnnotationPage extends AbstractUIPage{
   private JTextField observationStandard;
 
   private Annotation annotation = null;
-  
+    
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   public AnnotationPage() 
@@ -167,38 +166,42 @@ public class AnnotationPage extends AbstractUIPage{
 		page = null;
 	}
   
-  public void setAnnotation(Annotation a) {
+  public void setAnnotation(Annotation a, String attributeName) {
 	  this.annotation = a;
+	  
+	  //what are we editing:
+	  Mapping mapping = annotation.getMapping(attributeName);
+	  Measurement measurement = mapping.getMeasurement();
+	  Observation observation = annotation.getObservation(measurement);
 	  
 	  //try to set the text field values
 	  try {
-		  String entity = annotation.getObservations().get(0).getEntity().getURI();
+		  String entity = observation.getEntity().getURI();
 		  this.observationEntity.setText(entity);
 	  }
 	  catch (Exception e) {}
 	  try {
-		  String characteristic = annotation.getObservations().get(0).getMeasurements().get(0).getCharacteristics().get(0).getURI();
+		  String characteristic = measurement.getCharacteristics().get(0).getURI();
 		  this.observationCharacteristic.setText(characteristic);
 	  }
 	  catch (Exception e) {}
 	  try {
-		  String standard = annotation.getObservations().get(0).getMeasurements().get(0).getStandard().getURI();
+		  String standard = measurement.getStandard().getURI();
 		  this.observationStandard.setText(standard);
 	  }
 	  catch (Exception e) {}
   }
-
-  public Annotation getAnnotation() {
-	  return annotation;
-  }
   
-  public Observation getObservation() {
+  public Annotation getAnnotation(String attributeName) {
+	  
+	  Mapping mapping = annotation.getMapping(attributeName);
+	  Measurement measurement = mapping.getMeasurement();
+	  Observation observation = annotation.getObservation(measurement);
+	  
 	  // set up the annotation objects
-	  Observation observation = new Observation();	  
 	  Entity entity = new Entity(observationEntity.getText());
 	  observation.setEntity(entity);
 	  
-	  Measurement measurement = new Measurement();
 	  Characteristic characteristic = new Characteristic(observationCharacteristic.getText());
 	  measurement.addCharacteristic(characteristic);
 	  
@@ -206,8 +209,7 @@ public class AnnotationPage extends AbstractUIPage{
 	  measurement.setStandard(standard);
 	  observation.addMeasurement(measurement);
 	  
-	  //add the observation to the annotation
-	  return observation;
+	  return annotation;
   }
 
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

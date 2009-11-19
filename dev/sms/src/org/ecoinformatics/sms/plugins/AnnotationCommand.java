@@ -157,13 +157,23 @@ public class AnnotationCommand implements Command {
 		if (mapping == null) {
 			mapping = new Mapping();
 			mapping.setAttribute(attributeName);
+			annotation.addMapping(mapping);
 		}
-		annotation.getMappings().clear();
-		annotation.addMapping(mapping);
+		Measurement measurement = mapping.getMeasurement();
+		if (measurement == null) {
+			measurement = new Measurement();
+			mapping.setMeasurement(measurement);
+		}
+		Observation observation = annotation.getObservation(measurement);
+		if (observation == null) {
+			observation = new Observation();
+			observation.addMeasurement(measurement);
+			annotation.addObservation(observation);
+		}
 		
 		// set the annotation in the page
 		annotationPage = new AnnotationPage();
-		annotationPage.setAnnotation(annotation);
+		annotationPage.setAnnotation(annotation, attributeName);
 		
 		// show the dialog
 		ModalDialog dialog = 
@@ -181,20 +191,8 @@ public class AnnotationCommand implements Command {
 		
 		try {
 			
-			// get the attribute to map to the measurement
-			Mapping mapping = annotation.getMapping(attributeName);
-			
-			//get the observation from the page (has the measurement)
-			Observation observation = annotationPage.getObservation();
-			annotation.addObservation(observation);
-			
-			// get the measurement to map to the attribute
-			Measurement measurement = observation.getMeasurements().get(0);
-			mapping.setMeasurement(measurement);
-			
-			// just 1:1 for now
-			annotation.getMappings().clear();
-			annotation.addMapping(mapping);
+			//the page will put things together for us
+			annotation = annotationPage.getAnnotation(attributeName);
 			
 			// about to save
 			AccessionNumber accNum = new AccessionNumber(Morpho.thisStaticInstance);
