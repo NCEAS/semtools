@@ -48,6 +48,14 @@ public interface AnnotationManager {
     * @param id the identifier to assign to the annotation
     */
    public void importAnnotation(InputStream is, String id) throws Exception;
+   
+   /**
+    * Import an annotation into the manager
+    * @param r the semantic annotation 
+    * @param id the identifier to assign to the annotation
+    */
+   public void importAnnotation(Annotation annot, String id) throws Exception;
+
 
    /**
     * Export an annotation from the manager
@@ -55,13 +63,6 @@ public interface AnnotationManager {
     * @param w the writer to write to
     */
    public void exportAnnotation(String id, OutputStream os) throws Exception;
-
-   /**
-    * Update an existing annotation in the manager
-    * @param r the new semantic annotation 
-    * @param id the identifier of the annotation to update
-    */
-   public void updateAnnotation(InputStream is, String id) throws Exception;
 
    /**
     * Remove an annotation from the manager

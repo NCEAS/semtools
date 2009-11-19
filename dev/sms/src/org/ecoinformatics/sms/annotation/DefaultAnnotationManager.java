@@ -63,11 +63,16 @@ public class DefaultAnnotationManager implements AnnotationManager {
     * @param id the identifier to assign to the annotation
     */
    public void importAnnotation(InputStream is, String id) throws Exception {
-      if(isAnnotation(id)) {
-         String msg = "annotation id '" + id + "' already exists";
-         throw new Exception(msg);
-      }
-      _annotations.put(id, Annotation.read(is));
+      importAnnotation(Annotation.read(is), id);
+   }
+   
+   /**
+    * Import an annotation into the manager
+    * @param r the semantic annotation 
+    * @param id the identifier to assign to the annotation
+    */
+   public void importAnnotation(Annotation ann, String id) throws Exception {
+      _annotations.put(id, ann);
    }
 
    /**
@@ -80,20 +85,6 @@ public class DefaultAnnotationManager implements AnnotationManager {
          throw new Exception(msg);
       }
       getAnnotation(id).write(os);
-   }
-
-   /**
-    * Update an existing annotation in the manager
-    * @param r the new semantic annotation 
-    * @param id the identifier of the annotation to update
-    */
-   public void updateAnnotation(InputStream is, String id) throws Exception {
-      if(!isAnnotation(id)) {
-         String msg = "annotation id '" + id + "' does not exist";
-         throw new Exception(msg);
-      }
-      removeAnnotation(id);
-      importAnnotation(is, id);
    }
 
    /**
