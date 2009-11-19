@@ -144,6 +144,19 @@ public class Annotation {
    public List<Mapping> getMappings() {
       return _mappings;
    }
+   
+   /**
+    * Get the mapping for the given attribute
+    * @return the mapping for the given attribute
+    */
+   public Mapping getMapping(String attribute) {
+	   for (Mapping mapping: _mappings) {
+		   if (mapping.getAttribute().equals(attribute)) {
+			   return mapping;
+		   }
+	   }
+	   return null;
+   }
 
    /** 
     * Add an ontology to this annotation
