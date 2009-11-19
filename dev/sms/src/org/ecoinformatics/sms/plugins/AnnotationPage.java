@@ -201,6 +201,7 @@ public class AnnotationPage extends AbstractUIPage{
 	  Measurement measurement = new Measurement();
 	  Characteristic characteristic = new Characteristic(observationCharacteristic.getText());
 	  measurement.addCharacteristic(characteristic);
+	  
 	  Standard standard = new Standard(observationStandard.getText());
 	  measurement.setStandard(standard);
 	  observation.addMeasurement(measurement);

@@ -115,14 +115,12 @@ public class AnnotationCommand implements Command {
 				entityName = adp.getEntityName(entityIndex);
 				attributeName = adp.getAttributeName(entityIndex, attributeIndex);
 				
-				Log.debug(30, "Annotating entity: " + entityName + ", attribute: " + attributeName);
-				
-				// look up the annotation if it exists, or make new one
+				// package and entity
 				String packageId = adp.getAccessionNumber();
 				String dataTable = String.valueOf(entityIndex);
 				
+				// look up the annotation if it exists, or make new one
 				List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId, dataTable);
-				//List<Annotation> annotations = new ArrayList<Annotation>();
 
 				if (annotations.size() > 0) {
 					annotation = annotations.get(0);
@@ -133,23 +131,18 @@ public class AnnotationCommand implements Command {
 					annotation.setDataTable(dataTable);
 				}
 				
+				Log.debug(5, "Annotating...\n " 
+						+ "Data package: " + packageId 
+						+ ", entity: " + entityName 
+						+ ", attribute: " + attributeName
+						+ ", annotation id: " + annotation.getURI()
+						);
+				
+				
 				if (showDialog()) {
 					
-					//set up the attribute->measurement mapping only 1:1 now
-					Mapping mapping = new Mapping();
-					mapping.setAttribute(attributeName);
-					Observation observation = annotationPage.getObservation();
-					Measurement measurement = observation.getMeasurements().get(0);
-					mapping.setMeasurement(measurement);
-					annotation.addObservation(observation);
-					annotation.addMapping(mapping);
-					
-					//about to save
-					AccessionNumber accNum = new AccessionNumber(Morpho.thisStaticInstance);
-					annotation.setURI(accNum.getNextId());
-					
-					//FIXME: what kind of saving?
-					//saveAnnotation();
+					// save - still some TBD
+					saveAnnotation();
 					
 				}
 			}
@@ -158,6 +151,17 @@ public class AnnotationCommand implements Command {
 	}
 	
 	private boolean showDialog() {
+		
+		// set up the attribute we are editing
+		Mapping mapping = annotation.getMapping(attributeName);
+		if (mapping == null) {
+			mapping = new Mapping();
+			mapping.setAttribute(attributeName);
+		}
+		annotation.getMappings().clear();
+		annotation.addMapping(mapping);
+		
+		// set the annotation in the page
 		annotationPage = new AnnotationPage();
 		annotationPage.setAnnotation(annotation);
 		
@@ -176,27 +180,50 @@ public class AnnotationCommand implements Command {
 	private void saveAnnotation() {
 		
 		try {
-			FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			annotation.write(baos);
 			
+			// get the attribute to map to the measurement
+			Mapping mapping = annotation.getMapping(attributeName);
+			
+			//get the observation from the page (has the measurement)
+			Observation observation = annotationPage.getObservation();
+			annotation.addObservation(observation);
+			
+			// get the measurement to map to the attribute
+			Measurement measurement = observation.getMeasurements().get(0);
+			mapping.setMeasurement(measurement);
+			
+			// just 1:1 for now
+			annotation.getMappings().clear();
+			annotation.addMapping(mapping);
+			
+			// about to save
 			AccessionNumber accNum = new AccessionNumber(Morpho.thisStaticInstance);
 			String id = annotation.getURI();
-			// increment if needed
-			if (!fds.status(id).equals(FileSystemDataStore.NONEXIST)) {
-				id = accNum.incRev(id);
-				annotation.setURI(id);
-			}
-			
-			//save in local store
-			File annotationFile = fds.saveFile(id, new StringReader(baos.toString()));
-			
-			//save in the manager - probably don't need this since it's all in memory and referencing the same annotation object
-			if (SMS.getInstance().getAnnotationManager().isAnnotation(annotation.getURI())) {
-				SMS.getInstance().getAnnotationManager().updateAnnotation(new FileInputStream(annotationFile), annotation.getURI());
+			if (id == null) {
+				id = accNum.getNextId();
 			} else {
-				SMS.getInstance().getAnnotationManager().importAnnotation(new FileInputStream(annotationFile), annotation.getURI());
+				id = accNum.incRev(id);
 			}
+			annotation.setURI(id);
+			
+			//save in the manager
+			SMS.getInstance().getAnnotationManager().importAnnotation(annotation, annotation.getURI());
+			
+			//FIXME: Save in the file system
+//			FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
+//			AccessionNumber accNum = new AccessionNumber(Morpho.thisStaticInstance);
+//			String id = annotation.getURI();
+//			// increment if needed
+//			if (!fds.status(id).equals(FileSystemDataStore.NONEXIST)) {
+//				id = accNum.incRev(id);
+//				annotation.setURI(id);
+//			}
+//			//save in local store
+//			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//			annotation.write(baos);
+//			File annotationFile = fds.saveFile(id, new StringReader(baos.toString()));
+			
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
