@@ -137,6 +137,19 @@ public class Observation {
    public boolean isDistinct() {
       return _isDistinct;
    }
+   
+   /**
+    * Get the distinct status of this observation
+    * @return true if this is a distinct observation
+    */
+   public boolean containsMeasurement(Measurement measurement) {
+      for (Measurement m: _measurements) {
+    	  if (m.equals(measurement)) {
+    		  return true;
+    	  }
+      }
+      return false;
+   }
 
    private String _label;
    private Entity _entity;
