@@ -119,6 +119,19 @@ public class Annotation {
    public List<Observation> getObservations() {
       return _observations;
    }
+   
+   /**
+    * Get the observation containing this measurement
+    * @return the first observation matching the measurement
+    */
+   public Observation getObservation(Measurement m) {
+      for (Observation o: _observations) {
+    	  if (o.containsMeasurement(m)) {
+    		  return o;
+    	  }
+      }
+      return null;
+   }
 
    /**
     * Add a mapping to this annotation
