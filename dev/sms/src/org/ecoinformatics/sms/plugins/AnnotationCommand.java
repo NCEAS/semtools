@@ -196,6 +196,10 @@ public class AnnotationCommand implements Command {
 			if (id == null) {
 				id = accNum.getNextId();
 			} else {
+				// remove the old one if present
+				if (SMS.getInstance().getAnnotationManager().isAnnotation(id)) {
+					SMS.getInstance().getAnnotationManager().removeAnnotation(id);
+				}
 				id = accNum.incRev(id);
 			}
 			annotation.setURI(id);
