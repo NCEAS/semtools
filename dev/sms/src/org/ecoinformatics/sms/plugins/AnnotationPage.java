@@ -209,6 +209,11 @@ public class AnnotationPage extends AbstractUIPage{
 	  measurement.setStandard(standard);
 	  observation.addMeasurement(measurement);
 	  
+	  // reference the ontologies used
+	  annotation.addOntology(entity.getOntology());
+	  annotation.addOntology(characteristic.getOntology());
+	  annotation.addOntology(standard.getOntology());
+
 	  return annotation;
   }
 
