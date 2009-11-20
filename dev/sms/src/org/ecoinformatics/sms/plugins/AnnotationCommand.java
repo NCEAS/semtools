@@ -27,12 +27,6 @@
 package org.ecoinformatics.sms.plugins;
 
 import java.awt.event.ActionEvent;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JTable;
@@ -48,7 +42,6 @@ import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
 import edu.ucsb.nceas.morpho.datapackage.AccessionNumber;
 import edu.ucsb.nceas.morpho.datapackage.DataViewContainerPanel;
 import edu.ucsb.nceas.morpho.datapackage.DataViewer;
-import edu.ucsb.nceas.morpho.datastore.FileSystemDataStore;
 import edu.ucsb.nceas.morpho.framework.ModalDialog;
 import edu.ucsb.nceas.morpho.framework.MorphoFrame;
 import edu.ucsb.nceas.morpho.framework.UIController;
@@ -162,11 +155,14 @@ public class AnnotationCommand implements Command {
 		Measurement measurement = mapping.getMeasurement();
 		if (measurement == null) {
 			measurement = new Measurement();
+			measurement.setLabel("measurement_" + System.currentTimeMillis());
 			mapping.setMeasurement(measurement);
 		}
 		Observation observation = annotation.getObservation(measurement);
 		if (observation == null) {
 			observation = new Observation();
+			//FIXME: should be meaningful
+			observation.setLabel("observation_" + System.currentTimeMillis());
 			observation.addMeasurement(measurement);
 			annotation.addObservation(observation);
 		}
@@ -206,21 +202,6 @@ public class AnnotationCommand implements Command {
 			
 			//save in the manager
 			SMS.getInstance().getAnnotationManager().importAnnotation(annotation, annotation.getURI());
-			
-			//FIXME: Save in the file system
-//			FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
-//			AccessionNumber accNum = new AccessionNumber(Morpho.thisStaticInstance);
-//			String id = annotation.getURI();
-//			// increment if needed
-//			if (!fds.status(id).equals(FileSystemDataStore.NONEXIST)) {
-//				id = accNum.incRev(id);
-//				annotation.setURI(id);
-//			}
-//			//save in local store
-//			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//			annotation.write(baos);
-//			File annotationFile = fds.saveFile(id, new StringReader(baos.toString()));
-			
 			
 		}
 		catch (Exception e) {
