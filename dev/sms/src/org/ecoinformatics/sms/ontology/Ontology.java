@@ -98,6 +98,11 @@ public class Ontology {
      * @return the prefix string
      */
     public String getPrefix() {
+    	if (_prefix == null) {
+    		//use the last part of the uri
+    		String generatedPrefix = _uri.substring(_uri.lastIndexOf("/")+1);
+    		return generatedPrefix;
+    	}
         return _prefix;
     }
     
