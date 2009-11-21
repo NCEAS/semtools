@@ -150,6 +150,13 @@ public class Observation {
       }
       return false;
    }
+   
+   public String toString() {
+	   if (_entity != null) {
+		   return _entity.toString();
+	   }
+	   return null;
+   }
 
    private String _label;
    private Entity _entity;
