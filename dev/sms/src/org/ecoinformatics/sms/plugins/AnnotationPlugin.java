@@ -44,6 +44,12 @@ import edu.ucsb.nceas.morpho.util.UISettings;
 public class AnnotationPlugin
 	implements PluginInterface, ServiceProvider, StateChangeListener {
 		
+    /** Constant int for Annotation menu position */
+    public static final int ANNOTATIONMENUPOSITION = 45;
+    
+    /** Constant String for Annotation menu label */
+    public static final String ANNOTATION_MENU_LABEL = "Annotation";
+    
 	private MorphoFrame morphoFrame = null;
 	
 	private GUIAction annotateAction = null;
@@ -66,6 +72,7 @@ public class AnnotationPlugin
 			Log.debug(6, see.toString());
 		}
 
+		// initialize the actions
 		annotateAction =
 			new GUIAction(
 				"Annotate current column...",
@@ -73,10 +80,9 @@ public class AnnotationPlugin
 				new AnnotationCommand());
 		annotateAction.setToolTipText(
 			"Add/edit annotation or this data table attribute");
-		// I figure a position of 100 will always place this at the bottom of the Data Menu.
 		annotateAction.setSeparatorPosition(Morpho.SEPARATOR_PRECEDING);
-		annotateAction.setMenuItemPosition(100);
-		annotateAction.setMenu(DataPackagePlugin.DATA_MENU_LABEL, DataPackagePlugin.DATAMENUPOSITION);
+		annotateAction.setMenuItemPosition(0);
+		annotateAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 		annotateAction.setEnabled(false);
 
 		annotateAction.setEnabledOnStateChange(
@@ -92,13 +98,13 @@ public class AnnotationPlugin
                 StateChangeEvent.CREATE_NOENTITY_DATAPACKAGE_FRAME,
                 false, GUIAction.EVENT_LOCAL);
 
-		// Save dialog box action
+		// Save Annotations
 	    GUIAction saveAction = new GUIAction("Save Annotations...",
 	                                              null,
 	                                              new SaveAnnotationCommand());
-	    saveAction.setMenuItemPosition(101);
+	    saveAction.setMenuItemPosition(10);
 	    saveAction.setToolTipText("Save Annotations...");
-		saveAction.setMenu(DataPackagePlugin.DATA_MENU_LABEL, DataPackagePlugin.DATAMENUPOSITION);
+		saveAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 	    saveAction.setEnabled(false);
 	    saveAction.setEnabledOnStateChange(
 				StateChangeEvent.SELECT_DATATABLE_COLUMN,
