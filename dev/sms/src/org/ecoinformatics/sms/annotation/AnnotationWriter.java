@@ -156,6 +156,11 @@ public class AnnotationWriter {
          s.print(_indent3 + "<sms:standard id=\"" +
                  d.getOntology().getPrefix() + ":" +
                  d.getName() + "\"/>\n");
+      Protocol p = m.getProtocol();
+      if(p != null && p.getOntology() != null)
+         s.print(_indent3 + "<sms:protocol id=\"" +
+                 p.getOntology().getPrefix() + ":" +
+                 p.getName() + "\"/>\n");
       for(Characteristic c : m.getCharacteristics())
          if(c.getOntology() != null)
             s.print(_indent3 + "<sms:characteristic id=\"" +

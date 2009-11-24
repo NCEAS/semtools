@@ -292,6 +292,12 @@ public class AnnotationReader {
          _error("measurement with multiple standard elements");
       else if(stds.size() == 1)
          _parseStandard(m, stds.get(0));
+      // get the protocol
+      List<Element> protocols = _getElements(e, "protocol");
+      if(protocols.size() > 1)
+         _error("measurement with multiple protocol elements");
+      else if(protocols.size() == 1)
+         _parseProtocol(m, protocols.get(0));
       // get the optional characteristics
       for(Element characteristic : _getElements(e, "characteristic"))
          _parseCharacteristic(m, characteristic);
@@ -348,6 +354,22 @@ public class AnnotationReader {
          _error("entity missing 'id' attribute");
       _getQName(e, standard, att.getValue().trim());
       m.setStandard(standard);
+   }
+   
+   /**
+    * Parse a measurement protocol element
+    * @param p the protocol
+    * @param e the element
+    */
+   private static void _parseProtocol(Measurement m, Element e)
+           throws Exception {
+	   Protocol protocol = new Protocol();
+      // get the id attribute
+      Attr att = _getAttribute(e, "id");
+      if(att == null)
+         _error("entity missing 'id' attribute");
+      _getQName(e, protocol, att.getValue().trim());
+      m.setProtocol(protocol);
    }
 
    /**

@@ -43,6 +43,7 @@ public class Measurement {
    private String _label;
    private List<Characteristic> _characteristics = new ArrayList();
    private Standard _standard;
+   private Protocol _protocol;   
    private List<Entity> _domainValues = new ArrayList();
    private double _precision = 1.0;
    private String _value;
@@ -78,6 +79,22 @@ public class Measurement {
     */
    public Standard getStandard() {
       return _standard;
+   }
+   
+   /**
+    * Set the measurement protocol
+    * @param protocol the protocol
+    */
+   public void setProtocol(Protocol protocol) {
+      _protocol = protocol;
+   }
+
+   /**
+    * Get the measurement protocol
+    * @return the protocol
+    */
+   public Protocol getProtocol() {
+      return _protocol;
    }
 
    /** 
