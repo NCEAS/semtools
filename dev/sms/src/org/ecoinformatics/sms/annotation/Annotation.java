@@ -132,6 +132,20 @@ public class Annotation {
       }
       return null;
    }
+   
+   /**
+    * Get the observation containing this entity
+    * @return the list of observations matching the entity
+    */
+   public List<Observation> getObservations(Entity e) {
+	   List<Observation> observations = new ArrayList<Observation>();
+      for (Observation o: _observations) {
+    	  if (o.getEntity() == e) {
+    		  observations.add(o);
+    	  }
+      }
+      return observations;
+   }
 
    /**
     * Add a mapping to this annotation
