@@ -42,6 +42,8 @@
 			minOccurs="0" maxOccurs="unbounded"/>
 		<xs:element name="standard" type="StandardType"
 			minOccurs="0" maxOccurs="1"/>
+		<xs:element name="protocol" type="ProtocolType"
+			minOccurs="0" maxOccurs="1"/>	
 		<xs:element name="domain" type="DomainType" 
 			minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
@@ -70,7 +72,11 @@
     <xs:attribute name="id" type="xs:QName" use="required"/>
   </xs:complexType>
 
-
+  <!-- protocol --> 
+  <xs:complexType name="ProtocolType">
+    <xs:attribute name="id" type="xs:QName" use="required"/>
+  </xs:complexType>
+  
   <!-- domains --> 
   <xs:complexType name="DomainType">
     <xs:sequence>
