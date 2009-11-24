@@ -151,6 +151,11 @@ public class AnnotationWriter {
       if(m.isKey())
          s.print(" key=\"yes\"");
       s.print(">\n");
+      for(Characteristic c : m.getCharacteristics())
+          if(c.getOntology() != null)
+             s.print(_indent3 + "<sms:characteristic id=\"" +
+                     c.getOntology().getPrefix() + ":" +
+                     c.getName() + "\"/>\n");
       Standard d = m.getStandard();
       if(d != null && d.getOntology() != null)
          s.print(_indent3 + "<sms:standard id=\"" +
@@ -161,11 +166,6 @@ public class AnnotationWriter {
          s.print(_indent3 + "<sms:protocol id=\"" +
                  p.getOntology().getPrefix() + ":" +
                  p.getName() + "\"/>\n");
-      for(Characteristic c : m.getCharacteristics())
-         if(c.getOntology() != null)
-            s.print(_indent3 + "<sms:characteristic id=\"" +
-                    c.getOntology().getPrefix() + ":" +
-                    c.getName() + "\"/>\n");
       if(m.getDomainValues().size() > 1) {
          s.print(_indent3 + "<sms:domain>\n");
          for(Entity v : m.getDomainValues())
