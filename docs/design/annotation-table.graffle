@@ -107,7 +107,7 @@
 					<array>
 						<dict>
 							<key>Bounds</key>
-							<string>{{670.75, 325.748}, {6.50012, 6.00012}}</string>
+							<string>{{670.75, 325.914}, {6.50012, 5.88901}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>HFlip</key>
@@ -144,7 +144,7 @@
 						</dict>
 						<dict>
 							<key>Bounds</key>
-							<string>{{667, 321.748}, {13.0002, 13.0002}}</string>
+							<string>{{667, 321.988}, {13.0002, 12.7595}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>HFlip</key>
@@ -214,7 +214,7 @@
 					<array>
 						<dict>
 							<key>Bounds</key>
-							<string>{{670.75, 283.748}, {6.50012, 6.00012}}</string>
+							<string>{{670.75, 284.692}, {6.50012, 5.88901}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>ID</key>
@@ -251,7 +251,7 @@
 						</dict>
 						<dict>
 							<key>Bounds</key>
-							<string>{{667, 280.748}, {13.0003, 13.0003}}</string>
+							<string>{{667, 281.748}, {13.0003, 12.7596}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>ID</key>
@@ -316,7 +316,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{667, 280.748}, {13.0005, 54}}</string>
+					<string>{{667, 281.748}, {13.0005, 53}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -359,7 +359,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{573, 281.748}, {96, 54.0002}}</string>
+			<string>{{573, 281.748}, {94, 53.0002}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -4768,7 +4768,7 @@
 		</dict>
 	</array>
 	<key>ModificationDate</key>
-	<string>2009-11-25 10:03:46 -0800</string>
+	<string>2009-11-25 10:07:02 -0800</string>
 	<key>Modifier</key>
 	<string>leinfelder</string>
 	<key>NotesVisible</key>
@@ -4838,9 +4838,9 @@
 		<key>Frame</key>
 		<string>{{196, 61}, {1035, 935}}</string>
 		<key>VisibleRegion</key>
-		<string>{{0, -26}, {1020, 821}}</string>
+		<string>{{255, 53}, {510, 410.5}}</string>
 		<key>Zoom</key>
-		<real>1</real>
+		<real>2</real>
 	</dict>
 </dict>
 </plist>
