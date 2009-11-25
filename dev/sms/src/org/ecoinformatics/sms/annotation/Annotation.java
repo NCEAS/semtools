@@ -140,7 +140,7 @@ public class Annotation {
    public List<Observation> getObservations(Entity e) {
 	   List<Observation> observations = new ArrayList<Observation>();
       for (Observation o: _observations) {
-    	  if (o.getEntity() == e) {
+    	  if (o.getEntity().equals(e)) {
     		  observations.add(o);
     	  }
       }
