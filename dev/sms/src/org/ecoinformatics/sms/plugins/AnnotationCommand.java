@@ -145,28 +145,6 @@ public class AnnotationCommand implements Command {
 	
 	private boolean showDialog() {
 		
-		// set up the attribute we are editing
-		Mapping mapping = annotation.getMapping(attributeName);
-		if (mapping == null) {
-			mapping = new Mapping();
-			mapping.setAttribute(attributeName);
-			annotation.addMapping(mapping);
-		}
-		Measurement measurement = mapping.getMeasurement();
-		if (measurement == null) {
-			measurement = new Measurement();
-			measurement.setLabel("measurement_" + System.currentTimeMillis());
-			mapping.setMeasurement(measurement);
-		}
-		Observation observation = annotation.getObservation(measurement);
-		if (observation == null) {
-			observation = new Observation();
-			//FIXME: should be meaningful
-			observation.setLabel("observation_" + System.currentTimeMillis());
-			observation.addMeasurement(measurement);
-			annotation.addObservation(observation);
-		}
-		
 		// set the annotation in the page
 		annotationPage = new AnnotationPage();
 		annotationPage.setAnnotation(annotation, attributeName);

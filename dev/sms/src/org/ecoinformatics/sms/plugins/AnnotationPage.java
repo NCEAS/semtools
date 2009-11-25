@@ -31,9 +31,11 @@ package org.ecoinformatics.sms.plugins;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -169,43 +171,87 @@ public class AnnotationPage extends AbstractUIPage{
   public void setAnnotation(Annotation a, String attributeName) {
 	  this.annotation = a;
 	  
-	  //what are we editing:
-	  Mapping mapping = annotation.getMapping(attributeName);
-	  Measurement measurement = mapping.getMeasurement();
-	  Observation observation = annotation.getObservation(measurement);
+	  try {
+		  // what are we editing:
+		  // is there a measurement mapping for the attribute?
+		  Mapping mapping = annotation.getMapping(attributeName);
+		  Measurement measurement = mapping.getMeasurement();
 	  
-	  //try to set the text field values
-	  try {
-		  String entity = observation.getEntity().getURI();
-		  this.observationEntity.setText(entity);
+		  // is there an observation that uses that measurement?
+		  Observation observation = annotation.getObservation(measurement);
+		  
+		  //try to set the text field values
+		  try {
+			  String entity = observation.getEntity().getURI();
+			  this.observationEntity.setText(entity);
+		  }
+		  catch (Exception e) {}
+		  try {
+			  String characteristic = measurement.getCharacteristics().get(0).getURI();
+			  this.observationCharacteristic.setText(characteristic);
+		  }
+		  catch (Exception e) {}
+		  try {
+			  String standard = measurement.getStandard().getURI();
+			  this.observationStandard.setText(standard);
+		  }
+		  catch (Exception e) {}
+	  } catch (Exception e) {
+		  //we don't care about this right now
 	  }
-	  catch (Exception e) {}
-	  try {
-		  String characteristic = measurement.getCharacteristics().get(0).getURI();
-		  this.observationCharacteristic.setText(characteristic);
-	  }
-	  catch (Exception e) {}
-	  try {
-		  String standard = measurement.getStandard().getURI();
-		  this.observationStandard.setText(standard);
-	  }
-	  catch (Exception e) {}
+
   }
   
   public Annotation getAnnotation(String attributeName) {
 	  
-	  Mapping mapping = annotation.getMapping(attributeName);
-	  Measurement measurement = mapping.getMeasurement();
-	  Observation observation = annotation.getObservation(measurement);
 	  
-	  // set up the annotation objects
+	  // set up the annotation objects with values from the form
 	  Entity entity = new Entity(observationEntity.getText());
-	  observation.setEntity(entity);
-	  
 	  Characteristic characteristic = new Characteristic(observationCharacteristic.getText());
-	  measurement.addCharacteristic(characteristic);
-	  
 	  Standard standard = new Standard(observationStandard.getText());
+
+	  //look for existing Observations of this entity
+	  Observation observation = null;
+	  List<Observation> existingObservations = annotation.getObservations(entity);
+	  if (!existingObservations.isEmpty()) {
+		  int useExisting = JOptionPane.showConfirmDialog(UIController.getInstance().getCurrentActiveWindow(), "Use existing observation?", "Existing Observation", JOptionPane.YES_NO_OPTION);
+		  if (useExisting == JOptionPane.YES_OPTION) {
+			  observation = existingObservations.get(0);
+		  }
+	  }
+	  
+		/////
+		// a measurement mapping for this attribute?
+		Mapping mapping = annotation.getMapping(attributeName);
+		if (mapping == null) {
+			mapping = new Mapping();
+			mapping.setAttribute(attributeName);
+			annotation.addMapping(mapping);
+		}
+		Measurement measurement = mapping.getMeasurement();
+		if (measurement == null) {
+			measurement = new Measurement();
+			measurement.setLabel("measurement_" + System.currentTimeMillis());
+			mapping.setMeasurement(measurement);
+		}
+		// was there an existing observation from something else?
+		if (observation == null) {
+			// was there one for this very measurement (i.e. an edit)?
+			observation = annotation.getObservation(measurement);
+			if (observation == null) {
+				observation = new Observation();
+				observation.setLabel("observation_" + System.currentTimeMillis());
+				observation.addMeasurement(measurement);
+				annotation.addObservation(observation);
+			}
+			// only do this if we are editing and it's not the same as an existing observation
+			observation.setEntity(entity);
+		}
+	  
+	  //////
+	  
+		// set the objects we made
+	  measurement.addCharacteristic(characteristic);
 	  measurement.setStandard(standard);
 	  observation.addMeasurement(measurement);
 	  
