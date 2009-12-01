@@ -1,0 +1,115 @@
+Semtools Project Meeting, November 30, 2009
+-------------------------------------------
+
+Participants
+
+  * Shawn Bowers
+  * Ben Leinfelder
+  * Mark Schildhauer
+  * Margaret O'Brien
+
+
+Notes: 
+
+* Mark gave a quick overview of his France trip:
+
+  - Discovered the Plant Ontology (PO) and Traits Ontology (TO). These
+    are fairly well established (as part of OBO) and generated a lot
+    of enthusiasm by vegetation ecologists. The URLs for these can be
+    obtained from here:
+    http://www.gramene.org/plant_ontology/ontology_browse.html
+
+  - Not clear how to incorporate these into a non-OBO OWL framework,
+    however, we agreed that it would be great to be able to use these
+    in annotations
+
+  - There is also some work by Joel Bender on units (measurement
+    standards) -- he has a webpage for this (?)
+
+  - Mark suggested getting Huiping to work with this group
+
+  - There still seems to be a lack of ontologies for biological
+    taxonomies. Although, there was some excitement at TDWG about
+    ontologies.
+
+  - Mark is going to work with a postdoc visitor from France for a few
+    months (who is planning on coming to NCEAS).
+
+  - There was agreement that incorporating existing ontologies as much
+    as possible should be done as part of the semtools work. It is
+    totally clear from a technical point of view how to approach this
+    (e.g., especially for the OBO based ontologies)
+ 
+  - Mark and Dave Thau worked together on VoCamp breakout group and
+    there may be some additional follow-ups with this work (on a
+    document describing the benefits of using ontologies, etc.)
+
+
+* We discussed the need for semtools to "lead the charge" in
+  developing useful demonstrations of how to obtain benefits from
+  ontologies
+
+    - We agreed that this should be from an informatics / data manager
+      perspective, not a computer science perspective
+
+    - There seems to be a lot more interest in developing domain
+      ontologies (based on Mark's interactions at TDWG and VoCamp,
+      with TraitNet, etc.)
+
+    - Semtools though is focused on a particular type of
+      highly-structured data (many different types of contextualized
+      observations) as opposed to relatively flat, "linked data" often
+      found in molecular biology and biomedicine (and possibly even in
+      presence/absence type) datasets
+
+* Huiping started today!
+
+    - Shawn argued that Huiping should be working on "demonstration"
+      projects as part of SONet, and more importantly, working with
+      Ben on developing the oboe tools for metacat/morpho.
+
+    - Shawn suggested that she could work on the search
+      components/services (extending the code Chad started on in the
+      iSEEK demo and implementing this work in the codebase Ben is now
+      working on in semtools).
+
+    - Another option would be for her to work on the sensible
+      summarization services, which are also one of the envisioned
+      "killer apps" for OBOE. Data integration, at least at this
+      point, should be a bit further down the road (Shawn's opinion)
+
+    - There was some agreement on her looking at search, but also she
+      is supposed to be working on core observation models for sonet
+
+
+* Discussed the two new mock-ups created by Ben
+
+    - The first contains a single row for observations
+
+    - The second contains an observation/entity-individual matrix and
+      context shown vertically
+
+    - We leaned towards the second design
+
+    - The second design seems to also contain more information (i.e.,
+      it would allow two different observations of the same entity on
+      a single row -- although this probably won't occur that often)
+
+    - Agreed that adding a collapse bar on top of the Entity,
+      Characteristic, and Standard section would be useful (which
+      would allow the obs/individual matrix to be collapsed)
+
+    - Also agreed that it would be useful to have a series of mockups
+      of the second design showing information added incrementally by
+      a user (to get a feel for how the design would work and look as
+      one edited it)
+
+    - Since all of the mockups we've considered so far contain an
+      entity, characteristic, and stardard portion, Ben is going to
+      start implementing this.
+
+    - Ben is also going to keep working on the screen shots for the
+      remaining portions
+
+    - Discussed and seemed to agree that having the labels on the
+      right-hand side is good (especially for really wide tables)
