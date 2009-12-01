@@ -13,17 +13,21 @@
 
 package org.ecoinformatics.sms.plugins;
 
+import java.awt.BorderLayout;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Vector;
 
 import org.ecoinformatics.sms.SMS;
+import org.ecoinformatics.sms.annotation.Annotation;
+import org.ecoinformatics.sms.plugins.table.AnnotationTableModel;
+import org.ecoinformatics.sms.plugins.table.AnnotationTablePanel;
 
 import edu.ucsb.nceas.morpho.Morpho;
-import edu.ucsb.nceas.morpho.datapackage.DataPackagePlugin;
+import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
 import edu.ucsb.nceas.morpho.datapackage.DataViewContainerPanel;
 import edu.ucsb.nceas.morpho.datapackage.DataViewer;
-import edu.ucsb.nceas.morpho.datapackage.SavePackageCommand;
 import edu.ucsb.nceas.morpho.datastore.FileSystemDataStore;
 import edu.ucsb.nceas.morpho.framework.ConfigXML;
 import edu.ucsb.nceas.morpho.framework.MorphoFrame;
@@ -39,7 +43,6 @@ import edu.ucsb.nceas.morpho.util.Log;
 import edu.ucsb.nceas.morpho.util.StateChangeEvent;
 import edu.ucsb.nceas.morpho.util.StateChangeListener;
 import edu.ucsb.nceas.morpho.util.StateChangeMonitor;
-import edu.ucsb.nceas.morpho.util.UISettings;
 
 public class AnnotationPlugin
 	implements PluginInterface, ServiceProvider, StateChangeListener {
@@ -190,26 +193,76 @@ public class AnnotationPlugin
 
 	public void handleStateChange(StateChangeEvent event) {
 
-		// alter the popup menu
+		// initialize data-table centric UI elements
 		if (event.getChangedState().equals(
 				StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME)) {
-			morphoFrame = UIController.getInstance().getCurrentActiveWindow();
-
-			if (morphoFrame != null) {
-				DataViewContainerPanel resultPane = morphoFrame
-						.getDataViewContainerPanel();
-
-				if (resultPane != null) {
-					DataViewer dataView = resultPane.getCurrentDataViewer();
-					if (dataView != null) {
-						annotateAction.setEnabled(true);
-						dataView.addPopupMenuItem(annotateAction);
-					}
-				}
-			}
-
+			initPopup();
+			buildAnnotationTable();
 		}
 
+	}
+	
+	private void initPopup() {
+		morphoFrame = UIController.getInstance().getCurrentActiveWindow();
+
+		if (morphoFrame != null) {
+			DataViewContainerPanel resultPane = 
+				morphoFrame.getDataViewContainerPanel();
+			if (resultPane != null) {
+				DataViewer dataView = resultPane.getCurrentDataViewer();
+				if (dataView != null) {
+					annotateAction.setEnabled(true);
+					dataView.addPopupMenuItem(annotateAction);
+				}
+			}
+		}
+	}
+	
+	private void buildAnnotationTable() {
+
+		morphoFrame = UIController.getInstance().getCurrentActiveWindow();
+		if (morphoFrame != null) {
+			DataViewContainerPanel dataViewContainerPanel = morphoFrame.getDataViewContainerPanel();
+			if (dataViewContainerPanel != null) {
+				// TODO: get all dataViewers
+				DataViewer dataViewer = dataViewContainerPanel.getCurrentDataViewer();
+				if (dataViewer != null) {
+					AbstractDataPackage adp = UIController.getInstance().getCurrentAbstractDataPackage();
+					// package and entity
+					String packageId = adp.getAccessionNumber();
+					int entityIndex = dataViewer.getEntityIndex();
+					String dataTable = String.valueOf(entityIndex);
+					
+					// look up the annotation if it exists, or make new one
+					List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId, dataTable);
+					Annotation annotation = null;
+					if (annotations.size() > 0) {
+						annotation = annotations.get(0);
+					} else {
+						// create a new one
+						annotation = new Annotation();
+						annotation.setEMLPackage(packageId);
+						annotation.setDataTable(dataTable);
+					}
+					
+					// set up the table model
+					List<String> columns = adp.getAttributeNames(entityIndex);
+					
+					AnnotationTableModel annotationTableModel = new AnnotationTableModel(annotation, columns);
+					AnnotationTablePanel annotationTablePanel = new AnnotationTablePanel(annotationTableModel);
+				
+					dataViewer.getHeaderPanel().add(BorderLayout.CENTER, annotationTablePanel);
+
+					Log.debug(5, "Set up annotation table...\n " 
+							+ "Data package: " + packageId 
+							+ ", entity: " + entityIndex 
+							+ ", annotation id: " + annotation.getURI()
+							);
+
+				}
+			}
+		}
+		
 	}
 
 }
