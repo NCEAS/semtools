@@ -97,8 +97,8 @@ public class AnnotationTableModel extends AbstractTableModel {
 			}
 		}
 		
-		return (rowIndex + ", " + columnIndex);
-		//return null;
+		//return (rowIndex + ", " + columnIndex);
+		return null;
 	}
  
 }
