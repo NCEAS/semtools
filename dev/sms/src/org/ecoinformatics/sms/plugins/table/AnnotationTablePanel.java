@@ -59,7 +59,7 @@ public class AnnotationTablePanel extends JPanel {
 	    annotationTable.getTableHeader().setReorderingAllowed(false);
 	    annotationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	    
-	    Dimension dim = new Dimension(100, 50);
+	    Dimension dim = new Dimension(100, 200);
 		annotationTable.setPreferredScrollableViewportSize(dim);
 		
 	    JScrollPane scrollPane = new JScrollPane(annotationTable);

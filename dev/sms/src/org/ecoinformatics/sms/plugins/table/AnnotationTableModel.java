@@ -26,6 +26,7 @@
 
 package org.ecoinformatics.sms.plugins.table;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -46,10 +47,11 @@ public class AnnotationTableModel extends AbstractTableModel {
 	
 	private List<String> columnNames;
 	
-	private static final int ROW_COUNT = 3;
-	private static final int ENTITY_ROW = 0;
-	private static final int CHARACTERISTIC_ROW = 1;
-	private static final int STANDARD_ROW = 2;
+	private static final int ROW_COUNT = 4;
+	private static final int SPACER_ROW = 0;
+	private static final int ENTITY_ROW = 1;
+	private static final int CHARACTERISTIC_ROW = 2;
+	private static final int STANDARD_ROW = 3;
 	
 	public AnnotationTableModel(Annotation annotation, List<String> columns) {
 		this.annotation = annotation;
@@ -57,7 +59,16 @@ public class AnnotationTableModel extends AbstractTableModel {
 	}
 	
 	public String[] getRowHeaders() {
-		return (new String[] {"Entity", "Characteristic", "Standard"});
+		List<String> rows = new ArrayList<String>();
+		for (Observation o: annotation.getObservations()) {
+			rows.add(o.getEntity().toString());
+		}
+		//add the measurements
+		rows.add("...");
+		rows.add("Entity");
+		rows.add("Characteristic");
+		rows.add("Standard");
+		return (rows.toArray(new String[0]));
 	}
 	
 	public int getColumnCount() {
@@ -65,7 +76,8 @@ public class AnnotationTableModel extends AbstractTableModel {
 	}
 
 	public int getRowCount() {
-		return ROW_COUNT;
+		int observationCount = annotation.getObservations().size();
+		return ROW_COUNT + observationCount;
 	}
 	
 	public String getColumnName(int column) {
@@ -74,30 +86,47 @@ public class AnnotationTableModel extends AbstractTableModel {
 	
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
+		
+		
 		// look up the column attribute
 		String column = columnNames.get(columnIndex);
+	
+		// look up in the observation count
+		int obsCount = annotation.getObservations().size();
+		
+		if (rowIndex == (obsCount + SPACER_ROW)) {
+			return null;
+		}
 		
 		// look up in the annotation
 		Mapping mapping = annotation.getMapping(column);
 		if (mapping != null) {
 			Measurement measurement = mapping.getMeasurement();
 			if (measurement != null) {
-				switch (rowIndex) {
-				case ENTITY_ROW:
-					Observation observation = annotation.getObservation(measurement);
+				Observation observation = annotation.getObservation(measurement);
+				if (rowIndex == (obsCount + ENTITY_ROW)) {
 					return observation.getEntity();
-				case CHARACTERISTIC_ROW:
+				}
+				else if (rowIndex == (obsCount + CHARACTERISTIC_ROW)) {
 					// TODO multiple characteristics
 					return measurement.getCharacteristics().get(0);
-				case STANDARD_ROW:
+				}
+				else if (rowIndex == (obsCount + STANDARD_ROW)) {
 					return measurement.getStandard();
-				default:
-					break;
+				} else {
+					String entityName = observation.getEntity().toString();
+					String obsRow = this.getRowHeaders()[rowIndex];
+					if (entityName.equals(obsRow)) {
+						return "+";
+					}
+					return "-";
 				}
 			}
 		}
-		
-		//return (rowIndex + ", " + columnIndex);
+				
+		if (rowIndex < obsCount) {
+			return "-";
+		}
 		return null;
 	}
  
