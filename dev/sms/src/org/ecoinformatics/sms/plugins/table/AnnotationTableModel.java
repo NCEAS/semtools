@@ -64,7 +64,7 @@ public class AnnotationTableModel extends AbstractTableModel {
 			rows.add(o.getEntity().toString());
 		}
 		//add the measurements
-		rows.add("...");
+		rows.add(" ");
 		rows.add("Entity");
 		rows.add("Characteristic");
 		rows.add("Standard");

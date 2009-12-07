@@ -53,6 +53,8 @@ public class AnnotationPlugin
     /** Constant String for Annotation menu label */
     public static final String ANNOTATION_MENU_LABEL = "Annotation";
     
+    public static final String ANNOTATION_CHANGE_EVENT = "ANNOTATION_SAVED_EVENT";
+    
 	private MorphoFrame morphoFrame = null;
 	
 	private GUIAction annotateAction = null;
@@ -250,6 +252,7 @@ public class AnnotationPlugin
 					
 					AnnotationTableModel annotationTableModel = new AnnotationTableModel(annotation, columns);
 					AnnotationTablePanel annotationTablePanel = new AnnotationTablePanel(annotationTableModel);
+					StateChangeMonitor.getInstance().addStateChangeListener(ANNOTATION_CHANGE_EVENT, annotationTablePanel);
 				
 					dataViewer.getHeaderPanel().add(BorderLayout.CENTER, annotationTablePanel);
 

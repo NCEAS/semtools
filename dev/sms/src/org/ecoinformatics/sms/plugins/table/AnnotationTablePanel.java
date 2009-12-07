@@ -41,18 +41,22 @@ import javax.swing.UIManager;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
+import edu.ucsb.nceas.morpho.util.StateChangeEvent;
+import edu.ucsb.nceas.morpho.util.StateChangeListener;
+
 /**
  * Panel for viewing and editing data-centric Annotations
  * @author leinfelder
  *
  */
-public class AnnotationTablePanel extends JPanel {
+public class AnnotationTablePanel extends JPanel implements StateChangeListener  {
 
-	private AnnotationTableModel annotationTableModel;
-	
+	private JTable annotationTable;
+	private JScrollPane annotationScrollPane;
+
 	public AnnotationTablePanel(AnnotationTableModel annotationTableModel) {
 		super(new BorderLayout(0,0));
-		JTable annotationTable = new JTable(annotationTableModel);
+		annotationTable = new JTable(annotationTableModel);
 		annotationTable.setColumnSelectionAllowed(true);
 		annotationTable.setRowSelectionAllowed(true);
 		annotationTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -62,14 +66,24 @@ public class AnnotationTablePanel extends JPanel {
 	    Dimension dim = new Dimension(100, 200);
 		annotationTable.setPreferredScrollableViewportSize(dim);
 		
-	    JScrollPane scrollPane = new JScrollPane(annotationTable);
+		annotationScrollPane = new JScrollPane(annotationTable);
 		
-		JList rowheaders = new JList(annotationTableModel.getRowHeaders());
+	    JList rowheaders = new JList(annotationTableModel.getRowHeaders());
 		rowheaders.setCellRenderer(new RowHeaderRenderer(annotationTable));
-		scrollPane.setRowHeaderView(rowheaders);
+		annotationScrollPane.setRowHeaderView(rowheaders);
 		
-		this.add(BorderLayout.CENTER, scrollPane);
+		this.add(BorderLayout.CENTER, annotationScrollPane);
 		
+	}
+
+	public void handleStateChange(StateChangeEvent event) {
+		AnnotationTableModel model = (AnnotationTableModel) annotationTable.getModel();
+		model.fireTableRowsUpdated(0, model.getRowCount());
+		model.fireTableStructureChanged();
+		
+		JList rowheaders = new JList(model.getRowHeaders());
+		rowheaders.setCellRenderer(new RowHeaderRenderer(annotationTable));
+		annotationScrollPane.setRowHeaderView(rowheaders);
 	}
 	
 	

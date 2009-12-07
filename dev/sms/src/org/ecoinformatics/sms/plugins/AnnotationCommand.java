@@ -47,6 +47,8 @@ import edu.ucsb.nceas.morpho.framework.MorphoFrame;
 import edu.ucsb.nceas.morpho.framework.UIController;
 import edu.ucsb.nceas.morpho.util.Command;
 import edu.ucsb.nceas.morpho.util.Log;
+import edu.ucsb.nceas.morpho.util.StateChangeEvent;
+import edu.ucsb.nceas.morpho.util.StateChangeMonitor;
 import edu.ucsb.nceas.morpho.util.UISettings;
 
 /**
@@ -136,6 +138,10 @@ public class AnnotationCommand implements Command {
 					
 					// save - still some TBD
 					saveAnnotation();
+					
+					// fire change event
+					StateChangeEvent annotationEvent = new StateChangeEvent(annotationPage, AnnotationPlugin.ANNOTATION_CHANGE_EVENT);
+					StateChangeMonitor.getInstance().notifyStateChange(annotationEvent);
 					
 				}
 			}
