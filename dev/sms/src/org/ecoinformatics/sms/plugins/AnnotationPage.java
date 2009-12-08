@@ -249,8 +249,8 @@ public class AnnotationPage extends AbstractUIPage{
 		}
 	  
 	  //////
-	  
-		// set the objects we made
+	  // set the objects we made
+		measurement.getCharacteristics().clear();
 	  measurement.addCharacteristic(characteristic);
 	  measurement.setStandard(standard);
 	  observation.addMeasurement(measurement);
