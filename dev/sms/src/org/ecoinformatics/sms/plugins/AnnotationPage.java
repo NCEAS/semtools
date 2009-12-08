@@ -250,6 +250,7 @@ public class AnnotationPage extends AbstractUIPage{
 	  
 	  //////
 	  // set the objects we made
+		//FIXME: handle more than one characteristic per measurement
 		measurement.getCharacteristics().clear();
 	  measurement.addCharacteristic(characteristic);
 	  measurement.setStandard(standard);
