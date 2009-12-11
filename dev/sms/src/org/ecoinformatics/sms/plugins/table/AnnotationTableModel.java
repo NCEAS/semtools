@@ -58,17 +58,17 @@ public class AnnotationTableModel extends AbstractTableModel {
 		this.columnNames = columns;
 	}
 	
-	public String[] getRowHeaders() {
-		List<String> rows = new ArrayList<String>();
+	public Object[] getRowHeaders() {
+		List<Object> rows = new ArrayList<Object>();
 		for (Observation o: annotation.getObservations()) {
-			rows.add(o.getEntity().toString());
+			rows.add(o.getEntity());
 		}
 		//add the measurements
 		rows.add(" ");
 		rows.add("Entity");
 		rows.add("Characteristic");
 		rows.add("Standard");
-		return (rows.toArray(new String[0]));
+		return rows.toArray();
 	}
 	
 	public int getColumnCount() {
@@ -114,9 +114,9 @@ public class AnnotationTableModel extends AbstractTableModel {
 				else if (rowIndex == (obsCount + STANDARD_ROW)) {
 					return measurement.getStandard();
 				} else {
-					String entityName = observation.getEntity().toString();
-					String obsRow = this.getRowHeaders()[rowIndex];
-					if (entityName.equals(obsRow)) {
+					Object entity = observation.getEntity();
+					Object obsRow = this.getRowHeaders()[rowIndex];
+					if (entity.equals(obsRow)) {
 						return "+";
 					}
 					return "-";
