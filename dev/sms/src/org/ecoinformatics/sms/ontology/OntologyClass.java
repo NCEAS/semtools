@@ -88,6 +88,15 @@ public class OntologyClass {
     public String getURI() {
         return getOntology().getURI() + "#" + getName();
     }
+    
+    /**
+     * Set the name of the class
+     * @return the class name
+     */
+    public void setURI(String uri) {
+    	  _ontology = new Ontology(uri.substring(0, uri.indexOf("#")));
+          _className = uri.substring(uri.indexOf("#") + 1);
+    }
 
     /**
      * Set the ontology of the class
