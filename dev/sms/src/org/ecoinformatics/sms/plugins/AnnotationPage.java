@@ -74,6 +74,11 @@ public class AnnotationPage extends AbstractUIPage{
   private JTextField observationStandard;
 
   private Annotation annotation = null;
+private Observation currentObservation;
+private Mapping currentMapping;
+private Measurement currentMeasurement;
+private Characteristic currentCharacteristic;
+private Standard currentStandard;
     
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -174,25 +179,27 @@ public class AnnotationPage extends AbstractUIPage{
 	  try {
 		  // what are we editing:
 		  // is there a measurement mapping for the attribute?
-		  Mapping mapping = annotation.getMapping(attributeName);
-		  Measurement measurement = mapping.getMeasurement();
-	  
+		  currentMapping = annotation.getMapping(attributeName);
+		  currentMeasurement = currentMapping.getMeasurement();
+		  currentCharacteristic = currentMeasurement.getCharacteristics().get(0);
+		  currentStandard = currentMeasurement.getStandard();
+
 		  // is there an observation that uses that measurement?
-		  Observation observation = annotation.getObservation(measurement);
+		  currentObservation = annotation.getObservation(currentMeasurement);
 		  
 		  //try to set the text field values
 		  try {
-			  String entity = observation.getEntity().getURI();
+			  String entity = currentObservation.getEntity().getURI();
 			  this.observationEntity.setText(entity);
 		  }
 		  catch (Exception e) {}
 		  try {
-			  String characteristic = measurement.getCharacteristics().get(0).getURI();
-			  this.observationCharacteristic.setText(characteristic);
+			  String charString = currentCharacteristic.getURI();
+			  this.observationCharacteristic.setText(charString);
 		  }
 		  catch (Exception e) {}
 		  try {
-			  String standard = measurement.getStandard().getURI();
+			  String standard = currentStandard.getURI();
 			  this.observationStandard.setText(standard);
 		  }
 		  catch (Exception e) {}
@@ -204,65 +211,75 @@ public class AnnotationPage extends AbstractUIPage{
   
   public Annotation getAnnotation(String attributeName) {
 	  
-	  
-	  // set up the annotation objects with values from the form
-	  Entity entity = new Entity(observationEntity.getText());
-	  Characteristic characteristic = new Characteristic(observationCharacteristic.getText());
-	  Standard standard = new Standard(observationStandard.getText());
+	  // edit the existing values
+	  	if (currentCharacteristic == null) {
+			currentCharacteristic = new Characteristic(
+					observationCharacteristic.getText());
+		} else {
+			currentCharacteristic.setURI(observationCharacteristic.getText());
+		}
 
-	  //look for existing Observations of this entity
-	  Observation observation = null;
-	  List<Observation> existingObservations = annotation.getObservations(entity);
-	  if (!existingObservations.isEmpty()) {
-		  int useExisting = JOptionPane.showConfirmDialog(UIController.getInstance().getCurrentActiveWindow(), "Use existing observation?", "Existing Observation", JOptionPane.YES_NO_OPTION);
-		  if (useExisting == JOptionPane.YES_OPTION) {
-			  observation = existingObservations.get(0);
-		  }
-	  }
-	  
-		/////
-		// a measurement mapping for this attribute?
-		Mapping mapping = annotation.getMapping(attributeName);
-		if (mapping == null) {
-			mapping = new Mapping();
-			mapping.setAttribute(attributeName);
-			annotation.addMapping(mapping);
+		if (currentStandard == null) {
+			currentStandard = new Standard(observationStandard.getText());
+		} else {
+			currentStandard.setURI(observationStandard.getText());
 		}
-		Measurement measurement = mapping.getMeasurement();
-		if (measurement == null) {
-			measurement = new Measurement();
-			measurement.setLabel("measurement_" + System.currentTimeMillis());
-			mapping.setMeasurement(measurement);
-		}
-		// was there an existing observation from something else?
-		if (observation == null) {
-			// was there one for this very measurement (i.e. an edit)?
-			observation = annotation.getObservation(measurement);
-			if (observation == null) {
-				observation = new Observation();
-				observation.setLabel("observation_" + System.currentTimeMillis());
-				observation.addMeasurement(measurement);
-				annotation.addObservation(observation);
-			}
-			// only do this if we are editing and it's not the same as an existing observation
-			observation.setEntity(entity);
-		}
-	  
-	  //////
-	  // set the objects we made
-		//FIXME: handle more than one characteristic per measurement
-		measurement.getCharacteristics().clear();
-	  measurement.addCharacteristic(characteristic);
-	  measurement.setStandard(standard);
-	  observation.addMeasurement(measurement);
-	  
-	  // reference the ontologies used
-	  annotation.addOntology(entity.getOntology());
-	  annotation.addOntology(characteristic.getOntology());
-	  annotation.addOntology(standard.getOntology());
 
-	  return annotation;
-  }
+		// create a measurement if there wasn't one already
+		if (currentMeasurement == null) {
+			currentMeasurement = new Measurement();
+			currentMeasurement.setLabel("measurement_"
+					+ System.currentTimeMillis());
+		}
+		currentMeasurement.setStandard(currentStandard);
+		currentMeasurement.getCharacteristics().clear();
+		currentMeasurement.addCharacteristic(currentCharacteristic);
+
+		// a measurement mapping for this attribute
+		if (currentMapping == null) {
+			currentMapping = new Mapping();
+			annotation.addMapping(currentMapping);
+		}
+		currentMapping.setAttribute(attributeName);
+		currentMapping.setMeasurement(currentMeasurement);
+
+		// look for existing Observations of this given entity
+		// Observation observation = currentObservation;
+		// List<Observation> existingObservations =
+		// annotation.getObservations(entity);
+		// if (!existingObservations.isEmpty()) {
+		// int useExisting =
+		// JOptionPane.showConfirmDialog(UIController.getInstance
+		// ().getCurrentActiveWindow(), "Use existing observation?",
+		// "Existing Observation", JOptionPane.YES_NO_OPTION);
+		// if (useExisting == JOptionPane.YES_OPTION) {
+		// observation = existingObservations.get(0);
+		// observation.addMeasurement(currentMeasurement);
+		// }
+		// }
+
+		//the observation
+		//TODO: add to exiting obs?
+		if (currentObservation == null) {
+			currentObservation = new Observation();
+			currentObservation.setLabel("observation_"
+					+ System.currentTimeMillis());
+			currentObservation.addMeasurement(currentMeasurement);
+			annotation.addObservation(currentObservation);
+		}
+		
+		// set up the annotation objects with values from the form
+		Entity entity = new Entity(observationEntity.getText());
+		// set the new values for existing classes
+		currentObservation.setEntity(entity);
+
+		// reference the ontologies used
+		annotation.addOntology(entity.getOntology());
+		annotation.addOntology(currentCharacteristic.getOntology());
+		annotation.addOntology(currentStandard.getOntology());
+
+		return annotation;
+	}
 
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
