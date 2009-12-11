@@ -248,23 +248,25 @@ public class AnnotationPage extends AbstractUIPage {
 		currentMapping.setAttribute(attributeName);
 		currentMapping.setMeasurement(currentMeasurement);
 
+		// make an entity from the form value
+		Entity entity = new Entity(observationEntity.getText());
+		
 		// look for existing Observations of this given entity
-		// Observation observation = currentObservation;
-		// List<Observation> existingObservations =
-		// annotation.getObservations(entity);
-		// if (!existingObservations.isEmpty()) {
-		// int useExisting =
-		// JOptionPane.showConfirmDialog(UIController.getInstance
-		// ().getCurrentActiveWindow(), "Use existing observation?",
-		// "Existing Observation", JOptionPane.YES_NO_OPTION);
-		// if (useExisting == JOptionPane.YES_OPTION) {
-		// observation = existingObservations.get(0);
-		// observation.addMeasurement(currentMeasurement);
-		// }
-		// }
+//		 List<Observation> existingObservations = annotation.getObservations(entity);
+//		 if (!existingObservations.isEmpty()) {
+//			 int useExisting =
+//				 JOptionPane.showConfirmDialog(
+//						 UIController.getInstance().getCurrentActiveWindow(),
+//						 "Use existing observation? Entity: " + entity,
+//						 "Existing Observation", 
+//						 JOptionPane.YES_NO_OPTION);
+//			 if (useExisting == JOptionPane.YES_OPTION) {
+//				 currentObservation = existingObservations.get(0);
+//				 currentObservation.addMeasurement(currentMeasurement);
+//			 }
+//		 }
 
 		// the observation
-		// TODO: add to exiting obs?
 		if (currentObservation == null) {
 			currentObservation = new Observation();
 			currentObservation.setLabel("observation_"
@@ -273,8 +275,6 @@ public class AnnotationPage extends AbstractUIPage {
 			annotation.addObservation(currentObservation);
 		}
 
-		// set up the annotation objects with values from the form
-		Entity entity = new Entity(observationEntity.getText());
 		// set the new values for existing classes
 		currentObservation.setEntity(entity);
 
