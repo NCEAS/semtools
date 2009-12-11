@@ -132,7 +132,8 @@ public class AnnotationPlugin
 		
 		//register as a listener for data frame opening
 		StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME, this);
-	
+		StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SELECT_DATA_VIEWER, this);
+		
 		// initialize the annotations
 		initializeAnnotations();
 	}
@@ -196,8 +197,11 @@ public class AnnotationPlugin
 	public void handleStateChange(StateChangeEvent event) {
 
 		// initialize data-table centric UI elements
-		if (event.getChangedState().equals(
-				StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME)) {
+		if (
+				event.getChangedState().equals(StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME)
+				||
+				event.getChangedState().equals(StateChangeEvent.SELECT_DATA_VIEWER)
+			) {
 			initPopup();
 			buildAnnotationTable();
 		}
@@ -256,7 +260,7 @@ public class AnnotationPlugin
 				
 					dataViewer.getHeaderPanel().add(BorderLayout.CENTER, annotationTablePanel);
 
-					Log.debug(5, "Set up annotation table...\n " 
+					Log.debug(30, "Set up annotation table...\n " 
 							+ "Data package: " + packageId 
 							+ ", entity: " + entityIndex 
 							+ ", annotation id: " + annotation.getURI()
