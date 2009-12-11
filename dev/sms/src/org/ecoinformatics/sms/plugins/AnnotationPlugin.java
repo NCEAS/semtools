@@ -14,10 +14,14 @@
 package org.ecoinformatics.sms.plugins;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseListener;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Vector;
+
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
@@ -257,7 +261,18 @@ public class AnnotationPlugin
 					AnnotationTableModel annotationTableModel = new AnnotationTableModel(annotation, columns);
 					AnnotationTablePanel annotationTablePanel = new AnnotationTablePanel(annotationTableModel);
 					StateChangeMonitor.getInstance().addStateChangeListener(ANNOTATION_CHANGE_EVENT, annotationTablePanel);
-				
+
+					// swap in the dataviewer's column headers...pretty nifty
+					TableColumnModel columnModel = dataViewer.getDataTable().getColumnModel();
+					annotationTablePanel.getAnnotationTable().setColumnModel(columnModel);
+					
+					// share the mouse listeners - not so sure we want to do this...
+					MouseListener[] listeners = dataViewer.getDataTable().getMouseListeners();
+					for (MouseListener l: listeners) {
+						annotationTablePanel.getAnnotationTable().addMouseListener(l);
+					}
+					 
+					// add to the dataviewer panel
 					dataViewer.getHeaderPanel().add(BorderLayout.CENTER, annotationTablePanel);
 
 					Log.debug(30, "Set up annotation table...\n " 

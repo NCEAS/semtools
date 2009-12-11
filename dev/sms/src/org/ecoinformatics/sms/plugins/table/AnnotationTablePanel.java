@@ -85,6 +85,14 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 		rowheaders.setCellRenderer(new RowHeaderRenderer(annotationTable));
 		annotationScrollPane.setRowHeaderView(rowheaders);
 	}
+
+	public JTable getAnnotationTable() {
+		return annotationTable;
+	}
+
+	public void setAnnotationTable(JTable annotationTable) {
+		this.annotationTable = annotationTable;
+	}
 	
 	
 }
