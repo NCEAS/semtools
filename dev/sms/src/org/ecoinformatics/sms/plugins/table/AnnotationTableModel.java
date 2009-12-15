@@ -47,11 +47,12 @@ public class AnnotationTableModel extends AbstractTableModel {
 	
 	private List<String> columnNames;
 	
-	private static final int ROW_COUNT = 4;
-	private static final int SPACER_ROW = 0;
-	private static final int ENTITY_ROW = 1;
-	private static final int CHARACTERISTIC_ROW = 2;
-	private static final int STANDARD_ROW = 3;
+	private static final int ROW_COUNT = 5;
+	private static final int CONTEXT_ROW = 0;
+	private static final int OBSERVATION_ROW = 1;
+	private static final int ENTITY_ROW = 2;
+	private static final int CHARACTERISTIC_ROW = 3;
+	private static final int STANDARD_ROW = 4;
 	
 	public AnnotationTableModel(Annotation annotation, List<String> columns) {
 		this.annotation = annotation;
@@ -61,7 +62,8 @@ public class AnnotationTableModel extends AbstractTableModel {
 	public Object[] getRowHeaders() {
 		List<Object> rows = new ArrayList<Object>();
 		//add the measurements
-		rows.add(" ");
+		rows.add("Context");
+		rows.add("Observation");
 		rows.add("Entity");
 		rows.add("Characteristic");
 		rows.add("Standard");
@@ -87,11 +89,6 @@ public class AnnotationTableModel extends AbstractTableModel {
 		
 		// look up the column attribute
 		String column = columnNames.get(columnIndex);
-	
-		// look up in the observation count		
-		if (rowIndex == (SPACER_ROW)) {
-			return null;
-		}
 		
 		// look up in the annotation
 		Mapping mapping = annotation.getMapping(column);
@@ -108,6 +105,13 @@ public class AnnotationTableModel extends AbstractTableModel {
 				}
 				else if (rowIndex == (STANDARD_ROW)) {
 					return measurement.getStandard();
+				}
+				else if (rowIndex == (OBSERVATION_ROW)) {
+					return observation.getLabel();
+				}
+				else if (rowIndex == (CONTEXT_ROW)) {
+					//TODO handle multiple contexts?
+					return observation.getContexts();
 				}
 			}
 		}
