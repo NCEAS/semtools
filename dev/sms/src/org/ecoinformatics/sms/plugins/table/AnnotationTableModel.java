@@ -60,9 +60,6 @@ public class AnnotationTableModel extends AbstractTableModel {
 	
 	public Object[] getRowHeaders() {
 		List<Object> rows = new ArrayList<Object>();
-		for (Observation o: annotation.getObservations()) {
-			rows.add(o.getEntity());
-		}
 		//add the measurements
 		rows.add(" ");
 		rows.add("Entity");
@@ -76,8 +73,8 @@ public class AnnotationTableModel extends AbstractTableModel {
 	}
 
 	public int getRowCount() {
-		int observationCount = annotation.getObservations().size();
-		return ROW_COUNT + observationCount;
+		
+		return ROW_COUNT;
 	}
 	
 	public String getColumnName(int column) {
@@ -91,10 +88,8 @@ public class AnnotationTableModel extends AbstractTableModel {
 		// look up the column attribute
 		String column = columnNames.get(columnIndex);
 	
-		// look up in the observation count
-		int obsCount = annotation.getObservations().size();
-		
-		if (rowIndex == (obsCount + SPACER_ROW)) {
+		// look up in the observation count		
+		if (rowIndex == (SPACER_ROW)) {
 			return null;
 		}
 		
@@ -104,28 +99,17 @@ public class AnnotationTableModel extends AbstractTableModel {
 			Measurement measurement = mapping.getMeasurement();
 			if (measurement != null) {
 				Observation observation = annotation.getObservation(measurement);
-				if (rowIndex == (obsCount + ENTITY_ROW)) {
+				if (rowIndex == (ENTITY_ROW)) {
 					return observation.getEntity();
 				}
-				else if (rowIndex == (obsCount + CHARACTERISTIC_ROW)) {
+				else if (rowIndex == (CHARACTERISTIC_ROW)) {
 					// TODO multiple characteristics
 					return measurement.getCharacteristics().get(0);
 				}
-				else if (rowIndex == (obsCount + STANDARD_ROW)) {
+				else if (rowIndex == (STANDARD_ROW)) {
 					return measurement.getStandard();
-				} else {
-					Object entity = observation.getEntity();
-					Object obsRow = this.getRowHeaders()[rowIndex];
-					if (entity.equals(obsRow)) {
-						return "+";
-					}
-					return "-";
 				}
 			}
-		}
-				
-		if (rowIndex < obsCount) {
-			return "-";
 		}
 		return null;
 	}
