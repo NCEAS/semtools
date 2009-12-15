@@ -51,6 +51,7 @@ import edu.ucsb.nceas.morpho.util.StateChangeListener;
  */
 public class AnnotationTablePanel extends JPanel implements StateChangeListener  {
 
+	public static final Dimension rowHeaderDim = new Dimension(100, 16);
 	private JTable annotationTable;
 	private JScrollPane annotationScrollPane;
 
@@ -63,12 +64,14 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 	    annotationTable.getTableHeader().setReorderingAllowed(false);
 	    annotationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	    
-	    Dimension dim = new Dimension(100, 150);
+	    Dimension dim = new Dimension(100, 80);
 		annotationTable.setPreferredScrollableViewportSize(dim);
 		
 		annotationScrollPane = new JScrollPane(annotationTable);
 		
 	    JList rowheaders = new JList(annotationTableModel.getRowHeaders());
+	    rowheaders.setPreferredSize(rowHeaderDim);
+	    
 		rowheaders.setCellRenderer(new RowHeaderRenderer(annotationTable));
 		annotationScrollPane.setRowHeaderView(rowheaders);
 		
@@ -112,6 +115,7 @@ class RowHeaderRenderer extends JLabel implements ListCellRenderer, TableCellRen
       setForeground(header.getForeground());
       //setBackground(header.getBackground());
       setFont(header.getFont());
+      setPreferredSize(AnnotationTablePanel.rowHeaderDim);
     }
    
     public Component getTableCellRendererComponent(JTable table, Object value,

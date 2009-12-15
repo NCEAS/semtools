@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.JLabel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
@@ -265,6 +266,11 @@ public class AnnotationPlugin
 					// swap in the dataviewer's column headers...pretty nifty
 					TableColumnModel columnModel = dataViewer.getDataTable().getColumnModel();
 					annotationTablePanel.getAnnotationTable().setColumnModel(columnModel);
+					
+					// add row header space to the viewer
+					JLabel filler = new JLabel("Data");
+					filler.setPreferredSize(AnnotationTablePanel.rowHeaderDim);
+					dataViewer.getDataScrollPanel().setRowHeaderView(filler);
 					
 					// share the mouse listeners - not so sure we want to do this...
 					MouseListener[] listeners = dataViewer.getDataTable().getMouseListeners();
