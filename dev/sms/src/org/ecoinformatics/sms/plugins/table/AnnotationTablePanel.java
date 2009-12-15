@@ -64,7 +64,7 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 	    annotationTable.getTableHeader().setReorderingAllowed(false);
 	    annotationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	    
-	    Dimension dim = new Dimension(100, 80);
+	    Dimension dim = new Dimension(100, 96);
 		annotationTable.setPreferredScrollableViewportSize(dim);
 		
 		annotationScrollPane = new JScrollPane(annotationTable);

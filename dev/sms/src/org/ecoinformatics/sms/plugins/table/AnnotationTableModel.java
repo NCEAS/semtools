@@ -47,12 +47,14 @@ public class AnnotationTableModel extends AbstractTableModel {
 	
 	private List<String> columnNames;
 	
-	private static final int ROW_COUNT = 5;
+	private static final int ROW_COUNT = 6;
 	private static final int CONTEXT_ROW = 0;
 	private static final int OBSERVATION_ROW = 1;
 	private static final int ENTITY_ROW = 2;
 	private static final int CHARACTERISTIC_ROW = 3;
 	private static final int STANDARD_ROW = 4;
+	private static final int PROTOCOL_ROW = 5;
+
 	
 	public AnnotationTableModel(Annotation annotation, List<String> columns) {
 		this.annotation = annotation;
@@ -67,6 +69,7 @@ public class AnnotationTableModel extends AbstractTableModel {
 		rows.add("Entity");
 		rows.add("Characteristic");
 		rows.add("Standard");
+		rows.add("Protocol");
 		return rows.toArray();
 	}
 	
@@ -105,6 +108,9 @@ public class AnnotationTableModel extends AbstractTableModel {
 				}
 				else if (rowIndex == (STANDARD_ROW)) {
 					return measurement.getStandard();
+				}
+				else if (rowIndex == (PROTOCOL_ROW)) {
+					return measurement.getProtocol();
 				}
 				else if (rowIndex == (OBSERVATION_ROW)) {
 					return observation.getLabel();
