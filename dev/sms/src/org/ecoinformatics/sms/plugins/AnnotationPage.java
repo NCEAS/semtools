@@ -45,6 +45,7 @@ import org.ecoinformatics.sms.annotation.Entity;
 import org.ecoinformatics.sms.annotation.Mapping;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
+import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
 
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
@@ -72,6 +73,7 @@ public class AnnotationPage extends AbstractUIPage {
 	private JTextField observationEntity;
 	private JTextField observationCharacteristic;
 	private JTextField observationStandard;
+	private JTextField observationProtocol;
 
 	private Annotation annotation = null;
 	private Observation currentObservation;
@@ -79,6 +81,7 @@ public class AnnotationPage extends AbstractUIPage {
 	private Measurement currentMeasurement;
 	private Characteristic currentCharacteristic;
 	private Standard currentStandard;
+	private Protocol currentProtocol;
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
@@ -147,6 +150,16 @@ public class AnnotationPage extends AbstractUIPage {
 		standardPanel.add(observationStandard);
 		standardPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
+		
+		// Protocol
+		JPanel protocolPanel = WidgetFactory.makePanel(1);
+		protocolPanel.add(WidgetFactory.makeLabel("Protocol:", false));
+		observationProtocol = WidgetFactory.makeOneLineTextField("<protocol>");
+		observationProtocol.addMouseListener(mListener);
+
+		protocolPanel.add(observationProtocol);
+		protocolPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
+				8 * WizardSettings.PADDING));
 
 		// put them together
 		classesPanel.add(entityPanel);
@@ -154,6 +167,8 @@ public class AnnotationPage extends AbstractUIPage {
 		classesPanel.add(characteristicPanel);
 		classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		classesPanel.add(standardPanel);
+		classesPanel.add(WidgetFactory.makeDefaultSpacer());
+		classesPanel.add(protocolPanel);
 
 		this.add(classesPanel);
 
@@ -188,6 +203,7 @@ public class AnnotationPage extends AbstractUIPage {
 			currentCharacteristic = currentMeasurement.getCharacteristics()
 					.get(0);
 			currentStandard = currentMeasurement.getStandard();
+			currentProtocol = currentMeasurement.getProtocol();
 
 			// is there an observation that uses that measurement?
 			currentObservation = annotation.getObservation(currentMeasurement);
@@ -206,6 +222,11 @@ public class AnnotationPage extends AbstractUIPage {
 			try {
 				String standard = currentStandard.getURI();
 				this.observationStandard.setText(standard);
+			} catch (Exception e) {
+			}
+			try {
+				String protocol = currentProtocol.getURI();
+				this.observationProtocol.setText(protocol);
 			} catch (Exception e) {
 			}
 		} catch (Exception e) {
@@ -229,7 +250,13 @@ public class AnnotationPage extends AbstractUIPage {
 		} else {
 			currentStandard.setURI(observationStandard.getText());
 		}
-
+		
+		if (currentProtocol == null) {
+			currentProtocol = new Protocol(observationProtocol.getText());
+		} else {
+			currentProtocol.setURI(observationProtocol.getText());
+		}
+		
 		// create a measurement if there wasn't one already
 		if (currentMeasurement == null) {
 			currentMeasurement = new Measurement();
@@ -237,6 +264,7 @@ public class AnnotationPage extends AbstractUIPage {
 					+ System.currentTimeMillis());
 		}
 		currentMeasurement.setStandard(currentStandard);
+		currentMeasurement.setProtocol(currentProtocol);
 		currentMeasurement.getCharacteristics().clear();
 		currentMeasurement.addCharacteristic(currentCharacteristic);
 
@@ -282,6 +310,7 @@ public class AnnotationPage extends AbstractUIPage {
 		annotation.addOntology(entity.getOntology());
 		annotation.addOntology(currentCharacteristic.getOntology());
 		annotation.addOntology(currentStandard.getOntology());
+		annotation.addOntology(currentProtocol.getOntology());
 
 		return annotation;
 	}
