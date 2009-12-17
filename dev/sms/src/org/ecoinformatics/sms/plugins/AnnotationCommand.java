@@ -105,7 +105,8 @@ public class AnnotationCommand implements Command {
 
 				String entityId = dataView.getEntityFileId();
 				table = dataView.getDataTable();
-				attributeIndex = table.getSelectedColumn();
+				int viewIndex = table.getSelectedColumn();
+		    	attributeIndex =  table.getColumnModel().getColumn(viewIndex).getModelIndex();
 				entityIndex = dataView.getEntityIndex();
 				entityName = adp.getEntityName(entityIndex);
 				attributeName = adp.getAttributeName(entityIndex, attributeIndex);
