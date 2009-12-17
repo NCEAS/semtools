@@ -96,6 +96,14 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 	public void setAnnotationTable(JTable annotationTable) {
 		this.annotationTable = annotationTable;
 	}
+
+	public JScrollPane getAnnotationScrollPane() {
+		return annotationScrollPane;
+	}
+
+	public void setAnnotationScrollPane(JScrollPane annotationScrollPane) {
+		this.annotationScrollPane = annotationScrollPane;
+	}
 	
 	
 }

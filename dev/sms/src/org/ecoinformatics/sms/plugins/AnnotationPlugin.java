@@ -14,6 +14,8 @@
 package org.ecoinformatics.sms.plugins;
 
 import java.awt.BorderLayout;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseListener;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -21,6 +23,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JLabel;
+import javax.swing.JScrollBar;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
@@ -28,6 +31,7 @@ import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.plugins.table.AnnotationTableModel;
 import org.ecoinformatics.sms.plugins.table.AnnotationTablePanel;
+import org.ecoinformatics.sms.plugins.table.ScrollBarAdjustmentListener;
 
 import edu.ucsb.nceas.morpho.Morpho;
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
@@ -277,6 +281,19 @@ public class AnnotationPlugin
 					for (MouseListener l: listeners) {
 						annotationTablePanel.getAnnotationTable().addMouseListener(l);
 					}
+					
+					//track the scrolling of the data - forward it to the annotation
+					AdjustmentListener annotationScrollListener = 
+						new ScrollBarAdjustmentListener(
+								annotationTablePanel.getAnnotationScrollPane().getHorizontalScrollBar());
+					dataViewer.getDataScrollPanel().getHorizontalScrollBar().addAdjustmentListener(annotationScrollListener);
+					
+					//track the scrolling of the annotation - forward it to the data
+					AdjustmentListener dataScrollListener = 
+						new ScrollBarAdjustmentListener(
+								dataViewer.getDataScrollPanel().getHorizontalScrollBar());
+					annotationTablePanel.getAnnotationScrollPane().getHorizontalScrollBar().addAdjustmentListener(dataScrollListener);
+					
 					 
 					// add to the dataviewer panel
 					dataViewer.getHeaderPanel().add(BorderLayout.CENTER, annotationTablePanel);
