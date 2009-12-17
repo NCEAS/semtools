@@ -14,7 +14,6 @@
 package org.ecoinformatics.sms.plugins;
 
 import java.awt.BorderLayout;
-import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseListener;
 import java.io.FileInputStream;
@@ -23,14 +22,14 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JLabel;
-import javax.swing.JScrollBar;
-import javax.swing.table.JTableHeader;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumnModel;
 
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.plugins.table.AnnotationTableModel;
 import org.ecoinformatics.sms.plugins.table.AnnotationTablePanel;
+import org.ecoinformatics.sms.plugins.table.DataTableModelListener;
 import org.ecoinformatics.sms.plugins.table.ScrollBarAdjustmentListener;
 
 import edu.ucsb.nceas.morpho.Morpho;
@@ -293,7 +292,10 @@ public class AnnotationPlugin
 						new ScrollBarAdjustmentListener(
 								dataViewer.getDataScrollPanel().getHorizontalScrollBar());
 					annotationTablePanel.getAnnotationScrollPane().getHorizontalScrollBar().addAdjustmentListener(dataScrollListener);
-					
+
+					// listen for data model changes
+					TableModelListener dataModelListener = new DataTableModelListener(adp, annotationTableModel, entityIndex);
+					dataViewer.getDataTable().getModel().addTableModelListener(dataModelListener);
 					 
 					// add to the dataviewer panel
 					dataViewer.getHeaderPanel().add(BorderLayout.CENTER, annotationTablePanel);

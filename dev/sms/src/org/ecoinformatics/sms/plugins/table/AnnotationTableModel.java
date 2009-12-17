@@ -87,6 +87,14 @@ public class AnnotationTableModel extends AbstractTableModel {
 	}
 	
 
+	public List<String> getColumnNames() {
+		return columnNames;
+	}
+
+	public void setColumnNames(List<String> columnNames) {
+		this.columnNames = columnNames;
+	}
+
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		
 		
