@@ -56,7 +56,6 @@ public class DataTableModelListener implements TableModelListener {
 	public void tableChanged(TableModelEvent e) {
 		List<String> columnNames = adp.getAttributeNames(entityIndex);
 		annotationTableModel.setColumnNames(columnNames);
-		annotationTableModel.fireTableStructureChanged();
 	}
 
 }
