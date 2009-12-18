@@ -327,7 +327,8 @@ public class AnnotationPlugin
 					// swap in the dataviewer's column headers...pretty nifty
 					TableColumnModel columnModel = dataViewer.getDataTable().getColumnModel();
 					annotationTablePanel.getAnnotationTable().setColumnModel(columnModel);
-					
+					annotationTableModel.setColumnNames(dataViewer.getColumnLabels());
+										
 					// add row header space to the viewer
 					JLabel filler = new JLabel("Data");
 					filler.setPreferredSize(AnnotationTablePanel.rowHeaderDim);
@@ -352,7 +353,7 @@ public class AnnotationPlugin
 					annotationTablePanel.getAnnotationScrollPane().getHorizontalScrollBar().addAdjustmentListener(dataScrollListener);
 
 					// listen for data model changes
-					TableModelListener dataModelListener = new DataTableModelListener(adp, annotationTableModel, entityIndex);
+					TableModelListener dataModelListener = new DataTableModelListener(adp, annotationTableModel, dataViewer, entityIndex);
 					dataViewer.getDataTable().getModel().addTableModelListener(dataModelListener);
 					 
 					// add to the dataviewer panel

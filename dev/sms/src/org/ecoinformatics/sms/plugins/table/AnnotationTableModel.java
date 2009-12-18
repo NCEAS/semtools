@@ -47,6 +47,8 @@ public class AnnotationTableModel extends AbstractTableModel {
 	
 	private List<String> columnNames;
 	
+	private List<String> columnIds;
+	
 	private static final int ROW_COUNT = 6;
 	private static final int CONTEXT_ROW = 0;
 	private static final int OBSERVATION_ROW = 1;
@@ -58,7 +60,7 @@ public class AnnotationTableModel extends AbstractTableModel {
 	
 	public AnnotationTableModel(Annotation annotation, List<String> columns) {
 		this.annotation = annotation;
-		this.columnNames = columns;
+		this.columnIds = columns;
 	}
 	
 	public Object[] getRowHeaders() {
@@ -74,18 +76,19 @@ public class AnnotationTableModel extends AbstractTableModel {
 	}
 	
 	public int getColumnCount() {
-		return columnNames.size();
+		return columnIds.size();
 	}
 
 	public int getRowCount() {
-		
 		return ROW_COUNT;
 	}
 	
 	public String getColumnName(int column) {
-		return columnNames.get(column);
-	}
-	
+		if (columnNames != null && !columnNames.isEmpty()) {
+			return columnNames.get(column);
+		}
+		return columnIds.get(column);
+	}	
 
 	public List<String> getColumnNames() {
 		return columnNames;
@@ -95,11 +98,19 @@ public class AnnotationTableModel extends AbstractTableModel {
 		this.columnNames = columnNames;
 	}
 
+	public List<String> getColumnIds() {
+		return columnIds;
+	}
+
+	public void setColumnIds(List<String> columnIds) {
+		this.columnIds = columnIds;
+	}
+
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		
 		
 		// look up the column attribute
-		String column = columnNames.get(columnIndex);
+		String column = columnIds.get(columnIndex);
 		
 		// look up in the annotation
 		Mapping mapping = annotation.getMapping(column);

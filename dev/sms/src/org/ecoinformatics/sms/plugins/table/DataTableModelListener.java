@@ -25,18 +25,16 @@
  */
 package org.ecoinformatics.sms.plugins.table;
 
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.util.List;
 
-import javax.swing.JScrollBar;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
+import edu.ucsb.nceas.morpho.datapackage.DataViewer;
 
 /**
- * Synchronizes the target scrollbar with the scrollbar being listened to
+ * Synchronizes the annotation table (columns) with the data table columns
  * @author leinfelder
  *
  */
@@ -45,17 +43,20 @@ public class DataTableModelListener implements TableModelListener {
 	private AbstractDataPackage adp;
 	private int entityIndex;
 	private AnnotationTableModel annotationTableModel;
+	private DataViewer dataViewer;
 
 	public DataTableModelListener(AbstractDataPackage adp,
-			AnnotationTableModel annotationTableModel, int entityIndex) {
+			AnnotationTableModel annotationTableModel, DataViewer dataViewer, int entityIndex) {
 		this.adp = adp;
 		this.annotationTableModel = annotationTableModel;
+		this.dataViewer = dataViewer;
 		this.entityIndex = entityIndex;
 	}
 
 	public void tableChanged(TableModelEvent e) {
-		List<String> columnNames = adp.getAttributeNames(entityIndex);
-		annotationTableModel.setColumnNames(columnNames);
+		List<String> columnIds = adp.getAttributeNames(entityIndex);
+		annotationTableModel.setColumnIds(columnIds);
+		annotationTableModel.setColumnNames(dataViewer.getColumnLabels());
 	}
 
 }
