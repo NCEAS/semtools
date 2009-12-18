@@ -66,6 +66,10 @@ public class AnnotationPlugin
 	private MorphoFrame morphoFrame = null;
 	
 	private GUIAction annotateAction = null;
+
+	private GUIAction splitObservationAction;
+
+	private GUIAction mergeObservationAction;
 	
 
 	/**
@@ -110,6 +114,54 @@ public class AnnotationPlugin
 		annotateAction.setEnabledOnStateChange(
                 StateChangeEvent.CREATE_NOENTITY_DATAPACKAGE_FRAME,
                 false, GUIAction.EVENT_LOCAL);
+		
+		mergeObservationAction =
+			new GUIAction(
+				"Merge Observation",
+				null,
+				new ObservationCommand(true));
+		mergeObservationAction.setToolTipText(
+			"Selected columns are for the same Observation");
+		mergeObservationAction.setMenuItemPosition(5);
+		mergeObservationAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
+		mergeObservationAction.setEnabled(false);
+
+		mergeObservationAction.setEnabledOnStateChange(
+				StateChangeEvent.SELECT_DATATABLE_COLUMN,
+				true, GUIAction.EVENT_LOCAL);
+		mergeObservationAction.setEnabledOnStateChange(
+                StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME,
+                true, GUIAction.EVENT_LOCAL);
+		mergeObservationAction.setEnabledOnStateChange(
+                StateChangeEvent.CREATE_SEARCH_RESULT_FRAME,
+                false, GUIAction.EVENT_LOCAL);
+		mergeObservationAction.setEnabledOnStateChange(
+                StateChangeEvent.CREATE_NOENTITY_DATAPACKAGE_FRAME,
+                false, GUIAction.EVENT_LOCAL);
+		
+		splitObservationAction =
+			new GUIAction(
+				"Split Observation",
+				null,
+				new ObservationCommand(false));
+		splitObservationAction.setToolTipText(
+			"Selected columns are for different Observations");
+		splitObservationAction.setMenuItemPosition(6);
+		splitObservationAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
+		splitObservationAction.setEnabled(false);
+
+		splitObservationAction.setEnabledOnStateChange(
+				StateChangeEvent.SELECT_DATATABLE_COLUMN,
+				true, GUIAction.EVENT_LOCAL);
+		splitObservationAction.setEnabledOnStateChange(
+                StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME,
+                true, GUIAction.EVENT_LOCAL);
+		splitObservationAction.setEnabledOnStateChange(
+                StateChangeEvent.CREATE_SEARCH_RESULT_FRAME,
+                false, GUIAction.EVENT_LOCAL);
+		splitObservationAction.setEnabledOnStateChange(
+                StateChangeEvent.CREATE_NOENTITY_DATAPACKAGE_FRAME,
+                false, GUIAction.EVENT_LOCAL);
 
 		// Save Annotations
 	    GUIAction saveAction = new GUIAction("Save Annotations...",
@@ -135,6 +187,8 @@ public class AnnotationPlugin
 		// add the custom actions
 		UIController controller = UIController.getInstance();
 		controller.addGuiAction(annotateAction);
+		controller.addGuiAction(mergeObservationAction);
+		controller.addGuiAction(splitObservationAction);
 		controller.addGuiAction(saveAction);
 
 		
@@ -227,6 +281,10 @@ public class AnnotationPlugin
 				if (dataView != null) {
 					annotateAction.setEnabled(true);
 					dataView.addPopupMenuItem(annotateAction);
+					mergeObservationAction.setEnabled(true);
+					dataView.addPopupMenuItem(mergeObservationAction);
+					splitObservationAction.setEnabled(true);
+					dataView.addPopupMenuItem(splitObservationAction);
 				}
 			}
 		}
