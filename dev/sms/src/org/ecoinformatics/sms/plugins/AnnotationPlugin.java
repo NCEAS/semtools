@@ -14,6 +14,7 @@
 package org.ecoinformatics.sms.plugins;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseListener;
 import java.io.FileInputStream;
@@ -264,10 +265,32 @@ public class AnnotationPlugin
 				||
 				event.getChangedState().equals(StateChangeEvent.SELECT_DATA_VIEWER)
 			) {
-			initPopup();
-			buildAnnotationTable();
+			if (!isInitialized()) {
+				initPopup();
+				buildAnnotationTable();
+			}
 		}
 
+	}
+	
+	private boolean isInitialized() {
+
+		morphoFrame = UIController.getInstance().getCurrentActiveWindow();
+		if (morphoFrame != null) {
+			DataViewContainerPanel dataViewContainerPanel = morphoFrame.getDataViewContainerPanel();
+			if (dataViewContainerPanel != null) {
+				DataViewer dataViewer = dataViewContainerPanel.getCurrentDataViewer();
+				if (dataViewer != null) {
+					Component[] existingComponents = dataViewer.getHeaderPanel().getComponents();
+					for (Component comp: existingComponents) {
+						if (comp instanceof AnnotationTablePanel) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
 	}
 	
 	private void initPopup() {
@@ -296,7 +319,6 @@ public class AnnotationPlugin
 		if (morphoFrame != null) {
 			DataViewContainerPanel dataViewContainerPanel = morphoFrame.getDataViewContainerPanel();
 			if (dataViewContainerPanel != null) {
-				// TODO: get all dataViewers
 				DataViewer dataViewer = dataViewContainerPanel.getCurrentDataViewer();
 				if (dataViewer != null) {
 					AbstractDataPackage adp = UIController.getInstance().getCurrentAbstractDataPackage();
