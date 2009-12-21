@@ -62,12 +62,13 @@ public class AnnotationQueryPage extends AbstractUIPage {
 	
 	private SimpleAnnotationPanel simpleAnnotationPanel = null;
 
-	private Characteristic currentCharacteristic;
-	private Standard currentStandard;
-	private Protocol currentProtocol;
 	private Query query = null;
-	private Entity currentEntity;
 
+	private static Entity currentEntity;
+	private static Characteristic currentCharacteristic;
+	private static Standard currentStandard;
+	private static Protocol currentProtocol;
+	
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
 
@@ -165,6 +166,20 @@ public class AnnotationQueryPage extends AbstractUIPage {
 	 * The action to be executed when the page is displayed. May be empty
 	 */
 	public void onLoadAction() {
+		// load the last values if they exist
+		try {
+			simpleAnnotationPanel.setObservationEntity(currentEntity.getURI());
+		} catch (Exception e) {}
+		try {
+			simpleAnnotationPanel.setObservationStandard(currentStandard.getURI());
+		} catch (Exception e) {}
+		try {
+			simpleAnnotationPanel.setObservationCharacteristic(currentCharacteristic.getURI());
+		} catch (Exception e) {}
+		try {
+			simpleAnnotationPanel.setObservationProtocol(currentProtocol.getURI());
+		} catch (Exception e) {}
+
 	}
 
 	/**

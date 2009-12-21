@@ -150,12 +150,14 @@ public class OntologyClassSelectionPanel extends JPanel {
 	public List<OntologyClass> getOntologyClasses() {
 		List<OntologyClass> returnList = new ArrayList<OntologyClass>();
 		TreePath[] paths = _ontoTree.getSelectionPaths();
-		for (int i = 0; i < paths.length; i++) {
-			DefaultMutableTreeNode node = 
-				(DefaultMutableTreeNode) paths[i].getLastPathComponent();
-			if (node.getUserObject() instanceof OntologyClass) {
-				OntologyClass cls = (OntologyClass) node.getUserObject();
-				returnList.add(cls);
+		if (paths != null) {
+			for (int i = 0; i < paths.length; i++) {
+				DefaultMutableTreeNode node = 
+					(DefaultMutableTreeNode) paths[i].getLastPathComponent();
+				if (node.getUserObject() instanceof OntologyClass) {
+					OntologyClass cls = (OntologyClass) node.getUserObject();
+					returnList.add(cls);
+				}
 			}
 		}
 		return returnList;

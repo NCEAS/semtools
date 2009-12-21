@@ -128,13 +128,20 @@ public class SimpleAnnotationPanel extends JPanel {
 		OntologyClassSelectionPage page = new OntologyClassSelectionPage();
 
 		// show the dialog
-		ModalDialog dialog = new ModalDialog(page, UIController.getInstance()
-				.getCurrentActiveWindow(), UISettings.POPUPDIALOG_WIDTH,
-				UISettings.POPUPDIALOG_HEIGHT);
+		ModalDialog dialog = 
+			new ModalDialog(
+					page, 
+					UIController.getInstance().getCurrentActiveWindow(), 
+					UISettings.POPUPDIALOG_WIDTH,
+					UISettings.POPUPDIALOG_HEIGHT);
 
 		// get the response back
 		if (dialog.USER_RESPONSE == ModalDialog.OK_OPTION) {
-			source.setText(page.getSelectedTerms().get(0));
+			String selectedClass = null;
+			if (page.getSelectedTerms() !=null && page.getSelectedTerms().size() > 0) {
+				selectedClass = page.getSelectedTerms().get(0);
+			}
+			source.setText(selectedClass);
 		}
 		page = null;
 	}
