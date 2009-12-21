@@ -61,7 +61,7 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 		annotationTable.setColumnSelectionAllowed(true);
 		annotationTable.setRowSelectionAllowed(true);
 		annotationTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-	    annotationTable.getTableHeader().setReorderingAllowed(false);
+	    annotationTable.getTableHeader().setReorderingAllowed(true);
 	    annotationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	    
 	    Dimension dim = new Dimension(100, 96);

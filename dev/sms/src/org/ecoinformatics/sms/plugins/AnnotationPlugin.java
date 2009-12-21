@@ -416,10 +416,16 @@ public class AnnotationPlugin
 					filler.setPreferredSize(AnnotationTablePanel.rowHeaderDim);
 					dataViewer.getDataScrollPanel().setRowHeaderView(filler);
 					
-					// share the mouse listeners - not so sure we want to do this...
+					// share the mouse listeners
 					MouseListener[] listeners = dataViewer.getDataTable().getMouseListeners();
 					for (MouseListener l: listeners) {
 						annotationTablePanel.getAnnotationTable().addMouseListener(l);
+					}
+					
+					// share the header mouse listeners
+					MouseListener[] headerListeners = dataViewer.getDataTable().getTableHeader().getMouseListeners();
+					for (MouseListener l: headerListeners) {
+						annotationTablePanel.getAnnotationTable().getTableHeader().addMouseListener(l);
 					}
 					
 					//track the scrolling of the data - forward it to the annotation
