@@ -185,12 +185,21 @@ public class AnnotationPlugin
                 StateChangeEvent.CREATE_NOENTITY_DATAPACKAGE_FRAME,
                 false, GUIAction.EVENT_LOCAL);
 	    
+	    GUIAction searchAction = new GUIAction("Search Annotations...",
+                null,
+                new AnnotationSearchCommand());
+	    searchAction.setMenuItemPosition(15);
+	    searchAction.setToolTipText("Search Annotations...");
+	    searchAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
+	    searchAction.setEnabled(true);
+			    
 		// add the custom actions
 		UIController controller = UIController.getInstance();
 		controller.addGuiAction(annotateAction);
 		controller.addGuiAction(mergeObservationAction);
 		controller.addGuiAction(splitObservationAction);
 		controller.addGuiAction(saveAction);
+		controller.addGuiAction(searchAction);
 
 		
 		//register as a listener for data frame opening
@@ -256,6 +265,57 @@ public class AnnotationPlugin
 	    searchtext.append("</queryterm></querygroup></pathquery>");
 	    return searchtext.toString();
 	  }
+	
+	public static String getDocQuery(List<Annotation> annotations) {
+		ConfigXML config = Morpho.getConfiguration();
+		ConfigXML profile = Morpho.thisStaticInstance.getProfile();
+		
+		StringBuffer searchtext = new StringBuffer();
+		searchtext.append("<?xml version=\"1.0\"?>\n");
+		searchtext.append("<pathquery version=\"1.0\">\n");
+		String lastname = profile.get("lastname", 0);
+		String firstname = profile.get("firstname", 0);
+		searchtext.append("<querytitle>Matching Docs for Annotations (" + firstname + " "
+				+ lastname);
+		searchtext.append(")</querytitle>\n");
+		Vector<String> returnDoctypeList = config.get("returndoc");
+		//Vector<String> returnDoctypeList = new Vector<String>();
+		//returnDoctypeList.add("http://ecoinformatics.org/sms/annotation.0.9");
+		for (int i = 0; i < returnDoctypeList.size(); i++) {
+			searchtext.append("<returndoctype>");
+			searchtext.append(returnDoctypeList.elementAt(i));
+			searchtext.append("</returndoctype>\n");
+		}
+		Vector<String> returnFieldList = config.get("returnfield");
+		for (int i = 0; i < returnFieldList.size(); i++) {
+			searchtext.append("<returnfield>");
+			searchtext.append(returnFieldList.elementAt(i));
+			searchtext.append("</returnfield>\n");
+		}
+		searchtext.append("<owner>" + Morpho.thisStaticInstance.getUserName()
+				+ "</owner>\n");
+		
+		//Annotation matches
+		if (annotations != null && annotations.size() > 0) {
+			searchtext.append("<querygroup operator=\"UNION\">\n");
+		
+			for (Annotation annotation: annotations) {
+				searchtext.append("<queryterm casesensitive=\"true\" ");
+				searchtext.append("searchmode=\"contains\">\n");
+				searchtext.append("<value>");
+				searchtext.append(annotation.getEMLPackage());
+				searchtext.append("</value>\n");
+				searchtext.append("<pathexpr>@packageId</pathexpr>\n");
+				searchtext.append("</queryterm>");
+			}
+			searchtext.append("</querygroup>");
+		}
+	
+		searchtext.append("</pathquery>");
+
+
+		return searchtext.toString();
+	}
 
 	public void handleStateChange(StateChangeEvent event) {
 
