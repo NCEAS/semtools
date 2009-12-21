@@ -35,6 +35,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.OntologyClassSelectionPage;
 
 import edu.ucsb.nceas.morpho.framework.ModalDialog;
@@ -126,7 +127,16 @@ public class SimpleAnnotationPanel extends JPanel {
 	
 	private void showDialog(JTextField source) {
 		OntologyClassSelectionPage page = new OntologyClassSelectionPage();
-
+		
+		try {
+			OntologyClass currentClass = new OntologyClass(source.getText());
+			if (currentClass != null) {
+				page.setCurrentClass(currentClass);
+			}
+		} catch (Exception e) {
+			//ignore
+		}
+		
 		// show the dialog
 		ModalDialog dialog = 
 			new ModalDialog(

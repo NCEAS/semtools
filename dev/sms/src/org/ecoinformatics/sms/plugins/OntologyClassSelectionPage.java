@@ -62,6 +62,7 @@ public class OntologyClassSelectionPage extends AbstractUIVocabularyPage {
 	private OntologyClassSelectionPanel selectionPanel;
 
 	private OrderedMap returnMap = new OrderedMap();
+	private OntologyClass currentClass = null;
 
 	public OntologyClassSelectionPage() {
 		init();
@@ -88,17 +89,7 @@ public class OntologyClassSelectionPage extends AbstractUIVocabularyPage {
 		middlePanel.add(WidgetFactory.makeDefaultSpacer());
 		middlePanel.add(WidgetFactory.makeDefaultSpacer());
 
-		//the selected term
-		MouseListener doubleClickListener =
-			new MouseAdapter() {
-				public void mouseClicked(MouseEvent e) {
-					if (e.getClickCount() > 1) {
-						getModalDialog().okAction();
-					}				
-				}
-			};
-
-			selectionPanel = new OntologyClassSelectionPanel();
+		selectionPanel = new OntologyClassSelectionPanel();
 			
 		//put the pieces together
 		middlePanel.add(selectionPanel);
@@ -108,6 +99,10 @@ public class OntologyClassSelectionPage extends AbstractUIVocabularyPage {
 				8 * WizardSettings.PADDING));
 
 		this.add(middlePanel, BorderLayout.CENTER);
+	}
+	
+	public void setCurrentClass(OntologyClass currentClass) {
+		this.currentClass = currentClass;
 	}
 	
 	public void setVocabulary(String vocab) {
@@ -167,6 +162,9 @@ public class OntologyClassSelectionPage extends AbstractUIVocabularyPage {
 	 */
 
 	public void onLoadAction() {
+		if (currentClass != null) {
+			this.selectionPanel.doSelect(currentClass);
+		}
 	}
 
 	/**

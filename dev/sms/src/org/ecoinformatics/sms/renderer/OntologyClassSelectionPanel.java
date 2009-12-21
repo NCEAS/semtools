@@ -418,7 +418,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 	 * @param cls
 	 *            the OntologyClass to select
 	 */
-	private void doSelect(OntologyClass cls) {
+	public void doSelect(OntologyClass cls) {
 		if (cls == null)
 			return;
 		// clear current selection
