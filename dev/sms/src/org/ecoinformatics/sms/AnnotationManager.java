@@ -138,7 +138,8 @@ public interface AnnotationManager {
     * @return the matching annotations
     */
    public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
-           List<OntologyClass> characteristics, List<OntologyClass> standards);
+           List<OntologyClass> characteristics, List<OntologyClass> standards,
+           List<OntologyClass> protocols);
 
    /**
     * Get annotations that contain an entity in the given list and a 
@@ -151,7 +152,7 @@ public interface AnnotationManager {
     */
    public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
            List<OntologyClass> characteristics, List<OntologyClass> standards,
-           boolean searchSubclasses);
+           List<OntologyClass> protocols, boolean searchSubclasses);
 
    /**
     * Get annotations that contain the given entity, characteristic, and standard
@@ -161,7 +162,8 @@ public interface AnnotationManager {
     * @return the matching annotations
     */
    public List<Annotation> getMatchingAnnotations(OntologyClass entity,
-           OntologyClass characteristic, OntologyClass standard);
+           OntologyClass characteristic, OntologyClass standard,
+           OntologyClass protocol);
 
    /**
     * Get annotations that contain the given entity, characteristic, and standard
@@ -173,7 +175,7 @@ public interface AnnotationManager {
     */
    public List<Annotation> getMatchingAnnotations(OntologyClass entity,
            OntologyClass characteristic, OntologyClass standard,
-           boolean searchSubclasses);
+           OntologyClass protocol, boolean searchSubclasses);
 
    /**
     * Get entities used in managed annotations

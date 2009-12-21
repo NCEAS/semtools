@@ -78,10 +78,11 @@ public class Test {
             chars.add(new OntologyClass(gceOnt, "DryWeight"));
             List<OntologyClass> stds = new ArrayList();
             stds.add(new OntologyClass(gceOnt, "GramsPerSquareMeter"));
+            List<OntologyClass> protocols = new ArrayList();
 
             // get query results         
             System.out.println("\nSearch for matching annotation:");
-            for(Annotation a : annotationManager.getMatchingAnnotations(entities, chars, stds))
+            for(Annotation a : annotationManager.getMatchingAnnotations(entities, chars, stds, protocols))
                 System.out.println("   match: " + a.getURI());
 
             System.out.println("\nActive Entities: ");

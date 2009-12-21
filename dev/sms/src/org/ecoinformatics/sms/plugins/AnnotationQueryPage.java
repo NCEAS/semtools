@@ -143,7 +143,8 @@ public class AnnotationQueryPage extends AbstractUIPage {
 		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getMatchingAnnotations(
 				currentEntity, 
 				currentCharacteristic, 
-				currentStandard, 
+				currentStandard,
+				currentProtocol,
 				true);
 		
 		// get the query text

@@ -242,7 +242,8 @@ public class DefaultAnnotationManager implements AnnotationManager {
     * @return the matching annotations
     */
    public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
-           List<OntologyClass> characteristics, List<OntologyClass> standards) {
+           List<OntologyClass> characteristics, List<OntologyClass> standards,
+           List<OntologyClass> protocols) {
       // find matches
       List<Annotation> results = new ArrayList();
       for(Annotation annot : getAnnotations()) {
@@ -269,16 +270,18 @@ public class DefaultAnnotationManager implements AnnotationManager {
     */
    public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
            List<OntologyClass> characteristics, List<OntologyClass> standards,
-           boolean searchSubclasses) {
+           List<OntologyClass> protocols, boolean searchSubclasses) {
       if(!searchSubclasses)
-         return getMatchingAnnotations(entities, characteristics, standards);
+         return getMatchingAnnotations(entities, characteristics, standards, protocols);
       List<OntologyClass> entSubs = new ArrayList(entities);
       List<OntologyClass> charSubs = new ArrayList(characteristics);
       List<OntologyClass> stdSubs = new ArrayList(standards);
+      List<OntologyClass> protSubs = new ArrayList(protocols);
       addSubclasses(entSubs);
       addSubclasses(charSubs);
       addSubclasses(stdSubs);
-      return getMatchingAnnotations(entSubs, charSubs, stdSubs);
+      addSubclasses(protSubs);
+      return getMatchingAnnotations(entSubs, charSubs, stdSubs, protSubs);
    }
 
    /**
@@ -289,7 +292,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
     * @return the matching annotations
     */
    public List<Annotation> getMatchingAnnotations(OntologyClass entity,
-           OntologyClass characteristic, OntologyClass standard) {
+           OntologyClass characteristic, OntologyClass standard, OntologyClass protocol) {
       List<OntologyClass> entities = new ArrayList();
       if(entity != null)
          entities.add(entity);
@@ -299,7 +302,10 @@ public class DefaultAnnotationManager implements AnnotationManager {
       List<OntologyClass> standards = new ArrayList();
       if(standard != null)
          standards.add(standard);
-      return getMatchingAnnotations(entities, characteristics, standards);
+      List<OntologyClass> protocols = new ArrayList();
+      if(protocol != null)
+         standards.add(protocol);
+      return getMatchingAnnotations(entities, characteristics, standards, protocols);
    }
 
    /**
@@ -311,8 +317,8 @@ public class DefaultAnnotationManager implements AnnotationManager {
     * @return the matching annotations
     */
    public List<Annotation> getMatchingAnnotations(OntologyClass entity,
-           OntologyClass characteristic, OntologyClass standard,
-           boolean searchSubclasses) {
+           OntologyClass characteristic, OntologyClass standard, 
+           OntologyClass protocol, boolean searchSubclasses) {
       List<OntologyClass> entities = new ArrayList();
       if(entity != null)
          entities.add(entity);
@@ -322,7 +328,10 @@ public class DefaultAnnotationManager implements AnnotationManager {
       List<OntologyClass> standards = new ArrayList();
       if(standard != null)
          standards.add(standard);
-      return getMatchingAnnotations(entities, characteristics, standards, searchSubclasses);
+      List<OntologyClass> protocols = new ArrayList();
+      if(protocol != null)
+         standards.add(protocol);
+      return getMatchingAnnotations(entities, characteristics, standards, protocols, searchSubclasses);
    }
 
    /**
