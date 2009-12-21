@@ -4,7 +4,7 @@
  *             package wizard
  *  Copyright: 2000 Regents of the University of California and the
  *             National Center for Ecological Analysis and Synthesis
- *    Authors: Chad Berkley
+ *    Authors: Ben Leinfelder
  *    Release: @release@
  *
  *   '$Author: tao $'
@@ -28,16 +28,8 @@
 
 package org.ecoinformatics.sms.plugins;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.List;
-
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
@@ -47,14 +39,11 @@ import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
+import org.ecoinformatics.sms.plugins.ui.SimpleAnnotationPanel;
 
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
-import edu.ucsb.nceas.morpho.framework.ModalDialog;
-import edu.ucsb.nceas.morpho.framework.UIController;
 import edu.ucsb.nceas.morpho.plugins.DataPackageWizardInterface;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
-import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
-import edu.ucsb.nceas.morpho.util.UISettings;
 import edu.ucsb.nceas.utilities.OrderedMap;
 
 public class AnnotationPage extends AbstractUIPage {
@@ -69,11 +58,8 @@ public class AnnotationPage extends AbstractUIPage {
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
-
-	private JTextField observationEntity;
-	private JTextField observationCharacteristic;
-	private JTextField observationStandard;
-	private JTextField observationProtocol;
+	
+	private SimpleAnnotationPanel simpleAnnotationPanel = null;
 
 	private Annotation annotation = null;
 	private Observation currentObservation;
@@ -108,88 +94,14 @@ public class AnnotationPage extends AbstractUIPage {
 		this.add(desc);
 
 		this.add(WidgetFactory.makeDefaultSpacer());
-
-		MouseListener mListener = new MouseAdapter() {
-
-			public void mouseClicked(MouseEvent e) {
-				JTextField source = (JTextField) e.getSource();
-				showDialog(source);
-			}
-
-		};
-		JPanel classesPanel = WidgetFactory.makePanel();
-		classesPanel.setLayout(new BoxLayout(classesPanel, BoxLayout.Y_AXIS));
-
-		// Entity
-		JPanel entityPanel = WidgetFactory.makePanel(1);
-		entityPanel.add(WidgetFactory.makeLabel("Entity:", false));
-		observationEntity = WidgetFactory.makeOneLineTextField("<entity>");
-		observationEntity.addMouseListener(mListener);
-		entityPanel.add(observationEntity);
-		entityPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
-				8 * WizardSettings.PADDING));
-
-		// Characteristic
-		JPanel characteristicPanel = WidgetFactory.makePanel(1);
-		characteristicPanel.add(WidgetFactory.makeLabel("Characteristic:",
-				false));
-		observationCharacteristic = WidgetFactory
-				.makeOneLineTextField("<characteristic>");
-		observationCharacteristic.addMouseListener(mListener);
-
-		characteristicPanel.add(observationCharacteristic);
-		characteristicPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0,
-				0, 8 * WizardSettings.PADDING));
-
-		// Standard
-		JPanel standardPanel = WidgetFactory.makePanel(1);
-		standardPanel.add(WidgetFactory.makeLabel("Standard:", false));
-		observationStandard = WidgetFactory.makeOneLineTextField("<standard>");
-		observationStandard.addMouseListener(mListener);
-
-		standardPanel.add(observationStandard);
-		standardPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
-				8 * WizardSettings.PADDING));
 		
-		// Protocol
-		JPanel protocolPanel = WidgetFactory.makePanel(1);
-		protocolPanel.add(WidgetFactory.makeLabel("Protocol:", false));
-		observationProtocol = WidgetFactory.makeOneLineTextField("<protocol>");
-		observationProtocol.addMouseListener(mListener);
-
-		protocolPanel.add(observationProtocol);
-		protocolPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
-				8 * WizardSettings.PADDING));
-
-		// put them together
-		classesPanel.add(entityPanel);
-		classesPanel.add(WidgetFactory.makeDefaultSpacer());
-		classesPanel.add(characteristicPanel);
-		classesPanel.add(WidgetFactory.makeDefaultSpacer());
-		classesPanel.add(standardPanel);
-		classesPanel.add(WidgetFactory.makeDefaultSpacer());
-		classesPanel.add(protocolPanel);
-
-		this.add(classesPanel);
+		//add the main panel here
+		simpleAnnotationPanel = new SimpleAnnotationPanel();
+		this.add(simpleAnnotationPanel);
 
 		this.add(WidgetFactory.makeHalfSpacer());
 		this.add(WidgetFactory.makeDefaultSpacer());
 
-	}
-
-	private void showDialog(JTextField source) {
-		OntologyClassSelectionPage page = new OntologyClassSelectionPage();
-
-		// show the dialog
-		ModalDialog dialog = new ModalDialog(page, UIController.getInstance()
-				.getCurrentActiveWindow(), UISettings.POPUPDIALOG_WIDTH,
-				UISettings.POPUPDIALOG_HEIGHT);
-
-		// get the response back
-		if (dialog.USER_RESPONSE == ModalDialog.OK_OPTION) {
-			source.setText(page.getSelectedTerms().get(0));
-		}
-		page = null;
 	}
 
 	public void setAnnotation(Annotation a, String attributeName) {
@@ -211,22 +123,22 @@ public class AnnotationPage extends AbstractUIPage {
 			// try to set the text field values
 			try {
 				String entity = currentObservation.getEntity().getURI();
-				this.observationEntity.setText(entity);
+				this.simpleAnnotationPanel.setObservationEntity(entity);
 			} catch (Exception e) {
 			}
 			try {
 				String charString = currentCharacteristic.getURI();
-				this.observationCharacteristic.setText(charString);
+				this.simpleAnnotationPanel.setObservationCharacteristic(charString);
 			} catch (Exception e) {
 			}
 			try {
 				String standard = currentStandard.getURI();
-				this.observationStandard.setText(standard);
+				this.simpleAnnotationPanel.setObservationStandard(standard);
 			} catch (Exception e) {
 			}
 			try {
 				String protocol = currentProtocol.getURI();
-				this.observationProtocol.setText(protocol);
+				this.simpleAnnotationPanel.setObservationProtocol(protocol);
 			} catch (Exception e) {
 			}
 		} catch (Exception e) {
@@ -240,21 +152,21 @@ public class AnnotationPage extends AbstractUIPage {
 		// edit the existing values
 		if (currentCharacteristic == null) {
 			currentCharacteristic = new Characteristic(
-					observationCharacteristic.getText());
+					simpleAnnotationPanel.getObservationCharacteristic());
 		} else {
-			currentCharacteristic.setURI(observationCharacteristic.getText());
+			currentCharacteristic.setURI(simpleAnnotationPanel.getObservationCharacteristic());
 		}
 
 		if (currentStandard == null) {
-			currentStandard = new Standard(observationStandard.getText());
+			currentStandard = new Standard(simpleAnnotationPanel.getObservationStandard());
 		} else {
-			currentStandard.setURI(observationStandard.getText());
+			currentStandard.setURI(simpleAnnotationPanel.getObservationStandard());
 		}
 		
 		if (currentProtocol == null) {
-			currentProtocol = new Protocol(observationProtocol.getText());
+			currentProtocol = new Protocol(simpleAnnotationPanel.getObservationProtocol());
 		} else {
-			currentProtocol.setURI(observationProtocol.getText());
+			currentProtocol.setURI(simpleAnnotationPanel.getObservationProtocol());
 		}
 		
 		// create a measurement if there wasn't one already
@@ -277,7 +189,7 @@ public class AnnotationPage extends AbstractUIPage {
 		currentMapping.setMeasurement(currentMeasurement);
 
 		// make an entity from the form value
-		Entity entity = new Entity(observationEntity.getText());
+		Entity entity = new Entity(simpleAnnotationPanel.getObservationEntity());
 		
 		// look for existing Observations of this given entity
 //		 List<Observation> existingObservations = annotation.getObservations(entity);
