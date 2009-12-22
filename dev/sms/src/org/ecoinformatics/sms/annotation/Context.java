@@ -101,6 +101,14 @@ public class Context {
     public boolean isIdentifying() {
         return _isIdentifying;
     }
+    
+    public String toString() {
+    	if (_observation != null) {
+    		return _observation.toString();
+    	}
+    	return super.toString();
+    }
+    
     private Observation _observation;
     private Relationship _relationship;
     private boolean _isIdentifying;
