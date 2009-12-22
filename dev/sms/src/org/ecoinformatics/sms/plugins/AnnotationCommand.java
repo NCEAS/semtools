@@ -132,6 +132,9 @@ public class AnnotationCommand implements Command {
 				
 				if (showDialog()) {
 					
+					//the page will put things together for us
+					annotation = annotationPage.getAnnotation(attributeName);
+					
 					// save - still some TBD
 					AnnotationPlugin.saveAnnotation(annotation);
 					
