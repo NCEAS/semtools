@@ -45,6 +45,10 @@ public class Relationship extends OntologyClass {
     public Relationship() {
         super();
     }
+    
+    public Relationship(String uri) {
+        super(uri);
+    }
 
     /**
      * @param ontology the ontology
