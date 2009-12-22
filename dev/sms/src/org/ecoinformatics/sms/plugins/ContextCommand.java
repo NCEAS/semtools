@@ -30,13 +30,16 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
+import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.sms.annotation.Mapping;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
+import org.ecoinformatics.sms.annotation.Relationship;
 
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
 import edu.ucsb.nceas.morpho.datapackage.DataViewContainerPanel;
@@ -51,7 +54,7 @@ import edu.ucsb.nceas.morpho.util.StateChangeMonitor;
 /**
  * Class to handle edit column meta data command
  */
-public class ObservationCommand implements Command {
+public class ContextCommand implements Command {
 	/* Reference to morpho frame */
 	private MorphoFrame morphoFrame = null;
 
@@ -63,13 +66,13 @@ public class ObservationCommand implements Command {
 	private String entityName;
 	private AnnotationPage annotationPage = new AnnotationPage();
 	private Annotation annotation = null;
-	private boolean merge = true;
+	private boolean add = true;
 
 	/**
 	 * Constructor
 	 */
-	public ObservationCommand(boolean merge) {
-		this.merge = merge;
+	public ContextCommand(boolean add) {
+		this.add = add;
 	}
 
 	/**
@@ -120,60 +123,69 @@ public class ObservationCommand implements Command {
 					return;
 				}
 				
-				// process the attributes
+				// process the selected observation
 				table = dataView.getDataTable();
-				int[] selectedColumns = table.getSelectedColumns();
-				if (selectedColumns.length == 1) {
-					Log.debug(5, "Multiple columns must be selected!");
-					return;
-				}
+				int viewIndex = table.getSelectedColumn();
+				int attributeIndex =  table.getColumnModel().getColumn(viewIndex).getModelIndex();
+				String attributeName = adp.getAttributeName(entityIndex, attributeIndex);
+
+				// get the Observation that is/will be providing context
+				Mapping mapping = annotation.getMapping(attributeName);
+				Measurement measurement = mapping.getMeasurement();
+				Observation contextObservation = annotation.getObservation(measurement);
 				
-				Observation targetObservation = null;
-				List<Observation> observations = new ArrayList<Observation>();
-				for (int viewIndex: selectedColumns) {
-
-					int attributeIndex =  table.getColumnModel().getColumn(viewIndex).getModelIndex();
-					String attributeName = adp.getAttributeName(entityIndex, attributeIndex);
-
-					// get the annotation elements
-					Mapping mapping = annotation.getMapping(attributeName);
-					Measurement measurement = mapping.getMeasurement();
-					Observation observation = annotation.getObservation(measurement);
+				//ADD
+				if (add) {
+					// get the Observations it can provide context for
+					List<Observation> observations = annotation.getObservations();
 					
-					// merge or split them?
-					if (merge) {
-						// use the first one
-						if (targetObservation == null) {
-							targetObservation = observation;
-						} else {
-							// must be of the same entity
-							if (!observation.getEntity().equals(targetObservation.getEntity())) {
-								return;
-							}
-							//check that they are actually different observation instances currently
-							if (!observation.equals(targetObservation)) {
-								targetObservation.addMeasurement(measurement);
-								observation.removeMeasurement(measurement);
-								// remember to remove this observation form the annotation later
-								observations.add(observation);
-							}
-						}	
-					} else {
-						Observation splitObservation = new Observation();
-						splitObservation.setEntity(observation.getEntity());
-						splitObservation.setLabel("obs_" + System.currentTimeMillis());
-						splitObservation.addMeasurement(measurement);				
-						annotation.addObservation(splitObservation);
-						// remember to remove this observation later
-						observations.add(observation);
+					// remove "this" one
+					observations = new ArrayList<Observation>(observations);
+					observations.remove(contextObservation);
+					
+					// ask for the observation 
+					Object selectedObj = JOptionPane.showInputDialog(
+							morphoFrame, 
+							contextObservation + " provides context for: ", 
+							"Define Context", 
+							JOptionPane.INFORMATION_MESSAGE, 
+							null, 
+							observations.toArray(),
+							null
+							);
+					if (selectedObj != null) {
+						Observation selectedObservation = (Observation) selectedObj;
+						Context context = new Context();
+						context.setObservation(contextObservation);
+						//TODO: relationship
+						Relationship relationship = new Relationship();
+						context.setRelationship(relationship);
+						//TODO: identifying
+						context.setIdentifying(false);
+	
+						selectedObservation.addContext(context);
 					}
 				}
-				
-				// get rid of the old observations
-				for (Observation o: observations) {
-					annotation.removeObservation(o);
+				//REMOVE
+				else {
+					// get the existing contexts for this observation
+					List<Context> existingContexts = contextObservation.getContexts();
+					
+					// ask for the context to remove 
+					Object selectedObj = JOptionPane.showInputDialog(
+							morphoFrame, 
+							"Remove existing context for " + contextObservation, 
+							"Remove Context", 
+							JOptionPane.WARNING_MESSAGE, 
+							null, 
+							existingContexts.toArray(),
+							null
+							);
+					if (selectedObj != null) {
+						Context selectedContext = (Context) selectedObj;
+						contextObservation.removeContext(selectedContext);
+					}
 				}
-				
 					
 				// save - still some TBD
 				AnnotationPlugin.saveAnnotation(annotation);
@@ -186,5 +198,7 @@ public class ObservationCommand implements Command {
 
 		}
 	}
+	
+	
 
 }

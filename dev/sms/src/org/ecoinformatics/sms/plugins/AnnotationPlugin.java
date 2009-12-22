@@ -35,6 +35,7 @@ import org.ecoinformatics.sms.plugins.table.ScrollBarAdjustmentListener;
 
 import edu.ucsb.nceas.morpho.Morpho;
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
+import edu.ucsb.nceas.morpho.datapackage.AccessionNumber;
 import edu.ucsb.nceas.morpho.datapackage.DataViewContainerPanel;
 import edu.ucsb.nceas.morpho.datapackage.DataViewer;
 import edu.ucsb.nceas.morpho.datastore.FileSystemDataStore;
@@ -71,6 +72,10 @@ public class AnnotationPlugin
 	private GUIAction splitObservationAction;
 
 	private GUIAction mergeObservationAction;
+
+	private GUIAction addContextAction;
+
+	private GUIAction removeContextAction;
 	
 
 	/**
@@ -163,7 +168,55 @@ public class AnnotationPlugin
 		splitObservationAction.setEnabledOnStateChange(
                 StateChangeEvent.CREATE_NOENTITY_DATAPACKAGE_FRAME,
                 false, GUIAction.EVENT_LOCAL);
+		
+		addContextAction =
+			new GUIAction(
+				"Provides Context for...",
+				null,
+				new ContextCommand(true));
+		addContextAction.setToolTipText(
+			"Observation provides context for another Observation");
+		addContextAction.setMenuItemPosition(7);
+		addContextAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
+		addContextAction.setEnabled(false);
 
+		addContextAction.setEnabledOnStateChange(
+				StateChangeEvent.SELECT_DATATABLE_COLUMN,
+				true, GUIAction.EVENT_LOCAL);
+		addContextAction.setEnabledOnStateChange(
+                StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME,
+                true, GUIAction.EVENT_LOCAL);
+		addContextAction.setEnabledOnStateChange(
+                StateChangeEvent.CREATE_SEARCH_RESULT_FRAME,
+                false, GUIAction.EVENT_LOCAL);
+		addContextAction.setEnabledOnStateChange(
+                StateChangeEvent.CREATE_NOENTITY_DATAPACKAGE_FRAME,
+                false, GUIAction.EVENT_LOCAL);
+
+		removeContextAction =
+			new GUIAction(
+				"Remove Context",
+				null,
+				new ContextCommand(false));
+		removeContextAction.setToolTipText(
+			"Remove an Observation providing Context for this Observation");
+		removeContextAction.setMenuItemPosition(8);
+		removeContextAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
+		removeContextAction.setEnabled(false);
+
+		removeContextAction.setEnabledOnStateChange(
+				StateChangeEvent.SELECT_DATATABLE_COLUMN,
+				true, GUIAction.EVENT_LOCAL);
+		removeContextAction.setEnabledOnStateChange(
+                StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME,
+                true, GUIAction.EVENT_LOCAL);
+		removeContextAction.setEnabledOnStateChange(
+                StateChangeEvent.CREATE_SEARCH_RESULT_FRAME,
+                false, GUIAction.EVENT_LOCAL);
+		removeContextAction.setEnabledOnStateChange(
+                StateChangeEvent.CREATE_NOENTITY_DATAPACKAGE_FRAME,
+                false, GUIAction.EVENT_LOCAL);
+		
 		// Save Annotations
 	    GUIAction saveAction = new GUIAction("Save Annotations...",
 	                                              null,
@@ -198,6 +251,8 @@ public class AnnotationPlugin
 		controller.addGuiAction(annotateAction);
 		controller.addGuiAction(mergeObservationAction);
 		controller.addGuiAction(splitObservationAction);
+		controller.addGuiAction(addContextAction);
+		controller.addGuiAction(removeContextAction);
 		controller.addGuiAction(saveAction);
 		controller.addGuiAction(searchAction);
 
@@ -316,6 +371,33 @@ public class AnnotationPlugin
 
 		return searchtext.toString();
 	}
+	
+	public static void saveAnnotation(Annotation annotation) {
+		
+		try {
+			
+			// about to save
+			AccessionNumber accNum = new AccessionNumber(Morpho.thisStaticInstance);
+			String id = annotation.getURI();
+			if (id == null) {
+				id = accNum.getNextId();
+			} else {
+				// remove the old one if present
+				if (SMS.getInstance().getAnnotationManager().isAnnotation(id)) {
+					SMS.getInstance().getAnnotationManager().removeAnnotation(id);
+				}
+				id = accNum.incRev(id);
+			}
+			annotation.setURI(id);
+			
+			//save in the manager
+			SMS.getInstance().getAnnotationManager().importAnnotation(annotation, annotation.getURI());
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void handleStateChange(StateChangeEvent event) {
 
@@ -368,6 +450,10 @@ public class AnnotationPlugin
 					dataView.addPopupMenuItem(mergeObservationAction);
 					splitObservationAction.setEnabled(true);
 					dataView.addPopupMenuItem(splitObservationAction);
+					addContextAction.setEnabled(true);
+					dataView.addPopupMenuItem(addContextAction);
+					removeContextAction.setEnabled(true);
+					dataView.addPopupMenuItem(removeContextAction);
 				}
 			}
 		}

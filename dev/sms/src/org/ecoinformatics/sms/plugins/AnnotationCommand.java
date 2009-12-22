@@ -33,13 +33,8 @@ import javax.swing.JTable;
 
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
-import org.ecoinformatics.sms.annotation.Mapping;
-import org.ecoinformatics.sms.annotation.Measurement;
-import org.ecoinformatics.sms.annotation.Observation;
 
-import edu.ucsb.nceas.morpho.Morpho;
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
-import edu.ucsb.nceas.morpho.datapackage.AccessionNumber;
 import edu.ucsb.nceas.morpho.datapackage.DataViewContainerPanel;
 import edu.ucsb.nceas.morpho.datapackage.DataViewer;
 import edu.ucsb.nceas.morpho.framework.ModalDialog;
@@ -138,7 +133,7 @@ public class AnnotationCommand implements Command {
 				if (showDialog()) {
 					
 					// save - still some TBD
-					saveAnnotation();
+					AnnotationPlugin.saveAnnotation(annotation);
 					
 					// fire change event
 					StateChangeEvent annotationEvent = new StateChangeEvent(annotationPage, AnnotationPlugin.ANNOTATION_CHANGE_EVENT);
@@ -166,36 +161,6 @@ public class AnnotationCommand implements Command {
 		
 		//get the response back
 		return (dialog.USER_RESPONSE == ModalDialog.OK_OPTION);
-	}
-	
-	private void saveAnnotation() {
-		
-		try {
-			
-			//the page will put things together for us
-			annotation = annotationPage.getAnnotation(attributeName);
-			
-			// about to save
-			AccessionNumber accNum = new AccessionNumber(Morpho.thisStaticInstance);
-			String id = annotation.getURI();
-			if (id == null) {
-				id = accNum.getNextId();
-			} else {
-				// remove the old one if present
-				if (SMS.getInstance().getAnnotationManager().isAnnotation(id)) {
-					SMS.getInstance().getAnnotationManager().removeAnnotation(id);
-				}
-				id = accNum.incRev(id);
-			}
-			annotation.setURI(id);
-			
-			//save in the manager
-			SMS.getInstance().getAnnotationManager().importAnnotation(annotation, annotation.getURI());
-			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 }
