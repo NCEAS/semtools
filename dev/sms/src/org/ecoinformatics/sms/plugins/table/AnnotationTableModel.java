@@ -132,7 +132,7 @@ public class AnnotationTableModel extends AbstractTableModel {
 					return measurement.getProtocol();
 				}
 				else if (rowIndex == (OBSERVATION_ROW)) {
-					return observation.getLabel();
+					return observation;
 				}
 				else if (rowIndex == (CONTEXT_ROW)) {
 					//TODO handle multiple contexts?

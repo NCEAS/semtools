@@ -152,6 +152,9 @@ public class Observation {
    }
    
    public String toString() {
+	   if (_label != null) {
+		   return _label;
+	   }
 	   if (_entity != null) {
 		   return _entity.toString();
 	   }

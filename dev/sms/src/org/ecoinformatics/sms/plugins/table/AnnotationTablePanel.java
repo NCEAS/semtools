@@ -57,7 +57,7 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 
 	public AnnotationTablePanel(AnnotationTableModel annotationTableModel) {
 		super(new BorderLayout(0,0));
-		annotationTable = new JTable(annotationTableModel);
+		annotationTable = new AnnotationTable(annotationTableModel);
 		annotationTable.setColumnSelectionAllowed(true);
 		annotationTable.setRowSelectionAllowed(true);
 		annotationTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
