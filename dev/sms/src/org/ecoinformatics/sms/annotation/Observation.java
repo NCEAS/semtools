@@ -38,7 +38,7 @@ import java.util.ArrayList;
 /**
  * Objects of this class represent observations
  */
-public class Observation {
+public class Observation implements Comparable {
 
    /** 
     * Set the label of this observation
@@ -49,7 +49,7 @@ public class Observation {
    }
 
    /** 
-    * Get the label of this observatin
+    * Get the label of this observation
     * @return the label
     */
    public String getLabel() {
@@ -160,6 +160,19 @@ public class Observation {
 	   }
 	   return null;
    }
+   
+   /**
+    * do an alpha sort by label - really we only care about equality
+    */
+   public int compareTo(Object o) {
+	   if (o instanceof Observation) {
+		   Observation obs = (Observation) o;
+		   if (obs.getLabel() != null) {
+			   return this.getLabel().compareTo(obs.getLabel());
+		   }
+	   }
+	   return 0;
+	}
 
    private String _label;
    private Entity _entity;
