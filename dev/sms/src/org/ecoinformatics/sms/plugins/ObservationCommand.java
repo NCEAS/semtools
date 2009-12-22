@@ -148,6 +148,10 @@ public class ObservationCommand implements Command {
 						} else {
 							// must be of the same entity
 							if (!observation.getEntity().equals(targetObservation.getEntity())) {
+								Log.debug(5, 
+										"Observations must share the same Entity Type! \n" +
+										observation.getEntity() + " != " + targetObservation.getEntity()
+										);
 								return;
 							}
 							//check that they are actually different observation instances currently
