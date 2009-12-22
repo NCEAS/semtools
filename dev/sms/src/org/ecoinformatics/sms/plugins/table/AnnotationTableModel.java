@@ -50,12 +50,12 @@ public class AnnotationTableModel extends AbstractTableModel {
 	private List<String> columnIds;
 	
 	private static final int ROW_COUNT = 6;
-	private static final int CONTEXT_ROW = 0;
-	private static final int OBSERVATION_ROW = 1;
-	private static final int ENTITY_ROW = 2;
-	private static final int CHARACTERISTIC_ROW = 3;
-	private static final int STANDARD_ROW = 4;
-	private static final int PROTOCOL_ROW = 5;
+	public static final int CONTEXT_ROW = 0;
+	public static final int OBSERVATION_ROW = 1;
+	public static final int ENTITY_ROW = 2;
+	public static final int CHARACTERISTIC_ROW = 3;
+	public static final int STANDARD_ROW = 4;
+	public static final int PROTOCOL_ROW = 5;
 
 	
 	public AnnotationTableModel(Annotation annotation, List<String> columns) {

@@ -26,8 +26,14 @@
 
 package org.ecoinformatics.sms.plugins.table;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
+
+import org.ecoinformatics.sms.annotation.Observation;
 
 /**
  * Panel for viewing and editing data-centric Annotations
@@ -46,5 +52,26 @@ public class AnnotationTable extends JTable {
 
 	public TableCellRenderer getCellRenderer(int row, int column) {
 		return new ObservationCellRenderer();
+	}
+	
+	public void reorder() {
+		List<Observation> sortedObservations = new ArrayList<Observation>();
+		
+		for (int i = 0; i < this.getColumnCount(); i++) {
+			Observation cellObs = (Observation) this.getValueAt(AnnotationTableModel.OBSERVATION_ROW, i);
+			if (cellObs != null) {
+				sortedObservations.add(cellObs);
+			}
+		}
+		Collections.sort(sortedObservations);
+		
+		for (int i = 0; i < this.getColumnCount(); i++) {
+			Observation cellObs = (Observation) this.getValueAt(AnnotationTableModel.OBSERVATION_ROW, i);
+			if (cellObs != null) {
+				int sortedIndex = sortedObservations.indexOf(cellObs);
+				this.moveColumn(i, sortedIndex);
+			}
+		}
+		
 	}
 }

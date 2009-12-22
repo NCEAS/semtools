@@ -29,7 +29,10 @@ package org.ecoinformatics.sms.plugins.table;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -57,6 +60,8 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 
 	public AnnotationTablePanel(AnnotationTableModel annotationTableModel) {
 		super(new BorderLayout(0,0));
+		
+		// add the main table
 		annotationTable = new AnnotationTable(annotationTableModel);
 		annotationTable.setColumnSelectionAllowed(true);
 		annotationTable.setRowSelectionAllowed(true);
@@ -67,13 +72,25 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 	    Dimension dim = new Dimension(100, 96);
 		annotationTable.setPreferredScrollableViewportSize(dim);
 		
+		// put it in a scrollpane
 		annotationScrollPane = new JScrollPane(annotationTable);
 		
+		// add the row headers
 	    JList rowheaders = new JList(annotationTableModel.getRowHeaders());
 	    rowheaders.setPreferredSize(rowHeaderDim);
-	    
 		rowheaders.setCellRenderer(new RowHeaderRenderer(annotationTable));
 		annotationScrollPane.setRowHeaderView(rowheaders);
+		
+		// add the upper left corner
+		JButton reorder = new JButton();
+		reorder.setAction(new AbstractAction("Reorder") {
+
+			public void actionPerformed(ActionEvent e) {
+				((AnnotationTable)annotationTable).reorder();	
+			}
+			
+		});
+		annotationScrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, reorder);
 		
 		this.add(BorderLayout.CENTER, annotationScrollPane);
 		
