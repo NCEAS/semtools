@@ -61,8 +61,10 @@ public class OntologyClass {
     }
     
     public OntologyClass(String uri) {
-        _ontology = new Ontology(uri.substring(0, uri.indexOf("#")));
-        _className = uri.substring(uri.indexOf("#") + 1);
+    	if (uri.indexOf("#") > -1) {
+	        _ontology = new Ontology(uri.substring(0, uri.indexOf("#")));
+	        _className = uri.substring(uri.indexOf("#") + 1);
+    	}
     }
 
     /**
@@ -94,8 +96,10 @@ public class OntologyClass {
      * @return the class name
      */
     public void setURI(String uri) {
-    	  _ontology = new Ontology(uri.substring(0, uri.indexOf("#")));
-          _className = uri.substring(uri.indexOf("#") + 1);
+    	if (uri.indexOf("#") > -1) {
+    		_ontology = new Ontology(uri.substring(0, uri.indexOf("#")));
+    		_className = uri.substring(uri.indexOf("#") + 1);
+    	}
     }
 
     /**
