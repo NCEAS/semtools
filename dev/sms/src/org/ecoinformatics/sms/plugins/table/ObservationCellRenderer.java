@@ -12,7 +12,9 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JButton;
@@ -24,6 +26,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellRenderer;
 
+import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.sms.annotation.Observation;
 
 /**
@@ -33,7 +36,8 @@ import org.ecoinformatics.sms.annotation.Observation;
 public class ObservationCellRenderer extends JLabel implements
 		TableCellRenderer {
 
-	public static Map<Object, Color> colorMap = new HashMap<Object, Color>();
+	public static Map<Object, Color> colorMap = 
+		Collections.synchronizedMap(new HashMap<Object, Color>());
 	
 	/*
 	 * (non-Javadoc)
@@ -44,16 +48,32 @@ public class ObservationCellRenderer extends JLabel implements
 	 */
 	public Component getTableCellRendererComponent(JTable table, Object value,
 			boolean isSelected, boolean hasFocus, int row, int column) {
+		
+		Observation observation = null;
+		
+		// process possible Observation from Contexts
+		if (value instanceof List) {
+			// for Context
+			List<Context> contexts = (List<Context>) value;
+			if (contexts.size() > 0) {
+				observation = contexts.get(0).getObservation();
+			}
+		}
+		// get the Observation directly
 		if (value instanceof Observation) {
-			//look up the color for this object
-			Color c = colorMap.get(value);
+			observation = (Observation) value;
+		}
+		
+		if (observation != null) {
+			//look up the color for this Observation
+			Color c = colorMap.get(observation);
 			if (c == null) {
 				int red = (int) (Math.random( )*256);
 				int green = (int)(Math.random( )*256);
 				int blue = (int)(Math.random( )*256);
 				Color randomColor = new Color(red, green, blue);
 				c = randomColor;
-				colorMap.put(value, c);
+				colorMap.put(observation, c);
 			}
 			this.setColor1(c);
 		}

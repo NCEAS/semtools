@@ -118,8 +118,11 @@ public class AnnotationTableModel extends AbstractTableModel {
 			Measurement measurement = mapping.getMeasurement();
 			if (measurement != null) {
 				Observation observation = annotation.getObservation(measurement);
+				
 				if (rowIndex == (ENTITY_ROW)) {
-					return observation.getEntity();
+					if (observation != null) {
+						return observation.getEntity();
+					}
 				}
 				else if (rowIndex == (CHARACTERISTIC_ROW)) {
 					// TODO multiple characteristics
@@ -136,7 +139,9 @@ public class AnnotationTableModel extends AbstractTableModel {
 				}
 				else if (rowIndex == (CONTEXT_ROW)) {
 					//TODO handle multiple contexts?
-					return observation.getContexts();
+					if (observation != null) {
+						return observation.getContexts();
+					}
 				}
 			}
 		}
