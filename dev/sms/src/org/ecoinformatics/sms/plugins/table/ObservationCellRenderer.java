@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.table.TableCellRenderer;
 
 import org.ecoinformatics.sms.annotation.Context;
+import org.ecoinformatics.sms.annotation.Entity;
 import org.ecoinformatics.sms.annotation.Observation;
 
 /**
@@ -59,6 +60,11 @@ public class ObservationCellRenderer extends JLabel implements
 				observation = contexts.get(0).getObservation();
 			}
 		}
+		// get the Observation of the entity from the obs row
+		if (value instanceof Entity) {
+			observation = (Observation) table.getValueAt(AnnotationTableModel.OBSERVATION_ROW, column);
+		}
+		
 		// get the Observation directly
 		if (value instanceof Observation) {
 			observation = (Observation) value;
