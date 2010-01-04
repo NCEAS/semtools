@@ -30,6 +30,8 @@ package org.ecoinformatics.sms.plugins;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
@@ -44,6 +46,7 @@ import org.ecoinformatics.sms.plugins.ui.SimpleAnnotationPanel;
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
 import edu.ucsb.nceas.morpho.plugins.DataPackageWizardInterface;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
+import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
 import edu.ucsb.nceas.utilities.OrderedMap;
 
 public class AnnotationPage extends AbstractUIPage {
@@ -60,6 +63,11 @@ public class AnnotationPage extends AbstractUIPage {
 	// *
 	
 	private SimpleAnnotationPanel simpleAnnotationPanel = null;
+	
+	private JLabel attributeLabel;
+
+	private JTextField observationLabel;
+	private JLabel observationLabelLabel;
 
 	private Annotation annotation = null;
 	private Observation currentObservation;
@@ -95,6 +103,31 @@ public class AnnotationPage extends AbstractUIPage {
 
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
+		// Attribute Label
+		JPanel attributeLabelPanel = WidgetFactory.makePanel(1);
+		attributeLabelPanel.add(WidgetFactory.makeLabel("Attribute:", false));
+		attributeLabel = WidgetFactory.makeLabel("?", false);
+		attributeLabelPanel.add(attributeLabel);
+		attributeLabelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
+				8 * WizardSettings.PADDING));
+		
+		this.add(attributeLabelPanel);
+		
+		this.add(WidgetFactory.makeDefaultSpacer());
+		
+		// Observation Label
+		JPanel labelPanel = WidgetFactory.makePanel(1);
+		observationLabelLabel = WidgetFactory.makeLabel("Label:", true);
+		labelPanel.add(observationLabelLabel);
+		observationLabel = WidgetFactory.makeOneLineTextField("<label>");
+		labelPanel.add(observationLabel);
+		labelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
+				8 * WizardSettings.PADDING));
+		
+		this.add(labelPanel);
+		
+		this.add(WidgetFactory.makeDefaultSpacer());
+
 		//add the main panel here
 		simpleAnnotationPanel = new SimpleAnnotationPanel();
 		this.add(simpleAnnotationPanel);
@@ -106,9 +139,11 @@ public class AnnotationPage extends AbstractUIPage {
 
 	public void setAnnotation(Annotation a, String attributeName) {
 		this.annotation = a;
-
+		
 		try {
 			// what are we editing:
+			attributeLabel.setText(attributeName);
+
 			// is there a measurement mapping for the attribute?
 			currentMapping = annotation.getMapping(attributeName);
 			currentMeasurement = currentMapping.getMeasurement();
@@ -121,6 +156,11 @@ public class AnnotationPage extends AbstractUIPage {
 			currentObservation = annotation.getObservation(currentMeasurement);
 
 			// try to set the text field values
+			try {
+				String label = currentObservation.getLabel();
+				this.observationLabel.setText(label);
+			} catch (Exception e) {
+			}
 			try {
 				String entity = currentObservation.getEntity().getURI();
 				this.simpleAnnotationPanel.setObservationEntity(entity);
@@ -214,7 +254,13 @@ public class AnnotationPage extends AbstractUIPage {
 			currentObservation.addMeasurement(currentMeasurement);
 			annotation.addObservation(currentObservation);
 		}
-
+		
+		// TODO: check uniqueness
+		String label = observationLabel.getText();
+		if (label != null) {
+			currentObservation.setLabel(label);
+		}
+		
 		// set the new values for existing classes
 		currentObservation.setEntity(entity);
 
@@ -254,6 +300,17 @@ public class AnnotationPage extends AbstractUIPage {
 	 */
 	public boolean onAdvanceAction() {
 
+		// TODO: check uniqueness
+		String label = observationLabel.getText();
+		if (label != null) {
+			Observation obs = annotation.getObservation(label);
+			if (obs != null && !obs.equals(currentObservation)) {
+				//not unique
+				WidgetFactory.hiliteComponent(observationLabelLabel);
+				return false;
+			}
+		}
+		WidgetFactory.unhiliteComponent(observationLabelLabel);
 		return true;
 	}
 

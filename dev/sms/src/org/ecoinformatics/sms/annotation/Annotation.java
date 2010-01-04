@@ -134,6 +134,19 @@ public class Annotation {
    }
    
    /**
+    * Get the observation containing for this label 
+    * @return the observation matching the label
+    */
+   public Observation getObservation(String label) {
+      for (Observation o: _observations) {
+    	  if (o.getLabel().equals(label)) {
+    		  return o;
+    	  }
+      }
+      return null;
+   }
+   
+   /**
     * Get the observation containing this entity
     * @return the list of observations matching the entity
     */
