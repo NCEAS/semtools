@@ -29,6 +29,7 @@
 package org.ecoinformatics.sms.plugins;
 
 import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -68,6 +69,8 @@ public class AnnotationPage extends AbstractUIPage {
 
 	private JTextField observationLabel;
 	private JLabel observationLabelLabel;
+	
+	private JCheckBox observationIsDistinct;
 
 	private Annotation annotation = null;
 	private Observation currentObservation;
@@ -126,7 +129,16 @@ public class AnnotationPage extends AbstractUIPage {
 		
 		this.add(labelPanel);
 		
-		this.add(WidgetFactory.makeDefaultSpacer());
+		//this.add(WidgetFactory.makeHalfSpacer());
+		
+		// Observation distinct
+		observationIsDistinct = WidgetFactory.makeCheckBox("Is Distinct?", false);
+		labelPanel.add(observationIsDistinct);
+		labelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
+				8 * WizardSettings.PADDING));
+		
+		
+		this.add(WidgetFactory.makeHalfSpacer());
 
 		//add the main panel here
 		simpleAnnotationPanel = new SimpleAnnotationPanel();
@@ -156,6 +168,11 @@ public class AnnotationPage extends AbstractUIPage {
 			currentObservation = annotation.getObservation(currentMeasurement);
 
 			// try to set the text field values
+			try {
+				boolean distinct = currentObservation.isDistinct();
+				this.observationIsDistinct.setSelected(distinct);
+			} catch (Exception e) {
+			}
 			try {
 				String label = currentObservation.getLabel();
 				this.observationLabel.setText(label);
@@ -260,6 +277,9 @@ public class AnnotationPage extends AbstractUIPage {
 		if (label != null) {
 			currentObservation.setLabel(label);
 		}
+		
+		boolean distinct = observationIsDistinct.isSelected();
+		currentObservation.setDistinct(distinct);
 		
 		// set the new values for existing classes
 		currentObservation.setEntity(entity);
