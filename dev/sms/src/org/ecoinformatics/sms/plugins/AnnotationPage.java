@@ -67,10 +67,15 @@ public class AnnotationPage extends AbstractUIPage {
 	
 	private JLabel attributeLabel;
 
+	// observation
 	private JTextField observationLabel;
 	private JLabel observationLabelLabel;
-	
 	private JCheckBox observationIsDistinct;
+	
+	// measurement
+	private JTextField measurementLabel;
+	private JLabel measurementLabelLabel;
+	private JCheckBox measurementIsKey;
 
 	private Annotation annotation = null;
 	private Observation currentObservation;
@@ -103,7 +108,6 @@ public class AnnotationPage extends AbstractUIPage {
 								+ "The Ontology Browser can be used to navigate specific ontologies.",
 						2);
 		this.add(desc);
-
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
 		// Attribute Label
@@ -113,39 +117,50 @@ public class AnnotationPage extends AbstractUIPage {
 		attributeLabelPanel.add(attributeLabel);
 		attributeLabelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
-		
 		this.add(attributeLabelPanel);
-		
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
-		// Observation Label
-		JPanel labelPanel = WidgetFactory.makePanel(1);
-		observationLabelLabel = WidgetFactory.makeLabel("Label:", true);
-		labelPanel.add(observationLabelLabel);
-		observationLabel = WidgetFactory.makeOneLineTextField("<label>");
-		labelPanel.add(observationLabel);
-		labelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
+		// Measurement Label
+		JPanel measurementLabelPanel = WidgetFactory.makePanel(1);
+		measurementLabelLabel = WidgetFactory.makeLabel("Measurement Label:", true);
+		measurementLabelPanel.add(measurementLabelLabel);
+		measurementLabel = WidgetFactory.makeOneLineTextField("<label>");
+		measurementLabelPanel.add(measurementLabel);
+		measurementLabelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
-		
-		this.add(labelPanel);
-		
-		//this.add(WidgetFactory.makeHalfSpacer());
-		
-		// Observation distinct
-		observationIsDistinct = WidgetFactory.makeCheckBox("Is Distinct?", false);
-		labelPanel.add(observationIsDistinct);
-		labelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
+		// measurement key
+		measurementIsKey = WidgetFactory.makeCheckBox("Is Key?", false);
+		measurementLabelPanel.add(measurementIsKey);
+		measurementLabelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
+		this.add(measurementLabelPanel);
+		this.add(WidgetFactory.makeDefaultSpacer());
 		
-		
-		this.add(WidgetFactory.makeHalfSpacer());
+		//this.add(WidgetFactory.makeDefaultSpacer());
 
 		//add the main panel here
 		simpleAnnotationPanel = new SimpleAnnotationPanel();
 		this.add(simpleAnnotationPanel);
 
-		this.add(WidgetFactory.makeHalfSpacer());
 		this.add(WidgetFactory.makeDefaultSpacer());
+		this.add(WidgetFactory.makeDefaultSpacer());
+		
+		// Observation Label
+		JPanel labelPanel = WidgetFactory.makePanel(1);
+		observationLabelLabel = WidgetFactory.makeLabel("Observation Label:", true);
+		labelPanel.add(observationLabelLabel);
+		observationLabel = WidgetFactory.makeOneLineTextField("<label>");
+		labelPanel.add(observationLabel);
+		labelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
+				8 * WizardSettings.PADDING));
+		// Observation distinct
+		observationIsDistinct = WidgetFactory.makeCheckBox("Is Distinct?", false);
+		labelPanel.add(observationIsDistinct);
+		labelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
+				8 * WizardSettings.PADDING));
+		this.add(labelPanel);
+		this.add(WidgetFactory.makeDefaultSpacer());
+		
 
 	}
 
@@ -176,6 +191,16 @@ public class AnnotationPage extends AbstractUIPage {
 			try {
 				String label = currentObservation.getLabel();
 				this.observationLabel.setText(label);
+			} catch (Exception e) {
+			}
+			try {
+				boolean key = currentMeasurement.isKey();
+				this.measurementIsKey.setSelected(key);
+			} catch (Exception e) {
+			}
+			try {
+				String label = currentMeasurement.getLabel();
+				this.measurementLabel.setText(label);
 			} catch (Exception e) {
 			}
 			try {
@@ -236,6 +261,15 @@ public class AnnotationPage extends AbstractUIPage {
 		currentMeasurement.setProtocol(currentProtocol);
 		currentMeasurement.getCharacteristics().clear();
 		currentMeasurement.addCharacteristic(currentCharacteristic);
+		
+		// measurement label
+		String mLabel = measurementLabel.getText();
+		if (mLabel != null) {
+			currentMeasurement.setLabel(mLabel);
+		}
+		
+		boolean key = measurementIsKey.isSelected();
+		currentMeasurement.setKey(key);
 
 		// a measurement mapping for this attribute
 		if (currentMapping == null) {
@@ -272,7 +306,7 @@ public class AnnotationPage extends AbstractUIPage {
 			annotation.addObservation(currentObservation);
 		}
 		
-		// TODO: check uniqueness
+		// observation label
 		String label = observationLabel.getText();
 		if (label != null) {
 			currentObservation.setLabel(label);
@@ -280,6 +314,8 @@ public class AnnotationPage extends AbstractUIPage {
 		
 		boolean distinct = observationIsDistinct.isSelected();
 		currentObservation.setDistinct(distinct);
+		
+		
 		
 		// set the new values for existing classes
 		currentObservation.setEntity(entity);
@@ -320,7 +356,7 @@ public class AnnotationPage extends AbstractUIPage {
 	 */
 	public boolean onAdvanceAction() {
 
-		// TODO: check uniqueness
+		// check uniqueness of label
 		String label = observationLabel.getText();
 		if (label != null) {
 			Observation obs = annotation.getObservation(label);
