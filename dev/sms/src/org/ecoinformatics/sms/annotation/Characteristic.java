@@ -56,8 +56,9 @@ public class Characteristic extends OntologyClass {
     
     /**
      * @param uri the uri
+     * @throws Exception 
      */
-    public Characteristic(String uri) {
+    public Characteristic(String uri) throws Exception {
         super(uri);
     }
 } 

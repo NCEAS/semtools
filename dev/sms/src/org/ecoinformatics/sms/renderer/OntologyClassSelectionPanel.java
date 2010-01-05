@@ -640,7 +640,13 @@ public class OntologyClassSelectionPanel extends JPanel {
 			} else {
 				String searchStr = ae.getActionCommand();
 				//TODO: fuzzy match for search class
-				OntologyClass searchCls = new OntologyClass(searchStr);
+				OntologyClass searchCls = null;
+				try {
+					searchCls = new OntologyClass(searchStr);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				if (searchCls != null)
 					doSelect(searchCls);
 			}

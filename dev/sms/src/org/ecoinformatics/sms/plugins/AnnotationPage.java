@@ -231,37 +231,47 @@ public class AnnotationPage extends AbstractUIPage {
 
 	public Annotation getAnnotation(String attributeName) {
 
-		// edit the existing values
-		if (currentCharacteristic == null) {
-			currentCharacteristic = new Characteristic(
-					simpleAnnotationPanel.getObservationCharacteristic());
-		} else {
-			currentCharacteristic.setURI(simpleAnnotationPanel.getObservationCharacteristic());
-		}
-
-		if (currentStandard == null) {
-			currentStandard = new Standard(simpleAnnotationPanel.getObservationStandard());
-		} else {
-			currentStandard.setURI(simpleAnnotationPanel.getObservationStandard());
-		}
-		
-		if (currentProtocol == null) {
-			currentProtocol = new Protocol(simpleAnnotationPanel.getObservationProtocol());
-		} else {
-			currentProtocol.setURI(simpleAnnotationPanel.getObservationProtocol());
-		}
-		
 		// create a measurement if there wasn't one already
 		if (currentMeasurement == null) {
 			currentMeasurement = new Measurement();
 			currentMeasurement.setLabel("measurement_"
 					+ System.currentTimeMillis());
 		}
-		currentMeasurement.setStandard(currentStandard);
-		currentMeasurement.setProtocol(currentProtocol);
-		currentMeasurement.getCharacteristics().clear();
-		currentMeasurement.addCharacteristic(currentCharacteristic);
 		
+		// edit the existing values
+		try {
+			if (currentCharacteristic == null) {
+				currentCharacteristic = new Characteristic(
+						simpleAnnotationPanel.getObservationCharacteristic());
+			} else {
+				currentCharacteristic.setURI(simpleAnnotationPanel.getObservationCharacteristic());
+			}
+			currentMeasurement.getCharacteristics().clear();
+			currentMeasurement.addCharacteristic(currentCharacteristic);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			if (currentStandard == null) {
+				currentStandard = new Standard(simpleAnnotationPanel.getObservationStandard());
+			} else {
+				currentStandard.setURI(simpleAnnotationPanel.getObservationStandard());
+			}
+			currentMeasurement.setStandard(currentStandard);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		try {
+			if (currentProtocol == null) {
+				currentProtocol = new Protocol(simpleAnnotationPanel.getObservationProtocol());
+			} else {
+				currentProtocol.setURI(simpleAnnotationPanel.getObservationProtocol());
+			}
+			currentMeasurement.setProtocol(currentProtocol);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		// measurement label
 		String mLabel = measurementLabel.getText();
 		if (mLabel != null) {
@@ -280,7 +290,13 @@ public class AnnotationPage extends AbstractUIPage {
 		currentMapping.setMeasurement(currentMeasurement);
 
 		// make an entity from the form value
-		Entity entity = new Entity(simpleAnnotationPanel.getObservationEntity());
+		Entity entity = null;
+		try {
+			entity = new Entity(simpleAnnotationPanel.getObservationEntity());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// look for existing Observations of this given entity
 //		 List<Observation> existingObservations = annotation.getObservations(entity);
@@ -314,8 +330,6 @@ public class AnnotationPage extends AbstractUIPage {
 		
 		boolean distinct = observationIsDistinct.isSelected();
 		currentObservation.setDistinct(distinct);
-		
-		
 		
 		// set the new values for existing classes
 		currentObservation.setEntity(entity);

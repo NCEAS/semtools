@@ -46,7 +46,7 @@ public class Relationship extends OntologyClass {
         super();
     }
     
-    public Relationship(String uri) {
+    public Relationship(String uri) throws Exception {
         super(uri);
     }
 

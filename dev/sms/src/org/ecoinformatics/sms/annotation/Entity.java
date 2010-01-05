@@ -58,8 +58,9 @@ public class Entity extends OntologyClass {
     
     /**
      * @param the uri
+     * @throws Exception 
      */
-    public Entity(String uri) {
+    public Entity(String uri) throws Exception {
         super(uri);
     }
 

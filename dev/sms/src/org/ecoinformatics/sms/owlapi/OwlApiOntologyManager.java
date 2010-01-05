@@ -187,7 +187,13 @@ public class OwlApiOntologyManager implements OntologyManager {
 					
 					// add the subclass when appropriate
 					if (!subclass.isAnonymous()) {
-						OntologyClass ontologyClass = new OntologyClass(subclass.asOWLClass().getURI().toString());
+						OntologyClass ontologyClass = null;
+						try {
+							ontologyClass = new OntologyClass(subclass.asOWLClass().getURI().toString());
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						// include in the return list
 						classes.add(ontologyClass);
 					}
@@ -223,9 +229,15 @@ public class OwlApiOntologyManager implements OntologyManager {
 				
 				// add the subclass when appropriate
 				if (!subclass.isAnonymous()) {
-					OntologyClass ontologyClass = new OntologyClass(subclass.asOWLClass().getURI().toString());
-					// include in the return list
-					classes.add(ontologyClass);
+					OntologyClass ontologyClass = null;
+					try {
+						ontologyClass = new OntologyClass(subclass.asOWLClass().getURI().toString());
+						// include in the return list
+						classes.add(ontologyClass);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		}
@@ -265,9 +277,15 @@ public class OwlApiOntologyManager implements OntologyManager {
 					// add the superclass when appropriate
 					if (!superclassDesc.isAnonymous()) {
 						OWLClass superclass = superclassDesc.asOWLClass();
-						OntologyClass ontologyClass = new OntologyClass(superclass.getURI().toString());
-						// include in the return list
-						classes.add(ontologyClass);
+						OntologyClass ontologyClass = null;
+						try {
+							ontologyClass = new OntologyClass(superclass.getURI().toString());
+							// include in the return list
+							classes.add(ontologyClass);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 			}
@@ -299,9 +317,15 @@ public class OwlApiOntologyManager implements OntologyManager {
 				
 				// add the superclass when appropriate
 				if (!superclass.isAnonymous()) {
-					OntologyClass ontologyClass = new OntologyClass(superclass.asOWLClass().getURI().toString());
-					// include in the return list
-					classes.add(ontologyClass);
+					OntologyClass ontologyClass = null;
+					try {
+						ontologyClass = new OntologyClass(superclass.asOWLClass().getURI().toString());
+						// include in the return list
+						classes.add(ontologyClass);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		}

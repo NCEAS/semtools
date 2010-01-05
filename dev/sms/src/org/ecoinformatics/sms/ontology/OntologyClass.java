@@ -60,10 +60,12 @@ public class OntologyClass {
         _className = className;
     }
     
-    public OntologyClass(String uri) {
+    public OntologyClass(String uri) throws Exception {
     	if (uri.indexOf("#") > -1) {
 	        _ontology = new Ontology(uri.substring(0, uri.indexOf("#")));
 	        _className = uri.substring(uri.indexOf("#") + 1);
+    	} else {
+    		throw new Exception("URI does not refer to a valid class");
     	}
     }
 
@@ -94,11 +96,14 @@ public class OntologyClass {
     /**
      * Set the name of the class
      * @return the class name
+     * @throws Exception 
      */
-    public void setURI(String uri) {
+    public void setURI(String uri) throws Exception {
     	if (uri.indexOf("#") > -1) {
     		_ontology = new Ontology(uri.substring(0, uri.indexOf("#")));
     		_className = uri.substring(uri.indexOf("#") + 1);
+    	} else {
+    		throw new Exception("URI does not refer to a valid class");
     	}
     }
 

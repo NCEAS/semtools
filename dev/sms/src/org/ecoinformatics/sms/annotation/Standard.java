@@ -56,8 +56,9 @@ public class Standard extends OntologyClass {
     
     /**
      * @param uri the uri
+     * @throws Exception 
      */
-    public Standard(String uri) {
+    public Standard(String uri) throws Exception {
         super(uri);
     }
 } 

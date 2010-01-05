@@ -56,8 +56,9 @@ public class Protocol extends OntologyClass {
     
     /**
      * @param uri the uri
+     * @throws Exception 
      */
-    public Protocol(String uri) {
+    public Protocol(String uri) throws Exception {
         super(uri);
     }
 } 
