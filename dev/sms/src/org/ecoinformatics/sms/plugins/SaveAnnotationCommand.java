@@ -27,17 +27,8 @@
 package org.ecoinformatics.sms.plugins;
 
 import java.awt.event.ActionEvent;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.StringReader;
-import java.util.List;
 
-import org.ecoinformatics.sms.SMS;
-import org.ecoinformatics.sms.annotation.Annotation;
-
-import edu.ucsb.nceas.morpho.Morpho;
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
-import edu.ucsb.nceas.morpho.datastore.FileSystemDataStore;
 import edu.ucsb.nceas.morpho.framework.UIController;
 import edu.ucsb.nceas.morpho.util.Command;
 
@@ -58,25 +49,12 @@ public class SaveAnnotationCommand implements Command {
 	 *            ActionEvent
 	 */
 	public void execute(ActionEvent event) {
-
-		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
 		
-		// get the annotations for this datapackage
+		// saving annotations for current packageId 
 		AbstractDataPackage adp = UIController.getInstance().getCurrentAbstractDataPackage();
 		String packageId = adp.getPackageId();
-		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId, null);
 		
-		for (Annotation annotation: annotations) {
-		
-			String id = annotation.getURI();
-			// save if no file for this docid
-			if (fds.status(id).equals(FileSystemDataStore.NONEXIST)) {
-				//save in local store
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				annotation.write(baos);
-				File annotationFile = fds.saveFile(id, new StringReader(baos.toString()));
-			}
-		}
+		AnnotationPlugin.serializeAnnotation(packageId);
 	}
 
 }

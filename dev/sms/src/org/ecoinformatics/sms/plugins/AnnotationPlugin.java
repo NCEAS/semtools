@@ -17,8 +17,11 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseListener;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.util.List;
 import java.util.Vector;
 
@@ -50,6 +53,7 @@ import edu.ucsb.nceas.morpho.query.Query;
 import edu.ucsb.nceas.morpho.query.ResultSet;
 import edu.ucsb.nceas.morpho.util.GUIAction;
 import edu.ucsb.nceas.morpho.util.Log;
+import edu.ucsb.nceas.morpho.util.SaveEvent;
 import edu.ucsb.nceas.morpho.util.StateChangeEvent;
 import edu.ucsb.nceas.morpho.util.StateChangeListener;
 import edu.ucsb.nceas.morpho.util.StateChangeMonitor;
@@ -257,9 +261,10 @@ public class AnnotationPlugin
 		controller.addGuiAction(searchAction);
 
 		
-		//register as a listener for data frame opening
+		//register as a listener for events
 		StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME, this);
 		StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SELECT_DATA_VIEWER, this);
+		StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SAVE_DATAPACKAGE, this);
 		
 		// initialize the annotations
 		initializeAnnotations();
@@ -398,6 +403,24 @@ public class AnnotationPlugin
 			e.printStackTrace();
 		}
 	}
+	
+	// TODO: handle remote locations
+	public static void serializeAnnotation(String packageId) {
+		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
+		
+		// get the annotations for this datapackage
+		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId, null);		
+		for (Annotation annotation: annotations) {	
+			String id = annotation.getURI();
+			// save if no file for this docid
+			if (fds.status(id).equals(FileSystemDataStore.NONEXIST)) {
+				//save in local store
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				annotation.write(baos);
+				File annotationFile = fds.saveFile(id, new StringReader(baos.toString()));
+			}
+		}
+	}
 
 	public void handleStateChange(StateChangeEvent event) {
 
@@ -412,7 +435,29 @@ public class AnnotationPlugin
 				buildAnnotationTable();
 			}
 		}
+		
+		if (event instanceof SaveEvent) {
+			SaveEvent saveEvent = (SaveEvent) event;
+			handleSaveEvent(saveEvent);
+		}
 
+	}
+	
+	private void handleSaveEvent(SaveEvent saveEvent) {
+		// get the old and new ids for the package tha was saved
+		String oldId = saveEvent.getInitialId();
+		String newId = saveEvent.getFinalId();
+		
+		// get all the annotations for the original docid
+		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(oldId, null);
+		for (Annotation annotation: annotations) {
+			// set the updated packageId
+			annotation.setEMLPackage(newId);
+			// save the annotation
+			saveAnnotation(annotation);
+			// serialize to disk
+			serializeAnnotation(newId);
+		}
 	}
 	
 	private boolean isInitialized() {
