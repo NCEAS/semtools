@@ -44,12 +44,14 @@ import org.ecoinformatics.sms.annotation.Relationship;
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
 import edu.ucsb.nceas.morpho.datapackage.DataViewContainerPanel;
 import edu.ucsb.nceas.morpho.datapackage.DataViewer;
+import edu.ucsb.nceas.morpho.framework.ModalDialog;
 import edu.ucsb.nceas.morpho.framework.MorphoFrame;
 import edu.ucsb.nceas.morpho.framework.UIController;
 import edu.ucsb.nceas.morpho.util.Command;
 import edu.ucsb.nceas.morpho.util.Log;
 import edu.ucsb.nceas.morpho.util.StateChangeEvent;
 import edu.ucsb.nceas.morpho.util.StateChangeMonitor;
+import edu.ucsb.nceas.morpho.util.UISettings;
 
 /**
  * Class to handle edit column meta data command
@@ -65,6 +67,7 @@ public class ContextCommand implements Command {
 	private int entityIndex = -1;
 	private String entityName;
 	private AnnotationPage annotationPage = new AnnotationPage();
+	private ContextPage contextPage = null;
 	private Annotation annotation = null;
 	private boolean add = true;
 
@@ -132,7 +135,7 @@ public class ContextCommand implements Command {
 				// get the Observation that is/will be providing context
 				Mapping mapping = annotation.getMapping(attributeName);
 				Measurement measurement = mapping.getMeasurement();
-				Observation contextObservation = annotation.getObservation(measurement);
+				Observation currentObservation = annotation.getObservation(measurement);
 				
 				//ADD
 				if (add) {
@@ -141,40 +144,40 @@ public class ContextCommand implements Command {
 					
 					// remove "this" one
 					observations = new ArrayList<Observation>(observations);
-					observations.remove(contextObservation);
+					observations.remove(currentObservation);
 					
-					// ask for the observation 
-					Object selectedObj = JOptionPane.showInputDialog(
-							morphoFrame, 
-							contextObservation + " provides context for: ", 
-							"Define Context", 
-							JOptionPane.INFORMATION_MESSAGE, 
-							null, 
-							observations.toArray(),
-							null
-							);
-					if (selectedObj != null) {
-						Observation selectedObservation = (Observation) selectedObj;
+					// page for editing the new context relationship
+					contextPage = new ContextPage();
+					
+					// set "this" observation
+					contextPage.setObservation(currentObservation);
+					
+					// set the observations it might have a relationship with
+					contextPage.setObservations(observations);
+					
+					if (showContextDialog()) {
+						Observation selectedObservation = (Observation) contextPage.getSelectedObservation();
 						Context context = new Context();
-						context.setObservation(contextObservation);
-						//TODO: relationship
-						Relationship relationship = new Relationship();
+						context.setObservation(selectedObservation);
+						// relationship
+						Relationship relationship = contextPage.getRelationship();
 						context.setRelationship(relationship);
-						//TODO: identifying
-						context.setIdentifying(false);
+						// identifying
+						boolean isIdentifying = contextPage.getIsIdentifying();
+						context.setIdentifying(isIdentifying);
 	
-						selectedObservation.addContext(context);
+						currentObservation.addContext(context);
 					}
 				}
 				//REMOVE
 				else {
 					// get the existing contexts for this observation
-					List<Context> existingContexts = contextObservation.getContexts();
+					List<Context> existingContexts = currentObservation.getContexts();
 					
 					// ask for the context to remove 
 					Object selectedObj = JOptionPane.showInputDialog(
 							morphoFrame, 
-							"Remove existing context for " + contextObservation, 
+							"Remove existing context from: " + currentObservation, 
 							"Remove Context", 
 							JOptionPane.WARNING_MESSAGE, 
 							null, 
@@ -183,7 +186,7 @@ public class ContextCommand implements Command {
 							);
 					if (selectedObj != null) {
 						Context selectedContext = (Context) selectedObj;
-						contextObservation.removeContext(selectedContext);
+						currentObservation.removeContext(selectedContext);
 					}
 				}
 					
@@ -197,6 +200,19 @@ public class ContextCommand implements Command {
 			}
 
 		}
+	}
+	
+	private boolean showContextDialog() {
+		// show the dialog
+		ModalDialog dialog = 
+			new ModalDialog(
+					contextPage,
+					UIController.getInstance().getCurrentActiveWindow(),
+					UISettings.POPUPDIALOG_WIDTH,
+					UISettings.POPUPDIALOG_HEIGHT);
+		
+		//get the response back
+		return (dialog.USER_RESPONSE == ModalDialog.OK_OPTION);
 	}
 	
 	

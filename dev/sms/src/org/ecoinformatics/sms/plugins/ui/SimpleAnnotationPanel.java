@@ -125,7 +125,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		this.add(classesPanel);
 	}
 	
-	private void showDialog(JTextField source) {
+	public static void showDialog(JTextField source) {
 		OntologyClassSelectionPage page = new OntologyClassSelectionPage();
 		
 		try {
