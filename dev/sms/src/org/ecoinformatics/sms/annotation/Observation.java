@@ -151,6 +151,19 @@ public class Observation implements Comparable {
       return false;
    }
    
+   /**
+    * Check for matching Observation in Context list
+    * @return true if contains a context with the observation
+    */
+   public boolean containsObservation(Observation obs) {
+      for (Context c: _contexts) {
+    	  if (c.getObservation().equals(obs)) {
+    		  return true;
+    	  }
+      }
+      return false;
+   }
+   
    public String toString() {
 	   if (_label != null) {
 		   return _label;

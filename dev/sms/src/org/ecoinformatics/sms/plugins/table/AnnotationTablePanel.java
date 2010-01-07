@@ -86,7 +86,7 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 		reorder.setAction(new AbstractAction("Reorder") {
 
 			public void actionPerformed(ActionEvent e) {
-				((AnnotationTable)annotationTable).reorder();	
+				((AnnotationTable)annotationTable).reorder(true);	
 			}
 			
 		});

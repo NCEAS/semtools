@@ -28,6 +28,7 @@ package org.ecoinformatics.sms.plugins.table;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.JTable;
@@ -54,7 +55,7 @@ public class AnnotationTable extends JTable {
 		return new ObservationCellRenderer();
 	}
 	
-	public void reorder() {
+	public void reorder(boolean includeContext) {
 		List<Observation> sortedObservations = new ArrayList<Observation>();
 		
 		for (int i = 0; i < this.getColumnCount(); i++) {
@@ -63,7 +64,11 @@ public class AnnotationTable extends JTable {
 				sortedObservations.add(cellObs);
 			}
 		}
-		Collections.sort(sortedObservations);
+		if (includeContext) {
+			Collections.sort(sortedObservations, new ObservationComparator());
+		} else {
+			Collections.sort(sortedObservations);
+		}
 		
 		for (int i = 0; i < this.getColumnCount(); i++) {
 			Observation cellObs = (Observation) this.getValueAt(AnnotationTableModel.OBSERVATION_ROW, i);
@@ -74,4 +79,21 @@ public class AnnotationTable extends JTable {
 		}
 		
 	}
+}
+class ObservationComparator implements Comparator<Observation> {
+
+	public int compare(Observation o1, Observation o2) {
+		if (o1 == null && o2 == null) {
+			return 0;
+		}
+		if (o1.containsObservation(o2)) {
+			return 1;
+		}
+		else if (o2.containsObservation(o1)) {
+			return -1;
+		}
+		// default w/o context consideration
+		return o1.compareTo(o2);
+	}
+	
 }
