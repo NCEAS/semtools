@@ -490,15 +490,15 @@ public class AnnotationPlugin
 				DataViewer dataView = resultPane.getCurrentDataViewer();
 				if (dataView != null) {
 					annotateAction.setEnabled(true);
-					dataView.addPopupMenuItem(annotateAction);
+					dataView.addPopupMenuItem(annotateAction, true);
 					mergeObservationAction.setEnabled(true);
-					dataView.addPopupMenuItem(mergeObservationAction);
+					dataView.addPopupMenuItem(mergeObservationAction, false);
 					splitObservationAction.setEnabled(true);
-					dataView.addPopupMenuItem(splitObservationAction);
+					dataView.addPopupMenuItem(splitObservationAction, false);
 					addContextAction.setEnabled(true);
-					dataView.addPopupMenuItem(addContextAction);
+					dataView.addPopupMenuItem(addContextAction, false);
 					removeContextAction.setEnabled(true);
-					dataView.addPopupMenuItem(removeContextAction);
+					dataView.addPopupMenuItem(removeContextAction, false);
 				}
 			}
 		}
