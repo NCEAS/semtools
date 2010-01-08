@@ -122,7 +122,7 @@ public class AnnotationCommand implements Command {
 					annotation.setDataTable(dataTable);
 				}
 				
-				Log.debug(5, "Annotating...\n " 
+				Log.debug(30, "Annotating...\n " 
 						+ "Data package: " + packageId 
 						+ ", entity: " + entityName 
 						+ ", attribute: " + attributeName

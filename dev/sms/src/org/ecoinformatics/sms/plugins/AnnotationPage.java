@@ -48,6 +48,7 @@ import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
 import edu.ucsb.nceas.morpho.plugins.DataPackageWizardInterface;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
+import edu.ucsb.nceas.morpho.util.Log;
 import edu.ucsb.nceas.utilities.OrderedMap;
 
 public class AnnotationPage extends AbstractUIPage {
@@ -246,31 +247,40 @@ public class AnnotationPage extends AbstractUIPage {
 			} else {
 				currentCharacteristic.setURI(simpleAnnotationPanel.getObservationCharacteristic());
 			}
-			currentMeasurement.getCharacteristics().clear();
-			currentMeasurement.addCharacteristic(currentCharacteristic);
+			annotation.addOntology(currentCharacteristic.getOntology());
 		} catch (Exception e) {
-			e.printStackTrace();
+			currentCharacteristic = null;
+			Log.debug(30, "Ignoring: " + e.getMessage());
+			//e.printStackTrace();
 		}
+		currentMeasurement.getCharacteristics().clear();
+		currentMeasurement.addCharacteristic(currentCharacteristic);
 		try {
 			if (currentStandard == null) {
 				currentStandard = new Standard(simpleAnnotationPanel.getObservationStandard());
 			} else {
 				currentStandard.setURI(simpleAnnotationPanel.getObservationStandard());
 			}
-			currentMeasurement.setStandard(currentStandard);
+			annotation.addOntology(currentStandard.getOntology());
 		} catch (Exception e) {
-			e.printStackTrace();
-		}	
+			currentStandard = null;
+			Log.debug(30, "Ignoring: " + e.getMessage());
+			//e.printStackTrace();
+		}
+		currentMeasurement.setStandard(currentStandard);
 		try {
 			if (currentProtocol == null) {
 				currentProtocol = new Protocol(simpleAnnotationPanel.getObservationProtocol());
 			} else {
 				currentProtocol.setURI(simpleAnnotationPanel.getObservationProtocol());
 			}
-			currentMeasurement.setProtocol(currentProtocol);
+			annotation.addOntology(currentProtocol.getOntology());
 		} catch (Exception e) {
-			e.printStackTrace();
+			currentProtocol = null;
+			Log.debug(30, "Ignoring: " + e.getMessage());
+			//e.printStackTrace();
 		}
+		currentMeasurement.setProtocol(currentProtocol);
 
 		// measurement label
 		String mLabel = measurementLabel.getText();
@@ -293,6 +303,7 @@ public class AnnotationPage extends AbstractUIPage {
 		Entity entity = null;
 		try {
 			entity = new Entity(simpleAnnotationPanel.getObservationEntity());
+			annotation.addOntology(entity.getOntology());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -333,12 +344,6 @@ public class AnnotationPage extends AbstractUIPage {
 		
 		// set the new values for existing classes
 		currentObservation.setEntity(entity);
-
-		// reference the ontologies used
-		annotation.addOntology(entity.getOntology());
-		annotation.addOntology(currentCharacteristic.getOntology());
-		annotation.addOntology(currentStandard.getOntology());
-		annotation.addOntology(currentProtocol.getOntology());
 
 		return annotation;
 	}
