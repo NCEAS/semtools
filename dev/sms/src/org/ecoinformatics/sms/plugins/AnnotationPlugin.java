@@ -557,8 +557,8 @@ public class AnnotationPlugin
 					boolean hideTableHeader = true;
 					if (hideTableHeader) {
 						annotationTablePanel.getAnnotationTable().setTableHeader(null);
-						annotationTablePanel.getAnnotationScrollPane().setColumnHeaderView(new JLabel("Annotations"));
-						annotationTablePanel.getAnnotationScrollPane().getColumnHeader().setPreferredSize(AnnotationTablePanel.rowHeaderDim);
+//						annotationTablePanel.getAnnotationScrollPane().setColumnHeaderView(new JLabel("Annotations"));
+//						annotationTablePanel.getAnnotationScrollPane().getColumnHeader().setPreferredSize(AnnotationTablePanel.rowHeaderDim);
 
 					} else {
 						MouseListener[] headerListeners = dataViewer.getDataTable().getTableHeader().getMouseListeners();

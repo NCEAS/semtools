@@ -31,7 +31,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -44,6 +43,9 @@ import javax.swing.UIManager;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
+import edu.ucsb.nceas.morpho.util.Command;
+import edu.ucsb.nceas.morpho.util.GUIAction;
+import edu.ucsb.nceas.morpho.util.HyperlinkButton;
 import edu.ucsb.nceas.morpho.util.StateChangeEvent;
 import edu.ucsb.nceas.morpho.util.StateChangeListener;
 
@@ -81,16 +83,18 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 		rowheaders.setCellRenderer(new RowHeaderRenderer(annotationTable));
 		annotationScrollPane.setRowHeaderView(rowheaders);
 		
-		// add the upper left corner
-		JButton reorder = new JButton();
-		reorder.setAction(new AbstractAction("Reorder") {
+		// add the reorder
+		Command reorderCommand = new Command() {
 
-			public void actionPerformed(ActionEvent e) {
+			public void execute(ActionEvent event) {
 				((AnnotationTable)annotationTable).reorder(true);	
+				
 			}
 			
-		});
-		annotationScrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, reorder);
+		};
+		GUIAction reorderAction = new GUIAction("reorder", null, reorderCommand);
+		JButton reorder = new HyperlinkButton(reorderAction);
+		annotationScrollPane.setCorner(JScrollPane.LOWER_LEFT_CORNER, reorder);
 		
 		this.add(BorderLayout.CENTER, annotationScrollPane);
 		
