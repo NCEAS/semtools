@@ -34,6 +34,9 @@ import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
+import jp.gr.java_conf.tame.swing.table.CellSpan;
+import jp.gr.java_conf.tame.swing.table.MultiSpanCellTable;
+
 import org.ecoinformatics.sms.annotation.Observation;
 
 /**
@@ -41,7 +44,7 @@ import org.ecoinformatics.sms.annotation.Observation;
  * @author leinfelder
  *
  */
-public class AnnotationTable extends JTable {
+public class AnnotationTable extends MultiSpanCellTable {
 
 	public AnnotationTable(AnnotationTableModel annotationTableModel) {
 		super(annotationTableModel);
@@ -78,6 +81,68 @@ public class AnnotationTable extends JTable {
 			}
 		}
 		
+		// merge the "duplicate" cells
+		this.group();
+
+	}
+	
+	private void group() {
+		
+		//group the same cells in the table
+		CellSpan cellAtt = (CellSpan) ((AnnotationTableModel)this.getModel()).getCellAttribute();
+				
+		int[] contextRows = new int[]{AnnotationTableModel.CONTEXT_ROW};
+		int[] obsRows = new int[]{AnnotationTableModel.OBSERVATION_ROW};
+		int[] entityRows = new int[]{AnnotationTableModel.ENTITY_ROW};
+		
+		// group the same observations now that they are in order
+		List<Integer> sameColumns = new ArrayList<Integer>();
+		
+		Observation cellObs = (Observation) this.getValueAt(AnnotationTableModel.OBSERVATION_ROW, 0);
+		for (int i = 0; i < this.getColumnCount(); i++) {
+			Observation nextCellObs = (Observation) this.getValueAt(AnnotationTableModel.OBSERVATION_ROW, i);
+			if (cellObs == null) {
+				continue;
+			}
+			// still the same cell
+			if (nextCellObs != null
+				&& cellObs.equals(nextCellObs)) {
+					sameColumns.add(i);
+			} else {
+				// different cell
+				int[] columns = new int[sameColumns.size()];
+				for (int j = 0; j < sameColumns.size(); j++) {
+					columns[j] = sameColumns.get(j);
+				}
+				cellAtt.combine(contextRows, columns);
+				cellAtt.combine(obsRows, columns);
+				cellAtt.combine(entityRows, columns);
+				sameColumns.clear(); //start again
+				sameColumns.add(i);
+				cellObs = (Observation) this.getValueAt(AnnotationTableModel.OBSERVATION_ROW, i);
+			}
+		}
+		// show it
+		this.clearSelection();
+		this.revalidate();
+		this.repaint();
+	}
+	
+	public void reset() {
+		
+		CellSpan cellAtt = (CellSpan) ((AnnotationTableModel)this.getModel()).getCellAttribute();
+
+		for (int column = 0; column < this.getColumnCount(); column++) {
+		
+			cellAtt.split(AnnotationTableModel.CONTEXT_ROW, column);
+			cellAtt.split(AnnotationTableModel.OBSERVATION_ROW, column);
+			cellAtt.split(AnnotationTableModel.ENTITY_ROW, column);
+		}
+		
+		// show it
+		this.clearSelection();
+		this.revalidate();
+		this.repaint();
 	}
 }
 class ObservationComparator implements Comparator<Observation> {

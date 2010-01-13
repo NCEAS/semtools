@@ -31,6 +31,8 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import jp.gr.java_conf.tame.swing.table.AttributiveCellTableModel;
+
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Mapping;
 import org.ecoinformatics.sms.annotation.Measurement;
@@ -41,7 +43,7 @@ import org.ecoinformatics.sms.annotation.Observation;
  * @author leinfelder
  *
  */
-public class AnnotationTableModel extends AbstractTableModel {
+public class AnnotationTableModel extends AttributiveCellTableModel {
 
 	private Annotation annotation;
 	
@@ -59,6 +61,7 @@ public class AnnotationTableModel extends AbstractTableModel {
 
 	
 	public AnnotationTableModel(Annotation annotation, List<String> columns) {
+		super(columns.toArray(), ROW_COUNT);
 		this.annotation = annotation;
 		this.columnIds = columns;
 	}
@@ -76,6 +79,9 @@ public class AnnotationTableModel extends AbstractTableModel {
 	}
 	
 	public int getColumnCount() {
+		if (columnIds == null) {
+			return 0;
+		}
 		return columnIds.size();
 	}
 
