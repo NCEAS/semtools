@@ -554,9 +554,17 @@ public class AnnotationPlugin
 					}
 					
 					// share the header mouse listeners
-					MouseListener[] headerListeners = dataViewer.getDataTable().getTableHeader().getMouseListeners();
-					for (MouseListener l: headerListeners) {
-						annotationTablePanel.getAnnotationTable().getTableHeader().addMouseListener(l);
+					boolean hideTableHeader = false;
+					if (hideTableHeader) {
+						annotationTablePanel.getAnnotationTable().setTableHeader(null);
+						annotationTablePanel.getAnnotationScrollPane().setColumnHeaderView(new JLabel("Annotations"));
+						annotationTablePanel.getAnnotationScrollPane().getColumnHeader().setPreferredSize(AnnotationTablePanel.rowHeaderDim);
+
+					} else {
+						MouseListener[] headerListeners = dataViewer.getDataTable().getTableHeader().getMouseListeners();
+						for (MouseListener l: headerListeners) {
+							annotationTablePanel.getAnnotationTable().getTableHeader().addMouseListener(l);
+						}
 					}
 					
 					//track the scrolling of the data - forward it to the annotation
