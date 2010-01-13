@@ -120,12 +120,12 @@ public class AnnotationPage extends AbstractUIPage {
 				8 * WizardSettings.PADDING));
 		this.add(attributeLabelPanel);
 		this.add(WidgetFactory.makeDefaultSpacer());
-		
+				
 		// Measurement Label
 		JPanel measurementLabelPanel = WidgetFactory.makePanel(1);
-		measurementLabelLabel = WidgetFactory.makeLabel("Measurement Label:", true);
+		measurementLabelLabel = WidgetFactory.makeLabel("Measurement:", true);
 		measurementLabelPanel.add(measurementLabelLabel);
-		measurementLabel = WidgetFactory.makeOneLineTextField("<label>");
+		measurementLabel = WidgetFactory.makeOneLineShortTextField("<label>");
 		measurementLabelPanel.add(measurementLabel);
 		measurementLabelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
@@ -137,20 +137,11 @@ public class AnnotationPage extends AbstractUIPage {
 		this.add(measurementLabelPanel);
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
-		//this.add(WidgetFactory.makeDefaultSpacer());
-
-		//add the main panel here
-		simpleAnnotationPanel = new SimpleAnnotationPanel();
-		this.add(simpleAnnotationPanel);
-
-		this.add(WidgetFactory.makeDefaultSpacer());
-		this.add(WidgetFactory.makeDefaultSpacer());
-		
 		// Observation Label
 		JPanel labelPanel = WidgetFactory.makePanel(1);
-		observationLabelLabel = WidgetFactory.makeLabel("Observation Label:", true);
+		observationLabelLabel = WidgetFactory.makeLabel("Observation:", true);
 		labelPanel.add(observationLabelLabel);
-		observationLabel = WidgetFactory.makeOneLineTextField("<label>");
+		observationLabel = WidgetFactory.makeOneLineShortTextField("<label>");
 		labelPanel.add(observationLabel);
 		labelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
@@ -162,6 +153,13 @@ public class AnnotationPage extends AbstractUIPage {
 		this.add(labelPanel);
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
+		//this.add(WidgetFactory.makeDefaultSpacer());
+
+		//add the main panel here
+		simpleAnnotationPanel = new SimpleAnnotationPanel();
+		this.add(simpleAnnotationPanel);
+
+		this.add(WidgetFactory.makeDefaultSpacer());
 
 	}
 
