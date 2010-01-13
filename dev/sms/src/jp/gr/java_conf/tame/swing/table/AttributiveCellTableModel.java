@@ -47,7 +47,10 @@ public class AttributiveCellTableModel extends DefaultTableModel {
     setDataVector(data, columnNames);
   }
 
-    
+    /**
+     * this was crucial for making the code work:
+     * http://www.coderanch.com/t/425618/Swing-AWT-SWT-JFace/java/Merge-Cells-Jtable
+     */
   public void setDataVector(Vector newData, Vector columnNames) {
     if (newData == null)
       throw new IllegalArgumentException("setDataVector() - Null parameter");
