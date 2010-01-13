@@ -120,8 +120,8 @@ public class ObservationCellRenderer extends JLabel implements
 		int w = getWidth();
 		int h = getHeight();
 
-		GradientPaint gradient = new GradientPaint(0, 0, color1, w, h, color2, true);
-		//GradientPaint gradient = new GradientPaint(w, 0, color1, w, h, color2, true);
+		//GradientPaint gradient = new GradientPaint(0, 0, color1, w, h, color2, true);
+		GradientPaint gradient = new GradientPaint(w, 0, color1, w, h, color2, true);
 
 		g2.setPaint(gradient);
 		g2.fillRect(0, 0, w, h);
