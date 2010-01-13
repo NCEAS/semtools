@@ -554,7 +554,7 @@ public class AnnotationPlugin
 					}
 					
 					// share the header mouse listeners
-					boolean hideTableHeader = false;
+					boolean hideTableHeader = true;
 					if (hideTableHeader) {
 						annotationTablePanel.getAnnotationTable().setTableHeader(null);
 						annotationTablePanel.getAnnotationScrollPane().setColumnHeaderView(new JLabel("Annotations"));
