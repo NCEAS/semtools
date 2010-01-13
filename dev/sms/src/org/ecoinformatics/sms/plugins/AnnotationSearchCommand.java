@@ -106,8 +106,7 @@ public class AnnotationSearchCommand implements Command {
 		
 		resultWindow.setVisible(true);
 		Vector vector = new Vector();
-		String source = "";
-		HeadResultSet results = new HeadResultSet(query, source, vector, Morpho.thisStaticInstance);
+		HeadResultSet results = new HeadResultSet(query, vector, Morpho.thisStaticInstance);
 		boolean listCrashedDoc = false;
 		ResultPanel resultDisplayPanel = 
 			new ResultPanel(null, results, 12,
