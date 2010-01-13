@@ -158,5 +158,9 @@ public class AnnotationTableModel extends AttributiveCellTableModel {
 		}
 		return null;
 	}
+	
+	public boolean isCellEditable(int row, int column){  
+	    return false;  
+	  }  
  
 }
