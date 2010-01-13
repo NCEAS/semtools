@@ -93,6 +93,7 @@ public class AnnotationTable extends MultiSpanCellTable {
 				
 		int[] contextRows = new int[]{AnnotationTableModel.CONTEXT_ROW};
 		int[] obsRows = new int[]{AnnotationTableModel.OBSERVATION_ROW};
+		int[] spacerRows = new int[]{AnnotationTableModel.SPACER_ROW};
 		int[] entityRows = new int[]{AnnotationTableModel.ENTITY_ROW};
 		
 		// group the same observations now that they are in order
@@ -122,6 +123,14 @@ public class AnnotationTable extends MultiSpanCellTable {
 				cellObs = (Observation) this.getValueAt(AnnotationTableModel.OBSERVATION_ROW, i);
 			}
 		}
+		
+		//combine all spacer cells into one
+		int[] columns = new int[this.getColumnCount()];
+		for (int j = 0; j < this.getColumnCount(); j++) {
+			columns[j] = j;
+		}
+		cellAtt.combine(spacerRows, columns);
+
 		// show it
 		this.clearSelection();
 		this.revalidate();

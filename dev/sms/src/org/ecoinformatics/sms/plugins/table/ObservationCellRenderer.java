@@ -83,6 +83,10 @@ public class ObservationCellRenderer extends JLabel implements
 			}
 			this.setColor1(c);
 		}
+		else if (row == AnnotationTableModel.SPACER_ROW) {
+			this.setColor1(Color.white);
+			this.setColor2(Color.white);
+		}
 		else {
 			this.setColor1(Color.white);
 		}
