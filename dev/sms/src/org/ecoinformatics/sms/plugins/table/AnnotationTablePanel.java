@@ -56,7 +56,7 @@ import edu.ucsb.nceas.morpho.util.StateChangeListener;
 public class AnnotationTablePanel extends JPanel implements StateChangeListener  {
 
 	public static final Dimension rowHeaderDim = new Dimension(100, 17);
-	private JTable annotationTable;
+	private AnnotationTable annotationTable;
 	private JScrollPane annotationScrollPane;
 
 	public AnnotationTablePanel(AnnotationTableModel annotationTableModel) {
@@ -107,13 +107,16 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 		JList rowheaders = new JList(model.getRowHeaders());
 		rowheaders.setCellRenderer(new RowHeaderRenderer());
 		annotationScrollPane.setRowHeaderView(rowheaders);
+		
+		annotationTable.reset();
+	
 	}
 
 	public JTable getAnnotationTable() {
 		return annotationTable;
 	}
 
-	public void setAnnotationTable(JTable annotationTable) {
+	public void setAnnotationTable(AnnotationTable annotationTable) {
 		this.annotationTable = annotationTable;
 	}
 
