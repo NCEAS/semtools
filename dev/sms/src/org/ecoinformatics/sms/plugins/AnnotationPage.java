@@ -204,22 +204,22 @@ public class AnnotationPage extends AbstractUIPage {
 			}
 			try {
 				String entity = currentObservation.getEntity().getURI();
-				this.simpleAnnotationPanel.setObservationEntity(entity);
+				this.simpleAnnotationPanel.setObservationEntity(currentObservation.getEntity());
 			} catch (Exception e) {
 			}
 			try {
 				String charString = currentCharacteristic.getURI();
-				this.simpleAnnotationPanel.setObservationCharacteristic(charString);
+				this.simpleAnnotationPanel.setObservationCharacteristic(currentCharacteristic);
 			} catch (Exception e) {
 			}
 			try {
 				String standard = currentStandard.getURI();
-				this.simpleAnnotationPanel.setObservationStandard(standard);
+				this.simpleAnnotationPanel.setObservationStandard(currentStandard);
 			} catch (Exception e) {
 			}
 			try {
 				String protocol = currentProtocol.getURI();
-				this.simpleAnnotationPanel.setObservationProtocol(protocol);
+				this.simpleAnnotationPanel.setObservationProtocol(currentProtocol);
 			} catch (Exception e) {
 			}
 		} catch (Exception e) {
@@ -241,9 +241,9 @@ public class AnnotationPage extends AbstractUIPage {
 		try {
 			if (currentCharacteristic == null) {
 				currentCharacteristic = new Characteristic(
-						simpleAnnotationPanel.getObservationCharacteristic());
+						simpleAnnotationPanel.getObservationCharacteristic().getURI());
 			} else {
-				currentCharacteristic.setURI(simpleAnnotationPanel.getObservationCharacteristic());
+				currentCharacteristic.setURI(simpleAnnotationPanel.getObservationCharacteristic().getURI());
 			}
 			annotation.addOntology(currentCharacteristic.getOntology());
 		} catch (Exception e) {
@@ -255,9 +255,9 @@ public class AnnotationPage extends AbstractUIPage {
 		currentMeasurement.addCharacteristic(currentCharacteristic);
 		try {
 			if (currentStandard == null) {
-				currentStandard = new Standard(simpleAnnotationPanel.getObservationStandard());
+				currentStandard = new Standard(simpleAnnotationPanel.getObservationStandard().getURI());
 			} else {
-				currentStandard.setURI(simpleAnnotationPanel.getObservationStandard());
+				currentStandard.setURI(simpleAnnotationPanel.getObservationStandard().getURI());
 			}
 			annotation.addOntology(currentStandard.getOntology());
 		} catch (Exception e) {
@@ -268,9 +268,9 @@ public class AnnotationPage extends AbstractUIPage {
 		currentMeasurement.setStandard(currentStandard);
 		try {
 			if (currentProtocol == null) {
-				currentProtocol = new Protocol(simpleAnnotationPanel.getObservationProtocol());
+				currentProtocol = new Protocol(simpleAnnotationPanel.getObservationProtocol().getURI());
 			} else {
-				currentProtocol.setURI(simpleAnnotationPanel.getObservationProtocol());
+				currentProtocol.setURI(simpleAnnotationPanel.getObservationProtocol().getURI());
 			}
 			annotation.addOntology(currentProtocol.getOntology());
 		} catch (Exception e) {
@@ -300,7 +300,7 @@ public class AnnotationPage extends AbstractUIPage {
 		// make an entity from the form value
 		Entity entity = null;
 		try {
-			entity = new Entity(simpleAnnotationPanel.getObservationEntity());
+			entity = new Entity(simpleAnnotationPanel.getObservationEntity().getURI());
 			annotation.addOntology(entity.getOntology());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

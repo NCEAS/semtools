@@ -40,7 +40,6 @@ import javax.swing.JTable;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
-import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
 import edu.ucsb.nceas.morpho.util.Command;
@@ -80,7 +79,7 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 		// add the row headers
 	    JList rowheaders = new JList(annotationTableModel.getRowHeaders());
 	    rowheaders.setPreferredSize(rowHeaderDim);
-		rowheaders.setCellRenderer(new RowHeaderRenderer(annotationTable));
+		rowheaders.setCellRenderer(new RowHeaderRenderer());
 		annotationScrollPane.setRowHeaderView(rowheaders);
 		
 		// add the reorder
@@ -106,7 +105,7 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 		model.fireTableStructureChanged();
 		
 		JList rowheaders = new JList(model.getRowHeaders());
-		rowheaders.setCellRenderer(new RowHeaderRenderer(annotationTable));
+		rowheaders.setCellRenderer(new RowHeaderRenderer());
 		annotationScrollPane.setRowHeaderView(rowheaders);
 	}
 
@@ -135,15 +134,14 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
  *
  */
 class RowHeaderRenderer extends JLabel implements ListCellRenderer, TableCellRenderer {  
-    RowHeaderRenderer(JTable table) {
-      JTableHeader header = table.getTableHeader();
+    RowHeaderRenderer() {
       setOpaque(true);
       setBorder(UIManager.getBorder("TableHeader.cellBorder"));
       //setBorder(header.getBorder());
       setHorizontalAlignment(CENTER);
-      setForeground(header.getForeground());
-      //setBackground(header.getBackground());
-      setFont(header.getFont());
+      setForeground(UIManager.getColor("TableHeader.foreground"));
+      //setBackground(UIManager.getColor("TableHeader.background"));
+      setFont(UIManager.getFont("TableHeader.font"));
       setPreferredSize(AnnotationTablePanel.rowHeaderDim);
     }
    

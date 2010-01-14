@@ -117,25 +117,25 @@ public class AnnotationQueryPage extends AbstractUIPage {
 		// get the values
 		try {
 			currentCharacteristic = new Characteristic(
-					simpleAnnotationPanel.getObservationCharacteristic());
+					simpleAnnotationPanel.getObservationCharacteristic().getURI());
 		} catch (Exception e) {
 			currentCharacteristic = null;
 		}
 
 		try {
-			currentStandard = new Standard(simpleAnnotationPanel.getObservationStandard());
+			currentStandard = new Standard(simpleAnnotationPanel.getObservationStandard().getURI());
 		} catch (Exception e) {
 			currentStandard = null;
 		}
 		
 		try {
-			currentProtocol = new Protocol(simpleAnnotationPanel.getObservationProtocol());
+			currentProtocol = new Protocol(simpleAnnotationPanel.getObservationProtocol().getURI());
 		} catch (Exception e) {
 			currentProtocol = null;
 		}
 		
 		try {
-			currentEntity = new Entity(simpleAnnotationPanel.getObservationEntity());
+			currentEntity = new Entity(simpleAnnotationPanel.getObservationEntity().getURI());
 		} catch (Exception e) {
 			currentEntity = null;
 		}
@@ -168,16 +168,16 @@ public class AnnotationQueryPage extends AbstractUIPage {
 	public void onLoadAction() {
 		// load the last values if they exist
 		try {
-			simpleAnnotationPanel.setObservationEntity(currentEntity.getURI());
+			simpleAnnotationPanel.setObservationEntity(currentEntity);
 		} catch (Exception e) {}
 		try {
-			simpleAnnotationPanel.setObservationStandard(currentStandard.getURI());
+			simpleAnnotationPanel.setObservationStandard(currentStandard);
 		} catch (Exception e) {}
 		try {
-			simpleAnnotationPanel.setObservationCharacteristic(currentCharacteristic.getURI());
+			simpleAnnotationPanel.setObservationCharacteristic(currentCharacteristic);
 		} catch (Exception e) {}
 		try {
-			simpleAnnotationPanel.setObservationProtocol(currentProtocol.getURI());
+			simpleAnnotationPanel.setObservationProtocol(currentProtocol);
 		} catch (Exception e) {}
 
 	}

@@ -31,7 +31,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
 import jp.gr.java_conf.tame.swing.table.CellSpan;
@@ -133,7 +132,7 @@ public class AnnotationTable extends MultiSpanCellTable {
 
 		// show it
 		this.clearSelection();
-		this.revalidate();
+		this.validate();
 		this.repaint();
 	}
 	

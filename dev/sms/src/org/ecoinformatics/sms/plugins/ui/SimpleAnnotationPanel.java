@@ -33,7 +33,6 @@ import java.awt.event.MouseListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.OntologyClassSelectionPage;
@@ -46,10 +45,10 @@ import edu.ucsb.nceas.morpho.util.UISettings;
 
 public class SimpleAnnotationPanel extends JPanel {
 	
-	private JTextField observationEntity;
-	private JTextField observationCharacteristic;
-	private JTextField observationStandard;
-	private JTextField observationProtocol;
+	private OntologyClassJLabel observationEntity;
+	private OntologyClassJLabel observationCharacteristic;
+	private OntologyClassJLabel observationStandard;
+	private OntologyClassJLabel observationProtocol;
 	
 	public SimpleAnnotationPanel() {
 		super();
@@ -63,7 +62,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		MouseListener mListener = new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent e) {
-				JTextField source = (JTextField) e.getSource();
+				OntologyClassJLabel source = (OntologyClassJLabel) e.getSource();
 				showDialog(source);
 			}
 
@@ -75,7 +74,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		// Entity
 		JPanel entityPanel = WidgetFactory.makePanel(1);
 		entityPanel.add(WidgetFactory.makeLabel("Entity:", false));
-		observationEntity = WidgetFactory.makeOneLineTextField("<entity>");
+		observationEntity = OntologyClassJLabel.makeLabel("<entity>", false, null);
 		observationEntity.addMouseListener(mListener);
 		entityPanel.add(observationEntity);
 		entityPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
@@ -85,8 +84,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		JPanel characteristicPanel = WidgetFactory.makePanel(1);
 		characteristicPanel.add(WidgetFactory.makeLabel("Characteristic:",
 				false));
-		observationCharacteristic = WidgetFactory
-				.makeOneLineTextField("<characteristic>");
+		observationCharacteristic = OntologyClassJLabel.makeLabel("<characteristic>", false, null);
 		observationCharacteristic.addMouseListener(mListener);
 
 		characteristicPanel.add(observationCharacteristic);
@@ -96,7 +94,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		// Standard
 		JPanel standardPanel = WidgetFactory.makePanel(1);
 		standardPanel.add(WidgetFactory.makeLabel("Standard:", false));
-		observationStandard = WidgetFactory.makeOneLineTextField("<standard>");
+		observationStandard = OntologyClassJLabel.makeLabel("<standard>", false, null);
 		observationStandard.addMouseListener(mListener);
 
 		standardPanel.add(observationStandard);
@@ -106,7 +104,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		// Protocol
 		JPanel protocolPanel = WidgetFactory.makePanel(1);
 		protocolPanel.add(WidgetFactory.makeLabel("Protocol:", false));
-		observationProtocol = WidgetFactory.makeOneLineTextField("<protocol>");
+		observationProtocol = OntologyClassJLabel.makeLabel("<protocol>", false, null);
 		observationProtocol.addMouseListener(mListener);
 
 		protocolPanel.add(observationProtocol);
@@ -125,11 +123,11 @@ public class SimpleAnnotationPanel extends JPanel {
 		this.add(classesPanel);
 	}
 	
-	public static void showDialog(JTextField source) {
+	public static void showDialog(OntologyClassJLabel source) {
 		OntologyClassSelectionPage page = new OntologyClassSelectionPage();
 		
 		try {
-			OntologyClass currentClass = new OntologyClass(source.getText());
+			OntologyClass currentClass = source.getOntologyClass();
 			if (currentClass != null) {
 				page.setCurrentClass(currentClass);
 			}
@@ -147,45 +145,52 @@ public class SimpleAnnotationPanel extends JPanel {
 
 		// get the response back
 		if (dialog.USER_RESPONSE == ModalDialog.OK_OPTION) {
-			String selectedClass = null;
+			String selectedClassString = null;
 			if (page.getSelectedTerms() !=null && page.getSelectedTerms().size() > 0) {
-				selectedClass = page.getSelectedTerms().get(0);
+				selectedClassString = page.getSelectedTerms().get(0);
 			}
-			source.setText(selectedClass);
+			OntologyClass selectedClass = null;
+			try {
+				selectedClass = new OntologyClass(selectedClassString);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			source.setOntologyClass(selectedClass);
 		}
 		page = null;
 	}
 
-	public String getObservationEntity() {
-		return observationEntity.getText();
+	public OntologyClass getObservationEntity() {
+		return observationEntity.getOntologyClass();
 	}
 
-	public void setObservationEntity(String observationEntity) {
-		this.observationEntity.setText(observationEntity);
+	public void setObservationEntity(OntologyClass observationEntity) {
+		this.observationEntity.setOntologyClass(observationEntity);
 	}
 
-	public String getObservationCharacteristic() {
-		return observationCharacteristic.getText();
+	public OntologyClass getObservationCharacteristic() {
+		return observationCharacteristic.getOntologyClass();
 	}
 
-	public void setObservationCharacteristic(String observationCharacteristic) {
-		this.observationCharacteristic.setText(observationCharacteristic);
+	public void setObservationCharacteristic(OntologyClass observationCharacteristic) {
+		this.observationCharacteristic.setOntologyClass(observationCharacteristic);
 	}
 
-	public String getObservationStandard() {
-		return observationStandard.getText();
+	public OntologyClass getObservationStandard() {
+		return observationStandard.getOntologyClass();
 	}
 
-	public void setObservationStandard(String observationStandard) {
-		this.observationStandard.setText(observationStandard);
+	public void setObservationStandard(OntologyClass observationStandard) {
+		this.observationStandard.setOntologyClass(observationStandard);
 	}
 
-	public String getObservationProtocol() {
-		return observationProtocol.getText();
+	public OntologyClass getObservationProtocol() {
+		return observationProtocol.getOntologyClass();
 	}
 
-	public void setObservationProtocol(String observationProtocol) {
-		this.observationProtocol.setText(observationProtocol);
+	public void setObservationProtocol(OntologyClass observationProtocol) {
+		this.observationProtocol.setOntologyClass(observationProtocol);
 	}
 
 }
