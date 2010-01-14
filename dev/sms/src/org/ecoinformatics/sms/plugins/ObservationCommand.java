@@ -123,13 +123,11 @@ public class ObservationCommand implements Command {
 				// process the attributes
 				table = dataView.getDataTable();
 				int[] selectedColumns = table.getSelectedColumns();
-				if (selectedColumns.length == 1) {
-					Log.debug(5, "Multiple columns must be selected!");
-					return;
-				}
 				
 				Observation targetObservation = null;
 				List<Observation> observations = new ArrayList<Observation>();
+				
+				// iterate through the selected columns
 				for (int viewIndex: selectedColumns) {
 
 					int attributeIndex =  table.getColumnModel().getColumn(viewIndex).getModelIndex();
@@ -139,37 +137,49 @@ public class ObservationCommand implements Command {
 					Mapping mapping = annotation.getMapping(attributeName);
 					Measurement measurement = mapping.getMeasurement();
 					Observation observation = annotation.getObservation(measurement);
+					if (targetObservation == null) {
+						targetObservation = observation;
+					}
 					
 					// merge or split them?
 					if (merge) {
-						// use the first one
-						if (targetObservation == null) {
-							targetObservation = observation;
-						} else {
-							// must be of the same entity
-							if (!observation.getEntity().equals(targetObservation.getEntity())) {
-								Log.debug(5, 
-										"Observations must share the same Entity Type! \n" +
-										observation.getEntity() + " != " + targetObservation.getEntity()
-										);
-								return;
-							}
-							//check that they are actually different observation instances currently
-							if (!observation.equals(targetObservation)) {
-								targetObservation.addMeasurement(measurement);
-								observation.removeMeasurement(measurement);
-								// remember to remove this observation form the annotation later
-								observations.add(observation);
-							}
-						}	
+						//must be multiples
+						if (selectedColumns.length == 1) {
+							Log.debug(5, "Multiple columns must be selected!");
+							return;
+						}
+						// must be of the same entity
+						if (!observation.getEntity().equals(targetObservation.getEntity())) {
+							Log.debug(5, 
+									"Observations must share the same Entity Type! \n" +
+									observation.getEntity() + " != " + targetObservation.getEntity()
+									);
+							return;
+						}
+						//check that they are actually different observation instances currently
+						if (!observation.equals(targetObservation)) {
+							targetObservation.addMeasurement(measurement);
+							observation.removeMeasurement(measurement);
+							// remember to remove this observation form the annotation later
+							observations.add(observation);
+						}
 					} else {
+						if (selectedColumns.length != 1) {
+							Log.debug(5, "Only a single column can be selected!");
+							return;
+						}
+						if (observation.getMeasurements().size() == 1) {
+							Log.debug(5, "Selected observation contains only one measurement - will not split!");
+							return;
+						}
+						// create a new observation from the old one
 						Observation splitObservation = new Observation();
 						splitObservation.setEntity(observation.getEntity());
 						splitObservation.setLabel("obs_" + System.currentTimeMillis());
 						splitObservation.addMeasurement(measurement);				
 						annotation.addObservation(splitObservation);
-						// remember to remove this observation later
-						observations.add(observation);
+						// remove the measurement from the old observation
+						observation.removeMeasurement(measurement);
 					}
 				}
 				
