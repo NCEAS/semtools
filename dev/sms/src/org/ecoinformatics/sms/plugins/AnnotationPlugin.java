@@ -547,10 +547,15 @@ public class AnnotationPlugin
 					filler.setPreferredSize(AnnotationTablePanel.rowHeaderDim);
 					dataViewer.getDataScrollPanel().setRowHeaderView(filler);
 					
-					// share the mouse listeners
-					MouseListener[] listeners = dataViewer.getDataTable().getMouseListeners();
-					for (MouseListener l: listeners) {
-						annotationTablePanel.getAnnotationTable().addMouseListener(l);
+					// share the mouse listeners ?
+					boolean shareSelection = true;
+					if (shareSelection) {
+						MouseListener[] listeners = dataViewer.getDataTable().getMouseListeners();
+						for (MouseListener l: listeners) {
+							annotationTablePanel.getAnnotationTable().addMouseListener(l);
+						}
+					} else {
+						// TODO: different selection model for the annotation table	alone
 					}
 					
 					// share the header mouse listeners
