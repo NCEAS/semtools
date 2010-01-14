@@ -24,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
 
 import org.ecoinformatics.sms.annotation.Context;
@@ -84,8 +85,10 @@ public class ObservationCellRenderer extends JLabel implements
 			this.setColor1(c);
 		}
 		else if (row == AnnotationTableModel.SPACER_ROW) {
-			this.setColor1(Color.white);
-			this.setColor2(Color.white);
+			Color c = UIManager.getColor("Label.background");
+			//Color c = Color.white;
+			this.setColor1(c);
+			this.setColor2(c);
 		}
 		else {
 			this.setColor1(Color.white);
