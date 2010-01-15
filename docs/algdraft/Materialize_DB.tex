@@ -14,7 +14,7 @@
 %\setlength{\parindent}{0pt}
 %\pdfpagewidth 8.5in
 %\pdfpageheight 11in
-
+\newtheorem{example}{Example}[section]
 \begin{document}
 
 Note that in our description, we use
@@ -203,7 +203,7 @@ We can run the example in page 6 in the powerpoint file to explain the algorithm
 For Row(2007, 1, piru, 35.8)
     \begin{itemize}
     \item Create a measurement $mi_1=\langle meas1, null, Year, 2007\rangle$
-    \item Create a measurement $mi_2=\langle meas2, null, Year, 35.8\rangle$
+    \item Create a measurement $mi_2=\langle meas2, null, DBH, 35.8\rangle$
     \item Create a measurement $mi_3=\langle meas3, null, TaxonomicTypeName, Picea~rubens\rangle$
     \item Create a measurement $mi_4=\langle meas4, null, EntityName, 1\rangle$
     \item Get $MeasSet = \{mi_1, mi_2, mi_3, mi_4\}$;
@@ -255,4 +255,66 @@ For ROW (2008, 2, abba, 33.2)
     \end{itemize}
 
 
+\begin{table}[htb]
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+plt & spp & dbh\\\hline
+A & piru & 35.8 \\\hline
+A & piru & 36.2 \\\hline
+B & piru &33.2 \\\hline
+\end{tabular}
+\end{center}
+\vspace{-0.2in}
+\caption{Dataset 2 for Example \ref{eg2}}
+\end{table}
+
+\begin{example} [Example with identifying]\label{eg2}
+Use the data in the following table as an example. 
+
+For the {\bf first row}, after we run the first step, we got the three measurement instances $MeasSet=mi_1, mi_2, mi_3$. 
+After the second step, we get $KeyIdx = \{\langle o_1\rightarrow \{mi_1\} \rangle, \langle o_2 \rightarrow \{mi_2, mi_3\}\}$.
+
+Now we need to create observation and entity instances. 
+To create entity instance, we need to see whether there is/are key measurements for each observatioin type.  
+Here,  $o_1$ and $o_2$ have key measurements $m1$ and $m_2$ respectively. 
+The same value of the key measurement will denote the same entity. 
+For $o_1$, we get it's key value be $A$. Since there is no such a statement, we create an entity $ei_1$ of type $Plot$.
+Simiarly, for $o_2$, the key value is $(A, Picea~rubens)$ since it has context $o_1$ with {\em identifying yes}, we create an entity $ei_2$ of type $Tree$. \\
+$EntIdx = \{\langle o_1, A\rangle \rightarrow ei_1, \langle o_2, (A, Picea~rubens) \rangle \rightarrow ei_2\}$. 
+
+To create observation instance, we need to see whethe the observation type is specified with distinct yes. 
+Here, $o_1$ is specified with {\em distinct yes} while $o_2$ is not. 
+We only check whether we need to merge observation instances for $o_1$ or not. 
+We create an observation instance $oi_1$ whose entity is $ei_1$. 
+We also create an observation instance $oi_2$ whose entity is $ei_2$. 
+$ObsIdx = \{\langle o_1, A\rangle \rightarrow oi_1\}$. 
+
+The next step is to connect the measurement instances to observation instances,  $mi_1 \rightarrow oi_1$, $mi_2, mi_3 \rightarrow oi_2$.
+
+The last step for this row is to connect the observations using context relationship. For this instance, we connect $oi_1$ to $oi_2$ with context {\em Within}. 
+
+For the {\bf second row}, after the first step, we also get three measurement instances $MeasSet=mi_4, mi_5, mi_6$. 
+After the second step, we get $KeyIdx = \{\langle o_1\rightarrow \{mi_4\} \rangle, \langle o_2 \rightarrow \{mi_5, mi_6\}\}$.
+
+When we create entities, 
+we need to check whether there is any entity corresponding to Key value $\langle o_1, A\rangle$ $\langle, o_2, (A, Picea~rubens)\rangle$ or not.
+We observe that they have corresponding $ei_1$ and $ei_2$. So, we don't need to create entity instances for them. 
+
+Now, we create observatins, 
+Since $o_1$ is specified with {\em distinct yes}, we just need to see whether we need to create a new observation for it or get an existing one. 
+The key is $\langle o_1,A\rangle$, which corresponds to $oi_1$. So, we do not need to create a new observation for it. 
+For $o_2$, since no {\em distinct yes} is specified, we create an observation $oi_3$ for it. 
+
+For the next step, when we try to connect the measurement instances to observation instances, we realize that we do not create a new observation for $o_1$,
+so it's related measurement instance $mi_4$ can be discarded. While for $o_2$, $m_5, m_6\rightarrow oi_3$. 
+
+When we process the {\bf third row}, one thing to note is for $o_1$, now we have key value $\langle o_1, B\rangle$, we create a new entity for it.
+For $o_2$, we have key value $\langle o_2, (B,~Picea~rubens)\rangle$ and create a new entity for it. 
+
+
+\end{example}
+
+
 \end{document} 
+
