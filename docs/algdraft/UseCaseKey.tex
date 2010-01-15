@@ -1,0 +1,107 @@
+\documentclass[10pt]{article}
+%\title{}
+%\author{}
+%\date{}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{a4}
+\usepackage{color}
+\renewcommand\floatpagefraction{0.99}
+\renewcommand\topfraction{0.99}
+\renewcommand\bottomfraction{0.99}
+\renewcommand\textfraction{.05}
+\setcounter{totalnumber}{5}
+%\setlength{\parindent}{0pt}
+%\pdfpagewidth 8.5in
+%\pdfpageheight 11in
+\newtheorem{example}{Example}[section]
+\begin{document}
+
+{\bf Use cases to show that it's needed to have {\em key yes}, {\em identifying yes} and {distinct yes}}
+
+Q1: Why we need to distinguish the same entities using {\em key yes} and {\em identifying yes})? 
+
+Assume the following tabe is the measurement for some plant tree at different spots. 
+
+Consider this question that a user may ask. Give me the average dbh for every {\em piru} tree (i.e., tree entity). 
+First, we have three observations here.
+But how many tree entities here is a question. 
+
+There are several cases to consider:
+\begin{itemize}
+\item Case 1: The naive extreme way to interpret the data is that each observation is from different tree entity. Then, we have {\bf four} tree entities. 
+	This may be too strict. People may say, well, I have some observations for the same entity. 
+\item Case 2: The second naive extreme way is to interpret that different {\em spp} represent the different tree entity. 
+That's obvious that {\em piru} is different from {\em abba}. 
+With this constraint, we get {\bf two} tree entities. 
+\item Case 3: the assumption of case two has some obvious problem. 
+People want to further limit that the same {\em spp} in the same {\em plt} should represent the same tree entity set. 
+To achieve this, we use {\em identifying yes}.
+   Now, it should return
+	\[(A, piru, 36), (B, piru, 33.2), (B, abba, 34)\]
+\end{itemize}
+
+\begin{table}[htb]
+\begin{center}
+\begin{tabular}{cc}
+\begin{tabular}{|l|l|l|}
+\hline
+plt & spp & dbh\\\hline
+A & piru & 35.8 \\\hline
+A & piru & 36.2 \\\hline
+B & piru &33.2 \\\hline
+B&abba&34\\\hline
+\end{tabular}
+&
+\begin{tabular}{|l|l|l|l|}
+\hline
+plt & area & spp & dbh\\\hline
+A & 1.0 & piru & 35.8 \\\hline
+A & 1.1 & piru & 36.2 \\\hline
+B & &piru &33.2 \\\hline
+B& & abba&34\\\hline
+\end{tabular}\\
+(a) & (b)
+\end{tabular}
+\end{center}
+\vspace{-0.2in}
+\caption{Dataset}
+\end{table}
+
+Q2: Why we need to distinguish the same entities using {\em key yes} and {\em distinct yes}) to identify the same observation? 
+For the example, we have one observation for splot {\em A}.
+What's the semantic purpose of this? What kind of query may need this? 
+E.g., how many spots in this dataset? 
+
+{\bf Note 1}: if one observation type is marked with {\em distinct yes}, all its measurements should be marked with {\em key yes}. 
+Otherwise, we may have the same observation with different measurement values. 
+E.g., what will happen for the following: 
+
+\noindent
+{\bf observation} ``o1''  \textcolor{blue}{distinct yes}\\
+\verb|    |{\bf  entity} ``Plot''\\
+\verb|    |{\bf measurement} ``m1'' \textcolor{blue}{key yes}\\
+\verb|        | {\bf characteristic} ``EntityName'' \\
+\verb|        | {\bf standard} ``Nominal''\\
+\verb|    | {\bf measurement} ``m2''\\
+\verb|        | {\bf characteristic} ``area'' \\
+\verb|        | {\bf standard} ``sqft''\\
+
+Will $(A, 1.0)$ and $(A,1,1)$ be treated as the same observation? 
+According to the semantic meaning, they are the same observation because they have the same value on the key measurement and this observation type is marked witht {\em distinct yes}. 
+However, there is something wrong here. 
+
+
+\begin{table}[htb]
+\begin{center}
+
+\end{center}
+\vspace{-0.2in}
+\caption{Dataset}
+\end{table}
+
+Based on this note, it seems like it is not useful to denote {\em distinct yes}.
+Basically, once all the measurements are marked with {\em key yes}, it automatically infers that it is distinct yes. 
+
+\end{document} 
+
