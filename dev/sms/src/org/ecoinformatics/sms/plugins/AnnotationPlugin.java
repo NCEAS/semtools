@@ -270,6 +270,7 @@ public class AnnotationPlugin
 		initializeAnnotations();
 	}
 	
+	// TODO: search Metacat for annotations
 	private void initializeAnnotations() {
 		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
 		String querySpec = getAnnotationQuery();
