@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <config>
-  <version>1.7.0semtools</version>
+  <version>1.8.0_Beta2semtools</version>
   <dataLocationInlineOnline>online</dataLocationInlineOnline>
   <plugin>edu.ucsb.nceas.morpho.query.QueryPlugin</plugin>
   <plugin>edu.ucsb.nceas.morpho.datapackage.DataPackagePlugin</plugin>
@@ -21,6 +21,7 @@
   <debug_level>30</debug_level>
   <log_file>false</log_file>
   <back_dot_morpho_dir>true</back_dot_morpho_dir>
+  <disableSavingIncompleteDoc>true</disableSavingIncompleteDoc>
   <triplesTag>//triple</triplesTag>
   <saxparser>org.apache.xerces.parsers.SAXParser</saxparser>
   <packageWizardConfig>frames/packagewizard.xml</packageWizardConfig>
@@ -304,4 +305,12 @@
       <doctype>-//ecoinformatics.org//eml-dataset-2.0.0beta4//EN</doctype>
       <xslt>style/eml-dataset-2.0.0beta4.xsl</xslt>
   </doctype_xslt_mappings>
+  <styleSheetList>
+      <!-- when you add a style sheet, you must fill out name, label and location elements-->
+       <styleSheet>
+          <name>Biological Data Profile</name>
+          <label>Biological Data Profile (BDP)</label>
+          <location>xsl/eml2tonbii.xsl</location>
+       </styleSheet>
+  </styleSheetList>
 </config>
