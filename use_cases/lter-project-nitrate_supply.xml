@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lter:researchProject xmlns:lter="eml://ecoinformatics.org/lter-project-2.1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="eml://ecoinformatics.org/lter-project-2.1.0 http://sbc.lternet.edu/external/InformationManagement/projectDB/schema/lter-project.xsd"
+  id="knb-lter-sbc.project_nitrate_supply1.1">
+  <alternateIdentifier system="sbclter_filename">lter-project-sbc_nitrate_supply1.1.xml </alternateIdentifier>
+  <title>SBCLTER: Nitrate Supply</title>
+
+  <creator id="mbrzezinski">
+    <individualName>
+      <givenName>Mark</givenName>
+      <surName>Brzezinski</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=mbrzezinski,o=LTER,dc=ecoinformatics,dc=org</userId>
+  </creator>
+  <creator id="bgaylord">
+    <individualName>
+      <givenName>Brian</givenName>
+      <surName>Gaylord</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=bgaylord,o=LTER,dc=ecoinformatics,dc=org</userId>
+  </creator>
+  <creator id="dreed">
+    <individualName>
+      <givenName>Dan</givenName>
+      <surName>Reed</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=dreed,o=LTER,dc=ecoinformatics,dc=org</userId>
+  </creator>
+  <creator id="swilliams">
+    <individualName>
+      <givenName>Susan</givenName>
+      <surName>Williams</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=swilliams,o=LTER,dc=ecoinformatics,dc=org</userId>
+  </creator>
+  <creator id="smacintyre">
+    <individualName>
+      <givenName>Sally</givenName>
+      <surName>MacIntyre</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=smacintyre,o=LTER,dc=ecoinformatics,dc=org</userId>
+  </creator>
+
+  <creator id="ccarlson">
+    <individualName>
+      <givenName>Craig</givenName>
+      <surName>Carlson</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=ccarlson,o=LTER,dc=ecoinformatics,dc=org</userId>
+  </creator>
+  <creator id="jfram">
+    <individualName>
+      <givenName>Jonathan</givenName>
+      <surName>Fram</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=jfram,o=LTER,dc=ecoinformatics,dc=org</userId>
+  </creator>
+  <creator id="hstewart">
+    <individualName>
+      <givenName>Hannah</givenName>
+      <surName>Stewart</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=hstewart,o=LTER,dc=ecoinformatics,dc=org</userId>
+  </creator>
+  <abstract>
+    <para>Goal is to determine the relative importance of different sources of nitrate to the annual
+      nitrogen needs of the giant kelp Macrocystis pyrifera by characterizing
+      nitrate delivery using water column thermal structure and flow data.
+    </para>
+  </abstract>
+  <keywordSet name="sbclter-habitats">
+    <keyword keywordType="theme">beach</keyword>
+    <keyword keywordType="theme">stream</keyword>
+    <keyword keywordType="theme">reef</keyword>
+    <keywordThesaurus>SBCLTER Habitats</keywordThesaurus>
+  </keywordSet>
+  <keywordSet name="sbclter-places">
+    <keyword keywordType="place">Mohawk Reef</keyword>
+    <keywordThesaurus>SBCLTER Places</keywordThesaurus>
+  </keywordSet>
+  <distribution>
+    <online>
+      <url function="information">http://sbc.lternet.edu</url>
+    </online>
+  </distribution>
+  <coverage>
+    <geographicCoverage id="MWHK">
+      <geographicDescription>Mohawk Reef</geographicDescription>
+      <boundingCoordinates>
+        <westBoundingCoordinate>0</westBoundingCoordinate>
+        <eastBoundingCoordinate>0</eastBoundingCoordinate>
+        <northBoundingCoordinate>0</northBoundingCoordinate>
+        <southBoundingCoordinate>0</southBoundingCoordinate>
+      </boundingCoordinates>
+    </geographicCoverage>
+    <temporalCoverage>
+      <ongoing asOfDate="2010-01-15">
+        <beginDate>
+          <calendarDate>2005</calendarDate>
+        </beginDate>
+      </ongoing>
+    </temporalCoverage>
+  </coverage>
+  <studyAreaDescription>
+    <descriptor name="biome" citableClassificationSystem="0">
+      <descriptorValue>subtidal reef</descriptorValue>
+    </descriptor>
+  </studyAreaDescription>
+
+  <associatedMaterial category="dataset">
+    <distribution>
+      <online>
+        <onlineDescription>input dataset, Mohawk Reef Mooring Dataset (MKO)</onlineDescription>
+        <connection>
+          <connectionDefinition>
+            <schemeName system="sbclter">metacat</schemeName>
+            <description>metacat </description>
+            <parameterDefinition>
+              <name>docid</name>
+              <definition>knb-lter-sbc.2006</definition>
+            </parameterDefinition>
+          </connectionDefinition>
+        </connection>
+      </online>
+    </distribution>
+  </associatedMaterial>
+  <associatedMaterial category="dataset">
+    <distribution>
+      <online>
+        <onlineDescription>input dataset, Nearshore Water Profiles</onlineDescription>
+        <connection>
+          <connectionDefinition>
+            <schemeName system="sbclter">metacat</schemeName>
+            <description>metacat </description>
+            <parameterDefinition>
+              <name>docid</name>
+              <definition>knb-lter-sbc.10</definition>
+            </parameterDefinition>
+          </connectionDefinition>
+        </connection>
+      </online>
+    </distribution>
+  </associatedMaterial>
+  <associatedMaterial category="dataset">
+    <distribution>
+      <online>
+        <onlineDescription>input dataset, Arroyo Burro Creek Discharge (AB00)</onlineDescription>
+        <connection>
+          <connectionDefinition>
+            <schemeName system="sbclter">metacat</schemeName>
+            <description>metacat</description>
+            <parameterDefinition>
+              <name>docid</name>
+              <definition>knb-lter-sbc.3001</definition>
+            </parameterDefinition>
+          </connectionDefinition>
+        </connection>
+      </online>
+    </distribution>
+  </associatedMaterial>
+  <associatedMaterial category="dataset">
+    <distribution>
+      <online>
+        <onlineDescription>input dataset, Mission Creek Discharge (MC00)</onlineDescription>
+        <connection>
+          <connectionDefinition>
+            <schemeName system="sbclter">metacat</schemeName>
+            <description>metacat </description>
+            <parameterDefinition>
+              <name>docid</name>
+              <definition>knb-lter-sbc.3009</definition>
+            </parameterDefinition>
+          </connectionDefinition>
+        </connection>
+      </online>
+    </distribution>
+  </associatedMaterial>
+  <associatedMaterial category="dataset">
+    <distribution>
+      <online>
+        <onlineDescription>input dataset, Stream Chemistry</onlineDescription>
+        <connection>
+          <connectionDefinition>
+            <schemeName system="sbclter">metacat</schemeName>
+            <description>metacat </description>
+            <parameterDefinition>
+              <name>docid</name>
+              <definition>knb-lter-sbc.6</definition>
+            </parameterDefinition>
+          </connectionDefinition>
+        </connection>
+      </online>
+    </distribution>
+  </associatedMaterial>
+  <associatedMaterial category="dataset">
+    <distribution>
+      <online>
+        <onlineDescription>input dataset, Algal mass and CHN</onlineDescription>
+        <connection>
+          <connectionDefinition>
+            <schemeName system="sbclter">metacat</schemeName>
+            <description>metacat </description>
+            <parameterDefinition>
+              <name>docid</name>
+              <definition>knb-lter-sbc.24</definition>
+            </parameterDefinition>
+          </connectionDefinition>
+        </connection>
+      </online>
+    </distribution>
+  </associatedMaterial>
+  <associatedMaterial category="dataset">
+    <distribution>
+      <online>
+        <onlineDescription>input dataset, Giant Kelp NPP (including N)</onlineDescription>
+        <connection>
+          <connectionDefinition>
+            <schemeName system="sbclter">metacat</schemeName>
+            <description>metacat </description>
+            <parameterDefinition>
+              <name>docid</name>
+              <definition>knb-lter-sbc.21</definition>
+            </parameterDefinition>
+          </connectionDefinition>
+        </connection>
+      </online>
+    </distribution>
+  </associatedMaterial>
+</lter:researchProject>
