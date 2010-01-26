@@ -174,6 +174,17 @@ public class Observation implements Comparable {
 	   return null;
    }
    
+   public String getFullString() {
+	   String desc = "";
+	   if (_entity != null) {
+		   desc += _entity.toString();
+	   }
+	   if (_label != null) {
+		   desc += " (" + _label + ")"; 
+	   }
+	   return desc;
+   }
+   
    /**
     * do an alpha sort by label - really we only care about equality
     */
