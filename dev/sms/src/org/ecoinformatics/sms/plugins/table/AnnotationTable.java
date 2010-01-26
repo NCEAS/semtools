@@ -123,6 +123,17 @@ public class AnnotationTable extends MultiSpanCellTable {
 			}
 		}
 		
+		//merge the remaining cells
+		if (!sameColumns.isEmpty()) {
+			int[] columns = new int[sameColumns.size()];
+			for (int j = 0; j < sameColumns.size(); j++) {
+				columns[j] = sameColumns.get(j);
+			}
+			cellAtt.combine(contextRows, columns);
+			cellAtt.combine(obsRows, columns);
+			cellAtt.combine(entityRows, columns);
+		}
+		
 		//combine all spacer cells into one
 		int[] columns = new int[this.getColumnCount()];
 		for (int j = 0; j < this.getColumnCount(); j++) {
