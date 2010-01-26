@@ -1,0 +1,86 @@
+Morpho Plugin
+------------
+-annotation editor
+	-add "virtual" measurements to Observations (promoting metadata to the OBOE model)
+	DONE-define Observation/Entity/Characteristic/Standard/Protocol and map to a data column
+	DONE-combine Measurements as same Observation
+	DONE-split Measurements from same Observation
+	DONE-add Context for Observation and define the Relationship between them
+	DONE-remove Context for Observation
+-annotation editor UI
+	-use arrows to indicate Context relationships
+	-remove Observation row (duplicates information in Entity row)
+	-auto-generate Observation and Measurement labels (observation_1, measurement_2, etc..)
+	-add tool tips and helpful labels for annotation table rows ("what's an Entity again?"
+	DONE-group and merge cells of the same Observation
+-search facility
+	-compound search combining AND/OR with basic annotation search
+	-options for including subclasses/siblings/superclasses
+	-fuzzy term search that enters ontology class labels/descriptions to find formal classes
+	-merge search results from normal keyword-based searching with annotation-based searching
+	DONE-basic search over Entity/Characteristic/Standard/Protocol
+-ontology management
+	-load local ontology files (logical->physical mappings)
+	-load remote ontologies (URI is both logical and physical)
+	-load remote ontologies (logical URI maps to physical URL)
+	-load Metacat-managed ontologies
+-annotation management
+	DONE-save annotation when EML is saved (locally)
+	-save annotation when EML is saved (network)
+	-define permissions (ACL) for annotations
+	-track the "author" of the annotation in the annotation schema
+	-allow multiple annotations per EML datatable
+-aggregation browser
+	-"materialize" the annotation in the OBOE model
+	-"sensibly" summarize by Observations: sum, mean, min, max
+	-OLAP/datamining-style UI for drilling down and adding facets
+
+SMS library
+------------
+-architecture decoupled from Metacat
+	-Metacat as a service provider that SMS can use for document storage, simple searching
+	-Data Manager as another service that SMS can utilize
+	-both SMS and DM as consumers of Metacat (ecogrid?) services
+-ontology managemenet
+	-refine OntologyManager interface - focus on the methods we will actually use (clean-up)
+		-subclasses
+		-superclasses
+		-properties
+		-ranges
+-manage annotations
+	-address potential scaling issues (loading all annotation documents at once is not feasible for large corpus)
+	-indexed searching (class->annotation mappings)
+	-cache "most used" classes (and the annotations that reference them)
+	-ensuring ontologies used/referenced in annotations are managed/manageable by the ontology manager
+		-do we need a mapping element for physically resolving ontology URIs referenced in annotations?
+-search interface
+	-create TermExpanderSearch
+		-getClassForFuzzySearchTerm(String term);
+		-getExpandedClasses(...) with options like:
+			-includeDeepSubclasses
+			-includeSiblingClasses
+			-includeRelatedClasses
+				-part-of
+				-has-a
+			-includeInferredSubClasses
+				-uses reasoner
+	-create StructuredAnnotationSearch
+		-getDatapackages(...)
+			-basic search criteria: 
+				-{(entity+characteristic[+standard]) (AND|OR) (entity+characteristic[+standard])...}
+				-context (TODO: need clarification on this)
+			-similar options as included in term expander (subsumption inference, subclass depth, property relations)	
+	
+Metacat integration
+--------------------
+-allow Metacat to store OWL/RDF documents
+-allow Metacat to store+search annotation documents
+-allow Metacat to search annotation documents
+-use SMS api for annotation search or should it be more closesly linked to Metacat storage (see caching/indexing in the SMS API section)
+-determine permission policy for ontology/annotation documents
+	-ontologies should be public
+	-annotations might also be public, but the EML they annotate would determine whether they show in search results
+	-annotations could also be controlled:
+		-by an eml-access module in the annotation schema. 
+		-by the setAccess API in Metacat
+		-this would prevent us from needlessly searching restricted annotations
