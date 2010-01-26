@@ -534,6 +534,8 @@ public class AnnotationPlugin
 						annotation = new Annotation();
 						annotation.setEMLPackage(packageId);
 						annotation.setDataTable(dataTable);
+						// remember it
+						saveAnnotation(annotation);
 					}
 					
 					// set up the table model
