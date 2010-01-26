@@ -137,7 +137,9 @@ public class AnnotationTableModel extends AttributiveCellTableModel {
 				}
 				else if (rowIndex == (CHARACTERISTIC_ROW)) {
 					// TODO multiple characteristics
-					return measurement.getCharacteristics().get(0);
+					if (measurement.getCharacteristics() != null && !measurement.getCharacteristics().isEmpty()) {
+						return measurement.getCharacteristics().get(0);
+					}
 				}
 				else if (rowIndex == (STANDARD_ROW)) {
 					return measurement.getStandard();
