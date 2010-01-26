@@ -165,11 +165,11 @@ public class Observation implements Comparable {
    }
    
    public String toString() {
-	   if (_label != null) {
-		   return _label;
-	   }
 	   if (_entity != null) {
 		   return _entity.toString();
+	   }
+	   if (_label != null) {
+		   return _label;
 	   }
 	   return null;
    }

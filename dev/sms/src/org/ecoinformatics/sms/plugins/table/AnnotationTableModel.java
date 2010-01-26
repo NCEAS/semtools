@@ -51,17 +51,16 @@ public class AnnotationTableModel extends AttributiveCellTableModel {
 	
 	private List<String> columnIds;
 	
-	public static final int ROW_COUNT = 7;
+	public static final int ROW_COUNT = 6;
 	
 	public static final int CONTEXT_ROW = 0;
-	public static final int OBSERVATION_ROW = 1;
 	
-	public static final int SPACER_ROW = 2;
+	public static final int SPACER_ROW = 1;
 	
-	public static final int ENTITY_ROW = 3;
-	public static final int CHARACTERISTIC_ROW = 4;
-	public static final int STANDARD_ROW = 5;
-	public static final int PROTOCOL_ROW = 6;
+	public static final int OBSERVATION_ROW = 2;
+	public static final int CHARACTERISTIC_ROW = 3;
+	public static final int STANDARD_ROW = 4;
+	public static final int PROTOCOL_ROW = 5;
 
 	
 	public AnnotationTableModel(Annotation annotation, List<String> columns) {
@@ -74,9 +73,8 @@ public class AnnotationTableModel extends AttributiveCellTableModel {
 		List<Object> rows = new ArrayList<Object>();
 		//add the measurements
 		rows.add("Context");
-		rows.add("Observation");
 		rows.add("---");
-		rows.add("Entity");
+		rows.add("Observation");
 		rows.add("Characteristic");
 		rows.add("Standard");
 		rows.add("Protocol");
@@ -130,12 +128,8 @@ public class AnnotationTableModel extends AttributiveCellTableModel {
 			if (measurement != null) {
 				Observation observation = annotation.getObservation(measurement);
 				
-				if (rowIndex == (ENTITY_ROW)) {
-					if (observation != null) {
-						return observation.getEntity();
-					}
-				}
-				else if (rowIndex == (CHARACTERISTIC_ROW)) {
+				
+				if (rowIndex == (CHARACTERISTIC_ROW)) {
 					// TODO multiple characteristics
 					if (measurement.getCharacteristics() != null && !measurement.getCharacteristics().isEmpty()) {
 						return measurement.getCharacteristics().get(0);

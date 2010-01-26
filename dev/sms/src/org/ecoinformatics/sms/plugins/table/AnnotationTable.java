@@ -93,7 +93,6 @@ public class AnnotationTable extends MultiSpanCellTable {
 		int[] contextRows = new int[]{AnnotationTableModel.CONTEXT_ROW};
 		int[] obsRows = new int[]{AnnotationTableModel.OBSERVATION_ROW};
 		int[] spacerRows = new int[]{AnnotationTableModel.SPACER_ROW};
-		int[] entityRows = new int[]{AnnotationTableModel.ENTITY_ROW};
 		
 		// group the same observations now that they are in order
 		List<Integer> sameColumns = new ArrayList<Integer>();
@@ -116,7 +115,6 @@ public class AnnotationTable extends MultiSpanCellTable {
 				}
 				cellAtt.combine(contextRows, columns);
 				cellAtt.combine(obsRows, columns);
-				cellAtt.combine(entityRows, columns);
 				sameColumns.clear(); //start again
 				sameColumns.add(i);
 				cellObs = (Observation) this.getValueAt(AnnotationTableModel.OBSERVATION_ROW, i);
@@ -131,7 +129,6 @@ public class AnnotationTable extends MultiSpanCellTable {
 			}
 			cellAtt.combine(contextRows, columns);
 			cellAtt.combine(obsRows, columns);
-			cellAtt.combine(entityRows, columns);
 		}
 		
 		//combine all spacer cells into one
@@ -155,7 +152,6 @@ public class AnnotationTable extends MultiSpanCellTable {
 		
 			cellAtt.split(AnnotationTableModel.CONTEXT_ROW, column);
 			cellAtt.split(AnnotationTableModel.OBSERVATION_ROW, column);
-			cellAtt.split(AnnotationTableModel.ENTITY_ROW, column);
 		}
 		
 		// show it
