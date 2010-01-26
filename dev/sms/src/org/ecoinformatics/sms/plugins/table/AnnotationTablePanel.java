@@ -151,6 +151,28 @@ class RowHeaderRenderer extends JLabel implements ListCellRenderer, TableCellRen
     public Component getTableCellRendererComponent(JTable table, Object value,
                           boolean isSelected, boolean hasFocus, int row, int column) {
       setText((value == null) ? "" : value.toString());
+      switch (row) {
+		case AnnotationTableModel.CONTEXT_ROW:
+			setToolTipText("The context[s] in which the observation was made");
+			break;
+		case AnnotationTableModel.OBSERVATION_ROW:
+			setToolTipText("The Observation");
+			break;
+		case AnnotationTableModel.ENTITY_ROW:
+			setToolTipText("The 'thing' being observed");
+			break;
+		case AnnotationTableModel.CHARACTERISTIC_ROW:
+			setToolTipText("The characteristic of the 'thing' being measured");
+			break;
+		case AnnotationTableModel.STANDARD_ROW:
+			setToolTipText("The the measurement unit");
+			break;
+		case AnnotationTableModel.PROTOCOL_ROW:
+			setToolTipText("The protocol used for collecting the measurement");
+			break;	
+		default:
+			break;
+      }
       return this;
     }
 
