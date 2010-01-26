@@ -433,7 +433,12 @@ public class AnnotationPlugin
 			) {
 			if (!isInitialized()) {
 				initPopup();
-				buildAnnotationTable();
+				try {
+					buildAnnotationTable();
+				} catch (Exception e) {
+					Log.debug(5, "Could not build annotation table");
+					e.printStackTrace();
+				}
 			}
 		}
 		
@@ -505,7 +510,7 @@ public class AnnotationPlugin
 		}
 	}
 	
-	private void buildAnnotationTable() {
+	private void buildAnnotationTable() throws Exception {
 
 		morphoFrame = UIController.getInstance().getCurrentActiveWindow();
 		if (morphoFrame != null) {
