@@ -2,6 +2,9 @@ Morpho Plugin
 ------------
 -annotation editor
 	-add "virtual" measurements to Observations (promoting metadata to the OBOE model)
+	-inform automatic annotation creation from EML measurementStandards and unit definitions
+	-use annotations to automatically generate EML measurementStandards...
+	-create annotation "templates" that can be re-applied to multiple datatables
 	DONE-define Observation/Entity/Characteristic/Standard/Protocol and map to a data column
 	DONE-combine Measurements as same Observation
 	DONE-split Measurements from same Observation
@@ -30,6 +33,7 @@ Morpho Plugin
 	-define permissions (ACL) for annotations
 	-track the "author" of the annotation in the annotation schema
 	-allow multiple annotations per EML datatable
+	-export annotation as part of EML file in the additionalMetadata section
 -aggregation browser
 	-"materialize" the annotation in the OBOE model
 	-"sensibly" summarize by Observations: sum, mean, min, max
