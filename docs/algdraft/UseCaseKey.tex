@@ -17,11 +17,108 @@
 \newtheorem{example}{Example}[section]
 \begin{document}
 
+Mark and Huiping had a discussion about use cases to use ``key yes'', ``distinct yes'' and ``identifying yes''. 
+
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+Plot & sub-plot & Tmnt & Sp & Ind &wt\\\hline
+1 & A & X &Aus&1&10\\\hline
+1 & A & C &Bus&1&20\\\hline
+1 & B & X &Aus&3&10\\\hline
+1 & B & C &Bus&4&10\\\hline
+2 & A & X &Aus&1&20\\\hline
+2 & A & C &Bus&4&10\\\hline
+2 & B & X &Aus&5&20\\\hline
+2 & B & C &Bus&4&10\\\hline
+\end{tabular}
+\end{center}
+\caption{A dataset with more complex information}
+\label{tb:complexdb}
+\end{table}
+
+\noindent Give the data in Table \ref{tb:complexdb}. Assume we have the following observation types (Correct me if it's not very appropriate.)
+\begin{itemize}
+\item Plot (with measurement type: PlotLabel)
+\item SubPlot (with measurement type: SubPlotLabel)
+\item Tmnt (represent {\em Treatment} (With measurement type TmntType))
+\item Sp (represent {\em Species}, with measurement type: SpName)
+\item Ind (represent {\em Individual}, with measurement type: IndLabel and Weight)
+\end{itemize} 
+
+\noindent  Given the dataset in Table \ref{tb:complexdb}, users have different situations to catch. 
+\begin{itemize}
+\item Case 1: {\em Plot} with label ``1'' should refer to the same one physical plot (i.e., the Plot in the first 4 row means the same thing); similarly, 
+  {\em plot} with label ``2'' should refer to the second physical plot (i.e., the Plot in the last 4 row means the same thing). 
+\begin{itemize} 
+\item This can be captured in annotation by putting ``Distinct yes'' for observation type {\em Plot} and ``key yes'' for its measurement type {\em PlotLabel}. 
+\end{itemize}
+\item Case 2: {\em sub-plot}s with the same lable should refer to the same physical sub-plot if they are within the same plot; 
+but the sub-plot with the same label with different {\em Plot} label are different sub-plots.
+E.g., Row 1 \{Plot=1, sub-plot=A\} refers the same sub-plot as that in Row 2, but is different from the one in Row 5 \{Plot=2, sub-plot=A\}. 
+ \begin{itemize} 
+\item This can be captured by putting ``Distinct yes'' for observation type {\em SubPlot} , ``key yes'' for its measurement type {\em SubPlotLabel}. We need to denote {\em Plot} is its context and with {\em identifying yes} specified on this context. 
+\end{itemize}
+\item Case 3: {\em Tmnt} with the same lable should refer to the same treatment process (So that we can aggregate on different treatment process, e.g., on ``X'' or on ``C''.)  But the treatment at different sub-plot should refer to different treatment. 
+ \begin{itemize} 
+\item The first requirement can be captured by treating all the Treatment with value ``X'' as the same entity. 
+The second requirement can be captured by treating the treatment in different sub-plots as different observationsß†. 
+I.e., treatments in row 1 and row 3 are of the same entity, but are different observations. 
+\item At the first glance, to represent this, {\em TmntType} for {\em Tmnt} should be specified with ``key yes''. 
+It should have context {\em sub-plot} which is specified with ``identifying yes''. 
+\item After further analysis, {\bf  one question arises: 
+The key measurements for the treatment observation is different from the key measurement  of the entity treatment}. 
+After considering the context, the key measurements for the treatment observation are \{Plotlabel, SubPlotLabel, TmntType\}.  
+When two rows have the same value on these measurements, they represent the same observation instance.
+However, the key measurement for the treatment entity is just \{TmntType\}. When two rows have the same value on it, they represent the same entity instance. 
+The {\em identifying} constraint can only capture the observation context. 
+{\bf This problem is more obvious when we analyze Case 5}. 
+\item Another different annotation may be applied to catch this semantic. E.g., treat the {\em treatments} in different rows as different entity instances. 
+This way, the observation type and the entity type have the same key measurement types \{Plotlabel, SubPlotLabel, TmntType\}. 
+However, this problem still exists for Case 4 and Case 5. 
+\end{itemize}
+
+\item Case 4:  {\em Sp} with the same name should refer to the same species (e.g., a bird named {\em Aus} flies from sub-plot (1,A) to (1,B).)  
+But the {\em Sp} with the same name at different sub-plot should refer to different observations of a specie.
+\begin{itemize}
+\item At the first glance, to represent this, {\em SpName} for {\em Sp} should be specified with ``key yes''. 
+It should have context {\em sub-plot} which is specified with ``identifying yes''. 
+\item {\bf The same problem as Case 3: The key measurements for the {\em Sp} observation is different from the key measurement  of the entity {\em Sp}}.
+the key measurements for the species observation are \{Plotlabel, SubPlotLabel, SpName\}. 
+However, the key measurements for the species entity is just \{SpName\}. 
+\end{itemize} 
+
+\item Case 5:  {\em Ind} with the same label and and the same species name should refer to the same species.
+But the individual (with the same lable and the same species name) at different sub-plot should refer to different species observations.
+\begin{itemize}
+\item {\bf The same problem as Case 4 and Case 5: The key measurements for the {\em Ind} observation is different from the key measurement  of the entity {\em Ind}.}
+the key measurements for the species observation are \{Plotlabel, SubPlotLabel, SpName, Ind\}. 
+However, the key measurement for the species entity is just \{SpName, Ind\}.  When two rows have the same value on these two columns, they represent the same entity instance. 
+In this case, the observation context of Ind is {\em Sp} and {\em Sub-plot}. But the entity context of Ind is just {\em Sp}. 
+\end{itemize} 
+
+\end{itemize}
+
+In summary, we can get a better idea about the problem described in the above use cases can when we answer the following two simple questions: \\
+Q1:  Will an entity type and an observation type (which is of the given entity type) always have the same key measurement type(s)?
+     The above use cases give situations that the answer is no.  \\
+Q2: is {\em identifying} itself enough to distinguish the key measurement for observation types and for entity types? 
+    My temporary answer to this question is no. 
+
+A general thinking: 
+the counterpart in RDB (Relational DataBase) is a relational scheme with key attributes. 
+Here, we have two levels of objects: entity level and instance level.
+Then, for different levels of objects, we need to have different ways to specify their key measurements. 
+
+\newpage
+
 {\bf Use cases to show that it's needed to have {\em key yes}, {\em identifying yes} and {distinct yes}}
 
 Q1: Why we need to distinguish the same entities using {\em key yes} and {\em identifying yes})? 
 
-Assume the following tabe is the measurement for some plant tree at different spots. 
+Assume the following table is the measurement for some plant tree at different spots. 
 
 Consider this question that a user may ask. Give me the average dbh for every {\em piru} tree (i.e., tree entity). 
 First, we have three observations here.
@@ -92,16 +189,11 @@ According to the semantic meaning, they are the same observation because they ha
 However, there is something wrong here. 
 
 
-\begin{table}[htb]
-\begin{center}
-
-\end{center}
-\vspace{-0.2in}
-\caption{Dataset}
-\end{table}
-
 Based on this note, it seems like it is not useful to denote {\em distinct yes}.
 Basically, once all the measurements are marked with {\em key yes}, it automatically infers that it is distinct yes. 
+
+
+
 
 \end{document} 
 
