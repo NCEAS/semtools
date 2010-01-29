@@ -170,16 +170,6 @@ public class OntologyClassSelectionPanel extends JPanel {
 	 * Private method for initializing the panel
 	 */
 	private void init(boolean libraryOnly, int length, int height) {
-		try {
-			//SMS.getInstance().getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe.1.0beta");
-			//SMS.getInstance().getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe.0.9");
-			//SMS.getInstance().getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe-units.1.0beta");
-			//SMS.getInstance().getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe-units.0.9");
-			SMS.getInstance().getOntologyManager().importOntology("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		JScrollPane treeView = createTreeView(libraryOnly);
 		_ontoTree.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
 

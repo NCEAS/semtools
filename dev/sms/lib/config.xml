@@ -33,6 +33,12 @@
   <eastBCSearchPath>eastBoundingCoordinate</eastBCSearchPath>
   <taxonRankSearchPath>taxonomicClassification/taxonRankName</taxonRankSearchPath>
   <taxonValueSearchPath>taxonomicClassification/taxonRankValue</taxonValueSearchPath>
+  <ontologies>
+  	<logicalURI>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl</logicalURI>
+  	<physicalURI>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl</physicalURI>
+  	<logicalURI>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl</logicalURI>
+  	<physicalURI>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl</physicalURI>
+  </ontologies>
   <vocabularies>
   	<vocabulary>KNBRegistry</vocabulary>
   	<className>edu.ucsb.nceas.morpho.plugins.vocabulary.GenericTreeVocabularyPage</className>

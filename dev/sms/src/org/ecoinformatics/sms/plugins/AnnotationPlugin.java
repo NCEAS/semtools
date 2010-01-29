@@ -22,8 +22,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
+import java.util.Map.Entry;
 
 import javax.swing.JLabel;
 import javax.swing.event.TableModelListener;
@@ -266,6 +268,9 @@ public class AnnotationPlugin
 		StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SELECT_DATA_VIEWER, this);
 		StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SAVE_DATAPACKAGE, this);
 		
+		//initialize the ontologies
+		initializeOntologies();
+		
 		// initialize the annotations
 		initializeAnnotations();
 	}
@@ -291,6 +296,25 @@ public class AnnotationPlugin
 			docids.add(docid);
 		}
 		
+	}
+	
+	private void initializeOntologies() {
+		// load the default ontologies
+		Hashtable<String, String> ontologyURIs = Morpho.getConfiguration().getHashtable("ontologies", "logicalURI", "physicalURI");
+		for (Entry<String, String> entry: ontologyURIs.entrySet()) {
+			String uri = entry.getKey();
+			String url = entry.getValue();
+			try {
+				SMS.getInstance().getOntologyManager().importOntology(url, uri);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		//SMS.getInstance().getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe.1.0beta");
+		//SMS.getInstance().getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe-units.1.0beta");
+		//SMS.getInstance().getOntologyManager().importOntology("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl");
+		//SMS.getInstance().getOntologyManager().importOntology("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl");
 	}
 	
 	public static String getAnnotationQuery()
