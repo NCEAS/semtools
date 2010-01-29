@@ -11,7 +11,9 @@
    <property name="config"  location="config"/>
    <property name="infile"  value="examples/test-annotation1.xml"/>
    <property name="outfile"  value=""/>
-
+	<!-- override the morpho property -->
+   	<property name="morpho.args" value=".semtools"/>
+	
    <target name="init" depends="morpho.init">
       <!-- Create the time stamp -->
       <tstamp/>
@@ -53,6 +55,14 @@
            debug="on"
            source="1.5"
            deprecation="true"/>
+   		<!-- copy the image resources we are using -->
+		<copy todir="${build}" filtering="no">
+			<fileset dir="${src}">
+				<include name="**/*.gif" />
+				<include name="**/*.png" />
+				<include name="**/*.jpg" />
+			</fileset>
+		</copy>
    </target>
 
    <target name="test" depends="compile">
