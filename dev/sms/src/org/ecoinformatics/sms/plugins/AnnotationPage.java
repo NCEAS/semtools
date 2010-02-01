@@ -172,12 +172,13 @@ public class AnnotationPage extends AbstractUIPage {
 
 			// is there a measurement mapping for the attribute?
 			currentMapping = annotation.getMapping(attributeName);
+			if (currentMapping == null) {
+				return;
+			}
+			
+			// get the current measurement from the mapping
 			currentMeasurement = currentMapping.getMeasurement();
-			currentCharacteristic = currentMeasurement.getCharacteristics()
-					.get(0);
-			currentStandard = currentMeasurement.getStandard();
-			currentProtocol = currentMeasurement.getProtocol();
-
+			
 			// is there an observation that uses that measurement?
 			currentObservation = annotation.getObservation(currentMeasurement);
 
@@ -208,21 +209,25 @@ public class AnnotationPage extends AbstractUIPage {
 			} catch (Exception e) {
 			}
 			try {
+				currentCharacteristic = currentMeasurement.getCharacteristics().get(0);
 				String charString = currentCharacteristic.getURI();
 				this.simpleAnnotationPanel.setObservationCharacteristic(currentCharacteristic);
 			} catch (Exception e) {
 			}
 			try {
+				currentStandard = currentMeasurement.getStandard();
 				String standard = currentStandard.getURI();
 				this.simpleAnnotationPanel.setObservationStandard(currentStandard);
 			} catch (Exception e) {
 			}
 			try {
+				currentProtocol = currentMeasurement.getProtocol();
 				String protocol = currentProtocol.getURI();
 				this.simpleAnnotationPanel.setObservationProtocol(currentProtocol);
 			} catch (Exception e) {
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			// we don't care about this right now
 		}
 
@@ -304,7 +309,8 @@ public class AnnotationPage extends AbstractUIPage {
 			annotation.addOntology(entity.getOntology());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.debug(30, "Ignoring: " + e.getMessage());
+			//e.printStackTrace();
 		}
 		
 		// look for existing Observations of this given entity
