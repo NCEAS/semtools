@@ -174,7 +174,7 @@ public class ObservationCommand implements Command {
 						// create a new observation from the old one
 						Observation splitObservation = new Observation();
 						splitObservation.setEntity(observation.getEntity());
-						splitObservation.setLabel("obs_" + System.currentTimeMillis());
+						splitObservation.setLabel(Annotation.getNextObservationLabel(annotation, "observation"));
 						splitObservation.addMeasurement(measurement);				
 						annotation.addObservation(splitObservation);
 						// remove the measurement from the old observation

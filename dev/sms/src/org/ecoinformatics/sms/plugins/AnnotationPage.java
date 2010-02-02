@@ -125,7 +125,8 @@ public class AnnotationPage extends AbstractUIPage {
 		JPanel measurementLabelPanel = WidgetFactory.makePanel(1);
 		measurementLabelLabel = WidgetFactory.makeLabel("Measurement:", true);
 		measurementLabelPanel.add(measurementLabelLabel);
-		measurementLabel = WidgetFactory.makeOneLineShortTextField("<label>");
+		measurementLabel = WidgetFactory.makeOneLineShortTextField("");
+		measurementLabel.setEnabled(false);
 		measurementLabelPanel.add(measurementLabel);
 		measurementLabelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
@@ -141,7 +142,8 @@ public class AnnotationPage extends AbstractUIPage {
 		JPanel labelPanel = WidgetFactory.makePanel(1);
 		observationLabelLabel = WidgetFactory.makeLabel("Observation:", true);
 		labelPanel.add(observationLabelLabel);
-		observationLabel = WidgetFactory.makeOneLineShortTextField("<label>");
+		observationLabel = WidgetFactory.makeOneLineShortTextField("");
+		observationLabel.setEnabled(false);
 		labelPanel.add(observationLabel);
 		labelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
@@ -238,8 +240,8 @@ public class AnnotationPage extends AbstractUIPage {
 		// create a measurement if there wasn't one already
 		if (currentMeasurement == null) {
 			currentMeasurement = new Measurement();
-			currentMeasurement.setLabel("measurement_"
-					+ System.currentTimeMillis());
+			currentMeasurement.setLabel(
+					Annotation.getNextMeasurementLabel(annotation, "measurement"));
 		}
 		
 		// edit the existing values
@@ -287,7 +289,7 @@ public class AnnotationPage extends AbstractUIPage {
 
 		// measurement label
 		String mLabel = measurementLabel.getText();
-		if (mLabel != null) {
+		if (mLabel != null && mLabel.length() > 0) {
 			currentMeasurement.setLabel(mLabel);
 		}
 		
@@ -331,15 +333,15 @@ public class AnnotationPage extends AbstractUIPage {
 		// the observation
 		if (currentObservation == null) {
 			currentObservation = new Observation();
-			currentObservation.setLabel("observation_"
-					+ System.currentTimeMillis());
+			currentObservation.setLabel(
+					Annotation.getNextObservationLabel(annotation, "observation"));
 			currentObservation.addMeasurement(currentMeasurement);
 			annotation.addObservation(currentObservation);
 		}
 		
 		// observation label
 		String label = observationLabel.getText();
-		if (label != null) {
+		if (label != null && label.length() > 0) {
 			currentObservation.setLabel(label);
 		}
 		
