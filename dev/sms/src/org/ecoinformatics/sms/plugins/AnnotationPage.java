@@ -241,7 +241,7 @@ public class AnnotationPage extends AbstractUIPage {
 		if (currentMeasurement == null) {
 			currentMeasurement = new Measurement();
 			currentMeasurement.setLabel(
-					Annotation.getNextMeasurementLabel(annotation, "measurement"));
+					Annotation.getNextMeasurementLabel(annotation, "m"));
 		}
 		
 		// edit the existing values
@@ -334,7 +334,7 @@ public class AnnotationPage extends AbstractUIPage {
 		if (currentObservation == null) {
 			currentObservation = new Observation();
 			currentObservation.setLabel(
-					Annotation.getNextObservationLabel(annotation, "observation"));
+					Annotation.getNextObservationLabel(annotation, "o"));
 			currentObservation.addMeasurement(currentMeasurement);
 			annotation.addObservation(currentObservation);
 		}
