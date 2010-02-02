@@ -123,7 +123,7 @@ public class AnnotationPage extends AbstractUIPage {
 				
 		// Measurement Label
 		JPanel measurementLabelPanel = WidgetFactory.makePanel(1);
-		measurementLabelLabel = WidgetFactory.makeLabel("Measurement:", true);
+		measurementLabelLabel = WidgetFactory.makeLabel("Measurement:", false);
 		measurementLabelPanel.add(measurementLabelLabel);
 		measurementLabel = WidgetFactory.makeOneLineShortTextField("");
 		measurementLabel.setEnabled(false);
@@ -140,7 +140,7 @@ public class AnnotationPage extends AbstractUIPage {
 		
 		// Observation Label
 		JPanel labelPanel = WidgetFactory.makePanel(1);
-		observationLabelLabel = WidgetFactory.makeLabel("Observation:", true);
+		observationLabelLabel = WidgetFactory.makeLabel("Observation:", false);
 		labelPanel.add(observationLabelLabel);
 		observationLabel = WidgetFactory.makeOneLineShortTextField("");
 		observationLabel.setEnabled(false);
