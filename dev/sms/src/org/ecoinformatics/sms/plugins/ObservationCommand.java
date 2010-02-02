@@ -61,7 +61,6 @@ public class ObservationCommand implements Command {
 	private DataViewContainerPanel resultPane = null;
 	private int entityIndex = -1;
 	private String entityName;
-	private AnnotationPage annotationPage = new AnnotationPage();
 	private Annotation annotation = null;
 	private boolean merge = true;
 
@@ -193,7 +192,7 @@ public class ObservationCommand implements Command {
 				AnnotationPlugin.saveAnnotation(annotation);
 				
 				// fire change event
-				StateChangeEvent annotationEvent = new StateChangeEvent(annotationPage, AnnotationPlugin.ANNOTATION_CHANGE_EVENT);
+				StateChangeEvent annotationEvent = new StateChangeEvent(morphoFrame, AnnotationPlugin.ANNOTATION_CHANGE_EVENT);
 				StateChangeMonitor.getInstance().notifyStateChange(annotationEvent);
 				
 			}

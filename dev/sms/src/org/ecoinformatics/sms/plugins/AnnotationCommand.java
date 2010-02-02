@@ -61,7 +61,7 @@ public class AnnotationCommand implements Command {
 	private int attributeIndex = -1;
 	private String entityName;
 	private String attributeName;
-	private AnnotationPage annotationPage = new AnnotationPage();
+	private AnnotationPage annotationPage = null;
 	private Annotation annotation = null;
 
 	/**

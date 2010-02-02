@@ -66,7 +66,6 @@ public class ContextCommand implements Command {
 	private DataViewContainerPanel resultPane = null;
 	private int entityIndex = -1;
 	private String entityName;
-	private AnnotationPage annotationPage = new AnnotationPage();
 	private ContextPage contextPage = null;
 	private Annotation annotation = null;
 	private boolean add = true;
@@ -194,7 +193,7 @@ public class ContextCommand implements Command {
 				AnnotationPlugin.saveAnnotation(annotation);
 				
 				// fire change event
-				StateChangeEvent annotationEvent = new StateChangeEvent(annotationPage, AnnotationPlugin.ANNOTATION_CHANGE_EVENT);
+				StateChangeEvent annotationEvent = new StateChangeEvent(contextPage, AnnotationPlugin.ANNOTATION_CHANGE_EVENT);
 				StateChangeMonitor.getInstance().notifyStateChange(annotationEvent);
 				
 			}
