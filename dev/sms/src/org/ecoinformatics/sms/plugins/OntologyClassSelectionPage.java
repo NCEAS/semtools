@@ -63,6 +63,7 @@ public class OntologyClassSelectionPage extends AbstractUIVocabularyPage {
 
 	private OrderedMap returnMap = new OrderedMap();
 	private OntologyClass currentClass = null;
+	private OntologyClass filterClass = null;
 
 	public OntologyClassSelectionPage() {
 		init();
@@ -103,6 +104,10 @@ public class OntologyClassSelectionPage extends AbstractUIVocabularyPage {
 	
 	public void setCurrentClass(OntologyClass currentClass) {
 		this.currentClass = currentClass;
+	}
+	
+	public void setFilterClass(OntologyClass filterClass) {
+		this.filterClass = filterClass;
 	}
 	
 	public void setVocabulary(String vocab) {
@@ -162,6 +167,7 @@ public class OntologyClassSelectionPage extends AbstractUIVocabularyPage {
 	 */
 
 	public void onLoadAction() {
+		this.selectionPanel.initialize(filterClass);
 		if (currentClass != null) {
 			this.selectionPanel.doSelect(currentClass);
 		}

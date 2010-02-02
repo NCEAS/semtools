@@ -15,6 +15,7 @@ import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
 
 public class OntologyClassJLabel extends JLabel {
 	private OntologyClass ontologyClass;
+	private OntologyClass filterClass;
 
 	public OntologyClassJLabel(String text) {
 		super(text);
@@ -30,6 +31,14 @@ public class OntologyClassJLabel extends JLabel {
 	
 	public OntologyClass getOntologyClass() {
 		return this.ontologyClass;
+	}
+
+	public OntologyClass getFilterClass() {
+		return filterClass;
+	}
+
+	public void setFilterClass(OntologyClass filterClass) {
+		this.filterClass = filterClass;
 	}
 
 	public String getText() {

@@ -22,8 +22,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import java.util.Map.Entry;
 
@@ -33,6 +35,7 @@ import javax.swing.table.TableColumnModel;
 
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
+import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.table.AnnotationTableModel;
 import org.ecoinformatics.sms.plugins.table.AnnotationTablePanel;
 import org.ecoinformatics.sms.plugins.table.DataTableModelListener;
@@ -70,6 +73,9 @@ public class AnnotationPlugin
     public static final String ANNOTATION_MENU_LABEL = "Annotation";
     
     public static final String ANNOTATION_CHANGE_EVENT = "ANNOTATION_SAVED_EVENT";
+    
+    // for filtering
+    public static Map<Class,OntologyClass> OBOE_CLASSES = new HashMap<Class, OntologyClass>();
     
 	private MorphoFrame morphoFrame = null;
 	
@@ -306,6 +312,20 @@ public class AnnotationPlugin
 			String url = entry.getValue();
 			try {
 				SMS.getInstance().getOntologyManager().importOntology(url, uri);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		// initialize the static classes
+		Hashtable<String, String> oboeClasses = Morpho.getConfiguration().getHashtable("oboeClasses", "className", "classURI");
+		for (Entry<String, String> entry: oboeClasses.entrySet()) {
+			String name = entry.getKey();
+			String uri = entry.getValue();
+			try {
+				OntologyClass oboeClass = (OntologyClass) Class.forName(name).newInstance();
+				oboeClass.setURI(uri);
+				OBOE_CLASSES.put(oboeClass.getClass(), oboeClass);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

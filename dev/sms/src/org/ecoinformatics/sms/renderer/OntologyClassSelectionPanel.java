@@ -103,43 +103,6 @@ public class OntologyClassSelectionPanel extends JPanel {
 	 * and having a default width and height.
 	 */
 	public OntologyClassSelectionPanel() {
-		init(false, 525, 350);
-	}
-
-	/**
-	 * Initializes the panel with default width and height.
-	 * 
-	 * @param libraryOnly
-	 *            if true, only loads the library indexed ontologies
-	 */
-	public OntologyClassSelectionPanel(boolean libraryOnly) {
-		init(libraryOnly, 525, 350);
-	}
-
-	/**
-	 * Initializes the panel accepting all ontologies.
-	 * 
-	 * @param width
-	 *            the width of the component
-	 * @param height
-	 *            the height of the component
-	 */
-	public OntologyClassSelectionPanel(int width, int height) {
-		init(false, width, height);
-	}
-
-	/**
-	 * Initializes the panel with the appropriate ontologies, width, and height
-	 * 
-	 * @param libraryOnly
-	 *            if true, only loads the library indexed ontologies
-	 * @param width
-	 *            the width of the component
-	 * @param height
-	 *            the height of the component
-	 */
-	public OntologyClassSelectionPanel(boolean libraryOnly, int width, int height) {
-		init(libraryOnly, width, height);
 	}
 
 	/**
@@ -163,14 +126,17 @@ public class OntologyClassSelectionPanel extends JPanel {
 		return returnList;
 	}
 
+	public void initialize(OntologyClass filterClass) {
+		init(filterClass, 525, 350);
+	}
 
 	// PRIVATE METHODS
 
 	/**
 	 * Private method for initializing the panel
 	 */
-	private void init(boolean libraryOnly, int length, int height) {
-		JScrollPane treeView = createTreeView(libraryOnly);
+	private void init(OntologyClass filterClass, int length, int height) {
+		JScrollPane treeView = createTreeView(filterClass);
 		_ontoTree.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
 		// set up search button
@@ -244,7 +210,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 	 *            true if only the library ontologies are selected
 	 * @return a scroll pane containing the ontologies
 	 */
-	private JScrollPane createTreeView(boolean libraryOnly) {
+	private JScrollPane createTreeView(OntologyClass filterSuperClass) {
 		// create the default root node
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("");
 
@@ -262,6 +228,11 @@ public class OntologyClassSelectionPanel extends JPanel {
 			while (rootClasses.hasNext()) {
 				// build tree from the roots
 				OntologyClass root = rootClasses.next();
+				if (filterSuperClass != null) {
+					if (!filterSuperClass.equals(root)) {
+						continue;
+					}
+				}
 				List<OntologyClass> superclasses = SMS.getInstance().getOntologyManager().getNamedSuperclasses(root, m);
 				if (superclasses == null || superclasses.isEmpty()) {
 					buildTree(root, childNode);

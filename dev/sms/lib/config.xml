@@ -39,6 +39,16 @@
   	<logicalURI>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl</logicalURI>
   	<physicalURI>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl</physicalURI>
   </ontologies>
+  <oboeClasses>
+  	<className>org.ecoinformatics.sms.annotation.Entity</className>
+  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0beta#Entity</classURI>
+  	<className>org.ecoinformatics.sms.annotation.Characteristic</className>
+  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0beta#Characteristic</classURI>
+  	<className>org.ecoinformatics.sms.annotation.Standard</className>
+  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0beta#Standard</classURI>
+  	<className>org.ecoinformatics.sms.annotation.Protocol</className>
+  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0beta#Protocol</classURI>
+  </oboeClasses>
   <vocabularies>
   	<vocabulary>KNBRegistry</vocabulary>
   	<className>edu.ucsb.nceas.morpho.plugins.vocabulary.GenericTreeVocabularyPage</className>

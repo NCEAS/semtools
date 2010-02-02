@@ -34,7 +34,12 @@ import java.awt.event.MouseListener;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import org.ecoinformatics.sms.annotation.Characteristic;
+import org.ecoinformatics.sms.annotation.Entity;
+import org.ecoinformatics.sms.annotation.Protocol;
+import org.ecoinformatics.sms.annotation.Standard;
 import org.ecoinformatics.sms.ontology.OntologyClass;
+import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.OntologyClassSelectionPage;
 
 import edu.ucsb.nceas.morpho.framework.ModalDialog;
@@ -75,6 +80,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		JPanel entityPanel = WidgetFactory.makePanel(1);
 		entityPanel.add(WidgetFactory.makeLabel("Entity:", false));
 		observationEntity = OntologyClassJLabel.makeLabel("<entity>", false, null);
+		observationEntity.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Entity.class));
 		observationEntity.addMouseListener(mListener);
 		entityPanel.add(observationEntity);
 		entityPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
@@ -85,6 +91,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		characteristicPanel.add(WidgetFactory.makeLabel("Characteristic:",
 				false));
 		observationCharacteristic = OntologyClassJLabel.makeLabel("<characteristic>", false, null);
+		observationCharacteristic.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Characteristic.class));
 		observationCharacteristic.addMouseListener(mListener);
 
 		characteristicPanel.add(observationCharacteristic);
@@ -95,6 +102,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		JPanel standardPanel = WidgetFactory.makePanel(1);
 		standardPanel.add(WidgetFactory.makeLabel("Standard:", false));
 		observationStandard = OntologyClassJLabel.makeLabel("<standard>", false, null);
+		observationStandard.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Standard.class));
 		observationStandard.addMouseListener(mListener);
 
 		standardPanel.add(observationStandard);
@@ -105,6 +113,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		JPanel protocolPanel = WidgetFactory.makePanel(1);
 		protocolPanel.add(WidgetFactory.makeLabel("Protocol:", false));
 		observationProtocol = OntologyClassJLabel.makeLabel("<protocol>", false, null);
+		observationProtocol.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Protocol.class));
 		observationProtocol.addMouseListener(mListener);
 
 		protocolPanel.add(observationProtocol);
@@ -128,9 +137,11 @@ public class SimpleAnnotationPanel extends JPanel {
 		
 		try {
 			OntologyClass currentClass = source.getOntologyClass();
+			OntologyClass filterClass = source.getFilterClass();
 			if (currentClass != null) {
 				page.setCurrentClass(currentClass);
 			}
+			page.setFilterClass(filterClass);
 		} catch (Exception e) {
 			//ignore
 		}
