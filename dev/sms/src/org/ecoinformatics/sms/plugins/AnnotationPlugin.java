@@ -123,15 +123,6 @@ public class AnnotationPlugin
 		annotateAction.setEnabledOnStateChange(
 				StateChangeEvent.SELECT_DATATABLE_COLUMN,
 				true, GUIAction.EVENT_LOCAL);
-		annotateAction.setEnabledOnStateChange(
-                StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME,
-                true, GUIAction.EVENT_LOCAL);
-		annotateAction.setEnabledOnStateChange(
-                StateChangeEvent.CREATE_SEARCH_RESULT_FRAME,
-                false, GUIAction.EVENT_LOCAL);
-		annotateAction.setEnabledOnStateChange(
-                StateChangeEvent.CREATE_NOENTITY_DATAPACKAGE_FRAME,
-                false, GUIAction.EVENT_LOCAL);
 		
 		mergeObservationAction =
 			new GUIAction(
@@ -147,15 +138,6 @@ public class AnnotationPlugin
 		mergeObservationAction.setEnabledOnStateChange(
 				StateChangeEvent.SELECT_DATATABLE_COLUMN,
 				true, GUIAction.EVENT_LOCAL);
-		mergeObservationAction.setEnabledOnStateChange(
-                StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME,
-                true, GUIAction.EVENT_LOCAL);
-		mergeObservationAction.setEnabledOnStateChange(
-                StateChangeEvent.CREATE_SEARCH_RESULT_FRAME,
-                false, GUIAction.EVENT_LOCAL);
-		mergeObservationAction.setEnabledOnStateChange(
-                StateChangeEvent.CREATE_NOENTITY_DATAPACKAGE_FRAME,
-                false, GUIAction.EVENT_LOCAL);
 		
 		splitObservationAction =
 			new GUIAction(
@@ -171,15 +153,6 @@ public class AnnotationPlugin
 		splitObservationAction.setEnabledOnStateChange(
 				StateChangeEvent.SELECT_DATATABLE_COLUMN,
 				true, GUIAction.EVENT_LOCAL);
-		splitObservationAction.setEnabledOnStateChange(
-                StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME,
-                true, GUIAction.EVENT_LOCAL);
-		splitObservationAction.setEnabledOnStateChange(
-                StateChangeEvent.CREATE_SEARCH_RESULT_FRAME,
-                false, GUIAction.EVENT_LOCAL);
-		splitObservationAction.setEnabledOnStateChange(
-                StateChangeEvent.CREATE_NOENTITY_DATAPACKAGE_FRAME,
-                false, GUIAction.EVENT_LOCAL);
 		
 		addContextAction =
 			new GUIAction(
@@ -195,15 +168,6 @@ public class AnnotationPlugin
 		addContextAction.setEnabledOnStateChange(
 				StateChangeEvent.SELECT_DATATABLE_COLUMN,
 				true, GUIAction.EVENT_LOCAL);
-		addContextAction.setEnabledOnStateChange(
-                StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME,
-                true, GUIAction.EVENT_LOCAL);
-		addContextAction.setEnabledOnStateChange(
-                StateChangeEvent.CREATE_SEARCH_RESULT_FRAME,
-                false, GUIAction.EVENT_LOCAL);
-		addContextAction.setEnabledOnStateChange(
-                StateChangeEvent.CREATE_NOENTITY_DATAPACKAGE_FRAME,
-                false, GUIAction.EVENT_LOCAL);
 
 		removeContextAction =
 			new GUIAction(
@@ -219,15 +183,6 @@ public class AnnotationPlugin
 		removeContextAction.setEnabledOnStateChange(
 				StateChangeEvent.SELECT_DATATABLE_COLUMN,
 				true, GUIAction.EVENT_LOCAL);
-		removeContextAction.setEnabledOnStateChange(
-                StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME,
-                true, GUIAction.EVENT_LOCAL);
-		removeContextAction.setEnabledOnStateChange(
-                StateChangeEvent.CREATE_SEARCH_RESULT_FRAME,
-                false, GUIAction.EVENT_LOCAL);
-		removeContextAction.setEnabledOnStateChange(
-                StateChangeEvent.CREATE_NOENTITY_DATAPACKAGE_FRAME,
-                false, GUIAction.EVENT_LOCAL);
 		
 		// Save Annotations
 	    GUIAction saveAction = new GUIAction("Save Annotations...",
@@ -237,9 +192,6 @@ public class AnnotationPlugin
 	    saveAction.setToolTipText("Save Annotations...");
 		saveAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 	    saveAction.setEnabled(false);
-	    saveAction.setEnabledOnStateChange(
-				StateChangeEvent.SELECT_DATATABLE_COLUMN,
-				true, GUIAction.EVENT_LOCAL);
 	    saveAction.setEnabledOnStateChange(
                 StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME,
                 true, GUIAction.EVENT_LOCAL);
@@ -539,16 +491,16 @@ public class AnnotationPlugin
 			if (resultPane != null) {
 				DataViewer dataView = resultPane.getCurrentDataViewer();
 				if (dataView != null) {
-					annotateAction.setEnabled(true);
-					dataView.addPopupMenuItem(annotateAction, true);
-					mergeObservationAction.setEnabled(true);
-					dataView.addPopupMenuItem(mergeObservationAction, false);
-					splitObservationAction.setEnabled(true);
-					dataView.addPopupMenuItem(splitObservationAction, false);
-					addContextAction.setEnabled(true);
-					dataView.addPopupMenuItem(addContextAction, false);
-					removeContextAction.setEnabled(true);
-					dataView.addPopupMenuItem(removeContextAction, false);
+					//annotateAction.setEnabled(true);
+					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(annotateAction, morphoFrame), true);
+					//mergeObservationAction.setEnabled(true);
+					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(mergeObservationAction, morphoFrame), false);
+					//splitObservationAction.setEnabled(true);
+					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(splitObservationAction, morphoFrame), false);
+					//addContextAction.setEnabled(true);
+					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(addContextAction, morphoFrame), false);
+					//removeContextAction.setEnabled(true);
+					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(removeContextAction, morphoFrame), false);
 				}
 			}
 		}
