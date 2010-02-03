@@ -28,6 +28,8 @@
 
 package org.ecoinformatics.sms.plugins;
 
+import java.awt.GridLayout;
+
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -103,12 +105,16 @@ public class AnnotationPage extends AbstractUIPage {
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+		JPanel descPanel = WidgetFactory.makePanel(3);
 		JLabel desc = WidgetFactory
 				.makeHTMLLabel(
-						"<b>Select Observation Entity, Characteristic and Standard for the selected attribute.</b> "
-								+ "The Ontology Browser can be used to navigate specific ontologies.",
-						2);
-		this.add(desc);
+						"<b>Select the Observation Entity, Characteristic, Standard and Protocol for the selected attribute.</b> "
+						+ "<br>The Ontology Browser can be used to locate classes in specific ontologies."
+						+ "<br>Clicking the spyglass will launch the browser for that annotation class."
+						, 3);
+		descPanel.add(desc);
+		this.add(descPanel);
+		
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
 		// Attribute Label
@@ -122,6 +128,9 @@ public class AnnotationPage extends AbstractUIPage {
 		this.add(WidgetFactory.makeDefaultSpacer());
 				
 		// Measurement Label
+		JPanel measurementPanel = WidgetFactory.makePanel(1);
+		measurementPanel.setLayout(new GridLayout(1,2));
+		
 		JPanel measurementLabelPanel = WidgetFactory.makePanel(1);
 		measurementLabelLabel = WidgetFactory.makeLabel("Measurement:", false);
 		measurementLabelPanel.add(measurementLabelLabel);
@@ -135,10 +144,16 @@ public class AnnotationPage extends AbstractUIPage {
 		measurementLabelPanel.add(measurementIsKey);
 		measurementLabelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
-		this.add(measurementLabelPanel);
+		
+		measurementPanel.add(measurementLabelPanel);
+		measurementPanel.add(WidgetFactory.makeHTMLLabel("The measurement 'Is Key' when it contributes to the uniqueness of the Observation", 1));
+		this.add(measurementPanel);
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
 		// Observation Label
+		JPanel observationPanel = WidgetFactory.makePanel(1);
+		observationPanel.setLayout(new GridLayout(1,2));
+		
 		JPanel labelPanel = WidgetFactory.makePanel(1);
 		observationLabelLabel = WidgetFactory.makeLabel("Observation:", false);
 		labelPanel.add(observationLabelLabel);
@@ -152,7 +167,10 @@ public class AnnotationPage extends AbstractUIPage {
 		labelPanel.add(observationIsDistinct);
 		labelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
-		this.add(labelPanel);
+		
+		observationPanel.add(labelPanel);
+		observationPanel.add(WidgetFactory.makeHTMLLabel("The Observation 'Is Distinct' when.....? ", 1));
+		this.add(observationPanel);
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
 		//this.add(WidgetFactory.makeDefaultSpacer());

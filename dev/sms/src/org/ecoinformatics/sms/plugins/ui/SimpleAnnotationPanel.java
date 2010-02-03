@@ -27,6 +27,7 @@
  */
 package org.ecoinformatics.sms.plugins.ui;
 
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -77,46 +78,69 @@ public class SimpleAnnotationPanel extends JPanel {
 		classesPanel.setLayout(new BoxLayout(classesPanel, BoxLayout.Y_AXIS));
 
 		// Entity
-		JPanel entityPanel = WidgetFactory.makePanel(1);
-		entityPanel.add(WidgetFactory.makeLabel("Entity:", false));
+		JPanel entityPanel = WidgetFactory.makePanel(2);
+		entityPanel.setLayout(new GridLayout(1,2));
+
+		JPanel entityLabelPanel = WidgetFactory.makePanel(2);
+		entityLabelPanel.add(WidgetFactory.makeLabel("Entity:", false));
 		observationEntity = OntologyClassJLabel.makeLabel("<entity>", false, null);
 		observationEntity.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Entity.class));
 		observationEntity.addMouseListener(mListener);
-		entityPanel.add(observationEntity);
+		entityLabelPanel.add(observationEntity);
+		
+		entityPanel.add(entityLabelPanel);
+		entityPanel.add(WidgetFactory.makeHTMLLabel("The Entity is the 'thing' being observed. If the diameter of a tree is measured, the Entity will be the tree.", 2));
 		entityPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
 
 		// Characteristic
-		JPanel characteristicPanel = WidgetFactory.makePanel(1);
-		characteristicPanel.add(WidgetFactory.makeLabel("Characteristic:",
+		JPanel characteristicPanel = WidgetFactory.makePanel(2);
+		characteristicPanel.setLayout(new GridLayout(1,2));
+
+		JPanel characteristicLabelPanel = WidgetFactory.makePanel(2);
+		characteristicLabelPanel.add(WidgetFactory.makeLabel("Characteristic:",
 				false));
 		observationCharacteristic = OntologyClassJLabel.makeLabel("<characteristic>", false, null);
 		observationCharacteristic.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Characteristic.class));
 		observationCharacteristic.addMouseListener(mListener);
-
-		characteristicPanel.add(observationCharacteristic);
+		characteristicLabelPanel.add(observationCharacteristic);
+		
+		characteristicPanel.add(characteristicLabelPanel);
+		characteristicPanel.add(WidgetFactory.makeHTMLLabel("The Characteristic is the property being measured. If the diameter of a tree is measured, the Characteristic will be the diameter (length).", 2));
 		characteristicPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0,
 				0, 8 * WizardSettings.PADDING));
 
 		// Standard
-		JPanel standardPanel = WidgetFactory.makePanel(1);
-		standardPanel.add(WidgetFactory.makeLabel("Standard:", false));
+		JPanel standardPanel = WidgetFactory.makePanel(2);
+		standardPanel.setLayout(new GridLayout(1,2));
+		
+		JPanel standardLabelPanel = WidgetFactory.makePanel(2);
+		standardLabelPanel.add(WidgetFactory.makeLabel("Standard:", false));
 		observationStandard = OntologyClassJLabel.makeLabel("<standard>", false, null);
 		observationStandard.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Standard.class));
 		observationStandard.addMouseListener(mListener);
 
-		standardPanel.add(observationStandard);
+		standardLabelPanel.add(observationStandard);
+		standardPanel.add(standardLabelPanel);
+		standardPanel.add(WidgetFactory.makeHTMLLabel("The Standard is the unit used for the measurement. If the diameter of a tree is measured, the Standard will be a length unit (meters).", 2));
+
 		standardPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
 		
 		// Protocol
-		JPanel protocolPanel = WidgetFactory.makePanel(1);
-		protocolPanel.add(WidgetFactory.makeLabel("Protocol:", false));
+		JPanel protocolPanel = WidgetFactory.makePanel(2);
+		protocolPanel.setLayout(new GridLayout(1,2));
+		
+		JPanel protocolLabelPanel = WidgetFactory.makePanel(2);
+		protocolLabelPanel.add(WidgetFactory.makeLabel("Protocol:", false));
 		observationProtocol = OntologyClassJLabel.makeLabel("<protocol>", false, null);
 		observationProtocol.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Protocol.class));
 		observationProtocol.addMouseListener(mListener);
 
-		protocolPanel.add(observationProtocol);
+		protocolLabelPanel.add(observationProtocol);
+		protocolPanel.add(protocolLabelPanel);
+		protocolPanel.add(WidgetFactory.makeHTMLLabel("The Protocol is the method used for taking the measurement. If the diameter of a tree is measured at breast height, this will be the Protocol.", 2));
+
 		protocolPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
 
