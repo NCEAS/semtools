@@ -128,10 +128,10 @@ public class AnnotationPage extends AbstractUIPage {
 		this.add(WidgetFactory.makeDefaultSpacer());
 				
 		// Measurement Label
-		JPanel measurementPanel = WidgetFactory.makePanel(1);
+		JPanel measurementPanel = WidgetFactory.makePanel(2);
 		measurementPanel.setLayout(new GridLayout(1,2));
 		
-		JPanel measurementLabelPanel = WidgetFactory.makePanel(1);
+		JPanel measurementLabelPanel = WidgetFactory.makePanel(2);
 		measurementLabelLabel = WidgetFactory.makeLabel("Measurement:", false);
 		measurementLabelPanel.add(measurementLabelLabel);
 		measurementLabel = WidgetFactory.makeOneLineShortTextField("");
@@ -146,15 +146,15 @@ public class AnnotationPage extends AbstractUIPage {
 				8 * WizardSettings.PADDING));
 		
 		measurementPanel.add(measurementLabelPanel);
-		measurementPanel.add(WidgetFactory.makeHTMLLabel("The measurement 'Is Key' when it contributes to the uniqueness of the Observation", 1));
+		measurementPanel.add(WidgetFactory.makeHTMLLabel("The Measurement 'Is Key' when it identifies the uniqueness of an Observation instance. Multiple measurements may be combined as a compound key.", 2));
 		this.add(measurementPanel);
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
 		// Observation Label
-		JPanel observationPanel = WidgetFactory.makePanel(1);
+		JPanel observationPanel = WidgetFactory.makePanel(2);
 		observationPanel.setLayout(new GridLayout(1,2));
 		
-		JPanel labelPanel = WidgetFactory.makePanel(1);
+		JPanel labelPanel = WidgetFactory.makePanel(2);
 		observationLabelLabel = WidgetFactory.makeLabel("Observation:", false);
 		labelPanel.add(observationLabelLabel);
 		observationLabel = WidgetFactory.makeOneLineShortTextField("");
@@ -169,7 +169,7 @@ public class AnnotationPage extends AbstractUIPage {
 				8 * WizardSettings.PADDING));
 		
 		observationPanel.add(labelPanel);
-		observationPanel.add(WidgetFactory.makeHTMLLabel("The Observation 'Is Distinct' when.....? ", 1));
+		observationPanel.add(WidgetFactory.makeHTMLLabel("The Observation 'Is Distinct' when the observation Entity identifies the uniqueness of the observation Instance.", 2));
 		this.add(observationPanel);
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
