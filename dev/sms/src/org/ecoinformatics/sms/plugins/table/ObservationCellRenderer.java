@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -25,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
 import javax.swing.table.TableCellRenderer;
 
 import org.ecoinformatics.sms.annotation.Context;
@@ -93,6 +95,10 @@ public class ObservationCellRenderer extends JLabel implements
 //		}
 		else {
 			this.setColor1(Color.white);
+		}
+		
+		if (isSelected) {
+			setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 		}
 		setText((value == null) ? "" : value.toString());
 		return this;
