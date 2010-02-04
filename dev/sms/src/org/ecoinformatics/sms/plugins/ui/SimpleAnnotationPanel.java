@@ -47,6 +47,7 @@ import edu.ucsb.nceas.morpho.framework.ModalDialog;
 import edu.ucsb.nceas.morpho.framework.UIController;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
+import edu.ucsb.nceas.morpho.util.Log;
 import edu.ucsb.nceas.morpho.util.UISettings;
 
 public class SimpleAnnotationPanel extends JPanel {
@@ -188,8 +189,8 @@ public class SimpleAnnotationPanel extends JPanel {
 			try {
 				selectedClass = new OntologyClass(selectedClassString);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				selectedClass = null;
+				Log.debug(20, "error constructing selectedClass from string: " + selectedClassString);
 			}
 			source.setOntologyClass(selectedClass);
 		}

@@ -192,7 +192,11 @@ public class DirectAnnotationCommand implements Command {
 	private boolean setClass() throws Exception {
 		
 		// what's the class?
-		String selectedClassString = ontologyPage.getSelectedTerms().get(0);
+		String selectedClassString = null;
+		List<String> terms = ontologyPage.getSelectedTerms();
+		if (!terms.isEmpty()) {
+			selectedClassString = terms.get(0);
+		}
 		
 		if (currentMapping == null) {
 			currentMapping = new Mapping();
@@ -217,10 +221,19 @@ public class DirectAnnotationCommand implements Command {
 		int selectedRow = annotationTable.getSelectedRow();
 		switch (selectedRow) {
 			case AnnotationTableModel.OBSERVATION_ROW:
-				currentObservation.setEntity(new Entity(selectedClassString));
-				annotation.addOntology(currentObservation.getEntity().getOntology());
+				Entity entity = null;
+				if (selectedClassString != null) {
+					entity = new Entity(selectedClassString);
+					annotation.addOntology(entity.getOntology());
+				}
+				currentObservation.setEntity(entity);
 				break;
 			case AnnotationTableModel.CHARACTERISTIC_ROW:
+				// handle null selection
+				if (selectedClassString == null) {
+					currentMeasurement.getCharacteristics().clear();
+					break;
+				}
 				if (currentCharacteristic == null) {
 					currentCharacteristic = new Characteristic();
 					currentMeasurement.getCharacteristics().clear();
@@ -230,19 +243,29 @@ public class DirectAnnotationCommand implements Command {
 				annotation.addOntology(currentCharacteristic.getOntology());
 				break;
 			case AnnotationTableModel.STANDARD_ROW:
+				// handle null selection
+				if (selectedClassString == null) {
+					currentMeasurement.setStandard(null);
+					break;
+				}
 				if (currentStandard == null) {
 					currentStandard = new Standard();
 				}
-				currentStandard.setURI(selectedClassString);
 				currentMeasurement.setStandard(currentStandard);
+				currentStandard.setURI(selectedClassString);
 				annotation.addOntology(currentStandard.getOntology());
 				break;
 			case AnnotationTableModel.PROTOCOL_ROW:
+				// handle null selection
+				if (selectedClassString == null) {
+					currentMeasurement.setProtocol(null);
+					break;
+				}
 				if (currentProtocol == null) {
 					currentProtocol = new Protocol();
 				}
-				currentProtocol.setURI(selectedClassString);
 				currentMeasurement.setProtocol(currentProtocol);
+				currentProtocol.setURI(selectedClassString);
 				annotation.addOntology(currentProtocol.getOntology());
 				break;	
 	
