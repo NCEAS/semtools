@@ -28,10 +28,17 @@
 
 package org.ecoinformatics.sms.plugins;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -50,6 +57,10 @@ import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
 import edu.ucsb.nceas.morpho.plugins.DataPackageWizardInterface;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
+import edu.ucsb.nceas.morpho.plugins.datapackagewizard.pages.HelpDialog;
+import edu.ucsb.nceas.morpho.util.Command;
+import edu.ucsb.nceas.morpho.util.GUIAction;
+import edu.ucsb.nceas.morpho.util.HyperlinkButton;
 import edu.ucsb.nceas.morpho.util.Log;
 import edu.ucsb.nceas.utilities.OrderedMap;
 
@@ -105,7 +116,8 @@ public class AnnotationPage extends AbstractUIPage {
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-		JPanel descPanel = WidgetFactory.makePanel(3);
+		JPanel descPanel = WidgetFactory.makePanel(5);
+		descPanel.setLayout(new GridLayout(2,1));
 		JLabel desc = WidgetFactory
 				.makeHTMLLabel(
 						"<b>Select the Observation Entity, Characteristic, Standard and Protocol for the selected attribute.</b> "
@@ -113,8 +125,48 @@ public class AnnotationPage extends AbstractUIPage {
 						+ "<br>Clicking the spyglass will launch the browser for that annotation class."
 						, 3);
 		descPanel.add(desc);
-		this.add(descPanel);
 		
+		// help button
+	    Command command = new Command() {
+	      private JDialog helpDialog = null;
+	      public void execute(ActionEvent ae) {
+
+	        if(helpDialog == null) {
+	        	String title = "Help with Semantic Annotations";
+	        	String helpText = 
+	        		"<html> <body>"
+	        		+ "<p><b>Measurement (Is Key)</b></p>"
+	        		+ "<p>The measurement 'iskey' attribute in the annotation syntax is a constraint, much like (primary) key constraints in relational databases." +
+	        		"<br>A measurement 'isKey = yes' constraint states that a particular measurement (characteristic-value pair) determines the identity of the corresponding entity instance." +
+	        		"<br>For example, if we have a plot entity with a label characteristic measurement, and state that this measurement is a key, then each occurrence of the label value in a row of the dataset relates to the same entity instance (see example below)." +
+	        		"<br>For instance, each site label '1' would denote a unique site instance, each site label '2' would denote a different site instance, and so on." +
+	        		"<br>If multiple measurements in an observation have an 'isKey = yes' constraint, then each measurement serves as a partial key, i.e., the identity of the entity instance is determined by a combination of the corresponding characteristic-value pairs (and not by just one of the pairs).</p>" +
+	        		"<p><b>Observation (Is Distinct)</b></p>" +
+	        		"<p>The observation 'isDistinct=yes' constraint is somewhat similar, but promoted to the level of the observation." +
+	        		"<br>It states that if two of the observation instances are of the same entity instance, then the these observation instances are the same instance (i.e., there is only one 'distinct' or 'unique' observation).</p>"
+	        		+ "</body> </html>";
+	          helpDialog = new HelpDialog(title, helpText);
+	        }
+	        Point loc = getLocationOnScreen();
+	        int wd = getWidth();
+	        int ht = getHeight();
+	        int dwd = HelpDialog.HELP_DIALOG_SIZE.width;
+	        int dht = HelpDialog.HELP_DIALOG_SIZE.height;
+	        helpDialog.setLocation( (int)loc.getX() + wd/2 - dwd/2, (int)loc.getY() + ht/2 - dht/2);
+	        helpDialog.setSize(HelpDialog.HELP_DIALOG_SIZE);
+	        helpDialog.setVisible(true);
+	        helpDialog.toFront();
+
+	      }
+	    };
+	    
+	    GUIAction helpAction = new GUIAction("More information about Semantic Annotation", null, command);
+		JButton helpButton = new HyperlinkButton(helpAction);
+		
+		
+		//this.add(WidgetFactory.makePanel(1).add(helpButton));
+		descPanel.add(helpButton);
+		this.add(descPanel);
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
 		// Attribute Label
