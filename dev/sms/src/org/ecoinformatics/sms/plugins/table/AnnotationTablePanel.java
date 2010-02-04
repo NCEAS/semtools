@@ -30,6 +30,9 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -41,6 +44,8 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
+
+import org.ecoinformatics.sms.plugins.DirectAnnotationCommand;
 
 import edu.ucsb.nceas.morpho.util.Command;
 import edu.ucsb.nceas.morpho.util.GUIAction;
@@ -69,6 +74,24 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 		annotationTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 	    annotationTable.getTableHeader().setReorderingAllowed(false);
 	    annotationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	    
+	    
+	    // when we click on the table, we invoke the command
+	    MouseListener mouseListener = new MouseAdapter() {
+	    	
+	    	DirectAnnotationCommand directAnnotationCommand = new DirectAnnotationCommand(annotationTable);
+			
+	    	@Override
+			public void mouseClicked(MouseEvent e) {
+	    		if (e.getClickCount() > 1) {
+	    			directAnnotationCommand.execute(null);
+	    		}
+				
+			}
+	    	
+	    };
+	    annotationTable.addMouseListener(mouseListener);
+	    
 	    
 	    Dimension dim = new Dimension(rowHeaderDim.width, AnnotationTableModel.ROW_COUNT * rowHeaderDim.height);
 		annotationTable.setPreferredScrollableViewportSize(dim);
