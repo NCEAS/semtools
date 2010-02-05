@@ -17,6 +17,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -279,11 +281,24 @@ public class AnnotationPlugin
 		initializeOntologies();
 		
 		// initialize the annotations
-		initializeAnnotations();
+		initializeAnnotations(null);
+		
+	}
+	
+	private void initializeWindowAdapter() {
+		morphoFrame = UIController.getInstance().getCurrentActiveWindow();
+		WindowAdapter windowListener = new WindowAdapter() {
+			public void windowClosed(WindowEvent we) {
+				String docid = morphoFrame.getAbstractDataPackage().getAccessionNumber();
+				initializeAnnotations(docid);
+				morphoFrame.removeWindowListener(this);
+			}
+		};
+		morphoFrame.addWindowListener(windowListener);
 	}
 	
 	// TODO: search Metacat for annotations
-	private void initializeAnnotations() {
+	private void initializeAnnotations(String forDocid) {
 		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
 		String querySpec = getAnnotationQuery();
 		Query query = new Query(querySpec, Morpho.thisStaticInstance);
@@ -291,16 +306,22 @@ public class AnnotationPlugin
 		query.setSearchMetacat(false);
 		ResultSet rs = query.execute();
 		Vector<Vector> resultVector = rs.getResultsVector();
-		Vector<String> docids = new Vector<String>();
 		for (Vector row: resultVector) {
 			String docid = (String) row.get(ResultSet.DOCIDINDEX);
 			try {
 				InputStream is = new FileInputStream(fds.openFile(docid));
-				SMS.getInstance().getAnnotationManager().importAnnotation(is, docid);
+				Annotation annotation = Annotation.read(is);
+				// if we are filtering, skip any docs that don't match
+				if (forDocid != null) {
+					String docidFromAnnotation = annotation.getEMLPackage();
+					if (!forDocid.equals(docidFromAnnotation)) {
+						continue;
+					}
+				}
+				SMS.getInstance().getAnnotationManager().importAnnotation(annotation, docid);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			docids.add(docid);
 		}
 		
 	}
@@ -471,12 +492,25 @@ public class AnnotationPlugin
 	public void handleStateChange(StateChangeEvent event) {
 
 		// initialize data-table centric UI elements
-		if (
-				event.getChangedState().equals(StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME)
-				||
-				event.getChangedState().equals(StateChangeEvent.SELECT_DATA_VIEWER)
-			) {
+		if (event.getChangedState().equals(StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME)) {
 			if (!isInitialized()) {
+				// listen for the closed window event
+				initializeWindowAdapter();
+				// make the pop up for the data table
+				initPopup();
+				try {
+					buildAnnotationTable();
+				} catch (Exception e) {
+					Log.debug(5, "Could not build annotation table");
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		// just build the annotation table and pop up - no window lisener
+		if (event.getChangedState().equals(StateChangeEvent.SELECT_DATA_VIEWER)) {
+			if (!isInitialized()) {
+				// make the pop up for the data table
 				initPopup();
 				try {
 					buildAnnotationTable();
