@@ -35,11 +35,14 @@ import javax.swing.table.TableColumnModel;
 
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
+import org.ecoinformatics.sms.annotation.Measurement;
+import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.commands.AnnotationCommand;
 import org.ecoinformatics.sms.plugins.commands.AnnotationSearchCommand;
 import org.ecoinformatics.sms.plugins.commands.ContextCommand;
 import org.ecoinformatics.sms.plugins.commands.ObservationCommand;
+import org.ecoinformatics.sms.plugins.commands.RemoveCommand;
 import org.ecoinformatics.sms.plugins.commands.SaveAnnotationCommand;
 import org.ecoinformatics.sms.plugins.table.AnnotationTableModel;
 import org.ecoinformatics.sms.plugins.table.AnnotationTablePanel;
@@ -93,6 +96,10 @@ public class AnnotationPlugin
 	private GUIAction addContextAction;
 
 	private GUIAction removeContextAction;
+
+	private GUIAction removeObservationAction;
+
+	private GUIAction removeMeasurementAction;
 	
 
 	/**
@@ -112,6 +119,8 @@ public class AnnotationPlugin
 			Log.debug(6, see.toString());
 		}
 
+		int menuPosition = 0;
+		
 		// initialize the actions
 		annotateAction =
 			new GUIAction(
@@ -121,7 +130,7 @@ public class AnnotationPlugin
 		annotateAction.setToolTipText(
 			"Add/edit annotation or this data table attribute");
 		annotateAction.setSeparatorPosition(Morpho.SEPARATOR_PRECEDING);
-		annotateAction.setMenuItemPosition(0);
+		annotateAction.setMenuItemPosition(menuPosition++);
 		annotateAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 		annotateAction.setEnabled(false);
 
@@ -136,7 +145,7 @@ public class AnnotationPlugin
 				new ObservationCommand(true));
 		mergeObservationAction.setToolTipText(
 			"Selected columns are for the same Observation");
-		mergeObservationAction.setMenuItemPosition(5);
+		mergeObservationAction.setMenuItemPosition(menuPosition++);
 		mergeObservationAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 		mergeObservationAction.setEnabled(false);
 
@@ -151,11 +160,41 @@ public class AnnotationPlugin
 				new ObservationCommand(false));
 		splitObservationAction.setToolTipText(
 			"Selected columns are for different Observations");
-		splitObservationAction.setMenuItemPosition(6);
+		splitObservationAction.setMenuItemPosition(menuPosition++);
 		splitObservationAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 		splitObservationAction.setEnabled(false);
 
 		splitObservationAction.setEnabledOnStateChange(
+				StateChangeEvent.SELECT_DATATABLE_COLUMN,
+				true, GUIAction.EVENT_LOCAL);
+		
+		removeObservationAction =
+			new GUIAction(
+				"Remove Observation",
+				null,
+				new RemoveCommand(Observation.class));
+		removeObservationAction.setToolTipText(
+			"Remove this Observation");
+		removeObservationAction.setMenuItemPosition(menuPosition++);
+		removeObservationAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
+		removeObservationAction.setEnabled(false);
+
+		removeObservationAction.setEnabledOnStateChange(
+				StateChangeEvent.SELECT_DATATABLE_COLUMN,
+				true, GUIAction.EVENT_LOCAL);
+		
+		removeMeasurementAction =
+			new GUIAction(
+				"Remove Measurement",
+				null,
+				new RemoveCommand(Measurement.class));
+		removeMeasurementAction.setToolTipText(
+			"Remove this Measurement");
+		removeMeasurementAction.setMenuItemPosition(menuPosition++);
+		removeMeasurementAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
+		removeMeasurementAction.setEnabled(false);
+
+		removeMeasurementAction.setEnabledOnStateChange(
 				StateChangeEvent.SELECT_DATATABLE_COLUMN,
 				true, GUIAction.EVENT_LOCAL);
 		
@@ -166,7 +205,7 @@ public class AnnotationPlugin
 				new ContextCommand(true));
 		addContextAction.setToolTipText(
 			"Define a Context relationship between this Observation and another");
-		addContextAction.setMenuItemPosition(7);
+		addContextAction.setMenuItemPosition(menuPosition++);
 		addContextAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 		addContextAction.setEnabled(false);
 
@@ -181,7 +220,7 @@ public class AnnotationPlugin
 				new ContextCommand(false));
 		removeContextAction.setToolTipText(
 			"Remove a Context relationship from this Observation");
-		removeContextAction.setMenuItemPosition(8);
+		removeContextAction.setMenuItemPosition(menuPosition++);
 		removeContextAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 		removeContextAction.setEnabled(false);
 
@@ -190,10 +229,12 @@ public class AnnotationPlugin
 				true, GUIAction.EVENT_LOCAL);
 		
 		// Save Annotations
-	    GUIAction saveAction = new GUIAction("Save Annotations...",
-	                                              null,
-	                                              new SaveAnnotationCommand());
-	    saveAction.setMenuItemPosition(10);
+	    GUIAction saveAction = 
+	    	new GUIAction(
+	    			"Save Annotations...",
+	    			null,
+	    			new SaveAnnotationCommand());
+	    saveAction.setMenuItemPosition(menuPosition++);
 	    saveAction.setToolTipText("Save Annotations...");
 		saveAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 	    saveAction.setEnabled(false);
@@ -210,7 +251,7 @@ public class AnnotationPlugin
 	    GUIAction searchAction = new GUIAction("Search Annotations...",
                 null,
                 new AnnotationSearchCommand());
-	    searchAction.setMenuItemPosition(15);
+	    searchAction.setMenuItemPosition(menuPosition++);
 	    searchAction.setToolTipText("Search Annotations...");
 	    searchAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 	    searchAction.setEnabled(true);
@@ -220,11 +261,12 @@ public class AnnotationPlugin
 		controller.addGuiAction(annotateAction);
 		controller.addGuiAction(mergeObservationAction);
 		controller.addGuiAction(splitObservationAction);
+		controller.addGuiAction(removeObservationAction);
+		controller.addGuiAction(removeMeasurementAction);
 		controller.addGuiAction(addContextAction);
 		controller.addGuiAction(removeContextAction);
 		controller.addGuiAction(saveAction);
 		controller.addGuiAction(searchAction);
-
 		
 		//register as a listener for events
 		StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME, this);
@@ -496,15 +538,12 @@ public class AnnotationPlugin
 			if (resultPane != null) {
 				DataViewer dataView = resultPane.getCurrentDataViewer();
 				if (dataView != null) {
-					//annotateAction.setEnabled(true);
 					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(annotateAction, morphoFrame), true);
-					//mergeObservationAction.setEnabled(true);
 					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(mergeObservationAction, morphoFrame), false);
-					//splitObservationAction.setEnabled(true);
 					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(splitObservationAction, morphoFrame), false);
-					//addContextAction.setEnabled(true);
+					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(removeObservationAction, morphoFrame), false);
+					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(removeMeasurementAction, morphoFrame), false);
 					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(addContextAction, morphoFrame), false);
-					//removeContextAction.setEnabled(true);
 					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(removeContextAction, morphoFrame), false);
 				}
 			}
