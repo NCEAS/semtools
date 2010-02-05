@@ -129,7 +129,7 @@ public class AnnotationPlugin
 				new AnnotationCommand());
 		annotateAction.setToolTipText(
 			"Add/edit annotation or this data table attribute");
-		annotateAction.setSeparatorPosition(Morpho.SEPARATOR_PRECEDING);
+		annotateAction.setSeparatorPosition(Morpho.SEPARATOR_FOLLOWING);
 		annotateAction.setMenuItemPosition(menuPosition++);
 		annotateAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 		annotateAction.setEnabled(false);
@@ -207,6 +207,7 @@ public class AnnotationPlugin
 			"Define a Context relationship between this Observation and another");
 		addContextAction.setMenuItemPosition(menuPosition++);
 		addContextAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
+		addContextAction.setSeparatorPosition(Morpho.SEPARATOR_PRECEDING);
 		addContextAction.setEnabled(false);
 
 		addContextAction.setEnabledOnStateChange(
@@ -237,6 +238,7 @@ public class AnnotationPlugin
 	    saveAction.setMenuItemPosition(menuPosition++);
 	    saveAction.setToolTipText("Save Annotations...");
 		saveAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
+		saveAction.setSeparatorPosition(Morpho.SEPARATOR_PRECEDING);
 	    saveAction.setEnabled(false);
 	    saveAction.setEnabledOnStateChange(
                 StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME,
@@ -539,11 +541,13 @@ public class AnnotationPlugin
 				DataViewer dataView = resultPane.getCurrentDataViewer();
 				if (dataView != null) {
 					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(annotateAction, morphoFrame), true);
-					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(mergeObservationAction, morphoFrame), false);
+					// separator
+					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(mergeObservationAction, morphoFrame), true);
 					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(splitObservationAction, morphoFrame), false);
 					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(removeObservationAction, morphoFrame), false);
 					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(removeMeasurementAction, morphoFrame), false);
-					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(addContextAction, morphoFrame), false);
+					// separator
+					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(addContextAction, morphoFrame), true);
 					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(removeContextAction, morphoFrame), false);
 				}
 			}
