@@ -41,7 +41,7 @@ import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
-import org.ecoinformatics.sms.plugins.OntologyClassSelectionPage;
+import org.ecoinformatics.sms.plugins.pages.OntologyClassSelectionPage;
 
 import edu.ucsb.nceas.morpho.framework.ModalDialog;
 import edu.ucsb.nceas.morpho.framework.UIController;

@@ -24,9 +24,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package org.ecoinformatics.sms.plugins;
+package org.ecoinformatics.sms.plugins.commands;
 
 import java.awt.event.ActionEvent;
+
+import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
 import edu.ucsb.nceas.morpho.framework.UIController;

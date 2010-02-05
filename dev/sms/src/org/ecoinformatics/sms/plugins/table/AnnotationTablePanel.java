@@ -45,7 +45,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
 
-import org.ecoinformatics.sms.plugins.DirectAnnotationCommand;
+import org.ecoinformatics.sms.plugins.commands.DirectAnnotationCommand;
 
 import edu.ucsb.nceas.morpho.util.Command;
 import edu.ucsb.nceas.morpho.util.GUIAction;

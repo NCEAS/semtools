@@ -24,7 +24,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package org.ecoinformatics.sms.plugins;
+package org.ecoinformatics.sms.plugins.commands;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -37,6 +37,7 @@ import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Mapping;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
+import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
 import edu.ucsb.nceas.morpho.datapackage.DataViewContainerPanel;

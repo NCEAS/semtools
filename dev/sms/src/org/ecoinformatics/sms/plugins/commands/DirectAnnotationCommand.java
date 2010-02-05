@@ -24,7 +24,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package org.ecoinformatics.sms.plugins;
+package org.ecoinformatics.sms.plugins.commands;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -39,6 +39,8 @@ import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
 import org.ecoinformatics.sms.ontology.OntologyClass;
+import org.ecoinformatics.sms.plugins.AnnotationPlugin;
+import org.ecoinformatics.sms.plugins.pages.OntologyClassSelectionPage;
 import org.ecoinformatics.sms.plugins.table.AnnotationTable;
 import org.ecoinformatics.sms.plugins.table.AnnotationTableModel;
 

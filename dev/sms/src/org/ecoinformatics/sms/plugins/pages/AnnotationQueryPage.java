@@ -26,7 +26,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package org.ecoinformatics.sms.plugins;
+package org.ecoinformatics.sms.plugins.pages;
 
 import java.util.List;
 
@@ -39,6 +39,7 @@ import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Entity;
 import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
+import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.ui.SimpleAnnotationPanel;
 
 import edu.ucsb.nceas.morpho.Morpho;

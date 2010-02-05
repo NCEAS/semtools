@@ -24,7 +24,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package org.ecoinformatics.sms.plugins;
+package org.ecoinformatics.sms.plugins.commands;
 
 import edu.ucsb.nceas.morpho.Morpho;
 import edu.ucsb.nceas.morpho.framework.ModalDialog;
@@ -40,6 +40,8 @@ import edu.ucsb.nceas.morpho.util.UISettings;
 
 import java.util.Vector;
 import java.awt.event.ActionEvent;
+
+import org.ecoinformatics.sms.plugins.pages.AnnotationQueryPage;
 
 /**
  * Class to handle annotation search command
