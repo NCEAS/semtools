@@ -140,6 +140,10 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 		annotationScrollPane.setRowHeaderView(rowheaders);
 		
 		annotationTable.reset();
+		
+		if (annotationTable.isReordered()) {
+			annotationTable.reorder(true);
+		}
 	
 	}
 

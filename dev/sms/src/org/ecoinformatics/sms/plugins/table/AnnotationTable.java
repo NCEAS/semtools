@@ -45,6 +45,8 @@ import org.ecoinformatics.sms.annotation.Observation;
  */
 public class AnnotationTable extends MultiSpanCellTable {
 
+	private boolean reordered = false;
+	
 	public AnnotationTable(AnnotationTableModel annotationTableModel) {
 		super(annotationTableModel);
 //		this.setIntercellSpacing(new Dimension(0,0));
@@ -57,7 +59,18 @@ public class AnnotationTable extends MultiSpanCellTable {
 		return new ObservationCellRenderer();
 	}
 	
+	public boolean isReordered() {
+		return reordered;
+	}
+
+	public void setReordered(boolean reordered) {
+		this.reordered = reordered;
+	}
+
 	public void reorder(boolean includeContext) {
+		
+		this.reordered = true;
+		
 		List<Observation> sortedObservations = new ArrayList<Observation>();
 		
 		for (int i = 0; i < this.getColumnCount(); i++) {
