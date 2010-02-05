@@ -98,6 +98,9 @@ public class AnnotationPage extends AbstractUIPage {
 	private Characteristic currentCharacteristic;
 	private Standard currentStandard;
 	private Protocol currentProtocol;
+	
+	private String MEASUREMENT_HELP_TEXT = "The Measurement 'Is Key' when it identifies the uniqueness of an Observation instance. Multiple measurements may be combined as a compound key.";
+	private String OBSERVATION_HELP_TEXT = "The Observation 'Is Distinct' when the observation Entity identifies the uniqueness of the observation Instance.";
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
@@ -198,7 +201,7 @@ public class AnnotationPage extends AbstractUIPage {
 				8 * WizardSettings.PADDING));
 		
 		measurementPanel.add(measurementLabelPanel);
-		measurementPanel.add(WidgetFactory.makeHTMLLabel("The Measurement 'Is Key' when it identifies the uniqueness of an Observation instance. Multiple measurements may be combined as a compound key.", 2));
+		measurementPanel.add(WidgetFactory.makeHTMLLabel(MEASUREMENT_HELP_TEXT , 2));
 		this.add(measurementPanel);
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
@@ -221,7 +224,8 @@ public class AnnotationPage extends AbstractUIPage {
 				8 * WizardSettings.PADDING));
 		
 		observationPanel.add(labelPanel);
-		observationPanel.add(WidgetFactory.makeHTMLLabel("The Observation 'Is Distinct' when the observation Entity identifies the uniqueness of the observation Instance.", 2));
+		observationPanel.add(WidgetFactory.makeHTMLLabel(OBSERVATION_HELP_TEXT , 2));
+
 		this.add(observationPanel);
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
