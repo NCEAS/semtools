@@ -52,6 +52,7 @@ import edu.ucsb.nceas.morpho.util.GUIAction;
 import edu.ucsb.nceas.morpho.util.HyperlinkButton;
 import edu.ucsb.nceas.morpho.util.StateChangeEvent;
 import edu.ucsb.nceas.morpho.util.StateChangeListener;
+import edu.ucsb.nceas.morpho.util.StateChangeMonitor;
 
 /**
  * Panel for viewing and editing data-centric Annotations
@@ -83,6 +84,13 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 			
 	    	@Override
 			public void mouseClicked(MouseEvent e) {
+	    		if (!e.isPopupTrigger()) {
+		    		// this counts as selection of the column
+		    		StateChangeEvent event = new StateChangeEvent(annotationTable, StateChangeEvent.SELECT_DATATABLE_COLUMN);
+		    		StateChangeMonitor.getInstance().notifyStateChange(event);
+	    		}
+	    		
+	    		// open the direct editor if they double click
 	    		if (e.getClickCount() > 1) {
 	    			directAnnotationCommand.execute(null);
 	    		}
