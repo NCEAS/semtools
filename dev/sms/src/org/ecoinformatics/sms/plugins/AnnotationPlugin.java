@@ -44,6 +44,7 @@ import org.ecoinformatics.sms.plugins.commands.AnnotationCommand;
 import org.ecoinformatics.sms.plugins.commands.AnnotationSearchCommand;
 import org.ecoinformatics.sms.plugins.commands.ContextCommand;
 import org.ecoinformatics.sms.plugins.commands.ObservationCommand;
+import org.ecoinformatics.sms.plugins.commands.OntologyManagementCommand;
 import org.ecoinformatics.sms.plugins.commands.RemoveCommand;
 import org.ecoinformatics.sms.plugins.commands.SaveAnnotationCommand;
 import org.ecoinformatics.sms.plugins.table.AnnotationTableModel;
@@ -83,6 +84,13 @@ public class AnnotationPlugin
     public static final String ANNOTATION_MENU_LABEL = "Annotation";
     
     public static final String ANNOTATION_CHANGE_EVENT = "ANNOTATION_SAVED_EVENT";
+    
+    /** Constants for ConfigXML entries **/
+    public static final String ONTOLOGY_TAG_NAME = "ontologies";
+    
+    public static final String LOGICAL_URI_TAG_NAME = "logicalURI";
+
+    public static final String PHYSICAL_URI_TAG_NAME = "physicalURI";
     
     // for filtering
     public static Map<Class,OntologyClass> OBOE_CLASSES = new HashMap<Class, OntologyClass>();
@@ -259,6 +267,15 @@ public class AnnotationPlugin
 	    searchAction.setToolTipText("Search Annotations...");
 	    searchAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 	    searchAction.setEnabled(true);
+	    
+	    GUIAction manageOntologyAction = new GUIAction("Manage Ontologies...",
+                null,
+                new OntologyManagementCommand());
+	    manageOntologyAction.setMenuItemPosition(menuPosition++);
+	    manageOntologyAction.setSeparatorPosition(Morpho.SEPARATOR_PRECEDING);
+	    manageOntologyAction.setToolTipText("Manage Ontologies...");
+	    manageOntologyAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
+	    manageOntologyAction.setEnabled(true);
 			    
 		// add the custom actions
 		UIController controller = UIController.getInstance();
@@ -271,6 +288,7 @@ public class AnnotationPlugin
 		controller.addGuiAction(removeContextAction);
 		controller.addGuiAction(saveAction);
 		controller.addGuiAction(searchAction);
+		controller.addGuiAction(manageOntologyAction);
 		
 		//register as a listener for events
 		StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME, this);
@@ -328,7 +346,7 @@ public class AnnotationPlugin
 	
 	private void initializeOntologies() {
 		// load the default ontologies
-		Hashtable<String, String> ontologyURIs = Morpho.getConfiguration().getHashtable("ontologies", "logicalURI", "physicalURI");
+		Hashtable<String, String> ontologyURIs = Morpho.getConfiguration().getHashtable(ONTOLOGY_TAG_NAME, LOGICAL_URI_TAG_NAME, PHYSICAL_URI_TAG_NAME);
 		for (Entry<String, String> entry: ontologyURIs.entrySet()) {
 			String uri = entry.getKey();
 			String url = entry.getValue();
