@@ -15,13 +15,15 @@ import org.apache.commons.logging.LogFactory;
 import org.ecoinformatics.sms.OntologyManager;
 import org.ecoinformatics.sms.ontology.Ontology;
 import org.ecoinformatics.sms.ontology.OntologyClass;
-import org.ecoinformatics.sms.ontology.OntologyObjectProperty;
 import org.ecoinformatics.sms.ontology.OntologyProperty;
 import org.semanticweb.owl.apibinding.OWLManager;
+import org.semanticweb.owl.model.OWLAnnotation;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLDescription;
 import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.OWLOntologyAnnotationAxiom;
 import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owl.model.UnknownOWLOntologyException;
 import org.semanticweb.owl.util.SimpleURIMapper;
 
 /**
@@ -90,15 +92,30 @@ public class OwlApiOntologyManager implements OntologyManager {
 	 * @see org.ecoinformatics.sms.OntologyManager#getNamedClassLabel(org.ecoinformatics.sms.ontology.OntologyClass)
 	 */
 	public String getNamedClassLabel(OntologyClass c) {
-		// TODO Auto-generated method stub
-		return null;
+		OWLClass owlClass = this.getOWLClass(c);
+		OWLOntology ontology = null;
+		try {
+			ontology = manager.getOntology(new URI(c.getOntology().getURI()));
+		} catch (UnknownOWLOntologyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		StringBuffer labels = new StringBuffer();
+		for (OWLAnnotation annotation : owlClass.getAnnotations(ontology)) {
+			labels.append(annotation.getAnnotationValue().toString());
+		}
+
+		return labels.toString();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.ecoinformatics.sms.OntologyManager#getNamedClassLabels(org.ecoinformatics.sms.ontology.OntologyClass)
 	 */
 	public List<String> getNamedClassLabels(OntologyClass c) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -379,8 +396,23 @@ public class OwlApiOntologyManager implements OntologyManager {
 	 * @see org.ecoinformatics.sms.OntologyManager#getOntologyLabel(org.ecoinformatics.sms.ontology.Ontology)
 	 */
 	public String getOntologyLabel(Ontology ont) {
-		// TODO Auto-generated method stub
-		return null;
+		OWLOntology owlOnt = null;
+		try {
+			owlOnt = manager.getOntology(new URI(ont.getURI()));
+		} catch (UnknownOWLOntologyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		StringBuffer labels = new StringBuffer();
+		for (OWLOntologyAnnotationAxiom annotation : owlOnt.getAnnotations(owlOnt)) {
+			labels.append(annotation.getAnnotation().toString());
+		}
+
+		return labels.toString();
+		
 	}
 
 	/* (non-Javadoc)
