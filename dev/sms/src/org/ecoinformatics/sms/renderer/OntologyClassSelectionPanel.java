@@ -214,29 +214,21 @@ public class OntologyClassSelectionPanel extends JPanel {
 		// create the default root node
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("");
 
-		// get each ont model for the library
-		Iterator<String> ontModels = SMS.getInstance().getOntologyManager().getOntologyIds().iterator();
-
-		while (ontModels.hasNext()) {
-			// add ontologies to root
-			String uri = ontModels.next();
-			Ontology m = SMS.getInstance().getOntologyManager().getOntology(uri);
-			DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(m);
-			rootNode.add(childNode);
-			// get each root class of the model
-			Iterator<OntologyClass> rootClasses = SMS.getInstance().getOntologyManager().getNamedClasses(m).iterator();
-			while (rootClasses.hasNext()) {
-				// build tree from the roots
-				OntologyClass root = rootClasses.next();
-				if (filterSuperClass != null) {
-					if (!filterSuperClass.equals(root)) {
-						continue;
-					}
+		// don't add ontologies to root - just the top level classes
+		// get each root class of the model
+		Iterator<OntologyClass> rootClasses = SMS.getInstance().getOntologyManager().getNamedClasses().iterator();
+		while (rootClasses.hasNext()) {
+			// build tree from the roots
+			OntologyClass root = rootClasses.next();
+			if (filterSuperClass != null) {
+				if (!filterSuperClass.equals(root)) {
+					continue;
 				}
-				List<OntologyClass> superclasses = SMS.getInstance().getOntologyManager().getNamedSuperclasses(root, m);
-				if (superclasses == null || superclasses.isEmpty()) {
-					buildTree(root, childNode);
-				}
+			}
+			List<OntologyClass> superclasses = SMS.getInstance().getOntologyManager().getNamedSuperclasses(root);
+			if (superclasses == null || superclasses.isEmpty()) {
+				
+				buildTree(root, rootNode);
 			}
 		}
 
