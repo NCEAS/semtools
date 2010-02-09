@@ -344,8 +344,14 @@ public class AnnotationPlugin
 		
 	}
 	
-	private void initializeOntologies() {
-		// load the default ontologies
+	public static void initializeOntologies() {
+		// clear the ontologies that are loaded
+		for (String uri:SMS.getInstance().getOntologyManager().getOntologyIds()) {
+			if (SMS.getInstance().getOntologyManager().isOntology(uri)) {
+				SMS.getInstance().getOntologyManager().removeOntology(uri);
+			}
+		}
+		// load the configured ontologies
 		Hashtable<String, String> ontologyURIs = Morpho.getConfiguration().getHashtable(ONTOLOGY_TAG_NAME, LOGICAL_URI_TAG_NAME, PHYSICAL_URI_TAG_NAME);
 		for (Entry<String, String> entry: ontologyURIs.entrySet()) {
 			String uri = entry.getKey();
@@ -359,6 +365,7 @@ public class AnnotationPlugin
 		}
 		// initialize the static classes
 		Hashtable<String, String> oboeClasses = Morpho.getConfiguration().getHashtable("oboeClasses", "className", "classURI");
+		OBOE_CLASSES.clear();
 		for (Entry<String, String> entry: oboeClasses.entrySet()) {
 			String name = entry.getKey();
 			String uri = entry.getValue();

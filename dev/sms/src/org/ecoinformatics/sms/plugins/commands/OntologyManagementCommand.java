@@ -86,7 +86,7 @@ public class OntologyManagementCommand implements Command {
 						url);
 			}
 			Morpho.getConfiguration().save();
-			// TODO: reload ontologies
+			AnnotationPlugin.initializeOntologies();
 		}
 	}
 	
