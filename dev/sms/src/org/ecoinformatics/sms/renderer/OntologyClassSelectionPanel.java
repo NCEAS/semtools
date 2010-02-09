@@ -158,7 +158,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 		// onto tree label
 		JPanel panel1 = new JPanel();
 		panel1.setLayout(new BoxLayout(panel1, BoxLayout.X_AXIS));
-		panel1.add(new JLabel("All Categories:", SwingConstants.LEFT));
+		panel1.add(new JLabel("All Classes:", SwingConstants.LEFT));
 		panel1.add(Box.createHorizontalGlue());
 
 		// search
@@ -185,7 +185,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 		// comment/description label
 		JPanel panel8 = new JPanel();
 		panel8.setLayout(new BoxLayout(panel8, BoxLayout.X_AXIS));
-		panel8.add(new JLabel("Category Description:", SwingConstants.LEFT));
+		panel8.add(new JLabel("Description:", SwingConstants.LEFT));
 		panel8.add(Box.createHorizontalGlue());
 
 		// top-level panel

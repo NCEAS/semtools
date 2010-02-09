@@ -61,7 +61,7 @@ public class OntologyTreeModel extends AbstractTreeTableModel implements
 
 	// Names of the columns.
 	static protected String[] cNames = 
-	{ "Class", "Description" };
+	{ "Name", "Ontology" };
 
 	// Types of the columns.
 	static protected Class[] cTypes = { TreeTableModel.class, String.class };
