@@ -625,6 +625,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 					OntologyClass cls = (OntologyClass) obj;
 					String label = SMS.getInstance().getOntologyManager().getNamedClassLabel(cls);
 					_commentTxt.setText(label);
+					_commentTxt.setCaretPosition(0);
 					//_commentTxt.setText(cls.getURI());
 
 				}
