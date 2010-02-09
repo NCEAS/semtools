@@ -4,6 +4,7 @@
 package org.ecoinformatics.sms.owlapi;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -457,7 +458,12 @@ public class OwlApiOntologyManager implements OntologyManager {
 	 * @see org.ecoinformatics.sms.OntologyManager#removeOntology(java.lang.String)
 	 */
 	public void removeOntology(String uri) {
-		// TODO Auto-generated method stub
+		try {
+			manager.removeOntology(new URI(uri));
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
