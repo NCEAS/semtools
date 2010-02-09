@@ -443,6 +443,12 @@ public class OwlApiOntologyManager implements OntologyManager {
 	 */
 	public boolean isOntology(String uri) {
 		// TODO Auto-generated method stub
+		try {
+			return manager.contains(new URI(uri));
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
