@@ -19,7 +19,9 @@ import org.ecoinformatics.sms.ontology.OntologyProperty;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.model.OWLAnnotation;
 import org.semanticweb.owl.model.OWLClass;
+import org.semanticweb.owl.model.OWLConstant;
 import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLObject;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyAnnotationAxiom;
 import org.semanticweb.owl.model.OWLOntologyManager;
@@ -407,8 +409,10 @@ public class OwlApiOntologyManager implements OntologyManager {
 			e.printStackTrace();
 		}
 		StringBuffer labels = new StringBuffer();
-		for (OWLOntologyAnnotationAxiom annotation : owlOnt.getAnnotations(owlOnt)) {
-			labels.append(annotation.getAnnotation().toString());
+		for (OWLOntologyAnnotationAxiom axiom : owlOnt.getAnnotations(owlOnt)) {
+			OWLAnnotation<? extends OWLObject> annotation = axiom.getAnnotation();
+			OWLConstant value = annotation.getAnnotationValueAsConstant();
+			labels.append(value.getLiteral());
 		}
 
 		return labels.toString();
