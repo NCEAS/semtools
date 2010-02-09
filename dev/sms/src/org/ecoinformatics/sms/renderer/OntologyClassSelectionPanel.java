@@ -49,7 +49,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -59,7 +58,6 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -71,13 +69,11 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JTree;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
@@ -85,6 +81,10 @@ import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.ontology.Ontology;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.ontology.OntologyProperty;
+import org.ecoinformatics.sms.renderer.treetable.OntologyTreeCellRenderer;
+import org.ecoinformatics.sms.renderer.treetable.OntologyTreeModel;
+
+import edu.ucsb.nceas.morpho.plugins.datapackagewizard.pages.JTreeTable;
 
 
 /**
@@ -112,13 +112,13 @@ public class OntologyClassSelectionPanel extends JPanel {
 	 */
 	public List<OntologyClass> getOntologyClasses() {
 		List<OntologyClass> returnList = new ArrayList<OntologyClass>();
-		TreePath[] paths = _ontoTree.getSelectionPaths();
-		if (paths != null) {
-			for (int i = 0; i < paths.length; i++) {
-				DefaultMutableTreeNode node = 
-					(DefaultMutableTreeNode) paths[i].getLastPathComponent();
-				if (node.getUserObject() instanceof OntologyClass) {
-					OntologyClass cls = (OntologyClass) node.getUserObject();
+		int[] rows = _ontoTree.getSelectedRows();
+		if (rows != null) {
+			for (int i = 0; i < rows.length; i++) {
+				Object obj = _ontoTree.getValueAt(rows[i], 0);
+				
+				if (obj instanceof OntologyClass) {
+					OntologyClass cls = (OntologyClass) obj;
 					returnList.add(cls);
 				}
 			}
@@ -243,12 +243,12 @@ public class OntologyClassSelectionPanel extends JPanel {
 		// assign root to tree
 		_ontoTree = new OntoClassSelectionJTree(rootNode);
 		// configure tree
-		_ontoTree.setRootVisible(false);
-		_ontoTree.setCellRenderer(new OntoClassSelectionJTreeRenderer());
+		_ontoTree.getTree().setRootVisible(false);
+		//_ontoTree.setCellRenderer(new OntoClassSelectionJTreeRenderer());
 		_ontoTree.setDragEnabled(false); // if true, causes problems on linux
-		_ontoTree
+		_ontoTree.getTree()
 				.addTreeSelectionListener(new OntoClassTreeSelectionListener());
-		_ontoTree.setShowsRootHandles(true);
+		_ontoTree.getTree().setShowsRootHandles(true);
 
 		// wrap tree in scroll pane
 		return new JScrollPane(_ontoTree,
@@ -285,8 +285,8 @@ public class OntologyClassSelectionPanel extends JPanel {
 	 * @return set of paths in the ontology tree
 	 */
 	private Vector findMatchingClasses(String str) {
-		DefaultMutableTreeNode root = (DefaultMutableTreeNode) _ontoTree
-				.getModel().getRoot();
+		DefaultMutableTreeNode root = 
+			(DefaultMutableTreeNode) _ontoTree.getTree().getModel().getRoot();
 		return findMatchingClasses(root, str);
 	}
 
@@ -343,7 +343,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 	private void collapseTree() {
 		int row = _ontoTree.getRowCount() - 1;
 		while (row >= 0) {
-			_ontoTree.collapseRow(row);
+			_ontoTree.getTree().collapseRow(row);
 			row--;
 		}
 	}
@@ -368,7 +368,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 			// add selection for each match
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) results
 					.next();
-			_ontoTree.addSelectionPath(new TreePath(node.getPath()));
+			_ontoTree.getTree().addSelectionPath(new TreePath(node.getPath()));
 		}
 		_commentTxt.setText("");
 	}
@@ -387,12 +387,12 @@ public class OntologyClassSelectionPanel extends JPanel {
 		// collapse the tree
 		collapseTree();
 		// get the matches
-		DefaultMutableTreeNode root = (DefaultMutableTreeNode) _ontoTree
-				.getModel().getRoot();
+		DefaultMutableTreeNode root = 
+			(DefaultMutableTreeNode) _ontoTree.getTree().getModel().getRoot();
 		Iterator paths = findPaths(cls, root).iterator();
 		while (paths.hasNext()) {
 			TreePath path = (TreePath) paths.next();
-			_ontoTree.addSelectionPath(path);
+			_ontoTree.getTree().addSelectionPath(path);
 		}
 	}
 
@@ -429,75 +429,6 @@ public class OntologyClassSelectionPanel extends JPanel {
 
 	// PRIVATE CLASSES
 
-	/**
-	 * Private class for rendering the ontology tree. Uses different icons for
-	 * ontology nodes and class nodes.
-	 */
-	private class OntoClassSelectionJTreeRenderer extends
-			DefaultTreeCellRenderer {
-		private ImageIcon _classIcon;
-		private ImageIcon _ontoIcon;
-
-		/** initializes the renderer */
-		public OntoClassSelectionJTreeRenderer() {
-			URL ontoImgURL = OntoClassSelectionJTreeRenderer.class
-					.getResource(ONTO_ICON);
-			if (ontoImgURL != null) {
-				_ontoIcon = new ImageIcon(ontoImgURL);
-			}
-			URL classImgURL = OntoClassSelectionJTreeRenderer.class
-					.getResource(CLASS_ICON);
-			if (classImgURL != null) {
-				_classIcon = new ImageIcon(classImgURL);
-			}
-
-			// _classIcon = new ImageIcon(CLASS_ICON);
-			// _ontoIcon = new ImageIcon(ONTO_ICON);
-		}
-
-		/** returns tree cell renderer */
-		public Component getTreeCellRendererComponent(JTree tree, Object value,
-				boolean sel, boolean expanded, boolean leaf, int row,
-				boolean hasFocus) {
-			super.getTreeCellRendererComponent(tree, value, sel, expanded,
-					leaf, row, hasFocus);
-			if (isClassNode(value)) {
-				setIcon(_classIcon);
-				setToolTipText("This is a class ... ");
-			} else if (isOntoNode(value)) {
-				setIcon(_ontoIcon);
-				setToolTipText("This is an ontology ... ");
-			}
-			return this;
-		}
-
-		/**
-		 * Determines if a given value is a class node
-		 * 
-		 * @return true if the given node object is a OntologyClass
-		 */
-		protected boolean isClassNode(Object value) {
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-			Object obj = node.getUserObject();
-			if (obj instanceof OntologyClass)
-				return true;
-			return false;
-		}
-
-		/**
-		 * Determines if a given value is an ontology node
-		 * 
-		 * @return true if the given node object is a Ontology
-		 */
-		protected boolean isOntoNode(Object value) {
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-			Object obj = node.getUserObject();
-			if (obj instanceof Ontology)
-				return true;
-			return false;
-		}
-
-	};
 
 	/**
 	 * Private class implementing a listener for search button
@@ -512,14 +443,15 @@ public class OntologyClassSelectionPanel extends JPanel {
 	/**
 	 * Private class that extends JTree for icons and drag and drop
 	 */
-	private class OntoClassSelectionJTree extends JTree implements
+	private class OntoClassSelectionJTree extends JTreeTable implements
 			ActionListener {
 		private JPopupMenu popup;
 		private JMenuItem desc;
 		private JMenuItem select;
 
 		public OntoClassSelectionJTree(DefaultMutableTreeNode node) {
-			super(node);
+			super(new OntologyTreeModel(node));
+			getTree().setCellRenderer(new OntologyTreeCellRenderer());
 			popup = new JPopupMenu();
 			popup.setOpaque(true);
 			popup.setLightWeightPopupEnabled(true);
@@ -558,16 +490,15 @@ public class OntologyClassSelectionPanel extends JPanel {
 			clearSelection();
 
 			// highlight selected node
-			int row = getRowForLocation(e.getX(), e.getY());
+			int row = getSelectedRow();
 			if (row == -1)
 				return;
-			TreePath path = getPathForRow(row);
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) path
-					.getLastPathComponent();
+			Object o = getValueAt(row, 0);
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
 			if (!(node.getUserObject() instanceof OntologyClass))
 				return;
 
-			setSelectionRow(row);
+			//setSelectionRow(row);
 
 			// configure popup
 			initPopup();
@@ -592,9 +523,10 @@ public class OntologyClassSelectionPanel extends JPanel {
 		}
 
 		public void actionPerformed(ActionEvent ae) {
-			TreePath path = getSelectionPath();
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) path
-					.getLastPathComponent();
+			int row = getSelectedRow();
+			Object o = getValueAt(row, 0);
+			DefaultMutableTreeNode node = 
+				(DefaultMutableTreeNode) o;
 			OntologyClass cls = (OntologyClass) node.getUserObject();
 			if (ae.getActionCommand().equals("__SELECT")) {
 				//addToList(cls);
@@ -650,14 +582,10 @@ public class OntologyClassSelectionPanel extends JPanel {
 			if (source instanceof OntoClassSelectionJTree) {
 				OntoClassSelectionJTree tree = (OntoClassSelectionJTree) source;
 				Point sourcePoint = e.getDragOrigin();
-				TreePath path = tree.getPathForLocation(sourcePoint.x,
-						sourcePoint.y);
+				int row = tree.getSelectedRow();
+				Object o = tree.getValueAt(row, 0);
 				// If we didn't select anything.. then don't drag.
-				if (path == null)
-					return;
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode) path
-						.getLastPathComponent();
-				if (node == null)
+				if (o == null)
 					return;
 //				if (node.getUserObject() instanceof OntologyClass) {
 //					OntologyClassTransferable transferable = new OntologyClassTransferable();
@@ -678,26 +606,27 @@ public class OntologyClassSelectionPanel extends JPanel {
 	private class OntoClassTreeSelectionListener implements
 			TreeSelectionListener {
 		public void valueChanged(TreeSelectionEvent ev) {
-			TreePath[] paths = _ontoTree.getSelectionPaths();
+			int[] rows = _ontoTree.getSelectedRows();
 
-			if (paths == null || paths.length < 1) {
+			if (rows == null || rows.length < 1) {
 				_commentTxt.setText("");
 				return;
 			}
 
-			if (paths.length > 1) {
+			if (rows.length > 1) {
 				_commentTxt.setText("");
 			} else {
-				TreePath path = paths[0];
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode) path
-						.getLastPathComponent();
-				Object obj = node.getUserObject();
+				int row = rows[0];
+				Object obj = _ontoTree.getValueAt(row, 0);
 
 				if (!(obj instanceof OntologyClass))
 					_commentTxt.setText("");
 				else {
 					OntologyClass cls = (OntologyClass) obj;
-					_commentTxt.setText(cls.getURI());
+					String label = SMS.getInstance().getOntologyManager().getNamedClassLabel(cls);
+					_commentTxt.setText(label);
+					//_commentTxt.setText(cls.getURI());
+
 				}
 			}
 		}
@@ -709,12 +638,6 @@ public class OntologyClassSelectionPanel extends JPanel {
 	private JTextArea _commentTxt;
 	private JButton _searchBtn = new JButton("Search");
 	
-	// private String KEPLER = System.getProperty("KEPLER");
-	private final String CLASS_ICON = "";
-	// KEPLER + "/configs/ptolemy/configs/kepler/sms/class.png";
-	private final String ONTO_ICON = "";
-
-	// KEPLER + "/configs/ptolemy/configs/kepler/sms/onto.png";
 
 	// TESTING
 
