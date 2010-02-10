@@ -39,6 +39,9 @@ public class OntologyClassJLabel extends JLabel {
 
 	public void setFilterClass(OntologyClass filterClass) {
 		this.filterClass = filterClass;
+		if (filterClass != null) {
+			this.setToolTipText(filterClass.getName());
+		}
 	}
 
 	public String getText() {
@@ -64,9 +67,9 @@ public class OntologyClassJLabel extends JLabel {
 		label.setMinimumSize(dims);
 		label.setAlignmentX(SwingConstants.LEADING);
 		label.setFont(WizardSettings.WIZARD_CONTENT_FONT);
-
-		label.setBorder(BorderFactory.createMatteBorder(1, 3, 1, 3,
-				(Color) null));
+		
+		label.setBorder(
+				BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray));
 		if (hiliteRequired) {
 			label.setForeground(WizardSettings.WIZARD_CONTENT_REQD_TEXT_COLOR);
 		} else {
