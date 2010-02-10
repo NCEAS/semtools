@@ -166,11 +166,9 @@ public class AnnotationPage extends AbstractUIPage {
 	    GUIAction helpAction = new GUIAction("More information about Semantic Annotation", null, command);
 		JButton helpButton = new HyperlinkButton(helpAction);
 		
-		
 		//this.add(WidgetFactory.makePanel(1).add(helpButton));
 		descPanel.add(helpButton);
 		this.add(descPanel);
-		this.add(WidgetFactory.makeDefaultSpacer());
 		
 		// Attribute Label
 		JPanel attributeLabelPanel = WidgetFactory.makePanel(1);
@@ -180,8 +178,14 @@ public class AnnotationPage extends AbstractUIPage {
 		attributeLabelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
 		this.add(attributeLabelPanel);
+		this.add(WidgetFactory.makeDefaultSpacer());				
+		
+		//add the main panel here
+		simpleAnnotationPanel = new SimpleAnnotationPanel(true);
+		this.add(simpleAnnotationPanel);
+
 		this.add(WidgetFactory.makeDefaultSpacer());
-				
+		
 		// Measurement Label
 		JPanel measurementPanel = WidgetFactory.makePanel(2);
 		measurementPanel.setLayout(new GridLayout(1,2));
@@ -229,14 +233,7 @@ public class AnnotationPage extends AbstractUIPage {
 		this.add(observationPanel);
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
-		//this.add(WidgetFactory.makeDefaultSpacer());
-
-		//add the main panel here
-		simpleAnnotationPanel = new SimpleAnnotationPanel(true);
-		this.add(simpleAnnotationPanel);
-
-		this.add(WidgetFactory.makeDefaultSpacer());
-
+	
 	}
 
 	public void setAnnotation(Annotation a, String attributeName) {
