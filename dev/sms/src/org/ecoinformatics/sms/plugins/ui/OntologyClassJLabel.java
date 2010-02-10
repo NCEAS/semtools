@@ -7,10 +7,11 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 import org.ecoinformatics.sms.ontology.OntologyClass;
 
-import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
 
 public class OntologyClassJLabel extends JLabel {
@@ -40,6 +41,16 @@ public class OntologyClassJLabel extends JLabel {
 	public void setFilterClass(OntologyClass filterClass) {
 		this.filterClass = filterClass;
 		if (filterClass != null) {
+			Border underline = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray);
+			Border titleBorder = 
+				BorderFactory.createTitledBorder(
+						underline, 
+						filterClass.getName(), 
+						TitledBorder.CENTER, 
+						TitledBorder.BELOW_BOTTOM);
+			// TODO: figure out how to size it so the underline title is shown all the time
+			//this.setBorder(titleBorder);
+			this.setBorder(underline);
 			this.setToolTipText(filterClass.getName());
 		}
 	}
