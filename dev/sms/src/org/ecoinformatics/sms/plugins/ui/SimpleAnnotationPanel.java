@@ -57,9 +57,19 @@ public class SimpleAnnotationPanel extends JPanel {
 	private OntologyClassJLabel observationStandard;
 	private OntologyClassJLabel observationProtocol;
 	
-	public SimpleAnnotationPanel() {
+	public static String ENTITY_HELP = "The <b>Entity</b> is the 'thing' being observed. If the diameter of a tree is measured, the Entity will be the tree.";
+	public static String CHARACTERISTIC_HELP = "The <b>Characteristic</b> is the property being measured. If the diameter of a tree is measured, the Characteristic will be the diameter (length).";
+	public static String STANDARD_HELP = "The <b>Standard</b> is the unit used for the measurement. If the diameter of a tree is measured, the Standard will be a length unit (meters).";
+	public static String PROTOCOL_HELP = "The <b>Protocol</b> is the method used for taking the measurement. If the diameter of a tree is measured at breast height, this will be the Protocol.";
+	
+	public SimpleAnnotationPanel(boolean madLib) {
 		super();
-		init();
+		if (madLib) {
+			initMadLib();
+		} else {
+			init();
+		}
+
 	}
 	
 	private void init() {
@@ -90,7 +100,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		entityLabelPanel.add(observationEntity);
 		
 		entityPanel.add(entityLabelPanel);
-		entityPanel.add(WidgetFactory.makeHTMLLabel("The Entity is the 'thing' being observed. If the diameter of a tree is measured, the Entity will be the tree.", 2));
+		entityPanel.add(WidgetFactory.makeHTMLLabel(ENTITY_HELP, 2));
 		entityPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
 
@@ -107,7 +117,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		characteristicLabelPanel.add(observationCharacteristic);
 		
 		characteristicPanel.add(characteristicLabelPanel);
-		characteristicPanel.add(WidgetFactory.makeHTMLLabel("The Characteristic is the property being measured. If the diameter of a tree is measured, the Characteristic will be the diameter (length).", 2));
+		characteristicPanel.add(WidgetFactory.makeHTMLLabel(CHARACTERISTIC_HELP, 2));
 		characteristicPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0,
 				0, 8 * WizardSettings.PADDING));
 
@@ -123,7 +133,7 @@ public class SimpleAnnotationPanel extends JPanel {
 
 		standardLabelPanel.add(observationStandard);
 		standardPanel.add(standardLabelPanel);
-		standardPanel.add(WidgetFactory.makeHTMLLabel("The Standard is the unit used for the measurement. If the diameter of a tree is measured, the Standard will be a length unit (meters).", 2));
+		standardPanel.add(WidgetFactory.makeHTMLLabel(STANDARD_HELP, 2));
 
 		standardPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
@@ -140,7 +150,7 @@ public class SimpleAnnotationPanel extends JPanel {
 
 		protocolLabelPanel.add(observationProtocol);
 		protocolPanel.add(protocolLabelPanel);
-		protocolPanel.add(WidgetFactory.makeHTMLLabel("The Protocol is the method used for taking the measurement. If the diameter of a tree is measured at breast height, this will be the Protocol.", 2));
+		protocolPanel.add(WidgetFactory.makeHTMLLabel(PROTOCOL_HELP, 2));
 
 		protocolPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
@@ -153,6 +163,91 @@ public class SimpleAnnotationPanel extends JPanel {
 		classesPanel.add(standardPanel);
 		classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		classesPanel.add(protocolPanel);
+
+		this.add(classesPanel);
+	}
+	
+	private void initMadLib() {
+		
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+		MouseListener mListener = new MouseAdapter() {
+
+			public void mouseClicked(MouseEvent e) {
+				OntologyClassJLabel source = (OntologyClassJLabel) e.getSource();
+				showDialog(source);
+			}
+
+		};
+		
+		JPanel classesPanel = WidgetFactory.makePanel();
+		classesPanel.setLayout(new BoxLayout(classesPanel, BoxLayout.Y_AXIS));
+		
+		// Characteristic and Entity
+		JPanel characteristicPanel = WidgetFactory.makePanel(1);
+		
+		characteristicPanel.add(WidgetFactory.makeLabel("The ", false, null));
+		
+		observationCharacteristic = OntologyClassJLabel.makeLabel("<characteristic>", true, null);
+		observationCharacteristic.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Characteristic.class));
+		observationCharacteristic.addMouseListener(mListener);
+		characteristicPanel.add(observationCharacteristic);
+		
+		characteristicPanel.add(WidgetFactory.makeLabel(" of the ", false, null));
+		
+		observationEntity = OntologyClassJLabel.makeLabel("<entity>", true, null);
+		observationEntity.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Entity.class));
+		observationEntity.addMouseListener(mListener);
+		characteristicPanel.add(observationEntity);
+		characteristicPanel.add(WidgetFactory.makeLabel(" was recorded ", false, null));
+		
+		characteristicPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0,
+				0, 8 * WizardSettings.PADDING));
+		
+	
+		// Standard and Protocol
+		JPanel standardPanel = WidgetFactory.makePanel(1);
+				
+		standardPanel.add(WidgetFactory.makeLabel(" using the ", false, null));
+
+		observationStandard = OntologyClassJLabel.makeLabel("<standard>", true, null);
+		observationStandard.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Standard.class));
+		observationStandard.addMouseListener(mListener);
+
+		standardPanel.add(observationStandard);
+		standardPanel.add(WidgetFactory.makeLabel(" standard, ", false, null));
+
+		standardPanel.add(WidgetFactory.makeLabel("and the ", false, null));
+
+		observationProtocol = OntologyClassJLabel.makeLabel("<protocol>", true, null);
+		observationProtocol.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Protocol.class));
+		observationProtocol.addMouseListener(mListener);
+		standardPanel.add(observationProtocol);
+
+		standardPanel.add(WidgetFactory.makeLabel(" protocol.", false, null));
+
+		standardPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
+				8 * WizardSettings.PADDING));
+		
+
+		// the help panel
+		JPanel helpPanel = WidgetFactory.makePanel();
+		helpPanel.setLayout(new GridLayout(4,1));
+		helpPanel.add(WidgetFactory.makeHTMLLabel(ENTITY_HELP, 1));
+		helpPanel.add(WidgetFactory.makeHTMLLabel(CHARACTERISTIC_HELP, 1));
+		helpPanel.add(WidgetFactory.makeHTMLLabel(STANDARD_HELP, 1));
+		helpPanel.add(WidgetFactory.makeHTMLLabel(PROTOCOL_HELP, 1));
+		helpPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
+				8 * WizardSettings.PADDING));
+		
+
+		// put them together
+		classesPanel.add(characteristicPanel);
+		classesPanel.add(WidgetFactory.makeDefaultSpacer());
+		classesPanel.add(standardPanel);
+		classesPanel.add(WidgetFactory.makeDefaultSpacer());
+		classesPanel.add(helpPanel);
+		classesPanel.add(WidgetFactory.makeDefaultSpacer());
 
 		this.add(classesPanel);
 	}

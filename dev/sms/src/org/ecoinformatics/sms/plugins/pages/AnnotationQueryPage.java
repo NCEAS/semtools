@@ -97,7 +97,7 @@ public class AnnotationQueryPage extends AbstractUIPage {
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
 		//add the main panel here
-		simpleAnnotationPanel = new SimpleAnnotationPanel();
+		simpleAnnotationPanel = new SimpleAnnotationPanel(false);
 		this.add(simpleAnnotationPanel);
 
 		this.add(WidgetFactory.makeHalfSpacer());

@@ -232,7 +232,7 @@ public class AnnotationPage extends AbstractUIPage {
 		//this.add(WidgetFactory.makeDefaultSpacer());
 
 		//add the main panel here
-		simpleAnnotationPanel = new SimpleAnnotationPanel();
+		simpleAnnotationPanel = new SimpleAnnotationPanel(true);
 		this.add(simpleAnnotationPanel);
 
 		this.add(WidgetFactory.makeDefaultSpacer());
