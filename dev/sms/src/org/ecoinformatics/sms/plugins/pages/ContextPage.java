@@ -42,6 +42,7 @@ import javax.swing.JTextField;
 
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Relationship;
+import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.ui.OntologyClassJLabel;
 import org.ecoinformatics.sms.plugins.ui.SimpleAnnotationPanel;
 
@@ -56,7 +57,7 @@ public class ContextPage extends AbstractUIPage {
 	// *
 
 	private final String pageID = null;
-	private final String pageNumber = "9";
+	private final String pageNumber = "0";
 	private final String title = "Context Annotation Editor";
 	private final String subtitle = "";
 
@@ -70,7 +71,7 @@ public class ContextPage extends AbstractUIPage {
 	private OntologyClassJLabel contextRelationship;
 	
 	// providing observation
-	private JTextField observationLabel;
+	private JLabel observationLabel;
 	private JLabel observationLabelLabel;
 
 	private Observation currentObservation;
@@ -80,8 +81,12 @@ public class ContextPage extends AbstractUIPage {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
 
-	public ContextPage() {
-		init();
+	public ContextPage(boolean madLib) {
+		if (madLib) {
+			initMadlib();
+		} else {
+			init();
+		}
 	}
 
 	/**
@@ -115,8 +120,7 @@ public class ContextPage extends AbstractUIPage {
 		JPanel contextPanel = WidgetFactory.makePanel(1);
 		observationLabelLabel = WidgetFactory.makeLabel("Observation:", false);
 		contextPanel.add(observationLabelLabel);
-		observationLabel = WidgetFactory.makeOneLineTextField();
-		observationLabel.setEditable(false);
+		observationLabel = WidgetFactory.makeLabel("", true, null);
 		observationLabel.setEnabled(false);
 		contextPanel.add(observationLabel);
 		contextPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
@@ -157,6 +161,71 @@ public class ContextPage extends AbstractUIPage {
 
 	}
 
+	private void initMadlib() {
+
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+		MouseListener mListener = new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				OntologyClassJLabel source = (OntologyClassJLabel) e.getSource();
+				SimpleAnnotationPanel.showDialog(source);
+			}
+
+		};
+		
+		JLabel desc = WidgetFactory
+				.makeHTMLLabel(
+						"<b>Select the Observation providing context</b> "
+								+ "The Ontology Browser can be used to navigate specific ontologies.",
+						2);
+		this.add(desc);
+		this.add(WidgetFactory.makeDefaultSpacer());
+				
+		// Observation
+		JPanel contextPanel = WidgetFactory.makePanel(2);
+		observationLabelLabel = WidgetFactory.makeLabel("The Observation was made where the ", false, null);
+		contextPanel.add(observationLabelLabel);
+		
+		// entity
+		observationLabel = WidgetFactory.makeLabel("", true, null);
+		observationLabel.setEnabled(false);
+		contextPanel.add(observationLabel);
+		
+		contextPanel.add(WidgetFactory.makeLabel(" was ", false, null));
+
+		// context
+		contextRelationship = OntologyClassJLabel.makeLabel("<relationship>", false, null);
+		contextRelationship.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Relationship.class));
+		contextRelationship.addMouseListener(mListener);
+		contextPanel.add(contextRelationship);
+		
+		contextPanel.add(WidgetFactory.makeLabel(" the ", false, null));
+		
+		// other entity
+		observationList = WidgetFactory.makePickList(null, false, 0, null);
+		contextPanel.add(observationList);
+		
+		contextPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
+				8 * WizardSettings.PADDING));
+		this.add(contextPanel);
+
+		this.add(WidgetFactory.makeDefaultSpacer());
+		
+		// Relationship
+		JPanel relationshipPanel = WidgetFactory.makePanel(1);
+		
+		// Relationship is identifying
+		observationIsIdentifying = WidgetFactory.makeCheckBox("Relationship is Identifying?", false);
+		relationshipPanel.add(observationIsIdentifying);
+		relationshipPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
+				8 * WizardSettings.PADDING));
+		this.add(relationshipPanel);
+		
+
+		this.add(WidgetFactory.makeDefaultSpacer());
+
+	}
+	
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
 
@@ -295,7 +364,7 @@ public class ContextPage extends AbstractUIPage {
 
 	public void setObservation(Observation contextObservation) {
 		this.currentObservation = contextObservation;
-		this.observationLabel.setText(currentObservation.getLabel());
+		this.observationLabel.setText(currentObservation.getFullString());
 		
 	}
 }

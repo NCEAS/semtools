@@ -26,6 +26,7 @@
 
 package org.ecoinformatics.sms.plugins.commands;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -138,6 +139,7 @@ public class ContextCommand implements Command {
 				Measurement measurement = mapping.getMeasurement();
 				Observation currentObservation = annotation.getObservation(measurement);
 				
+				Component source = null;
 				//ADD
 				if (add) {
 					// get the Observations it can provide context for
@@ -148,7 +150,10 @@ public class ContextCommand implements Command {
 					observations.remove(currentObservation);
 					
 					// page for editing the new context relationship
-					contextPage = new ContextPage();
+					contextPage = new ContextPage(true);
+					
+					// for the state change event
+					source = contextPage;
 					
 					// set "this" observation
 					contextPage.setObservation(currentObservation);
@@ -168,6 +173,9 @@ public class ContextCommand implements Command {
 						context.setIdentifying(isIdentifying);
 	
 						currentObservation.addContext(context);
+					} else {
+						// no need to continue - cancelled
+						return;
 					}
 				}
 				//REMOVE
@@ -185,17 +193,26 @@ public class ContextCommand implements Command {
 							existingContexts.toArray(),
 							null
 							);
+					
 					if (selectedObj != null) {
 						Context selectedContext = (Context) selectedObj;
 						currentObservation.removeContext(selectedContext);
+					} else {
+						// cancelled
+						return;
 					}
+					
+					// for the state change event
+					source = morphoFrame;
 				}
 					
-				// save - still some TBD
+				// made it here
+				
+				// save to the annotation
 				AnnotationPlugin.saveAnnotation(annotation);
 				
 				// fire change event
-				StateChangeEvent annotationEvent = new StateChangeEvent(contextPage, AnnotationPlugin.ANNOTATION_CHANGE_EVENT);
+				StateChangeEvent annotationEvent = new StateChangeEvent(source, AnnotationPlugin.ANNOTATION_CHANGE_EVENT);
 				StateChangeMonitor.getInstance().notifyStateChange(annotationEvent);
 				
 			}
