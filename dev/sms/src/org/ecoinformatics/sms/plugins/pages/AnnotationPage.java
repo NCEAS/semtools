@@ -184,7 +184,7 @@ public class AnnotationPage extends AbstractUIPage {
 		simpleAnnotationPanel = new SimpleAnnotationPanel(true);
 		this.add(simpleAnnotationPanel);
 
-		this.add(WidgetFactory.makeDefaultSpacer());
+		//this.add(WidgetFactory.makeDefaultSpacer());
 		
 		// Measurement Label
 		JPanel measurementPanel = WidgetFactory.makePanel(2);
