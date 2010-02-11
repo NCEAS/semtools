@@ -11,8 +11,13 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 import org.ecoinformatics.sms.ontology.OntologyClass;
+import org.ecoinformatics.sms.plugins.pages.OntologyClassSelectionPage;
 
+import edu.ucsb.nceas.morpho.framework.ModalDialog;
+import edu.ucsb.nceas.morpho.framework.UIController;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
+import edu.ucsb.nceas.morpho.util.Log;
+import edu.ucsb.nceas.morpho.util.UISettings;
 
 public class OntologyClassJLabel extends JLabel {
 	private OntologyClass ontologyClass;
@@ -89,5 +94,46 @@ public class OntologyClassJLabel extends JLabel {
 
 		return label;
 	}
+	
+	public static void showDialog(OntologyClassJLabel source) {
+		OntologyClassSelectionPage page = new OntologyClassSelectionPage();
+		
+		try {
+			OntologyClass currentClass = source.getOntologyClass();
+			OntologyClass filterClass = source.getFilterClass();
+			if (currentClass != null) {
+				page.setCurrentClass(currentClass);
+			}
+			page.setFilterClass(filterClass);
+		} catch (Exception e) {
+			//ignore
+		}
+		
+		// show the dialog
+		ModalDialog dialog = 
+			new ModalDialog(
+					page, 
+					UIController.getInstance().getCurrentActiveWindow(), 
+					UISettings.POPUPDIALOG_WIDTH,
+					UISettings.POPUPDIALOG_HEIGHT);
+
+		// get the response back
+		if (dialog.USER_RESPONSE == ModalDialog.OK_OPTION) {
+			String selectedClassString = null;
+			if (page.getSelectedTerms() !=null && page.getSelectedTerms().size() > 0) {
+				selectedClassString = page.getSelectedTerms().get(0);
+			}
+			OntologyClass selectedClass = null;
+			try {
+				selectedClass = new OntologyClass(selectedClassString);
+			} catch (Exception e) {
+				selectedClass = null;
+				Log.debug(20, "error constructing selectedClass from string: " + selectedClassString);
+			}
+			source.setOntologyClass(selectedClass);
+		}
+		page = null;
+	}
+
 
 }

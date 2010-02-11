@@ -38,13 +38,11 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Relationship;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.ui.OntologyClassJLabel;
-import org.ecoinformatics.sms.plugins.ui.SimpleAnnotationPanel;
 
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
@@ -101,7 +99,7 @@ public class ContextPage extends AbstractUIPage {
 		MouseListener mListener = new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				OntologyClassJLabel source = (OntologyClassJLabel) e.getSource();
-				SimpleAnnotationPanel.showDialog(source);
+				OntologyClassJLabel.showDialog(source);
 			}
 
 		};
@@ -168,7 +166,7 @@ public class ContextPage extends AbstractUIPage {
 		MouseListener mListener = new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				OntologyClassJLabel source = (OntologyClassJLabel) e.getSource();
-				SimpleAnnotationPanel.showDialog(source);
+				OntologyClassJLabel.showDialog(source);
 			}
 
 		};
