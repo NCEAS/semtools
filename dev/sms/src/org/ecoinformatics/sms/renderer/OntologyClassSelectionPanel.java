@@ -155,6 +155,8 @@ public class OntologyClassSelectionPanel extends JPanel {
 		_ontoTree.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
 		// set up search button
+		_searchBtn = new JButton("Search");
+		_searchTxt = new JTextField(14);
 		_searchBtn.addActionListener(new ClassSearchButtonListener());
 		_searchTxt.addActionListener(new ClassSearchButtonListener());
 
@@ -716,9 +718,9 @@ public class OntologyClassSelectionPanel extends JPanel {
 
 	private JPopupMenu popup;
 	private OntoClassSelectionJTree _ontoTree;
-	private JTextField _searchTxt = new JTextField(14);
+	private JTextField _searchTxt;
 	private JTextArea _commentTxt;
-	private JButton _searchBtn = new JButton("Search");
+	private JButton _searchBtn;
 	
 
 	// TESTING
