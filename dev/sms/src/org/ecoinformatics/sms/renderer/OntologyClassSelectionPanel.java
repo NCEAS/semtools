@@ -83,7 +83,7 @@ import org.ecoinformatics.sms.ontology.OntologyProperty;
 import org.ecoinformatics.sms.renderer.treetable.OntologyTreeCellRenderer;
 import org.ecoinformatics.sms.renderer.treetable.OntologyTreeModel;
 
-import edu.ucsb.nceas.morpho.plugins.datapackagewizard.pages.JTreeTable;
+import edu.ucsb.nceas.morpho.util.treetable.JTreeTable;
 
 
 /**
@@ -475,6 +475,8 @@ public class OntologyClassSelectionPanel extends JPanel {
 		while (paths.hasNext()) {
 			TreePath path = (TreePath) paths.next();
 			_ontoTree.getTree().addSelectionPath(path);
+			int row = _ontoTree.getTree().getRowForPath(path);
+			_ontoTree.setRowSelectionInterval(row, row);
 		}
 	}
 
