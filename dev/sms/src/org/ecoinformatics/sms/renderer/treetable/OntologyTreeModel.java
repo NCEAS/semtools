@@ -56,8 +56,7 @@ import edu.ucsb.nceas.morpho.plugins.datapackagewizard.pages.TreeTableModel;
  * 
  */
 
-public class OntologyTreeModel extends AbstractTreeTableModel implements
-		TreeTableModel {
+public class OntologyTreeModel extends AbstractTreeTableModel {
 
 	// Names of the columns.
 	static protected String[] cNames = 

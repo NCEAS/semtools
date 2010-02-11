@@ -78,7 +78,6 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import org.ecoinformatics.sms.SMS;
-import org.ecoinformatics.sms.ontology.Ontology;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.ontology.OntologyProperty;
 import org.ecoinformatics.sms.renderer.treetable.OntologyTreeCellRenderer;
@@ -97,6 +96,11 @@ import edu.ucsb.nceas.morpho.plugins.datapackagewizard.pages.JTreeTable;
  * @author Shawn Bowers
  */
 public class OntologyClassSelectionPanel extends JPanel {
+
+	private JScrollPane treeView;
+	private OntologyClass filterClass;
+	private boolean firstSearch = true;
+
 
 	/**
 	 * Default constructor that initializes the panel, accepting all ontologies
@@ -127,7 +131,8 @@ public class OntologyClassSelectionPanel extends JPanel {
 	}
 
 	public void initialize(OntologyClass filterClass) {
-		init(filterClass, 525, 350);
+		this.filterClass = filterClass;
+		init(525, 350);
 	}
 
 	// PRIVATE METHODS
@@ -135,8 +140,18 @@ public class OntologyClassSelectionPanel extends JPanel {
 	/**
 	 * Private method for initializing the panel
 	 */
-	private void init(OntologyClass filterClass, int length, int height) {
-		JScrollPane treeView = createTreeView(filterClass);
+	private void init(int length, int height) {
+		
+
+		// make the scroll pane for the tree
+		treeView = 
+			new JScrollPane(
+					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+		// generate the tree
+		createTreeView(filterClass);
+
 		_ontoTree.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
 		// set up search button
@@ -210,7 +225,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 	 *            true if only the library ontologies are selected
 	 * @return a scroll pane containing the ontologies
 	 */
-	private JScrollPane createTreeView(OntologyClass filterSuperClass) {
+	private void createTreeView(OntologyClass filterSuperClass) {
 		// create the default root node
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("");
 
@@ -243,9 +258,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 		_ontoTree.getTree().setShowsRootHandles(true);
 
 		// wrap tree in scroll pane
-		return new JScrollPane(_ontoTree,
-				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		treeView.setViewportView(_ontoTree);
 	}
 
 	/**
@@ -356,6 +369,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 			return;
 		// get all the matches
 		Iterator results = findMatchingClasses(searchStr).iterator();
+		OntologyTreeModel treeModel = (OntologyTreeModel) _ontoTree.getTree().getModel();
 		while (results.hasNext()) {
 			// add selection for each match
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) results
@@ -363,6 +377,80 @@ public class OntologyClassSelectionPanel extends JPanel {
 			_ontoTree.getTree().addSelectionPath(new TreePath(node.getPath()));
 		}
 		_commentTxt.setText("");
+	}
+	
+	/**
+	 * Private method for executing a search
+	 * 
+	 * @param searchStr
+	 *            the string to search for
+	 */
+	private void doFilterSearch(String searchStr) {
+		
+		if (!firstSearch) {
+			// reset the selections
+			createTreeView(filterClass);
+		}
+		
+		firstSearch = false;
+
+		// if empty reset and expand the first level
+		if (searchStr.trim().equals("")) {
+			_ontoTree.getTree().expandRow(0);
+			return;
+		}
+		// get all the matches
+		Vector<DefaultMutableTreeNode> matches = findMatchingClasses(searchStr);
+		OntologyTreeModel treeModel = (OntologyTreeModel) _ontoTree.getTree().getModel();
+		//expand to include parents
+		Vector<DefaultMutableTreeNode> expandedMatches = new Vector<DefaultMutableTreeNode>();
+		for (DefaultMutableTreeNode match: matches) {
+			expandedMatches.addAll(expandMatches(match));
+		}
+		matches.addAll(expandedMatches);
+		//remove anything that doesn't match
+		for (DefaultMutableTreeNode match: matches) {
+			removeNodes(match, treeModel, matches);
+			_ontoTree.getTree().expandPath(new TreePath(match.getPath()));
+		}
+		
+		_commentTxt.setText("");
+	}
+	
+	
+	private Vector<DefaultMutableTreeNode> expandMatches(DefaultMutableTreeNode node) {
+		Vector<DefaultMutableTreeNode> matches = new Vector<DefaultMutableTreeNode>();
+		DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
+		while (parent != null) {
+			if (!matches.contains(parent)) {
+				matches.add(parent);
+			}
+			parent = (DefaultMutableTreeNode) parent.getParent();
+		}
+		return matches;
+	}
+	
+	private void removeNodes(DefaultMutableTreeNode match, OntologyTreeModel treeModel, Vector<DefaultMutableTreeNode> matches) {
+		//get the parent of the match
+		DefaultMutableTreeNode parent = (DefaultMutableTreeNode) match.getParent();
+		if (parent == null) {
+			return;
+		}
+		//remove the children
+		Vector<DefaultMutableTreeNode> nodesToRemove = new Vector<DefaultMutableTreeNode>();
+		for (int i=0; i < parent.getChildCount(); i++) {
+			DefaultMutableTreeNode child = (DefaultMutableTreeNode) parent.getChildAt(i);
+			if (!matches.contains(child)) {
+				//remove this sibling of the match
+				nodesToRemove.add(child);
+				// now try to remove the parent's siblings
+				removeNodes(parent, treeModel, matches);
+			}
+		}
+		// remove them now
+		for (DefaultMutableTreeNode node: nodesToRemove) {
+			treeModel.removeNodeFromParent(node);
+		}
 	}
 
 	/**
@@ -427,7 +515,8 @@ public class OntologyClassSelectionPanel extends JPanel {
 	 */
 	private class ClassSearchButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
-			doSearch(_searchTxt.getText());
+			//doSearch(_searchTxt.getText());
+			doFilterSearch(_searchTxt.getText());
 		}
 	};
 
