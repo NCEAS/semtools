@@ -2,6 +2,9 @@ package org.ecoinformatics.sms.plugins.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -92,6 +95,17 @@ public class OntologyClassJLabel extends JLabel {
 			label.setForeground(WizardSettings.WIZARD_CONTENT_TEXT_COLOR);
 		}
 
+		// listen to the click
+		MouseListener mListener = new MouseAdapter() {
+
+			public void mouseClicked(MouseEvent e) {
+				OntologyClassJLabel source = (OntologyClassJLabel) e.getSource();
+				OntologyClassJLabel.showDialog(source);
+			}
+
+		};
+		label.addMouseListener(mListener);
+		
 		return label;
 	}
 	

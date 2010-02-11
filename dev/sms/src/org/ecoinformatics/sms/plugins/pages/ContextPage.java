@@ -28,9 +28,6 @@
 
 package org.ecoinformatics.sms.plugins.pages;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -95,14 +92,6 @@ public class ContextPage extends AbstractUIPage {
 	private void init() {
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-		MouseListener mListener = new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				OntologyClassJLabel source = (OntologyClassJLabel) e.getSource();
-				OntologyClassJLabel.showDialog(source);
-			}
-
-		};
 		
 		JLabel desc = WidgetFactory
 				.makeHTMLLabel(
@@ -132,7 +121,6 @@ public class ContextPage extends AbstractUIPage {
 		relationshipPanel.add(WidgetFactory.makeLabel("Relationship:",
 				false));
 		contextRelationship = OntologyClassJLabel.makeLabel("<relationship>", false, null);
-		contextRelationship.addMouseListener(mListener);
 		relationshipPanel.add(contextRelationship);
 		relationshipPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0,
 				0, 8 * WizardSettings.PADDING));
@@ -162,14 +150,6 @@ public class ContextPage extends AbstractUIPage {
 	private void initMadlib() {
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-		MouseListener mListener = new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				OntologyClassJLabel source = (OntologyClassJLabel) e.getSource();
-				OntologyClassJLabel.showDialog(source);
-			}
-
-		};
 		
 		JLabel desc = WidgetFactory
 				.makeHTMLLabel(
@@ -194,7 +174,6 @@ public class ContextPage extends AbstractUIPage {
 		// context
 		contextRelationship = OntologyClassJLabel.makeLabel("<relationship>", false, null);
 		contextRelationship.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Relationship.class));
-		contextRelationship.addMouseListener(mListener);
 		contextPanel.add(contextRelationship);
 		
 		contextPanel.add(WidgetFactory.makeLabel(" the ", false, null));
