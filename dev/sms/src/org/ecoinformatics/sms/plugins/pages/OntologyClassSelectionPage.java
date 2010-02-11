@@ -110,6 +110,16 @@ public class OntologyClassSelectionPage extends AbstractUIVocabularyPage {
 		this.filterClass = filterClass;
 	}
 	
+	public OntologyClassSelectionPanel getSelectionPanel() {
+		return selectionPanel;
+	}
+
+
+	public void setSelectionPanel(OntologyClassSelectionPanel selectionPanel) {
+		this.selectionPanel = selectionPanel;
+	}
+
+
 	public void setVocabulary(String vocab) {
 		//TODO: restrict to a certain ontology?
 	}

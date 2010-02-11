@@ -1,6 +1,7 @@
 package org.ecoinformatics.sms.plugins.ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -9,6 +10,7 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
@@ -25,6 +27,9 @@ import edu.ucsb.nceas.morpho.util.UISettings;
 public class OntologyClassJLabel extends JLabel {
 	private OntologyClass ontologyClass;
 	private OntologyClass filterClass;
+	private OntologyClassSelectionPage page;
+	private JPopupMenu popup = null;
+	private boolean isPopupShowing = false;
 
 	public OntologyClassJLabel(String text) {
 		super(text);
@@ -70,45 +75,6 @@ public class OntologyClassJLabel extends JLabel {
 		return ontologyClass.getName();
 	}
 
-	public static OntologyClassJLabel makeLabel(String text,
-			boolean hiliteRequired, Dimension dims) {
-
-		if (text == null) {
-			text = "";
-		}
-		if (dims == null) {
-			dims = WizardSettings.WIZARD_CONTENT_LABEL_DIMS;
-		}
-		OntologyClassJLabel label = new OntologyClassJLabel(text);
-
-		//WidgetFactory.setPrefMaxSizes(label, dims);
-		label.setPreferredSize(dims);
-		label.setMinimumSize(dims);
-		label.setAlignmentX(SwingConstants.LEADING);
-		label.setFont(WizardSettings.WIZARD_CONTENT_FONT);
-		
-		label.setBorder(
-				BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray));
-		if (hiliteRequired) {
-			label.setForeground(WizardSettings.WIZARD_CONTENT_REQD_TEXT_COLOR);
-		} else {
-			label.setForeground(WizardSettings.WIZARD_CONTENT_TEXT_COLOR);
-		}
-
-		// listen to the click
-		MouseListener mListener = new MouseAdapter() {
-
-			public void mouseClicked(MouseEvent e) {
-				OntologyClassJLabel source = (OntologyClassJLabel) e.getSource();
-				OntologyClassJLabel.showDialog(source);
-			}
-
-		};
-		label.addMouseListener(mListener);
-		
-		return label;
-	}
-	
 	public static void showDialog(OntologyClassJLabel source) {
 		OntologyClassSelectionPage page = new OntologyClassSelectionPage();
 		
@@ -147,6 +113,98 @@ public class OntologyClassJLabel extends JLabel {
 			source.setOntologyClass(selectedClass);
 		}
 		page = null;
+	}
+
+	public static OntologyClassJLabel makeLabel(String text,
+			boolean hiliteRequired, Dimension dims) {
+
+		if (text == null) {
+			text = "";
+		}
+		if (dims == null) {
+			dims = WizardSettings.WIZARD_CONTENT_LABEL_DIMS;
+		}
+		OntologyClassJLabel label = new OntologyClassJLabel(text);
+
+		//WidgetFactory.setPrefMaxSizes(label, dims);
+		label.setPreferredSize(dims);
+		label.setMinimumSize(dims);
+		label.setAlignmentX(SwingConstants.LEADING);
+		label.setFont(WizardSettings.WIZARD_CONTENT_FONT);
+		
+		label.setBorder(
+				BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray));
+		if (hiliteRequired) {
+			label.setForeground(WizardSettings.WIZARD_CONTENT_REQD_TEXT_COLOR);
+		} else {
+			label.setForeground(WizardSettings.WIZARD_CONTENT_TEXT_COLOR);
+		}
+
+		// listen to the click
+		MouseListener mListener = new MouseAdapter() {
+
+			public void mouseClicked(MouseEvent e) {
+				OntologyClassJLabel source = (OntologyClassJLabel) e.getSource();
+				if (source.isPopupShowing) {
+					
+					// get the response back
+					String selectedClassString = null;
+					if (source.page.getSelectedTerms() !=null && source.page.getSelectedTerms().size() > 0) {
+						selectedClassString = source.page.getSelectedTerms().get(0);
+					}
+					OntologyClass selectedClass = null;
+					try {
+						selectedClass = new OntologyClass(selectedClassString);
+					} catch (Exception ex) {
+						selectedClass = null;
+						Log.debug(20, "error constructing selectedClass from string: " + selectedClassString);
+					}
+					source.setOntologyClass(selectedClass);
+
+					source.isPopupShowing = false;
+					source.popup.setVisible(false);
+					
+				} else {
+					OntologyClassJLabel.showPopupDialog(source);
+				}
+			}
+
+		};
+		label.addMouseListener(mListener);
+		
+		return label;
+	}
+	
+	public static void showPopupDialog(OntologyClassJLabel source) {
+		OntologyClassSelectionPage page = new OntologyClassSelectionPage();
+		
+		try {
+			OntologyClass currentClass = source.getOntologyClass();
+			OntologyClass filterClass = source.getFilterClass();
+			if (currentClass != null) {
+				page.setCurrentClass(currentClass);
+			}
+			page.setFilterClass(filterClass);
+			page.onLoadAction();
+		} catch (Exception e) {
+			//ignore
+		}
+		
+        Component owner = source;
+		int x = 0;
+        int y = owner.getSize().height;
+        
+        JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+        JPopupMenu popup = new JPopupMenu();
+        popup.add(page.getSelectionPanel());
+        popup.show(owner, x, y);
+		
+		// set the popup
+		source.popup = popup;
+		source.page = page;
+		source.isPopupShowing = true;
+
+		
 	}
 
 
