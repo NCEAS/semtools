@@ -189,21 +189,18 @@ public class OntologyClassField extends JTextField {
 				source.selectionPanel.doSearch(searchTerm);
 			}
 
-			@Override
 			public void keyPressed(KeyEvent e) {
 				//doKey(e);
 				// TODO Auto-generated method stub
 				
 			}
 
-			@Override
 			public void keyReleased(KeyEvent e) {
 				doKey(e);
 				// TODO Auto-generated method stub
 				
 			}
 
-			@Override
 			public void keyTyped(KeyEvent e) {
 				//doKey(e);
 				
