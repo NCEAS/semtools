@@ -82,6 +82,10 @@ public class OntologyClassField extends JTextField {
 		return ontologyClass.getName();
 	}
 
+	/**
+	 * @deprecated in favor of using the showPopupDialog() method
+	 * @param source
+	 */
 	public static void showDialog(OntologyClassField source) {
 		OntologyClassSelectionPage page = new OntologyClassSelectionPage();
 		
@@ -154,26 +158,11 @@ public class OntologyClassField extends JTextField {
 			public void mouseClicked(MouseEvent e) {
 				OntologyClassField source = (OntologyClassField) e.getSource();
 				if (source.isPopupShowing) {
-					
-					// get the response back
-					String selectedClassString = null;
-					if (source.page.getSelectedTerms() !=null && source.page.getSelectedTerms().size() > 0) {
-						selectedClassString = source.page.getSelectedTerms().get(0);
-					}
-					OntologyClass selectedClass = null;
-					try {
-						selectedClass = new OntologyClass(selectedClassString);
-					} catch (Exception ex) {
-						selectedClass = null;
-						Log.debug(20, "error constructing selectedClass from string: " + selectedClassString);
-					}
-					source.setOntologyClass(selectedClass);
-
+					// the popup on the subsequent click
+					source.syncSource();
 					source.isPopupShowing = false;
 					source.editing = false;
-					//source.popup.setVisible(false);
 					source.popup.hide();
-					
 				} else {
 					OntologyClassField.showPopupDialog(source);
 				}
@@ -185,8 +174,13 @@ public class OntologyClassField extends JTextField {
 		// listen to the keys
 		KeyListener kListener = new KeyListener() {
 			private void doKey(KeyEvent e) {
-				OntologyClassField comp = (OntologyClassField) e.getComponent();
 				OntologyClassField source = (OntologyClassField) e.getSource();
+				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					source.syncSource();
+					source.isPopupShowing = false;
+					source.editing = false;
+					source.popup.hide();
+				}
 
 				String searchTerm = source.getText();
 				source.page.getSelectionPanel().doSearch(searchTerm);
@@ -215,6 +209,22 @@ public class OntologyClassField extends JTextField {
 		};
 		label.addKeyListener(kListener);
 		return label;
+	}
+	
+	private void syncSource() {
+		// get the response back
+		String selectedClassString = null;
+		if (this.page.getSelectedTerms() !=null && this.page.getSelectedTerms().size() > 0) {
+			selectedClassString = this.page.getSelectedTerms().get(0);
+		}
+		OntologyClass selectedClass = null;
+		try {
+			selectedClass = new OntologyClass(selectedClassString);
+		} catch (Exception ex) {
+			selectedClass = null;
+			Log.debug(20, "error constructing selectedClass from string: " + selectedClassString);
+		}
+		this.setOntologyClass(selectedClass);
 	}
 	
 	public static void showPopupDialog(OntologyClassField source) {
