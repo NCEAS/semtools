@@ -83,7 +83,7 @@ import org.ecoinformatics.sms.ontology.OntologyProperty;
 import org.ecoinformatics.sms.renderer.treetable.OntologyTreeCellRenderer;
 import org.ecoinformatics.sms.renderer.treetable.OntologyTreeModel;
 
-import edu.ucsb.nceas.morpho.util.treetable.JTreeTable;
+import edu.ucsb.nceas.morpho.plugins.datapackagewizard.pages.JTreeTable;
 
 
 /**
@@ -361,7 +361,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 	 * @param searchStr
 	 *            the string to search for
 	 */
-	private void doSearch(String searchStr) {
+	public void doSearch(String searchStr) {
 		// reset the selections
 		_ontoTree.clearSelection();
 		// collapse the tree

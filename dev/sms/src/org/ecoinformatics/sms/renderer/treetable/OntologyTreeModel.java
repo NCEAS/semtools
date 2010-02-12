@@ -45,8 +45,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 
-import edu.ucsb.nceas.morpho.util.treetable.AbstractTreeTableModel;
-import edu.ucsb.nceas.morpho.util.treetable.TreeTableModel;
+import edu.ucsb.nceas.morpho.plugins.datapackagewizard.pages.AbstractTreeTableModel;
+import edu.ucsb.nceas.morpho.plugins.datapackagewizard.pages.TreeTableModel;
+
 
 
 /**
