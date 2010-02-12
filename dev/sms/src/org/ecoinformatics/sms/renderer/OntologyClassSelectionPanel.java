@@ -100,13 +100,15 @@ public class OntologyClassSelectionPanel extends JPanel {
 	private JScrollPane treeView;
 	private OntologyClass filterClass;
 	private boolean firstSearch = true;
+	private boolean showSearch = true;
 
 
 	/**
 	 * Default constructor that initializes the panel, accepting all ontologies
 	 * and having a default width and height.
 	 */
-	public OntologyClassSelectionPanel() {
+	public OntologyClassSelectionPanel(boolean showSearch) {
+		this.showSearch = showSearch;
 	}
 
 	/**
@@ -154,11 +156,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 
 		_ontoTree.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
-		// set up search button
-		_searchBtn = new JButton("Search");
-		_searchTxt = new JTextField(14);
-		_searchBtn.addActionListener(new ClassSearchButtonListener());
-		_searchTxt.addActionListener(new ClassSearchButtonListener());
+		
 
 		// the description text area
 		_commentTxt = new JTextArea();
@@ -177,27 +175,35 @@ public class OntologyClassSelectionPanel extends JPanel {
 		panel1.setLayout(new BoxLayout(panel1, BoxLayout.X_AXIS));
 		panel1.add(new JLabel("All Classes:", SwingConstants.LEFT));
 		panel1.add(Box.createHorizontalGlue());
-
-		// search
-		JPanel panel2 = new JPanel();
-		panel2.setLayout(new BoxLayout(panel2, BoxLayout.X_AXIS));
-		panel2.add(_searchTxt);
-		panel2.add(Box.createRigidArea(new Dimension(5, 0)));
-		panel2.add(_searchBtn);
+		
+		// set up search button
+		_searchBtn = new JButton("Search");
+		_searchTxt = new JTextField(14);
+		_searchBtn.addActionListener(new ClassSearchButtonListener());
+		_searchTxt.addActionListener(new ClassSearchButtonListener());
+		
+		// search panel
+		JPanel searchPanel = new JPanel();
+		searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.X_AXIS));
+		searchPanel.add(_searchTxt);
+		searchPanel.add(Box.createRigidArea(new Dimension(5, 0)));
+		searchPanel.add(_searchBtn);
 
 		// onto tree
-		JPanel panel3 = new JPanel();
-		panel3.setLayout(new BoxLayout(panel3, BoxLayout.Y_AXIS));
-		panel3.add(panel1);
-		panel3.add(Box.createRigidArea(new Dimension(0, 2)));
-		panel3.add(treeView);
-		panel3.add(Box.createRigidArea(new Dimension(0, 5)));
-		panel3.add(panel2);
+		JPanel treePanel = new JPanel();
+		treePanel.setLayout(new BoxLayout(treePanel, BoxLayout.Y_AXIS));
+		treePanel.add(panel1);
+		treePanel.add(Box.createRigidArea(new Dimension(0, 2)));
+		treePanel.add(treeView);
+		if (showSearch) {
+			treePanel.add(Box.createRigidArea(new Dimension(0, 5)));
+			treePanel.add(searchPanel);
+		}
 
 		// top portion
 		JPanel panel7 = new JPanel();
 		panel7.setLayout(new BoxLayout(panel7, BoxLayout.X_AXIS));
-		panel7.add(panel3);
+		panel7.add(treePanel);
 		
 		// comment/description label
 		JPanel panel8 = new JPanel();
@@ -221,7 +227,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 	}
 
 	/**
-	 * Private method that initiliazes and creates the tree view sub-panel
+	 * Private method that initializes and creates the tree view sub-panel
 	 * 
 	 * @param libraryOnly
 	 *            true if only the library ontologies are selected
@@ -732,7 +738,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 	 */
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
-		frame.getContentPane().add(new OntologyClassSelectionPanel());
+		frame.getContentPane().add(new OntologyClassSelectionPanel(true));
 		frame.setTitle("Test Frame");
 		frame.pack();
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

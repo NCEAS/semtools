@@ -90,7 +90,7 @@ public class OntologyClassSelectionPage extends AbstractUIVocabularyPage {
 		middlePanel.add(WidgetFactory.makeDefaultSpacer());
 		middlePanel.add(WidgetFactory.makeDefaultSpacer());
 
-		selectionPanel = new OntologyClassSelectionPanel();
+		selectionPanel = new OntologyClassSelectionPanel(true);
 			
 		//put the pieces together
 		middlePanel.add(selectionPanel);

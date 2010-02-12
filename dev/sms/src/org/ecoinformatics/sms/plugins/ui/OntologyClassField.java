@@ -21,6 +21,7 @@ import javax.swing.border.TitledBorder;
 
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.pages.OntologyClassSelectionPage;
+import org.ecoinformatics.sms.renderer.OntologyClassSelectionPanel;
 
 import edu.ucsb.nceas.morpho.framework.ModalDialog;
 import edu.ucsb.nceas.morpho.framework.UIController;
@@ -31,7 +32,7 @@ import edu.ucsb.nceas.morpho.util.UISettings;
 public class OntologyClassField extends JTextField {
 	private OntologyClass ontologyClass;
 	private OntologyClass filterClass;
-	private OntologyClassSelectionPage page;
+	private OntologyClassSelectionPanel selectionPanel;
 	//private JPopupMenu popup = null;
 	private Popup popup = null;
 	private boolean isPopupShowing = false;
@@ -45,7 +46,9 @@ public class OntologyClassField extends JTextField {
 
 	public void setOntologyClass(OntologyClass ontologyClass) {
 		this.ontologyClass = ontologyClass;
-		this.setText(ontologyClass.getName());
+		if (ontologyClass != null) {
+			this.setText(ontologyClass.getName());
+		}
 		this.revalidate();
 		this.repaint();
 	}
@@ -183,7 +186,7 @@ public class OntologyClassField extends JTextField {
 				}
 
 				String searchTerm = source.getText();
-				source.page.getSelectionPanel().doSearch(searchTerm);
+				source.selectionPanel.doSearch(searchTerm);
 			}
 
 			@Override
@@ -213,31 +216,24 @@ public class OntologyClassField extends JTextField {
 	
 	private void syncSource() {
 		// get the response back
-		String selectedClassString = null;
-		if (this.page.getSelectedTerms() !=null && this.page.getSelectedTerms().size() > 0) {
-			selectedClassString = this.page.getSelectedTerms().get(0);
-		}
 		OntologyClass selectedClass = null;
-		try {
-			selectedClass = new OntologyClass(selectedClassString);
-		} catch (Exception ex) {
-			selectedClass = null;
-			Log.debug(20, "error constructing selectedClass from string: " + selectedClassString);
+		if (this.selectionPanel.getOntologyClasses() !=null && this.selectionPanel.getOntologyClasses().size() > 0) {
+			selectedClass = this.selectionPanel.getOntologyClasses().get(0);
 		}
 		this.setOntologyClass(selectedClass);
 	}
 	
 	public static void showPopupDialog(OntologyClassField source) {
-		OntologyClassSelectionPage page = new OntologyClassSelectionPage();
+		OntologyClassSelectionPanel selectionPanel = new OntologyClassSelectionPanel(false);
 		
 		try {
 			OntologyClass currentClass = source.getOntologyClass();
 			OntologyClass filterClass = source.getFilterClass();
+			
+			selectionPanel.initialize(filterClass);
 			if (currentClass != null) {
-				page.setCurrentClass(currentClass);
+				selectionPanel.doSelect(currentClass);
 			}
-			page.setFilterClass(filterClass);
-			page.onLoadAction();
 		} catch (Exception e) {
 			//ignore
 		}
@@ -248,7 +244,7 @@ public class OntologyClassField extends JTextField {
 		int x = source.getLocationOnScreen().x;
         int y = source.getLocationOnScreen().y + source.getSize().height;
        
-		Popup popup = PopupFactory.getSharedInstance().getPopup(source, page.getSelectionPanel(), x, y);
+		Popup popup = PopupFactory.getSharedInstance().getPopup(source, selectionPanel, x, y);
 		popup.show();
 		
 //		int x = 0;
@@ -260,7 +256,7 @@ public class OntologyClassField extends JTextField {
 		
 		// set the popup
 		source.popup = popup;
-		source.page = page;
+		source.selectionPanel = selectionPanel;
 		source.isPopupShowing = true;
 
 		
