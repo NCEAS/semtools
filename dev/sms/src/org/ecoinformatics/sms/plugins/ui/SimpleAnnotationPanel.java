@@ -44,10 +44,10 @@ import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
 
 public class SimpleAnnotationPanel extends JPanel {
 	
-	private OntologyClassJLabel observationEntity;
-	private OntologyClassJLabel observationCharacteristic;
-	private OntologyClassJLabel observationStandard;
-	private OntologyClassJLabel observationProtocol;
+	private OntologyClassField observationEntity;
+	private OntologyClassField observationCharacteristic;
+	private OntologyClassField observationStandard;
+	private OntologyClassField observationProtocol;
 	
 	public static String ENTITY_HELP = "The <b>Entity</b> is the 'thing' being observed. If the diameter of a tree is measured, the Entity will be the tree.";
 	public static String CHARACTERISTIC_HELP = "The <b>Characteristic</b> is the property being measured. If the diameter of a tree is measured, the Characteristic will be the diameter (length).";
@@ -77,7 +77,7 @@ public class SimpleAnnotationPanel extends JPanel {
 
 		JPanel entityLabelPanel = WidgetFactory.makePanel(2);
 		entityLabelPanel.add(WidgetFactory.makeLabel("Entity:", false));
-		observationEntity = OntologyClassJLabel.makeLabel("<entity>", false, null);
+		observationEntity = OntologyClassField.makeLabel("<entity>", false, null);
 		observationEntity.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Entity.class));
 		entityLabelPanel.add(observationEntity);
 		
@@ -93,7 +93,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		JPanel characteristicLabelPanel = WidgetFactory.makePanel(2);
 		characteristicLabelPanel.add(WidgetFactory.makeLabel("Characteristic:",
 				false));
-		observationCharacteristic = OntologyClassJLabel.makeLabel("<characteristic>", false, null);
+		observationCharacteristic = OntologyClassField.makeLabel("<characteristic>", false, null);
 		observationCharacteristic.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Characteristic.class));
 		characteristicLabelPanel.add(observationCharacteristic);
 		
@@ -108,7 +108,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		
 		JPanel standardLabelPanel = WidgetFactory.makePanel(2);
 		standardLabelPanel.add(WidgetFactory.makeLabel("Standard:", false));
-		observationStandard = OntologyClassJLabel.makeLabel("<standard>", false, null);
+		observationStandard = OntologyClassField.makeLabel("<standard>", false, null);
 		observationStandard.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Standard.class));
 
 		standardLabelPanel.add(observationStandard);
@@ -124,7 +124,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		
 		JPanel protocolLabelPanel = WidgetFactory.makePanel(2);
 		protocolLabelPanel.add(WidgetFactory.makeLabel("Protocol:", false));
-		observationProtocol = OntologyClassJLabel.makeLabel("<protocol>", false, null);
+		observationProtocol = OntologyClassField.makeLabel("<protocol>", false, null);
 		observationProtocol.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Protocol.class));
 
 		protocolLabelPanel.add(observationProtocol);
@@ -158,13 +158,13 @@ public class SimpleAnnotationPanel extends JPanel {
 		
 		characteristicPanel.add(WidgetFactory.makeLabel("The ", false, null));
 		
-		observationCharacteristic = OntologyClassJLabel.makeLabel("<characteristic>", true, null);
+		observationCharacteristic = OntologyClassField.makeLabel("<characteristic>", true, null);
 		observationCharacteristic.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Characteristic.class));
 		characteristicPanel.add(observationCharacteristic);
 		
 		characteristicPanel.add(WidgetFactory.makeLabel(" of the ", false, null));
 		
-		observationEntity = OntologyClassJLabel.makeLabel("<entity>", true, null);
+		observationEntity = OntologyClassField.makeLabel("<entity>", true, null);
 		observationEntity.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Entity.class));
 		characteristicPanel.add(observationEntity);
 		characteristicPanel.add(WidgetFactory.makeLabel(" was recorded ", false, null));
@@ -178,7 +178,7 @@ public class SimpleAnnotationPanel extends JPanel {
 				
 		standardPanel.add(WidgetFactory.makeLabel(" using the ", false, null));
 
-		observationStandard = OntologyClassJLabel.makeLabel("<standard>", true, null);
+		observationStandard = OntologyClassField.makeLabel("<standard>", true, null);
 		observationStandard.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Standard.class));
 
 		standardPanel.add(observationStandard);
@@ -186,7 +186,7 @@ public class SimpleAnnotationPanel extends JPanel {
 
 		standardPanel.add(WidgetFactory.makeLabel("and the ", false, null));
 
-		observationProtocol = OntologyClassJLabel.makeLabel("<protocol>", true, null);
+		observationProtocol = OntologyClassField.makeLabel("<protocol>", true, null);
 		observationProtocol.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Protocol.class));
 		standardPanel.add(observationProtocol);
 

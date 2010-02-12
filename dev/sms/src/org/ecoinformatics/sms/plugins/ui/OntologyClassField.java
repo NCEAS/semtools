@@ -1,8 +1,9 @@
 package org.ecoinformatics.sms.plugins.ui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -11,6 +12,9 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
@@ -24,21 +28,24 @@ import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
 import edu.ucsb.nceas.morpho.util.Log;
 import edu.ucsb.nceas.morpho.util.UISettings;
 
-public class OntologyClassJLabel extends JLabel {
+public class OntologyClassField extends JTextField {
 	private OntologyClass ontologyClass;
 	private OntologyClass filterClass;
 	private OntologyClassSelectionPage page;
-	private JPopupMenu popup = null;
+	//private JPopupMenu popup = null;
+	private Popup popup = null;
 	private boolean isPopupShowing = false;
+	private boolean editing = false;
 
-	public OntologyClassJLabel(String text) {
+	public OntologyClassField(String text) {
 		super(text);
-		this.setIcon(new ImageIcon(this.getClass().getResource("search_icon.gif")));
-		this.setHorizontalTextPosition(LEADING);
+		//this.setIcon(new ImageIcon(this.getClass().getResource("search_icon.gif")));
+		//this.setHorizontalTextPosition(LEADING);
 	}
 
 	public void setOntologyClass(OntologyClass ontologyClass) {
 		this.ontologyClass = ontologyClass;
+		this.setText(ontologyClass.getName());
 		this.revalidate();
 		this.repaint();
 	}
@@ -63,19 +70,19 @@ public class OntologyClassJLabel extends JLabel {
 						TitledBorder.BELOW_BOTTOM);
 			// TODO: figure out how to size it so the underline title is shown all the time
 			//this.setBorder(titleBorder);
-			this.setBorder(underline);
+			//this.setBorder(underline);
 			this.setToolTipText(filterClass.getName());
 		}
 	}
 
 	public String getText() {
-		if (ontologyClass == null) {
-			return "";
+		if (editing || ontologyClass == null) {
+			return super.getText();
 		}
 		return ontologyClass.getName();
 	}
 
-	public static void showDialog(OntologyClassJLabel source) {
+	public static void showDialog(OntologyClassField source) {
 		OntologyClassSelectionPage page = new OntologyClassSelectionPage();
 		
 		try {
@@ -115,7 +122,7 @@ public class OntologyClassJLabel extends JLabel {
 		page = null;
 	}
 
-	public static OntologyClassJLabel makeLabel(String text,
+	public static OntologyClassField makeLabel(String text,
 			boolean hiliteRequired, Dimension dims) {
 
 		if (text == null) {
@@ -124,16 +131,17 @@ public class OntologyClassJLabel extends JLabel {
 		if (dims == null) {
 			dims = WizardSettings.WIZARD_CONTENT_LABEL_DIMS;
 		}
-		OntologyClassJLabel label = new OntologyClassJLabel(text);
+		OntologyClassField label = new OntologyClassField(text);
 
 		//WidgetFactory.setPrefMaxSizes(label, dims);
 		label.setPreferredSize(dims);
 		label.setMinimumSize(dims);
+		label.setMaximumSize(dims);
 		label.setAlignmentX(SwingConstants.LEADING);
 		label.setFont(WizardSettings.WIZARD_CONTENT_FONT);
 		
-		label.setBorder(
-				BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray));
+//		label.setBorder(
+//				BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray));
 		if (hiliteRequired) {
 			label.setForeground(WizardSettings.WIZARD_CONTENT_REQD_TEXT_COLOR);
 		} else {
@@ -144,7 +152,7 @@ public class OntologyClassJLabel extends JLabel {
 		MouseListener mListener = new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent e) {
-				OntologyClassJLabel source = (OntologyClassJLabel) e.getSource();
+				OntologyClassField source = (OntologyClassField) e.getSource();
 				if (source.isPopupShowing) {
 					
 					// get the response back
@@ -162,20 +170,54 @@ public class OntologyClassJLabel extends JLabel {
 					source.setOntologyClass(selectedClass);
 
 					source.isPopupShowing = false;
-					source.popup.setVisible(false);
+					source.editing = false;
+					//source.popup.setVisible(false);
+					source.popup.hide();
 					
 				} else {
-					OntologyClassJLabel.showPopupDialog(source);
+					OntologyClassField.showPopupDialog(source);
 				}
 			}
 
 		};
 		label.addMouseListener(mListener);
 		
+		// listen to the keys
+		KeyListener kListener = new KeyListener() {
+			private void doKey(KeyEvent e) {
+				OntologyClassField comp = (OntologyClassField) e.getComponent();
+				OntologyClassField source = (OntologyClassField) e.getSource();
+
+				String searchTerm = source.getText();
+				source.page.getSelectionPanel().doSearch(searchTerm);
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				//doKey(e);
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				doKey(e);
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				//doKey(e);
+				
+			}
+
+		};
+		label.addKeyListener(kListener);
 		return label;
 	}
 	
-	public static void showPopupDialog(OntologyClassJLabel source) {
+	public static void showPopupDialog(OntologyClassField source) {
 		OntologyClassSelectionPage page = new OntologyClassSelectionPage();
 		
 		try {
@@ -190,14 +232,21 @@ public class OntologyClassJLabel extends JLabel {
 			//ignore
 		}
 		
-        Component owner = source;
-		int x = 0;
-        int y = owner.getSize().height;
-        
-        JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-        JPopupMenu popup = new JPopupMenu();
-        popup.add(page.getSelectionPanel());
-        popup.show(owner, x, y);
+		//clear out the text area
+		source.editing = true;
+		
+		int x = source.getLocationOnScreen().x;
+        int y = source.getLocationOnScreen().y + source.getSize().height;
+       
+		Popup popup = PopupFactory.getSharedInstance().getPopup(source, page.getSelectionPanel(), x, y);
+		popup.show();
+		
+//		int x = 0;
+//        int y = source.getSize().height;
+//        JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+//        JPopupMenu popup = new JPopupMenu();
+//        popup.add(page.getSelectionPanel());
+//        popup.show(source, x, y);
 		
 		// set the popup
 		source.popup = popup;

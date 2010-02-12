@@ -39,7 +39,7 @@ import javax.swing.JPanel;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Relationship;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
-import org.ecoinformatics.sms.plugins.ui.OntologyClassJLabel;
+import org.ecoinformatics.sms.plugins.ui.OntologyClassField;
 
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
@@ -63,7 +63,7 @@ public class ContextPage extends AbstractUIPage {
 	private JComboBox observationList;
 	private JLabel observationListLabel;
 	private JCheckBox observationIsIdentifying;
-	private OntologyClassJLabel contextRelationship;
+	private OntologyClassField contextRelationship;
 	
 	// providing observation
 	private JLabel observationLabel;
@@ -120,7 +120,7 @@ public class ContextPage extends AbstractUIPage {
 		JPanel relationshipPanel = WidgetFactory.makePanel(1);
 		relationshipPanel.add(WidgetFactory.makeLabel("Relationship:",
 				false));
-		contextRelationship = OntologyClassJLabel.makeLabel("<relationship>", false, null);
+		contextRelationship = OntologyClassField.makeLabel("<relationship>", false, null);
 		relationshipPanel.add(contextRelationship);
 		relationshipPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0,
 				0, 8 * WizardSettings.PADDING));
@@ -172,7 +172,7 @@ public class ContextPage extends AbstractUIPage {
 		contextPanel.add(WidgetFactory.makeLabel(" was ", false, null));
 
 		// context
-		contextRelationship = OntologyClassJLabel.makeLabel("<relationship>", false, null);
+		contextRelationship = OntologyClassField.makeLabel("<relationship>", false, null);
 		contextRelationship.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Relationship.class));
 		contextPanel.add(contextRelationship);
 		
