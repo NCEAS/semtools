@@ -2,6 +2,10 @@ package org.ecoinformatics.sms.plugins.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -175,43 +179,59 @@ public class OntologyClassField extends JTextField {
 		label.addMouseListener(mListener);
 		
 		// listen to the keys
-		KeyListener kListener = new KeyListener() {
+		KeyListener kListener = new KeyAdapter() {
 			private void doKey(KeyEvent e) {
 				OntologyClassField source = (OntologyClassField) e.getSource();
+				
+				// start them off with the popup
+				if (!source.isPopupShowing) {
+					showPopupDialog(source);
+				}
+				
+				// get out of here!
 				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-					source.syncSource();
 					source.isPopupShowing = false;
 					source.editing = false;
 					source.popup.hide();
+					return;
 				}
 
+				// search
 				String searchTerm = source.getText();
 				source.selectionPanel.doSearch(searchTerm);
 			}
 
-			public void keyPressed(KeyEvent e) {
-				//doKey(e);
-				// TODO Auto-generated method stub
-				
-			}
-
 			public void keyReleased(KeyEvent e) {
-				doKey(e);
-				// TODO Auto-generated method stub
-				
-			}
-
-			public void keyTyped(KeyEvent e) {
-				//doKey(e);
-				
+				doKey(e);				
 			}
 
 		};
 		label.addKeyListener(kListener);
+		
+		FocusListener fListener = new FocusAdapter() {
+            public void focusLost(FocusEvent e) {
+				OntologyClassField source = (OntologyClassField) e.getSource();
+				
+				// save and leave 
+				if (source.isPopupShowing) {
+					source.syncSource();
+					source.isPopupShowing = false;
+					source.editing = false;
+					source.popup.hide();
+					return;
+				}
+            }
+            
+		};
+		label.addFocusListener(fListener);
+		
 		return label;
 	}
 	
 	private void syncSource() {
+		if (this.selectionPanel == null) {
+			return;
+		}
 		// get the response back
 		OntologyClass selectedClass = null;
 		if (this.selectionPanel.getOntologyClasses() !=null && this.selectionPanel.getOntologyClasses().size() > 0) {
