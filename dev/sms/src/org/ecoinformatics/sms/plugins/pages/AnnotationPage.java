@@ -28,12 +28,10 @@
 
 package org.ecoinformatics.sms.plugins.pages;
 
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -41,8 +39,10 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Entity;
@@ -51,9 +51,15 @@ import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
+import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.ui.SimpleAnnotationPanel;
 
+import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
+import edu.ucsb.nceas.morpho.datapackage.DataViewContainerPanel;
+import edu.ucsb.nceas.morpho.datapackage.DataViewer;
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
+import edu.ucsb.nceas.morpho.framework.MorphoFrame;
+import edu.ucsb.nceas.morpho.framework.UIController;
 import edu.ucsb.nceas.morpho.plugins.DataPackageWizardInterface;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
@@ -62,9 +68,11 @@ import edu.ucsb.nceas.morpho.util.Command;
 import edu.ucsb.nceas.morpho.util.GUIAction;
 import edu.ucsb.nceas.morpho.util.HyperlinkButton;
 import edu.ucsb.nceas.morpho.util.Log;
+import edu.ucsb.nceas.morpho.util.StateChangeEvent;
+import edu.ucsb.nceas.morpho.util.StateChangeListener;
 import edu.ucsb.nceas.utilities.OrderedMap;
 
-public class AnnotationPage extends AbstractUIPage {
+public class AnnotationPage extends AbstractUIPage implements StateChangeListener {
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
@@ -78,6 +86,8 @@ public class AnnotationPage extends AbstractUIPage {
 	// *
 	
 	private SimpleAnnotationPanel simpleAnnotationPanel = null;
+	
+	private String currentAttributeName = null;
 	
 	private JLabel attributeLabel;
 
@@ -238,6 +248,7 @@ public class AnnotationPage extends AbstractUIPage {
 
 	public void setAnnotation(Annotation a, String attributeName) {
 		this.annotation = a;
+		this.currentAttributeName = attributeName;
 		
 		try {
 			// what are we editing:
@@ -544,5 +555,86 @@ public class AnnotationPage extends AbstractUIPage {
 	public boolean setPageData(OrderedMap data, String _xPathRoot) {
 
 		return true;
+	}
+
+	public void handleStateChange(StateChangeEvent event) {
+		if (event.getChangedState().equals(StateChangeEvent.SELECT_DATATABLE_COLUMN)) {
+			handleSelectColumn();
+		}
+		
+	}
+	
+	private void handleSelectColumn() {
+		
+		//save what we have before moving forward?
+		if (currentAttributeName != null) {
+			annotation = this.getAnnotation(currentAttributeName);
+			
+			// save
+			AnnotationPlugin.saveAnnotation(annotation);
+
+		}
+		
+		//now go on with the current selection
+		MorphoFrame morphoFrame = UIController.getInstance().getCurrentActiveWindow();
+
+		DataViewContainerPanel resultPane = null;
+		if (morphoFrame != null) {
+			resultPane = morphoFrame.getDataViewContainerPanel();
+		}
+
+		AbstractDataPackage adp = null;
+		if (resultPane != null) {
+			adp = resultPane.getAbstractDataPackage();
+		}
+
+		if (adp == null) {
+			Log.debug(16, " Abstract Data Package is null in "
+					+ this.getClass().getName());
+			return;
+		}
+
+		// make sure resultPanel is not null
+		if (resultPane != null) {
+			DataViewer dataView = resultPane.getCurrentDataViewer();
+			if (dataView != null) {
+
+				JTable table = dataView.getDataTable();
+				int viewIndex = table.getSelectedColumn();
+		    	int attributeIndex = table.getColumnModel().getColumn(viewIndex).getModelIndex();
+				int entityIndex = dataView.getEntityIndex();
+				String entityName = adp.getEntityName(entityIndex);
+				String attributeName = adp.getAttributeName(entityIndex, attributeIndex);
+				
+				// package and entity
+				String packageId = adp.getAccessionNumber();
+				String dataTable = String.valueOf(entityIndex);
+				
+				// look up the annotation if it exists, or make new one
+				List<Annotation> annotations = 
+					SMS.getInstance().getAnnotationManager().getAnnotations(packageId, dataTable);
+
+				Annotation annotation;
+				if (annotations.size() > 0) {
+					annotation = annotations.get(0);
+				} else {
+					// create a new one
+					annotation = new Annotation();
+					annotation.setEMLPackage(packageId);
+					annotation.setDataTable(dataTable);
+				}
+				
+				Log.debug(30, "Annotating...\n " 
+						+ "Data package: " + packageId 
+						+ ", entity: " + entityName 
+						+ ", attribute: " + attributeName
+						+ ", annotation id: " + annotation.getURI()
+						);
+				
+				this.setAnnotation(annotation, attributeName);
+								
+			}
+
+		}
 	}
 }
