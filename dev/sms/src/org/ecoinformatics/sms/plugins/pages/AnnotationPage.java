@@ -89,6 +89,8 @@ public class AnnotationPage extends AbstractUIPage implements StateChangeListene
 	
 	private String currentAttributeName = null;
 	
+	private boolean showAll = true;
+	
 	private JLabel attributeLabel;
 
 	// observation
@@ -115,8 +117,8 @@ public class AnnotationPage extends AbstractUIPage implements StateChangeListene
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
 
-	public AnnotationPage() {
-		nextPageID = DataPackageWizardInterface.GEOGRAPHIC;
+	public AnnotationPage(boolean showAll) {
+		this.showAll = showAll;
 		init();
 	}
 
@@ -178,7 +180,11 @@ public class AnnotationPage extends AbstractUIPage implements StateChangeListene
 		
 		//this.add(WidgetFactory.makePanel(1).add(helpButton));
 		descPanel.add(helpButton);
-		this.add(descPanel);
+		
+		// actually show the help
+		if (showAll) {
+			this.add(descPanel);
+		}
 		
 		// Attribute Label
 		JPanel attributeLabelPanel = WidgetFactory.makePanel(1);
@@ -216,8 +222,10 @@ public class AnnotationPage extends AbstractUIPage implements StateChangeListene
 		
 		measurementPanel.add(measurementLabelPanel);
 		measurementPanel.add(WidgetFactory.makeHTMLLabel(MEASUREMENT_HELP_TEXT , 2));
-		this.add(measurementPanel);
-		this.add(WidgetFactory.makeDefaultSpacer());
+		if (showAll) {
+			this.add(measurementPanel);
+			this.add(WidgetFactory.makeDefaultSpacer());
+		}
 		
 		// Observation Label
 		JPanel observationPanel = WidgetFactory.makePanel(2);
@@ -239,10 +247,10 @@ public class AnnotationPage extends AbstractUIPage implements StateChangeListene
 		
 		observationPanel.add(labelPanel);
 		observationPanel.add(WidgetFactory.makeHTMLLabel(OBSERVATION_HELP_TEXT , 2));
-
-		this.add(observationPanel);
-		this.add(WidgetFactory.makeDefaultSpacer());
-		
+		if (showAll) {
+			this.add(observationPanel);
+			this.add(WidgetFactory.makeDefaultSpacer());
+		}
 	
 	}
 

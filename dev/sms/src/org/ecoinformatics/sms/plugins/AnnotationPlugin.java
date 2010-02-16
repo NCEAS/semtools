@@ -709,7 +709,7 @@ public class AnnotationPlugin
 					tabPane.addTab("Table View", annotationTablePanel);
 					
 					// add the madlib view
-					AnnotationPage madLib = new AnnotationPage();
+					AnnotationPage madLib = new AnnotationPage(false);
 					StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SELECT_DATATABLE_COLUMN, madLib);
 					
 					JScrollPane madLibScroll = new JScrollPane(madLib);

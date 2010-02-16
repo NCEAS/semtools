@@ -153,7 +153,7 @@ public class AnnotationCommand implements Command {
 	private boolean showDialog() {
 		
 		// set the annotation in the page
-		annotationPage = new AnnotationPage();
+		annotationPage = new AnnotationPage(true);
 		annotationPage.setAnnotation(annotation, attributeName);
 		
 		// show the dialog
