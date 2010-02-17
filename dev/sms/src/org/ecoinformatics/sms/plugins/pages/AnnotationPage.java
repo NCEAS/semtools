@@ -197,7 +197,7 @@ public class AnnotationPage extends AbstractUIPage implements StateChangeListene
 		this.add(WidgetFactory.makeDefaultSpacer());				
 		
 		//add the main panel here
-		simpleAnnotationPanel = new SimpleAnnotationPanel(true);
+		simpleAnnotationPanel = new SimpleAnnotationPanel(true, showAll);
 		this.add(simpleAnnotationPanel);
 
 		//this.add(WidgetFactory.makeDefaultSpacer());

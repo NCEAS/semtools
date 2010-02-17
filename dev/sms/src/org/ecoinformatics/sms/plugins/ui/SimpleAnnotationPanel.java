@@ -54,10 +54,10 @@ public class SimpleAnnotationPanel extends JPanel {
 	public static String STANDARD_HELP = "The <b>Standard</b> is the unit used for the measurement. If the diameter of a tree is measured, the Standard will be a length unit (meters).";
 	public static String PROTOCOL_HELP = "The <b>Protocol</b> is the method used for taking the measurement. If the diameter of a tree is measured at breast height, this will be the Protocol.";
 	
-	public SimpleAnnotationPanel(boolean madLib) {
+	public SimpleAnnotationPanel(boolean madLib, boolean showHelp) {
 		super();
 		if (madLib) {
-			initMadLib();
+			initMadLib(showHelp);
 		} else {
 			init();
 		}
@@ -146,7 +146,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		this.add(classesPanel);
 	}
 	
-	private void initMadLib() {
+	private void initMadLib(boolean showHelp) {
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
@@ -212,8 +212,10 @@ public class SimpleAnnotationPanel extends JPanel {
 		classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		classesPanel.add(standardPanel);
 		classesPanel.add(WidgetFactory.makeDefaultSpacer());
-		classesPanel.add(helpPanel);
-		classesPanel.add(WidgetFactory.makeDefaultSpacer());
+		if (showHelp) {
+			classesPanel.add(helpPanel);
+			classesPanel.add(WidgetFactory.makeDefaultSpacer());
+		}
 
 		this.add(classesPanel);
 	}

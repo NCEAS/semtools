@@ -35,6 +35,7 @@ import java.util.Map.Entry;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumnModel;
 
@@ -720,10 +721,12 @@ public class AnnotationPlugin
 					madLibScroll.setPreferredSize(dim);
 					
 					// set the save button
-					tabPane.addTab("Column View", madLibScroll);
+					//tabPane.addTab("Column View", madLibScroll);
+					tabPane.addTab("Column View", madLib);
 										
 					// add to the tab pane
 					dataViewer.getHeaderPanel().add(BorderLayout.CENTER, tabPane);
+					
 					//dataViewer.getHeaderPanel().add(BorderLayout.CENTER, annotationTablePanel);
 
 
