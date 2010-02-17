@@ -49,6 +49,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -130,6 +131,12 @@ public class OntologyClassSelectionPanel extends JPanel {
 			}
 		}
 		return returnList;
+	}
+	
+	/** add our own listener, disables the double click expansion **/
+	public void addTreeMouseListener(MouseListener listener) {
+		_ontoTree.getTree().setToggleClickCount(0);
+		_ontoTree.getTree().addMouseListener(listener);
 	}
 
 	public void initialize(OntologyClass filterClass) {

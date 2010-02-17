@@ -276,7 +276,27 @@ public class OntologyClassField extends JTextField {
 		source.selectionPanel = selectionPanel;
 		source.isPopupShowing = true;
 
+		// listen for double click on the tree
+		MouseListener doubleClickTreeListener = source.new TreeMouseListener(source);
+		source.selectionPanel.addTreeMouseListener(doubleClickTreeListener);
 		
+	}
+	
+	class TreeMouseListener extends MouseAdapter {
+		private OntologyClassField label;
+		public TreeMouseListener(OntologyClassField label) {
+			this.label = label;
+		}
+		public void mousePressed(MouseEvent e) {
+			if (e.getClickCount() > 1) {
+				if (label.isPopupShowing) {
+					label.syncSource();
+					label.isPopupShowing = false;
+					label.editing = false;
+					label.popup.hide();
+				}
+			}
+		}
 	}
 
 
