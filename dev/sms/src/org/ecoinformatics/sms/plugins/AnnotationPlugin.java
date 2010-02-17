@@ -16,6 +16,7 @@ package org.ecoinformatics.sms.plugins;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
@@ -33,9 +34,8 @@ import java.util.Vector;
 import java.util.Map.Entry;
 
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.UIManager;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumnModel;
 
@@ -660,7 +660,10 @@ public class AnnotationPlugin
 										
 					// add row header space to the viewer
 					JLabel filler = new JLabel("Data");
-					filler.setPreferredSize(AnnotationTablePanel.rowHeaderDim);
+					Insets tabInsets = UIManager.getInsets("TabbedPane.tabAreaInsets");
+					Dimension fillerDim = new Dimension(AnnotationTablePanel.rowHeaderDim);
+					fillerDim.width += tabInsets.left;
+					filler.setPreferredSize(fillerDim);
 					dataViewer.getDataScrollPanel().setRowHeaderView(filler);
 					
 					// share the mouse listeners ?
@@ -705,30 +708,29 @@ public class AnnotationPlugin
 					dataViewer.getDataTable().getModel().addTableModelListener(dataModelListener);
 					 
 					
-					// add the table panel to a split panel
+					// add the table panel to a tab pane
 					JTabbedPane tabPane = new JTabbedPane(JTabbedPane.TOP);
 					tabPane.addTab("Table View", annotationTablePanel);
 					
-					// add the madlib view
+					// add the madlib column view
 					AnnotationPage madLib = new AnnotationPage(false);
 					StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SELECT_DATATABLE_COLUMN, madLib);
 					
-					JScrollPane madLibScroll = new JScrollPane(madLib);
-					Dimension dim = 
-						 new Dimension(
-								 AnnotationTablePanel.rowHeaderDim.width, 
-								 (AnnotationTableModel.ROW_COUNT) * AnnotationTablePanel.rowHeaderDim.height);
-					madLibScroll.setPreferredSize(dim);
+					// if we want scrolling
+//					JScrollPane madLibScroll = new JScrollPane(madLib);
+//					Dimension dim = 
+//						 new Dimension(
+//								 AnnotationTablePanel.rowHeaderDim.width, 
+//								 (AnnotationTableModel.ROW_COUNT) * AnnotationTablePanel.rowHeaderDim.height);
+//					madLibScroll.setPreferredSize(dim);					
+//					tabPane.addTab("Column View", madLibScroll);
 					
-					// set the save button
-					//tabPane.addTab("Column View", madLibScroll);
+					// just the panel, no scrolling
 					tabPane.addTab("Column View", madLib);
 										
-					// add to the tab pane
+					// add the tab pane to the panel
 					dataViewer.getHeaderPanel().add(BorderLayout.CENTER, tabPane);
 					
-					//dataViewer.getHeaderPanel().add(BorderLayout.CENTER, annotationTablePanel);
-
 
 					Log.debug(30, "Set up annotation table...\n " 
 							+ "Data package: " + packageId 
