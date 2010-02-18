@@ -341,7 +341,7 @@ public class ContextPage extends AbstractUIPage {
 
 	public void setObservation(Observation contextObservation) {
 		this.currentObservation = contextObservation;
-		this.observationLabel.setText(currentObservation.getFullString());
+		this.observationLabel.setText(currentObservation.toString());
 		
 	}
 }

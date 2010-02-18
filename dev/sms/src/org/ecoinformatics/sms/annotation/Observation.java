@@ -165,16 +165,10 @@ public class Observation implements Comparable {
    }
    
    public String toString() {
-	   if (_entity != null) {
-		   return _entity.toString();
-	   }
-	   if (_label != null) {
-		   return _label;
-	   }
-	   return null;
+	   return getFullString();
    }
    
-   public String getFullString() {
+   protected String getFullString() {
 	   String desc = "";
 	   if (_entity != null) {
 		   desc += _entity.toString();
