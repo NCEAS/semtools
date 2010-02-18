@@ -1,34 +1,30 @@
 package org.ecoinformatics.oboe;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.sql.ResultSet;
-import java.util.List;
 
 import org.ecoinformatics.datamanager.DataManager;
 import org.ecoinformatics.datamanager.database.DatabaseConnectionPoolInterfaceTest;
+import org.ecoinformatics.datamanager.database.Query;
+import org.ecoinformatics.datamanager.database.SelectionItem;
+import org.ecoinformatics.datamanager.database.TableItem;
 import org.ecoinformatics.datamanager.download.EcogridEndPointInterfaceTest;
 import org.ecoinformatics.datamanager.parser.Attribute;
 import org.ecoinformatics.datamanager.parser.AttributeList;
 import org.ecoinformatics.datamanager.parser.DataPackage;
 import org.ecoinformatics.datamanager.parser.Entity;
-import org.ecoinformatics.owlifier.OwlifierSpreadsheet;
 import org.ecoinformatics.sms.annotation.*;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.AnnotationManager;
 import org.ecoinformatics.sms.SMS;
 
-import org.ecoinformatics.owlifier.*;
 
 public class MaterializaDB {
 
 	private static String inputUriPrefix = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/";
-	private static String localInputUriPrefix = "/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/examples/";
 	private static String outputUriPrefix = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboedb/";
 	
 	/**
@@ -51,56 +47,102 @@ public class MaterializaDB {
 //		}
 //     
 //		System.out.println("sheet="+sheet);
+		
+		//  the EML file describing the data
+		String documentURL = inputUriPrefix + "er-2008-ex1-eml.xml";
+		System.out.println("documentURL="+documentURL);
+		
+		// the connection pool and DB adapter for DML
 		DatabaseConnectionPoolInterfaceTest connectionPool = 
             new DatabaseConnectionPoolInterfaceTest();
 		String dbAdapterName = connectionPool.getDBAdapterName();
+		// the ecogrid endpoint interface for use by DML
+		EcogridEndPointInterfaceTest endPointInfo = new EcogridEndPointInterfaceTest();
+		
+		// get an instance of the DM
 		DataManager dataManager = DataManager.getInstance(connectionPool, dbAdapterName);
 		
-		EcogridEndPointInterfaceTest endPointInfo = new EcogridEndPointInterfaceTest();
+		
 		AttributeList attributeList;
 	    Attribute attribute;
-	    Attribute countAttribute;
 	    DataPackage dataPackage = null;
 	    DataPackage[] dataPackages = null;
-		String documentURL = localInputUriPrefix + "er-2008-ex1-eml.xml";
-		System.out.println("documentURL="+documentURL);
-		 Entity entity = null;
-		    //InputStream inputStream = null;
-		    String operator = ">";
-		    boolean success;
-		    Integer value = new Integer(2);
-		    ResultSet resultSet = null;
-		    FileInputStream inputStream;
+		Entity entity = null;
+		ResultSet resultSet = null;
+		InputStream inputStream;
+		URL url;
 		try {
-			inputStream = new FileInputStream(documentURL);
-		      //inputStream = url.openStream();
-		      dataPackage = dataManager.parseMetadata(inputStream);
-		      System.out.println("Parse successfully");
-		      success = dataManager.loadDataToDB(dataPackage, endPointInfo);
-		      System.out.println("Load data to DB successfully");
-		      Entity[] entityList = dataPackage.getEntityList();
-		      System.out.println("entityList="+entityList.length);
-		      entity = entityList[0];
-		      System.out.println("entity="+entity.getName());
-		      attributeList = entity.getAttributeList();
-		      Attribute[] attributes = attributeList.getAttributes();
-		      System.out.println("attributes="+attributes.length);
-		      attribute = attributes[0];
-		      System.out.println("attribute="+attribute.getName());
-		      //countAttribute = attributes[6];
-		    }
-		    catch (MalformedURLException e) {
-		      e.printStackTrace();
-		      //throw(e);
-		    }
-		    catch (IOException e) {
-		      e.printStackTrace();
-		      //throw(e);
-		    }
-		    catch (Exception e) {
-		      e.printStackTrace();
-		      //throw(e);
-		    }
+			// parse the metadata from it's URL
+			url = new URL(documentURL);
+			inputStream = url.openStream();
+			dataPackage = dataManager.parseMetadata(inputStream);
+			System.out.println("Parse successfully");
+			
+			// load the data into local cache DB
+			boolean success = 
+				dataManager.loadDataToDB(dataPackage, endPointInfo);
+			System.out.println("Load data to DB successfully");
+			
+			// inspect the tables and columns
+			Entity[] entityList = dataPackage.getEntityList();
+			System.out.println("entityList=" + entityList.length);
+			entity = entityList[0];
+			System.out.println("entity=" + entity.getName());
+			attributeList = entity.getAttributeList();
+			Attribute[] attributes = attributeList.getAttributes();
+			System.out.println("attributes=" + attributes.length);
+			attribute = attributes[0];
+			System.out.println("attribute=" + attribute.getName());
+			
+			// construct a 'SELECT * FROM ...' query
+			Query query = new Query();
+			for (Attribute a : attributes) {
+				SelectionItem selection = new SelectionItem(entity, a);
+				query.addSelectionItem(selection);
+			}
+			TableItem tableItem = new TableItem(entity);
+			query.addTableItem(tableItem);
+			dataPackages = new DataPackage[1];
+			dataPackages[0] = dataPackage;
+			
+			String sqlString = query.toSQLString();
+			System.out.println("Query SQL = " + sqlString);
+			
+			// select the data from the cache DB
+			try {
+				resultSet = dataManager.selectData(query, dataPackages);
+
+				if (resultSet != null) {
+					System.out.println("selecting results");
+					int columnCount = resultSet.getMetaData().getColumnCount();
+					while (resultSet.next()) {
+						for (int i = 1; i <= columnCount; i++) {
+							Object column = resultSet.getString(i);
+							System.out.println("resultSet[" + i + "], column =  " + column);
+						}
+					}
+				} else {
+					throw new Exception("resultSet is null");
+				}
+			} catch (Exception e) {
+				System.err.println("Exception in DataManager.selectData()"
+						+ e.getMessage());
+				throw (e);
+			} finally {
+				if (resultSet != null)
+					resultSet.close();
+				dataManager.dropTables(dataPackage); // Clean-up test tables
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			// throw(e);
+		} catch (IOException e) {
+			e.printStackTrace();
+			// throw(e);
+		} catch (Exception e) {
+			e.printStackTrace();
+			// throw(e);
+		}
 		    
 		
 		//2. read annotation
