@@ -51,8 +51,8 @@ public class MaterializaDB {
 //		System.out.println("sheet="+sheet);
 		
 		//  the EML file describing the data
-		//String documentURL = inputUriPrefix + "er-2008-ex1-eml.xml";
-		String documentURL = "http://knb.ecoinformatics.org/knb/metacat/tao.1.1/xml";
+		String documentURL = inputUriPrefix + "er-2008-ex1-eml.xml";
+		//String documentURL = "http://knb.ecoinformatics.org/knb/metacat/tao.1.1/xml";
 		System.out.println("documentURL="+documentURL);
 		
 		// the connection pool and DB adapter for DML
