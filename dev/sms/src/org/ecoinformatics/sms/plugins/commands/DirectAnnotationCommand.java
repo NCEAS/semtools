@@ -296,6 +296,9 @@ public class DirectAnnotationCommand implements Command {
 		// what are we editing?
 		int selectedRow = annotationTable.getSelectedRow();
 		switch (selectedRow) {
+			case AnnotationTableModel.CONTEXT_ROW:
+				// we don't edit this directly
+				return false;
 			case AnnotationTableModel.OBSERVATION_ROW:
 				ontologyPage.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Entity.class));
 				if (currentObservation != null) {
