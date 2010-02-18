@@ -47,6 +47,11 @@
             </simpleDelimited>
           </textFormat>
         </dataFormat>
+        <distribution scope="document">
+			<online>
+				<url function="download">https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-ex1-data.txt</url>
+			</online>
+		</distribution>
       </physical>
 
       <attributeList>
