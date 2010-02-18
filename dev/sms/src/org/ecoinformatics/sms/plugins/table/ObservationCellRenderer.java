@@ -66,13 +66,13 @@ public class ObservationCellRenderer extends JLabel implements
 		// get the Observation of the entity from the obs row
 		if (value instanceof Entity) {
 			observation = (Observation) table.getValueAt(AnnotationTableModel.OBSERVATION_ROW, column);
-			setToolTipText(observation.getFullString());
+			setToolTipText(observation.toString());
 		}
 		
 		// get the Observation directly
 		if (value instanceof Observation) {
 			observation = (Observation) value;
-			setToolTipText(observation.getFullString());
+			setToolTipText(observation.toString());
 		}
 		
 		if (observation != null) {
