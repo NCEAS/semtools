@@ -11,6 +11,8 @@ import org.ecoinformatics.datamanager.database.DatabaseConnectionPoolInterfaceTe
 import org.ecoinformatics.datamanager.database.Query;
 import org.ecoinformatics.datamanager.database.SelectionItem;
 import org.ecoinformatics.datamanager.database.TableItem;
+import org.ecoinformatics.datamanager.download.ConfigurableEcogridEndPoint;
+import org.ecoinformatics.datamanager.download.EcogridEndPointInterface;
 import org.ecoinformatics.datamanager.download.EcogridEndPointInterfaceTest;
 import org.ecoinformatics.datamanager.parser.Attribute;
 import org.ecoinformatics.datamanager.parser.AttributeList;
@@ -49,7 +51,8 @@ public class MaterializaDB {
 //		System.out.println("sheet="+sheet);
 		
 		//  the EML file describing the data
-		String documentURL = inputUriPrefix + "er-2008-ex1-eml.xml";
+		//String documentURL = inputUriPrefix + "er-2008-ex1-eml.xml";
+		String documentURL = "http://knb.ecoinformatics.org/knb/metacat/tao.1.1/xml";
 		System.out.println("documentURL="+documentURL);
 		
 		// the connection pool and DB adapter for DML
@@ -57,7 +60,9 @@ public class MaterializaDB {
             new DatabaseConnectionPoolInterfaceTest();
 		String dbAdapterName = connectionPool.getDBAdapterName();
 		// the ecogrid endpoint interface for use by DML
-		EcogridEndPointInterfaceTest endPointInfo = new EcogridEndPointInterfaceTest();
+		//EcogridEndPointInterface endPointInfo = new EcogridEndPointInterfaceTest();
+		EcogridEndPointInterface endPointInfo = new ConfigurableEcogridEndPoint();
+
 		
 		// get an instance of the DM
 		DataManager dataManager = DataManager.getInstance(connectionPool, dbAdapterName);
