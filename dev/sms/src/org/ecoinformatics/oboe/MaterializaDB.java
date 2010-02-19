@@ -19,19 +19,21 @@ import java.util.Map.Entry;
 
 
 import org.ecoinformatics.datamanager.DataManager;
-import org.ecoinformatics.datamanager.database.DatabaseConnectionPoolInterfaceTest;
-import org.ecoinformatics.datamanager.download.EcogridEndPointInterfaceTest;
+import org.ecoinformatics.datamanager.database.DatabaseConnectionPoolInterface;
+import org.ecoinformatics.datamanager.database.pooling.DatabaseConnectionPoolFactory;
+import org.ecoinformatics.datamanager.download.ConfigurableEcogridEndPoint;
+import org.ecoinformatics.datamanager.download.EcogridEndPointInterface;
 import org.ecoinformatics.datamanager.parser.Attribute;
 import org.ecoinformatics.datamanager.parser.AttributeList;
 import org.ecoinformatics.datamanager.parser.DataPackage;
 import org.ecoinformatics.datamanager.parser.Entity;
-import org.ecoinformatics.owlifier.OwlifierSpreadsheet;
+//import org.ecoinformatics.owlifier.OwlifierSpreadsheet;
 import org.ecoinformatics.sms.annotation.*;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.AnnotationManager;
 import org.ecoinformatics.sms.SMS;
 
-import org.ecoinformatics.owlifier.*;
+//import org.ecoinformatics.owlifier.*;
 import org.ecoinformatics.sms.annotation.*;
 
 public class MaterializaDB {
@@ -42,12 +44,13 @@ public class MaterializaDB {
 	
 	private static void readDataFromDataManager()
 	{
-		DatabaseConnectionPoolInterfaceTest connectionPool = 
-            new DatabaseConnectionPoolInterfaceTest();
+		DatabaseConnectionPoolInterface connectionPool = 
+            DatabaseConnectionPoolFactory.getDatabaseConnectionPoolInterface();
 		String dbAdapterName = connectionPool.getDBAdapterName();
 		DataManager dataManager = DataManager.getInstance(connectionPool, dbAdapterName);
 		
-		EcogridEndPointInterfaceTest endPointInfo = new EcogridEndPointInterfaceTest();
+		EcogridEndPointInterface endPointInfo = 
+			new ConfigurableEcogridEndPoint();
 		AttributeList attributeList;
 	    Attribute attribute;
 	    Attribute countAttribute;
@@ -94,20 +97,20 @@ public class MaterializaDB {
 		    }
 	}
 	
-	private static void readDataFromOwlifier(String dataFileName)
-	{
-		OwlifierSpreadsheet sheet = null; 
-		try {
-			sheet = Owlifier.read(new FileInputStream(dataFileName));
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-			System.out.println("Unable to read: " + dataFileName);
-		}
-     
-		System.out.println("sheet="+sheet);
-	}
+//	private static void readDataFromOwlifier(String dataFileName)
+//	{
+//		OwlifierSpreadsheet sheet = null; 
+//		try {
+//			sheet = Owlifier.read(new FileInputStream(dataFileName));
+//		} catch (FileNotFoundException e1) {
+//			e1.printStackTrace();
+//		} catch (IOException e1) {
+//			e1.printStackTrace();
+//			System.out.println("Unable to read: " + dataFileName);
+//		}
+//     
+//		System.out.println("sheet="+sheet);
+//	}
 	
 	/**
 	 * Read annotation
