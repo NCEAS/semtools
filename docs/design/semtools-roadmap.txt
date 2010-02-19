@@ -12,9 +12,10 @@ Morpho Plugin
 	DONE-remove Context for Observation
 -annotation editor UI
 	-use arrows to indicate Context relationships
-	-remove Observation row (duplicates information in Entity row)
-	-auto-generate Observation and Measurement labels (observation_1, measurement_2, etc..)
-	-add tool tips and helpful labels for annotation table rows ("what's an Entity again?"
+	DONE-directly edit the annotation classes from the annotation table
+	DONE-remove Observation row (duplicates information in Entity row)
+	DONE-auto-generate Observation and Measurement labels (observation_1, measurement_2, etc..)
+	DONE-add tool tips and helpful labels for annotation table rows ("what's an Entity again?"
 	DONE-group and merge cells of the same Observation
 -search facility
 	-compound search combining AND/OR with basic annotation search
@@ -23,13 +24,14 @@ Morpho Plugin
 	-merge search results from normal keyword-based searching with annotation-based searching
 	DONE-basic search over Entity/Characteristic/Standard/Protocol
 -ontology management
-	-load local ontology files (logical->physical mappings)
-	-load remote ontologies (URI is both logical and physical)
-	-load remote ontologies (logical URI maps to physical URL)
+	DONE-load local ontology files (logical->physical mappings)
+	DONE-load remote ontologies (URI is both logical and physical)
+	DONE-load remote ontologies (logical URI maps to physical URL)
 	-load Metacat-managed ontologies
 -annotation management
 	DONE-save annotation when EML is saved (locally)
 	-save annotation when EML is saved (network)
+	-prompt for save if annotation has changed
 	-define permissions (ACL) for annotations
 	-track the "author" of the annotation in the annotation schema
 	-allow multiple annotations per EML datatable
