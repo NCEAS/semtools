@@ -24,6 +24,7 @@ public class ConditionInstance<T extends Comparable<T>> {
 			
 			//this condition can apply to this column
 			//FIXME: this may not be right!!!!!
+			//I want something that can change condValue to the unknown T data type.
 			String condValue = cond.getValue();
 			
 			int comp = attValue.toString().compareTo(condValue);

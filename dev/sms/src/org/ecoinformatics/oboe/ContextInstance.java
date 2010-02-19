@@ -35,5 +35,20 @@ public class ContextInstance {
 		this.contextType = contextType;
 	}
 
+	public String toString()
+	{
+		String str = "(";
+		str += observationInstance.getObsId();
+		str += ", ct=";
+		if(contextType==null||(contextType.getRelationship()==null)){
+			str += "null";
+		}else{
+			contextType.getRelationship().getName();
+		}
+		
+		str += (" coi=" +contextObservationInstance.getObsId());
+		str +=")";
+		return str;
+	}
 	
 }

@@ -68,6 +68,17 @@ public class OboeModel {
 		 ciList.add(ci);
 	 }
 	 
+	 public String toString()
+	 {
+		 String str="OBOE:\n";
+		 str +=("measurementInstances: "+measurementInstances+"\n");
+		 str +=("entityInstances: "+entityInstances+"\n");
+		 str +=("observationInstances: "+observationInstances+"\n");
+		 str +=("contextInstances: "+contextInstances+"\n");
+		 
+		 return str;
+	 }
+	 
 	 /**
 	 * Get the key value of this observation instance 
 	 * The key value is the key value of ONLY this observation's key measurements

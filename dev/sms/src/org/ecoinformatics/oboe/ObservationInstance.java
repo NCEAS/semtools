@@ -6,9 +6,9 @@ import java.util.Set;
 
 import org.ecoinformatics.sms.annotation.*;
 
-public class ObservationInstance {
+public class ObservationInstance implements Comparable<ObservationInstance>{
 	private static long gObsId = 0;
-	private long obsId;
+	private Long obsId;
 	private Observation obsType;
 	private EntityInstance entityInstance;
 	
@@ -41,5 +41,22 @@ public class ObservationInstance {
 		this.entityInstance = _entityInstance;
 	}
 	
-	
+	public String toString()
+	{
+		String str="[";
+		str += obsId.toString();
+		str += ", ei=";
+		if(entityInstance!=null)
+			str +=entityInstance.getEntId()+"-"+entityInstance.getEntityType().getName();
+		else
+			str +=entityInstance;
+		str += ", ot="+obsType.getLabel();
+		str +="]";
+		
+		return str;
+	}
+
+	public int compareTo(ObservationInstance other) {
+		return (obsId.compareTo(other.getObsId()));	
+	}
 }

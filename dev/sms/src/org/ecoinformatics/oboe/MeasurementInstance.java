@@ -2,9 +2,9 @@ package org.ecoinformatics.oboe;
 
 import org.ecoinformatics.sms.annotation.Measurement;
 
-public class MeasurementInstance<T> {
+public class MeasurementInstance<T> implements Comparable<MeasurementInstance> {
 	private static long gMeasId=0;
-	private long measId;
+	private Long measId;
 	private T measValue;
 	private ObservationInstance observationInstance;
 	private Measurement measurementType;
@@ -42,5 +42,24 @@ public class MeasurementInstance<T> {
 		this.measurementType = measurementType;
 	}
 	
+	
+	public int compareTo(MeasurementInstance other) {
+		return (measId.compareTo(other.getMeasId()));	
+	}
+	
+	public String toString()
+	{
+		String str="[";
+		str += measId.toString();
+		str += ", oi=";
+		if(observationInstance!=null)
+			str +=observationInstance.getObsId();
+		else
+			str +=observationInstance;
+		str += ", mt="+measurementType.getLabel();
+		str += ", val="+measValue.toString();
+		str +="]";
+		return str;
+	}
 	
 }

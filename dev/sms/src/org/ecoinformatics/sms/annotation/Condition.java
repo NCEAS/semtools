@@ -119,6 +119,17 @@ public class Condition {
     }
 
 
+    /**
+     * Get the string representation, to easy debug the program
+     * 
+     * @author cao
+     */
+    public String toString()
+    {
+    	String str = getAttribute() +" " + getOperator() + " " + getValue();
+    	return str;
+    }
+    
     public static String LESS_THAN = "lt";
     public static String GREATER_THAN = "gt";
     public static String EQUAL = "eq";

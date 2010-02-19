@@ -109,6 +109,12 @@ public class MaterializaDB {
 		System.out.println("sheet="+sheet);
 	}
 	
+	/**
+	 * Read annotation
+	 * 
+	 * @param annotFileName
+	 * @return
+	 */
 	private static Annotation readAnnotation(String annotFileName)
 	{
 	
@@ -170,27 +176,27 @@ public class MaterializaDB {
 	 * 
 	 * @return true if all the conditions are satisfies; otherwise, return false.
 	 */
-	private boolean ifConditionSatisfied(String attrName, String attValue, List<Condition> conditionList)
-	{
-		boolean isSatisfyAllCondition = true;
-		for(Condition cond: conditionList){
-			if(!cond.getAttribute().equals(attrName))
-				continue;
-			
-			//this condition can apply to this column
-			//FIXME: ugly implementation
-			
-			String op = cond.getOperator();
-			if(op.equals(cond.LESS_THAN)){
-			}else if(op.equals(cond.GREATER_THAN)){
-			}else if(op.equals(cond.EQUAL)){
-			}else if(op.equals(cond.LESS_THAN_EQUAL)){
-			}else if(op.equals(cond.GREATER_THAN_EQUAL)){
-			}else if(op.equals(cond.NOT_EQUAL)){
-			}
-		}
-		return isSatisfyAllCondition;
-	}
+//	private boolean ifConditionSatisfied(String attrName, String attValue, List<Condition> conditionList)
+//	{
+//		boolean isSatisfyAllCondition = true;
+//		for(Condition cond: conditionList){
+//			if(!cond.getAttribute().equals(attrName))
+//				continue;
+//			
+//			//this condition can apply to this column
+//			//FIXME: ugly implementation
+//			
+//			String op = cond.getOperator();
+//			if(op.equals(cond.LESS_THAN)){
+//			}else if(op.equals(cond.GREATER_THAN)){
+//			}else if(op.equals(cond.EQUAL)){
+//			}else if(op.equals(cond.LESS_THAN_EQUAL)){
+//			}else if(op.equals(cond.GREATER_THAN_EQUAL)){
+//			}else if(op.equals(cond.NOT_EQUAL)){
+//			}
+//		}
+//		return isSatisfyAllCondition;
+//	}
 	
 	/**
 	 * Create new orphan measurement instances
@@ -209,7 +215,9 @@ public class MaterializaDB {
 			Measurement measurementType = m.getMeasurement();
 			String resAttribute = m.getAttribute().trim();
 			List<Condition> conditionList = m.getConditions();
-			String mapValue = m.getValue().trim();
+			String mapValue = null; 
+			if(m.getValue()!=null)
+				mapValue = m.getValue().trim();
 			
 			for(int i=0;i<rowStruct.size();i++){
 				String rowAttributeName = ((String) rowStruct.get(i)).trim();
@@ -217,7 +225,7 @@ public class MaterializaDB {
 					continue;
 				
 				ConditionInstance ci = new ConditionInstance<String>();
-				boolean satisfyCondition = ci.ifConditionSatisfied((String)rowStruct.get(i), (String)row.get(i),conditionList); 
+				boolean satisfyCondition = ci.ifConditionSatisfied((String)rowStruct.get(i), row.get(i).toString(),conditionList); 
 				if(!satisfyCondition)
 					continue;
 				
@@ -234,6 +242,7 @@ public class MaterializaDB {
 			//end of dealing with each column
 		}
 	
+		System.out.println("measSet = "+measSet);
 		return measSet;
 		
 	}
@@ -449,7 +458,7 @@ public class MaterializaDB {
 			
 			List<Context> contextList = obsType.getContexts();
 			List<Observation> contextObsTypeList = new ArrayList<Observation>();
-			//List<ContextInstance> contextObsInstanceList = new ArrayList<ContextInstance>(); //for output
+			
 			for(Context c: contextList){
 				Observation contextObsType = c.getObservation();
 				ObservationInstance contextObsInstance = contextIdx.get(contextObsType);
@@ -467,7 +476,7 @@ public class MaterializaDB {
 	 * @param annotFileName
 	 * @param oboeFilePrefix
 	 */
-	private static OboeModel MaterializeDB(String dataFileName, String annotFileName, String oboeFilePrefix)		
+	public static OboeModel MaterializeDB(String dataFileName, String annotFileName, String oboeFilePrefix)		
 	{
 		//1. read data
 		//readDataFromOwlifier(dataFileName); 
@@ -509,6 +518,7 @@ public class MaterializaDB {
 			MaterializeContext(contextIdx, A, OBOE);
 		}
 		
+		System.out.println(OBOE);
 		return OBOE;
 	
 	}
@@ -537,9 +547,9 @@ public class MaterializaDB {
 //		public static final String PHYSICAL_URI = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl";
 		
 		//TODO: for testing purpose, hard code the three files, need to get this from parameters
-		String dataFileName = inputUriPrefix + "er-2008-ex2-data.txt";
-		String annotFileName = inputUriPrefix + "er-2008-ex2-annot.xml";
-		String oboeFilePrefix = outputUriPrefix + "er-2008-ex2-oboe";
+		String dataFileName = inputUriPrefix + "er-2008-ex1-data.txt";
+		String annotFileName = inputUriPrefix + "er-2008-ex1-annot.xml";
+		String oboeFilePrefix = outputUriPrefix + "er-2008-ex1-oboe";
 		
 		OboeModel OBOE = MaterializeDB(dataFileName, annotFileName, oboeFilePrefix); 
 		

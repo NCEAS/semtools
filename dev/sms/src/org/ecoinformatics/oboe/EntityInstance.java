@@ -26,5 +26,12 @@ public class EntityInstance {
 		this.entityType = entityType;
 	}
 	
-	
+	public String toString()
+	{
+		String str = "(";
+		str += entId;
+		str +=", et="+ entityType.getName();
+		str +=")";
+		return str;
+	}
 }

@@ -1,6 +1,6 @@
 package org.ecoinformatics.oboe;
 
-public class ObsTypeKey {
+public class ObsTypeKey implements Comparable<ObsTypeKey>{
 	String obsTypeLabel;
 	String keyValue;
 	
@@ -22,7 +22,17 @@ public class ObsTypeKey {
 		return keyValue;
 	}
 
-	public void setKeyValue(String keyValue) {
-		this.keyValue = keyValue;
+	public void setKeyValue(String _keyValue) {
+		this.keyValue = _keyValue;
+	}
+
+	public int compareTo(ObsTypeKey other) {
+		int comp1 = obsTypeLabel.compareTo(other.getObsTypeLabel());
+		if(comp1!=0)
+			return comp1;
+		else{
+			int comp2 = keyValue.compareTo(other.getKeyValue());
+			return comp2;
+		}
 	}
 }
