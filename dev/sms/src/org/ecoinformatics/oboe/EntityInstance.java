@@ -2,14 +2,22 @@ package org.ecoinformatics.oboe;
 
 import org.ecoinformatics.sms.annotation.Entity;
 public class EntityInstance {
-	private long _entId;
+	private static long gEntId=0;
+	
+	private long entId;
 	private Entity entityType;
 	
-	public long getEntId() {
-		return _entId;
+	public EntityInstance(Entity _entityType)
+	{
+		setEntId(gEntId++);
+		setEntityType(_entityType);
 	}
-	public void setEntId(long entId) {
-		_entId = entId;
+	
+	public long getEntId() {
+		return entId;
+	}
+	public void setEntId(long _entId) {
+		entId = _entId;
 	}
 	public Entity getEntityType() {
 		return entityType;

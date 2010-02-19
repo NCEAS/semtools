@@ -164,6 +164,23 @@ public class Observation implements Comparable {
       return false;
    }
    
+   /**
+    * Get the measurement types which are marked with "key yes" for this observation type
+    * 
+    * @author cao
+    * @return a list of measurement types marked with "key yes"
+    */
+   public List<Measurement> getKeyMeasurements()
+   {
+	   List<Measurement> keyMeasurementList = new ArrayList<Measurement>();
+	   for(Measurement mType: _measurements){
+		   if(mType.isKey()){
+			   keyMeasurementList.add(mType);
+		   }
+	   }
+	   return keyMeasurementList;
+   }
+   
    public String toString() {
 	   return getFullString();
    }
