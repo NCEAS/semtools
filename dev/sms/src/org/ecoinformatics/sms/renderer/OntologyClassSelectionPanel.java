@@ -421,13 +421,29 @@ public class OntologyClassSelectionPanel extends JPanel {
 		//expand to include parents
 		Vector<DefaultMutableTreeNode> expandedMatches = new Vector<DefaultMutableTreeNode>();
 		for (DefaultMutableTreeNode match: matches) {
+			// select the "core" matches
+			TreePath path = new TreePath(match.getPath());
+			_ontoTree.getTree().addSelectionPath(path);
+			int row = _ontoTree.getTree().getRowForPath(path);
+			_ontoTree.setRowSelectionInterval(row, row);
+			// add the expanded matches so the tree is not over-pruned
 			expandedMatches.addAll(expandMatches(match));
 		}
-		matches.addAll(expandedMatches);
-		//remove anything that doesn't match
-		for (DefaultMutableTreeNode match: matches) {
-			removeNodes(match, treeModel, matches);
+		// add the originals
+		expandedMatches.addAll(matches);
+		//remove anything that doesn't match the complete list
+		for (DefaultMutableTreeNode match: expandedMatches) {
+			removeNodes(match, treeModel, expandedMatches);
 			_ontoTree.getTree().expandPath(new TreePath(match.getPath()));
+		}
+		
+		//select the first "core" match
+		for (DefaultMutableTreeNode match: matches) {
+			TreePath path = new TreePath(match.getPath());
+			_ontoTree.getTree().addSelectionPath(path);
+			int row = _ontoTree.getTree().getRowForPath(path);
+			_ontoTree.setRowSelectionInterval(row, row);
+			break;
 		}
 		
 		_commentTxt.setText("");
