@@ -94,6 +94,19 @@ public class OwlApiOntologyManager implements OntologyManager {
 	 * @see org.ecoinformatics.sms.OntologyManager#getNamedClassLabel(org.ecoinformatics.sms.ontology.OntologyClass)
 	 */
 	public String getNamedClassLabel(OntologyClass c) {
+		List<String> labels =getNamedClassLabels(c);
+		StringBuffer sb = new StringBuffer();
+		for (String label : labels) {
+			sb.append(label);
+		}
+
+		return sb.toString();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.ecoinformatics.sms.OntologyManager#getNamedClassLabels(org.ecoinformatics.sms.ontology.OntologyClass)
+	 */
+	public List<String> getNamedClassLabels(OntologyClass c) {
 		OWLClass owlClass = this.getOWLClass(c);
 		OWLOntology ontology = null;
 		try {
@@ -106,19 +119,12 @@ public class OwlApiOntologyManager implements OntologyManager {
 			e.printStackTrace();
 		}
 
-		StringBuffer labels = new StringBuffer();
+		List<String> labels = new ArrayList<String>();
 		for (OWLAnnotation annotation : owlClass.getAnnotations(ontology)) {
-			labels.append(annotation.getAnnotationValue().toString());
+			labels.add(annotation.getAnnotationValue().toString());
 		}
 
-		return labels.toString();
-	}
-
-	/* (non-Javadoc)
-	 * @see org.ecoinformatics.sms.OntologyManager#getNamedClassLabels(org.ecoinformatics.sms.ontology.OntologyClass)
-	 */
-	public List<String> getNamedClassLabels(OntologyClass c) {
-		return null;
+		return labels;
 	}
 
 	/* (non-Javadoc)

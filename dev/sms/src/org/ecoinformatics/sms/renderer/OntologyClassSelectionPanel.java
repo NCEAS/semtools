@@ -311,30 +311,41 @@ public class OntologyClassSelectionPanel extends JPanel {
 	}
 
 	/**
-	 * Private method that returns tree nodes containing OntTreeNodes
-	 * 
+	 * Private method that returns tree nodes containing matches
+	 * Searches the Class Name and also the Class Labels as defined in the Ontology
 	 * @param root
 	 *            The root of the tree to search
 	 * @param str
 	 *            The search string
 	 */
-	private Vector findMatchingClasses(DefaultMutableTreeNode root, String str) {
-		Vector result = new Vector();
+	private Vector<DefaultMutableTreeNode> findMatchingClasses(DefaultMutableTreeNode root, String str) {
+		Vector<DefaultMutableTreeNode> result = new Vector<DefaultMutableTreeNode>();
 		Object obj = root.getUserObject();
 		if (obj instanceof OntologyClass) {
 			OntologyClass cls = (OntologyClass) obj;
+			// match on class name
 			if (approxMatch(cls.getName(), str)) {
 				result.add(root);
 				return result;
+			} else {
+				// check ontology labels for more match potential
+				List<String> labels = SMS.getInstance().getOntologyManager().getNamedClassLabels(cls);
+				for (String label: labels) {
+					if (approxMatch(label, str)) {
+						result.add(root);
+						return result;
+					}
+				}
 			}
 		}
 		Enumeration children = root.children();
 		while (children.hasMoreElements()) {
-			DefaultMutableTreeNode child = (DefaultMutableTreeNode) children
-					.nextElement();
-			Iterator ancestors = findMatchingClasses(child, str).iterator();
-			while (ancestors.hasNext())
+			DefaultMutableTreeNode child = 
+				(DefaultMutableTreeNode) children.nextElement();
+			Iterator<DefaultMutableTreeNode> ancestors = findMatchingClasses(child, str).iterator();
+			while (ancestors.hasNext()) {
 				result.add(ancestors.next());
+			}
 		}
 		return result;
 	}
