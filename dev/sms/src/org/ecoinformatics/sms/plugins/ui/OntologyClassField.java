@@ -198,7 +198,7 @@ public class OntologyClassField extends JTextField {
 
 				// search
 				String searchTerm = source.getText();
-				source.selectionPanel.doSearch(searchTerm);
+				source.selectionPanel.doFilterSearch(searchTerm);
 			}
 
 			public void keyReleased(KeyEvent e) {

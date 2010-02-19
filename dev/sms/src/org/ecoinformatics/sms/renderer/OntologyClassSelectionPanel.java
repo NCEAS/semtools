@@ -370,6 +370,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 
 	/**
 	 * Private method for executing a search
+	 * @deprecated
 	 * 
 	 * @param searchStr
 	 *            the string to search for
@@ -400,7 +401,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 	 * @param searchStr
 	 *            the string to search for
 	 */
-	private void doFilterSearch(String searchStr) {
+	public void doFilterSearch(String searchStr) {
 		
 		if (!firstSearch) {
 			// reset the selections
