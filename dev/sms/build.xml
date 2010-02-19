@@ -10,7 +10,11 @@
    <property name="dist"  location="dist"/>
    <property name="config"  location="config"/>
    <property name="infile"  value="examples/test-annotation1.xml"/>
-   <property name="outfile"  value=""/>
+	
+	<!-- for getting datamanager -->
+	   <property name="emldir"  value="${morpho.basedir}/../eml"/>
+	   <property name="svn.emlUrl"  value="https://code.ecoinformatics.org/code/eml/trunk/"/>
+
 	<!-- override the morpho property -->
    	<property name="morpho.args" value=".semtools"/>
 	
@@ -26,9 +30,23 @@
             <include name="**"/>
          </fileset>
       </copy>
+   	  <condition property="eml.required">
+			<or>
+				<not>
+					<available file="${emldir}" type="dir" />
+				</not>
+			</or>
+		</condition>
+   		<condition property="datamanager.required">
+   				<or>
+   					<not>
+   						<available file="$./lib/datamanager.jar" />
+   					</not>
+   				</or>
+   			</condition>
    </target>
 
-   <target name="setclasspath" depends="">
+   <target name="setclasspath" depends="datamanager">
       <path id="project.class.path">
          <pathelement location="./"/>
          <pathelement location="./configs"/>
@@ -137,6 +155,26 @@
       <delete dir="${build}"/>
       <delete dir="${dist}"/>
    </target>
+	
+	   <target name="clean-all" description="clean up all sorts of stuff" depends="clean">
+	      <delete file="./lib/datamanager.jar"/>
+	   </target>
+	
+	<target name="datamanager" depends="geteml" if="datamanager.required">
+		<ant dir="${emldir}" target="clean" inheritAll="false" />
+		<ant dir="${emldir}" target="jar-datamanager-lib" inheritAll="false" />
+		<copy file="${emldir}/build/datamanager.jar" todir="./lib" overwrite="true"/>
+	</target>
+
+	<target name="geteml" depends="init" if="eml.required"
+		description="Checks eml out of svn and copies it to your eml dir if it does not already exist">
+		<echo message="Exporting eml files from svn repository:" />
+		<svn>
+			<export srcUrl="${svn.emlUrl}"
+				destPath="${emldir}" />
+		</svn>
+
+	</target>
 
 </project>
 
