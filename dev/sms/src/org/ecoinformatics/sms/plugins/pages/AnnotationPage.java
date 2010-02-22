@@ -265,6 +265,7 @@ public class AnnotationPage extends AbstractUIPage implements StateChangeListene
 			// is there a measurement mapping for the attribute?
 			currentMapping = annotation.getMapping(attributeName);
 			if (currentMapping == null) {
+				reset();
 				return;
 			}
 			
@@ -386,14 +387,6 @@ public class AnnotationPage extends AbstractUIPage implements StateChangeListene
 		boolean key = measurementIsKey.isSelected();
 		currentMeasurement.setKey(key);
 
-		// a measurement mapping for this attribute
-		if (currentMapping == null) {
-			currentMapping = new Mapping();
-			annotation.addMapping(currentMapping);
-		}
-		currentMapping.setAttribute(attributeName);
-		currentMapping.setMeasurement(currentMeasurement);
-
 		// make an entity from the form value
 		Entity entity = null;
 		try {
@@ -405,20 +398,22 @@ public class AnnotationPage extends AbstractUIPage implements StateChangeListene
 			//e.printStackTrace();
 		}
 		
-		// look for existing Observations of this given entity
-//		 List<Observation> existingObservations = annotation.getObservations(entity);
-//		 if (!existingObservations.isEmpty()) {
-//			 int useExisting =
-//				 JOptionPane.showConfirmDialog(
-//						 UIController.getInstance().getCurrentActiveWindow(),
-//						 "Use existing observation? Entity: " + entity,
-//						 "Existing Observation", 
-//						 JOptionPane.YES_NO_OPTION);
-//			 if (useExisting == JOptionPane.YES_OPTION) {
-//				 currentObservation = existingObservations.get(0);
-//				 currentObservation.addMeasurement(currentMeasurement);
-//			 }
-//		 }
+		// check that there is anything to set
+		if (
+				currentCharacteristic == null
+				&&
+				currentProtocol == null
+				&&
+				currentStandard == null
+				&&
+				currentObservation == null
+				&&
+				entity == null
+				
+		) {
+			// don't save this at all
+			return annotation;
+		}
 
 		// the observation
 		if (currentObservation == null) {
@@ -440,6 +435,14 @@ public class AnnotationPage extends AbstractUIPage implements StateChangeListene
 		
 		// set the new values for existing classes
 		currentObservation.setEntity(entity);
+		
+		// a mapping for this attribute
+		if (currentMapping == null) {
+			currentMapping = new Mapping();
+			annotation.addMapping(currentMapping);
+		}
+		currentMapping.setAttribute(attributeName);
+		currentMapping.setMeasurement(currentMeasurement);
 
 		return annotation;
 	}
@@ -563,6 +566,29 @@ public class AnnotationPage extends AbstractUIPage implements StateChangeListene
 	public boolean setPageData(OrderedMap data, String _xPathRoot) {
 
 		return true;
+	}
+	
+	private void reset() {
+		currentCharacteristic = null;
+		currentMapping = null;
+		currentMeasurement = null;
+		currentObservation = null;
+		currentProtocol = null;
+		currentStandard = null;
+		
+		// observation
+		observationLabel.setText(null);
+		observationIsDistinct.setSelected(false);
+		
+		// measurement
+		measurementLabel.setText(null);
+		measurementIsKey.setSelected(false);
+		
+		simpleAnnotationPanel.setObservationCharacteristic(null);
+		simpleAnnotationPanel.setObservationEntity(null);
+		simpleAnnotationPanel.setObservationProtocol(null);
+		simpleAnnotationPanel.setObservationStandard(null);
+		
 	}
 
 	public void handleStateChange(StateChangeEvent event) {
