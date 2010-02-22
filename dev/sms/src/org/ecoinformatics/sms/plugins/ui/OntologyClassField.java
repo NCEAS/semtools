@@ -53,6 +53,9 @@ public class OntologyClassField extends JTextField {
 		if (ontologyClass != null) {
 			this.setText(ontologyClass.getName());
 		}
+		else {
+			this.setText("");
+		}
 		this.revalidate();
 		this.repaint();
 	}
