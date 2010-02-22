@@ -710,7 +710,7 @@ public class AnnotationPlugin
 					
 					// add the table panel to a tab pane
 					JTabbedPane tabPane = new JTabbedPane(JTabbedPane.TOP);
-					tabPane.addTab("Table View", annotationTablePanel);
+					tabPane.addTab("Full Annotation", annotationTablePanel);
 					
 					// add the madlib column view
 					AnnotationPage madLib = new AnnotationPage(false);
@@ -726,7 +726,7 @@ public class AnnotationPlugin
 //					tabPane.addTab("Column View", madLibScroll);
 					
 					// just the panel, no scrolling
-					tabPane.addTab("Column View", madLib);
+					tabPane.addTab("Column Annotation", madLib);
 										
 					// add the tab pane to the panel
 					dataViewer.getHeaderPanel().add(BorderLayout.CENTER, tabPane);
