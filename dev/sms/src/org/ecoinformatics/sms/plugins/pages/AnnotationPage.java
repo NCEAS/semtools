@@ -610,66 +610,18 @@ public class AnnotationPage extends AbstractUIPage implements StateChangeListene
 
 		}
 		
-		//now go on with the current selection
-		MorphoFrame morphoFrame = UIController.getInstance().getCurrentActiveWindow();
-
-		DataViewContainerPanel resultPane = null;
-		if (morphoFrame != null) {
-			resultPane = morphoFrame.getDataViewContainerPanel();
+		annotation = AnnotationPlugin.getCurrentActiveAnnotation();
+		String attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
+				
+		if (attributeName != null && annotation != null) {
+			Log.debug(30, "Annotating...\n " 
+					+ "Attribute: " + attributeName
+					+ ", annotation id: " + annotation.getURI()
+					);
+			
+			this.setAnnotation(annotation, attributeName);
 		}
 
-		AbstractDataPackage adp = null;
-		if (resultPane != null) {
-			adp = resultPane.getAbstractDataPackage();
-		}
-
-		if (adp == null) {
-			Log.debug(16, " Abstract Data Package is null in "
-					+ this.getClass().getName());
-			return;
-		}
-
-		// make sure resultPanel is not null
-		if (resultPane != null) {
-			DataViewer dataView = resultPane.getCurrentDataViewer();
-			if (dataView != null) {
-
-				JTable table = dataView.getDataTable();
-				int viewIndex = table.getSelectedColumn();
-		    	int attributeIndex = table.getColumnModel().getColumn(viewIndex).getModelIndex();
-				int entityIndex = dataView.getEntityIndex();
-				String entityName = adp.getEntityName(entityIndex);
-				String attributeName = adp.getAttributeName(entityIndex, attributeIndex);
-				
-				// package and entity
-				String packageId = adp.getAccessionNumber();
-				String dataTable = String.valueOf(entityIndex);
-				
-				// look up the annotation if it exists, or make new one
-				List<Annotation> annotations = 
-					SMS.getInstance().getAnnotationManager().getAnnotations(packageId, dataTable);
-
-				Annotation annotation;
-				if (annotations.size() > 0) {
-					annotation = annotations.get(0);
-				} else {
-					// create a new one
-					annotation = new Annotation();
-					annotation.setEMLPackage(packageId);
-					annotation.setDataTable(dataTable);
-				}
-				
-				Log.debug(30, "Annotating...\n " 
-						+ "Data package: " + packageId 
-						+ ", entity: " + entityName 
-						+ ", attribute: " + attributeName
-						+ ", annotation id: " + annotation.getURI()
-						);
-				
-				this.setAnnotation(annotation, attributeName);
-								
-			}
-
-		}
+		
 	}
 }
