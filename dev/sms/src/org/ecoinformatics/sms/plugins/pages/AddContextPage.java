@@ -317,8 +317,8 @@ public class AddContextPage extends AbstractUIPage {
 	}
 
 	public Relationship getRelationship() {
-		String uri = contextRelationship.getText();
 		try {
+			String uri = contextRelationship.getOntologyClass().getURI();
 			relationship = new Relationship(uri);
 		} catch (Exception e) {
 			relationship = null;
