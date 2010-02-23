@@ -46,7 +46,7 @@ import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
 import edu.ucsb.nceas.utilities.OrderedMap;
 
-public class ContextPage extends AbstractUIPage {
+public class AddContextPage extends AbstractUIPage {
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
@@ -76,7 +76,7 @@ public class ContextPage extends AbstractUIPage {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
 
-	public ContextPage(boolean madLib) {
+	public AddContextPage(boolean madLib) {
 		if (madLib) {
 			initMadlib();
 		} else {

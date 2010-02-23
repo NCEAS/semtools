@@ -42,7 +42,7 @@ import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Relationship;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
-import org.ecoinformatics.sms.plugins.pages.ContextPage;
+import org.ecoinformatics.sms.plugins.pages.AddContextPage;
 
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
 import edu.ucsb.nceas.morpho.datapackage.DataViewContainerPanel;
@@ -69,7 +69,7 @@ public class ContextCommand implements Command {
 	private DataViewContainerPanel resultPane = null;
 	private int entityIndex = -1;
 	private String entityName;
-	private ContextPage contextPage = null;
+	private AddContextPage contextPage = null;
 	private Annotation annotation = null;
 	private boolean add = true;
 
@@ -150,7 +150,7 @@ public class ContextCommand implements Command {
 					observations.remove(currentObservation);
 					
 					// page for editing the new context relationship
-					contextPage = new ContextPage(true);
+					contextPage = new AddContextPage(true);
 					
 					// for the state change event
 					source = contextPage;
