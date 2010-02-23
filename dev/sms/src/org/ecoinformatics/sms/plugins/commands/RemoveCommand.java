@@ -27,13 +27,9 @@
 package org.ecoinformatics.sms.plugins.commands;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 
-import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.sms.annotation.Mapping;
@@ -41,9 +37,6 @@ import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 
-import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
-import edu.ucsb.nceas.morpho.datapackage.DataViewContainerPanel;
-import edu.ucsb.nceas.morpho.datapackage.DataViewer;
 import edu.ucsb.nceas.morpho.framework.MorphoFrame;
 import edu.ucsb.nceas.morpho.framework.UIController;
 import edu.ucsb.nceas.morpho.util.Command;
@@ -58,11 +51,6 @@ public class RemoveCommand implements Command {
 	/* Reference to morpho frame */
 	private MorphoFrame morphoFrame = null;
 
-	private AbstractDataPackage adp = null;
-	private DataViewer dataView = null;
-	private JTable table = null;
-	private DataViewContainerPanel resultPane = null;
-	private int entityIndex = -1;
 	private Annotation annotation = null;
 	private Class toRemove = Observation.class;
 
@@ -82,111 +70,70 @@ public class RemoveCommand implements Command {
 	public void execute(ActionEvent event) {
 
 		morphoFrame = UIController.getInstance().getCurrentActiveWindow();
+		
+		annotation = AnnotationPlugin.getCurrentActiveAnnotation();
+		String attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
 
-		if (morphoFrame != null) {
-			resultPane = morphoFrame.getDataViewContainerPanel();
-		}
+		// get the annotation elements
+		Mapping mapping = annotation.getMapping(attributeName);
+		Measurement measurement = mapping.getMeasurement();
+		Observation observation = annotation.getObservation(measurement);
 
-		if (resultPane != null) {
-			adp = resultPane.getAbstractDataPackage();
-		}
-
-		if (adp == null) {
-			Log.debug(16, " Abstract Data Package is null in "
-					+ this.getClass().getName());
-			return;
-		}
-
-		// make sure resultPanel is not null
-		if (resultPane != null) {
-			dataView = resultPane.getCurrentDataViewer();
-			if (dataView != null) {
-				
-				//entity
-				entityIndex = dataView.getEntityIndex();
-				
-				// package and entity
-				String packageId = adp.getAccessionNumber();
-				String dataTable = String.valueOf(entityIndex);
-				
-				// look up the annotation if it exists
-				List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId, dataTable);
-
-				if (annotations.size() > 0) {
-					annotation = annotations.get(0);
-				} else {
-					Log.debug(5, "No existing annotation found!");
-					return;
-				}
-				
-				// process the attribute
-				table = dataView.getDataTable();
-				int viewIndex = table.getSelectedColumn();		
-				int attributeIndex =  table.getColumnModel().getColumn(viewIndex).getModelIndex();
-				String attributeName = adp.getAttributeName(entityIndex, attributeIndex);
-
-				// get the annotation elements
-				Mapping mapping = annotation.getMapping(attributeName);
-				Measurement measurement = mapping.getMeasurement();
-				Observation observation = annotation.getObservation(measurement);
-
-				if (toRemove.equals(Observation.class)) {
-					int remove = JOptionPane.showConfirmDialog(
-							morphoFrame, 
-							"Are you sure you want to remove Observation, " + observation, 
-							"Removing " + observation, 
-							JOptionPane.YES_NO_OPTION);
-					
-					if (remove == JOptionPane.NO_OPTION) {
-						return;
-					}
-					
-					// check for contexts
-					for (Observation obs: annotation.getObservations()) {
-						for (Context c: obs.getContexts()) {
-							if (c.getObservation() != null && c.getObservation().equals(observation)) {
-								//TODO concurrent modification?
-								//obs.removeContext(c);
-								Log.debug(5, 
-										observation + " provides context for " + obs 
-										+ "\nRemove this Context relationship before removing " + observation);
-								return;
-							}
-						}
-					}
-					// remove the mapping
-					annotation.removeMapping(mapping);
-					// remove the observation
-					annotation.removeObservation(observation);
-				}
-				
-				else if (toRemove.equals(Measurement.class)) {
-					int remove = JOptionPane.showConfirmDialog(
-							morphoFrame, 
-							"Are you sure you want to remove Measurement, " + measurement, 
-							"Removing " + measurement, 
-							JOptionPane.YES_NO_OPTION);
-					
-					if (remove == JOptionPane.NO_OPTION) {
-						return;
-					}
-					
-					// remove it from the observation
-					observation.removeMeasurement(measurement);
-					// just remove the mapping
-					annotation.removeMapping(mapping);
-				}
-					
-				// save the change
-				AnnotationPlugin.saveAnnotation(annotation);
-				
-				// fire change event
-				StateChangeEvent annotationEvent = new StateChangeEvent(morphoFrame, AnnotationPlugin.ANNOTATION_CHANGE_EVENT);
-				StateChangeMonitor.getInstance().notifyStateChange(annotationEvent);
-				
+		if (toRemove.equals(Observation.class)) {
+			int remove = JOptionPane.showConfirmDialog(
+					morphoFrame, 
+					"Are you sure you want to remove Observation, " + observation, 
+					"Removing " + observation, 
+					JOptionPane.YES_NO_OPTION);
+			
+			if (remove == JOptionPane.NO_OPTION) {
+				return;
 			}
-
+			
+			// check for contexts
+			for (Observation obs: annotation.getObservations()) {
+				for (Context c: obs.getContexts()) {
+					if (c.getObservation() != null && c.getObservation().equals(observation)) {
+						//TODO concurrent modification?
+						//obs.removeContext(c);
+						Log.debug(5, 
+								observation + " provides context for " + obs 
+								+ "\nRemove this Context relationship before removing " + observation);
+						return;
+					}
+				}
+			}
+			// remove the mapping
+			annotation.removeMapping(mapping);
+			// remove the observation
+			annotation.removeObservation(observation);
 		}
+		
+		else if (toRemove.equals(Measurement.class)) {
+			int remove = JOptionPane.showConfirmDialog(
+					morphoFrame, 
+					"Are you sure you want to remove Measurement, " + measurement, 
+					"Removing " + measurement, 
+					JOptionPane.YES_NO_OPTION);
+			
+			if (remove == JOptionPane.NO_OPTION) {
+				return;
+			}
+			
+			// remove it from the observation
+			observation.removeMeasurement(measurement);
+			// just remove the mapping
+			annotation.removeMapping(mapping);
+		}
+			
+		// save the change
+		AnnotationPlugin.saveAnnotation(annotation);
+		
+		// fire change event
+		StateChangeEvent annotationEvent = new StateChangeEvent(morphoFrame, AnnotationPlugin.ANNOTATION_CHANGE_EVENT);
+		StateChangeMonitor.getInstance().notifyStateChange(annotationEvent);
+		
 	}
+
 
 }

@@ -32,9 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 
-import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.sms.annotation.Mapping;
@@ -44,14 +42,9 @@ import org.ecoinformatics.sms.annotation.Relationship;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.pages.AddContextPage;
 
-import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
-import edu.ucsb.nceas.morpho.datapackage.DataViewContainerPanel;
-import edu.ucsb.nceas.morpho.datapackage.DataViewer;
 import edu.ucsb.nceas.morpho.framework.ModalDialog;
-import edu.ucsb.nceas.morpho.framework.MorphoFrame;
 import edu.ucsb.nceas.morpho.framework.UIController;
 import edu.ucsb.nceas.morpho.util.Command;
-import edu.ucsb.nceas.morpho.util.Log;
 import edu.ucsb.nceas.morpho.util.StateChangeEvent;
 import edu.ucsb.nceas.morpho.util.StateChangeMonitor;
 import edu.ucsb.nceas.morpho.util.UISettings;
@@ -60,15 +53,7 @@ import edu.ucsb.nceas.morpho.util.UISettings;
  * Class to handle edit column meta data command
  */
 public class ContextCommand implements Command {
-	/* Reference to morpho frame */
-	private MorphoFrame morphoFrame = null;
 
-	private AbstractDataPackage adp = null;
-	private DataViewer dataView = null;
-	private JTable table = null;
-	private DataViewContainerPanel resultPane = null;
-	private int entityIndex = -1;
-	private String entityName;
 	private AddContextPage contextPage = null;
 	private Annotation annotation = null;
 	private boolean add = true;
@@ -88,136 +73,91 @@ public class ContextCommand implements Command {
 	 */
 	public void execute(ActionEvent event) {
 
-		morphoFrame = UIController.getInstance().getCurrentActiveWindow();
+		annotation = AnnotationPlugin.getCurrentActiveAnnotation();
+		String attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
 
-		if (morphoFrame != null) {
-			resultPane = morphoFrame.getDataViewContainerPanel();
-		}
+		// get the Observation that is/will be providing context
+		Mapping mapping = annotation.getMapping(attributeName);
+		Measurement measurement = mapping.getMeasurement();
+		Observation currentObservation = annotation.getObservation(measurement);
+		
+		Component source = null;
+		//ADD
+		if (add) {
+			// get the Observations it can provide context for
+			List<Observation> observations = annotation.getObservations();
+			
+			// remove "this" one
+			observations = new ArrayList<Observation>(observations);
+			observations.remove(currentObservation);
+			
+			// page for editing the new context relationship
+			contextPage = new AddContextPage(true);
+			
+			// for the state change event
+			source = contextPage;
+			
+			// set "this" observation
+			contextPage.setObservation(currentObservation);
+			
+			// set the observations it might have a relationship with
+			contextPage.setObservations(observations);
+			
+			if (showContextDialog()) {
+				Observation selectedObservation = (Observation) contextPage.getSelectedObservation();
+				Context context = new Context();
+				context.setObservation(selectedObservation);
+				// relationship
+				Relationship relationship = contextPage.getRelationship();
+				context.setRelationship(relationship);
+				// identifying
+				boolean isIdentifying = contextPage.getIsIdentifying();
+				context.setIdentifying(isIdentifying);
 
-		if (resultPane != null) {
-			adp = resultPane.getAbstractDataPackage();
-		}
-
-		if (adp == null) {
-			Log.debug(16, " Abstract Data Package is null in "
-					+ this.getClass().getName());
-			return;
-		}
-
-		// make sure resultPanel is not null
-		if (resultPane != null) {
-			dataView = resultPane.getCurrentDataViewer();
-			if (dataView != null) {
-				
-				//entity
-				entityIndex = dataView.getEntityIndex();
-				entityName = adp.getEntityName(entityIndex);
-				String entityId = dataView.getEntityFileId();
-				
-				// package and entity
-				String packageId = adp.getAccessionNumber();
-				String dataTable = String.valueOf(entityIndex);
-				
-				// look up the annotation if it exists, or make new one
-				List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId, dataTable);
-
-				if (annotations.size() > 0) {
-					annotation = annotations.get(0);
-				} else {
-					Log.debug(5, "No existing annotation found!");
-					return;
-				}
-				
-				// process the selected observation
-				table = dataView.getDataTable();
-				int viewIndex = table.getSelectedColumn();
-				int attributeIndex =  table.getColumnModel().getColumn(viewIndex).getModelIndex();
-				String attributeName = adp.getAttributeName(entityIndex, attributeIndex);
-
-				// get the Observation that is/will be providing context
-				Mapping mapping = annotation.getMapping(attributeName);
-				Measurement measurement = mapping.getMeasurement();
-				Observation currentObservation = annotation.getObservation(measurement);
-				
-				Component source = null;
-				//ADD
-				if (add) {
-					// get the Observations it can provide context for
-					List<Observation> observations = annotation.getObservations();
-					
-					// remove "this" one
-					observations = new ArrayList<Observation>(observations);
-					observations.remove(currentObservation);
-					
-					// page for editing the new context relationship
-					contextPage = new AddContextPage(true);
-					
-					// for the state change event
-					source = contextPage;
-					
-					// set "this" observation
-					contextPage.setObservation(currentObservation);
-					
-					// set the observations it might have a relationship with
-					contextPage.setObservations(observations);
-					
-					if (showContextDialog()) {
-						Observation selectedObservation = (Observation) contextPage.getSelectedObservation();
-						Context context = new Context();
-						context.setObservation(selectedObservation);
-						// relationship
-						Relationship relationship = contextPage.getRelationship();
-						context.setRelationship(relationship);
-						// identifying
-						boolean isIdentifying = contextPage.getIsIdentifying();
-						context.setIdentifying(isIdentifying);
-	
-						currentObservation.addContext(context);
-					} else {
-						// no need to continue - cancelled
-						return;
-					}
-				}
-				//REMOVE
-				else {
-					// get the existing contexts for this observation
-					List<Context> existingContexts = currentObservation.getContexts();
-					
-					// ask for the context to remove 
-					Object selectedObj = JOptionPane.showInputDialog(
-							morphoFrame, 
-							"Remove existing context from: " + currentObservation, 
-							"Remove Context", 
-							JOptionPane.WARNING_MESSAGE, 
-							null, 
-							existingContexts.toArray(),
-							null
-							);
-					
-					if (selectedObj != null) {
-						Context selectedContext = (Context) selectedObj;
-						currentObservation.removeContext(selectedContext);
-					} else {
-						// cancelled
-						return;
-					}
-					
-					// for the state change event
-					source = morphoFrame;
-				}
-					
-				// made it here
-				
-				// save to the annotation
-				AnnotationPlugin.saveAnnotation(annotation);
-				
-				// fire change event
-				StateChangeEvent annotationEvent = new StateChangeEvent(source, AnnotationPlugin.ANNOTATION_CHANGE_EVENT);
-				StateChangeMonitor.getInstance().notifyStateChange(annotationEvent);
-				
+				currentObservation.addContext(context);
+			} else {
+				// no need to continue - cancelled
+				return;
 			}
-
 		}
+		//REMOVE
+		else {
+			// get the existing contexts for this observation
+			List<Context> existingContexts = currentObservation.getContexts();
+			
+			// ask for the context to remove 
+			Object selectedObj = JOptionPane.showInputDialog(
+					UIController.getInstance().getCurrentActiveWindow(), 
+					"Remove existing context from: " + currentObservation, 
+					"Remove Context", 
+					JOptionPane.WARNING_MESSAGE, 
+					null, 
+					existingContexts.toArray(),
+					null
+					);
+			
+			if (selectedObj != null) {
+				Context selectedContext = (Context) selectedObj;
+				currentObservation.removeContext(selectedContext);
+			} else {
+				// cancelled
+				return;
+			}
+			
+			// for the state change event
+			source = UIController.getInstance().getCurrentActiveWindow();
+		}
+			
+		// made it here
+		
+		// save to the annotation
+		AnnotationPlugin.saveAnnotation(annotation);
+		
+		// fire change event
+		StateChangeEvent annotationEvent = new StateChangeEvent(source, AnnotationPlugin.ANNOTATION_CHANGE_EVENT);
+		StateChangeMonitor.getInstance().notifyStateChange(annotationEvent);
+				
+
 	}
 	
 	private boolean showContextDialog() {

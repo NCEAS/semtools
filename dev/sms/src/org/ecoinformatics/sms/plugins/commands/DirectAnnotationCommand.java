@@ -29,7 +29,6 @@ package org.ecoinformatics.sms.plugins.commands;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Entity;
@@ -44,11 +43,7 @@ import org.ecoinformatics.sms.plugins.pages.OntologyClassSelectionPage;
 import org.ecoinformatics.sms.plugins.table.AnnotationTable;
 import org.ecoinformatics.sms.plugins.table.AnnotationTableModel;
 
-import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
-import edu.ucsb.nceas.morpho.datapackage.DataViewContainerPanel;
-import edu.ucsb.nceas.morpho.datapackage.DataViewer;
 import edu.ucsb.nceas.morpho.framework.ModalDialog;
-import edu.ucsb.nceas.morpho.framework.MorphoFrame;
 import edu.ucsb.nceas.morpho.framework.UIController;
 import edu.ucsb.nceas.morpho.util.Command;
 import edu.ucsb.nceas.morpho.util.Log;
@@ -60,15 +55,7 @@ import edu.ucsb.nceas.morpho.util.UISettings;
  * Class to handle edit column meta data command
  */
 public class DirectAnnotationCommand implements Command {
-	/* Reference to morpho frame */
-	private MorphoFrame morphoFrame = null;
-
-	private AbstractDataPackage adp = null;
-	private DataViewer dataView = null;
-	private DataViewContainerPanel resultPane = null;
-	private int entityIndex = -1;
-	private int attributeIndex = -1;
-	private String entityName;
+	
 	private String attributeName;
 	private OntologyClassSelectionPage ontologyPage = null;
 	private Annotation annotation = null;
@@ -119,75 +106,31 @@ public class DirectAnnotationCommand implements Command {
     		return;
     	}
     	
-		morphoFrame = UIController.getInstance().getCurrentActiveWindow();
-
-		if (morphoFrame != null) {
-			resultPane = morphoFrame.getDataViewContainerPanel();
-		}
-
-		if (resultPane != null) {
-			adp = resultPane.getAbstractDataPackage();
-		}
-
-		if (adp == null) {
-			Log.debug(16, " Abstract Data Package is null in "
-					+ this.getClass().getName());
-			return;
-		}
-
-		// make sure resultPanel is not null
-		if (resultPane != null) {
-			dataView = resultPane.getCurrentDataViewer();
-			if (dataView != null) {
+    	annotation = AnnotationPlugin.getCurrentActiveAnnotation();
+		String attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
 				
-		    	attributeIndex =  annotationTable.getColumnModel().getColumn(selectedColumn).getModelIndex();
-				entityIndex = dataView.getEntityIndex();
-				entityName = adp.getEntityName(entityIndex);
-				attributeName = adp.getAttributeName(entityIndex, attributeIndex);
-				
-				// package and entity
-				String packageId = adp.getAccessionNumber();
-				String dataTable = String.valueOf(entityIndex);
-				
-				// look up the annotation if it exists, or make new one
-				List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId, dataTable);
-
-				if (annotations.size() > 0) {
-					annotation = annotations.get(0);
-				} else {
-					// create a new one
-					annotation = new Annotation();
-					annotation.setEMLPackage(packageId);
-					annotation.setDataTable(dataTable);
-				}
-				
-				Log.debug(30, "Directly Annotating...\n " 
-						+ "Data package: " + packageId 
-						+ ", entity: " + entityName 
-						+ ", attribute: " + attributeName
-						+ ", annotation id: " + annotation.getURI()
-						);
-				
-				
-				if (showDialog()) {
-					
-					try {
-						setClass();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-					// save - still some TBD
-					AnnotationPlugin.saveAnnotation(annotation);
-					
-					// fire change event
-					StateChangeEvent annotationEvent = new StateChangeEvent(ontologyPage, AnnotationPlugin.ANNOTATION_CHANGE_EVENT);
-					StateChangeMonitor.getInstance().notifyStateChange(annotationEvent);
-					
-				}
+		Log.debug(30, "Directly Annotating...\n " 
+				+ "Attribute: " + attributeName
+				+ ", annotation id: " + annotation.getURI()
+				);
+		
+		
+		if (showDialog()) {
+			
+			try {
+				setClass();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
+			
+			// save - still some TBD
+			AnnotationPlugin.saveAnnotation(annotation);
+			
+			// fire change event
+			StateChangeEvent annotationEvent = new StateChangeEvent(ontologyPage, AnnotationPlugin.ANNOTATION_CHANGE_EVENT);
+			StateChangeMonitor.getInstance().notifyStateChange(annotationEvent);
+			
 		}
 	}
 	
