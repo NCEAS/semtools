@@ -35,6 +35,7 @@ import java.util.Map.Entry;
 
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -520,6 +521,119 @@ public class AnnotationPlugin
 			}
 		}
 	}
+	
+	/**
+	 * Consolidates the annotation retrieval code that has been used in
+	 * most of the annotation editing classes.
+	 * returns the currently selected attribute
+	 * @return currently selected attributeName
+	 */
+	public static String getCurrentSelectedAttribute() {
+
+		String attributeName = null;
+
+		//now go on with the current selection
+		MorphoFrame morphoFrame = UIController.getInstance().getCurrentActiveWindow();
+
+		DataViewContainerPanel resultPane = null;
+		if (morphoFrame != null) {
+			resultPane = morphoFrame.getDataViewContainerPanel();
+		}
+
+		AbstractDataPackage adp = null;
+		if (resultPane != null) {
+			adp = resultPane.getAbstractDataPackage();
+		}
+
+		if (adp == null) {
+			Log.debug(16, " Abstract Data Package is null in "
+					+ AnnotationPlugin.class.getName());
+			return attributeName;
+		}
+
+		// make sure resultPanel is not null
+		if (resultPane != null) {
+			DataViewer dataView = resultPane.getCurrentDataViewer();
+			if (dataView != null) {
+
+				JTable table = dataView.getDataTable();
+				int viewIndex = table.getSelectedColumn();
+				if (viewIndex < 0) {
+					return attributeName;
+				}
+				int entityIndex = dataView.getEntityIndex();
+
+				// attribute
+				int attributeIndex = table.getColumnModel().getColumn(viewIndex).getModelIndex();
+				attributeName = adp.getAttributeName(entityIndex, attributeIndex);
+			}
+		}
+		return attributeName;
+	}
+	
+	/**
+	 * Consolidates the annotation retrieval code that has been used in
+	 * most of the annotation editing classes.
+	 * and returns the currently selected attribute
+	 * @return current annotation for the current DP/entity
+	 */
+	public static Annotation getCurrentActiveAnnotation() {
+
+		Annotation annotation = null;
+
+		//now go on with the current selection
+		MorphoFrame morphoFrame = UIController.getInstance().getCurrentActiveWindow();
+
+		DataViewContainerPanel resultPane = null;
+		if (morphoFrame != null) {
+			resultPane = morphoFrame.getDataViewContainerPanel();
+		}
+
+		AbstractDataPackage adp = null;
+		if (resultPane != null) {
+			adp = resultPane.getAbstractDataPackage();
+		}
+
+		if (adp == null) {
+			Log.debug(16, " Abstract Data Package is null in "
+					+ AnnotationPlugin.class.getName());
+			return annotation;
+		}
+
+		// make sure resultPanel is not null
+		if (resultPane != null) {
+			DataViewer dataView = resultPane.getCurrentDataViewer();
+			if (dataView != null) {
+
+				JTable table = dataView.getDataTable();
+				int viewIndex = table.getSelectedColumn();
+				if (viewIndex < 0) {
+					return annotation;
+				}
+				int entityIndex = dataView.getEntityIndex();
+				
+				// package and entity
+				String packageId = adp.getAccessionNumber();
+				String dataTable = String.valueOf(entityIndex);
+				
+				// look up the annotation if it exists, or make new one
+				List<Annotation> annotations = 
+					SMS.getInstance().getAnnotationManager().getAnnotations(packageId, dataTable);
+
+				if (annotations.size() > 0) {
+					annotation = annotations.get(0);
+				} else {
+					// create a new one
+					annotation = new Annotation();
+					annotation.setEMLPackage(packageId);
+					annotation.setDataTable(dataTable);
+				}
+				
+			}
+		}
+		return annotation;
+	}
+	
 
 	public void handleStateChange(StateChangeEvent event) {
 
