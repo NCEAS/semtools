@@ -265,7 +265,6 @@ public class AnnotationPage extends AbstractUIPage implements StateChangeListene
 			// is there a measurement mapping for the attribute?
 			currentMapping = annotation.getMapping(attributeName);
 			if (currentMapping == null) {
-				reset();
 				return;
 			}
 			
@@ -603,6 +602,8 @@ public class AnnotationPage extends AbstractUIPage implements StateChangeListene
 		//save what we have before moving forward?
 		if (currentAttributeName != null) {
 			annotation = this.getAnnotation(currentAttributeName);
+			
+			this.reset();
 			
 			// save
 			AnnotationPlugin.saveAnnotation(annotation);
