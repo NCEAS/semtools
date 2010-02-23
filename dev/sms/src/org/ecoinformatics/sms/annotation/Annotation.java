@@ -273,11 +273,13 @@ public class Annotation {
    public static String getNextMeasurementLabel(Annotation annotation, String prefix) {
 	   int counter = 1;
 	   String retLabel = prefix + counter++;
-	   for (Observation o: annotation.getObservations()) {
-		   for (Measurement m: o.getMeasurements()) {
-			   String label = m.getLabel();
-			   if (retLabel.equals(label)) {
-				   retLabel = prefix + counter++;
+	   if (annotation != null) {
+		   for (Observation o: annotation.getObservations()) {
+			   for (Measurement m: o.getMeasurements()) {
+				   String label = m.getLabel();
+				   if (retLabel.equals(label)) {
+					   retLabel = prefix + counter++;
+				   }
 			   }
 		   }
 	   }
@@ -287,10 +289,12 @@ public class Annotation {
    public static String getNextObservationLabel(Annotation annotation, String prefix) {
 	   int counter = 1;
 	   String retLabel = prefix + counter++;
-	   for (Observation o: annotation.getObservations()) {
-		   String label = o.getLabel();
-		   if (retLabel.equals(label)) {
-			   retLabel = prefix + counter++;
+	   if (annotation != null) {
+		   for (Observation o: annotation.getObservations()) {
+			   String label = o.getLabel();
+			   if (retLabel.equals(label)) {
+				   retLabel = prefix + counter++;
+			   }
 		   }
 	   }
 	   return retLabel;
