@@ -36,6 +36,8 @@ import java.util.Map.Entry;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumnModel;
 
@@ -728,9 +730,22 @@ public class AnnotationPlugin
 					// just the panel, no scrolling
 					tabPane.addTab("Column Annotation", madLib);
 										
+					// add a change listener
+					tabPane.addChangeListener(new ChangeListener() {
+					    // This method is called whenever the selected tab changes
+					    public void stateChanged(ChangeEvent e) {
+					        JTabbedPane pane = (JTabbedPane)e.getSource();
+					        // Get current tab
+					        //int sel = pane.getSelectedIndex();
+					        // synthetic event
+					        StateChangeEvent event = 
+					        	new StateChangeEvent(pane, StateChangeEvent.SELECT_DATATABLE_COLUMN);
+					        StateChangeMonitor.getInstance().notifyStateChange(event);
+					    }
+					});
+					
 					// add the tab pane to the panel
 					dataViewer.getHeaderPanel().add(BorderLayout.CENTER, tabPane);
-					
 
 					Log.debug(30, "Set up annotation table...\n " 
 							+ "Data package: " + packageId 
