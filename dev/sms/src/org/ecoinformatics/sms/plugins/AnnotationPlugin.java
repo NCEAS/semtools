@@ -55,6 +55,7 @@ import org.ecoinformatics.sms.plugins.commands.OntologyManagementCommand;
 import org.ecoinformatics.sms.plugins.commands.RemoveCommand;
 import org.ecoinformatics.sms.plugins.commands.SaveAnnotationCommand;
 import org.ecoinformatics.sms.plugins.pages.AnnotationPage;
+import org.ecoinformatics.sms.plugins.pages.ContextPage;
 import org.ecoinformatics.sms.plugins.table.AnnotationTableModel;
 import org.ecoinformatics.sms.plugins.table.AnnotationTablePanel;
 import org.ecoinformatics.sms.plugins.table.DataTableModelListener;
@@ -844,6 +845,12 @@ public class AnnotationPlugin
 					// just the panel, no scrolling
 					tabPane.addTab("Column Annotation", madLib);
 										
+					// add the context tab
+					ContextPage contextTab = new ContextPage();
+					StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SELECT_DATATABLE_COLUMN, contextTab);
+					StateChangeMonitor.getInstance().addStateChangeListener(ANNOTATION_CHANGE_EVENT, contextTab);
+					tabPane.addTab("Context Annotation", contextTab);
+					
 					// add a change listener
 					tabPane.addChangeListener(new ChangeListener() {
 					    // This method is called whenever the selected tab changes
