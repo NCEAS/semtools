@@ -29,12 +29,10 @@
 package org.ecoinformatics.sms.plugins.pages;
 
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -114,7 +112,7 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 				editors, 
 				3, //displayRows, 
 				true, //showAddButton, 
-				false, //showEditButton, 
+				true, //showEditButton, 
 				false, //showDuplicateButton, 
 				true, //showDeleteButton, 
 				false, //showMoveUpButton, 
@@ -126,10 +124,6 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 		// add the custom add action
 		GUIAction addAction = new GUIAction("Add Context", null, new ContextCommand(true));
 		contextList.setCustomAddAction(addAction);
-		
-		// add the custom remove action
-		GUIAction removeAction = new GUIAction("Remove Context", null, new ContextCommand(false));
-		//contextList.setCustomDeleteAction(removeAction);
 		
 		// remove action
 		contextList.setCustomDeleteAction(new AbstractAction() {

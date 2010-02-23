@@ -26,7 +26,7 @@
 
 package org.ecoinformatics.sms.plugins.table;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -34,6 +34,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -47,6 +49,7 @@ import javax.swing.table.TableCellRenderer;
 
 import org.ecoinformatics.sms.plugins.commands.DirectAnnotationCommand;
 
+import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.util.Command;
 import edu.ucsb.nceas.morpho.util.GUIAction;
 import edu.ucsb.nceas.morpho.util.HyperlinkButton;
@@ -66,7 +69,8 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 	private JScrollPane annotationScrollPane;
 
 	public AnnotationTablePanel(AnnotationTableModel annotationTableModel) {
-		super(new BorderLayout(0,0));
+		//super(new BorderLayout(0,0));
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		// add the main table
 		annotationTable = new AnnotationTable(annotationTableModel);
@@ -125,8 +129,15 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 		GUIAction reorderAction = new GUIAction("reorder", null, reorderCommand);
 		JButton reorder = new HyperlinkButton(reorderAction);
 		annotationScrollPane.setCorner(JScrollPane.LOWER_LEFT_CORNER, reorder);
+		annotationScrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+		JPanel descPanel = WidgetFactory.makePanel(2);
+		descPanel.add(WidgetFactory.makeHTMLLabel("<p>Double click cells to directly edit the Annotation</p>", 2));
+		descPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray));
+		this.add(descPanel);
+		this.add(WidgetFactory.makeDefaultSpacer());
 		
-		this.add(BorderLayout.CENTER, annotationScrollPane);
+		this.add(annotationScrollPane);
 		
 	}
 
