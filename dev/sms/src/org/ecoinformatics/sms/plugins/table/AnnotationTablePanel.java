@@ -130,13 +130,12 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 		GUIAction reorderAction = new GUIAction("reorder", null, reorderCommand);
 		JButton reorder = new HyperlinkButton(reorderAction);
 		annotationScrollPane.setCorner(JScrollPane.LOWER_LEFT_CORNER, reorder);
-		annotationScrollPane.setBorder(BorderFactory.createEmptyBorder());
+		annotationScrollPane.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.gray));
 
 		JPanel descPanel = WidgetFactory.makePanel(2);
 		descPanel.add(WidgetFactory.makeHTMLLabel("<p>Double click cells to directly edit the Annotation</p>", 2));
-		descPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray));
 		this.add(descPanel);
-		this.add(WidgetFactory.makeDefaultSpacer());
+		//this.add(WidgetFactory.makeDefaultSpacer());
 		
 		this.add(annotationScrollPane);
 		
