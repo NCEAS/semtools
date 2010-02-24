@@ -597,11 +597,12 @@ public class AnnotationPage extends AbstractUIPage implements StateChangeListene
 		//save what we have before moving forward?
 		if (currentAttributeName != null) {
 			annotation = this.getAnnotation(currentAttributeName);
-			
-			this.reset();
-			
-			// save
-			AnnotationPlugin.saveAnnotation(annotation);
+			if (annotation != null) {
+				// reset the UI
+				this.reset();
+				// save
+				AnnotationPlugin.saveAnnotation(annotation);
+			}
 
 		}
 		
