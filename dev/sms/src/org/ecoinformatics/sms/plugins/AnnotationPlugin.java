@@ -215,11 +215,11 @@ public class AnnotationPlugin
 		// Save Annotations
 	    GUIAction saveAction = 
 	    	new GUIAction(
-	    			"Save Annotations...",
+	    			"Save Annotations",
 	    			null,
 	    			new SaveAnnotationCommand());
 	    saveAction.setMenuItemPosition(menuPosition++);
-	    saveAction.setToolTipText("Save Annotations...");
+	    saveAction.setToolTipText("Save Annotations");
 		saveAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 		saveAction.setSeparatorPosition(Morpho.SEPARATOR_PRECEDING);
 	    saveAction.setEnabled(false);
