@@ -47,6 +47,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
 
+import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.commands.DirectAnnotationCommand;
 
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
@@ -142,18 +143,30 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 	}
 
 	public void handleStateChange(StateChangeEvent event) {
-		AnnotationTableModel model = (AnnotationTableModel) annotationTable.getModel();
-		model.fireTableRowsUpdated(0, model.getRowCount());
-		model.fireTableStructureChanged();
-		
-		JList rowheaders = new JList(model.getRowHeaders());
-		rowheaders.setCellRenderer(new RowHeaderRenderer());
-		annotationScrollPane.setRowHeaderView(rowheaders);
-		
-		annotationTable.reset();
-		
-		if (annotationTable.isReordered()) {
-			annotationTable.reorder(true);
+		if (event.getChangedState().equals(AnnotationPlugin.ANNOTATION_CHANGE_EVENT)) {
+			AnnotationTableModel model = (AnnotationTableModel) annotationTable.getModel();
+			// remember the current selection state
+			int viewIndex = annotationTable.getSelectedColumn();
+			int modelIndex = -1;
+			if (viewIndex >= 0) {
+				modelIndex = annotationTable.getColumnModel().getColumn(viewIndex).getModelIndex();
+			}
+			
+			model.fireTableRowsUpdated(0, model.getRowCount());
+			model.fireTableStructureChanged();
+			
+			JList rowheaders = new JList(model.getRowHeaders());
+			rowheaders.setCellRenderer(new RowHeaderRenderer());
+			annotationScrollPane.setRowHeaderView(rowheaders);
+			
+			annotationTable.reset();
+			
+			if (annotationTable.isReordered()) {
+				annotationTable.reorder(true);
+			}
+			
+			// set the original selection index
+			annotationTable.setColumnSelectionInterval(viewIndex, viewIndex);
 		}
 	
 	}
