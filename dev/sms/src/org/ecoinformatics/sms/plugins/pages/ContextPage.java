@@ -58,6 +58,7 @@ import edu.ucsb.nceas.utilities.OrderedMap;
 
 public class ContextPage extends AbstractUIPage implements StateChangeListener {
 
+	private static final int CONTEXT_INDEX = 2;
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
 
@@ -76,6 +77,7 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 	// context options
 	private CustomList contextList;
 	private JLabel contextListLabel;
+	private JLabel contextObservationLabel;
 	
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -94,18 +96,20 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		JLabel desc = WidgetFactory
-				.makeHTMLLabel(
-						"<b>Edit Context Relationships</b> "
-								+ "Add, Remove, Edit Observation Contexts",
-						2);
-		this.add(desc);
+		JPanel descPanel = WidgetFactory.makePanel(2); 
+		descPanel.add(WidgetFactory.makeLabel("Observation:", false));
+		contextObservationLabel = WidgetFactory.makeLabel("", true, null);
+		descPanel.add(contextObservationLabel);
+		descPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
+				8 * WizardSettings.PADDING));
+		
+		this.add(descPanel);
 				
 		// Context list
 		JPanel contextListPanel = WidgetFactory.makePanel(5);
 		contextListLabel = WidgetFactory.makeLabel("Context:", false);
 		contextListPanel.add(contextListLabel);
-		String[] colNames = new String[] {"Observation", "Relationship", "Observation"};
+		String[] colNames = new String[] {"Relationship", "Observation"};
 		Object[] editors = null; // no direct editing
 		contextList = WidgetFactory.makeList(
 				colNames, 
@@ -144,13 +148,11 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 				8 * WizardSettings.PADDING));
 		this.add(contextListPanel);
 
-		this.add(WidgetFactory.makeDefaultSpacer());
-
 	}
 	
 	private void doEdit() {
 		List rowList = contextList.getSelectedRowList();
-		Context selectedContext = (Context) rowList.get(3);
+		Context selectedContext = (Context) rowList.get(CONTEXT_INDEX);
 		// the context command takes care of the rest
 		ContextCommand contextCommand = new ContextCommand(ContextCommand.EDIT);
 		contextCommand.setCurrentContext(selectedContext);
@@ -159,7 +161,7 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 	
 	private void doRemove() {
 		List rowList = contextList.getSelectedRowList();
-		Context selectedContext = (Context) rowList.get(3);
+		Context selectedContext = (Context) rowList.get(CONTEXT_INDEX);
 		// get the existing context
 		List<Context> existingContexts = observation.getContexts();
 		for (Context context: existingContexts) {
@@ -184,18 +186,20 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 		if (this.observation == null) {
 			return;
 		}
-		//set the existing entries
+		// set the label text
+		contextObservationLabel.setText(observation.toString());
+		// set the existing entries
 		List<Context> existingContexts = observation.getContexts();
 		for (Context context: existingContexts) {
 			Relationship relationship = context.getRelationship();
 			Observation target = context.getObservation();
 			
 			List<Object> rowList = new ArrayList<Object>();
-			rowList.add(observation);
+			//rowList.add(observation);
 			rowList.add(relationship);
 			rowList.add(target);
 			rowList.add(context);
-			contextList.addRow(rowList );			
+			contextList.addRow(rowList);			
 		}
 	}
 	
