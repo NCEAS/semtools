@@ -122,8 +122,15 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 		// add the data later
 		
 		// add the custom add action
-		GUIAction addAction = new GUIAction("Add Context", null, new ContextCommand(true));
+		GUIAction addAction = new GUIAction("Add Context", null, new ContextCommand(ContextCommand.ADD));
 		contextList.setCustomAddAction(addAction);
+		
+		// edit action
+		contextList.setCustomEditAction(new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				doEdit();
+			}
+		});
 		
 		// remove action
 		contextList.setCustomDeleteAction(new AbstractAction() {
@@ -131,7 +138,6 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 				doRemove();
 			}
 		});
-
 		
 		contextListPanel.add(contextList);
 		contextListPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
@@ -140,6 +146,15 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 
 		this.add(WidgetFactory.makeDefaultSpacer());
 
+	}
+	
+	private void doEdit() {
+		List rowList = contextList.getSelectedRowList();
+		Context selectedContext = (Context) rowList.get(3);
+		// the context command takes care of the rest
+		ContextCommand contextCommand = new ContextCommand(ContextCommand.EDIT);
+		contextCommand.setCurrentContext(selectedContext);
+		contextCommand.execute(null);
 	}
 	
 	private void doRemove() {
@@ -157,9 +172,7 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 				// done
 				break;
 			}
-		}
-
-		
+		}		
 	}
 	
 	public void setObservation(Observation observation) {
@@ -264,12 +277,6 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 	 *         settings for this particular wizard page
 	 */
 	public OrderedMap getPageData(String rootXPath) {
-		for (Object rowObj: contextList.getListOfRowLists()) {
-			List<String> row = (List<String>) rowObj;
-			String uri = row.get(0);
-			String url = row.get(1);
-			returnMap.put(uri, url);
-		}
 		return returnMap;
 	}
 

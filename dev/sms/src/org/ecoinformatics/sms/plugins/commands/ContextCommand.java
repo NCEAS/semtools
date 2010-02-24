@@ -56,13 +56,19 @@ public class ContextCommand implements Command {
 
 	private AddContextPage contextPage = null;
 	private Annotation annotation = null;
-	private boolean add = true;
+	private Context currentContext;
+
+	private int mode = 0;
+	
+	public static final int ADD = 0;
+	public static final int REMOVE = 1;
+	public static final int EDIT = 2;
 
 	/**
 	 * Constructor
 	 */
-	public ContextCommand(boolean add) {
-		this.add = add;
+	public ContextCommand(int mode) {
+		this.mode = mode;
 	}
 
 	/**
@@ -83,7 +89,7 @@ public class ContextCommand implements Command {
 		
 		Component source = null;
 		//ADD
-		if (add) {
+		if (mode == ADD || mode == EDIT) {
 			// get the Observations it can provide context for
 			List<Observation> observations = annotation.getObservations();
 			
@@ -97,6 +103,12 @@ public class ContextCommand implements Command {
 			// for the state change event
 			source = contextPage;
 			
+			// set the context if we have it
+			if (mode == ADD) {
+				currentContext = null;
+			}
+			contextPage.setContext(currentContext);
+			
 			// set "this" observation
 			contextPage.setObservation(currentObservation);
 			
@@ -104,24 +116,28 @@ public class ContextCommand implements Command {
 			contextPage.setObservations(observations);
 			
 			if (showContextDialog()) {
+				// check that the context exists, add it otherwise
+				currentContext = contextPage.getContext();
+				if (currentContext == null) {
+					currentContext = new Context();
+					currentObservation.addContext(currentContext);
+				}
 				Observation selectedObservation = (Observation) contextPage.getSelectedObservation();
-				Context context = new Context();
-				context.setObservation(selectedObservation);
+				currentContext.setObservation(selectedObservation);
 				// relationship
 				Relationship relationship = contextPage.getRelationship();
-				context.setRelationship(relationship);
+				currentContext.setRelationship(relationship);
 				// identifying
 				boolean isIdentifying = contextPage.getIsIdentifying();
-				context.setIdentifying(isIdentifying);
+				currentContext.setIdentifying(isIdentifying);
 
-				currentObservation.addContext(context);
 			} else {
-				// no need to continue - cancelled
+				// no need to continue - canceled
 				return;
 			}
 		}
 		//REMOVE
-		else {
+		else if (mode == REMOVE){
 			// get the existing contexts for this observation
 			List<Context> existingContexts = currentObservation.getContexts();
 			
@@ -171,6 +187,14 @@ public class ContextCommand implements Command {
 		
 		//get the response back
 		return (dialog.USER_RESPONSE == ModalDialog.OK_OPTION);
+	}
+
+	public Context getCurrentContext() {
+		return currentContext;
+	}
+
+	public void setCurrentContext(Context currentContext) {
+		this.currentContext = currentContext;
 	}
 	
 	

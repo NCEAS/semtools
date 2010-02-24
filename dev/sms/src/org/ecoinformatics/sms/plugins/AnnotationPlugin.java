@@ -221,7 +221,7 @@ public class AnnotationPlugin
 			new GUIAction(
 				"Add Context...",
 				null,
-				new ContextCommand(true));
+				new ContextCommand(ContextCommand.ADD));
 		addContextAction.setToolTipText(
 			"Define a Context relationship between this Observation and another");
 		addContextAction.setMenuItemPosition(menuPosition++);
@@ -237,7 +237,7 @@ public class AnnotationPlugin
 			new GUIAction(
 				"Remove Context...",
 				null,
-				new ContextCommand(false));
+				new ContextCommand(ContextCommand.REMOVE));
 		removeContextAction.setToolTipText(
 			"Remove a Context relationship from this Observation");
 		removeContextAction.setMenuItemPosition(menuPosition++);

@@ -36,6 +36,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Relationship;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
@@ -69,6 +70,7 @@ public class AddContextPage extends AbstractUIPage {
 	private JLabel observationLabel;
 	private JLabel observationLabelLabel;
 
+	private Context currentContext;
 	private Observation currentObservation;
 	private Relationship relationship;
 	private List<Observation> existingObservations;
@@ -339,9 +341,23 @@ public class AddContextPage extends AbstractUIPage {
 		
 	}
 
+	// for editing the context
+	public void setContext(Context context) {
+		this.currentContext = context;
+		if (context != null) {
+			this.contextRelationship.setOntologyClass(context.getRelationship());
+			this.observationIsIdentifying.setSelected(context.isIdentifying());
+			this.observationList.setSelectedItem(context.getObservation());
+		}
+		
+	}
+	
+	public Context getContext() {
+		return this.currentContext;
+	}
+	
 	public void setObservation(Observation contextObservation) {
 		this.currentObservation = contextObservation;
 		this.observationLabel.setText(currentObservation.toString());
-		
 	}
 }
