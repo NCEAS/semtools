@@ -124,9 +124,14 @@ public class ContextCommand implements Command {
 				}
 				Observation selectedObservation = (Observation) contextPage.getSelectedObservation();
 				currentContext.setObservation(selectedObservation);
+				
 				// relationship
 				Relationship relationship = contextPage.getRelationship();
 				currentContext.setRelationship(relationship);
+				if (relationship != null) {
+					annotation.addOntology(relationship.getOntology());
+				}
+				
 				// identifying
 				boolean isIdentifying = contextPage.getIsIdentifying();
 				currentContext.setIdentifying(isIdentifying);
