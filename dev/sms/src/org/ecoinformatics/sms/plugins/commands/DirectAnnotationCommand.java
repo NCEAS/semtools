@@ -107,7 +107,7 @@ public class DirectAnnotationCommand implements Command {
     	}
     	
     	annotation = AnnotationPlugin.getCurrentActiveAnnotation();
-		String attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
+		attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
 				
 		Log.debug(30, "Directly Annotating...\n " 
 				+ "Attribute: " + attributeName
