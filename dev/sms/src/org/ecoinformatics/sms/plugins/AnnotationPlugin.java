@@ -49,7 +49,6 @@ import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.commands.AnnotationCommand;
 import org.ecoinformatics.sms.plugins.commands.AnnotationSearchCommand;
-import org.ecoinformatics.sms.plugins.commands.ContextCommand;
 import org.ecoinformatics.sms.plugins.commands.ObservationCommand;
 import org.ecoinformatics.sms.plugins.commands.OntologyManagementCommand;
 import org.ecoinformatics.sms.plugins.commands.RemoveCommand;
@@ -111,10 +110,6 @@ public class AnnotationPlugin
 	private GUIAction splitObservationAction;
 
 	private GUIAction mergeObservationAction;
-
-	private GUIAction addContextAction;
-
-	private GUIAction removeContextAction;
 
 	private GUIAction removeObservationAction;
 
@@ -217,37 +212,6 @@ public class AnnotationPlugin
 				StateChangeEvent.SELECT_DATATABLE_COLUMN,
 				true, GUIAction.EVENT_LOCAL);
 		
-		addContextAction =
-			new GUIAction(
-				"Add Context...",
-				null,
-				new ContextCommand(ContextCommand.ADD));
-		addContextAction.setToolTipText(
-			"Define a Context relationship between this Observation and another");
-		addContextAction.setMenuItemPosition(menuPosition++);
-		addContextAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
-		addContextAction.setSeparatorPosition(Morpho.SEPARATOR_PRECEDING);
-		addContextAction.setEnabled(false);
-
-		addContextAction.setEnabledOnStateChange(
-				StateChangeEvent.SELECT_DATATABLE_COLUMN,
-				true, GUIAction.EVENT_LOCAL);
-
-		removeContextAction =
-			new GUIAction(
-				"Remove Context...",
-				null,
-				new ContextCommand(ContextCommand.REMOVE));
-		removeContextAction.setToolTipText(
-			"Remove a Context relationship from this Observation");
-		removeContextAction.setMenuItemPosition(menuPosition++);
-		removeContextAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
-		removeContextAction.setEnabled(false);
-
-		removeContextAction.setEnabledOnStateChange(
-				StateChangeEvent.SELECT_DATATABLE_COLUMN,
-				true, GUIAction.EVENT_LOCAL);
-		
 		// Save Annotations
 	    GUIAction saveAction = 
 	    	new GUIAction(
@@ -293,8 +257,6 @@ public class AnnotationPlugin
 		controller.addGuiAction(splitObservationAction);
 		controller.addGuiAction(removeObservationAction);
 		controller.addGuiAction(removeMeasurementAction);
-		controller.addGuiAction(addContextAction);
-		controller.addGuiAction(removeContextAction);
 		controller.addGuiAction(saveAction);
 		controller.addGuiAction(searchAction);
 		controller.addGuiAction(manageOntologyAction);
@@ -727,9 +689,6 @@ public class AnnotationPlugin
 					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(splitObservationAction, morphoFrame), false);
 					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(removeObservationAction, morphoFrame), false);
 					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(removeMeasurementAction, morphoFrame), false);
-					// separator
-					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(addContextAction, morphoFrame), true);
-					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(removeContextAction, morphoFrame), false);
 				}
 			}
 		}
