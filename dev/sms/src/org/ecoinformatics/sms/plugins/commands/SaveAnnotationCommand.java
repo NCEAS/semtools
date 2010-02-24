@@ -28,6 +28,8 @@ package org.ecoinformatics.sms.plugins.commands;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JOptionPane;
+
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
@@ -57,6 +59,8 @@ public class SaveAnnotationCommand implements Command {
 		String packageId = adp.getPackageId();
 		
 		AnnotationPlugin.serializeAnnotation(packageId);
+		
+		JOptionPane.showMessageDialog(UIController.getInstance().getCurrentActiveWindow(), "Annotations Saved!");
 	}
 
 }
