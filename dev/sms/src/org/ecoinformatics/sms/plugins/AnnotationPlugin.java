@@ -813,6 +813,8 @@ public class AnnotationPlugin
 					
 					// tabPane listens for column selection
 					StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SELECT_DATATABLE_COLUMN, tabPane);
+					// tab pane listens for annotation change
+					StateChangeMonitor.getInstance().addStateChangeListener(ANNOTATION_CHANGE_EVENT, tabPane);
 					
 					// add the tab pane to the panel
 					dataViewer.getHeaderPanel().add(BorderLayout.CENTER, tabPane);
