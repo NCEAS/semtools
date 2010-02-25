@@ -11,8 +11,6 @@ import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.pages.AnnotationPage;
 
-
-import edu.ucsb.nceas.morpho.util.Log;
 import edu.ucsb.nceas.morpho.util.StateChangeEvent;
 import edu.ucsb.nceas.morpho.util.StateChangeListener;
 
@@ -52,62 +50,61 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 	}
 	
 	private void handleSelectColumn() {
-		int currentTab = getSelectedIndex();
+		// get the annotation page if it exists
+		AnnotationPage annotationPage = null;
+		if (getTabCount() == TAB_NAMES.size()) {
+			annotationPage = (AnnotationPage) getComponentAt(TAB_NAMES.indexOf(COLUMN_ANNOTATION));
+		}
+		
 		// save the state of the annotation if we are on the annotation tab
+		int currentTab = getSelectedIndex();
 		if (currentTab == TAB_NAMES.indexOf(COLUMN_ANNOTATION)) {
-			AnnotationPage annotationPage = (AnnotationPage) getComponentAt(currentTab);
 			persistColumnAnnotation(annotationPage);
 		}
+		
+		// always set the annotation
+		showColumnAnnotation(annotationPage);
+		
 	}
 	
 	private void handleSelectTab() {
 		
+		// get the annotation page if it exists
+		AnnotationPage annotationPage = null;
+		if (getTabCount() == TAB_NAMES.size()) {
+			annotationPage = (AnnotationPage) getComponentAt(TAB_NAMES.indexOf(COLUMN_ANNOTATION));
+		}
+		
 		// save when moving away from the annotation tab
 		int currentTab = getSelectedIndex();
-		AnnotationPage annotationPage = null;
-
-		// navigated to this tab (show current state of the annotation
-		if (currentTab == TAB_NAMES.indexOf(COLUMN_ANNOTATION)) {
-			annotationPage = (AnnotationPage) getComponentAt(currentTab);
-			Annotation annotation = AnnotationPlugin.getCurrentActiveAnnotation();
-			String attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
-			annotationPage.setAnnotation(annotation, attributeName);
-		}
-		// navigated away from the tab
-		else if (currentTab != TAB_NAMES.indexOf(COLUMN_ANNOTATION)) {
+		if (currentTab != TAB_NAMES.indexOf(COLUMN_ANNOTATION)) {
 			if (previousTab == TAB_NAMES.indexOf(COLUMN_ANNOTATION)) {
-				annotationPage = (AnnotationPage) getComponentAt(TAB_NAMES.indexOf(COLUMN_ANNOTATION));
 				persistColumnAnnotation(annotationPage);
 			}
 		}
+		
+		// always set the latest state in the annotation tab
+		showColumnAnnotation(annotationPage);
+		
 		previousTab = currentTab;
 	}
 	
 	private void persistColumnAnnotation(AnnotationPage annotationPage) {
-		Annotation annotation = null;
-		
-		//save what we have before moving forward?
-		String currentAttributeName = annotationPage.getCurrentAttributeName();
-		if (currentAttributeName != null) {
-			annotation = annotationPage.getAnnotation(currentAttributeName);
-			if (annotation != null) {
-				// reset the UI
-				annotationPage.reset();
-				// save
-				AnnotationPlugin.saveAnnotation(annotation);
-			}
+		Annotation annotation = annotationPage.getAnnotation();
+		if (annotation != null) {
+			// reset the UI
+			annotationPage.reset();
+			// save
+			AnnotationPlugin.saveAnnotation(annotation);
 		}
-		
-		annotation = AnnotationPlugin.getCurrentActiveAnnotation();
-		String attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
-				
-		if (attributeName != null && annotation != null) {
-			Log.debug(30, "Annotating...\n " 
-					+ "Attribute: " + attributeName
-					+ ", annotation id: " + annotation.getURI()
-					);
-			
-			annotationPage.setAnnotation(annotation, attributeName);
+	}
+	
+	private void showColumnAnnotation(AnnotationPage annotationPage) {
+		if (annotationPage != null) {
+			Annotation annotation = AnnotationPlugin.getCurrentActiveAnnotation();
+			String attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
+			annotationPage.setAnnotation(annotation);
+			annotationPage.editAttribute(attributeName);
 		}
 	}
 	

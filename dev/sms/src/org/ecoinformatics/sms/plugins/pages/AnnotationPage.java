@@ -246,8 +246,7 @@ public class AnnotationPage extends AbstractUIPage {
 	
 	}
 
-	public void setAnnotation(Annotation a, String attributeName) {
-		this.annotation = a;
+	public void editAttribute(String attributeName) {
 		this.currentAttributeName = attributeName;
 		
 		try {
@@ -288,25 +287,21 @@ public class AnnotationPage extends AbstractUIPage {
 			} catch (Exception e) {
 			}
 			try {
-				String entity = currentObservation.getEntity().getURI();
 				this.simpleAnnotationPanel.setObservationEntity(currentObservation.getEntity());
 			} catch (Exception e) {
 			}
 			try {
 				currentCharacteristic = currentMeasurement.getCharacteristics().get(0);
-				String charString = currentCharacteristic.getURI();
 				this.simpleAnnotationPanel.setObservationCharacteristic(currentCharacteristic);
 			} catch (Exception e) {
 			}
 			try {
 				currentStandard = currentMeasurement.getStandard();
-				String standard = currentStandard.getURI();
 				this.simpleAnnotationPanel.setObservationStandard(currentStandard);
 			} catch (Exception e) {
 			}
 			try {
 				currentProtocol = currentMeasurement.getProtocol();
-				String protocol = currentProtocol.getURI();
 				this.simpleAnnotationPanel.setObservationProtocol(currentProtocol);
 			} catch (Exception e) {
 			}
@@ -316,8 +311,16 @@ public class AnnotationPage extends AbstractUIPage {
 		}
 
 	}
+	
+	public void setAnnotation(Annotation a) {
+		this.annotation = a;
+	}
 
-	public Annotation getAnnotation(String attributeName) {
+	public Annotation getAnnotation() {
+		
+		if (currentAttributeName == null) {
+			return annotation;
+		}
 
 		// create a measurement if there wasn't one already
 		if (currentMeasurement == null) {
@@ -432,7 +435,7 @@ public class AnnotationPage extends AbstractUIPage {
 			currentMapping = new Mapping();
 			annotation.addMapping(currentMapping);
 		}
-		currentMapping.setAttribute(attributeName);
+		currentMapping.setAttribute(currentAttributeName);
 		currentMapping.setMeasurement(currentMeasurement);
 
 		return annotation;
@@ -560,12 +563,18 @@ public class AnnotationPage extends AbstractUIPage {
 	}
 	
 	public void reset() {
+			
+		currentAttributeName = null;
+
 		currentCharacteristic = null;
 		currentMapping = null;
 		currentMeasurement = null;
 		currentObservation = null;
 		currentProtocol = null;
 		currentStandard = null;
+		
+		// attribute
+		attributeLabel.setText(null);
 		
 		// observation
 		observationLabel.setText(null);
@@ -575,6 +584,7 @@ public class AnnotationPage extends AbstractUIPage {
 		measurementLabel.setText(null);
 		measurementIsKey.setSelected(false);
 		
+		// classes
 		simpleAnnotationPanel.setObservationCharacteristic(null);
 		simpleAnnotationPanel.setObservationEntity(null);
 		simpleAnnotationPanel.setObservationProtocol(null);
@@ -586,7 +596,4 @@ public class AnnotationPage extends AbstractUIPage {
 		return currentAttributeName;
 	}
 
-	public void setCurrentAttributeName(String currentAttributeName) {
-		this.currentAttributeName = currentAttributeName;
-	}
 }

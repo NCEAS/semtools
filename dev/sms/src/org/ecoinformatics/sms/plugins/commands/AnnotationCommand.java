@@ -74,7 +74,7 @@ public class AnnotationCommand implements Command {
 		if (showDialog()) {
 			
 			//the page will put things together for us
-			annotation = annotationPage.getAnnotation(attributeName);
+			annotation = annotationPage.getAnnotation();
 			
 			// save - still some TBD
 			AnnotationPlugin.saveAnnotation(annotation);
@@ -90,7 +90,8 @@ public class AnnotationCommand implements Command {
 		
 		// set the annotation in the page
 		annotationPage = new AnnotationPage(true);
-		annotationPage.setAnnotation(annotation, attributeName);
+		annotationPage.setAnnotation(annotation);
+		annotationPage.editAttribute(attributeName);
 		
 		// show the dialog
 		ModalDialog dialog = 
