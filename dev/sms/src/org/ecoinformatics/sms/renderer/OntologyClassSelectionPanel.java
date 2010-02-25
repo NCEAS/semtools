@@ -134,9 +134,9 @@ public class OntologyClassSelectionPanel extends JPanel {
 	}
 	
 	/** add our own listener, disables the double click expansion **/
-	public void addTreeMouseListener(MouseListener listener) {
-		_ontoTree.getTree().setToggleClickCount(0);
-		_ontoTree.getTree().addMouseListener(listener);
+	public void setTreeMouseListener(MouseListener listener) {
+		this.treeMouseListener = listener;
+		_ontoTree.getTree().addMouseListener(treeMouseListener);
 	}
 
 	public void initialize(OntologyClass filterClass) {
@@ -162,8 +162,6 @@ public class OntologyClassSelectionPanel extends JPanel {
 		createTreeView(filterClass);
 
 		_ontoTree.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
-
-		
 
 		// the description text area
 		_commentTxt = new JTextArea();
@@ -266,6 +264,10 @@ public class OntologyClassSelectionPanel extends JPanel {
 		_ontoTree = new OntoClassSelectionJTree(rootNode);
 		// configure tree
 		_ontoTree.getTree().setRootVisible(false);
+		// ensure we continue to listen to 2x clicks
+		_ontoTree.getTree().setToggleClickCount(0);
+		_ontoTree.getTree().addMouseListener(treeMouseListener);
+		
 		//_ontoTree.setCellRenderer(new OntoClassSelectionJTreeRenderer());
 		_ontoTree.setDragEnabled(false); // if true, causes problems on linux
 		_ontoTree.getTree()
@@ -761,6 +763,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 
 	private JPopupMenu popup;
 	private OntoClassSelectionJTree _ontoTree;
+	private MouseListener treeMouseListener = null;
 	private JTextField _searchTxt;
 	private JTextArea _commentTxt;
 	private JButton _searchBtn;

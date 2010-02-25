@@ -281,7 +281,7 @@ public class OntologyClassField extends JTextField {
 
 		// listen for double click on the tree
 		MouseListener doubleClickTreeListener = source.new TreeMouseListener(source);
-		source.selectionPanel.addTreeMouseListener(doubleClickTreeListener);
+		source.selectionPanel.setTreeMouseListener(doubleClickTreeListener);
 		
 	}
 	
