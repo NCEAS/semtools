@@ -48,7 +48,6 @@ import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
-import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.ui.SimpleAnnotationPanel;
 
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
@@ -60,11 +59,9 @@ import edu.ucsb.nceas.morpho.util.Command;
 import edu.ucsb.nceas.morpho.util.GUIAction;
 import edu.ucsb.nceas.morpho.util.HyperlinkButton;
 import edu.ucsb.nceas.morpho.util.Log;
-import edu.ucsb.nceas.morpho.util.StateChangeEvent;
-import edu.ucsb.nceas.morpho.util.StateChangeListener;
 import edu.ucsb.nceas.utilities.OrderedMap;
 
-public class AnnotationPage extends AbstractUIPage implements StateChangeListener {
+public class AnnotationPage extends AbstractUIPage {
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
@@ -562,7 +559,7 @@ public class AnnotationPage extends AbstractUIPage implements StateChangeListene
 		return true;
 	}
 	
-	private void reset() {
+	public void reset() {
 		currentCharacteristic = null;
 		currentMapping = null;
 		currentMeasurement = null;
@@ -585,39 +582,11 @@ public class AnnotationPage extends AbstractUIPage implements StateChangeListene
 		
 	}
 
-	public void handleStateChange(StateChangeEvent event) {
-		if (event.getChangedState().equals(StateChangeEvent.SELECT_DATATABLE_COLUMN)) {
-			handleSelectColumn();
-		}
-		
+	public String getCurrentAttributeName() {
+		return currentAttributeName;
 	}
-	
-	private void handleSelectColumn() {
-		
-		//save what we have before moving forward?
-		if (currentAttributeName != null) {
-			annotation = this.getAnnotation(currentAttributeName);
-			if (annotation != null) {
-				// reset the UI
-				this.reset();
-				// save
-				AnnotationPlugin.saveAnnotation(annotation);
-			}
 
-		}
-		
-		annotation = AnnotationPlugin.getCurrentActiveAnnotation();
-		String attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
-				
-		if (attributeName != null && annotation != null) {
-			Log.debug(30, "Annotating...\n " 
-					+ "Attribute: " + attributeName
-					+ ", annotation id: " + annotation.getURI()
-					);
-			
-			this.setAnnotation(annotation, attributeName);
-		}
-
-		
+	public void setCurrentAttributeName(String currentAttributeName) {
+		this.currentAttributeName = currentAttributeName;
 	}
 }

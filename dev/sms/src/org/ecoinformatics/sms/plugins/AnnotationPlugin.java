@@ -55,6 +55,7 @@ import org.ecoinformatics.sms.plugins.commands.RemoveCommand;
 import org.ecoinformatics.sms.plugins.commands.SaveAnnotationCommand;
 import org.ecoinformatics.sms.plugins.pages.AnnotationPage;
 import org.ecoinformatics.sms.plugins.pages.ContextPage;
+import org.ecoinformatics.sms.plugins.table.AnnotationTabPane;
 import org.ecoinformatics.sms.plugins.table.AnnotationTableModel;
 import org.ecoinformatics.sms.plugins.table.AnnotationTablePanel;
 import org.ecoinformatics.sms.plugins.table.DataTableModelListener;
@@ -785,12 +786,12 @@ public class AnnotationPlugin
 					 
 					
 					// add the table panel to a tab pane
-					JTabbedPane tabPane = new JTabbedPane(JTabbedPane.TOP);
-					tabPane.addTab("Full Annotation", annotationTablePanel);
+					AnnotationTabPane tabPane = new AnnotationTabPane(JTabbedPane.TOP);
+					tabPane.addTab(AnnotationTabPane.TAB_NAMES.get(0), annotationTablePanel);
 					
 					// add the madlib column view
 					AnnotationPage madLib = new AnnotationPage(false);
-					StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SELECT_DATATABLE_COLUMN, madLib);
+					//StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SELECT_DATATABLE_COLUMN, madLib);
 					
 					// if we want scrolling
 //					JScrollPane madLibScroll = new JScrollPane(madLib);
@@ -802,27 +803,16 @@ public class AnnotationPlugin
 //					tabPane.addTab("Column View", madLibScroll);
 					
 					// just the panel, no scrolling
-					tabPane.addTab("Column Annotation", madLib);
+					tabPane.addTab(AnnotationTabPane.TAB_NAMES.get(1), madLib);
 										
 					// add the context tab
 					ContextPage contextTab = new ContextPage();
 					StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SELECT_DATATABLE_COLUMN, contextTab);
 					StateChangeMonitor.getInstance().addStateChangeListener(ANNOTATION_CHANGE_EVENT, contextTab);
-					tabPane.addTab("Context Annotation", contextTab);
+					tabPane.addTab(AnnotationTabPane.TAB_NAMES.get(2), contextTab);
 					
-					// add a change listener
-					tabPane.addChangeListener(new ChangeListener() {
-					    // This method is called whenever the selected tab changes
-					    public void stateChanged(ChangeEvent e) {
-					        JTabbedPane pane = (JTabbedPane)e.getSource();
-					        // Get current tab
-					        //int sel = pane.getSelectedIndex();
-					        // synthetic event
-					        StateChangeEvent event = 
-					        	new StateChangeEvent(pane, StateChangeEvent.SELECT_DATATABLE_COLUMN);
-					        StateChangeMonitor.getInstance().notifyStateChange(event);
-					    }
-					});
+					// tabPane listens for column selection
+					StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SELECT_DATATABLE_COLUMN, tabPane);
 					
 					// add the tab pane to the panel
 					dataViewer.getHeaderPanel().add(BorderLayout.CENTER, tabPane);
