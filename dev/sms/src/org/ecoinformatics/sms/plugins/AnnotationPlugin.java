@@ -305,7 +305,15 @@ public class AnnotationPlugin
 				if (forDocid != null) {
 					String docidFromAnnotation = annotation.getEMLPackage();
 					if (!forDocid.equals(docidFromAnnotation)) {
+						// not what we are looking for
 						continue;
+					}
+					else {
+						// remove the current existing annotations for EML
+						List<Annotation> existingAnnotations = SMS.getInstance().getAnnotationManager().getAnnotations(forDocid, null);
+						for (Annotation existingAnnotation: existingAnnotations) {
+							SMS.getInstance().getAnnotationManager().removeAnnotation(existingAnnotation.getURI());
+						}
 					}
 				}
 				SMS.getInstance().getAnnotationManager().importAnnotation(annotation, docid);
