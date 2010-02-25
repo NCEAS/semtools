@@ -186,25 +186,30 @@ public class OntologyClassField extends JTextField {
 			private void doKey(KeyEvent e) {
 				OntologyClassField source = (OntologyClassField) e.getSource();
 				
-				// start them off with the popup
+				// start off with the popup if not already showing
 				if (!source.isPopupShowing) {
 					showPopupDialog(source);
 				}
-				
-				// get out of here!
-				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-					source.isPopupShowing = false;
-					source.editing = false;
-					source.popup.hide();
-					return;
-				}
 
-				// search
+				// search, or continue to search with the text provided
 				String searchTerm = source.getText();
 				source.selectionPanel.doFilterSearch(searchTerm);
 			}
 
 			public void keyReleased(KeyEvent e) {
+				OntologyClassField source = (OntologyClassField) e.getSource();
+				// get out of here!
+				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					if (source.isPopupShowing) {
+						source.isPopupShowing = false;
+						source.editing = false;
+						source.popup.hide();
+						return;
+					}
+				}			
+			}
+			public void keyTyped(KeyEvent e) {
+				// only do this for keys that have characters
 				doKey(e);				
 			}
 
