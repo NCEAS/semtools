@@ -251,10 +251,10 @@ public class AnnotationPage extends AbstractUIPage {
 		
 		try {
 			// what are we editing:
-			attributeLabel.setText(attributeName);
+			attributeLabel.setText(currentAttributeName);
 
 			// is there a measurement mapping for the attribute?
-			currentMapping = annotation.getMapping(attributeName);
+			currentMapping = annotation.getMapping(currentAttributeName);
 			if (currentMapping == null) {
 				return;
 			}
@@ -327,6 +327,7 @@ public class AnnotationPage extends AbstractUIPage {
 			currentMeasurement = new Measurement();
 			currentMeasurement.setLabel(
 					Annotation.getNextMeasurementLabel(annotation, "m"));
+			Log.debug(40, "Adding Measurement: " + currentMeasurement);
 		}
 		
 		// edit the existing values
@@ -340,7 +341,7 @@ public class AnnotationPage extends AbstractUIPage {
 			annotation.addOntology(currentCharacteristic.getOntology());
 		} catch (Exception e) {
 			currentCharacteristic = null;
-			Log.debug(30, "Ignoring: " + e.getMessage());
+			Log.debug(40, "Ignoring Characteristic: " + e.getMessage());
 			//e.printStackTrace();
 		}
 		currentMeasurement.getCharacteristics().clear();
@@ -354,7 +355,7 @@ public class AnnotationPage extends AbstractUIPage {
 			annotation.addOntology(currentStandard.getOntology());
 		} catch (Exception e) {
 			currentStandard = null;
-			Log.debug(30, "Ignoring: " + e.getMessage());
+			Log.debug(40, "Ignoring Standard: " + e.getMessage());
 			//e.printStackTrace();
 		}
 		currentMeasurement.setStandard(currentStandard);
@@ -367,7 +368,7 @@ public class AnnotationPage extends AbstractUIPage {
 			annotation.addOntology(currentProtocol.getOntology());
 		} catch (Exception e) {
 			currentProtocol = null;
-			Log.debug(30, "Ignoring: " + e.getMessage());
+			Log.debug(40, "Ignoring Protocol: " + e.getMessage());
 			//e.printStackTrace();
 		}
 		currentMeasurement.setProtocol(currentProtocol);
@@ -388,7 +389,7 @@ public class AnnotationPage extends AbstractUIPage {
 			annotation.addOntology(entity.getOntology());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			Log.debug(30, "Ignoring: " + e.getMessage());
+			Log.debug(40, "Ignoring Entity: " + e.getMessage());
 			//e.printStackTrace();
 		}
 		
@@ -416,6 +417,7 @@ public class AnnotationPage extends AbstractUIPage {
 					Annotation.getNextObservationLabel(annotation, "o"));
 			currentObservation.addMeasurement(currentMeasurement);
 			annotation.addObservation(currentObservation);
+			Log.debug(40, "Adding Observation: " + currentObservation);
 		}
 		
 		// observation label
@@ -434,6 +436,7 @@ public class AnnotationPage extends AbstractUIPage {
 		if (currentMapping == null) {
 			currentMapping = new Mapping();
 			annotation.addMapping(currentMapping);
+			Log.debug(40, "Adding Mapping: " + currentMapping);
 		}
 		currentMapping.setAttribute(currentAttributeName);
 		currentMapping.setMeasurement(currentMeasurement);
