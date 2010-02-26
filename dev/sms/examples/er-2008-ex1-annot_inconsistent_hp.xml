@@ -34,10 +34,10 @@
         </sms:context>
     </sms:observation>
     <sms:map attribute="yr" measurement="m1"/>
-    <sms:map attribute="dbh" measurement="m2" if="dbh ge 0"/>
-    <sms:map attribute="tree" measurement="m4"/>
-    <sms:map attribute="spp" measurement="m3" value="Picea rubens" 
+    <sms:map attribute="diam" measurement="m2" if="diam ge 0"/>
+    <sms:map attribute="tree" measurement="m3"/>
+    <sms:map attribute="spp" measurement="m4" value="Picea rubens" 
 	   if="spp eq 'piru'"/>
-    <sms:map attribute="spp" measurement="m3" value="Abies balsamea" 
+    <sms:map attribute="spp" measurement="m4" value="Abies balsamea" 
 	   if="spp eq 'abba'"/>
 </sms:annotation>

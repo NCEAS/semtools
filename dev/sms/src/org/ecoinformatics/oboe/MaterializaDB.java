@@ -555,7 +555,8 @@ public class MaterializaDB {
 		
 		//TODO: for testing purpose, hard code the three files, need to get this from parameters
 		String dataFileName = inputUriPrefix + "er-2008-ex1-data.txt";
-		String annotFileName = inputUriPrefix + "er-2008-ex1-annot.xml";
+		//String annotFileName = inputUriPrefix + "er-2008-ex1-annot.xml";
+		String annotFileName = localInputUriPrefix + "er-2008-ex1-annot.xml";
 		String oboeFileName = localOutputUriPrefix + "er-2008-ex1-oboe.csv";
 		
 		try {

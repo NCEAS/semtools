@@ -114,6 +114,10 @@ public class Mapping {
 	return _conditions;
     }
 
+    public String toString(){
+    	String str = "attr=" + _attribute +", meas name="+_measurement.getLabel() + ", value="+_value +", conditions="+_conditions;
+    	return str;
+    }
 
     private String _attribute;
     private Measurement _measurement;
