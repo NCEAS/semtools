@@ -68,22 +68,23 @@ public class MeasurementInstance<T> implements Comparable<MeasurementInstance> {
 	
 	public String toString()
 	{
-		String str="[";
-		str += measId.toString();
-		str += ", oi=";
+		String str="[mi";
+		str += measId.toString();		
+		str += "("+measurementType.getLabel()+","+measurementType.getCharacteristics()+")";
+		str += " val="+measValue.toString();
+		str += " -> oi";
 		if(observationInstance!=null)
 			str +=observationInstance.getObsId();
 		else
-			str +=observationInstance;
-		str += ", mt="+measurementType.getLabel();
-		str += ", val="+measValue.toString();
+			str +="("+observationInstance+")";
 		str +="]";
+		
 		return str;
 	}
 	
 	public void toPrintStream(PrintStream p)
 	{
-		p.println(measId + "," + measValue +", "+observationInstance.getObsId() + ", "+measurementType.getLabel());
+		p.println(measId + "," + measValue +","+observationInstance.getObsId() + ", "+measurementType.getLabel());
 	}
 	
 	public void fromPrintStream(BufferedReader in) throws IOException{

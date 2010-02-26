@@ -48,10 +48,10 @@ public class EntityInstance {
 	
 	public String toString()
 	{
-		String str = "(";
+		String str = "[ei";
 		str += entId;
-		str +=", et="+ entityType.getName();
-		str +=")";
+		str +="("+ entityType.getName()+")";
+		str +="]";
 		return str;
 	}
 	

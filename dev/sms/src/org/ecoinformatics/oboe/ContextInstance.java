@@ -6,6 +6,8 @@ import java.io.PrintStream;
 
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Context;
+import org.ecoinformatics.sms.annotation.Observation;
+import org.ecoinformatics.sms.annotation.Relationship;
 
 public class ContextInstance {
 	private ObservationInstance observationInstance;
@@ -19,8 +21,9 @@ public class ContextInstance {
 			Context _contextType,
 			ObservationInstance _contextObservationInstance)
 	{
-		this.setObservationInstance(_contextObservationInstance);
-		this.setContextType(_contextType);
+		this.setObservationInstance(_observationInstance);
+		contextType = new Context(_contextType.getObservation(),_contextType.getRelationship(),_contextType.isIdentifying());		
+		//this.setContextType(_contextType); //after this one, contextType is still null, //FIXME to check what's the problem
 		this.setContextObservationInstance(_contextObservationInstance);
 	}
 	
@@ -60,15 +63,14 @@ public class ContextInstance {
 	public String toString()
 	{
 		String str = "(";
-		str += observationInstance.getObsId();
-		str += ", ct=";
+		str += "oi"+observationInstance.getObsId();
+		str += ("->coi" +contextObservationInstance.getObsId());
+		str += " ct=";
 		if(contextType==null||(contextType.getRelationship()==null)){
 			str += "null";
 		}else{
-			contextType.getRelationship().getName();
+			str +=contextType.getRelationship().getName();
 		}
-		
-		str += (" coi=" +contextObservationInstance.getObsId());
 		str +=")";
 		return str;
 	}
@@ -80,7 +82,7 @@ public class ContextInstance {
 			throw new Exception("contextType is NULL.");
 		}
 			
-		p.println(observationInstance.getObsId() + "," + contextObservationInstance.getObsId() +", " + contextType.getRelationship().getName());		
+		p.println(observationInstance.getObsId() + "," + contextObservationInstance.getObsId() +"," + contextType.getRelationship().getName());		
 	}
 	
 	public void fromPrintStream(BufferedReader in) throws IOException{

@@ -62,11 +62,11 @@ public class ObservationInstance implements Comparable<ObservationInstance>{
 	
 	public String toString()
 	{
-		String str="[";
+		String str="[oi";
 		str += obsId.toString();
-		str += ", ei=";
+		str += "->ei";
 		if(entityInstance!=null)
-			str +=entityInstance.getEntId()+"-"+entityInstance.getEntityType().getName();
+			str +=entityInstance.getEntId()+"("+entityInstance.getEntityType().getName()+")";
 		else
 			str +=entityInstance;
 		str += ", ot="+obsType.getLabel();
@@ -81,7 +81,7 @@ public class ObservationInstance implements Comparable<ObservationInstance>{
 	
 	public void toPrintStream(PrintStream p)
 	{
-		p.println(obsId + "," + entityInstance.getEntId() +", "+obsType.getLabel());
+		p.println(obsId + "," + entityInstance.getEntId() +","+obsType.getLabel());
 	}
 	
 	public void fromPrintStream(BufferedReader in) throws IOException{

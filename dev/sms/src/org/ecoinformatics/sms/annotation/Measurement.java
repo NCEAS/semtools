@@ -195,5 +195,16 @@ public class Measurement {
    public boolean isKey() {
       return _isKey;
    }
+   
+   /**
+    * To check the content easily
+    * 
+    * @author cao
+    */
+   public String toString(){
+	   String str = "Label="+_label+",characteristics="+_characteristics+",standard="+_standard
+	   	+",protocol="+_protocol+",precision="+_precision+",value="+_value+",iskey="+_isKey;
+	   return str;
+   }
 
 } 

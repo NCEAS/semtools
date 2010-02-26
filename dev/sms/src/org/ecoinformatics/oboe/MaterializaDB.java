@@ -469,6 +469,7 @@ public class MaterializaDB {
 				
 				//create a new context instance and put it into oboe
 				ContextInstance contextInstance = new ContextInstance(obsInstance,c,contextObsInstance);
+				System.out.println("contextInstance="+contextInstance);
 				ioOBOE.AddContextInstance(contextInstance);
 			}
 		}
@@ -542,22 +543,20 @@ public class MaterializaDB {
 	 */
 	public static void main(String[] args) {
 		
-//		if(args.length!=4){
-//			System.out.println("Usage: ./MaterializeDB <1. data file name> <2. annotation file name> <3. output OBOE file prefix>");
-//			return;
-//		}
-//		// Get input parameters
-//		String dataFileName = args[1];
-//		String annotFileName = args[2]; 
-//		String oboeFilePrefix = args[3];
-		
-//		public static final String PHYSICAL_URI = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl";
+		if(args.length!=3){
+			System.out.println("Usage: ./MaterializeDB <1. data file name> <2. annotation file name> <3. output OBOE file prefix>");
+			return;
+		}
+		// Get input parameters
+		String dataFileName = inputUriPrefix + args[0];
+		String annotFileName = inputUriPrefix + args[1]; 
+		String oboeFileName = localOutputUriPrefix +args[2];
 		
 		//TODO: for testing purpose, hard code the three files, need to get this from parameters
-		String dataFileName = inputUriPrefix + "er-2008-ex1-data.txt";
+		//String dataFileName = inputUriPrefix + "er-2008-ex1-data.txt";
 		//String annotFileName = inputUriPrefix + "er-2008-ex1-annot.xml";
-		String annotFileName = localInputUriPrefix + "er-2008-ex1-annot.xml";
-		String oboeFileName = localOutputUriPrefix + "er-2008-ex1-oboe.csv";
+		////String annotFileName = localInputUriPrefix + "er-2008-ex1-annot.xml";
+		//String oboeFileName = localOutputUriPrefix + "er-2008-ex1-oboe.csv";
 		
 		try {
 			
