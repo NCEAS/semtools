@@ -41,6 +41,7 @@ public class MaterializaDB {
 	private static String inputUriPrefix = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/";
 	private static String localInputUriPrefix = "/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/examples/";
 	private static String outputUriPrefix = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboedb/";
+	private static String localOutputUriPrefix = "/Users/cao/DATA/SONET/svntrunk/semtools/dev/oboedb/";
 	
 	private static void readDataFromDataManager()
 	{
@@ -478,8 +479,10 @@ public class MaterializaDB {
 	 * @param dataFileName
 	 * @param annotFileName
 	 * @param oboeFilePrefix
+	 * @throws Exception 
 	 */
-	public static OboeModel MaterializeDB(String dataFileName, String annotFileName, String oboeFilePrefix)		
+	public static OboeModel MaterializeDB(String dataFileName, String annotFileName, String oboeFileName) 
+		throws Exception		
 	{
 		//1. read data
 		//readDataFromOwlifier(dataFileName); 
@@ -522,8 +525,9 @@ public class MaterializaDB {
 		}
 		
 		System.out.println(OBOE);
-		return OBOE;
-	
+		OBOE.toCSV(oboeFileName);
+		
+		return OBOE;	
 	}
 	
 	
@@ -552,9 +556,19 @@ public class MaterializaDB {
 		//TODO: for testing purpose, hard code the three files, need to get this from parameters
 		String dataFileName = inputUriPrefix + "er-2008-ex1-data.txt";
 		String annotFileName = inputUriPrefix + "er-2008-ex1-annot.xml";
-		String oboeFilePrefix = outputUriPrefix + "er-2008-ex1-oboe";
+		String oboeFileName = localOutputUriPrefix + "er-2008-ex1-oboe.csv";
 		
-		OboeModel OBOE = MaterializeDB(dataFileName, annotFileName, oboeFilePrefix); 
+		try {
+			
+			OboeModel OBOE = MaterializeDB(dataFileName, annotFileName, oboeFileName);
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 

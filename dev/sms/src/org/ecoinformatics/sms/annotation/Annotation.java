@@ -146,6 +146,8 @@ public class Annotation {
       return null;
    }
    
+   
+   
    /**
     * Get the observation containing this entity
     * @return the list of observations matching the entity
@@ -160,6 +162,46 @@ public class Annotation {
       return observations;
    }
 
+   /**
+    * Get the measurement type with the given label
+    * 
+    * FIXME: inefficient, need to discuss with Ben
+    * @author cao
+    * @param measurementLabel
+    * @return
+    */
+   public Measurement getMeasurement(String measurementLabel)
+   {
+	   for (Observation o: _observations) {
+		   List<Measurement> measurements = o.getMeasurements(); 
+		   for(Measurement m: measurements){
+			   if (m.getLabel().equals(measurementLabel)) {
+				   return m;
+			   }
+		   }
+	   }
+	   return null;	   
+   }
+   
+   /**
+    * Get the entity type with the given label
+    * 
+    * FIXME: inefficient, need to discuss with Ben
+    * @author cao
+    * @param measurementLabel
+    * @return
+    */
+   public Entity getEntity(String entityTypeName)
+   {
+	   for (Observation o: _observations) {
+		   Entity entityType = o.getEntity();
+		   if (entityType.getName().equals(entityTypeName)) {
+			   return entityType;
+		   }
+	   }
+	   return null;	   
+   }
+   
    /**
     * Add a mapping to this annotation
     * @param m the mapping to add

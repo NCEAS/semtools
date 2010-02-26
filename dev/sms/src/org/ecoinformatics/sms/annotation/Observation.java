@@ -123,6 +123,23 @@ public class Observation implements Comparable {
    }
 
    /**
+    * Get the context type given this observation type's relationship name 
+    * (it should be unique, otherwise, there would be error) //FIXME: check this with ben
+    * 
+    * @author cao
+    * @param contextRelationshipName
+    * @return
+    */
+   public Context getContext(String contextRelationshipName)
+   {
+	   for(Context c: _contexts){
+		   if(c.getRelationship().getName().equals(contextRelationshipName)){
+			   return c;
+		   }
+	   }
+	   return null;
+   }
+   /**
     * Set whether this is a distinct observation
     * @param isDistinct if true, this is a distinct observation
     */

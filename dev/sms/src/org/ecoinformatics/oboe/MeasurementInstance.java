@@ -1,15 +1,21 @@
 package org.ecoinformatics.oboe;
 
+import java.io.*;
+import org.ecoinformatics.sms.annotation.*;
+
 import org.ecoinformatics.sms.annotation.Measurement;
 
 public class MeasurementInstance<T> implements Comparable<MeasurementInstance> {
 	private static long gMeasId=0;
 	private Long measId;
-	private T measValue;
+	private String measValue;
 	private ObservationInstance observationInstance;
 	private Measurement measurementType;
 	
-	public MeasurementInstance(Measurement _measType, ObservationInstance _obsInstance, T _measValue)
+	private OboeModel oboe;
+	private Annotation a;
+	
+	public MeasurementInstance(Measurement _measType, ObservationInstance _obsInstance, String _measValue)
 	{
 		setMeasId(gMeasId++);
 		this.setMeasValue(_measValue);
@@ -17,18 +23,20 @@ public class MeasurementInstance<T> implements Comparable<MeasurementInstance> {
 		this.setObservationInstance(_obsInstance);
 		
 	}
-	public T getMeasValue() {
+	public String getMeasValue() {
 		return measValue;
 	}
-	public void setMeasValue(T measValue) {
+	public void setMeasValue(String measValue) {
 		this.measValue = measValue;
 	}
 	public long getMeasId() {
 		return measId;
 	}
-	public void setMeasId(long _measId) {
-		measId = _measId;
+	
+	public void setMeasId(Long measId) {
+		this.measId = measId;
 	}
+	
 	public ObservationInstance getObservationInstance() {
 		return observationInstance;
 	}
@@ -41,7 +49,18 @@ public class MeasurementInstance<T> implements Comparable<MeasurementInstance> {
 	public void setMeasurementType(Measurement measurementType) {
 		this.measurementType = measurementType;
 	}
-	
+	public OboeModel getOboe() {
+		return oboe;
+	}
+	public void setOboe(OboeModel oboe) {
+		this.oboe = oboe;
+	}
+	public Annotation getA() {
+		return a;
+	}
+	public void setA(Annotation a) {
+		this.a = a;
+	}
 	
 	public int compareTo(MeasurementInstance other) {
 		return (measId.compareTo(other.getMeasId()));	
@@ -62,4 +81,23 @@ public class MeasurementInstance<T> implements Comparable<MeasurementInstance> {
 		return str;
 	}
 	
+	public void toPrintStream(PrintStream p)
+	{
+		p.println(measId + "," + measValue +", "+observationInstance.getObsId() + ", "+measurementType.getLabel());
+	}
+	
+	public void fromPrintStream(BufferedReader in) throws IOException{
+		String line = in.readLine(); 
+		String[] strArray = line.split(",");
+		measId = Long.parseLong(strArray[0]);
+		
+		measValue = strArray[1];
+		Long oiId = Long.parseLong(strArray[2]);
+		observationInstance = oboe.GetObservationInstance(oiId);
+		
+		String measurementLabel= strArray[3];
+		measurementType = a.getMeasurement(measurementLabel);
+		
+		oboe.AddMeasurementInstance(this);
+	}
 }
