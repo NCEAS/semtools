@@ -35,4 +35,10 @@ public class ObsTypeKey implements Comparable<ObsTypeKey>{
 			return comp2;
 		}
 	}
+	
+	public String toString()
+	{
+		String str = obsTypeLabel+":"+keyValue;
+		return str;
+	}
 }

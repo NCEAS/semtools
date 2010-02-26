@@ -9,7 +9,7 @@ import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Relationship;
 
-public class ContextInstance {
+public class ContextInstance{
 	private ObservationInstance observationInstance;
 	private ObservationInstance contextObservationInstance;
 	private Context contextType;
@@ -62,16 +62,16 @@ public class ContextInstance {
 
 	public String toString()
 	{
-		String str = "(";
+		String str = "[";
 		str += "oi"+observationInstance.getObsId();
-		str += ("->coi" +contextObservationInstance.getObsId());
-		str += " ct=";
+		str += ("->c:oi" +contextObservationInstance.getObsId());
+		str += "(";
 		if(contextType==null||(contextType.getRelationship()==null)){
 			str += "null";
 		}else{
 			str +=contextType.getRelationship().getName();
 		}
-		str +=")";
+		str +=")]";
 		return str;
 	}
 	
@@ -98,6 +98,18 @@ public class ContextInstance {
 		contextType = observationInstance.getObsType().getContext(contextTypeRelationshipName);
 		
 		oboe.AddContextInstance(this);
+	}
+
+	public boolean isSame(ContextInstance o) {
+		boolean cmp1 = ((observationInstance.getObsId()-o.getObservationInstance().getObsId())==0)?true:false;
+		if(!cmp1) return (cmp1);
+		
+		boolean cmp2 = ((contextObservationInstance.getObsId()-o.getContextObservationInstance().getObsId())==0)?true:false;
+		if(!cmp2) return cmp2;
+		
+		boolean cmp3 = contextType.isSame(o.getContextType());
+		
+		return (cmp3);
 	}
 	
 }

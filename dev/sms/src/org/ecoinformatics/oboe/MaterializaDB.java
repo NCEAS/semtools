@@ -38,13 +38,16 @@ import org.ecoinformatics.sms.annotation.*;
 
 public class MaterializaDB {
 
+	private static boolean test = false;
 	private static String inputUriPrefix = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/";
 	private static String localInputUriPrefix = "/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/examples/";
 	private static String outputUriPrefix = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboedb/";
 	private static String localOutputUriPrefix = "/Users/cao/DATA/SONET/svntrunk/semtools/dev/oboedb/";
 	
-	private static void readDataFromDataManager()
+	private static ArrayList readDataFromDataManager(String emlFileName,ArrayList<String> oRowStruct)
 	{
+		ArrayList dataset = new ArrayList();
+		
 		DatabaseConnectionPoolInterface connectionPool = 
             DatabaseConnectionPoolFactory.getDatabaseConnectionPoolInterface();
 		String dbAdapterName = connectionPool.getDBAdapterName();
@@ -57,7 +60,7 @@ public class MaterializaDB {
 	    Attribute countAttribute;
 	    DataPackage dataPackage = null;
 	    DataPackage[] dataPackages = null;
-		String documentURL = localInputUriPrefix + "er-2008-ex1-eml.xml";
+		String documentURL = emlFileName;
 		System.out.println("documentURL="+documentURL);
 		 Entity entity = null;
 		    //InputStream inputStream = null;
@@ -67,22 +70,21 @@ public class MaterializaDB {
 		    ResultSet resultSet = null;
 		    FileInputStream inputStream;
 		try {
-			inputStream = new FileInputStream(documentURL);
-		      //inputStream = url.openStream();
-		      dataPackage = dataManager.parseMetadata(inputStream);
-		      System.out.println("Parse successfully");
-		      success = dataManager.loadDataToDB(dataPackage, endPointInfo);
-		      System.out.println("Load data to DB successfully");
-		      Entity[] entityList = dataPackage.getEntityList();
-		      System.out.println("entityList="+entityList.length);
-		      entity = entityList[0];
-		      System.out.println("entity="+entity.getName());
-		      attributeList = entity.getAttributeList();
-		      Attribute[] attributes = attributeList.getAttributes();
-		      System.out.println("attributes="+attributes.length);
-		      attribute = attributes[0];
-		      System.out.println("attribute="+attribute.getName());
-		      //countAttribute = attributes[6];
+			  inputStream = new FileInputStream(documentURL);
+			  dataPackage = dataManager.parseMetadata(inputStream);
+			  System.out.println("Parse successfully");
+			  success = dataManager.loadDataToDB(dataPackage, endPointInfo);
+			  System.out.println("Load data to DB successfully");
+			  Entity[] entityList = dataPackage.getEntityList();
+			  System.out.println("entityList="+entityList.length);
+			  entity = entityList[0];
+			  System.out.println("entity="+entity.getName());
+			  attributeList = entity.getAttributeList();
+			  Attribute[] attributes = attributeList.getAttributes();
+			  System.out.println("attributes="+attributes.length);
+			  attribute = attributes[0];
+			  System.out.println("attribute="+attribute.getName());
+			  //countAttribute = attributes[6];
 		    }
 		    catch (MalformedURLException e) {
 		      e.printStackTrace();
@@ -96,6 +98,8 @@ public class MaterializaDB {
 		      e.printStackTrace();
 		      //throw(e);
 		    }
+		    
+		    return dataset;
 	}
 	
 //	private static void readDataFromOwlifier(String dataFileName)
@@ -158,7 +162,7 @@ public class MaterializaDB {
 	    
 	    for(Annotation a: annotations){
 	    	List<Mapping> mappingList = a.getMappings();
-	    	System.out.println("a : EML package = " +a.getEMLPackage()+", Data Table = " + a.getDataTable());
+	    	//System.out.println("a : EML package = " +a.getEMLPackage()+", Data Table = " + a.getDataTable());
 	    	System.out.println("a : mappingList size = " +mappingList.size());
 	    	for(Mapping m: mappingList){
 	    		System.out.println(m.getAttribute()+", " + m.getMeasurement().getLabel() +", "+m.getValue() +", "+m.getConditions());
@@ -306,8 +310,10 @@ public class MaterializaDB {
 		// when this observation is marked with "distinct yes" 
 		// and some of its measurements are marked with "key yes"
 		// the entity of this observation type should be unique
-		if(obsType.isDistinct()&&keyMeasTypes.size()>0){
-			hasKey = false;
+		//if(obsType.isDistinct()&&keyMeasTypes.size()>0) //this is used to determine the unique observation
+		if(keyMeasTypes.size()>0) //this is used to determine the unique entity
+		{
+			hasKey = true;
 		}
 		
 		ObsTypeKey obsTypeKey = new ObsTypeKey(obsType.getLabel(),keyValue);
@@ -315,8 +321,9 @@ public class MaterializaDB {
 		// Check whether I need to create a new entity instance
 		boolean crtNewEntityInstance = true;
 		if(hasKey){
-			entityInstance = entIdx.get(obsTypeKey);
+			entityInstance = entIdx.get(obsTypeKey);			
 			if(entityInstance!=null){//this entity with the key exists
+				System.out.println("Old ei: " + entityInstance);
 				crtNewEntityInstance = false;
 			}
 		}
@@ -324,6 +331,7 @@ public class MaterializaDB {
 		if(crtNewEntityInstance){
 			org.ecoinformatics.sms.annotation.Entity entType = obsType.getEntity();
 			entityInstance = new EntityInstance(entType);
+			System.out.println("New ei: " + entityInstance);
 			OBOE.AddEntityInstance(entityInstance);
 			
 			if(hasKey){
@@ -354,9 +362,11 @@ public class MaterializaDB {
 		for(MeasurementInstance mi: thisObsTypeMeasInstanceSet){
 			if(mi.getMeasurementType().isKey()){
 				if(!isContext){
-					keyValue +="mt:"+mi.getMeasurementType().getLabel()+"mv:"+mi.getMeasValue().toString();
+					//keyValue +="mt:"+mi.getMeasurementType().getLabel()+"mv:"+mi.getMeasValue().toString();
+					keyValue +=mi.getMeasurementType().getLabel()+"_"+mi.getMeasValue().toString();
 				}else{
-					keyValue +="cmt:"+mi.getMeasurementType().getLabel()+"cmv:"+mi.getMeasValue().toString();
+					//keyValue +="cmt:"+mi.getMeasurementType().getLabel()+"cmv:"+mi.getMeasValue().toString();
+					keyValue +="c"+mi.getMeasurementType().getLabel()+"_"+mi.getMeasValue().toString();
 				}
 			}
 		}
@@ -385,7 +395,9 @@ public class MaterializaDB {
 		List<Context> contextList = obsType.getContexts();
 		for(Context c: contextList){
 			Observation contextObsType = c.getObservation();
-			keyValue += getDirectObsTypeKeys(contextObsType, obsType2MeasIdx, true);			
+			if(c.isIdentifying()){
+				keyValue += getDirectObsTypeKeys(contextObsType, obsType2MeasIdx, true);
+			}
 		}
 		
 		return keyValue;
@@ -420,6 +432,7 @@ public class MaterializaDB {
 			obsInstance = obsIdx.get(obsTypeKey);
 			if(obsInstance!=null){
 				crtNewObsInstance = false;
+				System.out.println("Old oi: " + obsInstance);
 			}
 		}
 		
@@ -427,6 +440,7 @@ public class MaterializaDB {
 		if(crtNewObsInstance){
 			obsInstance = new ObservationInstance(obsType,entInstance);
 			ioOBOE.AddObservationInstance(obsInstance);
+			System.out.println("New oi: " + obsInstance);
 			if(obsType.isDistinct()){
 				obsIdx.put(obsTypeKey,obsInstance);
 			}
@@ -435,6 +449,7 @@ public class MaterializaDB {
 			Set<MeasurementInstance> miSet = obsType2MeasIdx.get(obsType);
 			for(MeasurementInstance mi: miSet){
 				mi.setObservationInstance(obsInstance);
+				System.out.println("Connect mi: " + mi);
 				ioOBOE.AddMeasurementInstance(mi);
 			}
 		}	
@@ -469,8 +484,11 @@ public class MaterializaDB {
 				
 				//create a new context instance and put it into oboe
 				ContextInstance contextInstance = new ContextInstance(obsInstance,c,contextObsInstance);
-				System.out.println("contextInstance="+contextInstance);
-				ioOBOE.AddContextInstance(contextInstance);
+								
+				boolean added = ioOBOE.AddContextInstance(contextInstance);
+				if(added){
+					System.out.println("Add contextInstance="+contextInstance);
+				}
 			}
 		}
 	}
@@ -482,16 +500,21 @@ public class MaterializaDB {
 	 * @param oboeFilePrefix
 	 * @throws Exception 
 	 */
-	public static OboeModel MaterializeDB(String dataFileName, String annotFileName, String oboeFileName) 
+	public static OboeModel MaterializeDB(
+			String emlFileName, String dataFileName, String annotFileName, String oboeFileName) 
 		throws Exception		
 	{
 		//1. read data
-		//readDataFromOwlifier(dataFileName); 
-		//readDataFromDataManager();
-		
-		//each element is a row, which is also an arraylist
 		ArrayList<String> rowStruct = new ArrayList<String>();
-		ArrayList dataset = TestData.setTestData1(rowStruct);  
+		ArrayList dataset = null; 		//each element is a row, which is also an arraylist		
+		if(test){
+			dataset = TestData.setTestData1(rowStruct);				
+		}else{
+			//dataset = //readDataFromDataManager(emlFileName,rowStruct);
+			dataset = CSVDataReader.read(dataFileName, rowStruct);			
+		}
+		System.out.println("rowStruct = "+ rowStruct);
+		System.out.println("dataset = "+ dataset);
 		
 		//2. read annotation
 		Annotation A = readAnnotation(annotFileName);
@@ -537,20 +560,28 @@ public class MaterializaDB {
 	/**
 	 * @author cao
 	 * @param args
+	 * 
+	 * er-2008-ex1-data.txt
+er-2008-ex1-annot.xml
+er-2008-ex1-oboe.csv
+
 	 * [1] data file name
 	 * [2] Annotation file name
 	 * [3] Output file name prefix
 	 */
 	public static void main(String[] args) {
 		
-		if(args.length!=3){
-			System.out.println("Usage: ./MaterializeDB <1. data file name> <2. annotation file name> <3. output OBOE file prefix>");
+		if(args.length!=4){
+			System.out.println("Usage: ./MaterializeDB <0. Eml file name> <1. data file name> " +
+					"<2. annotation file name> " +
+					"<3. output OBOE file prefix>");
 			return;
 		}
 		// Get input parameters
-		String dataFileName = inputUriPrefix + args[0];
-		String annotFileName = inputUriPrefix + args[1]; 
-		String oboeFileName = localOutputUriPrefix +args[2];
+		String emlFileName = localInputUriPrefix + args[0];
+		String dataFileName = localInputUriPrefix + args[1];
+		String annotFileName = inputUriPrefix + args[2]; 
+		String oboeFileName = localOutputUriPrefix +args[3];
 		
 		//TODO: for testing purpose, hard code the three files, need to get this from parameters
 		//String dataFileName = inputUriPrefix + "er-2008-ex1-data.txt";
@@ -559,8 +590,7 @@ public class MaterializaDB {
 		//String oboeFileName = localOutputUriPrefix + "er-2008-ex1-oboe.csv";
 		
 		try {
-			
-			OboeModel OBOE = MaterializeDB(dataFileName, annotFileName, oboeFileName);
+			OboeModel OBOE = MaterializeDB(emlFileName,dataFileName, annotFileName, oboeFileName);
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

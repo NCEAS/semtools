@@ -15,6 +15,7 @@ public class OboeModel {
 	 private List<EntityInstance> entityInstances;
 	 private List<ObservationInstance> observationInstances;
 	 private List<MeasurementInstance> measurementInstances;
+	 
 	 private List<ContextInstance> contextInstances;
 	 
 	 //index from oi --> ci list, used in materialize DB
@@ -92,7 +93,14 @@ public class OboeModel {
 		 miList.add(mi);
 	 }
 	 
-	 public void AddContextInstance(ContextInstance ci){
+	 public boolean AddContextInstance(ContextInstance ci){
+		 
+		 //no need to add the existing ones
+		 for(ContextInstance oldCi: contextInstances){
+			 if(oldCi.isSame(ci))
+				 return false;
+		 }
+		 
 		 contextInstances.add(ci);
 		 
 		 //maintain the index
@@ -102,6 +110,7 @@ public class OboeModel {
 			 oi2ciList.put(ci.getObservationInstance(),ciList);
 		 }
 		 ciList.add(ci);
+		 return true;
 	 }
 	 
 	 public String toString()

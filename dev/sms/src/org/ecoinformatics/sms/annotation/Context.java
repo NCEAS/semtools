@@ -34,7 +34,7 @@ package org.ecoinformatics.sms.annotation;
 /**
  * Objects of this class represent observation contexts
  */
-public class Context {
+public class Context{
 
     /**
      * Default constructor
@@ -112,4 +112,20 @@ public class Context {
     private Observation _observation;
     private Relationship _relationship;
     private boolean _isIdentifying;
+    
+    /**
+     * check whether two Context types are the same
+     * @author cao
+     */
+	public boolean isSame(Context o) {
+		boolean cmp1 = _observation.getLabel().equals(o.getObservation().getLabel());
+		
+		if(!cmp1) return cmp1;
+			
+		boolean cmp2 = _relationship.getURI().equals(o.getRelationship().getURI());
+		if(!cmp2) return cmp2;
+		
+		boolean cmp3 = (_isIdentifying==o.isIdentifying());
+		return cmp3;
+	}
 } 
