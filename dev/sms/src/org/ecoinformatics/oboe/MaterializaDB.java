@@ -39,10 +39,10 @@ import org.ecoinformatics.sms.annotation.*;
 public class MaterializaDB {
 
 	private static boolean test = false;
-	private static String inputUriPrefix = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/";
-	private static String localInputUriPrefix = "/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/examples/";
-	private static String outputUriPrefix = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboedb/";
-	private static String localOutputUriPrefix = "/Users/cao/DATA/SONET/svntrunk/semtools/dev/oboedb/";
+	//private static String inputUriPrefix = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/";
+	//private static String localInputUriPrefix = "/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/examples/";
+	//private static String outputUriPrefix = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboedb/";
+	//private static String localOutputUriPrefix = "/Users/cao/DATA/SONET/svntrunk/semtools/dev/oboedb/";
 	
 	private static ArrayList readDataFromDataManager(String emlFileName,ArrayList<String> oRowStruct)
 	{
@@ -578,10 +578,10 @@ er-2008-ex1-oboe.csv
 			return;
 		}
 		// Get input parameters
-		String emlFileName = localInputUriPrefix + args[0];
-		String dataFileName = localInputUriPrefix + args[1];
-		String annotFileName = inputUriPrefix + args[2]; 
-		String oboeFileName = localOutputUriPrefix +args[3];
+		String emlFileName = Constant.localInputUriPrefix + args[0];
+		String dataFileName = Constant.localInputUriPrefix + args[1];
+		String annotFileName = Constant.inputUriPrefix + args[2]; 
+		String oboeFileName = Constant.localOutputUriPrefix +args[3];
 		
 		//TODO: for testing purpose, hard code the three files, need to get this from parameters
 		//String dataFileName = inputUriPrefix + "er-2008-ex1-data.txt";
