@@ -177,7 +177,7 @@ public class OntologyClassSelectionPage extends AbstractUIVocabularyPage {
 	 */
 
 	public void onLoadAction() {
-		this.selectionPanel.initialize(filterClass);
+		this.selectionPanel.initialize(filterClass, null);
 		if (currentClass != null) {
 			this.selectionPanel.doSelect(currentClass);
 		}

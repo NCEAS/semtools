@@ -139,9 +139,15 @@ public class OntologyClassSelectionPanel extends JPanel {
 		_ontoTree.getTree().addMouseListener(treeMouseListener);
 	}
 
-	public void initialize(OntologyClass filterClass) {
+	public void initialize(OntologyClass filterClass, Dimension dim) {
 		this.filterClass = filterClass;
-		init(525, 350);
+		int width = 525;
+		int height = 350;
+		if (dim != null) {
+			width = dim.width;
+			height = dim.height;
+		}
+		init(width, height);
 	}
 
 	// PRIVATE METHODS
@@ -149,7 +155,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 	/**
 	 * Private method for initializing the panel
 	 */
-	private void init(int length, int height) {
+	private void init(int width, int height) {
 		
 
 		// make the scroll pane for the tree
@@ -172,8 +178,8 @@ public class OntologyClassSelectionPanel extends JPanel {
 		JScrollPane commentView = new JScrollPane(_commentTxt,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		commentView.setMaximumSize(new Dimension(length, 150));
-		commentView.setPreferredSize(new Dimension(length, 150));
+		commentView.setMaximumSize(new Dimension(width, 150));
+		commentView.setPreferredSize(new Dimension(width, 150));
 
 		// onto tree label
 		JPanel panel1 = new JPanel();
@@ -225,8 +231,8 @@ public class OntologyClassSelectionPanel extends JPanel {
 		panel.add(Box.createRigidArea(new Dimension(0, 2)));
 		panel.add(commentView);
 
-		panel.setMaximumSize(new Dimension(length, height));
-		panel.setPreferredSize(new Dimension(length, height));
+		panel.setMaximumSize(new Dimension(width, height));
+		panel.setPreferredSize(new Dimension(width, height));
 
 		add(panel);
 	}

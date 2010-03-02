@@ -255,7 +255,7 @@ public class OntologyClassField extends JTextField {
 			OntologyClass currentClass = source.getOntologyClass();
 			OntologyClass filterClass = source.getFilterClass();
 			
-			selectionPanel.initialize(filterClass);
+			selectionPanel.initialize(filterClass, null);
 			if (currentClass != null) {
 				selectionPanel.doSelect(currentClass);
 			}
