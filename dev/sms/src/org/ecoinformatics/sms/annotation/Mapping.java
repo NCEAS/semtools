@@ -115,7 +115,7 @@ public class Mapping {
     }
 
     public String toString(){
-    	String str = "attr=" + _attribute +", meas name="+_measurement.getLabel() + ", value="+_value +", conditions="+_conditions;
+    	String str = "attr=" + _attribute +", meas="+_measurement + ", value="+_value +", conditions="+_conditions;
     	return str;
     }
 
