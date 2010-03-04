@@ -87,10 +87,19 @@ public class AnnotationWriter {
          s.print(" distinct=\"yes\"");
       s.print(">\n");
       Entity e = o.getEntity();
-      if(e != null && e.getOntology() != null)
-         s.print(_indent2 + "<sms:entity id=\"" +
-                 e.getOntology().getPrefix() + ":" +
-                 e.getName() + "\"/>\n");
+    
+      //Huiping made changes here to support writer without ontology (for data generator purpose)
+      if(e != null){
+    	  if(e.getOntology() != null){
+    		  s.print(_indent2 + "<sms:entity id=\"" +
+    	                 e.getOntology().getPrefix() + ":" +
+    	                 e.getName() + "\"/>\n");
+    	  }else{
+    		  s.print(_indent2 + "<sms:entity id=\"" +
+ 	                 e.getName() + "\"/>\n");
+    	  }
+      }
+      
       for(Measurement m : o.getMeasurements())
          _writeMeasurement(m, s);
       for(Context c : o.getContexts())
