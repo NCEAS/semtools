@@ -60,6 +60,7 @@ import org.ecoinformatics.sms.plugins.table.AnnotationTableModel;
 import org.ecoinformatics.sms.plugins.table.AnnotationTablePanel;
 import org.ecoinformatics.sms.plugins.table.DataTableModelListener;
 import org.ecoinformatics.sms.plugins.table.ScrollBarAdjustmentListener;
+import org.ecoinformatics.sms.renderer.OntologyClassSelectionPanel;
 
 import edu.ucsb.nceas.morpho.Morpho;
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
@@ -673,7 +674,7 @@ public class AnnotationPlugin
 				if (dataViewer != null) {
 					Component[] existingComponents = dataViewer.getHeaderPanel().getComponents();
 					for (Component comp: existingComponents) {
-						if (comp instanceof AnnotationTablePanel) {
+						if (comp instanceof AnnotationTabPane) {
 							return true;
 						}
 					}
@@ -826,6 +827,18 @@ public class AnnotationPlugin
 					
 					// add the tab pane to the panel
 					dataViewer.getHeaderPanel().add(BorderLayout.CENTER, tabPane);
+					
+					// add the ontology palette
+					OntologyClassSelectionPanel ontologyPalette = new OntologyClassSelectionPanel(true);
+					Dimension dim = new Dimension(250,325);
+					ontologyPalette.initialize(null, dim);
+					
+					dataViewContainerPanel.getEntityTabbedPane().insertTab(
+							"Ontology", 
+							null, 
+							ontologyPalette, 
+							"Ontology Palatte", 
+							1);
 
 					Log.debug(30, "Set up annotation table...\n " 
 							+ "Data package: " + packageId 
