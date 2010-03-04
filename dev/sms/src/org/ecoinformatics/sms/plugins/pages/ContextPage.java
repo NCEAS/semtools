@@ -58,7 +58,7 @@ import edu.ucsb.nceas.utilities.OrderedMap;
 
 public class ContextPage extends AbstractUIPage implements StateChangeListener {
 
-	private static final int CONTEXT_INDEX = 2;
+	private static final int CONTEXT_INDEX = 0;
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
 
@@ -109,7 +109,8 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 		JPanel contextListPanel = WidgetFactory.makePanel(5);
 		contextListLabel = WidgetFactory.makeLabel("Context:", false);
 		contextListPanel.add(contextListLabel);
-		String[] colNames = new String[] {"Relationship", "Observation"};
+		//String[] colNames = new String[] {"Relationship", "Observation"};
+		String[] colNames = new String[] {"Context"};
 		Object[] editors = null; // no direct editing
 		contextList = WidgetFactory.makeList(
 				colNames, 
@@ -196,8 +197,8 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 			
 			List<Object> rowList = new ArrayList<Object>();
 			//rowList.add(observation);
-			rowList.add(relationship);
-			rowList.add(target);
+			//rowList.add(relationship);
+			//rowList.add(target);
 			rowList.add(context);
 			contextList.addRow(rowList);			
 		}

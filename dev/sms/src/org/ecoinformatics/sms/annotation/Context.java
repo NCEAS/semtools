@@ -103,10 +103,30 @@ public class Context{
     }
     
     public String toString() {
-    	if (_observation != null) {
-    		return _observation.toString();
+    	return getMadlib();
+//    	if (_observation != null) {
+//    		return _observation.toString();
+//    	}
+//    	return super.toString();
+    }
+    
+    public String getMadlib() {
+    	StringBuffer sb = new StringBuffer();
+    	sb.append("The Observation was ");
+    	if (_relationship != null) {
+    		sb.append(_relationship.toString());
     	}
-    	return super.toString();
+    	else {
+    		sb.append("<relationship>");
+    	}
+    	sb.append(" the ");
+    	if (_observation != null) {
+    		sb.append(_observation.toString());
+    	}
+    	else {
+    		sb.append("<observation>");
+    	}
+    	return sb.toString();
     }
     
     private Observation _observation;
