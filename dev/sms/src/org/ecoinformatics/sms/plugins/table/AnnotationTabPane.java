@@ -114,13 +114,14 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 		if (annotationPage != null) {
 			// reset the UI
 			annotationPage.reset();
+			// now set it
+			if (annotation != null) {
+				Log.debug(40, "Showing Annotation: " + annotation.getURI());
+				annotationPage.setAnnotation(annotation);
+				annotationPage.editAttribute(attributeName);
+			}
 		}
-		// now set it
-		if (annotation != null) {
-			Log.debug(40, "Showing Annotation: " + annotation.getURI());
-			annotationPage.setAnnotation(annotation);
-			annotationPage.editAttribute(attributeName);
-		}
+		
 	}
 	
 }

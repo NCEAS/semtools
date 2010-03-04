@@ -53,6 +53,7 @@ import org.ecoinformatics.sms.plugins.commands.ObservationCommand;
 import org.ecoinformatics.sms.plugins.commands.OntologyManagementCommand;
 import org.ecoinformatics.sms.plugins.commands.RemoveCommand;
 import org.ecoinformatics.sms.plugins.commands.SaveAnnotationCommand;
+import org.ecoinformatics.sms.plugins.commands.ViewAnnotationCommand;
 import org.ecoinformatics.sms.plugins.pages.AnnotationPage;
 import org.ecoinformatics.sms.plugins.pages.ContextPage;
 import org.ecoinformatics.sms.plugins.table.AnnotationTabPane;
@@ -213,8 +214,29 @@ public class AnnotationPlugin
 		removeMeasurementAction.setEnabledOnStateChange(
 				StateChangeEvent.SELECT_DATATABLE_COLUMN,
 				true, GUIAction.EVENT_LOCAL);
-		
-		// Save Annotations
+	    
+		// view Annotation
+	    GUIAction viewAction = 
+	    	new GUIAction(
+	    			"View Annotation",
+	    			null,
+	    			new ViewAnnotationCommand());
+	    viewAction.setMenuItemPosition(menuPosition++);
+	    viewAction.setToolTipText("View Annotation");
+	    viewAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
+	    viewAction.setSeparatorPosition(Morpho.SEPARATOR_PRECEDING);
+	    viewAction.setEnabled(false);
+	    viewAction.setEnabledOnStateChange(
+                StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME,
+                true, GUIAction.EVENT_LOCAL);
+	    viewAction.setEnabledOnStateChange(
+                StateChangeEvent.CREATE_SEARCH_RESULT_FRAME,
+                false, GUIAction.EVENT_LOCAL);
+	    viewAction.setEnabledOnStateChange(
+                StateChangeEvent.CREATE_NOENTITY_DATAPACKAGE_FRAME,
+                false, GUIAction.EVENT_LOCAL);
+	    
+	    // Save Annotations
 	    GUIAction saveAction = 
 	    	new GUIAction(
 	    			"Save Annotations",
@@ -259,6 +281,7 @@ public class AnnotationPlugin
 		controller.addGuiAction(splitObservationAction);
 		controller.addGuiAction(removeObservationAction);
 		controller.addGuiAction(removeMeasurementAction);
+		controller.addGuiAction(viewAction);
 		controller.addGuiAction(saveAction);
 		controller.addGuiAction(searchAction);
 		controller.addGuiAction(manageOntologyAction);
@@ -578,11 +601,6 @@ public class AnnotationPlugin
 			DataViewer dataView = resultPane.getCurrentDataViewer();
 			if (dataView != null) {
 
-				JTable table = dataView.getDataTable();
-				int viewIndex = table.getSelectedColumn();
-				if (viewIndex < 0) {
-					return annotation;
-				}
 				int entityIndex = dataView.getEntityIndex();
 				
 				// package and entity
