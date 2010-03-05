@@ -6,6 +6,7 @@ import java.io.PrintStream;
 
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Entity;
+
 public class EntityInstance {
 	private static long gEntId=0;
 	
