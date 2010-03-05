@@ -1,4 +1,4 @@
-package org.ecoinformatics.oboe;
+package org.ecoinformatics.oboe.model;
 
 import java.util.List;
 

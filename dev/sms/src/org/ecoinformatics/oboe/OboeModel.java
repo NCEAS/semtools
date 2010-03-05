@@ -9,6 +9,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 
+import org.ecoinformatics.oboe.model.ContextInstance;
+import org.ecoinformatics.oboe.model.EntityInstance;
+import org.ecoinformatics.oboe.model.ObservationInstance;
+
 
 public class OboeModel {
 

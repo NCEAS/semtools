@@ -1,6 +1,8 @@
 package org.ecoinformatics.oboe;
 
 import java.io.*;
+
+import org.ecoinformatics.oboe.model.ObservationInstance;
 import org.ecoinformatics.sms.annotation.*;
 
 import org.ecoinformatics.sms.annotation.Measurement;

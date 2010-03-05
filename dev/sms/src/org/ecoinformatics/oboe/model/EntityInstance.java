@@ -1,9 +1,10 @@
-package org.ecoinformatics.oboe;
+package org.ecoinformatics.oboe.model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import org.ecoinformatics.oboe.OboeModel;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Entity;
 public class EntityInstance {
