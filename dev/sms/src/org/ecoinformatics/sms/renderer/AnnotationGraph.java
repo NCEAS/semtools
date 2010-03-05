@@ -6,6 +6,7 @@ import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
+import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
 
 import com.mxgraph.model.mxCell;
@@ -31,9 +32,19 @@ public class AnnotationGraph {
 			try {
 				
 				Object observationCell = graph.addCell(new mxCell(observation), parent);
-				Object observationNode = 
-					graph.insertVertex(observationCell, null, observation, x, y, width, height);
 				
+				// add observation
+				Object observationNode = 
+					graph.insertVertex(observationCell, null, observation.getLabel(), x, y, width, height);
+				
+				// shift down
+				//y += (height*2);
+				
+				// of entity
+				Object entityNode = 
+					graph.insertVertex(observationCell, null, observation.getEntity(), x, y + (height*2), width, height);
+				graph.insertEdge(observationCell, null, "ofEntity", observationNode, entityNode);
+
 				for (Measurement measurement: observation.getMeasurements()) {
 					
 					// shift over to right
@@ -55,7 +66,7 @@ public class AnnotationGraph {
 					} catch (Exception e) {}
 					Object characteristicNode = 
 						graph.insertVertex(observationCell, null, characteristic, x, y, width, height);
-					graph.insertEdge(observationCell, null, "of", measurementNode, characteristicNode);
+					graph.insertEdge(observationCell, null, "ofCharacteristic", measurementNode, characteristicNode);
 					
 					// shift down
 					y += (height*2);
@@ -68,6 +79,16 @@ public class AnnotationGraph {
 					
 					// shift down
 					y += (height*2);
+					
+					// add protocol
+					Protocol protocol = measurement.getProtocol();
+					Object protocolNode = 
+						graph.insertVertex(observationCell, null, protocol, x, y, width, height);
+					graph.insertEdge(observationCell, null, "usesProtocol", measurementNode, protocolNode);
+					
+					// shift down
+					y += (height*2);
+					
 				}
 				// shift down
 				y += height;
