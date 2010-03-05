@@ -31,6 +31,8 @@ import org.ecoinformatics.datamanager.parser.Entity;
 import org.ecoinformatics.oboe.model.ConditionInstance;
 import org.ecoinformatics.oboe.model.ContextInstance;
 import org.ecoinformatics.oboe.model.EntityInstance;
+import org.ecoinformatics.oboe.model.MeasurementInstance;
+import org.ecoinformatics.oboe.model.OboeModel;
 import org.ecoinformatics.oboe.model.ObservationInstance;
 import org.ecoinformatics.sms.annotation.*;
 import org.ecoinformatics.sms.ontology.OntologyClass;

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.ecoinformatics.oboe.OboeModel;
 import org.ecoinformatics.sms.annotation.*;
 
 public class ObservationInstance implements Comparable<ObservationInstance>{
