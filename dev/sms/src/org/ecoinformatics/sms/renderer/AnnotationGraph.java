@@ -1,12 +1,16 @@
 package org.ecoinformatics.sms.renderer;
 
 import java.awt.Component;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
+import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Protocol;
+import org.ecoinformatics.sms.annotation.Relationship;
 import org.ecoinformatics.sms.annotation.Standard;
 
 import com.mxgraph.model.mxCell;
@@ -25,6 +29,8 @@ public class AnnotationGraph {
 		int width = 80;
 		int height = 30;
 		
+		Map<Observation, mxCell> observationMap = new HashMap<Observation, mxCell>();
+		
 		for (Observation observation: annotation.getObservations()) {
 			// start at the left again
 			x = 20;
@@ -33,6 +39,8 @@ public class AnnotationGraph {
 				
 				Object observationCell = graph.addCell(new mxCell(observation), parent);
 				
+				observationMap.put(observation, (mxCell) observationCell);
+
 				// add observation
 				Object observationNode = 
 					graph.insertVertex(observationCell, null, observation.getLabel(), x, y, width, height);
@@ -95,6 +103,24 @@ public class AnnotationGraph {
 			}
 			finally {
 				graph.getModel().endUpdate();
+			}
+		}
+		
+		// process context
+		Object[] observationCells = graph.getChildCells(parent);
+		for (int i = 0; i < observationCells.length; i++) {
+			mxCell observationCell = (mxCell) observationCells[i];
+			Observation observation = (Observation) observationCell.getValue();
+			if (observation.getContexts() != null) {
+				for (Context context: observation.getContexts()) {
+					Observation targetObservation = context.getObservation();
+					Relationship relationship = context.getRelationship();
+					mxCell targetObservationCell = observationMap.get(targetObservation);
+					// add the context from one observation node to the other observation node
+					// here we know the Observation is the first child in the observationCell
+					// TODO: figure out how to effectively do sub-graphs so that i can connect individual observation cells
+					graph.insertEdge(parent, null, relationship, observationCell.getChildAt(0), targetObservationCell.getChildAt(0));
+				}	
 			}
 		}
 		
