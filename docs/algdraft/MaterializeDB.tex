@@ -1,0 +1,561 @@
+\documentclass[10pt]{article}
+%\title{}
+%\author{}
+%\date{}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{a4}
+\usepackage{color}
+\renewcommand\floatpagefraction{0.99}
+\renewcommand\topfraction{0.99}
+\renewcommand\bottomfraction{0.99}
+\renewcommand\textfraction{.05}
+\setcounter{totalnumber}{5}
+
+%\setlength{\parindent}{0pt}
+\setlength\topmargin{0in}
+\setlength\headheight{0in}
+\setlength\headsep{0in}
+\setlength\textheight{8.5in}
+\setlength\textwidth{6.5in}
+\setlength\oddsidemargin{0in}
+\setlength\evensidemargin{0in}
+
+\newtheorem{example}{Example}[section]
+\newtheorem{definition}{Definition}[section]
+\newcommand{\from}[2]{{\bf[{\sc from #1:} #2]}}
+\begin{document}
+
+\section{Key constraints}
+ 
+%motivation to have key constraints.
+In real world, the dataset collected by an ecologist to describe
+measurents and observations is not normalized. I.e., two different
+rows in the table may have a big amount of ``redundant'' 'information
+to describe an object (e.g., entity). 
+
+As discussed in \cite{***} %ER paper, 
+we can use the OBOE cenceptual model to capture the semantic
+relationships from the columns to their real meaning. 
+However, the mapping from the columns to the OBOE model still cannot
+directly solve the problem of getting concise informatin (e.g., unique
+entity instances, unique observation instances, etc.)
+
+Given Table \ref{tb:pltarea}(a), it records the fact that four times
+of dbh of some trees are taken. 
+Very often, an ecologist may ask questions like this:  Give me the
+average dbh for every different trees. 
+First, we have four rows here for trees. 
+But how many tree entity instances are here is a question. 
+
+There are several cases to consider:
+\begin{itemize}
+\item Case 1: The naive extreme way to interpret the data is that each
+  observation is from different tree entity. Then, we have {\bf four}
+  tree entities. This may be too strict. People may say, well, I have
+  some observations for the same entity. 
+\item Case 2: The second naive extreme way is to interpret that different {\em spp} represent the different tree entity. 
+That's obvious that {\em piru} is different from {\em abba}. 
+With this constraint, we get {\bf two} tree entities. However, an
+obvious fact is also true that one {\em piru} tree cannot at the
+different plots. (It is another story if this tree was migrated from one plot to another.) 
+\item Case 3: Following Case 2, people want to further limit that the
+  same {\em spp} in the same {\em plt} should represent the same tree
+  entity set.  
+%To achieve this, we use {\em identifying yes}.
+%   Now, it should return
+%	\[(A, piru, 36), (B, piru, 33.2), (B, abba, 34)\]
+\end{itemize}
+
+%Q2: Why we need to distinguish the same entities using {\em key yes}
+%and {\em distinct yes}) to identify the same observation? 
+%For the example, we have one observation for splot {\em A}.
+%What's the semantic purpose of this? What kind of query may need this? 
+%E.g., how many spots in this dataset? 
+
+\begin{table}[htb]
+\begin{center}
+\begin{tabular}{cc}
+\begin{tabular}{|l|l|l|}
+\hline
+plt & spp & dbh\\\hline
+A & piru & 35.8 \\\hline
+A & piru & 36.2 \\\hline
+B & piru &33.2 \\\hline
+B&abba&34\\\hline
+\end{tabular}
+&
+\begin{tabular}{|l|l|l|l|}
+\hline
+plt & area & spp & dbh\\\hline
+A & 1.0 & piru & 35.8 \\\hline
+A & 1.1 & piru & 36.2 \\\hline
+B & 2.0 &piru &33.2 \\\hline
+B& 2.0 & abba&34\\\hline
+\end{tabular}\\
+(a) & (b)
+\end{tabular}
+\end{center}
+\vspace{-0.2in}
+\caption{Dataset}
+\label{tb:pltarea}
+\end{table}
+
+
+Obviously, to answer this question, we not only need to figure out
+what are the observations and measurements, we also need proper
+constraints to help us understand whether different observations are
+from the same entity or not. 
+
+To tackle this problem, we proposed to use {\em key yes}, {\em
+  distinct yes} and {\em identifying yes} constraints. 
+
+\from{HP} {Describe or define {\em key yes},  {\em distinct yes},  {\em identifying yes}}
+
+\begin{definition}[Key measurement types]{
+The key mensurement tytpes of an observation are the measurement types
+that are used to distinguish one observation/entity instance from the
+other. }
+\end{definition}
+In most simple case, when an observation type does not have context, 
+the key measurement types are specified with ``key yes''. 
+
+{\bf Key constraints}: in this report (paper),  we use the term {\em
+  key constraints} to refer to the general constraints of the above
+three types {\em key yes}, {\em distinct yes} and 
+{\em identifying yes}. 
+
+\section{Valid annotation constraints}
+
+Based on the semantic meaning of these key constraints, we can see
+that they have some correlations. 
+Before we give any further examples to explain such correlations, we
+list the correlation rules among them.
+
+\begin{itemize}
+\item {\bf Rule 1}: If an observation type is specified with {\em distinct yes}, all
+  its measurement types are automatically marked with {\em key yes}. 
+\item {\bf Rule 2}: If the context of an observation type is specified with {\em identifying
+    yes}. This observation type MUST have some key measurement
+  types. And the context observation type also MUST have key
+  measurement types too. 
+\end{itemize} 
+
+The following example shows an example why Rule 1 is needed. 
+Given the data in Table \ref{tb:pltarea}(b) and the following
+annotation. 
+
+\noindent
+{\bf observation} ``o1''  \textcolor{blue}{distinct yes}\\
+\verb|    |{\bf  entity} ``Plot''\\
+\verb|    |{\bf measurement} ``m1'' \textcolor{blue}{key yes}\\
+\verb|        | {\bf characteristic} ``EntityName'' \\
+\verb|        | {\bf standard} ``Nominal''\\
+\verb|    | {\bf measurement} ``m2''\\
+\verb|        | {\bf characteristic} ``area'' \\
+\verb|        | {\bf standard} ``sqft''\\
+\verb|        |$\cdots$ 
+
+According to the annotation, if two plots have the same value for
+``EntityName'', they represent the same plot observation. 
+Obviously, it has problem to interprete the data in Table
+\ref{tb:pltarea} with this annotatioin. 
+E.g., the first and second rows catch information about plot with
+EntityName $A$. Accoring to the annotation, they should be the same
+plot obervation. 
+However, the data shows that this one plot has two different areas
+$1.0$ and $1.1$, so, there is confusion here.
+
+For this case, we can have several ways to make the annoation
+consistent. 
+The first alternative to tackle this confusion is to change the
+annotation.  We can let $m_2$ automatically becomes key measurement type of
+$o_1$. Then, every different ($m_1$, $m_2$) value pair denote a
+different observation instance which come from the different entity
+instance.
+The second alternative is to get rid of {\em distinct yes} for $o_1$,
+which means that $(A,1.0)$ and $(A,1.1)$ are different observation instances of the same entity instance
+$A$.  
+
+
+%Here are some very basic rules to restrict the correlations among these constraints. 
+%\begin{itemize}
+%\item ``Distinct yes'' on an observation type implies that all its measurements collectively form a key of this observation type. 
+%In the above example, we can specify ``distinct yes'' on ``$o_1$''
+%without {\em explicitly} denote ``key yes'' on the measurements $m_1$
+%and $m_2$. 
+%The semantic meaning is that ($m_1$, $m_2$) collectively form key measurement for $o_1$.  
+%\item Logically, we can specify ``Distinct no'' on an observation type and specify ``key yes'' on all of its measurements.
+%In this case, when two rows (for the observation type) have the same
+%values for these key measurements, they represent the different
+%observation instances. Such a case means that there may exist other
+%``variables'' that can distinguish one observation instance from the
+%other, but this dataset does not catch this variable ({\bf HP: is
+%``variable'' the right word to use? }). So, in real application, we
+%do not encourage such situation to appear. 
+%\end{itemize}
+
+In our materialization algorithm, we assume that the annotations on the dataset are valid, i.e., they comply with the rules among these constraints. 
+
+\section{Data materialization algorithm}
+The {\bf MaterializeDB} algorithm catches the {\em key}, {\em distinct} and {\em identifying} constraints in the annotation during the materialization process. 
+The input of the algorithm is the $Dataset$ and the annotations $A.*$ on it. 
+Each row in the input dataset represents the information related to one or more observations and their contexts.
+The input $A.*$ represents the annotation information.
+More specifically,
+\begin{itemize}
+\item A.MeasType = $\{\langle \underline{MeasTypeId}, ObsTypeId, CharType, StdType, ProtType, Precision, isKey \rangle\}$;
+\item A.ObservationType = $\{\langle \underline{ObsTypeId}, EntTypeId, isDistinct \rangle\}$ \\
+	Note that, we hide the ``AnnotId'' in this schema, which denotes the resource the annotation is on.
+    We do not include this because the algorithm focuses on dealing with annotations on one resource.
+    This way, we can simplify the description.
+\item A.ContextType = $\{\langle \underline{ObsTypeId, ContextObsTypeId, RelType}, isIdentify\rangle\}$
+\item A.Map = $\{\langle \underline{MeasTypeId, ResAttribute, Cond}, Val\rangle\}$
+\end{itemize}
+
+The output of the algorithm is a set of materialized tables represented in the OBOE model and denoted by $OBOE.*$. In detail,
+\begin{itemize}
+\item $OBOE.Observation=\{\langle \underline{ObsId}, ObsType, EntId \rangle\}$ keeps all the observation instances;
+\item $OBOE.Measurement=\{\langle \underline{MeasId}, ObsId, MeasType, Val\rangle\}$ for all the measurement instances;
+\item $OBOE.Entity=\{\langle \underline{EntId}, EntType\rangle\}$ for all the entity instances;
+\item $OBOE.Context =\{\langle \underline{ObsId, ConextObsId, ContextType}\rangle\}$ for all the context instances;
+\end{itemize}
+
+Algorithm \ref{alg:matdb} shows the framework of our algorithm. 
+In this algorithm, we maintain two intermediate index structures ($EntIdx$ and $ObsIdx$) to keep track of the distinct entity and observation instances. 
+$ObsIdx$ is the index structure maintained for the observation instances 
+whose types are specified with {\em distinct yes}. 
+This index maintains the mapping from observation type and key values to its corresponding observation instance id. 
+Obviously, only when an observation type is specified with {\em distinct yes}, (i.e., we want to keep track of the same observation instances) we need to maintain their instances in this index. 
+
+The key values can be calculated in three different cases.
+In the first case where only one measurement of an observation type is specified with ``key yes'', the key value is the value of this ``key'' measurement.
+ In the second case, several measurement types are marked with ``key yes'', the key value is the combined instance value of these several measurement types. 
+In the third case, some context of this object type is marked with ``identifying yes'', the key value is the combination of the instance values of its own key measurement types and the instance values of its context observation's key measurements. 
+
+$Entidx$ is the index structure for tracking the distinct entities. In case that some measurement type(s) of an observation type is/are specified with ``key yes'', 
+if different observation instances have the same value on these key measurements, semantically, we interpret that they are of the same entity. 
+The key value for each entity instance is computed in the same way as that for an observation instance.
+
+The procedure of this algorithm is very straightforward. 
+It processes the dataset in a row-wise manner. 
+In dealing with each row, five steps are involved. 
+The first step generates orphan measurement instances which are not connected to any observation instances.
+The second step groups these measurement instances according to their observation types.
+Then, for different observation types, the third and fourth steps materialize entity instances and observation instances respectively by either creating new oned or return existing ones. 
+The last step assigns the context relationship among the different observation instances. 
+
+
+
+\noindent {\bf Analysis of MaterializeDB}. \\
+{\bf Time}: As can be seen that  this algorihm scans the original data file in a row-by-row manner without revisiting the already seen rows. So, it is linear in the size of the dataset. 
+In addition, we use $EntIdx$ and $ObsIdx$ to facilitate the checking of unique entity and observation instances. Let $m$ be the number of distinct keys, each checking could take O(log(m)) time. 
+So, in total, the algorithm runs in O(n log(m)) where $m\ll n$ generally. \\
+{\bf Space}: $EntIdx$ and $ObsIdx$ are the intermdedite structures that we use in the algorithm. Since they keep the distinct entity and observation key values. The space complexity is of $O(m)$. 
+
+\begin{algorithm} [htb]
+\caption{{\bf MaterializeDB} ($Dataset, A.*$)}
+\label{alg:matdb}
+{\small
+\begin{algorithmic}
+\STATE /* {\em Dataset}: [Input] in the form of a flat file */\\
+\STATE /* {\em A }:  [Input] Annotations*/
+\STATE
+\STATE $ObsIdx =\emptyset$;  /* Keep index $\langle ObsTypeId, KeyVal\rangle \rightarrow ObsId$*/
+\STATE $EntIdx = \emptyset$;  /* Keep index $\langle ObsTypeId, KeyVal\rangle \rightarrow EntId$*/
+\STATE
+\FOR { (each $Row\langle A_1, A_2, \cdots, A_n\rangle \in Dataset$)}
+    \STATE /* Step 1: Define measurement instances */\\
+            $MeasSet$ = CrtMeasurement($Row, A.*$);
+    \STATE
+    \STATE /* Step 2: Partition the measurement instances according to observation types*/\\
+        $ObsType2MeasIdx$ = PartMeas($MeasSet, A.*$);  /*$ObsType2MeasIdx=\{ObsTypeId \rightarrow \{mi\}\}$*/
+    \STATE
+    \STATE $ContextIdx = \emptyset$;  /* Keep index $ObsTypeId \rightarrow ObsId$ to materialize context*/
+    \FOR{(each $ObsTypeId$ in $ObsType2MeasIdx$)}
+      \STATE /* Step 3: Find or create the entity instance for each observation type partition */
+        \STATE $EntId$ = MaterializeEntity($ObsTypeId, ObsType2MeasIdx, EntIdx, A.*, OBOE.*$);
+        \STATE
+        \STATE /* Step 4: Find or create the observation instance for each observation type partition of entity $EntId$ */
+        \STATE MaterializeObs($ObsTypeId, EntId, ObsType2MeasIdx, ObsIdx, ContextIdx, A.*, OBOE.*$);
+    \ENDFOR
+    \STATE
+    \STATE /* Step 5: Assign the context observation instances */  \\
+            MaterializeContext($ContextIdx, A.*, OBOE.*$);
+\ENDFOR
+\RETURN OBOE;
+\end{algorithmic}
+}
+\end{algorithm}
+
+\begin{algorithm} [htb]
+\caption{{\bf CrtMeasurement} ($Row, A.*$)}
+{\small
+\begin{algorithmic}
+    \STATE/* Create new orphan measurement instances */
+    \STATE $MeasSet = \emptyset$; /* Keep the set of new measurement instances */
+	\FOR {(each $m = \langle MeasTypeId, ResAttribute, Cond, Val\rangle \in A.Map$)}
+		
+		\STATE {\bf if}{(($m.ResAttribute != Row.A_i.Attrname$) OR ($Row.A_i$ does not satisfy $m.Cond$))}
+		  {\bf continue};
+		\STATE $mi_{id}$ = GetNewMeasId($OBOE.Measurement$);
+		\STATE {\bf if} ($m.Val!=NULL$) $MeasVal$ = $m.Val$;
+		\STATE {\bf else} $MeasVal$ = $Row.A_i.Val$;
+		\STATE Create a measurement instance $\langle mi_{id}, null, MeasType, MeasVal\rangle$ and add it to $MeasSet$;
+	\ENDFOR
+    \RETURN $MeasSet$;
+\end{algorithmic}
+}
+\end{algorithm}
+
+\begin{algorithm} [htb]
+\caption{{\bf PartMeas} ($MeasSet, A.*$)}
+{\small
+\begin{algorithmic}
+    \STATE /* Partition measurement instances according to their observation types*/
+    \STATE $ObsType2MeasIdx=\emptyset$ /* Keep index for $ObsTypeId \rightarrow \{mi\}$ */
+    \FOR{(each $mi \in MeasSet$)}
+    \STATE $ObsTypeId$ = GetObsTypeId ($A.MeasType, mi.MeasTypeId$);
+	\STATE Update $ObsType2MeasIdx$ by changing the item $ObsTypeId \rightarrow \{mi\}$;
+    \ENDFOR
+    \RETURN $ObsType2MeasIdx$;
+\end{algorithmic}
+}
+\end{algorithm}
+
+\begin{algorithm} [htb]
+\caption{{\bf MaterializeEntity}($ObsTypeId, ObsType2MeasIdx, EntIdx, A.*, OBOE.*)$}
+{\small
+\begin{algorithmic}
+\STATE $KeyVal$ = GetObsTypeKeys ($ObsTypeId, ObsType2MeasIdx$);
+\STATE $HasKey$ = false;
+\STATE {\bf if }{($ObsTypeId$ has key measurements OR is specified with distinct yes)}
+     $HasKey$ = true;
+\STATE $EntType$ = GetObsEntityType ($A.ObservationType, ObsTypeId$);
+\STATE $CrtNewEntInst$ = true;
+\IF{ ($HasKey$==true) }
+	\STATE $EntId$ = GetEntId($ObsTypeId, KeyVal, EntIdx$); %/*From the current entity key index get the id of the entity instance*/
+	\STATE {\bf  if} {($EntId!=NULL$)} $CrtNewEntInst$ = false;
+\ENDIF
+\IF{($CrtNewEntInst==true$)}
+	\STATE $EntId$ = CrtEntId($EntType$);
+	\STATE Create an entity instance $ei = \langle EntId, EntType\rangle $ and put $ei$ to $OBOE.Entity$;
+	\STATE {\bf if} ($HasKey$==true) $EntIdx = EntIdx \cup \{\langle ObsTypeId, KeyVal \rangle \rightarrow EntId$\};
+\ENDIF
+\RETURN $EntId$;
+\end{algorithmic}
+}
+\end{algorithm}
+
+\begin{algorithm} [ht]
+\caption{{\bf MaterializeObs}($ObsTypeId, EntId, ObsType2MeasIdx, ObsIdx, ContextIdx, A.*, OBOE.*$)}
+{\small 
+\begin{algorithmic}
+    \STATE $KeyVal$ = GetObsTypeKeys ($ObsTypeId, ObsType2MeasIdx$);
+    \STATE $IsObsDistinct$ = CheckIfObsDistinct($A.ObservationType, ObsTypeId$);
+		\STATE $CrtNewObsInst$ = true;
+	\IF{ ($IsObsDistinct$==true) }
+		\STATE $ObsId$ = GetObsId($ObsTypeId, KeyVal, ObsIdx$);
+		\STATE {\bf if}{($ObsId!=NULL$)}  $CrtNewObsInst$ = false;
+	\ENDIF
+	\IF{($CrtNewObsInst==true)$}
+		\STATE Create an observation instance $oi = \langle ObsId,  EntId\rangle$ and put $oi$ to $OBOE.Observation$;
+		\STATE {\bf  if} ($IsObsDistinct$==true) $ObsIdx = ObsIdx \cup \{\langle ObsTypeId, KeyVal \rangle \rightarrow ObsId$\};
+           \ENDIF
+    \STATE
+    \STATE /* Maintain the measurement instances for this observation instance */
+    \STATE $miSet$ = GetMeasInst($ObsType2MeasIdx, ObsTypeId$);
+    \IF{($ObsId$ is a new one)} 
+         \STATE Set the $obsId$ to each $mi \in miSet$ so that $mi$-s are not orphans;
+	\STATE Put all the $mi \in miSet$ to $OBOE.Measurement$;
+    \ELSE
+         \STATE Discard all the $mi \in miSet$;
+     \ENDIF
+
+	\STATE $ContextIdx = ContextIdx \cup \{ObsTypeId \rightarrow ObsId\}$; /* $ContextIdx$ is also output*/
+
+\end{algorithmic}
+}
+\end{algorithm}
+
+
+\begin{algorithm} [htb]
+\caption{{\bf MaterializeContext}($ContextIdx, A.*, OBOE.*$)}
+{\small 
+\begin{algorithmic}
+\FOR{ ($ObsTypeId \rightarrow ObsId \in ContextIdx$)}
+\STATE $ContextObsTypeId, Rel$ = GetContextObsTypeRel($A.ContextType, ObsTypeId$);
+\IF{($ContextObsTypeId!= NULL$)}
+	\STATE $ContextObsId$ = GetContextObsId($ContextIdx, ContextObsTypeId$);
+	\STATE Create a context instance $ci=\langle ObsId, ContextObsId, Rel\rangle$;
+	\STATE Put $ci$ to $OBOE.Context$;
+\ENDIF
+\ENDFOR
+\end{algorithmic}
+}
+\end{algorithm}
+
+\newpage
+\begin{table}[htb]
+\begin{center}
+\begin{tabular}{|l|l|l|l|}
+\hline
+yr & spec & spp & dbh\\\hline
+2007 & 1 & piru & 35.8 \\\hline
+2008 & 1 & piru & 36.2 \\\hline
+2008 & 2 & abba & 33.2 \\\hline
+\end{tabular}
+\end{center}
+\vspace{-0.2in}
+\caption{Dataset 1}
+\label{tb:dataset1}
+\end{table}
+
+
+
+\begin{example} [Example with ``key yes'' and ``distinct yes'', without ``identifying yes'']
+Take the data in Table \ref{tb:dataset1} \footnote{The detailed annotation is in page 6 of Shawn's powerpoint file.}
+as an example to explain the algorithm. \\
+For {\bf Row(2007, 1, piru, 35.8)}
+\begin{itemize}
+\item Step 1 creates four measurement instances: 
+$\langle mi_1, null, Year, 2007\rangle$, $\langle mi_2, null, DBH, 35.8\rangle$, \\
+$\langle mi_3, null, TaxonomicTypeName, Picea~rubens\rangle$, $\langle mi_4, null, EntityName, 1\rangle$,\\
+and returns $MeasSet = \{mi_1, mi_2, mi_3, mi_4\}$;
+\footnote{For all the instances, the measurement characteristic is set to represent Measurement Type}.
+
+\item Step 2 returns $ObsType2MeasIdx = \{\{o_1\rightarrow \{mi_1\}, o_2 \rightarrow \{mi_2, mi_3, mi_4\}\}$. 
+ \item Step 3-4: for  observation types $o_1$ and $o_2$,  materialize entity and observation instance
+    \begin{itemize}
+    \item for $o_1$ (with associated instance $mi_1$ of type $m_1$)
+    \begin{itemize}
+        \item Since $m_1$ is specified as key, get the $KeyVal=2007$;
+        \item No entity with this key exists in $EntIdx$, create an entity $\langle ei_1, TemporalRange\rangle$; Now, $EntIdx=\{\langle o_1, 2007\rangle\rightarrow ei_1\}$.
+        \item Since $o_1$ is specified as {\em distinct}, need to make sure we do not create redundant observation instances. No entry with the key $\langle o_1, 2007\rangle$ exists in $ObsIdx$, so, create an observation instance $oi_1$, which is of entity $ei_1$ and represented as $\langle oi_1, ei_1\rangle$. \\
+	Now, $ObsIdx=\{\langle o_1, 2007 \rangle \rightarrow oi_1\}$
+        \item Connect $mi_1$ to $oi_1$;
+    \end{itemize}
+    
+    \item When deal with $o_2$,
+        \begin{itemize}
+        \item $KeyVal=1$.
+        \item Create an entity instance $\langle ei_2, Tree\rangle$; $EntIdx=\{\langle o_1, 2007\rangle\rightarrow ei_1, \langle o_2, 1\rangle\rightarrow ei_2\}$.
+        \item Create an observation instance $\langle oi_2, ei_2 \rangle$.
+            No need to update $ObsIdx$ because $o_2$ is not identified as {\em distinct}.
+        \item Connect $mi_2$, $mi_3$ and $mi_4$ to $oi_2$;
+        \end{itemize}
+    \end{itemize}
+    \item Step 5 assigns the context relationship between $oi_1$ and $oi_2$;
+    \end{itemize}
+    
+    
+For {\bf Row (2008, 1, piru, 36.2)}
+    \begin{itemize}
+    \item Step 1 creates measurement instances $\langle mi_5, null, Year, 2008\rangle$,
+    $\langle mi_6, null, DBH, 36.2\rangle$,\\
+    $\langle mi_7, null, TaxonomicTypeName, Picea~rubens\rangle$,
+    $\langle mi_8, null, EntityName, 1\rangle$\\
+    and returns $MeasSet = \{mi_5, mi_6, mi_7, mi_8\}$;
+    \item Step 2 gets $ObsType2MeasIdx = \{\{o_1\rightarrow \{mi_5\}, o_2 \rightarrow \{mi_6, mi_7, mi_8\}\}$
+    \item Step 3-4: for observation types $o_1$ and $o_2$ materialize entity and observation instance
+        \begin{itemize}
+            \item for $o_1$
+            \begin{itemize}
+            \item  $KeyVal=2008$;
+            \item Create an entity instance $\langle ei_3, TemporalRange\rangle$; \\
+                $EntIdx=\{\langle o_1, 2007 \rangle \rightarrow ei_1, \langle o_2, 1 \rangle \rightarrow ei_2, \langle o_1, 2008 \rangle \rightarrow ei_3\}$.
+             \item Create an observation instance $\langle oi_3, ei_3 \rangle$;\\
+              $ObsIdx=\{\langle o_1, 2007\rangle\rightarrow oi_1, \langle o_2, 1\rangle\rightarrow oi_2, \langle o_1, 2008\rangle\rightarrow oi_3\}$
+		\item Connect $mi_5$ to $oi_3$; 
+            \end{itemize}
+            \item When deal with $o_2$,
+            \begin{itemize}
+             \item $KeyVal=1$.
+            \item {\bf item $\langle o_2, 1 \rangle \rightarrow ei_2$ is already in $EntIdx$, so get the entity id $ei_2$. No need to create an entity.}
+            \item Since $o_2$ is not specified with {\em distinct yet}, we NEED to create an observation $\langle oi_4, ei_2 \rangle$. No need to update $ObsIdx$.
+		\item Connect $mi_6, mi_7, mi_8$ to $oi_4$; 
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+For {\bf ROW (2008, 2, abba, 33.2)}
+    \begin{itemize}
+        \item For $o_1$'s measurement $2008$, 
+	\begin{itemize}
+	\item Since $\langle o_1, 2008 \rangle \rightarrow ei_3$ already exists in $EntIdx$, {\bf no need to create a new entity}.
+        \item Since $o_1$ is specified with {\em distinct yes}, and $\langle o_1, 2008 \rangle \rightarrow oi_3 $ already exists in $ObsIdx$, 
+	{\bf no need to create a new OBSERVATION} and no need to put the measurement instance for $2008$ into OBOE model.
+	\end{itemize}
+    \end{itemize}
+
+\end{example}
+ 
+    
+\begin{table}[htb]
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+plt & spp & dbh\\\hline
+A & piru & 35.8 \\\hline
+A & piru & 36.2 \\\hline
+B & piru &33.2 \\\hline
+\end{tabular}
+\end{center}
+\vspace{-0.2in}
+\caption{Dataset 2}
+\label{tb2}
+\end{table}
+
+\begin{example} [Example with identifying]\label{eg2}
+Let us use the data in Table \ref{tb2} as an example. \footnote{The detailed annotation information is at page 8 in Shawn's powerpoint file.}
+Before we go through the algorithm step by step,  we first note that  $o_1$ and $o_2$ have key measurements $m1$ and $m_2$ respectively. 
+So, we need to maintain the distinct entity instances for both of these two observation types. 
+In addition, $o_1$ is specified with {\em distinct yes} while $o_2$ is not. So, we need to maintain the distinct observation instances for $o_1$ but not for $o_2$. 
+
+For the {\bf first row}, 
+\begin{itemize}
+\item The first step generates three measurement instances $MeasSet=\{\langle mi_1, null, EntityName, A\rangle$, \\
+$\langle mi_2, null, TaxonomicTypeName, Picea~rubens\rangle$, $\langle mi_3, null, DBH, 35.8\rangle\}$.
+\item The second step gets $ObsType2MeasIdx = \{\{o_1\rightarrow \{mi_1\}, o_2 \rightarrow \{mi_2, mi_3\}\}$.
+\item For each observation type, create entity and observation instances.
+\begin{itemize}
+\item For $o_1$, the key value is $A$. Since there is no such a key in $EntIdx$, we create an entity $ei_1$ of type $Plot$.\\
+	$EntIdx = \{\langle o_1, A\rangle \rightarrow ei_1\}$. \\
+	We create an observation instance $oi_1$ whose entity is $ei_1$.\\
+	$ObsIdx = \{\langle o_1, A\rangle \rightarrow oi_1\}$.\\
+	Connect the measurement instance $mi_1$ to observation instances  $oi_1$,
+\item For $o_2$, 
+	the key value is $(A, Picea~rubens)$ since it has context $o_1$ with ``{\em identifying yes}''.\\
+  	We create an entity instance $ei_2$ of type $Tree$. \\
+	$EntIdx = \{\langle o_1, A\rangle \rightarrow ei_1, \langle o_2, (A, Picea~rubens) \rangle \rightarrow ei_2\}$.\\
+	We  create an observation instance $oi_2$ whose entity is $ei_2$.\\
+	Connect the measurement instances $mi_2$ and $mi_3$  to observation instance $oi_2$.
+\end{itemize}
+\item The last step for this row is to connect the observations using context relationship. For this instance, we connect $oi_1$ to $oi_2$ with context ``{\em Within}''.
+\end{itemize}
+
+For the {\bf second row}, 
+\begin{itemize} 
+\item The first step defines three measurement instances $MeasSet=\{\langle mi_4, null, EntityName, A\rangle$, \\
+$\langle mi_5, null,TaxonomicTypeName, Picea~rubens\rangle, \langle mi_6, null, DBH, 36.2\rangle\}$.
+\item The second step gets $ObsType2MeasIdx = \{\{o_1\rightarrow \{mi_4\}, o_2 \rightarrow \{mi_5, mi_6\}\}$.
+\item For each observation type, create entity and observation instances.
+\begin{itemize}
+\item For $o_1$, the key value is $\langle o_1, A\rangle$, $EntIdx$ already has an item for it with entity instance $ei_1$. No need to create a new instance for it. \\
+To create observation instance, since $o_1$ is specified with ``{\em distinct yes}'' and the key value is $\langle o_1,A\rangle$, 
+which corresponds to an existing observatin instance $oi_1$. So, we do not need to create a new observation for it.\\
+When we try to connect the measurement instance $mi_4$ to observation instance,  we realize that we did not create a new observation instance for type $o_1$. 
+So its related measurement instance $mi_4$ can be discarded. 
+\item For $o_2$, the new key value is $\langle o_2, (A, Picea~rubens)\rangle$ , which corresponds to $ei_2$ in $EntIdx$, so no need to create a new instance for it either. \\
+To create observation instances, since no ``{\em distinct yes}'' is specified, we create a new observation instance $oi_3$ for it.
+Then, we connct the measurement instances $\{m_5, m_6\}$ to observation instance $oi_3$.
+\end{itemize}
+\end{itemize}
+
+When we process the {\bf third row}, we have a new key value $\langle o_1, B\rangle$ for $o_1$, thus we create a new entity instance for it.
+For $o_2$, we have new key value $\langle o_2, (B,~Picea~rubens)\rangle$ and create a new entity instance for it. Similarly, we need to create new observation instances for both type.
+
+\end{example}
+
+
+\end{document}
+
