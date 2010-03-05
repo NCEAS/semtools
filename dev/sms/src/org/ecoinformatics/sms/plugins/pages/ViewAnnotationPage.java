@@ -28,13 +28,17 @@
 
 package org.ecoinformatics.sms.plugins.pages;
 
+import java.awt.Component;
+
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
 import org.ecoinformatics.sms.annotation.Annotation;
+import org.ecoinformatics.sms.renderer.AnnotationGraph;
 
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
@@ -51,6 +55,8 @@ public class ViewAnnotationPage extends AbstractUIPage {
 	private final String title = "View Annotation";
 	private final String subtitle = "";
 	private JTextArea annotationXML;
+	
+	private JTabbedPane tabPane = null;
 	
 	private Annotation annotation;
 
@@ -75,16 +81,13 @@ public class ViewAnnotationPage extends AbstractUIPage {
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		JLabel desc = WidgetFactory
-				.makeHTMLLabel(
-						"<b>Annotation XML</b>",
-						2);
+		JLabel desc = WidgetFactory.makeHTMLLabel("<b>View Annotation</b>", 2);
 		this.add(desc);
-		this.add(WidgetFactory.makeDefaultSpacer());
-		
-		this.add(WidgetFactory.makeDefaultSpacer());
-		
-		// annotation
+
+		tabPane = new JTabbedPane();
+		this.add(tabPane);
+				
+		// annotation XML
 		JPanel annotationPanel = WidgetFactory.makePanel();
 		annotationPanel.add(WidgetFactory.makeLabel("Annotation:", false));
 		annotationXML = WidgetFactory.makeTextArea("", 20, false);
@@ -92,9 +95,20 @@ public class ViewAnnotationPage extends AbstractUIPage {
 		annotationPanel.add(annotationScrollPane);
 		annotationPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
-		this.add(annotationPanel);
+		
+		tabPane.insertTab("Annotation XML", null, annotationPanel, "View XML source", 0);
+		
+		// annotation graph
+		JPanel annotationGraphPanel = WidgetFactory.makePanel();
+		annotationGraphPanel.add(WidgetFactory.makeLabel("Graph:", false));
+		// create the graph
+		Component graphComponent = AnnotationGraph.createAnnotationGraph(annotation);
+		annotationGraphPanel.add(graphComponent);
+		annotationGraphPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
+				8 * WizardSettings.PADDING));
+		
+		tabPane.insertTab("Annotation Graph", null, annotationGraphPanel, "View graph", 1);
 
-		this.add(WidgetFactory.makeDefaultSpacer());
 
 	}
 

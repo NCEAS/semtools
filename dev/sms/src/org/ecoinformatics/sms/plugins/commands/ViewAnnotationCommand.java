@@ -68,9 +68,6 @@ public class ViewAnnotationCommand implements Command {
 					UISettings.POPUPDIALOG_HEIGHT,
 					true);
 		
-//		JOptionPane.showMessageDialog(
-//				UIController.getInstance().getCurrentActiveWindow(), 
-//				annotation.toString());
 	}
 
 }
