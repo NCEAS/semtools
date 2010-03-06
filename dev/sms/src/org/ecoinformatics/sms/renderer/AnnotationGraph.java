@@ -15,7 +15,9 @@ import org.ecoinformatics.sms.annotation.Standard;
 
 import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxGraph;
+import com.mxgraph.view.mxStylesheet;
 
 public class AnnotationGraph {
 	
@@ -24,11 +26,24 @@ public class AnnotationGraph {
 		// the graph
 		mxGraph graph = new mxGraph();
 		Object parent = graph.getDefaultParent();
+		
+		//the style
+		mxStylesheet stylesheet = graph.getStylesheet();
+		Map<String, Object> styleMap = new HashMap<String, Object>();
+		styleMap.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
+		//styleMap.put(mxConstants.STYLE_OPACITY, 50);
+		//styleMap.put(mxConstants.STYLE_FONTCOLOR, "#774400");
+		stylesheet.putCellStyle("ROUNDED", styleMap);
+		graph.setStylesheet(stylesheet);
+		
+		// for positioning
 		int x = 20;
 		int y = 20;
 		int width = 80;
 		int height = 30;
+		String style = "defaultVertex;ROUNDED";
 		
+		// keep track of the observaiton cells
 		Map<Observation, mxCell> observationMap = new HashMap<Observation, mxCell>();
 		
 		for (Observation observation: annotation.getObservations()) {
@@ -43,14 +58,14 @@ public class AnnotationGraph {
 
 				// add observation
 				Object observationNode = 
-					graph.insertVertex(observationCell, null, observation.getLabel(), x, y, width, height);
-				
+					graph.insertVertex(observationCell, null, observation.getLabel(), x, y, width, height, style);
+
 				// shift down
 				//y += (height*2);
 				
 				// of entity
 				Object entityNode = 
-					graph.insertVertex(observationCell, null, observation.getEntity(), x, y + (height*2), width, height);
+					graph.insertVertex(observationCell, null, observation.getEntity(), x, y + (height*2), width, height, style);
 				graph.insertEdge(observationCell, null, "ofEntity", observationNode, entityNode);
 
 				for (Measurement measurement: observation.getMeasurements()) {
@@ -60,7 +75,7 @@ public class AnnotationGraph {
 					
 					// add measurement
 					Object measurementNode = 
-						graph.insertVertex(observationCell, null, measurement.getLabel(), x, y, width, height);
+						graph.insertVertex(observationCell, null, measurement.getLabel(), x, y, width, height, style);
 					
 					graph.insertEdge(observationCell, null, "hasMeasurement", observationNode, measurementNode);
 					
@@ -73,7 +88,7 @@ public class AnnotationGraph {
 						characteristic = measurement.getCharacteristics().get(0);
 					} catch (Exception e) {}
 					Object characteristicNode = 
-						graph.insertVertex(observationCell, null, characteristic, x, y, width, height);
+						graph.insertVertex(observationCell, null, characteristic, x, y, width, height, style);
 					graph.insertEdge(observationCell, null, "ofCharacteristic", measurementNode, characteristicNode);
 					
 					// shift down
@@ -82,7 +97,7 @@ public class AnnotationGraph {
 					// add standard
 					Standard standard = measurement.getStandard();
 					Object standardNode = 
-						graph.insertVertex(observationCell, null, standard, x, y, width, height);
+						graph.insertVertex(observationCell, null, standard, x, y, width, height, style);
 					graph.insertEdge(observationCell, null, "usesStandard", measurementNode, standardNode);
 					
 					// shift down
@@ -91,7 +106,7 @@ public class AnnotationGraph {
 					// add protocol
 					Protocol protocol = measurement.getProtocol();
 					Object protocolNode = 
-						graph.insertVertex(observationCell, null, protocol, x, y, width, height);
+						graph.insertVertex(observationCell, null, protocol, x, y, width, height, style);
 					graph.insertEdge(observationCell, null, "usesProtocol", measurementNode, protocolNode);
 					
 					// shift down

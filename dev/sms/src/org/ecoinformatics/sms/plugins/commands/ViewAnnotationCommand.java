@@ -28,8 +28,6 @@ package org.ecoinformatics.sms.plugins.commands;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.JOptionPane;
-
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.pages.ViewAnnotationPage;
