@@ -567,13 +567,14 @@ public class MaterializaDB {
 	 * @author cao
 	 * @param args
 	 * 
-	 * er-2008-ex1-data.txt
-er-2008-ex1-annot.xml
-er-2008-ex1-oboe.csv
+	 * 
+	E.g., to set parameters in the Arguments field
 
-	 * [1] data file name
-	 * [2] Annotation file name
-	 * [3] Output file name prefix
+	er-2008-ex3-eml.xml //now this file is not used
+	er-2008-ex3-data.txt
+	er-2008-ex3-annot.xml
+	er-2008-ex3-oboe.csv
+
 	 */
 	public static void main(String[] args) {
 		
@@ -597,12 +598,10 @@ er-2008-ex1-oboe.csv
 		
 		try {
 			OboeModel OBOE = MaterializeDB(emlFileName,dataFileName, annotFileName, oboeFileName);
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.out.println("********************\nOutput OBOE file is in: "+oboeFileName+"\n********************");
+		} catch (FileNotFoundException e) {			
 			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {			
 			e.printStackTrace();
 		}
 		

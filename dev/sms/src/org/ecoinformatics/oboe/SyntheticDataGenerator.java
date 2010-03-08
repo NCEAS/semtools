@@ -39,6 +39,16 @@ public class SyntheticDataGenerator {
 	
 	/**
 	 * @param args
+	 * 
+	 * Example 1: 
+	 * Put the following two lines in the Arguments field
+	  eg13
+      2000
+      it will generate an annotation file together with a data file with 2000 rows to follow the annotation specification in eg13
+      
+      eg2
+      10
+      it will generate an annotation file together with a data file with 10 rows to follow the annotation specification in eg2
 	 */
 	public static void main(String[] args) {
 		if(args.length!=2){
