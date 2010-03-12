@@ -498,8 +498,9 @@ public class OwlApiOntologyManager implements OntologyManager {
 	 * @see org.ecoinformatics.sms.OntologyManager#isSubClass(org.ecoinformatics.sms.ontology.OntologyClass, org.ecoinformatics.sms.ontology.OntologyClass)
 	 */
 	public boolean isSubClass(OntologyClass sub, OntologyClass sup) {
-		// TODO Auto-generated method stub
-		return false;
+		List<OntologyClass> subclasses = this.getNamedSubclasses(sup);
+		return subclasses.contains(sub);
+		
 	}
 
 	/* (non-Javadoc)
