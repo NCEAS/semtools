@@ -1,6 +1,7 @@
 package org.ecoinformatics.sms.plugins.ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -167,6 +168,7 @@ public class OntologyClassField extends JTextField {
 
 			public void mouseClicked(MouseEvent e) {
 				OntologyClassField source = (OntologyClassField) e.getSource();
+				Log.debug(40, "mouseClicked, dialogIsShowing: "  + source.isPopupShowing);
 				if (source.isPopupShowing) {
 					// the popup on the subsequent click
 					source.syncSource();
@@ -219,6 +221,14 @@ public class OntologyClassField extends JTextField {
 		FocusListener fListener = new FocusAdapter() {
             public void focusLost(FocusEvent e) {
 				OntologyClassField source = (OntologyClassField) e.getSource();
+				Log.debug(40, "focusLost, source.isPopupShowing=" + source.isPopupShowing);
+
+				// check what gained the focus
+				Component gained = e.getOppositeComponent();
+				if (!(gained instanceof OntologyClassField)) {
+					// ignore unless switching to another field
+					return;
+				}
 				
 				// save and leave 
 				if (source.isPopupShowing) {
@@ -269,6 +279,7 @@ public class OntologyClassField extends JTextField {
 		int x = source.getLocationOnScreen().x;
         int y = source.getLocationOnScreen().y + source.getSize().height;
        
+		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 		Popup popup = PopupFactory.getSharedInstance().getPopup(source, selectionPanel, x, y);
 		popup.show();
 		
