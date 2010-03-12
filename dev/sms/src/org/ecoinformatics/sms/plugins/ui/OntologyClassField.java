@@ -3,6 +3,8 @@ package org.ecoinformatics.sms.plugins.ui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -14,16 +16,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
 import javax.swing.SwingConstants;
+import javax.swing.TransferHandler;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.pages.OntologyClassSelectionPage;
 import org.ecoinformatics.sms.renderer.OntologyClassSelectionPanel;
@@ -35,6 +36,9 @@ import edu.ucsb.nceas.morpho.util.Log;
 import edu.ucsb.nceas.morpho.util.UISettings;
 
 public class OntologyClassField extends JTextField {
+	
+	public static final DataFlavor ontologyClassFlavor = new DataFlavor(OntologyClass.class, null);
+	
 	private OntologyClass ontologyClass;
 	private OntologyClass filterClass;
 	private OntologyClassSelectionPanel selectionPanel;
@@ -242,7 +246,46 @@ public class OntologyClassField extends JTextField {
             
 		};
 		label.addFocusListener(fListener);
+		TransferHandler dropHandler = new TransferHandler() {
+			 public boolean canImport(TransferSupport support) {
+				 support.isDataFlavorSupported(ontologyClassFlavor);
+				 return true;
+			 }
+			public boolean importData(TransferHandler.TransferSupport info) {
+                Log.debug(30, "importing: " + info);
+
+                if (!info.isDrop()) {
+                    return false;
+                }
+
+                // get the drop target
+				OntologyClassField source = (OntologyClassField) info.getComponent();
+
+                // Get the OntologyClass that is being dropped.
+                Transferable t = info.getTransferable();
+                OntologyClass data;
+                try {
+                    data = (OntologyClass) t.getTransferData(ontologyClassFlavor);
+                    // check that the dropped OntologyClass is a subclass of the filter class, if not the actual class even
+                    if (!data.equals(source.getFilterClass())) {
+	                    boolean isSubclass = SMS.getInstance().getOntologyManager().isSubClass(data, source.getFilterClass());
+	                    if (!isSubclass) {
+	                    	return false;
+	                    }
+                    }
+                } 
+                catch (Exception e) {
+                	return false;
+                }
+                
+                source.setOntologyClass(data);
+			
+                return true;
+            }
+            
+		};
 		
+		label.setTransferHandler(dropHandler);
 		return label;
 	}
 	

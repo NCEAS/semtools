@@ -34,22 +34,21 @@ package org.ecoinformatics.sms.renderer;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Point;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
-import java.awt.dnd.DragSourceContext;
-import java.awt.dnd.DragSourceDragEvent;
-import java.awt.dnd.DragSourceDropEvent;
-import java.awt.dnd.DragSourceEvent;
-import java.awt.dnd.DragSourceListener;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -81,10 +80,12 @@ import javax.swing.tree.TreePath;
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.ontology.OntologyProperty;
+import org.ecoinformatics.sms.plugins.ui.OntologyClassField;
 import org.ecoinformatics.sms.renderer.treetable.OntologyTreeCellRenderer;
 import org.ecoinformatics.sms.renderer.treetable.OntologyTreeModel;
 
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.pages.JTreeTable;
+import edu.ucsb.nceas.morpho.util.Log;
 
 
 /**
@@ -686,49 +687,47 @@ public class OntologyClassSelectionPanel extends JPanel {
 	private class _OntoClassSelectionTreeGestureListener implements
 			DragGestureListener {
 		public void dragGestureRecognized(DragGestureEvent e) {
-			DragSourceListener dsl = new DragSourceListener() {
-				public void dragDropEnd(DragSourceDropEvent dsde) {
-				}
 
-				public void dragEnter(DragSourceDragEvent dsde) {
-					DragSourceContext context = dsde.getDragSourceContext();
-					// Intersection of the users selected action,
-					// and the source and target actions
-					int myaction = dsde.getDropAction();
-					// if((myaction & DnDConstants.ACTION_COPY_OR_MOVE) != 0)
-					if ((myaction & DnDConstants.ACTION_COPY_OR_MOVE) != 0)
-						context.setCursor(DragSource.DefaultCopyDrop);
-					else
-						context.setCursor(DragSource.DefaultCopyNoDrop);
-				}
-
-				public void dragExit(DragSourceEvent dse) {
-				}
-
-				public void dragOver(DragSourceDragEvent dsde) {
-				}
-
-				public void dropActionChanged(DragSourceDragEvent dsde) {
-				}
-
-			};
 			Component source = e.getComponent();
 			if (source instanceof OntoClassSelectionJTree) {
 				OntoClassSelectionJTree tree = (OntoClassSelectionJTree) source;
-				Point sourcePoint = e.getDragOrigin();
 				int row = tree.getSelectedRow();
-				Object o = tree.getValueAt(row, 0);
+				final Object o = tree.getValueAt(row, 0);
+				Log.debug(30, "dragging, object: " + o);
 				// If we didn't select anything.. then don't drag.
-				if (o == null)
+				if (o == null) {
 					return;
-//				if (node.getUserObject() instanceof OntologyClass) {
-//					OntologyClassTransferable transferable = new OntologyClassTransferable();
-//					transferable
-//							.addObject((OntologyClass) node.getUserObject());
-//					e
-//							.startDrag(DragSource.DefaultCopyNoDrop,
-//									transferable, dsl);
-//				}
+				}
+				if (o instanceof OntologyClass) {
+					
+					// construct the transferable object
+					Transferable transferable = new Transferable() {
+
+						public Object getTransferData(DataFlavor flavor)
+								throws UnsupportedFlavorException, IOException {
+							if (flavor.equals(OntologyClassField.ontologyClassFlavor)) {
+								return o;
+							} else {
+								throw new UnsupportedFlavorException(flavor);
+								//return null;
+							}
+						}
+
+						public DataFlavor[] getTransferDataFlavors() {
+							return new DataFlavor[] {OntologyClassField.ontologyClassFlavor};
+						}
+
+						public boolean isDataFlavorSupported(DataFlavor flavor) {
+							if (flavor.equals(OntologyClassField.ontologyClassFlavor)) {
+								return true;
+							}
+							return false;
+						}
+						
+					};
+					
+					e.startDrag(DragSource.DefaultCopyNoDrop, transferable);
+				}
 			}
 		}
 	};
