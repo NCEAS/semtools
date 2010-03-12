@@ -279,7 +279,6 @@ public class OntologyClassField extends JTextField {
 		int x = source.getLocationOnScreen().x;
         int y = source.getLocationOnScreen().y + source.getSize().height;
        
-		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 		Popup popup = PopupFactory.getSharedInstance().getPopup(source, selectionPanel, x, y);
 		popup.show();
 		
