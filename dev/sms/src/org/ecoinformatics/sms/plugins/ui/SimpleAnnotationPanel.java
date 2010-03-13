@@ -220,6 +220,14 @@ public class SimpleAnnotationPanel extends JPanel {
 		this.add(classesPanel);
 	}
 	
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		observationEntity.setEnabled(enabled);
+		observationCharacteristic.setEnabled(enabled);
+		observationStandard.setEnabled(enabled);
+		observationProtocol.setEnabled(enabled);
+	}
+	
 	public OntologyClass getObservationEntity() {
 		return observationEntity.getOntologyClass();
 	}

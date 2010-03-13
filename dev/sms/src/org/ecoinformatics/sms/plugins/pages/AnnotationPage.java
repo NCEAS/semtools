@@ -109,8 +109,13 @@ public class AnnotationPage extends AbstractUIPage {
 	public AnnotationPage(boolean showAll) {
 		this.showAll = showAll;
 		init();
+		setFieldsEnabled(false);
 	}
 
+	private void setFieldsEnabled(boolean enabled) {		
+		this.simpleAnnotationPanel.setEnabled(enabled);
+	}
+	
 	/**
 	 * initialize method does frame-specific design - i.e. adding the widgets
 	 * that are displayed only in this frame (doesn't include prev/next buttons
@@ -248,6 +253,7 @@ public class AnnotationPage extends AbstractUIPage {
 
 	public void editAttribute(String attributeName) {
 		this.currentAttributeName = attributeName;
+		this.setFieldsEnabled(currentAttributeName != null);
 		
 		try {
 			// what are we editing:

@@ -261,6 +261,11 @@ public class OntologyClassField extends JTextField {
                 // get the drop target
 				OntologyClassField source = (OntologyClassField) info.getComponent();
 
+				// is it enabled
+				if (!source.isEnabled()) {
+					return false;
+				}
+				
                 // Get the OntologyClass that is being dropped.
                 Transferable t = info.getTransferable();
                 OntologyClass data;
@@ -303,6 +308,10 @@ public class OntologyClassField extends JTextField {
 	
 	public static void showPopupDialog(OntologyClassField source) {
 		OntologyClassSelectionPanel selectionPanel = new OntologyClassSelectionPanel(false);
+		
+		if (!source.isEnabled()) {
+			return;
+		}
 		
 		try {
 			OntologyClass currentClass = source.getOntologyClass();
