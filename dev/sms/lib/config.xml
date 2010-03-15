@@ -50,6 +50,8 @@
   	<classURI>http://ecoinformatics.org/oboe/oboe.1.0beta#Protocol</classURI>
   	<className>org.ecoinformatics.sms.annotation.Relationship</className>
   	<classURI>http://ecoinformatics.org/oboe/oboe.1.0beta#Relationship</classURI>
+  	<className>org.ecoinformatics.sms.annotation.Measurement</className>
+  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0beta#Measurement</classURI>
   </oboeClasses>
   <vocabularies>
   	<vocabulary>KNBRegistry</vocabulary>

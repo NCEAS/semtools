@@ -374,9 +374,15 @@ public class AnnotationPlugin
 			String name = entry.getKey();
 			String uri = entry.getValue();
 			try {
-				OntologyClass oboeClass = (OntologyClass) Class.forName(name).newInstance();
+				Object objectClass = Class.forName(name).newInstance();
+				OntologyClass oboeClass = null;
+				if (objectClass instanceof OntologyClass) {
+					oboeClass = (OntologyClass) objectClass;
+				} else {
+					oboeClass = new OntologyClass();
+				}
 				oboeClass.setURI(uri);
-				OBOE_CLASSES.put(oboeClass.getClass(), oboeClass);
+				OBOE_CLASSES.put(objectClass.getClass(), oboeClass);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
