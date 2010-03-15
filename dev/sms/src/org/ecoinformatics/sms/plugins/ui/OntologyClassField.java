@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
@@ -247,19 +248,18 @@ public class OntologyClassField extends JTextField {
 		};
 		label.addFocusListener(fListener);
 		TransferHandler dropHandler = new TransferHandler() {
-			 public boolean canImport(TransferSupport support) {
-				 support.isDataFlavorSupported(ontologyClassFlavor);
-				 return true;
-			 }
-			public boolean importData(TransferHandler.TransferSupport info) {
-                Log.debug(30, "importing: " + info);
-
-                if (!info.isDrop()) {
-                    return false;
-                }
+			public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
+				//TODO: check flavors
+				if (comp instanceof OntologyClassField) {
+					return true;
+				}
+				return false;
+			}
+			public boolean importData(JComponent comp, Transferable t) {
+                Log.debug(30, "importing: " + t);
 
                 // get the drop target
-				OntologyClassField source = (OntologyClassField) info.getComponent();
+				OntologyClassField source = (OntologyClassField) comp;
 
 				// is it enabled
 				if (!source.isEnabled()) {
@@ -267,7 +267,7 @@ public class OntologyClassField extends JTextField {
 				}
 				
                 // Get the OntologyClass that is being dropped.
-                Transferable t = info.getTransferable();
+                //Transferable t = info.getTransferable();
                 OntologyClass data;
                 try {
                     data = (OntologyClass) t.getTransferData(ontologyClassFlavor);
