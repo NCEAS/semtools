@@ -594,10 +594,7 @@ public class AnnotationPage extends AbstractUIPage {
 		measurementIsKey.setSelected(false);
 		
 		// classes
-		simpleAnnotationPanel.setObservationCharacteristic(null);
-		simpleAnnotationPanel.setObservationEntity(null);
-		simpleAnnotationPanel.setObservationProtocol(null);
-		simpleAnnotationPanel.setObservationStandard(null);
+		simpleAnnotationPanel.reset();
 		
 	}
 

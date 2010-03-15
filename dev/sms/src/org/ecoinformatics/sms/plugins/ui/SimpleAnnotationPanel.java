@@ -28,12 +28,15 @@
 package org.ecoinformatics.sms.plugins.ui;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Entity;
+import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
 import org.ecoinformatics.sms.ontology.OntologyClass;
@@ -41,6 +44,7 @@ import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
+import edu.ucsb.nceas.utilities.Log;
 
 public class SimpleAnnotationPanel extends JPanel {
 	
@@ -49,6 +53,9 @@ public class SimpleAnnotationPanel extends JPanel {
 	private OntologyClassField observationStandard;
 	private OntologyClassField observationProtocol;
 	
+	// for Measurement "template"
+	private OntologyClassField observationMeasurement;
+
 	public static String ENTITY_HELP = "The <b>Entity</b> is the 'thing' being observed. If the diameter of a tree is measured, the Entity will be the tree.";
 	public static String CHARACTERISTIC_HELP = "The <b>Characteristic</b> is the property being measured. If the diameter of a tree is measured, the Characteristic will be the diameter (length).";
 	public static String STANDARD_HELP = "The <b>Standard</b> is the unit used for the measurement. If the diameter of a tree is measured, the Standard will be a length unit (meters).";
@@ -153,6 +160,36 @@ public class SimpleAnnotationPanel extends JPanel {
 		JPanel classesPanel = WidgetFactory.makePanel();
 		classesPanel.setLayout(new BoxLayout(classesPanel, BoxLayout.Y_AXIS));
 		
+		// Measurement template
+		JPanel measurementPanel = WidgetFactory.makePanel(1);
+		measurementPanel.add(WidgetFactory.makeLabel("The ", false, null));
+		observationMeasurement = OntologyClassField.makeLabel("", true, null);
+		observationMeasurement.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Measurement.class));
+		measurementPanel.add(observationMeasurement);
+		measurementPanel.add(WidgetFactory.makeLabel(" was recorded.", false, null));
+		measurementPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0,
+				0, 8 * WizardSettings.PADDING));
+		observationMeasurement.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				Log.debug(30, "observationMeasurement set");
+				//TODO: actually look up the correct values
+				OntologyClass measurement = getObservationMeasurement();
+				observationCharacteristic.setOntologyClass(measurement);
+				observationStandard.setOntologyClass(measurement);
+				observationProtocol.setOntologyClass(measurement);
+				observationEntity.setOntologyClass(measurement);
+				
+				if (measurement != null) {
+					setEnabled(false);
+				} else {
+					setEnabled(true);
+				}
+				
+			}
+			
+		});
+		
 		// Characteristic and Entity
 		JPanel characteristicPanel = WidgetFactory.makePanel(1);
 		
@@ -208,6 +245,8 @@ public class SimpleAnnotationPanel extends JPanel {
 		
 
 		// put them together
+		classesPanel.add(measurementPanel);
+		classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		classesPanel.add(characteristicPanel);
 		classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		classesPanel.add(standardPanel);
@@ -226,6 +265,14 @@ public class SimpleAnnotationPanel extends JPanel {
 		observationCharacteristic.setEnabled(enabled);
 		observationStandard.setEnabled(enabled);
 		observationProtocol.setEnabled(enabled);
+	}
+	
+	public void reset() {
+		setObservationMeasurement(null);
+		setObservationCharacteristic(null);
+		setObservationEntity(null);
+		setObservationProtocol(null);
+		setObservationStandard(null);
 	}
 	
 	public OntologyClass getObservationEntity() {
@@ -258,6 +305,14 @@ public class SimpleAnnotationPanel extends JPanel {
 
 	public void setObservationProtocol(OntologyClass observationProtocol) {
 		this.observationProtocol.setOntologyClass(observationProtocol);
+	}
+	
+	public OntologyClass getObservationMeasurement() {
+		return observationMeasurement.getOntologyClass();
+	}
+
+	public void setObservationMeasurement(OntologyClass observationMeasurement) {
+		this.observationMeasurement.setOntologyClass(observationMeasurement);
 	}
 
 }

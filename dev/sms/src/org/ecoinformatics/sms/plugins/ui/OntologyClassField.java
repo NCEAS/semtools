@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -304,6 +306,14 @@ public class OntologyClassField extends JTextField {
 			selectedClass = this.selectionPanel.getOntologyClasses().get(0);
 		}
 		this.setOntologyClass(selectedClass);
+		this.notifyListeners();
+	}
+	
+	private void notifyListeners() {
+		for (ActionListener al: getActionListeners()) {
+			ActionEvent e = new ActionEvent(this, 1, "value set");
+			al.actionPerformed(e);
+		}
 	}
 	
 	public static void showPopupDialog(OntologyClassField source) {
