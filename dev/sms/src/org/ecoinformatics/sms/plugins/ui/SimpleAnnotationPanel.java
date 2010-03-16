@@ -30,16 +30,21 @@ package org.ecoinformatics.sms.plugins.ui;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Entity;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
+import org.ecoinformatics.sms.ontology.Ontology;
 import org.ecoinformatics.sms.ontology.OntologyClass;
+import org.ecoinformatics.sms.ontology.OntologyObjectProperty;
+import org.ecoinformatics.sms.ontology.OntologyProperty;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
@@ -175,10 +180,54 @@ public class SimpleAnnotationPanel extends JPanel {
 				Log.debug(30, "observationMeasurement set");
 				//TODO: actually look up the correct values
 				OntologyClass measurement = getObservationMeasurement();
-				observationCharacteristic.setOntologyClass(measurement);
-				observationStandard.setOntologyClass(measurement);
-				observationProtocol.setOntologyClass(measurement);
-				observationEntity.setOntologyClass(measurement);
+				
+				// reset the fields
+				setObservationCharacteristic(null);
+				setObservationEntity(null);
+				setObservationProtocol(null);
+				setObservationStandard(null);
+				
+				// assume the filter class has the OBOE ontology
+				Ontology oboeOntology = observationMeasurement.getFilterClass().getOntology();
+				OntologyProperty property = null;
+				List<OntologyClass> classes = null;
+				
+				// get the entity
+				try {
+					property = new OntologyObjectProperty(oboeOntology, "measurementFor");
+					classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+					observationEntity.setOntologyClass(classes.get(0));
+				} catch (Exception ex) {
+					Log.debug(30, "ignoring measurement entity template exception");
+					//ex.printStackTrace();
+				}
+				// get the characteristic
+				try {
+					property = new OntologyObjectProperty(oboeOntology, "ofCharacteristic");
+					classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+					observationCharacteristic.setOntologyClass(classes.get(0));
+				} catch (Exception ex) {
+					Log.debug(30, "ignoring measurement characteristic template exception");
+					//ex.printStackTrace();
+				}
+				// get the standard
+				try {
+					property = new OntologyObjectProperty(oboeOntology, "usesStandard");
+					classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+					observationStandard.setOntologyClass(classes.get(0));
+				} catch (Exception ex) {
+					Log.debug(30, "ignoring measurement standard template exception");
+					//ex.printStackTrace();
+				}
+				// get the protocol
+				try {
+					property = new OntologyObjectProperty(oboeOntology, "usesProtocol");
+					classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+					observationProtocol.setOntologyClass(classes.get(0));
+				} catch (Exception ex) {
+					Log.debug(30, "ignoring measurement protocol template exception");
+					//ex.printStackTrace();
+				}
 				
 				if (measurement != null) {
 					setEnabled(false);
