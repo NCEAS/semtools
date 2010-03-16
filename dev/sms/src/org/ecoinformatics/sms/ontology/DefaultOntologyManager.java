@@ -476,4 +476,10 @@ public class DefaultOntologyManager implements OntologyManager {
        Ontology onto = getOntology(o.getURI());
        return _models.get(onto);
     }
+
+	public List<OntologyClass> getNamedClassesForPropertyRestriction(
+			OntologyProperty p, OntologyClass c) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

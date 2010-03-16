@@ -63,7 +63,7 @@ public abstract class OntologyProperty {
      * @return the name
      */
     public String getURI() {
-        return getOntology().getURI() + getName();
+        return getOntology().getURI() + "#" + getName();
     }
 
     /**

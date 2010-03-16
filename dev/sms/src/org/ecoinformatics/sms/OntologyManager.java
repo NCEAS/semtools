@@ -129,6 +129,14 @@ public interface OntologyManager {
     public List<OntologyClass> getNamedClasses(Ontology ontology);
 
     /**
+     * Gets classes for the given property restriction on the given class
+     * @param p restrictions for this property
+     * @param c the class that has the restrictions
+     * @return list of classes for the restriction
+     */
+	public List<OntologyClass> getNamedClassesForPropertyRestriction(OntologyProperty p, OntologyClass c);
+	
+    /**
      * Returns the set of named subclasses of the given ontology class.
      * @param c the superclass to search for
      * @return the subclasses

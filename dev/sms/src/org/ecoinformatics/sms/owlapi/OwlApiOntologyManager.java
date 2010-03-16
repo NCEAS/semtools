@@ -24,6 +24,7 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -272,6 +273,33 @@ public class OwlApiOntologyManager implements OntologyManager {
 		
 		return classes;
 	}
+	
+	public List<OntologyClass> getNamedClassesForPropertyRestriction(OntologyProperty p, OntologyClass c) {
+		List<OntologyClass> classes = new ArrayList<OntologyClass>();
+
+		OWLClass restrictedClass = getOWLClass(c);
+		OWLOntology ontology = manager.getOntology(IRI.create(c.getOntology().getURI()));
+        OWLObjectProperty property = manager.getOWLDataFactory().getOWLObjectProperty(IRI.create(p.getURI()));
+        
+		RestrictionVisitor visitor = new RestrictionVisitor(restrictedClass, ontology);
+		
+		Set<OWLClass> owlClasses = visitor.getRestrictedProperties().get(property);
+		if (owlClasses != null) {
+			for (OWLClass owlClass: owlClasses) {
+				OntologyClass ontologyClass = null;
+				try {
+					ontologyClass = new OntologyClass(owlClass.getIRI().toString());
+					// include in the return list
+					classes.add(ontologyClass);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return classes;
+	}
+	
 
 	/* (non-Javadoc)
 	 * @see org.ecoinformatics.sms.OntologyManager#getNamedSubproperties(org.ecoinformatics.sms.ontology.OntologyProperty)

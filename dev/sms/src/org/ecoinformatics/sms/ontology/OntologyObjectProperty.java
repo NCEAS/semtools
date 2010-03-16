@@ -40,7 +40,7 @@ public class OntologyObjectProperty extends OntologyProperty {
     /**
      * Default constructor
      */
-    protected OntologyObjectProperty(Ontology ontology, String propName) {
+    public OntologyObjectProperty(Ontology ontology, String propName) {
         super(ontology, propName);
     }
 
