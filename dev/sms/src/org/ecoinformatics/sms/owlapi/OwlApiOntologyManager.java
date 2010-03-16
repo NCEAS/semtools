@@ -16,17 +16,19 @@ import org.ecoinformatics.sms.OntologyManager;
 import org.ecoinformatics.sms.ontology.Ontology;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.ontology.OntologyProperty;
-import org.semanticweb.owl.apibinding.OWLManager;
-import org.semanticweb.owl.model.OWLAnnotation;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLConstant;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyAnnotationAxiom;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.model.UnknownOWLOntologyException;
-import org.semanticweb.owl.util.SimpleURIMapper;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationValue;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.UnknownOWLOntologyException;
+import org.semanticweb.owlapi.util.SimpleIRIMapper;
 
 /**
  * @author leinfelder
@@ -70,11 +72,11 @@ public class OwlApiOntologyManager implements OntologyManager {
 	private OWLClass getOWLClass(OntologyClass ontologyClass) {
 		String classURI = ontologyClass.getURI();
 		try {
-			OWLOntology ontology = manager.getOntology(new URI(ontologyClass.getOntology().getURI()));
-			Iterator<OWLClass> classIter = ontology.getReferencedClasses().iterator();
+			OWLOntology ontology = manager.getOntology(IRI.create(ontologyClass.getOntology().getURI()));
+			Iterator<OWLClass> classIter = ontology.getClassesInSignature().iterator();
 			while (classIter.hasNext()) {
 				OWLClass owlClass = classIter.next();
-				String owlClassURI = owlClass.getURI().toString();
+				String owlClassURI = owlClass.getIRI().toURI().toString();
 				if (owlClassURI.equals(classURI)) {
 					return owlClass;
 				}
@@ -110,18 +112,18 @@ public class OwlApiOntologyManager implements OntologyManager {
 		OWLClass owlClass = this.getOWLClass(c);
 		OWLOntology ontology = null;
 		try {
-			ontology = manager.getOntology(new URI(c.getOntology().getURI()));
+			ontology = manager.getOntology(IRI.create(c.getOntology().getURI()));
 		} catch (UnknownOWLOntologyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (URISyntaxException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		List<String> labels = new ArrayList<String>();
 		for (OWLAnnotation annotation : owlClass.getAnnotations(ontology)) {
-			labels.add(annotation.getAnnotationValue().toString());
+			labels.add(annotation.getValue().toString());
 		}
 
 		return labels;
@@ -137,11 +139,11 @@ public class OwlApiOntologyManager implements OntologyManager {
 			Iterator<OWLOntology> ontologyIter = ontologies.iterator();
 			while (ontologyIter.hasNext()) {
 				OWLOntology ontology = ontologyIter.next();
-				Ontology o = new Ontology(ontology.getURI().toString());
-				Iterator<OWLClass> classIter = ontology.getReferencedClasses().iterator();
+				Ontology o = new Ontology(ontology.getOntologyID().getOntologyIRI().toString());
+				Iterator<OWLClass> classIter = ontology.getClassesInSignature().iterator();
 				while (classIter.hasNext()) {
 					OWLClass owlClass = classIter.next();
-					OntologyClass ontologyClass = new OntologyClass(owlClass.getURI().toString());
+					OntologyClass ontologyClass = new OntologyClass(owlClass.getIRI().toString());
 					if (!allClasses.contains(ontologyClass)) {
 						allClasses.add(ontologyClass);
 					}
@@ -163,11 +165,11 @@ public class OwlApiOntologyManager implements OntologyManager {
 		List<OntologyClass> allClasses = new ArrayList<OntologyClass>();
 		try {
 			
-			OWLOntology ontology = manager.getOntology(new URI(o.getURI()));
-			Iterator<OWLClass> classIter = ontology.getReferencedClasses().iterator();
+			OWLOntology ontology = manager.getOntology(IRI.create(o.getURI()));
+			Iterator<OWLClass> classIter = ontology.getClassesInSignature().iterator();
 			while (classIter.hasNext()) {
 				OWLClass owlClass = classIter.next();
-				OntologyClass ontologyClass = new OntologyClass(owlClass.getURI().toString());
+				OntologyClass ontologyClass = new OntologyClass(owlClass.getIRI().toString());
 				if (!allClasses.contains(ontologyClass)) {
 					allClasses.add(ontologyClass);
 				}		
@@ -202,20 +204,20 @@ public class OwlApiOntologyManager implements OntologyManager {
 			Iterator<OWLOntology> ontologyIter = ontologies.iterator();
 			while (ontologyIter.hasNext()) {
 				OWLOntology ontology = ontologyIter.next();
-				Ontology o = new Ontology(ontology.getURI().toString());
+				Ontology o = new Ontology(ontology.getOntologyID().getOntologyIRI().toString());
 				
 				// iterate over the subclasses of the class in this ontology
-				Set<OWLDescription> subClasses = owlClass.getSubClasses(ontology);
-				Iterator<OWLDescription> subClassIter = subClasses.iterator();
+				Set<OWLClassExpression> subClasses = owlClass.getSubClasses(ontology);
+				Iterator<OWLClassExpression> subClassIter = subClasses.iterator();
 				while (subClassIter.hasNext()) {
-					OWLDescription subclass = subClassIter.next();
+					OWLClassExpression subclass = subClassIter.next();
 					
 					
 					// add the subclass when appropriate
 					if (!subclass.isAnonymous()) {
 						OntologyClass ontologyClass = null;
 						try {
-							ontologyClass = new OntologyClass(subclass.asOWLClass().getURI().toString());
+							ontologyClass = new OntologyClass(subclass.asOWLClass().getIRI().toString());
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -240,24 +242,24 @@ public class OwlApiOntologyManager implements OntologyManager {
 		if (owlClass != null) {
 			OWLOntology ontology = null;
 			try {
-				ontology = manager.getOntology(new URI(o.getURI()));
+				ontology = manager.getOntology(IRI.create(o.getURI()));
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
 			}
 					
 			// iterate over the subclasses of the class for the given ontology
-			Set<OWLDescription> subClasses = owlClass.getSubClasses(ontology);
-			Iterator<OWLDescription> subClassIter = subClasses.iterator();
+			Set<OWLClassExpression> subClasses = owlClass.getSubClasses(ontology);
+			Iterator<OWLClassExpression> subClassIter = subClasses.iterator();
 			while (subClassIter.hasNext()) {
-				OWLDescription subclass = subClassIter.next();
+				OWLClassExpression subclass = subClassIter.next();
 				
 				
 				// add the subclass when appropriate
 				if (!subclass.isAnonymous()) {
 					OntologyClass ontologyClass = null;
 					try {
-						ontologyClass = new OntologyClass(subclass.asOWLClass().getURI().toString());
+						ontologyClass = new OntologyClass(subclass.asOWLClass().getIRI().toString());
 						// include in the return list
 						classes.add(ontologyClass);
 					} catch (Exception e) {
@@ -295,17 +297,17 @@ public class OwlApiOntologyManager implements OntologyManager {
 				OWLOntology ontology = ontologyIter.next();
 				
 				// iterate over the superclasses of the class in this ontology
-				Set<OWLDescription> superClasses = owlClass.getSuperClasses(ontology);
-				Iterator<OWLDescription> superClassIter = superClasses.iterator();
+				Set<OWLClassExpression> superClasses = owlClass.getSuperClasses(ontology);
+				Iterator<OWLClassExpression> superClassIter = superClasses.iterator();
 				while (superClassIter.hasNext()) {
-					OWLDescription superclassDesc = superClassIter.next();
+					OWLClassExpression superclassDesc = superClassIter.next();
 					
 					// add the superclass when appropriate
 					if (!superclassDesc.isAnonymous()) {
 						OWLClass superclass = superclassDesc.asOWLClass();
 						OntologyClass ontologyClass = null;
 						try {
-							ontologyClass = new OntologyClass(superclass.getURI().toString());
+							ontologyClass = new OntologyClass(superclass.getIRI().toString());
 							// include in the return list
 							classes.add(ontologyClass);
 						} catch (Exception e) {
@@ -330,22 +332,22 @@ public class OwlApiOntologyManager implements OntologyManager {
 		if (owlClass != null) {
 			OWLOntology ontology;
 			try {
-				ontology = manager.getOntology(new URI(o.getURI()));
+				ontology = manager.getOntology(IRI.create(o.getURI()));
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
 			}
 			// iterate over the superclasses of the class
-			Set<OWLDescription> superClasses = owlClass.getSuperClasses(ontology);
-			Iterator<OWLDescription> superClassIter = superClasses.iterator();
+			Set<OWLClassExpression> superClasses = owlClass.getSuperClasses(ontology);
+			Iterator<OWLClassExpression> superClassIter = superClasses.iterator();
 			while (superClassIter.hasNext()) {
-				OWLDescription superclass = superClassIter.next();
+				OWLClassExpression superclass = superClassIter.next();
 				
 				// add the superclass when appropriate
 				if (!superclass.isAnonymous()) {
 					OntologyClass ontologyClass = null;
 					try {
-						ontologyClass = new OntologyClass(superclass.asOWLClass().getURI().toString());
+						ontologyClass = new OntologyClass(superclass.asOWLClass().getIRI().toString());
 						// include in the return list
 						classes.add(ontologyClass);
 					} catch (Exception e) {
@@ -375,8 +377,8 @@ public class OwlApiOntologyManager implements OntologyManager {
 		Ontology ont = new Ontology();
 
 		try {
-			owlOnt = manager.getOntology(new URI(uri));
-			ont.setURI(owlOnt.getURI().toString());
+			owlOnt = manager.getOntology(IRI.create(uri));
+			ont.setURI(owlOnt.getOntologyID().getOntologyIRI().toString());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -395,7 +397,7 @@ public class OwlApiOntologyManager implements OntologyManager {
 		Iterator<OWLOntology> ontologyIter = ontologies.iterator();
 		while (ontologyIter.hasNext()) {
 			OWLOntology ontology = ontologyIter.next();
-			ids.add(ontology.getURI().toString());
+			ids.add(ontology.getOntologyID().getOntologyIRI().toString());
 		}
 		return ids;
 	}
@@ -406,19 +408,18 @@ public class OwlApiOntologyManager implements OntologyManager {
 	public String getOntologyLabel(Ontology ont) {
 		OWLOntology owlOnt = null;
 		try {
-			owlOnt = manager.getOntology(new URI(ont.getURI()));
+			owlOnt = manager.getOntology(IRI.create(ont.getURI()));
 		} catch (UnknownOWLOntologyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (URISyntaxException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		StringBuffer labels = new StringBuffer();
-		for (OWLOntologyAnnotationAxiom axiom : owlOnt.getAnnotations(owlOnt)) {
-			OWLAnnotation<? extends OWLObject> annotation = axiom.getAnnotation();
-			OWLConstant value = annotation.getAnnotationValueAsConstant();
-			labels.append(value.getLiteral());
+		for (OWLAnnotation annotation : owlOnt.getAnnotations()) {
+			OWLAnnotationValue value = annotation.getValue();
+			labels.append(value.toString());
 		}
 
 		return labels.toString();
@@ -454,7 +455,7 @@ public class OwlApiOntologyManager implements OntologyManager {
 	 */
 	public void importOntology(String uri) throws Exception {
 		// load from physical URI - this is an assumption for OntologyManager
-        manager.loadOntologyFromPhysicalURI(new URI(uri));
+        manager.loadOntologyFromOntologyDocument(IRI.create(uri));
 		//manager.loadOntology(new URI(uri));
 
 	}
@@ -464,11 +465,11 @@ public class OwlApiOntologyManager implements OntologyManager {
 	 */
 	public void importOntology(String url, String uri) throws Exception {
 		if (uri != null) {
-            SimpleURIMapper mapper = new SimpleURIMapper(new URI(uri), new URI(url));
-            manager.addURIMapper(mapper);
-            manager.loadOntology(new URI(uri));
+            OWLOntologyIRIMapper mapper = new SimpleIRIMapper(new URI(uri), IRI.create(url));
+            manager.addIRIMapper(mapper);
+            manager.loadOntology(IRI.create(uri));
 		} else {
-            manager.loadOntologyFromPhysicalURI(new URI(url));
+            manager.loadOntologyFromOntologyDocument(IRI.create(url));
 		}
 	}
 	
@@ -486,8 +487,8 @@ public class OwlApiOntologyManager implements OntologyManager {
 	public boolean isOntology(String uri) {
 		// TODO Auto-generated method stub
 		try {
-			return manager.contains(new URI(uri));
-		} catch (URISyntaxException e) {
+			return manager.contains(IRI.create(uri));
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -508,8 +509,8 @@ public class OwlApiOntologyManager implements OntologyManager {
 	 */
 	public void removeOntology(String uri) {
 		try {
-			manager.removeOntology(new URI(uri));
-		} catch (URISyntaxException e) {
+			manager.removeOntology(manager.getOntology(IRI.create(uri)));
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

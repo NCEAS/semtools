@@ -1,9 +1,9 @@
 package org.ecoinformatics.sms.owlapi.example;
 
-import org.semanticweb.owl.apibinding.OWLManager;
-import org.semanticweb.owl.io.OWLXMLOntologyFormat;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.SimpleURIMapper;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.io.OWLXMLOntologyFormat;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.SimpleIRIMapper;
 
 import java.net.URI;
 import java.util.Set;
@@ -51,20 +51,20 @@ public class URIMapping {
             // We have to have a physical URI - it may be the same as the logical
             // Or we can have a physical that maps to a logical
             // We may not "know" the logical URI until we load the ontology from the physical URI
-			URI physicalURI = new URI(args[0]);
-			URI logicalURI = null;
+			IRI physicalURI = IRI.create(args[0]);
+			IRI logicalURI = null;
 			if (args.length > 1) {
-				logicalURI = new URI(args[1]);
+				logicalURI = IRI.create(args[1]);
 			}
 			
 			// Now ask the manager to load the ontology based on what we have
 			if (logicalURI != null) {
-	            SimpleURIMapper mapper = new SimpleURIMapper(logicalURI, physicalURI);
-	            manager.addURIMapper(mapper);
+	            SimpleIRIMapper mapper = new SimpleIRIMapper(logicalURI, physicalURI);
+	            manager.addIRIMapper(mapper);
 	            manager.loadOntology(logicalURI);
 			} else {
-	            OWLOntology ontology = manager.loadOntologyFromPhysicalURI(physicalURI);
-	            logicalURI = ontology.getURI();
+	            OWLOntology ontology = manager.loadOntologyFromOntologyDocument(physicalURI);
+	            logicalURI = ontology.getOntologyID().getOntologyIRI();
 			}
             
 			// For debugging
@@ -73,22 +73,22 @@ public class URIMapping {
             // Look it up using the logical URI from this point on
             OWLOntology ontology = manager.getOntology(logicalURI);
             
-            System.out.println("Ontology: " + ontology.getURI());
-            System.out.println("Loaded from: " + manager.getPhysicalURIForOntology(ontology));
+            System.out.println("Ontology: " + ontology.getOntologyID().getOntologyIRI());
+            System.out.println("Loaded from: " + manager.getOntologyDocumentIRI(ontology));
             System.out.println("--------------------------------");
             
             // Print out all of the classes which are referenced in the ontology
-            for(OWLClass cls : ontology.getReferencedClasses()) {
+            for(OWLClass cls : ontology.getClassesInSignature()) {
                 printClasses(cls, ontology, 0);
             }
             
             // Now save a copy to another location in OWL/XML format (i.e. disregard the
             // format that the ontology was loaded in).
             // (To save the file on windows use a URL such as  "file:/C:\\windows\\temp\\MyOnt.owl")
-            URI physicalURI2 = URI.create("file:/tmp/MyOnt2.owl");
+            IRI physicalURI2 = IRI.create("file:/tmp/MyOnt2.owl");
             manager.saveOntology(ontology, new OWLXMLOntologyFormat(), physicalURI2);
             // Remove the ontology from the manager
-            manager.removeOntology(ontology.getURI());
+            manager.removeOntology(ontology);
         }
         catch (OWLOntologyCreationException e) {
             System.out.println("The ontology could not be created: " + e.getMessage());
@@ -105,7 +105,7 @@ public class URIMapping {
     	if (level == 0) {
     		System.out.println(cls);
     	}
-        for(OWLDescription cls2 : cls.getSubClasses(ontology)) {
+        for(OWLClassExpression cls2 : cls.getSubClasses(ontology)) {
         	for (int i = 0; i < level; i++) {
         		System.out.print("\t");
         	}
