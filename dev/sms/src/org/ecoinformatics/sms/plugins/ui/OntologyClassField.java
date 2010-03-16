@@ -64,6 +64,7 @@ public class OntologyClassField extends JTextField {
 		else {
 			this.setText("");
 		}
+		this.setCaretPosition(0);
 		this.revalidate();
 		this.repaint();
 	}
