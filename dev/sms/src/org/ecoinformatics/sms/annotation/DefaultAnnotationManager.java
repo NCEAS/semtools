@@ -253,6 +253,8 @@ public class DefaultAnnotationManager implements AnnotationManager {
             continue;
          if(!hasMatchingStandard(annot, standards))
             continue;
+         if(!hasMatchingProtocol(annot, protocols))
+             continue;
          if(!results.contains(annot))
             results.add(annot);
       }
@@ -304,7 +306,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
          standards.add(standard);
       List<OntologyClass> protocols = new ArrayList();
       if(protocol != null)
-         standards.add(protocol);
+         protocols.add(protocol);
       return getMatchingAnnotations(entities, characteristics, standards, protocols);
    }
 
@@ -330,7 +332,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
          standards.add(standard);
       List<OntologyClass> protocols = new ArrayList();
       if(protocol != null)
-         standards.add(protocol);
+         protocols.add(protocol);
       return getMatchingAnnotations(entities, characteristics, standards, protocols, searchSubclasses);
    }
 
@@ -826,6 +828,22 @@ public class DefaultAnnotationManager implements AnnotationManager {
       return false;
    }
 
+   /**
+    * Helper method to check if an annotation has a matching standard
+    * @param a the annotation
+    * @param standards the standards to check
+    * @return true if annotation contains a standard in the given list
+    */
+   private boolean hasMatchingProtocol(Annotation a, List<OntologyClass> protocols) {
+      if(protocols == null || protocols.size() == 0)
+         return true;
+      for(Observation o : a.getObservations())
+         for(Measurement m : o.getMeasurements())
+            if(protocols.contains(m.getProtocol()))
+               return true;
+      return false;
+   }
+   
    /** 
     * Helper method to add all superclasses of the given classes
     * @param classes the class list being added to
