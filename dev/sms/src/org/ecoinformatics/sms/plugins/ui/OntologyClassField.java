@@ -1,6 +1,5 @@
 package org.ecoinformatics.sms.plugins.ui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.datatransfer.DataFlavor;
@@ -17,15 +16,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
 import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.ontology.OntologyClass;
@@ -38,6 +34,16 @@ import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
 import edu.ucsb.nceas.morpho.util.Log;
 import edu.ucsb.nceas.morpho.util.UISettings;
 
+/**
+ * An extension of a textfield, this widget pops up an ontology browser that is used to select a class
+ * Typing in the text field starts a search based on the text currently entered.
+ * Clicking in the text field opens the popup
+ * Clicking again in the text field closes the popup and uses the selected (if any) class as the value
+ * Pressing ESC when the popup is showing closes the popup and does not set a value
+ * Tabbing or changing focus to another field uses the currently selected class from the popup and closes the popup
+ * @author leinfelder
+ *
+ */
 public class OntologyClassField extends JTextField {
 	
 	public static final DataFlavor ontologyClassFlavor = new DataFlavor(OntologyClass.class, null);
@@ -45,17 +51,18 @@ public class OntologyClassField extends JTextField {
 	private OntologyClass ontologyClass;
 	private OntologyClass filterClass;
 	private OntologyClassSelectionPanel selectionPanel;
-	//private JPopupMenu popup = null;
 	private Popup popup = null;
 	private boolean isPopupShowing = false;
 	private boolean editing = false;
 
 	public OntologyClassField(String text) {
 		super(text);
-		//this.setIcon(new ImageIcon(this.getClass().getResource("search_icon.gif")));
-		//this.setHorizontalTextPosition(LEADING);
 	}
 
+	/**
+	 * sets the ontology class selected for this widget
+	 * @param ontologyClass the class that has been selected (from the popup or drag event)
+	 */
 	public void setOntologyClass(OntologyClass ontologyClass) {
 		this.ontologyClass = ontologyClass;
 		if (ontologyClass != null) {
@@ -77,19 +84,13 @@ public class OntologyClassField extends JTextField {
 		return filterClass;
 	}
 
+	/**
+	 * sets the filter class for the popup - only subclasses of the filter class are shown
+	 * @param filterClass the superclass of the subclasses that should be shown in the popup
+	 */
 	public void setFilterClass(OntologyClass filterClass) {
 		this.filterClass = filterClass;
 		if (filterClass != null) {
-			Border underline = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray);
-			Border titleBorder = 
-				BorderFactory.createTitledBorder(
-						underline, 
-						filterClass.getName(), 
-						TitledBorder.CENTER, 
-						TitledBorder.BELOW_BOTTOM);
-			// TODO: figure out how to size it so the underline title is shown all the time
-			//this.setBorder(titleBorder);
-			//this.setBorder(underline);
 			this.setToolTipText(filterClass.getName());
 		}
 	}
@@ -163,8 +164,6 @@ public class OntologyClassField extends JTextField {
 		label.setAlignmentX(SwingConstants.LEADING);
 		label.setFont(WizardSettings.WIZARD_CONTENT_FONT);
 		
-//		label.setBorder(
-//				BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray));
 		if (hiliteRequired) {
 			label.setForeground(WizardSettings.WIZARD_CONTENT_REQD_TEXT_COLOR);
 		} else {
@@ -250,6 +249,8 @@ public class OntologyClassField extends JTextField {
             
 		};
 		label.addFocusListener(fListener);
+		
+		// handle drop events for OntologyClass objects that are dagged into the field
 		TransferHandler dropHandler = new TransferHandler() {
 			public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
 				//TODO: check flavors
@@ -270,7 +271,6 @@ public class OntologyClassField extends JTextField {
 				}
 				
                 // Get the OntologyClass that is being dropped.
-                //Transferable t = info.getTransferable();
                 OntologyClass data;
                 try {
                     data = (OntologyClass) t.getTransferData(ontologyClassFlavor);
@@ -286,17 +286,22 @@ public class OntologyClassField extends JTextField {
                 	return false;
                 }
                 
+                // set the class that was dropped
                 source.setOntologyClass(data);
 			
                 return true;
             }
             
 		};
-		
 		label.setTransferHandler(dropHandler);
+		
 		return label;
 	}
 	
+	/**
+	 * Gets the selected term from the popup and sets the ontology class accordingly
+	 * Also notifies the field listeners that the value has been set
+	 */
 	private void syncSource() {
 		if (this.selectionPanel == null) {
 			return;
@@ -310,6 +315,10 @@ public class OntologyClassField extends JTextField {
 		this.notifyListeners();
 	}
 	
+	/**
+	 * Notifies any listeners that the value has been set so that they can react to this event
+	 * Typically used when the value of one field affects possible values of another
+	 */
 	private void notifyListeners() {
 		for (ActionListener al: getActionListeners()) {
 			ActionEvent e = new ActionEvent(this, 1, "value set");
@@ -317,6 +326,10 @@ public class OntologyClassField extends JTextField {
 		}
 	}
 	
+	/**
+	 * Constructs and shows the popup ontology browser tree
+	 * @param source the textfield that the popup is "editing"
+	 */
 	public static void showPopupDialog(OntologyClassField source) {
 		OntologyClassSelectionPanel selectionPanel = new OntologyClassSelectionPanel(false);
 		
@@ -345,13 +358,6 @@ public class OntologyClassField extends JTextField {
 		Popup popup = PopupFactory.getSharedInstance().getPopup(source, selectionPanel, x, y);
 		popup.show();
 		
-//		int x = 0;
-//        int y = source.getSize().height;
-//        JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-//        JPopupMenu popup = new JPopupMenu();
-//        popup.add(page.getSelectionPanel());
-//        popup.show(source, x, y);
-		
 		// set the popup
 		source.popup = popup;
 		source.selectionPanel = selectionPanel;
@@ -363,6 +369,12 @@ public class OntologyClassField extends JTextField {
 		
 	}
 	
+	/**
+	 * Simple mouse listener for catching double clicks on the pop up tree
+	 * A double click will select the class, set the class in the field and close the popup
+	 * @author leinfelder
+	 *
+	 */
 	class TreeMouseListener extends MouseAdapter {
 		private OntologyClassField label;
 		public TreeMouseListener(OntologyClassField label) {

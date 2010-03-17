@@ -174,70 +174,14 @@ public class SimpleAnnotationPanel extends JPanel {
 		measurementPanel.add(WidgetFactory.makeLabel(" was recorded.", false, null));
 		measurementPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0,
 				0, 8 * WizardSettings.PADDING));
-		observationMeasurement.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				Log.debug(30, "observationMeasurement set");
-				//TODO: actually look up the correct values
-				OntologyClass measurement = getObservationMeasurement();
-				
-				// reset the fields
-				setObservationCharacteristic(null);
-				setObservationEntity(null);
-				setObservationProtocol(null);
-				setObservationStandard(null);
-				
-				// assume the filter class has the OBOE ontology
-				Ontology oboeOntology = observationMeasurement.getFilterClass().getOntology();
-				OntologyProperty property = null;
-				List<OntologyClass> classes = null;
-				
-				// get the entity
-				try {
-					property = new OntologyObjectProperty(oboeOntology, "measurementFor");
-					classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
-					observationEntity.setOntologyClass(classes.get(0));
-				} catch (Exception ex) {
-					Log.debug(30, "ignoring measurement entity template exception");
-					//ex.printStackTrace();
-				}
-				// get the characteristic
-				try {
-					property = new OntologyObjectProperty(oboeOntology, "ofCharacteristic");
-					classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
-					observationCharacteristic.setOntologyClass(classes.get(0));
-				} catch (Exception ex) {
-					Log.debug(30, "ignoring measurement characteristic template exception");
-					//ex.printStackTrace();
-				}
-				// get the standard
-				try {
-					property = new OntologyObjectProperty(oboeOntology, "usesStandard");
-					classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
-					observationStandard.setOntologyClass(classes.get(0));
-				} catch (Exception ex) {
-					Log.debug(30, "ignoring measurement standard template exception");
-					//ex.printStackTrace();
-				}
-				// get the protocol
-				try {
-					property = new OntologyObjectProperty(oboeOntology, "usesProtocol");
-					classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
-					observationProtocol.setOntologyClass(classes.get(0));
-				} catch (Exception ex) {
-					Log.debug(30, "ignoring measurement protocol template exception");
-					//ex.printStackTrace();
-				}
-				
-				if (measurement != null) {
-					setEnabled(false);
-				} else {
-					setEnabled(true);
-				}
-				
-			}
-			
-		});
+		
+		// listen for the measurement to be set
+		observationMeasurement.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						handleMeasurementSelected();
+					}
+				});
 		
 		// Characteristic and Entity
 		JPanel characteristicPanel = WidgetFactory.makePanel(1);
@@ -308,8 +252,71 @@ public class SimpleAnnotationPanel extends JPanel {
 		this.add(classesPanel);
 	}
 	
+	private void handleMeasurementSelected() {
+		Log.debug(30, "observationMeasurement set");
+		//TODO: actually look up the correct values
+		OntologyClass measurement = getObservationMeasurement();
+		
+		// reset the fields
+		setObservationCharacteristic(null);
+		setObservationEntity(null);
+		setObservationProtocol(null);
+		setObservationStandard(null);
+		
+		// assume the filter class has the OBOE ontology
+		Ontology oboeOntology = observationMeasurement.getFilterClass().getOntology();
+		OntologyProperty property = null;
+		List<OntologyClass> classes = null;
+		
+		// get the entity
+		try {
+			property = new OntologyObjectProperty(oboeOntology, "measurementFor");
+			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+			observationEntity.setOntologyClass(classes.get(0));
+		} catch (Exception ex) {
+			Log.debug(30, "ignoring measurement entity template exception");
+			//ex.printStackTrace();
+		}
+		// get the characteristic
+		try {
+			property = new OntologyObjectProperty(oboeOntology, "ofCharacteristic");
+			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+			observationCharacteristic.setOntologyClass(classes.get(0));
+		} catch (Exception ex) {
+			Log.debug(30, "ignoring measurement characteristic template exception");
+			//ex.printStackTrace();
+		}
+		// get the standard
+		try {
+			property = new OntologyObjectProperty(oboeOntology, "usesStandard");
+			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+			observationStandard.setOntologyClass(classes.get(0));
+		} catch (Exception ex) {
+			Log.debug(30, "ignoring measurement standard template exception");
+			//ex.printStackTrace();
+		}
+		// get the protocol
+		try {
+			property = new OntologyObjectProperty(oboeOntology, "usesProtocol");
+			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+			observationProtocol.setOntologyClass(classes.get(0));
+		} catch (Exception ex) {
+			Log.debug(30, "ignoring measurement protocol template exception");
+			//ex.printStackTrace();
+		}
+		
+		if (measurement != null) {
+			setEnabled(false);
+			observationMeasurement.setEnabled(true);
+		} else {
+			setEnabled(true);
+		}
+		
+	}
+	
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
+		observationMeasurement.setEnabled(enabled);
 		observationEntity.setEnabled(enabled);
 		observationCharacteristic.setEnabled(enabled);
 		observationStandard.setEnabled(enabled);
