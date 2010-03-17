@@ -29,6 +29,7 @@
 package org.ecoinformatics.sms.plugins.pages;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,10 +72,14 @@ public class CompoundQueryPage extends AbstractUIPage {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
 		
-	// context options
+	// query list
 	private CustomList queryList;
 	private JLabel queryListLabel;
 	
+	// query options
+	boolean union = true;
+	
+	// the final query
 	private Query query;
 	
 
@@ -96,8 +101,8 @@ public class CompoundQueryPage extends AbstractUIPage {
 		
 		JLabel desc = WidgetFactory
 				.makeHTMLLabel(
-						"<b>Compound Search Criteria</b> "
-								+ "Add/edit search criteria",
+						"<b>Annotation Search</b> "
+								+ "Specify one or more search criteria",
 						2);
 		this.add(desc);
 		this.add(WidgetFactory.makeDefaultSpacer());
@@ -109,7 +114,7 @@ public class CompoundQueryPage extends AbstractUIPage {
 		queryListLabel = WidgetFactory.makeLabel("Conditions:", false);
 		queryListPanel.add(queryListLabel);
 		String[] colNames = new String[] {"Conditions"};
-		Object[] editors = new Object[] {new JTextField(), new JTextField() };
+		Object[] editors = null; //new Object[] {new JTextField() };
 		queryList = WidgetFactory.makeList(
 				colNames, 
 				editors, 
@@ -171,6 +176,28 @@ public class CompoundQueryPage extends AbstractUIPage {
 		queryListPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
 		this.add(queryListPanel);
+		
+		
+		JPanel optionsPanel = WidgetFactory.makePanel(2);
+		
+		// add the AND/OR radio panel
+		final String[] andOrList = new String[] {"AND", "OR"};
+		JPanel radioPanel = WidgetFactory.makeRadioPanel(andOrList, 0, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+		        if (e.getActionCommand().equals(andOrList[0])) {
+		        	union = false;
+		        } else {
+		        	union = true;
+		        }
+			}
+		});
+		radioPanel.setBorder(new javax.swing.border.EmptyBorder(0, WizardSettings.
+		        PADDING, 0, 0));
+		
+		optionsPanel.add(WidgetFactory.makeLabel("Mode:", false));
+		optionsPanel.add(radioPanel);
+		
+		this.add(optionsPanel);
 
 		this.add(WidgetFactory.makeDefaultSpacer());
 
@@ -233,6 +260,8 @@ public class CompoundQueryPage extends AbstractUIPage {
 			}
 			
 		}
+		
+		// TODO: handle AND/OR
 		
 		// generate the query
 		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getMatchingAnnotations(
