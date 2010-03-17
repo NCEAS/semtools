@@ -23,12 +23,12 @@
  */
 package org.ecoinformatics.owlifier;
 
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLCommentAnnotation;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.AddOntologyAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 /**
  *
@@ -68,8 +68,10 @@ public class OwlifierNoteBlock extends OwlifierBlock {
       OWLOntologyManager m = ont.getOWLOntologyManager();
       OWLOntology o = ont.getOWLOntology();
       OWLDataFactory f = m.getOWLDataFactory();
-      OWLCommentAnnotation c = f.getCommentAnnotation(getNote());
-      OWLAxiom	a = f.getOWLOntologyAnnotationAxiom(o, c);
-      m.applyChange(new AddAxiom(o, a));
+      OWLAnnotation c = 
+    	  f.getOWLAnnotation(
+			  f.getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_COMMENT.getIRI()), 
+			  f.getOWLStringLiteral(getNote()));
+      m.applyChange( new AddOntologyAnnotation(o, c));
    }
 }

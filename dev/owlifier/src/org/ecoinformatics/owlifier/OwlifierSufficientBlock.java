@@ -27,15 +27,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.HashSet;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLObjectIntersectionOf;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /**
  *
@@ -130,26 +131,26 @@ public class OwlifierSufficientBlock extends OwlifierBlock {
       OWLOntology o = ont.getOWLOntology();
       OWLDataFactory f = m.getOWLDataFactory();
       // get the entity class
-      OWLClass c = f.getOWLClass(ont.getURI(getEntity()));
+      OWLClass c = f.getOWLClass(IRI.create(ont.getURI(getEntity())));
       if(isEntityBlock)
          if(getEntities().size() > 1) {
             Set<OWLClass> classes = new HashSet();
             for(String x : getEntities()) {
-               OWLClass d = f.getOWLClass(ont.getURI(x));
+               OWLClass d = f.getOWLClass(IRI.create(ont.getURI(x)));
                classes.add(d);
             }
             OWLObjectIntersectionOf i = f.getOWLObjectIntersectionOf(classes);
             OWLAxiom a = f.getOWLEquivalentClassesAxiom(c, i);
             m.applyChange(new AddAxiom(o, a));
          } else {
-            OWLClass d = f.getOWLClass(ont.getURI(getEntities().get(0)));
+            OWLClass d = f.getOWLClass(IRI.create(ont.getURI(getEntities().get(0))));
             OWLAxiom a = f.getOWLEquivalentClassesAxiom(c, d);
             m.applyChange(new AddAxiom(o, a));
          }
       else {
-         OWLObjectProperty p = f.getOWLObjectProperty(ont.getURI(getProperty()));
-         OWLClass r = f.getOWLClass(ont.getURI(getEntities().get(0)));
-         OWLDescription d = f.getOWLObjectSomeRestriction(p, r);
+         OWLObjectProperty p = f.getOWLObjectProperty(IRI.create(ont.getURI(getProperty())));
+         OWLClass r = f.getOWLClass(IRI.create(ont.getURI(getEntities().get(0))));
+         OWLClassExpression d = f.getOWLObjectSomeValuesFrom(p, r);
          if(isNotRelationshipBlock)
             d = f.getOWLObjectComplementOf(d);
          OWLAxiom a = f.getOWLEquivalentClassesAxiom(c, d);

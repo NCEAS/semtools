@@ -23,12 +23,13 @@
  */
 package org.ecoinformatics.owlifier;
 
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 /**
  *
@@ -70,8 +71,8 @@ public class OwlifierInverseBlock extends OwlifierBlock {
       OWLOntology o = ont.getOWLOntology();
       OWLDataFactory f = m.getOWLDataFactory();
       // create the properties and add them
-      OWLObjectProperty r1 = f.getOWLObjectProperty(ont.getURI(getRelationship1()));
-      OWLObjectProperty r2 = f.getOWLObjectProperty(ont.getURI(getRelationship2()));
+      OWLObjectProperty r1 = f.getOWLObjectProperty(IRI.create(ont.getURI(getRelationship1())));
+      OWLObjectProperty r2 = f.getOWLObjectProperty(IRI.create(ont.getURI(getRelationship2())));
       OWLAxiom a = f.getOWLDeclarationAxiom(r1);
       m.applyChange(new AddAxiom(o, a));
       a = f.getOWLDeclarationAxiom(r2);

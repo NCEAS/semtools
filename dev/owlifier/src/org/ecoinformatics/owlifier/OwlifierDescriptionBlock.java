@@ -23,14 +23,16 @@
  */
 package org.ecoinformatics.owlifier;
 
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAnnotation;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 /**
  *
@@ -71,15 +73,18 @@ public class OwlifierDescriptionBlock extends OwlifierBlock {
       OWLOntologyManager m = ont.getOWLOntologyManager();
       OWLOntology o = ont.getOWLOntology();
       OWLDataFactory f = m.getOWLDataFactory();
-      OWLAnnotation n = f.getCommentAnnotation(getDescription());
+      OWLAnnotation n = 
+    	  f.getOWLAnnotation(
+    			  f.getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_COMMENT.getIRI()), 
+    			  f.getOWLStringLiteral(getDescription()));
       if(ont.isClass(getItem())) {
-         OWLClass c = f.getOWLClass(ont.getURI(getItem()));
-         OWLAxiom a = f.getOWLEntityAnnotationAxiom(c, n);
+         OWLClass c = f.getOWLClass(IRI.create(ont.getURI(getItem())));
+         OWLAxiom a = f.getOWLAnnotationAssertionAxiom(c.getIRI(), n);
          m.applyChange(new AddAxiom(o, a));
       }
       if(ont.isProperty(getItem())) {
-         OWLObjectProperty p = f.getOWLObjectProperty(ont.getURI(getItem()));
-         OWLAxiom a = f.getOWLEntityAnnotationAxiom(p, n);
+         OWLObjectProperty p = f.getOWLObjectProperty(IRI.create(ont.getURI(getItem())));
+         OWLAxiom a = f.getOWLAnnotationAssertionAxiom(p.getIRI(), n);
          m.applyChange(new AddAxiom(o, a));
       }
    }

@@ -25,12 +25,13 @@ package org.ecoinformatics.owlifier;
 
 import java.util.Set;
 import java.util.HashSet;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /**
  *
@@ -67,7 +68,7 @@ public class OwlifierSynonymBlock extends OwlifierBlock {
       // add each entity as a class declaration
       Set<OWLClass> classes = new HashSet();
       for(String entity : getSynonyms()) {
-         OWLClass c = f.getOWLClass(ont.getURI(entity));
+         OWLClass c = f.getOWLClass(IRI.create(ont.getURI(entity)));
          OWLAxiom a = f.getOWLDeclarationAxiom(c);
          m.applyChange(new AddAxiom(o, a));
          classes.add(c);

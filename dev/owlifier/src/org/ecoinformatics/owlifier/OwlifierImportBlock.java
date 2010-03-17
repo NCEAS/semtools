@@ -24,11 +24,12 @@
 package org.ecoinformatics.owlifier;
 
 import java.net.URI;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.AddImport;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLImportsDeclaration;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /**
  *
@@ -61,8 +62,8 @@ public class OwlifierImportBlock extends OwlifierBlock {
       OWLOntology o = ont.getOWLOntology();
       URI uri = new URI(getURIString());
       OWLDataFactory f = m.getOWLDataFactory();
-      OWLAxiom axiom = f.getOWLImportsDeclarationAxiom(o, uri);
-      m.applyChange(new AddAxiom(o, axiom));
+      OWLImportsDeclaration importAxiom = f.getOWLImportsDeclaration(IRI.create(uri));
+      m.applyChange(new AddImport(o, importAxiom));
    }
 
    /**

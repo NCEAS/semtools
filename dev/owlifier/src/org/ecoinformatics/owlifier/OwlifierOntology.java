@@ -25,9 +25,10 @@ package org.ecoinformatics.owlifier;
 
 import java.net.URI;
 
-import org.semanticweb.owl.apibinding.OWLManager;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /**
  * 
@@ -54,7 +55,7 @@ public class OwlifierOntology {
       this.oboe = oboe;
       // set up the manager and create the ontology
       manager = OWLManager.createOWLOntologyManager();
-      ontology = manager.createOntology(uri);
+      ontology = manager.createOntology(IRI.create(uri));
       // build up the ontology
       if(oboe)
          buildOboeOntology();

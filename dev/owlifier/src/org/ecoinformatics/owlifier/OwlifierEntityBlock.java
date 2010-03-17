@@ -25,12 +25,13 @@ package org.ecoinformatics.owlifier;
 
 import java.util.List;
 import java.util.ArrayList;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /**
  *
@@ -66,15 +67,15 @@ public class OwlifierEntityBlock extends OwlifierBlock {
       OWLDataFactory f = m.getOWLDataFactory();
       // add each entity as a class declaration
       for(int i = 0; i < entities.size(); i++) {
-         OWLClass c = f.getOWLClass(ont.getURI(entities.get(i)));
+         OWLClass c = f.getOWLClass(IRI.create(ont.getURI(entities.get(i))));
          OWLAxiom a = f.getOWLDeclarationAxiom(c);
          m.applyChange(new AddAxiom(o, a));
       }
       // add subclasses
       for(int i = 0; i < entities.size() - 1; i++) {
-         OWLClass c1 = f.getOWLClass(ont.getURI(entities.get(i)));
-         OWLClass c2 = f.getOWLClass(ont.getURI(entities.get(i + 1)));
-         OWLAxiom a = f.getOWLSubClassAxiom(c2, c1);
+         OWLClass c1 = f.getOWLClass(IRI.create(ont.getURI(entities.get(i))));
+         OWLClass c2 = f.getOWLClass(IRI.create(ont.getURI(entities.get(i + 1))));
+         OWLAxiom a = f.getOWLSubClassOfAxiom(c2, c1);
          m.applyChange(new AddAxiom(o, a));
       }
    }

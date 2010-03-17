@@ -25,14 +25,15 @@ package org.ecoinformatics.owlifier;
 
 import java.util.List;
 import java.util.ArrayList;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /**
  *
@@ -99,13 +100,13 @@ public class OwlifierExactBlock extends OwlifierBlock {
      OWLOntologyManager m = ont.getOWLOntologyManager();
       OWLOntology o = ont.getOWLOntology();
       OWLDataFactory f = m.getOWLDataFactory();
-      OWLObjectProperty r = f.getOWLObjectProperty(ont.getURI(getRelationship()));
+      OWLObjectProperty r = f.getOWLObjectProperty(IRI.create(ont.getURI(getRelationship())));
       for(int i = 0; i < entities.size() - 1; i++) {
-         OWLClass c1 = f.getOWLClass(ont.getURI(entities.get(i)));
-         OWLClass c2 = f.getOWLClass(ont.getURI(entities.get(i+1)));
-         OWLDescription d =
-               f.getOWLObjectExactCardinalityRestriction(r, getExactCardinality(), c2);
-         OWLAxiom a = f.getOWLSubClassAxiom(c1, d);
+         OWLClass c1 = f.getOWLClass(IRI.create(ont.getURI(entities.get(i))));
+         OWLClass c2 = f.getOWLClass(IRI.create(ont.getURI(entities.get(i+1))));
+         OWLClassExpression d =
+               f.getOWLObjectExactCardinality(getExactCardinality(), r, c2);
+         OWLAxiom a = f.getOWLSubClassOfAxiom(c1, d);
          m.applyChange(new AddAxiom(o, a));
       }
     }
