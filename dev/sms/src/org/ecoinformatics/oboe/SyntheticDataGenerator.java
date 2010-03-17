@@ -1,10 +1,8 @@
 package org.ecoinformatics.oboe;
 
-import java.io.FileNotFoundException;
 import java.io.*;
-import java.util.*;
-import org.ecoinformatics.sms.annotation.*;
 import org.ecoinformatics.oboe.syntheticdata.*;
+import org.ecoinformatics.oboe.Constant;
 
 public class SyntheticDataGenerator {
 
@@ -56,13 +54,15 @@ public class SyntheticDataGenerator {
 			System.out.println("Usage: ./MaterializeDB <0. file name prefix> <1. number of rows> ");
 			return;
 		}
+		
+		System.out.println("args="+args);
+		
 		// Get input parameters
 		String inAnnotSpecFileName = Constant.localOutputUriPrefix + args[0] + L_ANNOT_SPEC_FILE_SUFFIX; 
-		String outAnnotSpecFileName = Constant.localOutputUriPrefix +args[0] + L_ANNOT_FILE_SUFFIX;
+		String outAnnotSpecFileName = Constant.localOutputUriPrefix + args[0] + L_ANNOT_FILE_SUFFIX;
 		String outDataSpecFileName = Constant.localOutputUriPrefix +args[0] + "-n"+args[1]+ L_DATA_FILE_SUFFIX;
 		
 		int numOfRows = Integer.parseInt(args[1]);
-		
 		
 		// Confirm parameters
 		System.out.println("inAnnotSpecFileName="+inAnnotSpecFileName);

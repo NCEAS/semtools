@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.ecoinformatics.sms.annotation.*;
+import org.ecoinformatics.sms.ontology.Ontology;
 
 public class AnnotationSpecifier{
 
@@ -22,11 +23,13 @@ public class AnnotationSpecifier{
 	private float defaultDistinctFactor = (float)0.5;
 	private Annotation annotation = null;
 	private Map<String, Float> key2distinctfactor = null;
+	private Ontology m_defaultOnto = null;
 	
 	public AnnotationSpecifier()
 	{
 		key2distinctfactor = new TreeMap<String, Float>();
-		annotation = new Annotation();		
+		annotation = new Annotation();
+		m_defaultOnto = new Ontology("oboe", "testOntology");
 	}
 	
 	public Map<String, Float> getKey2distinctfactor() {
@@ -48,6 +51,7 @@ public class AnnotationSpecifier{
 	public void WriteAnnotation(String outAnnotFileName) throws IOException
 	{
 		FileOutputStream annotOutputStream = new FileOutputStream(outAnnotFileName);
+				
 		annotation.write(annotOutputStream);
 		annotOutputStream.close();
 		System.out.println("Annotation is written to file: " + outAnnotFileName);
@@ -124,6 +128,7 @@ public class AnnotationSpecifier{
 			String entityLabel = obsAnnotate[1];
 			Entity entity = new Entity();
 			entity.setName(entityLabel);
+			entity.setOntology(m_defaultOnto);
 			obs.setEntity(entity);			
 		}
 		
