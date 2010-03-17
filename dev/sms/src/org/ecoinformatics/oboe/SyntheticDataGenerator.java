@@ -31,7 +31,8 @@ public class SyntheticDataGenerator {
 		generator.setRownum(numOfRows);
 		generator.setAnnotation(a.getAnnotation());
 		generator.setKey2distinctfactor(a.getKey2distinctfactor());
-		generator.Generate();
+		generator.GenerateBottomUp();
+		//generator.GenerateTopDown(); //need further testing
 		
 		//4. write dataset
 		generator.WriteData(outDataFileName); 		
