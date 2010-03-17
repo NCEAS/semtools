@@ -7,9 +7,9 @@
  *    Authors: Ben Leinfelder
  *    Release: @release@
  *
- *   '$Author: tao $'
- *     '$Date: 2009-03-13 03:57:28 $'
- * '$Revision: 1.18 $'
+ *   '$Author$'
+ *     '$Date$'
+ * '$Revision$'
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,10 +28,15 @@
 
 package org.ecoinformatics.sms.plugins.pages;
 
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
@@ -39,42 +44,44 @@ import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Entity;
 import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
+import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
-import org.ecoinformatics.sms.plugins.ui.SimpleAnnotationPanel;
 
 import edu.ucsb.nceas.morpho.Morpho;
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
+import edu.ucsb.nceas.morpho.framework.ModalDialog;
+import edu.ucsb.nceas.morpho.framework.UIController;
+import edu.ucsb.nceas.morpho.plugins.datapackagewizard.CustomList;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
+import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
 import edu.ucsb.nceas.morpho.query.Query;
+import edu.ucsb.nceas.morpho.util.UISettings;
 import edu.ucsb.nceas.utilities.OrderedMap;
 
-public class AnnotationQueryPage extends AbstractUIPage {
+public class CompoundQueryPage extends AbstractUIPage {
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
 
-	private final String pageID = "";
+	private final String pageID = null;
 	private final String pageNumber = "0";
-	private final String title = "Annotation Query";
+	private final String title = "Ontology Manager";
 	private final String subtitle = "";
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
+		
+	// context options
+	private CustomList queryList;
+	private JLabel queryListLabel;
 	
-	private SimpleAnnotationPanel simpleAnnotationPanel = null;
-
-	private Query query = null;
-
-	private Entity currentEntity;
-	private Characteristic currentCharacteristic;
-	private Standard currentStandard;
-	private Protocol currentProtocol;
+	private Query query;
 	
+
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
 
-	public AnnotationQueryPage() {
-		nextPageID = null;
+	public CompoundQueryPage() {
 		init();
 	}
 
@@ -86,58 +93,87 @@ public class AnnotationQueryPage extends AbstractUIPage {
 	private void init() {
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
+		
 		JLabel desc = WidgetFactory
 				.makeHTMLLabel(
-						"<b>Select Observation Entity, Characteristic and Standard to search by.</b> "
-								+ "The Ontology Browser can be used to navigate specific ontologies.",
+						"<b>Compound Search Criteria</b> "
+								+ "Add/edit search criteria",
 						2);
 		this.add(desc);
-
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
-		//add the main panel here
-		simpleAnnotationPanel = new SimpleAnnotationPanel(false, true);
-		this.add(simpleAnnotationPanel);
+		this.add(WidgetFactory.makeDefaultSpacer());
+		
+		// Query list
+		JPanel queryListPanel = WidgetFactory.makePanel(10);
+		queryListLabel = WidgetFactory.makeLabel("Conditions:", false);
+		queryListPanel.add(queryListLabel);
+		String[] colNames = new String[] {"Conditions"};
+		Object[] editors = new Object[] {new JTextField(), new JTextField() };
+		queryList = WidgetFactory.makeList(
+				colNames, 
+				editors, 
+				5, //displayRows, 
+				true, //showAddButton, 
+				true, //showEditButton, 
+				false, //showDuplicateButton, 
+				true, //showDeleteButton, 
+				false, //showMoveUpButton, 
+				false //showMoveDownButton
+				);
+		// add
+		queryList.setCustomAddAction(new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				AnnotationQueryPage aqp = new AnnotationQueryPage();
+				// show the dialog
+				ModalDialog dialog = 
+					new ModalDialog(
+							aqp, 
+							UIController.getInstance().getCurrentActiveWindow(), 
+							UISettings.POPUPDIALOG_WIDTH,
+							UISettings.POPUPDIALOG_HEIGHT);
 
-		this.add(WidgetFactory.makeHalfSpacer());
+				// get the response back
+				if (dialog.USER_RESPONSE == ModalDialog.OK_OPTION) {
+					List rowList = new ArrayList();
+					rowList.add(aqp);
+					queryList.addRow(rowList);
+				}
+				
+			}
+		});
+		// edit
+		queryList.setCustomEditAction(new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				List rowList = queryList.getSelectedRowList();
+				AnnotationQueryPage aqp = (AnnotationQueryPage) rowList.get(0);
+				
+				// show the dialog
+				ModalDialog dialog = 
+					new ModalDialog(
+							aqp, 
+							UIController.getInstance().getCurrentActiveWindow(), 
+							UISettings.POPUPDIALOG_WIDTH,
+							UISettings.POPUPDIALOG_HEIGHT);
+
+				// get the response back
+				if (dialog.USER_RESPONSE == ModalDialog.OK_OPTION) {
+					// make sure the UI reflects the changes
+					queryList.revalidate();
+					queryList.repaint();
+
+				}
+				
+			}
+		});
+		
+		queryListPanel.add(queryList);
+		queryListPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
+				8 * WizardSettings.PADDING));
+		this.add(queryListPanel);
+
 		this.add(WidgetFactory.makeDefaultSpacer());
 
-	}
-	
-	public SimpleAnnotationPanel getSimpleAnnotationPanel() {
-		return simpleAnnotationPanel;
-	}
-
-	public void setSimpleAnnotationPanel(SimpleAnnotationPanel simpleAnnotationPanel) {
-		this.simpleAnnotationPanel = simpleAnnotationPanel;
-	}
-
-	private void harvestValues() {
-		try {
-			currentCharacteristic = new Characteristic(
-					simpleAnnotationPanel.getObservationCharacteristic().getURI());
-		} catch (Exception e) {
-			currentCharacteristic = null;
-		}
-
-		try {
-			currentStandard = new Standard(simpleAnnotationPanel.getObservationStandard().getURI());
-		} catch (Exception e) {
-			currentStandard = null;
-		}
-		
-		try {
-			currentProtocol = new Protocol(simpleAnnotationPanel.getObservationProtocol().getURI());
-		} catch (Exception e) {
-			currentProtocol = null;
-		}
-		
-		try {
-			currentEntity = new Entity(simpleAnnotationPanel.getObservationEntity().getURI());
-		} catch (Exception e) {
-			currentEntity = null;
-		}
 	}
 	
 	public Query getQuery() {
@@ -150,16 +186,62 @@ public class AnnotationQueryPage extends AbstractUIPage {
 
 	private void generateQuery() {
 
-		// get the values
-		harvestValues();
+		List<OntologyClass> characteristics = new ArrayList<OntologyClass>();
+		List<OntologyClass> standards = new ArrayList<OntologyClass>();
+		List<OntologyClass> protocols = new ArrayList<OntologyClass>();
+		List<OntologyClass> entities = new ArrayList<OntologyClass>();
+		
+		for (int i = 0; i < queryList.getListOfRowLists().size(); i++) {
+			
+			// get the query page
+			List rowList = (List) queryList.getListOfRowLists().get(i);
+			AnnotationQueryPage aqp = (AnnotationQueryPage) rowList.get(0);
+			
+			Characteristic currentCharacteristic;
+			Standard currentStandard;
+			Protocol currentProtocol;
+			Entity currentEntity;
+			
+			// get the values form the page
+			try {
+				currentCharacteristic = new Characteristic(
+						aqp.getSimpleAnnotationPanel().getObservationCharacteristic().getURI());
+				characteristics.add(currentCharacteristic);
+			} catch (Exception e) {
+				currentCharacteristic = null;
+			}
+	
+			try {
+				currentStandard = new Standard(aqp.getSimpleAnnotationPanel().getObservationStandard().getURI());
+				standards.add(currentStandard);
+			} catch (Exception e) {
+				currentStandard = null;
+			}
+			
+			try {
+				currentProtocol = new Protocol(aqp.getSimpleAnnotationPanel().getObservationProtocol().getURI());
+				protocols.add(currentProtocol);
+			} catch (Exception e) {
+				currentProtocol = null;
+			}
+			
+			try {
+				currentEntity = new Entity(aqp.getSimpleAnnotationPanel().getObservationEntity().getURI());
+				entities.add(currentEntity);
+			} catch (Exception e) {
+				currentEntity = null;
+			}
+			
+		}
 		
 		// generate the query
 		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getMatchingAnnotations(
-				currentEntity, 
-				currentCharacteristic, 
-				currentStandard,
-				currentProtocol,
+				entities, 
+				characteristics, 
+				standards,
+				protocols,
 				true);
+		
 		
 		// get the query text
 		String querySpec = AnnotationPlugin.getDocQuery(annotations);
@@ -171,25 +253,6 @@ public class AnnotationQueryPage extends AbstractUIPage {
 	
 
 	}
-	
-	public String toString() {
-		
-		//make sure we have the latest values
-		harvestValues();
-		
-		StringBuffer sb = new StringBuffer();
-		
-		sb.append("The ");
-		sb.append(currentCharacteristic);
-		sb.append(" of the ");
-		sb.append(currentEntity);
-		sb.append(" was recorded using the ");
-		sb.append(currentStandard);
-		sb.append(", and the ");
-		sb.append(currentProtocol);
-		
-		return sb.toString();
-	}
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
@@ -198,20 +261,6 @@ public class AnnotationQueryPage extends AbstractUIPage {
 	 * The action to be executed when the page is displayed. May be empty
 	 */
 	public void onLoadAction() {
-		// load the last values if they exist
-		try {
-			simpleAnnotationPanel.setObservationEntity(currentEntity);
-		} catch (Exception e) {}
-		try {
-			simpleAnnotationPanel.setObservationStandard(currentStandard);
-		} catch (Exception e) {}
-		try {
-			simpleAnnotationPanel.setObservationCharacteristic(currentCharacteristic);
-		} catch (Exception e) {}
-		try {
-			simpleAnnotationPanel.setObservationProtocol(currentProtocol);
-		} catch (Exception e) {}
-
 	}
 
 	/**
@@ -231,7 +280,6 @@ public class AnnotationQueryPage extends AbstractUIPage {
 	 *         required field hasn't been filled in)
 	 */
 	public boolean onAdvanceAction() {
-			
 		return true;
 	}
 
@@ -245,7 +293,6 @@ public class AnnotationQueryPage extends AbstractUIPage {
 	private OrderedMap returnMap = new OrderedMap();
 
 	public OrderedMap getPageData() {
-
 		return getPageData(null);
 	}
 
@@ -260,6 +307,7 @@ public class AnnotationQueryPage extends AbstractUIPage {
 	 *         settings for this particular wizard page
 	 */
 	public OrderedMap getPageData(String rootXPath) {
+
 		return returnMap;
 	}
 
@@ -311,7 +359,7 @@ public class AnnotationQueryPage extends AbstractUIPage {
 	}
 
 	public boolean setPageData(OrderedMap data, String _xPathRoot) {
-
 		return true;
 	}
+
 }

@@ -49,6 +49,7 @@ import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.commands.AnnotationCommand;
 import org.ecoinformatics.sms.plugins.commands.AnnotationSearchCommand;
+import org.ecoinformatics.sms.plugins.commands.CompoundAnnotationSearchCommand;
 import org.ecoinformatics.sms.plugins.commands.ObservationCommand;
 import org.ecoinformatics.sms.plugins.commands.OntologyManagementCommand;
 import org.ecoinformatics.sms.plugins.commands.RemoveCommand;
@@ -259,7 +260,8 @@ public class AnnotationPlugin
 	    
 	    GUIAction searchAction = new GUIAction("Search Annotations...",
                 null,
-                new AnnotationSearchCommand());
+                //new AnnotationSearchCommand());
+                new CompoundAnnotationSearchCommand());
 	    searchAction.setMenuItemPosition(menuPosition++);
 	    searchAction.setToolTipText("Search Annotations...");
 	    searchAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
