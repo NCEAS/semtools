@@ -101,6 +101,7 @@ public class OwlApiOntologyManager implements OntologyManager {
 		StringBuffer sb = new StringBuffer();
 		for (String label : labels) {
 			sb.append(label);
+			sb.append("\n");
 		}
 
 		return sb.toString();
@@ -124,7 +125,11 @@ public class OwlApiOntologyManager implements OntologyManager {
 
 		List<String> labels = new ArrayList<String>();
 		for (OWLAnnotation annotation : owlClass.getAnnotations(ontology)) {
-			labels.add(annotation.getValue().toString());
+			OWLAnnotationValue value = annotation.getValue();
+			if (value instanceof OWLLiteral) {
+				OWLLiteral literal = (OWLLiteral) value;
+				labels.add(literal.getLiteral());
+			}
 		}
 
 		return labels;
