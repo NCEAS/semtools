@@ -29,6 +29,7 @@ package org.ecoinformatics.sms.plugins.table;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -117,25 +118,25 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 	    rowheaders.setPreferredSize(rowHeaderDim);
 		rowheaders.setCellRenderer(new RowHeaderRenderer());
 		annotationScrollPane.setRowHeaderView(rowheaders);
-		
-		// add the reorder
-		Command reorderCommand = new Command() {
-
-			public void execute(ActionEvent event) {
-				((AnnotationTable)annotationTable).reorder(true);	
-				
-			}
-			
-		};
-		GUIAction reorderAction = new GUIAction("reorder", null, reorderCommand);
-		JButton reorder = new HyperlinkButton(reorderAction);
-		annotationScrollPane.setCorner(JScrollPane.LOWER_LEFT_CORNER, reorder);
 		annotationScrollPane.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.gray));
 
-		JPanel descPanel = WidgetFactory.makePanel(2);
-		descPanel.add(WidgetFactory.makeHTMLLabel("<p>Double click cells to directly edit the Annotation</p>", 2));
+		// the reorder command
+		Command reorderCommand = new Command() {
+			public void execute(ActionEvent event) {
+				((AnnotationTable)annotationTable).reorder(true);					
+			}
+		};
+		GUIAction reorderAction = new GUIAction("Reorder the columns", null, reorderCommand);
+		JButton reorder = new HyperlinkButton(reorderAction);
+		
+//		annotationScrollPane.setCorner(JScrollPane.LOWER_LEFT_CORNER, reorder);
+
+		JPanel descPanel = WidgetFactory.makePanel(3);
+		descPanel.setLayout(new GridLayout(2, 1));
+		descPanel.add(WidgetFactory.makeHTMLLabel("<p>Double click cells to directly edit the Annotation</p>", 1));
+		descPanel.add(reorder);
+		
 		this.add(descPanel);
-		//this.add(WidgetFactory.makeDefaultSpacer());
 		
 		this.add(annotationScrollPane);
 		
