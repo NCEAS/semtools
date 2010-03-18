@@ -42,7 +42,7 @@ import org.ecoinformatics.sms.SMS;
 //import org.ecoinformatics.owlifier.*;
 import org.ecoinformatics.sms.annotation.*;
 
-public class MaterializaDB {
+public class MaterializeDB {
 
 	private static boolean test = false;
 	//private static String inputUriPrefix = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/";

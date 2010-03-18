@@ -13,52 +13,61 @@ import org.ecoinformatics.sms.ontology.Ontology;
 
 public class AnnotationSpecifier{
 
-	private String separatorMain = ":";
-	private String separatorMinor = " ";
-	private String measurementContextSeparatorMain = ",";
-	private String distinctStr = "distinct";
-	private String keyStr = "key";
-	private String identifyStr = "identifying";
+	private String m_separatorMain = ":";
+	private String m_separatorMinor = " ";
+	private String m_measurementContextSeparatorMain = ",";
+	private String m_comment = "#";
+	private String m_distinctStr = "distinct";
+	private String m_keyStr = "key";
+	private String m_identifyStr = "identifying";
 	
-	private float defaultDistinctFactor = (float)0.5;
-	private Annotation annotation = null;
-	private Map<String, Float> key2distinctfactor = null;
+	private float m_defaultDistinctFactor = (float)0.5;
+	private Annotation m_annotation = null;
+	private Map<String, Float> m_key2distinctfactor = null;
 	private Ontology m_defaultOnto = null;
 	
 	public AnnotationSpecifier()
 	{
-		key2distinctfactor = new TreeMap<String, Float>();
-		annotation = new Annotation();
+		m_key2distinctfactor = new TreeMap<String, Float>();
+		m_annotation = new Annotation();
 		m_defaultOnto = new Ontology("oboe", "testOntology");
 	}
 	
 	public Map<String, Float> getKey2distinctfactor() {
-		return key2distinctfactor;
+		return m_key2distinctfactor;
 	}
 
-	public void setKey2distinctfactor(Map<String, Float> key2distinctfactor) {
-		this.key2distinctfactor = key2distinctfactor;
+	public void setKey2distinctfactor(Map<String, Float> m_key2distinctfactor) {
+		this.m_key2distinctfactor = m_key2distinctfactor;
 	}
 	
 	public Annotation getAnnotation() {
-		return annotation;
+		return m_annotation;
 	}
 
-	public void setAnnotation(Annotation annotation) {
-		this.annotation = annotation;
+	public void setAnnotation(Annotation m_annotation) {
+		this.m_annotation = m_annotation;
 	}
 	
 	public void WriteAnnotation(String outAnnotFileName) throws IOException
 	{
 		FileOutputStream annotOutputStream = new FileOutputStream(outAnnotFileName);
 				
-		annotation.write(annotOutputStream);
+		m_annotation.write(annotOutputStream);
 		annotOutputStream.close();
-		System.out.println("Annotation is written to file: " + outAnnotFileName);
+		System.out.println("m_annotation is written to file: " + outAnnotFileName);
 		
-		System.out.println("\nkey2distinctfactor:" + key2distinctfactor);
+		System.out.println("\nkey2distinctfactor:" + m_key2distinctfactor);
 	}
 
+	/**
+	 * From a m_annotation specification file, read the m_annotation rules to the m_annotation structure
+	 * 
+	 * @param fname
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws Exception
+	 */
 	public void readAnnotationSpecFile(String fname) 
 		throws FileNotFoundException,IOException, Exception
 	{
@@ -70,6 +79,12 @@ public class AnnotationSpecifier{
 		if (bufferedReader != null) bufferedReader.close();
 	}
 	
+	/**
+	 * From a buffered reader, read m_annotation files to the m_annotation structure
+	 * 
+	 * @param r
+	 * @throws Exception
+	 */
 	private void readAnnotationSpecFile(BufferedReader r)
 		throws Exception
 	{
@@ -77,7 +92,9 @@ public class AnnotationSpecifier{
 		try {
 			while((line = r.readLine())!=null){
 				System.out.println(line);
-				extractAnnotation(line);				
+				if(!line.startsWith(m_comment)){
+					extractAnnotation(line);	
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -85,10 +102,17 @@ public class AnnotationSpecifier{
 		}
 	}
 	
+	/**
+	 * Extract annotation from a line in the specification file
+	 * 
+	 * @param line
+	 * @throws Exception
+	 */
 	private void extractAnnotation(String line)
 		throws Exception
 	{
-		String[] oneAnnotate = line.split(separatorMain);
+		System.out.println("Extract annotation from: " +line);
+		String[] oneAnnotate = line.split(m_separatorMain);
 		
 		if(oneAnnotate.length<=1)
 			return; 
@@ -96,12 +120,12 @@ public class AnnotationSpecifier{
 		Observation obsType = null;
 		if(oneAnnotate.length>=2){
 			obsType = extractObs(oneAnnotate[0]);
-			annotation.addObservation(obsType);
+			m_annotation.addObservation(obsType);
 			float factor = extractMeasurements(obsType,oneAnnotate[1]);
 			if(factor<0){
-				factor = defaultDistinctFactor;
+				factor = m_defaultDistinctFactor;
 			}
-			key2distinctfactor.put(obsType.getLabel(),factor);
+			m_key2distinctfactor.put(obsType.getLabel(),factor);
 		}
 		
 		if(oneAnnotate.length>=3){
@@ -119,7 +143,7 @@ public class AnnotationSpecifier{
 		throws Exception
 	{
 		Observation obs = new Observation();
-		String[] obsAnnotate = str.split(separatorMinor);
+		String[] obsAnnotate = str.split(m_separatorMinor);
 		
 		if(obsAnnotate.length>=2){
 			String obsLabel = obsAnnotate[0]; 
@@ -136,7 +160,7 @@ public class AnnotationSpecifier{
 			obs.setDistinct(false);
 		}else if(obsAnnotate.length==3){
 			String isDistinct = obsAnnotate[2];
-			if(isDistinct.trim().equals(distinctStr)){
+			if(isDistinct.trim().equals(m_distinctStr)){
 				obs.setDistinct(true);
 			}else{
 				obs.setDistinct(false);
@@ -157,7 +181,7 @@ public class AnnotationSpecifier{
 		throws Exception
 	{
 		float factor = (float)(-1.0);
-		String[] measurements = str.split(measurementContextSeparatorMain);
+		String[] measurements = str.split(m_measurementContextSeparatorMain);
 		
 		//1. error processing
 		if(obs==null){
@@ -197,7 +221,7 @@ public class AnnotationSpecifier{
 	private Measurement extractOneMeasurement(String str)
 		throws Exception
 	{
-		String[] oneMeasurement = str.split(separatorMinor); 
+		String[] oneMeasurement = str.split(m_separatorMinor); 
 		Measurement m = null;
 		
 		if(oneMeasurement.length==0||oneMeasurement.length>2){
@@ -211,7 +235,7 @@ public class AnnotationSpecifier{
 		
 		if(oneMeasurement.length==2){
 			String isKey = oneMeasurement[1];
-			if(isKey.trim().equals(keyStr)){
+			if(isKey.trim().equals(m_keyStr)){
 				m.setKey(true);
 			}else{
 				m.setKey(false);
@@ -231,7 +255,7 @@ public class AnnotationSpecifier{
 	private void extractContexts(Observation obs, String str)
 		throws Exception
 	{
-		String[] contexts = str.split(measurementContextSeparatorMain);
+		String[] contexts = str.split(m_measurementContextSeparatorMain);
 		
 		
 		//1. error processing
@@ -258,7 +282,7 @@ public class AnnotationSpecifier{
 		throws Exception
 	{
 		
-		String[] oneContext = str.split(separatorMinor); 
+		String[] oneContext = str.split(m_separatorMinor); 
 		Context c = null;
 		
 		if(oneContext.length==0||oneContext.length>2){
@@ -266,14 +290,14 @@ public class AnnotationSpecifier{
 		}
 		if(oneContext.length>=1){
 			String contextObsTypeLabel = oneContext[0];
-			Observation contextObsType = annotation.getObservation(contextObsTypeLabel);
+			Observation contextObsType = m_annotation.getObservation(contextObsTypeLabel);
 			c = new Context();
 			c.setObservation(contextObsType);			
 		}
 		
 		if(oneContext.length==2){
 			String isIdentifying = oneContext[1];
-			if(isIdentifying.trim().equals(identifyStr)){
+			if(isIdentifying.trim().equals(m_identifyStr)){
 				c.setIdentifying(true);
 			}else{
 				c.setIdentifying(false);

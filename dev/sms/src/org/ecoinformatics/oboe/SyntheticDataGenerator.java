@@ -21,7 +21,7 @@ public class SyntheticDataGenerator {
 		AnnotationSpecifier a = new AnnotationSpecifier();
 		a.readAnnotationSpecFile(inAnnotSpecFileName);
 		
-		//2. write annotation files
+		//2. write to annotation files (for consistency checking purpose, this will not be used in the generation process)
 		a.WriteAnnotation(outAnnotFileName);
 		
 		//3. generate dataset
@@ -29,7 +29,7 @@ public class SyntheticDataGenerator {
 		generator.setRownum(numOfRows);
 		generator.setAnnotation(a.getAnnotation());
 		generator.setKey2distinctfactor(a.getKey2distinctfactor());
-		//generator.GenerateBottomUp();
+		//generator.GenerateBottomUp(); //this method, the unique factor cannot be guaranteed
 		generator.GenerateTopDown(); //need further testing
 		
 		//4. write dataset
@@ -43,11 +43,8 @@ public class SyntheticDataGenerator {
 	 * Put the following two lines in the Arguments field
 	  eg13
       2000
-      it will generate an annotation file together with a data file with 2000 rows to follow the annotation specification in eg13
-      
-      eg2
-      10
-      it will generate an annotation file together with a data file with 10 rows to follow the annotation specification in eg2
+      it will generate an annotation file together with a data file with 2000 rows 
+      to follow the annotation specification in eg13
       
       Top-down generator passed test cases: 
       (1) eg1 10: (Specification file see: eg1-annot-spec.txt) 
@@ -60,8 +57,7 @@ public class SyntheticDataGenerator {
       (2) eg12 10 (Specification file see: eg12-annot-spec.txt) 
       	  This test case checks multi-key measurements for one observation type on the base of "eg1"
           No context
-          
-      ---
+      
       (3) eg13 10 (Specification file see: eg13-annot-spec.txt)
           This test case has context
           In the base of "eg12", add one observation type which has context of other two observation types

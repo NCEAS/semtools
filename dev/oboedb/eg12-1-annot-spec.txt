@@ -1,0 +1,9 @@
+o1 e1 distinct:m1 key,0.2
+o2 e2 distinct:m2 key,m3,0.3
+o3 e3:m4 key,m5 key,0.5:o1 identifying
+#
+#This one has a context chain o4 ->o3(m4,m5)->o1
+o4 e4:m6 key,0.5:o3 identifying
+#
+#This one has a more complex context chain o4 ->o3(m4,m5)->o1, o4->o1. It's crucial to let the factor work
+o5 e5:m7 key,0.5:o1 identifying,o3 identifying 
