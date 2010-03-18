@@ -39,6 +39,7 @@ import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Entity;
 import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
+import org.ecoinformatics.sms.annotation.Triple;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.ui.SimpleAnnotationPanel;
 
@@ -69,6 +70,7 @@ public class AnnotationQueryPage extends AbstractUIPage {
 	private Characteristic currentCharacteristic;
 	private Standard currentStandard;
 	private Protocol currentProtocol;
+	private Triple context;
 	
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
@@ -159,6 +161,7 @@ public class AnnotationQueryPage extends AbstractUIPage {
 				currentCharacteristic, 
 				currentStandard,
 				currentProtocol,
+				context,
 				true);
 		
 		// get the query text

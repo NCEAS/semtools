@@ -3,6 +3,8 @@ package org.ecoinformatics.sms;
 import org.ecoinformatics.sms.ontology.Ontology;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.annotation.Annotation;
+import org.ecoinformatics.sms.annotation.Triple;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.net.URL;
@@ -70,19 +72,23 @@ public class Test {
             //Ontology gceOnt = new Ontology(metacat + "gce.1.1");
             Ontology gceOnt = new Ontology("https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-examples.owl");
             List<OntologyClass> entities = new ArrayList();
-            entities.add(new OntologyClass(gceOnt, "SpatialLocation"));
-            entities.add(new OntologyClass(gceOnt, "Plant"));
-            entities.add(new OntologyClass(gceOnt, "CentralSubplot"));
-            entities.add(new OntologyClass(gceOnt, "FooBar"));
+            entities.add(new OntologyClass(gceOnt, "TemporalRange"));
+            entities.add(new OntologyClass(gceOnt, "Tree"));
             List<OntologyClass> chars = new ArrayList();
-            chars.add(new OntologyClass(gceOnt, "DryWeight"));
+            chars.add(new OntologyClass(gceOnt, "DBH"));
             List<OntologyClass> stds = new ArrayList();
-            stds.add(new OntologyClass(gceOnt, "GramsPerSquareMeter"));
             List<OntologyClass> protocols = new ArrayList();
+            List<Triple> contexts = new ArrayList();
+            Triple context = 
+            	new Triple(
+            			new OntologyClass(gceOnt, "Tree"),
+            			new OntologyClass(gceOnt, "Within"),
+            			new OntologyClass(gceOnt, "TemporalRange"));
+            contexts.add(context);
 
             // get query results         
             System.out.println("\nSearch for matching annotation:");
-            for(Annotation a : annotationManager.getMatchingAnnotations(entities, chars, stds, protocols))
+            for(Annotation a : annotationManager.getMatchingAnnotations(entities, chars, stds, protocols, contexts))
                 System.out.println("   match: " + a.getURI());
 
             System.out.println("\nActive Entities: ");

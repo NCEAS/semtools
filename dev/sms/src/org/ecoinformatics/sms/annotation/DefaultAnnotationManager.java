@@ -243,7 +243,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
     */
    public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
            List<OntologyClass> characteristics, List<OntologyClass> standards,
-           List<OntologyClass> protocols) {
+           List<OntologyClass> protocols, List<Triple> contexts) {
       // find matches
       List<Annotation> results = new ArrayList();
       for(Annotation annot : getAnnotations()) {
@@ -254,6 +254,8 @@ public class DefaultAnnotationManager implements AnnotationManager {
          if(!hasMatchingStandard(annot, standards))
             continue;
          if(!hasMatchingProtocol(annot, protocols))
+             continue;
+         if(!hasMatchingContext(annot, contexts))
              continue;
          if(!results.contains(annot))
             results.add(annot);
@@ -272,18 +274,20 @@ public class DefaultAnnotationManager implements AnnotationManager {
     */
    public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
            List<OntologyClass> characteristics, List<OntologyClass> standards,
-           List<OntologyClass> protocols, boolean searchSubclasses) {
+           List<OntologyClass> protocols, List<Triple> contexts, boolean searchSubclasses) {
       if(!searchSubclasses)
-         return getMatchingAnnotations(entities, characteristics, standards, protocols);
+         return getMatchingAnnotations(entities, characteristics, standards, protocols, contexts);
       List<OntologyClass> entSubs = new ArrayList(entities);
       List<OntologyClass> charSubs = new ArrayList(characteristics);
       List<OntologyClass> stdSubs = new ArrayList(standards);
       List<OntologyClass> protSubs = new ArrayList(protocols);
+      // TODO: add subclasses to the triples
+      List<Triple> contextSubs = new ArrayList<Triple>(contexts);
       addSubclasses(entSubs);
       addSubclasses(charSubs);
       addSubclasses(stdSubs);
       addSubclasses(protSubs);
-      return getMatchingAnnotations(entSubs, charSubs, stdSubs, protSubs);
+      return getMatchingAnnotations(entSubs, charSubs, stdSubs, protSubs, contextSubs);
    }
 
    /**
@@ -294,7 +298,8 @@ public class DefaultAnnotationManager implements AnnotationManager {
     * @return the matching annotations
     */
    public List<Annotation> getMatchingAnnotations(OntologyClass entity,
-           OntologyClass characteristic, OntologyClass standard, OntologyClass protocol) {
+           OntologyClass characteristic, OntologyClass standard, OntologyClass protocol,
+           Triple context) {
       List<OntologyClass> entities = new ArrayList();
       if(entity != null)
          entities.add(entity);
@@ -307,7 +312,10 @@ public class DefaultAnnotationManager implements AnnotationManager {
       List<OntologyClass> protocols = new ArrayList();
       if(protocol != null)
          protocols.add(protocol);
-      return getMatchingAnnotations(entities, characteristics, standards, protocols);
+      List<Triple> contexts = new ArrayList();
+      if(context != null)
+         contexts.add(context);
+      return getMatchingAnnotations(entities, characteristics, standards, protocols, contexts);
    }
 
    /**
@@ -320,7 +328,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
     */
    public List<Annotation> getMatchingAnnotations(OntologyClass entity,
            OntologyClass characteristic, OntologyClass standard, 
-           OntologyClass protocol, boolean searchSubclasses) {
+           OntologyClass protocol, Triple context, boolean searchSubclasses) {
       List<OntologyClass> entities = new ArrayList();
       if(entity != null)
          entities.add(entity);
@@ -333,7 +341,10 @@ public class DefaultAnnotationManager implements AnnotationManager {
       List<OntologyClass> protocols = new ArrayList();
       if(protocol != null)
          protocols.add(protocol);
-      return getMatchingAnnotations(entities, characteristics, standards, protocols, searchSubclasses);
+      List<Triple> contexts = new ArrayList();
+      if(context != null)
+         contexts.add(context);
+      return getMatchingAnnotations(entities, characteristics, standards, protocols, contexts, searchSubclasses);
    }
 
    /**
@@ -773,6 +784,33 @@ public class DefaultAnnotationManager implements AnnotationManager {
          return result;
       addSuperclasses(result);
       return result;
+   }
+   
+   /**
+    * Helper method to check if an annotation has a matching context
+    * @param a the annotation
+    * @param contexts list of context triples to check
+    * @return true if annotation contains an context in given list
+    */
+   private boolean hasMatchingContext(Annotation a, List<Triple> contexts) {
+      if(contexts == null || contexts.size() == 0) {
+         return true;
+      }
+      // construct all the general triples in this annotation
+      for(Observation o : a.getObservations()) {
+         for(Context c : o.getContexts()) {
+        	 Triple triple = new Triple();
+        	 triple.a = o.getEntity();
+        	 triple.b = c.getRelationship();
+        	 triple.c = c.getObservation().getEntity();
+        	 // is there a match in the given list?
+        	 boolean match = triple.hasMatch(contexts);
+        	 if (match) {
+        		 return match;
+        	 }
+         }
+      }
+      return false;
    }
 
    /**

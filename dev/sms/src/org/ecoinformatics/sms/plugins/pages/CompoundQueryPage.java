@@ -45,6 +45,7 @@ import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Entity;
 import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
+import org.ecoinformatics.sms.annotation.Triple;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 
@@ -217,6 +218,8 @@ public class CompoundQueryPage extends AbstractUIPage {
 		List<OntologyClass> standards = new ArrayList<OntologyClass>();
 		List<OntologyClass> protocols = new ArrayList<OntologyClass>();
 		List<OntologyClass> entities = new ArrayList<OntologyClass>();
+		List<Triple> contexts = new ArrayList<Triple>();
+
 		
 		for (int i = 0; i < queryList.getListOfRowLists().size(); i++) {
 			
@@ -269,6 +272,7 @@ public class CompoundQueryPage extends AbstractUIPage {
 				characteristics, 
 				standards,
 				protocols,
+				contexts,
 				true);
 		
 		

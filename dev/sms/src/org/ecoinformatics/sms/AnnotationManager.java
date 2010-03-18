@@ -33,6 +33,7 @@
 package org.ecoinformatics.sms;
 
 import org.ecoinformatics.sms.annotation.Annotation;
+import org.ecoinformatics.sms.annotation.Triple;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import java.util.List;
 import java.io.InputStream;
@@ -139,7 +140,7 @@ public interface AnnotationManager {
     */
    public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
            List<OntologyClass> characteristics, List<OntologyClass> standards,
-           List<OntologyClass> protocols);
+           List<OntologyClass> protocols, List<Triple> contexts);
 
    /**
     * Get annotations that contain an entity in the given list and a 
@@ -152,7 +153,7 @@ public interface AnnotationManager {
     */
    public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
            List<OntologyClass> characteristics, List<OntologyClass> standards,
-           List<OntologyClass> protocols, boolean searchSubclasses);
+           List<OntologyClass> protocols, List<Triple> contexts, boolean searchSubclasses);
 
    /**
     * Get annotations that contain the given entity, characteristic, and standard
@@ -163,7 +164,7 @@ public interface AnnotationManager {
     */
    public List<Annotation> getMatchingAnnotations(OntologyClass entity,
            OntologyClass characteristic, OntologyClass standard,
-           OntologyClass protocol);
+           OntologyClass protocol, Triple context);
 
    /**
     * Get annotations that contain the given entity, characteristic, and standard
@@ -175,7 +176,7 @@ public interface AnnotationManager {
     */
    public List<Annotation> getMatchingAnnotations(OntologyClass entity,
            OntologyClass characteristic, OntologyClass standard,
-           OntologyClass protocol, boolean searchSubclasses);
+           OntologyClass protocol, Triple context, boolean searchSubclasses);
 
    /**
     * Get entities used in managed annotations
