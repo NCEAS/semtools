@@ -11,4 +11,10 @@ public class Constant {
 	public static String localInputUriPrefix = "/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/examples/";
 	public static String outputUriPrefix = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboedb/";
 	public static String localOutputUriPrefix = "/Users/cao/DATA/SONET/svntrunk/semtools/dev/oboedb/";	
+	
+	public static String C_ANNOT_SPEC_FILE_SUFFIX = "-annot-spec.txt";
+	public static String C_ANNOT_FILE_SUFFIX = "-annot.xml";
+	public static String C_DATA_FILE_SUFFIX = "-data.txt";
+	
+	public static String C_DATASET_SEPARATOR = ",";	
 }

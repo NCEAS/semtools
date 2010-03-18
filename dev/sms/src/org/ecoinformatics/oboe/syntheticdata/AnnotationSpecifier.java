@@ -90,9 +90,9 @@ public class AnnotationSpecifier{
 	{
 		String line = null;
 		try {
-			while((line = r.readLine())!=null){
-				System.out.println(line);
+			while((line = r.readLine())!=null){				
 				if(!line.startsWith(m_comment)){
+					System.out.println(line);
 					extractAnnotation(line);	
 				}
 			}
@@ -111,7 +111,7 @@ public class AnnotationSpecifier{
 	private void extractAnnotation(String line)
 		throws Exception
 	{
-		System.out.println("Extract annotation from: " +line);
+		//System.out.println("Extract annotation from: " +line);
 		String[] oneAnnotate = line.split(m_separatorMain);
 		
 		if(oneAnnotate.length<=1)

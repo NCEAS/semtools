@@ -38,7 +38,7 @@ import java.util.ArrayList;
 /**
  * Objects of this class represent observation ameasurements
  */
-public class Measurement {
+public class Measurement implements Comparable<Measurement>{
 
    private String _label;
    private List<Characteristic> _characteristics = new ArrayList();
@@ -206,5 +206,16 @@ public class Measurement {
 	   	+",protocol="+_protocol+",precision="+_precision+",value="+_value+",iskey="+_isKey;
 	   return str;
    }
+
+   /**
+    * Add this to get some sorted list of measurements
+    * 
+    * @author cao
+    */
+	public int compareTo(Measurement o) {
+
+		int rc =  this.getLabel().compareTo(o.getLabel());		
+		return rc;
+	}
 
 } 

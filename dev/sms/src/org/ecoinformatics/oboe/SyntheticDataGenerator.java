@@ -6,10 +6,15 @@ import org.ecoinformatics.oboe.Constant;
 
 public class SyntheticDataGenerator {
 
-	private static String L_ANNOT_SPEC_FILE_SUFFIX = "-annot-spec.txt";
-	private static String L_ANNOT_FILE_SUFFIX = "-annot.xml";
-	private static String L_DATA_FILE_SUFFIX = "-data.txt";
-	
+	/**
+	 * Generate dataset with "numOfRows" rows based on the annotation specification file
+	 *
+	 * @param inAnnotSpecFileName
+	 * @param outAnnotFileName
+	 * @param outDataFileName
+	 * @param numOfRows
+	 * @throws Exception
+	 */
 	private static void Generate(String inAnnotSpecFileName,
 			String outAnnotFileName, 
 			String outDataFileName, 
@@ -30,7 +35,7 @@ public class SyntheticDataGenerator {
 		generator.setAnnotation(a.getAnnotation());
 		generator.setKey2distinctfactor(a.getKey2distinctfactor());
 		//generator.GenerateBottomUp(); //this method, the unique factor cannot be guaranteed
-		generator.GenerateTopDown(); //need further testing
+		generator.GenerateTopDown(); 
 		
 		//4. write dataset
 		generator.WriteData(outDataFileName); 		
@@ -62,6 +67,9 @@ public class SyntheticDataGenerator {
           This test case has context
           In the base of "eg12", add one observation type which has context of other two observation types
       
+      (4) eg12-1 10 (Specification file see: eg12-1-annot-spec.txt) 
+          Base: eg12
+          Test: context chain
 	 */
 	public static void main(String[] args) {
 		if(args.length!=2){
@@ -70,9 +78,9 @@ public class SyntheticDataGenerator {
 		}
 		
 		// Get input parameters
-		String inAnnotSpecFileName = Constant.localOutputUriPrefix + args[0] + L_ANNOT_SPEC_FILE_SUFFIX; 
-		String outAnnotSpecFileName = Constant.localOutputUriPrefix + args[0] + L_ANNOT_FILE_SUFFIX;
-		String outDataSpecFileName = Constant.localOutputUriPrefix +args[0] + "-n"+args[1]+ L_DATA_FILE_SUFFIX;
+		String inAnnotSpecFileName = Constant.localOutputUriPrefix + args[0] + Constant.C_ANNOT_SPEC_FILE_SUFFIX; 
+		String outAnnotSpecFileName = Constant.localOutputUriPrefix + args[0] + Constant.C_ANNOT_FILE_SUFFIX;
+		String outDataSpecFileName = Constant.localOutputUriPrefix +args[0] + "-n"+args[1]+ Constant.C_DATA_FILE_SUFFIX;
 		
 		int numOfRows = Integer.parseInt(args[1]);
 		
@@ -82,9 +90,9 @@ public class SyntheticDataGenerator {
 		System.out.println("outDataSpecFileName="+outDataSpecFileName);
 		System.out.println("numOfRows="+numOfRows+"\n");
 		
+		// Generate data to satisfy the annotation specifications
 		try {
-			Generate(inAnnotSpecFileName,outAnnotSpecFileName, outDataSpecFileName, numOfRows);
-			
+			Generate(inAnnotSpecFileName,outAnnotSpecFileName, outDataSpecFileName, numOfRows);			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (Exception e) {			

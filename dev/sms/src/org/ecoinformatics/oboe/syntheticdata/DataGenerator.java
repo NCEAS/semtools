@@ -5,8 +5,12 @@ import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.oboe.util.ObservationUtil;
+import org.ecoinformatics.oboe.Constant;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 import java.util.Map.Entry;
@@ -37,13 +41,13 @@ class ListComparator implements Comparator
 
 public class DataGenerator {
 
-	private String m_separator = ",";
-	
-	private Annotation m_annotation = null;
-	private List m_dataset = null; 
-	private int m_rownum = 0;
 	private Random m_randnumGenerator; 
-	private Map<String, Float> m_key2distinctfactor = null;
+	
+	private Annotation m_annotation = null; //userinput
+	private int m_rownum = 0; //user input
+	private Map<String, Float> m_key2distinctfactor = null; //user input
+	
+	private List m_dataset = null; 
 	private Map<String, List> m_obsType2obsData = null;
 	private Map<Observation, Set> m_obsType2contexObsType= null;
 	
@@ -78,6 +82,23 @@ public class DataGenerator {
 		this.m_rownum = rownum;
 	}
 
+	/**
+	 * Get all the measurement in a set ordered by the measurement label
+	 * 
+	 * @return
+	 */
+	private Set<Measurement> calMeasurementSet()
+	{
+		Set<Measurement> measurementSet = new TreeSet<Measurement>();
+		
+		for(Observation obsType: m_annotation.getObservations()){
+			List<Measurement> curObsMeasurementList = obsType.getMeasurements();
+			measurementSet.addAll(curObsMeasurementList);				
+		}
+		System.out.println("All measurements: " + measurementSet);
+		return measurementSet;		
+	}
+	
 	private void calObsType2ContextObsType()
 	{
 		for(Observation obsType: m_annotation.getObservations()){
@@ -118,8 +139,16 @@ public class DataGenerator {
 	 * This is a bottom-up method, 
 	 * It first calculates the instances for the most independent observations types
 	 * Then calculate the instances for the least independent observation types
-	 *  
+	 * 
+	 * This method cannot guarantee the generated key measurements satisfy the uniqueness factor. 
+	 * (1) For observations without context key measurements
+	 *     The number of unique key-measurements values/total number of measurement values =  the uniqueness factor.
+	 * (2) For observations with context key measurements
+	 *     The number of unique key-measurements values/total number of measurement values >= the uniqueness factor
+	 *     
+	 * @deprecated
 	 * @throws Exception
+	 * 
 	 */
 	public void GenerateBottomUp() throws Exception
 	{
@@ -202,6 +231,9 @@ public class DataGenerator {
 			generateNonKeyCols(obsType,measurement2ValueList);
 		}
 		
+		boolean rc = Validate(measurement2ValueList);
+		System.out.println("VALIDate value = "+rc);
+		
 		flattenDataTopDown(measurement2ValueList);
 	}
 	
@@ -215,6 +247,172 @@ public class DataGenerator {
 		
 		System.out.println("Data is written to "+outDataFileName);		
 	}
+	
+	/**
+	 * Read data from the given data file
+	 * 
+	 * @param inDataFileName
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws Exception
+	 */
+	public Map<String, List> readData(String inDataFileName) throws FileNotFoundException,IOException, Exception
+	{
+		BufferedReader bufferedReader = null; 
+		bufferedReader = new BufferedReader(new FileReader(inDataFileName));
+		
+		Map<String, List> measurement2valueList = readData(bufferedReader);
+		
+		if (bufferedReader != null) bufferedReader.close();		
+		
+		return measurement2valueList;
+	}
+	
+	/**
+	 * Read data from the given buffered reader
+	 * 
+	 * @param r
+	 * @throws Exception
+	 */
+	private Map<String, List> readData(BufferedReader r)
+		throws Exception
+	{
+		String line = null;
+		
+		// Calculate the set of the measurements for this annotation
+		Set<Measurement> measurementSet = calMeasurementSet();
+		
+		// Get the total number of column number
+		int colnum = measurementSet.size();
+		
+		// Read data file, and make sure each row contains exactly colnum values
+		try {
+			int lineno = 0;
+			while((line = r.readLine())!=null){
+				if((lineno++)<=10){
+					System.out.println(line);
+				}
+				extractOneRow(line,colnum);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+		// Structure data 
+		Map<String, List> measurement2valueList = structureData(measurementSet);
+		
+		return measurement2valueList;
+	}
+	
+	/**
+	 * From one line in the dataset, extract one row, it need to contain "colnum" values
+	 * 
+	 * @param line
+	 * @param colnum
+	 * @throws Exception
+	 */
+	private void extractOneRow(String line,int colnum)
+		throws Exception
+	{
+		if(m_dataset==null)
+			m_dataset = new ArrayList();
+		
+		String[] oneRow = line.split(Constant.C_DATASET_SEPARATOR);
+		if(oneRow.length!=colnum){
+			throw new Exception("Line ="+line +" does not contain "+colnum+" columns");
+		}
+		List<Integer> row = new ArrayList<Integer>();
+		for(int i=0;i<oneRow.length;i++){
+			row.add(Integer.parseInt(oneRow[i]));
+		}
+		m_dataset.add(row);
+	}
+	
+	/**
+	 * 
+	 * @param inDataFile
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws Exception
+	 */
+	public boolean Validate(String inDataFile) throws FileNotFoundException, IOException, Exception
+	{
+		// Read data		
+		Map<String, List> measurement2ValueList = readData(inDataFile);
+		
+		if(measurement2ValueList==null||measurement2ValueList.size()==0)
+			return true;
+		
+		// Validate data
+		boolean rc = Validate(measurement2ValueList);
+		return rc;
+	}
+	
+	
+	/**
+	 * Internally validate all the observation key measurements
+	 * @param measurement2ValueList
+	 * @return
+	 * @throws Exception
+	 */
+	private boolean Validate(Map<String, List> measurement2ValueList) throws Exception
+	{
+		boolean rc = true;
+		
+		for(Observation obsType: this.m_annotation.getObservations()){
+			float factor = m_key2distinctfactor.get(obsType.getLabel());
+			List<Measurement> keyMeasurementList = ObservationUtil.getAllKeyMeasurement(obsType);
+			Collections.sort(keyMeasurementList);
+			
+			boolean rcTmp = ValidateObsKeyMeasurements(factor,keyMeasurementList, measurement2ValueList);
+			if(!rcTmp){
+				rc = false;
+				System.out.println("obsType ="+ obsType.getLabel() +" is INVALID");
+			}
+		}
+		return rc;
+	}
+	
+	/**
+	 * Validate the data of one observation type
+	 * @param factor
+	 * @param keyMeasrementLists
+	 * @param measurement2ValueList
+	 * @return
+	 * @throws Exception
+	 */
+	private boolean ValidateObsKeyMeasurements(float factor,
+			List<Measurement> keyMeasurementList,
+			Map<String, List> measurement2ValueList) throws Exception
+	{
+		Set<List<Integer>> distinctKeyRowSet = new TreeSet<List<Integer>>(new ListComparator());
+		
+		for(int rowno=0;rowno<this.m_rownum;rowno++){
+			List<Integer> newrow = new ArrayList<Integer>();
+			for(Measurement m: keyMeasurementList){
+				List valueList = measurement2ValueList.get(m.getLabel());
+				if(rowno>=valueList.size()){
+					throw new Exception("rowno = " + rowno +">= valueList size="+valueList.size());
+				}
+				int colVal = (Integer)valueList.get(rowno);
+				newrow.add(colVal);
+			}
+			
+			distinctKeyRowSet.add(newrow);
+		}
+		
+		int shouldDistinctKeyRowNum = (int)(m_rownum*factor);
+		
+		System.out.println("shouldDistinctKeyRowNum="+shouldDistinctKeyRowNum);
+		System.out.println("distinctKeyRowSet="+distinctKeyRowSet);
+		if(distinctKeyRowSet.size()==shouldDistinctKeyRowNum){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 	
 	/**
 	 * Calculate a list of observation types which are ordered according their dependence to others
@@ -683,7 +881,9 @@ public class DataGenerator {
 	}
 	
 	/**
-	 * make sure one observation should have higher distinct factor than its context observations 
+	 * Make sure one observation should have higher distinct factor than its context observations
+	 * 
+	 * @deprecated For bottom up method
 	 * @param obsType
 	 * @throws Exception
 	 */
@@ -838,7 +1038,7 @@ public class DataGenerator {
 				String val = row.get(j).toString();
 				dataPrintStream.append(val);
 				if(j<row.size()-1){
-					dataPrintStream.append(m_separator);
+					dataPrintStream.append(Constant.C_DATASET_SEPARATOR);
 				}				
 			}
 			dataPrintStream.append("\n");
@@ -884,6 +1084,7 @@ public class DataGenerator {
 			String measLabel = entry.getKey();
 			List<Integer> valueList = entry.getValue();
 			
+			System.out.println("measLabel="+measLabel+" valueList="+valueList);
 			//2. make sure that this value list contains exactly the needed number of rows
 			if(valueList.size()!=m_rownum){
 				throw new Exception("For measurement " + measLabel +" there is no enough values.");
@@ -919,6 +1120,42 @@ public class DataGenerator {
 			++colno;
 		}
 		
+	}
+	
+	/**
+	 * Opposite to flatten data
+	 * 
+	 * @param measurementSet
+	 * @return
+	 */
+	private Map<String, List > structureData(Set<Measurement> measurementSet)
+	{
+		Map<String, List> measurement2ValueList = new TreeMap<String, List>();
+		Map<Integer, String> colno2measLabel = new HashMap<Integer,String>();
+		
+		// Construct the structure
+		int colno = 0;
+		for(Measurement m: measurementSet){
+			List valueList = new ArrayList();
+			measurement2ValueList.put(m.getLabel().trim(), valueList);
+			colno2measLabel.put(colno,m.getLabel().trim());
+			colno++;
+		}
+		
+		//refill the data
+		for(int i=0;i<m_dataset.size();i++){
+			List row = (List)m_dataset.get(i);
+			for(int j=0;j<row.size();j++){
+				int colval = (Integer)(row.get(j));
+				String colMeasLabel = colno2measLabel.get(j);
+				List colValueList = measurement2ValueList.get(colMeasLabel);
+				colValueList.add(colval);
+			}
+		}
+		
+		System.out.println("measurement2ValueList="+measurement2ValueList);
+		
+		return measurement2ValueList;
 	}
 
 }
