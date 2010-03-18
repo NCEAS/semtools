@@ -4,6 +4,7 @@ import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Context;
+import org.ecoinformatics.oboe.util.ObservationUtil;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -138,6 +139,8 @@ public class DataGenerator {
 		for(Observation obsType: contextObsList){
 			generateOneObsData(obsType);
 		}
+		
+		flattenData();
 	}
 	
 	/**
@@ -180,23 +183,26 @@ public class DataGenerator {
 		//List measurementSetList = compOrderedMeasurementSetList();
 		System.out.println("contextObsList="+contextObsList);
 		
-		Map<String,List> measurement2uniqueRowValueSet = new HashMap<String, List>();
+		Map<String,List> measurement2ValueList = new TreeMap<String, List>();
 		
 		//3. Generate rows with unique values
 		for(Observation obsType: contextObsList){
-			generateUniqueRow(obsType,measurement2uniqueRowValueSet);			
+			generateUniqueRow(obsType,measurement2ValueList);			
 		}
+		System.out.println("measurement2uniqueRowValueSet="+measurement2ValueList);
 		
 		//4. Generate rows with non-unique values
 		for(int i=contextObsList.size()-1; i>=0; i--){
 			Observation obsType = contextObsList.get(i);
-			generateNonUniqueRow(obsType,measurement2uniqueRowValueSet); 
+			generateNonUniqueRow(obsType,measurement2ValueList); 
 		}
 		
 		//4. Generate values for the measurement types that does not have any uniqueness restriction
 		for(Observation obsType: contextObsList){
-			generateNonKeyCols(obsType,measurement2uniqueRowValueSet);
+			generateNonKeyCols(obsType,measurement2ValueList);
 		}
+		
+		flattenDataTopDown(measurement2ValueList);
 	}
 	
 	
@@ -292,15 +298,23 @@ public class DataGenerator {
 		List<Measurement> measurementList = obsType.getMeasurements();
 		for(int j=0;j<measurementList.size();j++){
 			Measurement m = measurementList.get(j);
-			List distinctKeyColList =  ioMeasurement2ValueList.get(m.getLabel());
-			if(distinctKeyColList==null||distinctKeyColList.size()==0){
-				distinctKeyColList = new ArrayList<Integer>();
-				while(distinctKeyColList.size()<this.m_rownum){
+			
+			//get this measurement's value list
+			List measColValueList =  ioMeasurement2ValueList.get(m.getLabel());
+			
+			//when it is null, it means that we did not generate any values for this measurement yet
+			//these measurements are generally non-key measurements
+			if(measColValueList==null){
+				measColValueList = new ArrayList<Integer>();
+				while(measColValueList.size()<this.m_rownum){
 					int val = this.m_randnumGenerator.nextInt(2*m_rownum);
-					distinctKeyColList.add(val);
+					measColValueList.add(val);
 				}
+				//after we generate the random values for this measurement, put it into the map
+				ioMeasurement2ValueList.put(m.getLabel(), measColValueList);
 			}else{
-				if(distinctKeyColList.size()<m_rownum){
+				//when we already generate some values for this measurement, they need to have "m_rownum" values.
+				if(measColValueList.size()!=m_rownum){
 					throw new Exception("Key measurement has less than m_rownum values!");
 				}
 			}
@@ -321,10 +335,10 @@ public class DataGenerator {
 			Map<String,List> ioMeasurement2uniqueRowValueSet)
 		throws Exception
 	{
-		List<Measurement> keyMeasurementList = obsType.getKeyMeasurements();
+		List<Measurement> keyMeasurementList = ObservationUtil.getAllKeyMeasurement(obsType);//obsType.getKeyMeasurements();
 		
 		//1. get the minimum exist unique column size
-		int oldMinRowNum = -1;
+		int oldMinRowNum = -1; 
 		int oldMaxRowNum = -1;
 		for(int j=0;j<keyMeasurementList.size();j++){
 			Measurement m = keyMeasurementList.get(j);
@@ -332,8 +346,7 @@ public class DataGenerator {
 			if(oldMinRowNum==-1){
 				oldMinRowNum = oldMaxRowNum = distinctKeyColList.size();
 			}else{
-				if(oldMinRowNum>distinctKeyColList.size()){
-					//throw new Exception("oldRowNum = " + oldRowNum +" is not equal to distinctKeyColList size="+distinctKeyColList.size());
+				if(oldMinRowNum>distinctKeyColList.size()){					
 					oldMinRowNum = distinctKeyColList.size();
 				}
 				if(oldMaxRowNum<distinctKeyColList.size()){
@@ -347,24 +360,55 @@ public class DataGenerator {
 		ArrayList<ArrayList<Integer>> newRowList = new ArrayList();
 		int newRowNum = this.m_rownum - oldMinRowNum; 
 		while(newRowList.size()<newRowNum){
-			int index = this.m_randnumGenerator.nextInt(oldMaxRowNum);
 			
-			//some column row value exists, some column row value does not exist
-			//based on the existing values get the row index
-			if(newRowList.size() <= oldMaxRowNum){
-				index = searchRowIndex(keyMeasurementList,ioMeasurement2uniqueRowValueSet,newRowList.size(),oldMinRowNum);
+			ArrayList<Integer> newRow = null;
+			
+			//some column row value exists (should not be changed because they are key values), some column row value does not exist
+			//based on the existing values get the row index			
+			if((newRowList.size()+oldMinRowNum) < oldMaxRowNum){
+				//retrieve the row index between [0, oldMinRowNum) with the same existing column values 
+				int curRowNo = newRowList.size()+oldMinRowNum;
+				int index = searchRowIndex(keyMeasurementList,ioMeasurement2uniqueRowValueSet,curRowNo,oldMinRowNum);
 				if(index<0){
 					throw new Exception("Cannot find existing index, somewhere is wrong.");
 				}
+				//these are rows with existing values
+				newRow = retrieveExistRow(keyMeasurementList,index,ioMeasurement2uniqueRowValueSet);
+			}else{//i.e., (newRowList.size()+oldMinRowNum) >= oldMaxRowNum
+				//generate a random number in [0, oldMaxRowNum)
+				int index = this.m_randnumGenerator.nextInt(oldMaxRowNum);
+				
+				//get a new row for the key measurements from the existing row values col[index] 
+				
+				if(index<oldMinRowNum){
+					//these are rows with existing values
+					newRow = retrieveExistRow(keyMeasurementList,index,ioMeasurement2uniqueRowValueSet);
+				}else{
+					//these are rows which contain some old existing values (need to be consistent) and some newly added ones
+					newRow = newRowList.get(index-oldMinRowNum); 
+				}				
 			}
 			
-			//get a new row for the key measurements from the existing row values col[index] 
-			ArrayList<Integer> newRow = retrieveExistRow(keyMeasurementList,index,ioMeasurement2uniqueRowValueSet);
 			newRowList.add(newRow);
+			//generate a random number in [0, oldMaxRowNum)
+			//int index = this.m_randnumGenerator.nextInt(oldMaxRowNum);
+			
+			//some column row value exists (should not be changed because they are key values), some column row value does not exist
+			//based on the existing values get the row index
+			//int fullRowMaxIndex = oldMinRowNum+newRowList.size();
+			//if((index>=oldMinRowNum) && (fullRowMaxIndex < oldMaxRowNum))
+			//if((index>=oldMinRowNum))
+			//{
+				//retrieve the row index between [0, oldMinRowNum) with the same existing column values 
+			//	index = searchRowIndex(keyMeasurementList,ioMeasurement2uniqueRowValueSet,newRowList.size(),oldMinRowNum);
+			//	if(index<0){
+			//		throw new Exception("Cannot find existing index, somewhere is wrong.");
+			//	}
+			//}
 		}
 		
 		//3. from the new rows, write back the measurement value list
-		updMeasurementList(ioMeasurement2uniqueRowValueSet,keyMeasurementList,newRowList);		
+		updMeasurementList(ioMeasurement2uniqueRowValueSet,keyMeasurementList,newRowList,oldMinRowNum);		
 	}
 	
 	/**
@@ -410,11 +454,21 @@ public class DataGenerator {
 			if(distinctKeyColList.size()>curRowNo){ //this column has enough value;
 				int colVal = (Integer)distinctKeyColList.get(curRowNo);
 				Set<Integer> thisColRowId = calRowIdwithColVal(distinctKeyColList,colVal);
+				
+				//get the row id-s that is smaller than the oldMinRowNum
+				Set<Integer> validColRowId = new HashSet<Integer>(); 
+				for(int rowid: thisColRowId){
+					if(rowid<oldMinRowNum){
+						validColRowId.add(rowid);
+					}
+				}
+				
+				//get the intersection of all the valid row ids for the columns with existing values
 				if(availableRowIdSet.size()==0){
-					availableRowIdSet.addAll(thisColRowId);
+					availableRowIdSet.addAll(validColRowId);
 				}else{
 					//get the rowId intersection of the existing set and the new set
-					availableRowIdSet.retainAll(thisColRowId);
+					availableRowIdSet.retainAll(validColRowId);					
 				}
 			}
 		}
@@ -428,6 +482,7 @@ public class DataGenerator {
 			for(Integer x:availableRowIdSet){
 				if(i==tmpIdx){
 					index = x;
+					break;
 				}else{
 					i++;
 				}
@@ -494,7 +549,8 @@ public class DataGenerator {
 	 */
 	private void updMeasurementList(Map<String,List> ioMeasurement2RowValueList, 
 			List<Measurement> keyMeasurementList,
-			ArrayList<ArrayList<Integer>> rowList)
+			ArrayList<ArrayList<Integer>> rowList,
+			int startIdx)
 		throws Exception
 	{
 		for(int i=0;i<rowList.size();i++){
@@ -503,23 +559,24 @@ public class DataGenerator {
 				int newColVal = obsKeyRow.get(j);
 					
 				Measurement m = keyMeasurementList.get(j);
-				List distinctKeyColList =  ioMeasurement2RowValueList.get(m.getLabel());
-				if(distinctKeyColList!=null){ 
+				List colValueList =  ioMeasurement2RowValueList.get(m.getLabel());
+				if(colValueList!=null){ 
 					//the unique value list already exists, 
-					//need o see whether (1) exist ones should be the same, or (2) add the new ones 
-					if(i < distinctKeyColList.size()){//
-						int oldColVal = (Integer)distinctKeyColList.get(i);
+					//need to see whether (1) exist ones should be the same, or (2) add the new ones 
+					if((startIdx+i) < colValueList.size()){//
+						int oldColVal = (Integer)colValueList.get(startIdx+i);
 						if(newColVal!=oldColVal){
-							throw new Exception("newColVal!=oldColVal for row i="+i);
+							throw new Exception("newColVal!=oldColVal for m="+m.getLabel() +" row i="+(startIdx+i));
 						}
-					}else if(i== distinctKeyColList.size()){
-						distinctKeyColList.add(newColVal);
+					}else if((startIdx+i)== colValueList.size()){
+						colValueList.add(newColVal);
 					}else{
-						throw new Exception("Missing unique vlaues for measurement when I am at row i="+i);
+						throw new Exception("Missing unique vlaues for measurement when I am at m="+m.getLabel() +" row i="+i);
 					}
 				}else{//the unique value list does not exist yet,add this list
-					distinctKeyColList = new ArrayList();
-					distinctKeyColList.add(newColVal);
+					colValueList = new ArrayList();					
+					colValueList.add(newColVal);	
+					ioMeasurement2RowValueList.put(m.getLabel(), colValueList);
 				}
 			}
 		}
@@ -536,7 +593,7 @@ public class DataGenerator {
 		throws Exception
 	{
 		float factor = m_key2distinctfactor.get(obsType.getLabel());
-		List<Measurement> keyMeasurementList = obsType.getKeyMeasurements();
+		List<Measurement> keyMeasurementList = ObservationUtil.getAllKeyMeasurement(obsType);
 		
 		ArrayList<ArrayList<Integer>> distinctKeyRowList = new ArrayList();
 		Set<ArrayList<Integer>> distinctKeyRowSetIndex = new HashSet<ArrayList<Integer>>();
@@ -574,7 +631,7 @@ public class DataGenerator {
 		}
 		
 		//2. based on this unique measurement key set, update the related measurement value list
-		updMeasurementList(ioMeasurement2uniqueRowValueSet,keyMeasurementList,distinctKeyRowList);		
+		updMeasurementList(ioMeasurement2uniqueRowValueSet,keyMeasurementList,distinctKeyRowList,0);		
 	}
 	
 	/**
@@ -774,9 +831,7 @@ public class DataGenerator {
 	}
 	
 	private void WriteDataset(PrintStream dataPrintStream)
-	{
-		flattenData();
-			
+	{		
 		for(int i=0;i<m_dataset.size();i++){
 			ArrayList row = (ArrayList)(m_dataset.get(i));			
 			for(int j=0;j<row.size();j++){
@@ -807,6 +862,63 @@ public class DataGenerator {
 			}
 			m_dataset.add(row);
 		}
+	}
+	
+	/**
+	 * Put the data in the map to m_dataset
+	 * 
+	 * @param measurement2ValueList, TreeMap: each entity is <Measurement label string: list of values for this measurement>
+	 */
+	private void flattenDataTopDown(Map<String, List> measurement2ValueList)
+		throws Exception
+	{
+		//declare space for m_dataset
+		if(m_dataset==null) m_dataset = new ArrayList();
+		else m_dataset.clear();
+		
+		Iterator<Entry<String, List >> iter = measurement2ValueList.entrySet().iterator();
+		int colno = 0;
+		while(iter.hasNext()){
+			//1. get the measurement label, the value list for this measurement		
+			Entry<String, List > entry = iter.next();
+			String measLabel = entry.getKey();
+			List<Integer> valueList = entry.getValue();
+			
+			//2. make sure that this value list contains exactly the needed number of rows
+			if(valueList.size()!=m_rownum){
+				throw new Exception("For measurement " + measLabel +" there is no enough values.");
+			}
+			
+			if(colno==0){
+				for(int i=0;i<m_rownum;i++){
+					List<Integer> row = new ArrayList<Integer>();
+					int colVal = valueList.get(i);
+					row.add(colVal);
+					m_dataset.add(row);
+				}
+			}else{
+				//3. put this measurement's values to the dataset
+				for(int i=0;i<m_rownum;i++){
+					Object rowObj = m_dataset.get(i);
+					if(rowObj==null){
+						throw new Exception("Measurement" + measLabel +" row " + i + "does not EXIST.");
+					}
+					List<Integer> row = (List) rowObj;
+					
+					//when the row exist, make sure the existing number of columns matches this column no.
+					if(row.size()!=colno){
+						throw new Exception("Measurement" + measLabel +" row " + i + "does not match the existing data.");
+					}
+					
+					int colVal = valueList.get(i);
+					row.add(colVal);
+				}
+			}
+			
+			//4. maintain the column no for error checking
+			++colno;
+		}
+		
 	}
 
 }

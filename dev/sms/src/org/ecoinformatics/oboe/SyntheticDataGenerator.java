@@ -29,8 +29,8 @@ public class SyntheticDataGenerator {
 		generator.setRownum(numOfRows);
 		generator.setAnnotation(a.getAnnotation());
 		generator.setKey2distinctfactor(a.getKey2distinctfactor());
-		generator.GenerateBottomUp();
-		//generator.GenerateTopDown(); //need further testing
+		//generator.GenerateBottomUp();
+		generator.GenerateTopDown(); //need further testing
 		
 		//4. write dataset
 		generator.WriteData(outDataFileName); 		
@@ -48,14 +48,30 @@ public class SyntheticDataGenerator {
       eg2
       10
       it will generate an annotation file together with a data file with 10 rows to follow the annotation specification in eg2
+      
+      Top-down generator passed test cases: 
+      (1) eg1 10: (Specification file see: eg1-annot-spec.txt) 
+      	  this test case checks the basic function: 
+              generating single key measurement values for observation types 
+              one observation type only has one key measurement
+              one observation type has one key measurement and one non-key measurement 
+          eg2 10 (Specification file see: eg2-annot-spec.txt)
+              This is similar to "eg1 10" case. 
+      (2) eg12 10 (Specification file see: eg12-annot-spec.txt) 
+      	  This test case checks multi-key measurements for one observation type on the base of "eg1"
+          No context
+          
+      ---
+      (3) eg13 10 (Specification file see: eg13-annot-spec.txt)
+          This test case has context
+          In the base of "eg12", add one observation type which has context of other two observation types
+      
 	 */
 	public static void main(String[] args) {
 		if(args.length!=2){
 			System.out.println("Usage: ./MaterializeDB <0. file name prefix> <1. number of rows> ");
 			return;
 		}
-		
-		System.out.println("args="+args);
 		
 		// Get input parameters
 		String inAnnotSpecFileName = Constant.localOutputUriPrefix + args[0] + L_ANNOT_SPEC_FILE_SUFFIX; 
