@@ -1,6 +1,6 @@
 
 Readme for using package "org.ecoinformatics.oboe".
-Last changed: March 17, 2010
+Last changed: March 18, 2010, Thursday
 
 ===============
 This package contains content for two main parts
@@ -19,8 +19,20 @@ This package contains content for two main parts
         Annotation files: /dev/oboedb/*-annot.xml
         Data files: /dev/oboedb/*-n*-data.txt 
 
+3.  Validate whether the data satisfy the annotation specification.
+    Entrance: SyntheticDataValidator.java
+	The detailed parameter specification to use this function, see the comments in the main() function of this class
+
+	Test cases:
+	(1) Input: 
+	    Annotation specification files: /dev/oboedb/*-annot-spec.txt
+	    Data files: /dev/oboedb/*-n*-data.txt 
+	(2) Output:
+	    VALID	    
+	    INVALID
+	    
 ===============
-IDE configuration: 
+IDE configuration (date: March 17, 2010, Wed.) 
 Make sure to configure your classpath correctly (due to Ben's changes)  
 1. from classpath, remove jar:
    org.semanticweb.owl.owlapi.jar
