@@ -456,8 +456,12 @@ public class OwlApiOntologyManager implements OntologyManager {
 		}
 		StringBuffer labels = new StringBuffer();
 		for (OWLAnnotation annotation : owlOnt.getAnnotations()) {
+			
 			OWLAnnotationValue value = annotation.getValue();
-			labels.append(value.toString());
+			if (value instanceof OWLLiteral) {
+				OWLLiteral literal = (OWLLiteral) value;
+				labels.append(literal.getLiteral());
+			}
 		}
 
 		return labels.toString();
