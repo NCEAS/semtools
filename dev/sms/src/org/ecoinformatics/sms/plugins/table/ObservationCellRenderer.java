@@ -82,7 +82,8 @@ public class ObservationCellRenderer extends JLabel implements
 				int red = (int) (Math.random( )*256);
 				int green = (int)(Math.random( )*256);
 				int blue = (int)(Math.random( )*256);
-				Color randomColor = new Color(red, green, blue);
+				int alpha = 100;
+				Color randomColor = new Color(red, green, blue, alpha);
 				c = randomColor;
 				colorMap.put(observation, c);
 			}
