@@ -68,6 +68,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -283,7 +284,12 @@ public class OntologyClassSelectionPanel extends JPanel {
 		_ontoTree.getTree()
 				.addTreeSelectionListener(new OntoClassTreeSelectionListener());
 		_ontoTree.getTree().setShowsRootHandles(true);
-
+		
+		// this allows us to use "proportional" sizing"
+		_ontoTree.sizeColumnsToFit( JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS );
+		_ontoTree.getColumnModel().getColumn(0).setPreferredWidth(8000);
+		_ontoTree.getColumnModel().getColumn(1).setPreferredWidth(2000);
+		
 		// wrap tree in scroll pane
 		treeView.setViewportView(_ontoTree);
 	}
