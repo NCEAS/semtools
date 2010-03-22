@@ -141,7 +141,7 @@ public interface OntologyManager {
      * @param c the superclass to search for
      * @return the subclasses
      */
-    public List<OntologyClass> getNamedSubclasses(OntologyClass c);
+    public List<OntologyClass> getNamedSubclasses(OntologyClass c, boolean deep);
 
     /**
      * Returns the set of named subclasses of the given class within the given
@@ -158,7 +158,7 @@ public interface OntologyManager {
      * @param sup the superclass
      * @returns result of subclass check
      */
-    public boolean isSubClass(OntologyClass sub, OntologyClass sup);
+    public boolean isSubClass(OntologyClass sub, OntologyClass sup, boolean deep);
 
     /**
      * Returns true if classes are equivalent

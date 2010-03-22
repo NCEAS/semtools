@@ -237,7 +237,7 @@ public class DefaultOntologyManager implements OntologyManager {
      * @param c the superclass to search for
      * @return the subclasses
      */
-    public List<OntologyClass> getNamedSubclasses(OntologyClass c) {
+    public List<OntologyClass> getNamedSubclasses(OntologyClass c, boolean deep) {
         List<OntologyClass> results = new ArrayList();
         if(c == null)
             return results;
@@ -252,7 +252,7 @@ public class DefaultOntologyManager implements OntologyManager {
             if(oc == null)
                 continue;
             // change 'false' below to 'true' to get direct subclasses only
-            for(Resource r : (List<OntClass>) oc.listSubClasses(false).toList()) {
+            for(Resource r : (List<OntClass>) oc.listSubClasses(deep).toList()) {
                 String r_uri = r.getNameSpace();
                 if(r_uri != null && r_uri.endsWith("#"))
                     r_uri = r_uri.substring(0, r_uri.length() - 1);
@@ -302,7 +302,7 @@ public class DefaultOntologyManager implements OntologyManager {
      * @param sup the superclass
      * @returns result of subclass check
      */
-    public boolean isSubClass(OntologyClass sub, OntologyClass sup) {
+    public boolean isSubClass(OntologyClass sub, OntologyClass sup, boolean deep) {
         // TODO
         return false;
     }

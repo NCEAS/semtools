@@ -906,7 +906,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
       OntologyManager ontMgr = _sms.getOntologyManager();
       List<OntologyClass> subclasses = new ArrayList();
       for(OntologyClass c : classes)
-         for(OntologyClass s : ontMgr.getNamedSubclasses(c))
+         for(OntologyClass s : ontMgr.getNamedSubclasses(c, true))
             if(!subclasses.contains(s))
                subclasses.add(s);
       for(OntologyClass c : subclasses)

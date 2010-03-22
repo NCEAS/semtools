@@ -199,7 +199,7 @@ public class OwlApiOntologyManager implements OntologyManager {
 	/* (non-Javadoc)
 	 * @see org.ecoinformatics.sms.OntologyManager#getNamedSubclasses(org.ecoinformatics.sms.ontology.OntologyClass)
 	 */
-	public List<OntologyClass> getNamedSubclasses(OntologyClass c) {
+	public List<OntologyClass> getNamedSubclasses(OntologyClass c, boolean deep) {
 		List<OntologyClass> classes = new ArrayList<OntologyClass>();
 		
 		OWLClass owlClass = getOWLClass(c);
@@ -230,6 +230,11 @@ public class OwlApiOntologyManager implements OntologyManager {
 						}
 						// include in the return list
 						classes.add(ontologyClass);
+						
+						// recurse if needed
+						if (deep) {
+							classes.addAll(getNamedSubclasses(ontologyClass, deep));
+						}
 					}
 				}
 			}
@@ -531,8 +536,8 @@ public class OwlApiOntologyManager implements OntologyManager {
 	/* (non-Javadoc)
 	 * @see org.ecoinformatics.sms.OntologyManager#isSubClass(org.ecoinformatics.sms.ontology.OntologyClass, org.ecoinformatics.sms.ontology.OntologyClass)
 	 */
-	public boolean isSubClass(OntologyClass sub, OntologyClass sup) {
-		List<OntologyClass> subclasses = this.getNamedSubclasses(sup);
+	public boolean isSubClass(OntologyClass sub, OntologyClass sup, boolean deep) {
+		List<OntologyClass> subclasses = this.getNamedSubclasses(sup, deep);
 		return subclasses.contains(sub);
 		
 	}

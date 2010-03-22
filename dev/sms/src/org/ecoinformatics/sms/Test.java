@@ -43,7 +43,7 @@ public class Test {
             System.out.println("\nSubclasses: ");
             for(OntologyClass c : ontologyManager.getNamedClasses()) {
                 System.out.println("   subclasses of '" + c + "': ");
-                for(OntologyClass s : ontologyManager.getNamedSubclasses(c))
+                for(OntologyClass s : ontologyManager.getNamedSubclasses(c, false))
                     System.out.println("      " + s);
             }
 
@@ -134,7 +134,7 @@ public class Test {
             chars = new ArrayList();
             OntologyClass biomass = new OntologyClass(gceOnt, "Biomass");
             chars.add(biomass);
-            for(OntologyClass c : ontologyManager.getNamedSubclasses(biomass))
+            for(OntologyClass c : ontologyManager.getNamedSubclasses(biomass, true))
                 if(!chars.contains(c))
                     chars.add(c);
             // get the results

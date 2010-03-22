@@ -298,7 +298,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 		DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(c);
 		parentNode.add(childNode);
 		// get subclasses
-		Iterator<OntologyClass> subclasses = SMS.getInstance().getOntologyManager().getNamedSubclasses(c).iterator();
+		Iterator<OntologyClass> subclasses = SMS.getInstance().getOntologyManager().getNamedSubclasses(c, false).iterator();
 		while (subclasses.hasNext()) {
 			OntologyClass subclass = subclasses.next();
 			buildTree(subclass, childNode);

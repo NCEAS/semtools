@@ -276,7 +276,7 @@ public class OntologyClassField extends JTextField {
                     data = (OntologyClass) t.getTransferData(ontologyClassFlavor);
                     // check that the dropped OntologyClass is a subclass of the filter class, if not the actual class even
                     if (!data.equals(source.getFilterClass())) {
-	                    boolean isSubclass = SMS.getInstance().getOntologyManager().isSubClass(data, source.getFilterClass());
+	                    boolean isSubclass = SMS.getInstance().getOntologyManager().isSubClass(data, source.getFilterClass(), true);
 	                    if (!isSubclass) {
 	                    	return false;
 	                    }
