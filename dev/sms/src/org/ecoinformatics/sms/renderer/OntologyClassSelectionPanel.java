@@ -32,6 +32,7 @@
 
 package org.ecoinformatics.sms.renderer;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.datatransfer.DataFlavor;
@@ -179,7 +180,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 		JScrollPane commentView = new JScrollPane(_commentTxt,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		commentView.setMaximumSize(new Dimension(width, 150));
+		//commentView.setMaximumSize(new Dimension(width, 150));
 		commentView.setPreferredSize(new Dimension(width, 150));
 
 		// onto tree label
@@ -232,10 +233,12 @@ public class OntologyClassSelectionPanel extends JPanel {
 		panel.add(Box.createRigidArea(new Dimension(0, 2)));
 		panel.add(commentView);
 
-		panel.setMaximumSize(new Dimension(width, height));
-		panel.setPreferredSize(new Dimension(width, height));
-
-		add(panel);
+		//panel.setMaximumSize(new Dimension(width, height));
+		//panel.setPreferredSize(new Dimension(width, height));
+		
+		this.setLayout(new BorderLayout());
+		
+		add(panel, BorderLayout.CENTER);
 	}
 
 	/**
@@ -781,7 +784,10 @@ public class OntologyClassSelectionPanel extends JPanel {
 	 */
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
-		frame.getContentPane().add(new OntologyClassSelectionPanel(true));
+		OntologyClassSelectionPanel ontologyPalette = new OntologyClassSelectionPanel(true);
+		Dimension dim = new Dimension(250,325);
+		ontologyPalette.initialize(null, dim);
+		frame.getContentPane().add(ontologyPalette);
 		frame.setTitle("Test Frame");
 		frame.pack();
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
