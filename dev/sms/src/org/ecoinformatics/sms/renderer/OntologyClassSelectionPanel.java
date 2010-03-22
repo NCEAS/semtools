@@ -75,6 +75,7 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
@@ -82,6 +83,7 @@ import javax.swing.tree.TreePath;
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.ontology.OntologyProperty;
+import org.ecoinformatics.sms.plugins.table.OntologyCellRenderer;
 import org.ecoinformatics.sms.plugins.ui.OntologyClassField;
 import org.ecoinformatics.sms.renderer.treetable.OntologyTreeCellRenderer;
 import org.ecoinformatics.sms.renderer.treetable.OntologyTreeModel;
@@ -616,6 +618,14 @@ public class OntologyClassSelectionPanel extends JPanel {
 			ds.createDefaultDragGestureRecognizer(this,
 					DnDConstants.ACTION_COPY_OR_MOVE,
 					new _OntoClassSelectionTreeGestureListener());
+		}
+		
+		public TableCellRenderer getCellRenderer(int row, int column) {
+			if (column == 1) {
+				return new OntologyCellRenderer();
+			} else {
+				return super.getCellRenderer(row, column);
+			}
 		}
 
 		private void initPopup() {
