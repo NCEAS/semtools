@@ -61,11 +61,13 @@ public class SimpleAnnotationPanel extends JPanel {
 	// for Measurement "template"
 	private OntologyClassField observationMeasurement;
 
+	public static String MEASUREMENT_HELP = "The <b>Measurement</b> defines rules for what Characteristics of which Entities can be taken using certain Standards and Protocols.";
+
 	public static String ENTITY_HELP = "The <b>Entity</b> is the 'thing' being observed. If the diameter of a tree is measured, the Entity will be the tree.";
 	public static String CHARACTERISTIC_HELP = "The <b>Characteristic</b> is the property being measured. If the diameter of a tree is measured, the Characteristic will be the diameter (length).";
 	public static String STANDARD_HELP = "The <b>Standard</b> is the unit used for the measurement. If the diameter of a tree is measured, the Standard will be a length unit (meters).";
 	public static String PROTOCOL_HELP = "The <b>Protocol</b> is the method used for taking the measurement. If the diameter of a tree is measured at breast height, this will be the Protocol.";
-	
+
 	public SimpleAnnotationPanel(boolean madLib, boolean showHelp) {
 		super();
 		if (madLib) {
@@ -83,6 +85,29 @@ public class SimpleAnnotationPanel extends JPanel {
 		JPanel classesPanel = WidgetFactory.makePanel();
 		classesPanel.setLayout(new BoxLayout(classesPanel, BoxLayout.Y_AXIS));
 
+		// Measurement template
+		JPanel measurementPanel = WidgetFactory.makePanel(2);
+		measurementPanel.setLayout(new GridLayout(1,2));
+		
+		JPanel measurementLabelPanel = WidgetFactory.makePanel(2);
+		measurementLabelPanel.add(WidgetFactory.makeLabel("Measurement:", false));
+		observationMeasurement = OntologyClassField.makeLabel("", true, null);
+		observationMeasurement.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Measurement.class));
+		measurementLabelPanel.add(observationMeasurement);
+		
+		measurementPanel.add(measurementLabelPanel);
+		measurementPanel.add(WidgetFactory.makeHTMLLabel(MEASUREMENT_HELP, 2));
+		measurementPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0,
+				0, 8 * WizardSettings.PADDING));
+		
+		// listen for the measurement to be set
+		observationMeasurement.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						handleMeasurementSelected();
+					}
+				});
+		
 		// Entity
 		JPanel entityPanel = WidgetFactory.makePanel(2);
 		entityPanel.setLayout(new GridLayout(1,2));
@@ -147,6 +172,8 @@ public class SimpleAnnotationPanel extends JPanel {
 				8 * WizardSettings.PADDING));
 
 		// put them together
+		classesPanel.add(measurementPanel);
+		classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		classesPanel.add(entityPanel);
 		classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		classesPanel.add(characteristicPanel);
@@ -228,7 +255,8 @@ public class SimpleAnnotationPanel extends JPanel {
 
 		// the help panel
 		JPanel helpPanel = WidgetFactory.makePanel();
-		helpPanel.setLayout(new GridLayout(4,1));
+		helpPanel.setLayout(new GridLayout(5,1));
+		helpPanel.add(WidgetFactory.makeHTMLLabel(MEASUREMENT_HELP, 1));
 		helpPanel.add(WidgetFactory.makeHTMLLabel(ENTITY_HELP, 1));
 		helpPanel.add(WidgetFactory.makeHTMLLabel(CHARACTERISTIC_HELP, 1));
 		helpPanel.add(WidgetFactory.makeHTMLLabel(STANDARD_HELP, 1));
