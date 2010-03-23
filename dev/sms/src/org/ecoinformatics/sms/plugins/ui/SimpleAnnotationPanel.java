@@ -27,11 +27,13 @@
  */
 package org.ecoinformatics.sms.plugins.ui;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
@@ -186,21 +188,15 @@ public class SimpleAnnotationPanel extends JPanel {
 	}
 	
 	private void initMadLib(boolean showHelp) {
-		
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		
-		JPanel classesPanel = WidgetFactory.makePanel();
-		classesPanel.setLayout(new BoxLayout(classesPanel, BoxLayout.Y_AXIS));
-		
+				
 		// Measurement template
-		JPanel measurementPanel = WidgetFactory.makePanel(1);
+		JPanel measurementPanel = WidgetFactory.makePanel(2);
 		measurementPanel.add(WidgetFactory.makeLabel("The ", false, null));
 		observationMeasurement = OntologyClassField.makeLabel("", true, null);
 		observationMeasurement.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Measurement.class));
 		measurementPanel.add(observationMeasurement);
 		measurementPanel.add(WidgetFactory.makeLabel(" was recorded.", false, null));
-		measurementPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0,
-				0, 8 * WizardSettings.PADDING));
+		measurementPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray));
 		
 		// listen for the measurement to be set
 		observationMeasurement.addActionListener(
@@ -266,7 +262,8 @@ public class SimpleAnnotationPanel extends JPanel {
 		
 
 		// put them together
-		classesPanel.add(measurementPanel);
+		JPanel classesPanel = WidgetFactory.makePanel();
+		classesPanel.setLayout(new BoxLayout(classesPanel, BoxLayout.Y_AXIS));
 		classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		classesPanel.add(characteristicPanel);
 		classesPanel.add(WidgetFactory.makeDefaultSpacer());
@@ -276,7 +273,11 @@ public class SimpleAnnotationPanel extends JPanel {
 			classesPanel.add(helpPanel);
 			classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		}
+		//classesPanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
 
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+		this.add(measurementPanel);
 		this.add(classesPanel);
 	}
 	

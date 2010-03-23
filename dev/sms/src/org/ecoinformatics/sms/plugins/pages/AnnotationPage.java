@@ -191,7 +191,7 @@ public class AnnotationPage extends AbstractUIPage {
 		attributeLabelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
 		this.add(attributeLabelPanel);
-		this.add(WidgetFactory.makeDefaultSpacer());				
+		//this.add(WidgetFactory.makeDefaultSpacer());				
 		
 		//add the main panel here
 		simpleAnnotationPanel = new SimpleAnnotationPanel(true, showAll);
