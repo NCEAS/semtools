@@ -3,7 +3,8 @@ Semtools document and code repository
 
 This is the document and source code repository for joint efforts
 developing ontology-based data and workflow tools. These projects
-currently include SEEK (expiring), BDI (to-be-named), and SONET.
+currently include SEEK (expiring), *BDI (to-be-named)*, Semtools, 
+and SONET.
 
 Organization of the repository
 ------------------------------
@@ -24,15 +25,30 @@ semtools
    |-- trunk
        |
        |-- dev 
-       |   |-- project1
-       |   |-- project2
-       |   |-- ...
+       |   |-- oboe: ontology (oboe, sbc, gce) OWL files (mainly contributed by Margaret Obrien)
+       |   |-- oboedb: test data for materialize DB (mainly maintained by Huiping Cao)
+       |   |-- owlifier: read excel files???  (mainly maintained by Shawn Bowers)
+       |   |-- sms/src/: source codes
+       |   |   |-- jp.gr.java_conf.tame.swing.table (maintained by Ben Leinfelder)
+       |   |   |-- org.ecoinformatics
+       |   |   |   |-- oboe: oboe materialization (maintained by Huiping Cao)
+       |   |   |   |-- sms: semtools main plug-ins (maintained by Ben Leinfelder)
        |
        |-- docs
-       |   |-- presentations
+       |   |-- algdraft: algorithms for materializing OBOE database (mainly maintained by Huiping Cao)
+       |   |-- design: design documents for annotation (maintained by Ben Leinfelder)
+       |   |-- meetingnotes: some selective meeting notes (maintained by different people)
+       |   |-- oboe-guide: how to use OBOE model (mainly maintained by Shawn Bowers) 
+       |   |-- presentations: the published presentation materials for this project (maintained by different people)
+       |   |-- pubs: publications for this project (maintained by different people)
+       |   |-- reports: reporting materials for this project (mainly maintained by Matt Jones)
        |
        |-- meetings
-           |-- 20070201-mtg (as an example)
+       |   |-- whiteboards: Marratech whiteboard screen shots (mainly maintained by Ben Leinfelder) 
+       |   |-- 
+       |
+       |-- use_cases 
+       |   |-- background_material ((mainly maintained by Margaret Obrien)
 
 This is just an example -- feel free to extend or modify as needed.
 
