@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<sms:annotation xmlns:sms="http://ecoinformatics.org/sms/annotation.0.9">
+   <sms:observation label="o1" distinct="yes">
+      <sms:entity id="oboe:e1"/>
+      <sms:measurement label="m1" precision="1.0" key="yes">
+      </sms:measurement>
+   </sms:observation>
+   <sms:observation label="o2">
+      <sms:entity id="oboe:e2"/>
+      <sms:measurement label="m2" precision="1.0" key="yes">
+      </sms:measurement>
+      <sms:measurement label="m3" precision="1.0">
+      </sms:measurement>
+   </sms:observation>
+</sms:annotation>
