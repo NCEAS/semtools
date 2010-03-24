@@ -301,20 +301,33 @@ public class AnnotationPlugin
 		
 	}
 	
+	/**
+	 * This method adds a window adaptor to clean up annotations in memory 
+	 * that should not be saved when the data package is re-opened.
+	 * Similarly, it removes listeners that should no longer be active 
+	 * (as they are listening to closed packages).
+	 * We need to get a reference to the gui component so that it is available 
+	 * in the windowClosed event, otherwise it is null.
+	 */
 	private void initializeWindowAdapter() {
 		morphoFrame = UIController.getInstance().getCurrentActiveWindow();
-		WindowAdapter windowListener = new WindowAdapter() {
-			public void windowClosed(WindowEvent we) {
-				String docid = morphoFrame.getAbstractDataPackage().getAccessionNumber();
-				initializeAnnotations(docid);
-				morphoFrame.removeWindowListener(this);
-			}
-		};
-		morphoFrame.addWindowListener(windowListener);
+		if (morphoFrame != null) {
+			final DataViewContainerPanel dataViewContainerPanel = morphoFrame.getDataViewContainerPanel();
+			WindowAdapter windowListener = new WindowAdapter() {
+				public void windowClosed(WindowEvent we) {
+					String docid = morphoFrame.getAbstractDataPackage().getAccessionNumber();
+					initializeAnnotations(docid);
+					removeStateChangeListeners(dataViewContainerPanel);
+					morphoFrame.removeWindowListener(this);		
+				}
+			};
+			morphoFrame.addWindowListener(windowListener);
+		}
 	}
 	
 	// TODO: search Metacat for annotations
 	private void initializeAnnotations(String forDocid) {
+		Log.debug(30, "initializing annotations for docid: " + forDocid);
 		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
 		String querySpec = getAnnotationQuery();
 		Query query = new Query(querySpec, Morpho.thisStaticInstance);
@@ -338,10 +351,12 @@ public class AnnotationPlugin
 						// remove the current existing annotations for EML
 						List<Annotation> existingAnnotations = SMS.getInstance().getAnnotationManager().getAnnotations(forDocid, null);
 						for (Annotation existingAnnotation: existingAnnotations) {
+							Log.debug(30, "removing annotation: " + existingAnnotation.getURI());
 							SMS.getInstance().getAnnotationManager().removeAnnotation(existingAnnotation.getURI());
 						}
 					}
 				}
+				Log.debug(30, "importing annotation: " + docid);
 				SMS.getInstance().getAnnotationManager().importAnnotation(annotation, docid);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -618,7 +633,7 @@ public class AnnotationPlugin
 				// look up the annotation if it exists, or make new one
 				List<Annotation> annotations = 
 					SMS.getInstance().getAnnotationManager().getAnnotations(packageId, dataTable);
-
+				Log.debug(30, "Annotations for doc: " + annotations.size());
 				if (annotations.size() > 0) {
 					annotation = annotations.get(0);
 				} else {
@@ -688,6 +703,35 @@ public class AnnotationPlugin
 			// serialize to disk
 			serializeAnnotation(newId);
 		}
+	}
+	
+	/**
+	 * the AnnotationTabPane listens for GUI events and saves/shows the annotation as needed
+	 * When the frame is closed, this listner should stop listening (a new listener is made if 
+	 * the frame is re-opened)
+	 * @param dataViewContainerPanel reference to the morpho data viewer
+	 * @return true if the listeners were found/removed
+	 */
+	private boolean removeStateChangeListeners(DataViewContainerPanel dataViewContainerPanel) {
+
+		if (dataViewContainerPanel != null) {
+			DataViewer dataViewer = dataViewContainerPanel.getCurrentDataViewer();
+			if (dataViewer != null) {
+				Component[] existingComponents = dataViewer.getHeaderPanel().getComponents();
+				for (Component comp: existingComponents) {
+					if (comp instanceof AnnotationTabPane) {
+						AnnotationTabPane tabPane = (AnnotationTabPane) comp;
+						// tabPane listens for column selection
+						StateChangeMonitor.getInstance().removeStateChangeListener(StateChangeEvent.SELECT_DATATABLE_COLUMN, tabPane);
+						// tab pane listens for annotation change
+						StateChangeMonitor.getInstance().removeStateChangeListener(ANNOTATION_CHANGE_EVENT, tabPane);
+						return true;
+					}
+				}
+			}
+		}
+	
+		return false;
 	}
 	
 	private boolean isInitialized() {
