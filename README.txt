@@ -32,23 +32,22 @@ semtools
        |   |   |-- jp.gr.java_conf.tame.swing.table (maintained by Ben Leinfelder)
        |   |   |-- org.ecoinformatics
        |   |   |   |-- oboe: oboe materialization (maintained by Huiping Cao)
+       |   |   |   |   |--
        |   |   |   |-- sms: semtools main plug-ins (maintained by Ben Leinfelder)
        |
        |-- docs
        |   |-- algdraft: algorithms for materializing OBOE database (mainly maintained by Huiping Cao)
        |   |-- design: design documents for annotation (maintained by Ben Leinfelder)
        |   |-- meetingnotes: some selective meeting notes (maintained by different people)
+       |   |   |-- whiteboards: Marratech whiteboard screen shots (mainly maintained by Ben Leinfelder)
+       |   |
        |   |-- oboe-guide: how to use OBOE model (mainly maintained by Shawn Bowers) 
        |   |-- presentations: the published presentation materials for this project (maintained by different people)
        |   |-- pubs: publications for this project (maintained by different people)
        |   |-- reports: reporting materials for this project (mainly maintained by Matt Jones)
        |
-       |-- meetings
-       |   |-- whiteboards: Marratech whiteboard screen shots (mainly maintained by Ben Leinfelder) 
-       |   |-- 
-       |
        |-- use_cases 
-       |   |-- background_material ((mainly maintained by Margaret Obrien)
+       |   |-- background_material (mainly maintained by Margaret Obrien)
 
 This is just an example -- feel free to extend or modify as needed.
 
