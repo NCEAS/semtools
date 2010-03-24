@@ -29,11 +29,13 @@ semtools
        |   |-- oboedb: test data for materialize DB (mainly maintained by Huiping Cao)
        |   |-- owlifier: read excel files???  (mainly maintained by Shawn Bowers)
        |   |-- sms/src/: source codes
-       |   |   |-- jp.gr.java_conf.tame.swing.table (maintained by Ben Leinfelder)
-       |   |   |-- org.ecoinformatics
-       |   |   |   |-- oboe: oboe materialization (maintained by Huiping Cao)
-       |   |   |   |   |--
-       |   |   |   |-- sms: semtools main plug-ins (maintained by Ben Leinfelder)
+       |       |-- jp.gr.java_conf.tame.swing.table (maintained by Ben Leinfelder)
+       |       |-- org.ecoinformatics
+       |           |-- oboe: oboe materialization (maintained by Huiping Cao)
+       |           |   |--Readme.txt: Guidelines in using org.ecoinformatics.oboe package
+       |           |                  Further details of this package is in this file.
+       |           |
+       |           |-- sms: semtools main plug-ins (maintained by Ben Leinfelder)
        |
        |-- docs
        |   |-- algdraft: algorithms for materializing OBOE database (mainly maintained by Huiping Cao)
