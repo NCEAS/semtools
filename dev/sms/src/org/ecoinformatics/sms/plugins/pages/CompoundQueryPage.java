@@ -29,7 +29,6 @@
 package org.ecoinformatics.sms.plugins.pages;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +36,6 @@ import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
@@ -76,9 +74,6 @@ public class CompoundQueryPage extends AbstractUIPage {
 	// query list
 	private CustomList queryList;
 	private JLabel queryListLabel;
-	
-	// query options
-	boolean union = true;
 	
 	// the final query
 	private Query query;
@@ -177,28 +172,6 @@ public class CompoundQueryPage extends AbstractUIPage {
 		queryListPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
 		this.add(queryListPanel);
-		
-		
-		JPanel optionsPanel = WidgetFactory.makePanel(2);
-		
-		// add the AND/OR radio panel
-		final String[] andOrList = new String[] {"AND", "OR"};
-		JPanel radioPanel = WidgetFactory.makeRadioPanel(andOrList, 0, new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-		        if (e.getActionCommand().equals(andOrList[0])) {
-		        	union = false;
-		        } else {
-		        	union = true;
-		        }
-			}
-		});
-		radioPanel.setBorder(new javax.swing.border.EmptyBorder(0, WizardSettings.
-		        PADDING, 0, 0));
-		
-		optionsPanel.add(WidgetFactory.makeLabel("Mode:", false));
-		optionsPanel.add(radioPanel);
-		
-		this.add(optionsPanel);
 
 		this.add(WidgetFactory.makeDefaultSpacer());
 
