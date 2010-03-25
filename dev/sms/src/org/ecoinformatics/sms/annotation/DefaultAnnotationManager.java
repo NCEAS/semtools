@@ -40,6 +40,8 @@ import org.ecoinformatics.sms.ontology.OntologyClass;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -245,22 +247,46 @@ public class DefaultAnnotationManager implements AnnotationManager {
            List<OntologyClass> characteristics, List<OntologyClass> standards,
            List<OntologyClass> protocols, List<Triple> contexts) {
       // find matches
-      List<Annotation> results = new ArrayList();
+      List<Annotation> rankedResults = new ArrayList<Annotation>();
+      SortedMap<Integer, List<Annotation>> rankedResultMap = new TreeMap<Integer, List<Annotation>>();
       for(Annotation annot : getAnnotations()) {
-         if(!hasMatchingEntity(annot, entities))
+    	 // decremented for each type of match
+    	 int rank = 5;
+         if(!hasMatchingEntity(annot, entities)) {
             continue;
-         if(!hasMatchingCharacteristic(annot, characteristics))
+         }
+         rank--;
+         if(!hasMatchingCharacteristic(annot, characteristics)) {
             continue;
-         if(!hasMatchingStandard(annot, standards))
+         }
+         rank--;
+         if(!hasMatchingStandard(annot, standards)) {
             continue;
-         if(!hasMatchingProtocol(annot, protocols))
+         }
+         rank--;
+         if(!hasMatchingProtocol(annot, protocols)) {
              continue;
-         if(!hasMatchingContext(annot, contexts))
+         }
+         rank--;
+         if(!hasMatchingContext(annot, contexts)) {
              continue;
-         if(!results.contains(annot))
+         }
+         rank--;
+         // put the result in the correct bucket
+         List<Annotation> results = rankedResultMap.get(rank);
+         if (results == null) {
+        	 results = new ArrayList<Annotation>();
+        	 rankedResultMap.put(rank, results);
+         }
+         if(!results.contains(annot)) {
             results.add(annot);
+         }
       }
-      return results;
+      // combine the results in order from the map
+      for (List<Annotation> results: rankedResultMap.values()) {
+    	  rankedResults.addAll(results);
+      }
+      return rankedResults;
    }
 
    /**
