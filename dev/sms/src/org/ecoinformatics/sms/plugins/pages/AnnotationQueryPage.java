@@ -32,6 +32,7 @@ import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
@@ -92,12 +93,17 @@ public class AnnotationQueryPage extends AbstractUIPage {
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+		JPanel descPanel = WidgetFactory.makePanel();
 		JLabel desc = WidgetFactory
 				.makeHTMLLabel(
-						"<b>Select Observation Entity, Characteristic and Standard to search by.</b> "
-								+ "The Ontology Browser can be used to navigate specific ontologies.",
-						2);
-		this.add(desc);
+						"<p><b>Search Conditions</b></p><br>" +
+						"Select a <b>Measurement</b> type to pre-fill the annotation classes " +
+						"<i> or </i>" +
+						"select each <b>Entity, Characteristic, Standard and Protocol</b>. <br>" +
+						"<b>Context</b> relationship can also be queried.",
+						3);
+		descPanel.add(desc);
+		this.add(descPanel);
 
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
@@ -109,6 +115,7 @@ public class AnnotationQueryPage extends AbstractUIPage {
 
 		//add the context panel
 		contextTriplePanel = new ContextTriplePanel();
+		WidgetFactory.addTitledBorder(contextTriplePanel, "Context");
 		this.add(contextTriplePanel);
 
 		this.add(WidgetFactory.makeHalfSpacer());

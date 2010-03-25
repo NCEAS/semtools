@@ -84,32 +84,6 @@ public class SimpleAnnotationPanel extends JPanel {
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		JPanel classesPanel = WidgetFactory.makePanel();
-		classesPanel.setLayout(new BoxLayout(classesPanel, BoxLayout.Y_AXIS));
-
-		// Measurement template
-		JPanel measurementPanel = WidgetFactory.makePanel(2);
-		measurementPanel.setLayout(new GridLayout(1,2));
-		
-		JPanel measurementLabelPanel = WidgetFactory.makePanel(2);
-		measurementLabelPanel.add(WidgetFactory.makeLabel("Measurement:", false));
-		observationMeasurement = OntologyClassField.makeLabel("", true, null);
-		observationMeasurement.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Measurement.class));
-		measurementLabelPanel.add(observationMeasurement);
-		
-		measurementPanel.add(measurementLabelPanel);
-		measurementPanel.add(WidgetFactory.makeHTMLLabel(MEASUREMENT_HELP, 2));
-		measurementPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0,
-				0, 8 * WizardSettings.PADDING));
-		
-		// listen for the measurement to be set
-		observationMeasurement.addActionListener(
-				new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						handleMeasurementSelected();
-					}
-				});
-		
 		// Entity
 		JPanel entityPanel = WidgetFactory.makePanel(2);
 		entityPanel.setLayout(new GridLayout(1,2));
@@ -173,9 +147,35 @@ public class SimpleAnnotationPanel extends JPanel {
 		protocolPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
 
-		// put them together
-		classesPanel.add(measurementPanel);
-		classesPanel.add(WidgetFactory.makeDefaultSpacer());
+		
+		// Measurement template
+		JPanel measurementPanel = WidgetFactory.makePanel(3);
+		measurementPanel.setLayout(new GridLayout(1,2));
+		
+		JPanel measurementLabelPanel = WidgetFactory.makePanel(3);
+		measurementLabelPanel.add(WidgetFactory.makeLabel("Measurement:", false));
+		observationMeasurement = OntologyClassField.makeLabel("", true, null);
+		observationMeasurement.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Measurement.class));
+		measurementLabelPanel.add(observationMeasurement);
+		
+		measurementPanel.add(measurementLabelPanel);
+		measurementPanel.add(WidgetFactory.makeHTMLLabel(MEASUREMENT_HELP, 2));
+		measurementPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0,
+				0, 8 * WizardSettings.PADDING));
+		WidgetFactory.addTitledBorder(measurementPanel, "Measurement Type");
+		
+		// listen for the measurement to be set
+		observationMeasurement.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						handleMeasurementSelected();
+					}
+				});
+		
+		// the annotation classes
+		JPanel classesPanel = WidgetFactory.makePanel();
+		classesPanel.setLayout(new BoxLayout(classesPanel, BoxLayout.Y_AXIS));
+		
 		classesPanel.add(entityPanel);
 		classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		classesPanel.add(characteristicPanel);
@@ -183,8 +183,18 @@ public class SimpleAnnotationPanel extends JPanel {
 		classesPanel.add(standardPanel);
 		classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		classesPanel.add(protocolPanel);
+		classesPanel.add(WidgetFactory.makeDefaultSpacer());
+		WidgetFactory.addTitledBorder(classesPanel, "Annotations");
+		
+		// put them all together
+		JPanel annotationPanel = WidgetFactory.makePanel();
+		annotationPanel.setLayout(new BoxLayout(annotationPanel, BoxLayout.Y_AXIS));
+		annotationPanel.add(measurementPanel);
+		annotationPanel.add(WidgetFactory.makeDefaultSpacer());
+		annotationPanel.add(classesPanel);
+		
+		this.add(annotationPanel);
 
-		this.add(classesPanel);
 	}
 	
 	private void initMadLib(boolean showHelp) {
