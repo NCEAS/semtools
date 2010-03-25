@@ -41,6 +41,7 @@ import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
 import org.ecoinformatics.sms.annotation.Triple;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
+import org.ecoinformatics.sms.plugins.ui.ContextTriplePanel;
 import org.ecoinformatics.sms.plugins.ui.SimpleAnnotationPanel;
 
 import edu.ucsb.nceas.morpho.Morpho;
@@ -63,6 +64,8 @@ public class AnnotationQueryPage extends AbstractUIPage {
 	// *
 	
 	private SimpleAnnotationPanel simpleAnnotationPanel = null;
+	
+	private ContextTriplePanel contextTriplePanel = null;
 
 	private Query query = null;
 
@@ -101,6 +104,12 @@ public class AnnotationQueryPage extends AbstractUIPage {
 		//add the main panel here
 		simpleAnnotationPanel = new SimpleAnnotationPanel(false, true);
 		this.add(simpleAnnotationPanel);
+		
+		this.add(WidgetFactory.makeDefaultSpacer());
+
+		//add the context panel
+		contextTriplePanel = new ContextTriplePanel();
+		this.add(contextTriplePanel);
 
 		this.add(WidgetFactory.makeHalfSpacer());
 		this.add(WidgetFactory.makeDefaultSpacer());
@@ -113,6 +122,14 @@ public class AnnotationQueryPage extends AbstractUIPage {
 
 	public void setSimpleAnnotationPanel(SimpleAnnotationPanel simpleAnnotationPanel) {
 		this.simpleAnnotationPanel = simpleAnnotationPanel;
+	}
+
+	public ContextTriplePanel getContextTriplePanel() {
+		return contextTriplePanel;
+	}
+
+	public void setContextTriplePanel(ContextTriplePanel contextTriplePanel) {
+		this.contextTriplePanel = contextTriplePanel;
 	}
 
 	private void harvestValues() {
@@ -139,6 +156,12 @@ public class AnnotationQueryPage extends AbstractUIPage {
 			currentEntity = new Entity(simpleAnnotationPanel.getObservationEntity().getURI());
 		} catch (Exception e) {
 			currentEntity = null;
+		}
+		
+		try {
+			context = contextTriplePanel.getContextTriple();
+		} catch (Exception e) {
+			context = null;
 		}
 	}
 	
@@ -190,6 +213,9 @@ public class AnnotationQueryPage extends AbstractUIPage {
 		sb.append(currentStandard);
 		sb.append(", and the ");
 		sb.append(currentProtocol);
+		sb.append(".");
+		// context
+		sb.append(contextTriplePanel.toString());
 		
 		return sb.toString();
 	}

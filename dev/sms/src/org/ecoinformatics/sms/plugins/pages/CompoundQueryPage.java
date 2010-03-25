@@ -231,6 +231,7 @@ public class CompoundQueryPage extends AbstractUIPage {
 			Standard currentStandard;
 			Protocol currentProtocol;
 			Entity currentEntity;
+			Triple context;
 			
 			// get the values form the page
 			try {
@@ -260,6 +261,13 @@ public class CompoundQueryPage extends AbstractUIPage {
 				entities.add(currentEntity);
 			} catch (Exception e) {
 				currentEntity = null;
+			}
+			
+			try {
+				context = aqp.getContextTriplePanel().getContextTriple();
+				contexts.add(context);
+			} catch (Exception e) {
+				context = null;
 			}
 			
 		}
