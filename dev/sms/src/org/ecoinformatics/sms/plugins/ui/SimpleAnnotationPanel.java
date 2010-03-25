@@ -283,14 +283,13 @@ public class SimpleAnnotationPanel extends JPanel {
 	
 	private void handleMeasurementSelected() {
 		Log.debug(30, "observationMeasurement set");
-		//TODO: actually look up the correct values
 		OntologyClass measurement = getObservationMeasurement();
 		
 		// reset the fields
-		setObservationCharacteristic(null);
-		setObservationEntity(null);
-		setObservationProtocol(null);
-		setObservationStandard(null);
+//		setObservationCharacteristic(null);
+//		setObservationEntity(null);
+//		setObservationProtocol(null);
+//		setObservationStandard(null);
 		
 		// assume the filter class has the OBOE ontology
 		Ontology oboeOntology = observationMeasurement.getFilterClass().getOntology();
@@ -334,12 +333,13 @@ public class SimpleAnnotationPanel extends JPanel {
 			//ex.printStackTrace();
 		}
 		
-		if (measurement != null) {
-			setEnabled(false);
-			observationMeasurement.setEnabled(true);
-		} else {
-			setEnabled(true);
-		}
+		// disable other fields if measurement is selected
+//		if (measurement != null) {
+//			setEnabled(false);
+//			observationMeasurement.setEnabled(true);
+//		} else {
+//			setEnabled(true);
+//		}
 		
 	}
 	
