@@ -37,8 +37,6 @@ import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.UIManager;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumnModel;
 
@@ -48,7 +46,6 @@ import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.commands.AnnotationCommand;
-import org.ecoinformatics.sms.plugins.commands.AnnotationSearchCommand;
 import org.ecoinformatics.sms.plugins.commands.CompoundAnnotationSearchCommand;
 import org.ecoinformatics.sms.plugins.commands.ObservationCommand;
 import org.ecoinformatics.sms.plugins.commands.OntologyManagementCommand;
@@ -106,7 +103,7 @@ public class AnnotationPlugin
     
     // for filtering
     public static Map<Class,OntologyClass> OBOE_CLASSES = new HashMap<Class, OntologyClass>();
-    
+
 	private MorphoFrame morphoFrame = null;
 	
 	private GUIAction annotateAction = null;
@@ -712,7 +709,7 @@ public class AnnotationPlugin
 	 * @param dataViewContainerPanel reference to the morpho data viewer
 	 * @return true if the listeners were found/removed
 	 */
-	private boolean removeStateChangeListeners(DataViewContainerPanel dataViewContainerPanel) {
+	private void removeStateChangeListeners(DataViewContainerPanel dataViewContainerPanel) {
 
 		if (dataViewContainerPanel != null) {
 			DataViewer dataViewer = dataViewContainerPanel.getCurrentDataViewer();
@@ -720,18 +717,25 @@ public class AnnotationPlugin
 				Component[] existingComponents = dataViewer.getHeaderPanel().getComponents();
 				for (Component comp: existingComponents) {
 					if (comp instanceof AnnotationTabPane) {
+						
+						// get a reference to the tab pane to remove references from
 						AnnotationTabPane tabPane = (AnnotationTabPane) comp;
 						// tabPane listens for column selection
 						StateChangeMonitor.getInstance().removeStateChangeListener(StateChangeEvent.SELECT_DATATABLE_COLUMN, tabPane);
 						// tab pane listens for annotation change
 						StateChangeMonitor.getInstance().removeStateChangeListener(ANNOTATION_CHANGE_EVENT, tabPane);
-						return true;
+						
+						// remove listeners that are the tab contents
+						for (int i = 0; i < tabPane.getTabCount(); i++) {
+							Component tabContents = tabPane.getComponent(i);
+							if (tabContents instanceof StateChangeListener) {
+								StateChangeMonitor.getInstance().removeStateChangeListener((StateChangeListener)tabContents);
+							}
+						}
 					}
 				}
 			}
 		}
-	
-		return false;
 	}
 	
 	private boolean isInitialized() {
@@ -888,6 +892,7 @@ public class AnnotationPlugin
 					ContextPage contextTab = new ContextPage();
 					StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SELECT_DATATABLE_COLUMN, contextTab);
 					StateChangeMonitor.getInstance().addStateChangeListener(ANNOTATION_CHANGE_EVENT, contextTab);
+					
 					tabPane.addTab(AnnotationTabPane.TAB_NAMES.get(2), contextTab);
 					
 					// tabPane listens for column selection
