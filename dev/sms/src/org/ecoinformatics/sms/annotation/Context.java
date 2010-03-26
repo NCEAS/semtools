@@ -137,11 +137,16 @@ public class Context{
      * check whether two Context types are the same
      * @author cao
      */
-	public boolean isSame(Context o) {
+	public boolean isSame(Context o)
+		throws Exception
+	{
 		boolean cmp1 = _observation.getLabel().equals(o.getObservation().getLabel());
 		
 		if(!cmp1) return cmp1;
 			
+		if(_relationship==null||o.getRelationship()==null){
+			throw new Exception("_relationship="+_relationship+", o.getRelationship()="+o.getRelationship());
+		}
 		boolean cmp2 = _relationship.getURI().equals(o.getRelationship().getURI());
 		if(!cmp2) return cmp2;
 		

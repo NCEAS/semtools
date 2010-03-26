@@ -467,10 +467,11 @@ public class MaterializeDB {
 	 * @param contextIdx
 	 * @param A
 	 * @param ioOBOE
+	 * @throws Exception 
 	 */
 	private static void MaterializeContext(
 			Map<Observation, ObservationInstance> contextIdx, 
-			Annotation A, OboeModel ioOBOE)
+			Annotation A, OboeModel ioOBOE) throws Exception
 	{
 		Iterator<Entry<Observation, ObservationInstance>> iter = contextIdx.entrySet().iterator(); 
 		while(iter.hasNext()){
@@ -479,7 +480,7 @@ public class MaterializeDB {
 			ObservationInstance obsInstance = entry.getValue();
 			
 			List<Context> contextList = obsType.getContexts();
-			List<Observation> contextObsTypeList = new ArrayList<Observation>();
+			//List<Observation> contextObsTypeList = new ArrayList<Observation>();
 			
 			for(Context c: contextList){
 				Observation contextObsType = c.getObservation();
@@ -489,9 +490,9 @@ public class MaterializeDB {
 				ContextInstance contextInstance = new ContextInstance(obsInstance,c,contextObsInstance);
 								
 				boolean added = ioOBOE.AddContextInstance(contextInstance);
-				if(added){
-					System.out.println("Add contextInstance="+contextInstance);
-				}
+				//if(added){
+				//	System.out.println("Add contextInstance="+contextInstance);
+				//}
 			}
 		}
 	}
@@ -541,7 +542,7 @@ public class MaterializeDB {
 		
 		for(int i=0;i<dataset.size();i++){
 			ArrayList row = (ArrayList)dataset.get(i);
-			
+			//System.out.println("i="+i+", dataset size="+dataset.size());
 			//Step 1: define measurement instances
 			Set<MeasurementInstance> measSet = CrtMeasurement(rowStruct, row,A);
 			
@@ -557,6 +558,9 @@ public class MaterializeDB {
 				MaterializeObs(obsType, entInstance,obsType2MeasIdx,obsIdx,contextIdx,A, OBOE);
 			}
 			
+			//if(i==50){
+			//	System.out.println("test.");
+			//}
 			//Step 5: Assign the context observation instances
 			MaterializeContext(contextIdx, A, OBOE);
 		}

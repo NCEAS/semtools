@@ -10,66 +10,65 @@ import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Relationship;
 
 public class ContextInstance{
-	private ObservationInstance observationInstance;
-	private ObservationInstance contextObservationInstance;
-	private Context contextType;
+	private ObservationInstance m_observationInstance;
+	private ObservationInstance m_contextObservationInstance;
+	private Context m_contextType;
 	
-	private OboeModel oboe;
-	private Annotation a;
+	private OboeModel m_oboe;
+	private Annotation m_annotation;
 	
 	public ContextInstance(ObservationInstance _observationInstance,
 			Context _contextType,
 			ObservationInstance _contextObservationInstance)
 	{
-		this.setObservationInstance(_observationInstance);
-		contextType = new Context(_contextType.getObservation(),_contextType.getRelationship(),_contextType.isIdentifying());		
-		//this.setContextType(_contextType); //after this one, contextType is still null, //FIXME to check what's the problem
-		this.setContextObservationInstance(_contextObservationInstance);
+		setObservationInstance(_observationInstance);
+		m_contextType = new Context(_contextType.getObservation(),_contextType.getRelationship(),_contextType.isIdentifying());
+		setContextObservationInstance(_contextObservationInstance);
 	}
 	
 	public ObservationInstance getObservationInstance() {
-		return observationInstance;
+		return m_observationInstance;
 	}
 	public void setObservationInstance(ObservationInstance _observationInstance) {
-		this.observationInstance = _observationInstance;
+		m_observationInstance = _observationInstance;
 	}
 	public ObservationInstance getContextObservationInstance() {
-		return contextObservationInstance;
+		return m_contextObservationInstance;
 	}
 	public void setContextObservationInstance(ObservationInstance _contextObservationInstance) {
-		this.contextObservationInstance = _contextObservationInstance;
+		m_contextObservationInstance = _contextObservationInstance;
 	}
 	
 	public OboeModel getOboe() {
-		return oboe;
+		return m_oboe;
 	}
 	public void setOboe(OboeModel oboe) {
-		this.oboe = oboe;
+		m_oboe = oboe;
 	}
 	public Annotation getA() {
-		return a;
+		return m_annotation;
 	}
-	public void setA(Annotation a) {
-		this.a = a;
+	public void setA(Annotation annotation) {
+		m_annotation = annotation;
 	}
 	
 	public Context getContextType() {
-		return contextType;
+		return m_contextType;
 	}
 	public void setContextType(Context _contextType) {
-		this.contextType = contextType;
+		m_contextType = _contextType;
 	}
 
 	public String toString()
 	{
 		String str = "[";
-		str += "oi"+observationInstance.getObsId();
-		str += ("->c:oi" +contextObservationInstance.getObsId());
-		str += "(";
-		if(contextType==null||(contextType.getRelationship()==null)){
+		str += "oi"+m_observationInstance.getObsId();
+		str += ("->context_oi" +m_contextObservationInstance.getObsId());
+		str += "(context_type ";
+		if(m_contextType==null||(m_contextType.getRelationship()==null)){
 			str += "null";
 		}else{
-			str +=contextType.getRelationship().getName();
+			str +=m_contextType.getRelationship().getName();
 		}
 		str +=")]";
 		return str;
@@ -78,36 +77,51 @@ public class ContextInstance{
 	public void toPrintStream(PrintStream p)
 		throws Exception
 	{
-		if(contextType==null){
-			throw new Exception("contextType is NULL.");
+		if(m_contextType==null){
+			throw new Exception("m_contextType is NULL.");
 		}
 			
-		p.println(observationInstance.getObsId() + "," + contextObservationInstance.getObsId() +"," + contextType.getRelationship().getName());		
+		p.println(m_observationInstance.getObsId() + "," + m_contextObservationInstance.getObsId() +"," + m_contextType.getRelationship().getName());		
 	}
 	
-	public void fromPrintStream(BufferedReader in) throws IOException{
+	public void fromPrintStream(BufferedReader in) throws Exception
+	{
 		String line = in.readLine(); 
 		String[] strArray = line.split(",");
 		long oid1 = Long.parseLong(strArray[0]);
-		observationInstance = oboe.GetObservationInstance(oid1);
+		m_observationInstance = m_oboe.GetObservationInstance(oid1);
 		
 		long oid2 = Long.parseLong(strArray[1]);
-		contextObservationInstance = oboe.GetObservationInstance(oid2);
+		m_contextObservationInstance = m_oboe.GetObservationInstance(oid2);
 		
 		String contextTypeRelationshipName = strArray[2];
-		contextType = observationInstance.getObsType().getContext(contextTypeRelationshipName);
+		m_contextType = m_observationInstance.getObsType().getContext(contextTypeRelationshipName);
 		
-		oboe.AddContextInstance(this);
+		m_oboe.AddContextInstance(this);
 	}
 
-	public boolean isSame(ContextInstance o) {
-		boolean cmp1 = ((observationInstance.getObsId()-o.getObservationInstance().getObsId())==0)?true:false;
+	/**
+	 * Check whether this context instance is the same to another given one or not
+	 *  
+	 * @param o
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean isSame(ContextInstance o) throws Exception {
+		boolean cmp1 = ((m_observationInstance.getObsId()-o.getObservationInstance().getObsId())==0)?true:false;
 		if(!cmp1) return (cmp1);
 		
-		boolean cmp2 = ((contextObservationInstance.getObsId()-o.getContextObservationInstance().getObsId())==0)?true:false;
+		boolean cmp2 = ((m_contextObservationInstance.getObsId()-o.getContextObservationInstance().getObsId())==0)?true:false;
 		if(!cmp2) return cmp2;
 		
-		boolean cmp3 = contextType.isSame(o.getContextType());
+		boolean cmp3 = true; //for both context types are true
+		if(m_contextType==null&&o.getContextType()==null){
+			cmp3 = true;
+		}if((m_contextType!=null&&o.getContextType()==null)||(m_contextType==null&&o.getContextType()!=null)){
+			cmp3 = false;
+		}else{//(m_contextType!=null&&o.getContextType()!=null)
+			cmp3 = m_contextType.isSame(o.getContextType());
+		}
 		
 		return (cmp3);
 	}

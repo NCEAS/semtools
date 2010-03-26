@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.ecoinformatics.oboe.Constant;
 import org.ecoinformatics.sms.annotation.*;
 import org.ecoinformatics.sms.ontology.Ontology;
 
@@ -30,7 +31,7 @@ public class AnnotationSpecifier{
 	{
 		m_key2distinctfactor = new TreeMap<String, Float>();
 		m_annotation = new Annotation();
-		m_defaultOnto = new Ontology("oboe", "testOntology");
+		m_defaultOnto = new Ontology(Constant.ANNOTATION_DEFAULT_RELATIONSHIP_URI, Constant.ANNOTATION_DEFAULT_ONTOLOGY);
 	}
 	
 	public Map<String, Float> getKey2distinctfactor() {
@@ -294,7 +295,7 @@ public class AnnotationSpecifier{
 		
 		//2. extract all the contexts
 		for(int i=0;i<contexts.length;i++){
-			Context c = extractOneContext(contexts[i]); 
+			Context c = extractOneContext(contexts[i]);
 			obs.addContext(c);
 		}
 	}
@@ -331,6 +332,22 @@ public class AnnotationSpecifier{
 			c.setIdentifying(false);
 		}
 		
+		setDefaultContexRelationship(c);
+		
 		return c;		
+	}
+	
+	/**
+	 * Set a default relationship of this context
+	 * 
+	 * @param c
+	 * @throws Exception
+	 */
+	private void setDefaultContexRelationship(Context c) throws Exception
+	{
+		Relationship relationship = new Relationship();
+		relationship.setURI(Constant.ANNOTATION_DEFAULT_RELATIONSHIP_URI);
+		relationship.setName(Constant.ANNOTATION_DEFAULT_RELATIONSHIP_NAME);
+		c.setRelationship(relationship);
 	}
 }
