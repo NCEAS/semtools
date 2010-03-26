@@ -253,7 +253,7 @@ public class MaterializeDB {
 			//end of dealing with each column
 		}
 	
-		System.out.println("measSet = "+measSet);
+		//System.out.println("measSet = "+measSet);
 		return measSet;
 		
 	}
@@ -326,7 +326,7 @@ public class MaterializeDB {
 		if(hasKey){
 			entityInstance = entIdx.get(obsTypeKey);			
 			if(entityInstance!=null){//this entity with the key exists
-				System.out.println("Old ei: " + entityInstance);
+				//System.out.println("Old ei: " + entityInstance);
 				crtNewEntityInstance = false;
 			}
 		}
@@ -334,7 +334,7 @@ public class MaterializeDB {
 		if(crtNewEntityInstance){
 			org.ecoinformatics.sms.annotation.Entity entType = obsType.getEntity();
 			entityInstance = new EntityInstance(entType);
-			System.out.println("New ei: " + entityInstance);
+			//System.out.println("New ei: " + entityInstance);
 			OBOE.AddEntityInstance(entityInstance);
 			
 			if(hasKey){
@@ -435,7 +435,7 @@ public class MaterializeDB {
 			obsInstance = obsIdx.get(obsTypeKey);
 			if(obsInstance!=null){
 				crtNewObsInstance = false;
-				System.out.println("Old oi: " + obsInstance);
+				//System.out.println("Old oi: " + obsInstance);
 			}
 		}
 		
@@ -443,7 +443,7 @@ public class MaterializeDB {
 		if(crtNewObsInstance){
 			obsInstance = new ObservationInstance(obsType,entInstance);
 			ioOBOE.AddObservationInstance(obsInstance);
-			System.out.println("New oi: " + obsInstance);
+			//System.out.println("New oi: " + obsInstance);
 			if(obsType.isDistinct()){
 				obsIdx.put(obsTypeKey,obsInstance);
 			}
@@ -452,7 +452,7 @@ public class MaterializeDB {
 			Set<MeasurementInstance> miSet = obsType2MeasIdx.get(obsType);
 			for(MeasurementInstance mi: miSet){
 				mi.setObservationInstance(obsInstance);
-				System.out.println("Connect mi: " + mi);
+				//System.out.println("Connect mi: " + mi);
 				ioOBOE.AddMeasurementInstance(mi);
 			}
 		}	
@@ -527,6 +527,7 @@ public class MaterializeDB {
 			//this is an annotation specification file
 			AnnotationSpecifier a = new AnnotationSpecifier();
 			a.readAnnotationSpecFile(annotFileName);
+			a.setDefaultMapping(); //set default mapping
 			A = a.getAnnotation();
 		}
         
@@ -561,9 +562,10 @@ public class MaterializeDB {
 		}
 		long t2 = System.currentTimeMillis();
 		
+		//System.out.println(OBOE);
 		System.out.println("\n-----------\nTime used: " + (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
 		
-		System.out.println(OBOE);
+		
 		OBOE.toCSV(oboeFileName);
 		
 		return OBOE;	
@@ -606,7 +608,7 @@ public class MaterializeDB {
 		String emlFileName = Constant.localOutputUriPrefix + args[0] + Constant.C_EML_FILE_SUFFIX;
 		String annotFileName = Constant.localOutputUriPrefix + args[0] + Constant.C_ANNOT_SPEC_FILE_SUFFIX;
 		String dataFileName = Constant.localOutputUriPrefix +args[0] + "-n"+args[1]+ Constant.C_DATA_FILE_SUFFIX;
-		String oboeFileName = Constant.localOutputUriPrefix +args[0] + Constant.C_OUT_CSV_FILE_SUFFIX;
+		String oboeFileName = Constant.localOutputUriPrefix +args[0] + "-n"+args[1]+Constant.C_OUT_CSV_FILE_SUFFIX;
 		
 		int numOfRows = Integer.parseInt(args[1]);
 		

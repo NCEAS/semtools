@@ -48,6 +48,7 @@ public class DataGenerator {
 	private Map<String, Float> m_key2distinctfactor = null; //user input
 	
 	private List m_dataset = null; 
+	private List<String> m_rowStruct = null;
 	private Map<String, List> m_obsType2obsData = null;
 	private Map<Observation, Set> m_obsType2contexObsType= null;
 	
@@ -239,7 +240,7 @@ public class DataGenerator {
 	
 	
 	
-	public void WriteData(String outDataFileName) throws FileNotFoundException
+	public void WriteData(String outDataFileName) throws FileNotFoundException, Exception
 	{
 		PrintStream dataPrintStream = new PrintStream(outDataFileName);
 		WriteDataset(dataPrintStream);
@@ -289,10 +290,13 @@ public class DataGenerator {
 		try {
 			int lineno = 0;
 			while((line = r.readLine())!=null){
-				if((lineno++)<=10){
+				if((lineno)<=10){
 					System.out.println(line);
 				}
-				extractOneRow(line,colnum);
+				if(lineno>0){ //skip the first row because it's the row structure
+					extractOneRow(line,colnum);
+				}
+				++lineno;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -1051,9 +1055,28 @@ public class DataGenerator {
 	}
 	
 	private void WriteDataset(PrintStream dataPrintStream)
-	{		
+		throws Exception
+	{	
+		System.out.println("m_rowStruct="+m_rowStruct);
+		
+		
+		
+		//1. write data structure information
+		for(int i=0;i<m_rowStruct.size();i++){
+			dataPrintStream.append(m_rowStruct.get(i));
+			if(i<m_rowStruct.size()-1){
+				dataPrintStream.append(Constant.C_DATASET_SEPARATOR);
+			}
+		}
+		dataPrintStream.append("\n");
+		
+		
+		//2. write data information
 		for(int i=0;i<m_dataset.size();i++){
-			ArrayList row = (ArrayList)(m_dataset.get(i));			
+			ArrayList row = (ArrayList)(m_dataset.get(i));		
+			if(m_rowStruct.size()!=row.size()){
+				throw new Exception("m_rowStruct.size["+m_rowStruct.size()+"]!=row.size["+row.size()+"]!");
+			}
 			for(int j=0;j<row.size();j++){
 				String val = row.get(j).toString();
 				dataPrintStream.append(val);
@@ -1096,14 +1119,20 @@ public class DataGenerator {
 		if(m_dataset==null) m_dataset = new ArrayList();
 		else m_dataset.clear();
 		
+		if(m_rowStruct==null) m_rowStruct = new ArrayList<String>();
+		else m_rowStruct.clear();
+		
 		Iterator<Entry<String, List >> iter = measurement2ValueList.entrySet().iterator();
 		int colno = 0;
 		while(iter.hasNext()){
 			//1. get the measurement label, the value list for this measurement		
 			Entry<String, List > entry = iter.next();
 			String measLabel = entry.getKey();
+			
+			m_rowStruct.add(measLabel);
 			List<Integer> valueList = entry.getValue();
 			
+			System.out.println(measLabel+":"+valueList);
 			//System.out.println("measLabel="+measLabel+" valueList="+valueList);
 			//2. make sure that this value list contains exactly the needed number of rows
 			if(valueList.size()!=m_rownum){

@@ -50,4 +50,14 @@
       <sms:measurement label="m10" precision="1.0">
       </sms:measurement>
    </sms:observation>
+   <sms:map attribute="m1" measurement="m1"/>
+   <sms:map attribute="m2" measurement="m2"/>
+   <sms:map attribute="m3" measurement="m3"/>
+   <sms:map attribute="m4" measurement="m4"/>
+   <sms:map attribute="m5" measurement="m5"/>
+   <sms:map attribute="m6" measurement="m6"/>
+   <sms:map attribute="m7" measurement="m7"/>
+   <sms:map attribute="m8" measurement="m8"/>
+   <sms:map attribute="m9" measurement="m9"/>
+   <sms:map attribute="m10" measurement="m10"/>
 </sms:annotation>

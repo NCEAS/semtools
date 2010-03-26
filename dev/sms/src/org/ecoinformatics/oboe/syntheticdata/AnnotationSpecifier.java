@@ -49,10 +49,30 @@ public class AnnotationSpecifier{
 		this.m_annotation = m_annotation;
 	}
 	
+	/**
+	 * Set the default mappings from each column to each measurement
+	 */
+	public void setDefaultMapping()
+	{
+		for(Observation obs: m_annotation.getObservations()){
+			for(Measurement meas: obs.getMeasurements()){
+				Mapping m = new Mapping();
+				m.setAttribute(meas.getLabel());
+				m.setMeasurement(meas);
+				m_annotation.addMapping(m);
+			}
+		}
+	}
+	
+	
 	public void WriteAnnotation(String outAnnotFileName) throws IOException
 	{
 		FileOutputStream annotOutputStream = new FileOutputStream(outAnnotFileName);
-				
+		
+		// Form mapping for each measurement	
+		setDefaultMapping();
+		
+		// Write the annotation to an annotation file
 		m_annotation.write(annotOutputStream);
 		annotOutputStream.close();
 		System.out.println("m_annotation is written to file: " + outAnnotFileName);
@@ -88,6 +108,7 @@ public class AnnotationSpecifier{
 	private void readAnnotationSpecFile(BufferedReader r)
 		throws Exception
 	{
+		//1. Extract all the annotations and set default mappings
 		String line = null;
 		try {
 			while((line = r.readLine())!=null){				
@@ -100,6 +121,7 @@ public class AnnotationSpecifier{
 			e.printStackTrace();
 			throw e;
 		}
+		
 	}
 	
 	/**
