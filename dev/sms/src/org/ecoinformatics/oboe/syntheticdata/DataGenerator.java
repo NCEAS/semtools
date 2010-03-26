@@ -386,6 +386,9 @@ public class DataGenerator {
 			List<Measurement> keyMeasurementList,
 			Map<String, List> measurement2ValueList) throws Exception
 	{
+		if(keyMeasurementList.size()==0){
+			return true;
+		}
 		Set<List<Integer>> distinctKeyRowSet = new TreeSet<List<Integer>>(new ListComparator());
 		
 		for(int rowno=0;rowno<this.m_rownum;rowno++){
@@ -404,8 +407,8 @@ public class DataGenerator {
 		
 		int shouldDistinctKeyRowNum = (int)(m_rownum*factor);
 		
-		System.out.println("shouldDistinctKeyRowNum="+shouldDistinctKeyRowNum);
-		System.out.println("distinctKeyRowSet="+distinctKeyRowSet);
+		//System.out.println("shouldDistinctKeyRowNum="+shouldDistinctKeyRowNum);
+		//System.out.println("distinctKeyRowSet="+distinctKeyRowSet);
 		if(distinctKeyRowSet.size()==shouldDistinctKeyRowNum){
 			return true;
 		}else{
@@ -533,7 +536,12 @@ public class DataGenerator {
 			Map<String,List> ioMeasurement2uniqueRowValueSet)
 		throws Exception
 	{
+
 		List<Measurement> keyMeasurementList = ObservationUtil.getAllKeyMeasurement(obsType);//obsType.getKeyMeasurements();
+
+		if(keyMeasurementList.size()==0){
+			return;
+		}
 		
 		//1. get the minimum exist unique column size
 		int oldMinRowNum = -1; 
@@ -552,14 +560,19 @@ public class DataGenerator {
 				}
 			}
 		}
-		System.out.println("oldMinRowNum="+oldMinRowNum +", oldMaxRowNum="+oldMaxRowNum);
+		//System.out.println("oldMinRowNum="+oldMinRowNum +", oldMaxRowNum="+oldMaxRowNum);
 		
 		//2. calculate the new rows which are the same with some old existing rows
 		ArrayList<ArrayList<Integer>> newRowList = new ArrayList();
-		int newRowNum = this.m_rownum - oldMinRowNum; 
+		int newRowNum = this.m_rownum - oldMinRowNum;
+		if(oldMinRowNum<0){
+			newRowNum = this.m_rownum;
+		}
+		
 		while(newRowList.size()<newRowNum){
 			
 			ArrayList<Integer> newRow = null;
+			
 			
 			//some column row value exists (should not be changed because they are key values), some column row value does not exist
 			//based on the existing values get the row index			
@@ -586,6 +599,7 @@ public class DataGenerator {
 					newRow = newRowList.get(index-oldMinRowNum); 
 				}				
 			}
+			
 			
 			newRowList.add(newRow);
 			//generate a random number in [0, oldMaxRowNum)
@@ -793,6 +807,11 @@ public class DataGenerator {
 		float factor = m_key2distinctfactor.get(obsType.getLabel());
 		List<Measurement> keyMeasurementList = ObservationUtil.getAllKeyMeasurement(obsType);
 		
+		//no key measurements
+		if(keyMeasurementList.size()==0){
+			return;
+		}
+		
 		ArrayList<ArrayList<Integer>> distinctKeyRowList = new ArrayList();
 		Set<ArrayList<Integer>> distinctKeyRowSetIndex = new HashSet<ArrayList<Integer>>();
 		int distinctKeyRowNum = (int)(m_rownum*factor);
@@ -800,6 +819,7 @@ public class DataGenerator {
 		//1. generate "distinctKeyRowNum" rows of results
 		while(distinctKeyRowList.size()<distinctKeyRowNum){
 			ArrayList<Integer> obsKeyRow = new ArrayList<Integer>();
+			//System.out.println("distinctKeyRowList.size()="+distinctKeyRowList.size());
 			for(int j=0;j<keyMeasurementList.size();j++){
 				Measurement m = keyMeasurementList.get(j);
 				List distinctKeyColList =  ioMeasurement2uniqueRowValueSet.get(m.getLabel());
@@ -1084,7 +1104,7 @@ public class DataGenerator {
 			String measLabel = entry.getKey();
 			List<Integer> valueList = entry.getValue();
 			
-			System.out.println("measLabel="+measLabel+" valueList="+valueList);
+			//System.out.println("measLabel="+measLabel+" valueList="+valueList);
 			//2. make sure that this value list contains exactly the needed number of rows
 			if(valueList.size()!=m_rownum){
 				throw new Exception("For measurement " + measLabel +" there is no enough values.");

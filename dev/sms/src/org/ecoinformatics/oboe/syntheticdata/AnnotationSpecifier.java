@@ -194,11 +194,14 @@ public class AnnotationSpecifier{
 		
 		//2. extract the duplication factor
 		int numberOfMeasurements = measurements.length;
-		String lastStr = measurements[measurements.length-1];
-		factor = Float.parseFloat(lastStr);
-		if(factor>=0.0 && factor <=1.0){
-			--numberOfMeasurements;
+		if(measurements.length>1){
+			String lastStr = measurements[measurements.length-1];
+			factor = Float.parseFloat(lastStr);
+			if(factor>=0.0 && factor <=1.0){
+				--numberOfMeasurements;
+			}
 		}
+		
 
 		//3. extract all the measuremetns
 		if(numberOfMeasurements==0){

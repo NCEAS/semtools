@@ -34,6 +34,7 @@ import org.ecoinformatics.oboe.model.EntityInstance;
 import org.ecoinformatics.oboe.model.MeasurementInstance;
 import org.ecoinformatics.oboe.model.OboeModel;
 import org.ecoinformatics.oboe.model.ObservationInstance;
+import org.ecoinformatics.oboe.syntheticdata.AnnotationSpecifier;
 import org.ecoinformatics.sms.annotation.*;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.AnnotationManager;
@@ -45,10 +46,6 @@ import org.ecoinformatics.sms.annotation.*;
 public class MaterializeDB {
 
 	private static boolean test = false;
-	//private static String inputUriPrefix = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/";
-	//private static String localInputUriPrefix = "/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/examples/";
-	//private static String outputUriPrefix = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboedb/";
-	//private static String localOutputUriPrefix = "/Users/cao/DATA/SONET/svntrunk/semtools/dev/oboedb/";
 	
 	private static ArrayList readDataFromDataManager(String emlFileName,ArrayList<String> oRowStruct)
 	{
@@ -523,9 +520,18 @@ public class MaterializeDB {
 		System.out.println("dataset = "+ dataset);
 		
 		//2. read annotation
-		Annotation A = readAnnotation(annotFileName);
+		Annotation A = null;
+		if(annotFileName.endsWith(".xml")){ //this is an annotation file
+			A = readAnnotation(annotFileName);
+		}else{
+			//this is an annotation specification file
+			AnnotationSpecifier a = new AnnotationSpecifier();
+			a.readAnnotationSpecFile(annotFileName);
+			A = a.getAnnotation();
+		}
         
         //3. materialization
+		long t1 = System.currentTimeMillis();
 		OboeModel OBOE = new OboeModel();
 		Map<ObsTypeKey, EntityInstance> entIdx = 
 			new TreeMap<ObsTypeKey, EntityInstance>(); //<ObsTypeId, KeyVal> --> entity instance
@@ -553,6 +559,9 @@ public class MaterializeDB {
 			//Step 5: Assign the context observation instances
 			MaterializeContext(contextIdx, A, OBOE);
 		}
+		long t2 = System.currentTimeMillis();
+		
+		System.out.println("\n-----------\nTime used: " + (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
 		
 		System.out.println(OBOE);
 		OBOE.toCSV(oboeFileName);
@@ -578,23 +587,35 @@ public class MaterializeDB {
 	 */
 	public static void main(String[] args) {
 		
-		if(args.length!=4){
-			System.out.println("Usage: ./MaterializeDB <0. Eml file name> <1. data file name> " +
-					"<2. annotation file name> " +
-					"<3. output OBOE file prefix>");
+		//if(args.length!=4){
+		//	System.out.println("Usage: ./MaterializeDB <0. Eml file name> <1. data file name> " +
+		//			"<2. annotation [specification] file name> " +
+		//			"<3. output OBOE file prefix>");
+		//		return;
+		//}
+		// Get input parameters
+		//String emlFileName = Constant.localOutputUriPrefix + args[0];
+		//String dataFileName = Constant.localOutputUriPrefix + args[1];
+		//String annotFileName = Constant.localOutputUriPrefix + args[2]; 
+		//String oboeFileName = Constant.localOutputUriPrefix +args[3];
+		
+		if(args.length!=2){
+			System.out.println("Usage: ./MaterializeDB <1. file prefix name> <2. row num>");
 			return;
 		}
-		// Get input parameters
-		String emlFileName = Constant.localInputUriPrefix + args[0];
-		String dataFileName = Constant.localInputUriPrefix + args[1];
-		String annotFileName = Constant.inputUriPrefix + args[2]; 
-		String oboeFileName = Constant.localOutputUriPrefix +args[3];
+		String emlFileName = Constant.localOutputUriPrefix + args[0] + Constant.C_EML_FILE_SUFFIX;
+		String annotFileName = Constant.localOutputUriPrefix + args[0] + Constant.C_ANNOT_SPEC_FILE_SUFFIX;
+		String dataFileName = Constant.localOutputUriPrefix +args[0] + "-n"+args[1]+ Constant.C_DATA_FILE_SUFFIX;
+		String oboeFileName = Constant.localOutputUriPrefix +args[0] + Constant.C_OUT_CSV_FILE_SUFFIX;
 		
-		//TODO: for testing purpose, hard code the three files, need to get this from parameters
-		//String dataFileName = inputUriPrefix + "er-2008-ex1-data.txt";
-		//String annotFileName = inputUriPrefix + "er-2008-ex1-annot.xml";
-		////String annotFileName = localInputUriPrefix + "er-2008-ex1-annot.xml";
-		//String oboeFileName = localOutputUriPrefix + "er-2008-ex1-oboe.csv";
+		int numOfRows = Integer.parseInt(args[1]);
+		
+		// Confirm parameters
+		System.out.println("emlFileName="+emlFileName);
+		System.out.println("annotFileName="+annotFileName);
+		System.out.println("dataFileName="+dataFileName);
+		System.out.println("oboeFileName="+oboeFileName);
+		System.out.println("numOfRows="+numOfRows+"\n");
 		
 		try {
 			OboeModel OBOE = MaterializeDB(emlFileName,dataFileName, annotFileName, oboeFileName);

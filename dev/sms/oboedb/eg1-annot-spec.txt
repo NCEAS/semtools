@@ -1,2 +1,0 @@
-o1 e1 distinct:m1 key,0.2
-o2 e2 distinct:m2 key,m3,0.3
