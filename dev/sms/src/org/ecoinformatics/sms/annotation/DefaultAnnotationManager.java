@@ -252,23 +252,24 @@ public class DefaultAnnotationManager implements AnnotationManager {
       for(Annotation annot : getAnnotations()) {
     	 // decremented for each type of match
     	 int rank = 5;
-         if(!hasMatchingEntity(annot, entities)) {
+    	 int weight = -1;
+         if(0 > hasMatchingEntity(annot, entities)) {
             continue;
          }
          rank--;
-         if(!hasMatchingCharacteristic(annot, characteristics)) {
+         if(0 > hasMatchingCharacteristic(annot, characteristics)) {
             continue;
          }
          rank--;
-         if(!hasMatchingStandard(annot, standards)) {
+         if(0 > hasMatchingStandard(annot, standards)) {
             continue;
          }
          rank--;
-         if(!hasMatchingProtocol(annot, protocols)) {
+         if(0 > hasMatchingProtocol(annot, protocols)) {
              continue;
          }
          rank--;
-         if(!hasMatchingContext(annot, contexts)) {
+         if(0 > hasMatchingContext(annot, contexts)) {
              continue;
          }
          rank--;
@@ -816,11 +817,14 @@ public class DefaultAnnotationManager implements AnnotationManager {
     * Helper method to check if an annotation has a matching context
     * @param a the annotation
     * @param contexts list of context triples to check
-    * @return true if annotation contains an context in given list
+    * @return int 
+    * 	-1 for no matches
+    * 	0 if no criteria are given to match
+    * 	1 for a match
     */
-   private boolean hasMatchingContext(Annotation a, List<Triple> contexts) {
+   private int hasMatchingContext(Annotation a, List<Triple> contexts) {
       if(contexts == null || contexts.size() == 0) {
-         return true;
+         return 0;
       }
       // construct all the general triples in this annotation
       for(Observation o : a.getObservations()) {
@@ -832,80 +836,92 @@ public class DefaultAnnotationManager implements AnnotationManager {
         	 // is there a match in the given list?
         	 boolean match = triple.hasMatch(contexts);
         	 if (match) {
-        		 return match;
+        		 return 1;
         	 }
          }
       }
-      return false;
+      return -1;
    }
 
    /**
     * Helper method to check if an annotation has a matching entity
     * @param a the annotation
     * @param entities entities to check
-    * @return true if annotation contains an entity in given list
+    * @return int 
+    * 	-1 for no matches
+    * 	0 if no criteria are given to match
+    * 	1 for a match
     */
-   private boolean hasMatchingEntity(Annotation a, List<OntologyClass> entities) {
+   private int hasMatchingEntity(Annotation a, List<OntologyClass> entities) {
       if(entities == null || entities.size() == 0)
-         return true;
+         return 0;
       for(Observation o : a.getObservations())
          if(entities.contains(o.getEntity()))
-            return true;
+            return 1;
       for(Observation o : a.getObservations())
          for(Measurement m : o.getMeasurements())
             for(Entity v : m.getDomainValues())
                if(entities.contains(v))
-                  return true;
-      return false;
+                  return 1;
+      return -1;
    }
 
    /**
     * Helper method to check if an annotation has a matching characteristic
     * @param a the annotation
     * @param chars the characteristics to check
-    * @return true if annotation contains a characteristic in given list
+    * @return int 
+    * 	-1 for no matches
+    * 	0 if no criteria are given to match
+    * 	1 for a match
     */
-   private boolean hasMatchingCharacteristic(Annotation a, List<OntologyClass> chars) {
-      if(chars == null || chars.size() == 0)
-         return true;
+   private int hasMatchingCharacteristic(Annotation a, List<OntologyClass> chars) {
+	   if(chars == null || chars.size() == 0)
+         return 0;
       for(Observation o : a.getObservations())
          for(Measurement m : o.getMeasurements())
             for(Characteristic c : m.getCharacteristics())
                if(chars.contains(c))
-                  return true;
-      return false;
+                  return 1;
+      return -1;
    }
 
    /**
     * Helper method to check if an annotation has a matching standard
     * @param a the annotation
     * @param standards the standards to check
-    * @return true if annotation contains a standard in the given list
+    * @return int 
+    * 	-1 for no matches
+    * 	0 if no criteria are given to match
+    * 	1 for a match
     */
-   private boolean hasMatchingStandard(Annotation a, List<OntologyClass> standards) {
-      if(standards == null || standards.size() == 0)
-         return true;
+   private int hasMatchingStandard(Annotation a, List<OntologyClass> standards) {
+	  if(standards == null || standards.size() == 0)
+         return 0;
       for(Observation o : a.getObservations())
          for(Measurement m : o.getMeasurements())
             if(standards.contains(m.getStandard()))
-               return true;
-      return false;
+               return 1;
+      return -1;
    }
 
    /**
     * Helper method to check if an annotation has a matching standard
     * @param a the annotation
     * @param standards the standards to check
-    * @return true if annotation contains a standard in the given list
+    * @return int 
+    * 	-1 for no matches
+    * 	0 if no criteria are given to match
+    * 	1 for a match
     */
-   private boolean hasMatchingProtocol(Annotation a, List<OntologyClass> protocols) {
+   private int hasMatchingProtocol(Annotation a, List<OntologyClass> protocols) {
       if(protocols == null || protocols.size() == 0)
-         return true;
+         return 0;
       for(Observation o : a.getObservations())
          for(Measurement m : o.getMeasurements())
             if(protocols.contains(m.getProtocol()))
-               return true;
-      return false;
+               return 1;
+      return -1;
    }
    
    /** 
