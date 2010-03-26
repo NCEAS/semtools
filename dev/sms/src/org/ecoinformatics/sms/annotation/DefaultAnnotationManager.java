@@ -253,26 +253,31 @@ public class DefaultAnnotationManager implements AnnotationManager {
     	 // decremented for each type of match
     	 int rank = 5;
     	 int weight = -1;
-         if(0 > hasMatchingEntity(annot, entities)) {
+         weight = hasMatchingEntity(annot, entities);
+         if(weight < 0) {
             continue;
          }
-         rank--;
-         if(0 > hasMatchingCharacteristic(annot, characteristics)) {
+         rank -= weight;
+         weight = hasMatchingCharacteristic(annot, characteristics);
+         if (weight < 0) {
             continue;
          }
-         rank--;
-         if(0 > hasMatchingStandard(annot, standards)) {
+         rank -= weight;
+         weight = hasMatchingStandard(annot, standards);
+         if (weight < 0) {
             continue;
          }
-         rank--;
-         if(0 > hasMatchingProtocol(annot, protocols)) {
+         rank -= weight;
+         weight = hasMatchingProtocol(annot, protocols);
+         if (weight < 0) {
              continue;
          }
-         rank--;
-         if(0 > hasMatchingContext(annot, contexts)) {
+         rank -= weight;
+         weight = hasMatchingContext(annot, contexts);
+         if (weight < 0) {
              continue;
          }
-         rank--;
+         rank -= weight;
          // put the result in the correct bucket
          List<Annotation> results = rankedResultMap.get(rank);
          if (results == null) {
