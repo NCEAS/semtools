@@ -110,6 +110,10 @@ public class ContextTriplePanel extends JPanel {
 		contextTriple.a = entityA.getOntologyClass();
 		contextTriple.b = contextRelationship.getOntologyClass();
 		contextTriple.c = entityB.getOntologyClass();
+		
+		if (contextTriple.a == null && contextTriple.b == null && contextTriple.c == null) {
+			contextTriple = null;
+		}
 	}
 	
 	public Triple getContextTriple() {
