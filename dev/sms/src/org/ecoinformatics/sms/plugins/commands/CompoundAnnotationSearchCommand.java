@@ -38,6 +38,7 @@ import edu.ucsb.nceas.morpho.util.SortableJTable;
 import edu.ucsb.nceas.morpho.util.StateChangeEvent;
 import edu.ucsb.nceas.morpho.util.UISettings;
 
+import java.util.List;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
 
@@ -80,7 +81,7 @@ public class CompoundAnnotationSearchCommand implements Command {
 
 			// get the response back
 			if (dialog.USER_RESPONSE == ModalDialog.OK_OPTION) {
-				
+				List<String> orderedDocids = cqp.getDocids();
 				Query query = cqp.getQuery();
 				if (query != null) {
 					MorphoFrame box = 
@@ -88,7 +89,7 @@ public class CompoundAnnotationSearchCommand implements Command {
 					// first true is sorted or not, 5 is sorted column index,
 					// second true
 					// is send event of not
-					doQuery(box, query, true, 5, SortableJTable.DECENDING, true);
+					doQuery(box, query, true, 5, SortableJTable.DECENDING, true, orderedDocids);
 				}// if
 			}
 		}// if
@@ -104,7 +105,7 @@ public class CompoundAnnotationSearchCommand implements Command {
 	 */
 	public static void doQuery(MorphoFrame resultWindow, Query query,
 			boolean sorted, int sortedIndex, String sortedOder,
-			boolean sendEvent) {
+			boolean sendEvent, List orderedDocIds) {
 		
 		resultWindow.setVisible(true);
 		Vector vector = new Vector();
@@ -121,6 +122,7 @@ public class CompoundAnnotationSearchCommand implements Command {
 					StateChangeEvent.CREATE_SEARCH_RESULT_FRAME);
 
 		}
+		results.sortTableByColumn(sortedIndex, orderedDocIds);
 		query.displaySearchResult(resultWindow, resultDisplayPanel, sorted,
 				sortedIndex, sortedOder, showSearchNumber, event);
 

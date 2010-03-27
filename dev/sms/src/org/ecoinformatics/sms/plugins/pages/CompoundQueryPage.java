@@ -78,6 +78,9 @@ public class CompoundQueryPage extends AbstractUIPage {
 	// the final query
 	private Query query;
 	
+	// docids from the annotation query
+	private List<String> docids = new ArrayList<String>();
+	
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
@@ -177,6 +180,10 @@ public class CompoundQueryPage extends AbstractUIPage {
 
 	}
 	
+	public List<String> getDocids() {
+		return docids;
+	}
+	
 	public Query getQuery() {
 		
 		// generate query
@@ -238,9 +245,11 @@ public class CompoundQueryPage extends AbstractUIPage {
 			
 			try {
 				context = aqp.getContextTriplePanel().getContextTriple();
-				contexts.add(context);
 			} catch (Exception e) {
 				context = null;
+			}
+			if (context != null) {
+				contexts.add(context);
 			}
 			
 		}
@@ -264,8 +273,13 @@ public class CompoundQueryPage extends AbstractUIPage {
 		query = new Query(querySpec, Morpho.thisStaticInstance);
 		query.setSearchLocal(true);
 		query.setSearchMetacat(false);
-	
-
+		
+		// set the docids
+		docids.clear();
+		for (Annotation a: annotations) {
+			docids.add(a.getEMLPackage());
+		}
+		
 	}
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
