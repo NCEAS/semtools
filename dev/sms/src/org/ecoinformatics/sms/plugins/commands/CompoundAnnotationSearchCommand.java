@@ -43,6 +43,7 @@ import java.util.Vector;
 import java.awt.event.ActionEvent;
 
 import org.ecoinformatics.sms.plugins.pages.CompoundQueryPage;
+import org.ecoinformatics.sms.plugins.search.ResultSetComparator;
 
 /**
  * Class to handle annotation search command
@@ -130,7 +131,8 @@ public class CompoundAnnotationSearchCommand implements Command {
 		query.displaySearchResult(resultWindow, resultDisplayPanel, sorted,
 				sortedIndex, sortedOder, showSearchNumber, event);
 
-		results.sortTableByColumn(sortedIndex, orderedDocIds);
+		// sort the table with a custom comparator
+		results.sortTable(new ResultSetComparator(sortedIndex, orderedDocIds));
 
 	}// doQuery
 
