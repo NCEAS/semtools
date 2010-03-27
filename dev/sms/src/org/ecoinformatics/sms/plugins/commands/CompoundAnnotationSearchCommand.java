@@ -50,6 +50,8 @@ import org.ecoinformatics.sms.plugins.pages.CompoundQueryPage;
 public class CompoundAnnotationSearchCommand implements Command {
 
 
+	private CompoundQueryPage cqp;
+
 	/**
 	 * Constructor of AnnotationSearchCommand
 	 * 
@@ -70,7 +72,10 @@ public class CompoundAnnotationSearchCommand implements Command {
 		morphoFrame = UIController.getInstance().getCurrentActiveWindow();
 		// QueryDialog Create and show as modal
 		if (morphoFrame != null) {
-			CompoundQueryPage cqp = new CompoundQueryPage();
+			// easier to perform searches over and over
+			if (cqp == null) {
+				cqp = new CompoundQueryPage();
+			}
 			// show the dialog
 			ModalDialog dialog = 
 				new ModalDialog(
@@ -89,7 +94,7 @@ public class CompoundAnnotationSearchCommand implements Command {
 					// first true is sorted or not, 5 is sorted column index,
 					// second true
 					// is send event of not
-					doQuery(box, query, true, 5, SortableJTable.DECENDING, true, orderedDocids);
+					doQuery(box, query, true, 2, SortableJTable.ASCENDING, true, orderedDocids);
 				}// if
 			}
 		}// if
@@ -122,9 +127,10 @@ public class CompoundAnnotationSearchCommand implements Command {
 					StateChangeEvent.CREATE_SEARCH_RESULT_FRAME);
 
 		}
-		results.sortTableByColumn(sortedIndex, orderedDocIds);
 		query.displaySearchResult(resultWindow, resultDisplayPanel, sorted,
 				sortedIndex, sortedOder, showSearchNumber, event);
+
+		results.sortTableByColumn(sortedIndex, orderedDocIds);
 
 	}// doQuery
 
