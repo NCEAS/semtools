@@ -294,8 +294,8 @@ public class DefaultAnnotationManager implements AnnotationManager {
              //continue;
          }
          rank -= weight;
-         // didn't match any of the criteria
-         if (rank >= (criteria*2)) {
+         // criteria were given and it didn't match any of the criteria
+         if (rank >= (criteria*2) && criteria != 0) {
         	 continue;
          }
          // put the result in the correct bucket
