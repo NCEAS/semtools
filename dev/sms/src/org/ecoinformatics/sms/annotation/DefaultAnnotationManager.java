@@ -246,12 +246,28 @@ public class DefaultAnnotationManager implements AnnotationManager {
    public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
            List<OntologyClass> characteristics, List<OntologyClass> standards,
            List<OntologyClass> protocols, List<Triple> contexts) {
+	   int criteria = 5;
+	   if (entities == null || entities.isEmpty()) {
+		   criteria--;
+	   }
+	   if (characteristics == null || characteristics.isEmpty()) {
+		   criteria--;
+	   }
+	   if (standards == null || standards.isEmpty()) {
+		   criteria--;
+	   }
+	   if (protocols == null || protocols.isEmpty()) {
+		   criteria--;
+	   }
+	   if (contexts == null || contexts.isEmpty()) {
+		   criteria--;
+	   }
       // find matches
       List<Annotation> rankedResults = new ArrayList<Annotation>();
       SortedMap<Integer, List<Annotation>> rankedResultMap = new TreeMap<Integer, List<Annotation>>();
       for(Annotation annot : getAnnotations()) {
     	 // decremented for each type of match
-    	 int rank = 5;
+    	 int rank = criteria;
     	 int weight = -1;
          weight = hasMatchingEntity(annot, entities);
          if(weight < 0) {
@@ -278,8 +294,8 @@ public class DefaultAnnotationManager implements AnnotationManager {
              //continue;
          }
          rank -= weight;
-         // didn't match anything
-         if (rank >= 10) {
+         // didn't match any of the criteria
+         if (rank >= (criteria*2)) {
         	 continue;
          }
          // put the result in the correct bucket
