@@ -112,13 +112,13 @@ public class ComplexQueryPage extends AbstractUIPage {
 		queryListLabel = WidgetFactory.makeLabel("Conditions:", false);
 		queryListPanel.add(queryListLabel);
 		String[] colNames = new String[] {"Conditions"};
-		Object[] editors = new Object[] {new CriteriaRenderer(false) };
+		Object[] editors = new Object[] {new CriteriaRenderer(1) };
 		queryList = WidgetFactory.makeList(
 				colNames, 
 				editors, 
-				5, //displayRows, 
+				3, //displayRows, 
 				true, //showAddButton, 
-				true, //showEditButton, 
+				false, //showEditButton, 
 				false, //showDuplicateButton, 
 				true, //showDeleteButton, 
 				false, //showMoveUpButton, 
@@ -129,6 +129,7 @@ public class ComplexQueryPage extends AbstractUIPage {
 			public void actionPerformed(ActionEvent e) {
 	
 				Criteria criteria = new Criteria();
+				criteria.setGroup(true);
 				
 				List rowList = new ArrayList();
 				rowList.add(criteria);

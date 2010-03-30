@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractCellEditor;
 import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -35,18 +36,20 @@ public class CriteriaRenderer extends AbstractCellEditor implements
 	private Criteria criteria;
 	
 	private JPanel criteriaPanel;
+	private JPanel subcriteriaPanel;
 	private JPanel instance;
 	private JComboBox subject;
 	private JComboBox condition;
 	private OntologyClassField value;
 	
+	private JCheckBox anyAll;
 	private CustomList subCriteria;
 	
-	public CriteriaRenderer(boolean leaf) {
-		init(leaf);
-	}
-
-	private void init(boolean leaf) {
+	public CriteriaRenderer(int level) {
+		
+		instance = WidgetFactory.makePanel();
+		instance.setLayout(new BoxLayout(instance, BoxLayout.Y_AXIS));
+		
 		// change the filter class based on what is selected 
 		ItemListener subjectListener = new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
@@ -75,20 +78,21 @@ public class CriteriaRenderer extends AbstractCellEditor implements
 		criteriaPanel.add(condition);
 		criteriaPanel.add(value);
 		
-		instance = WidgetFactory.makePanel();
-		instance.setLayout(new BoxLayout(instance, BoxLayout.Y_AXIS));
-
 		instance.add(criteriaPanel);
 		
-		if (!leaf) {
-			String[] colNames = new String[] {"Conditions"};
-			Object[] editors = new Object[] {new CriteriaRenderer(true) };
+		subcriteriaPanel = WidgetFactory.makePanel(5);
+
+		if (level > 0) {
+			
+			anyAll = WidgetFactory.makeCheckBox("Match Any", false);
+			String[] colNames = new String[] {"Subcriteria"};
+			Object[] editors = new Object[] {new CriteriaRenderer(--level) };
 			subCriteria = WidgetFactory.makeList(
 					colNames, 
 					editors, 
-					3, //displayRows, 
+					4, //displayRows, 
 					true, //showAddButton, 
-					true, //showEditButton, 
+					false, //showEditButton, 
 					false, //showDuplicateButton, 
 					true, //showDeleteButton, 
 					false, //showMoveUpButton, 
@@ -99,6 +103,7 @@ public class CriteriaRenderer extends AbstractCellEditor implements
 				public void actionPerformed(ActionEvent e) {
 		
 					Criteria criteria = new Criteria();
+					criteria.setGroup(false);
 					
 					List rowList = new ArrayList();
 					rowList.add(criteria);
@@ -106,7 +111,11 @@ public class CriteriaRenderer extends AbstractCellEditor implements
 					
 				}
 			});
-			instance.add(subCriteria);
+			subcriteriaPanel.setLayout(new BoxLayout(subcriteriaPanel, BoxLayout.X_AXIS));
+
+			subcriteriaPanel.add(anyAll);
+			subcriteriaPanel.add(subCriteria);
+			instance.add(subcriteriaPanel);
 		}
 		
 	}
@@ -117,39 +126,61 @@ public class CriteriaRenderer extends AbstractCellEditor implements
 		value.setEnabled(enabled);
 	}
 	
-	public Component getTableCellRendererComponent(JTable table, Object value,
-			boolean isSelected, boolean hasFocus, int row, int column) {
+	private Component getComponent(JTable table, Object value,
+			boolean isSelected, int row, int column) {
+		
 		if (value instanceof Criteria) {
 			criteria = (Criteria) value;
+			
+			//set visibility
+			criteriaPanel.setVisible(!criteria.isGroup());
+			subcriteriaPanel.setVisible(criteria.isGroup());
+			
 			subject.setSelectedItem(criteria.getSubject());
 			condition.setSelectedItem(criteria.getCondition());
 			this.value.setOntologyClass(criteria.getValue());
-			table.setRowHeight(row, instance.getPreferredSize().height);
-			this.setEnabled(false);
+			
+			if (criteria.isGroup()) {
+				anyAll.setSelected(criteria.isAny());
+				subCriteria.removeAllRows();
+				if (criteria.getSubCriteria() != null) {
+					for (Criteria c: criteria.getSubCriteria()) {
+						List rowList = new ArrayList();
+						rowList.add(c);
+						subCriteria.addRow(rowList);
+					}
+				}
+			}
+			
+			table.setRowHeight(row, instance.getPreferredSize().height + 5);
 		}
 		return instance;
-		
-	}
 
+	}
+	
 	public Component getTableCellEditorComponent(JTable table, Object value,
 			boolean isSelected, int row, int column) {
-		if (value instanceof Criteria) {
-			criteria = (Criteria) value;
-			subject.setSelectedItem(criteria.getSubject());
-			condition.setSelectedItem(criteria.getCondition());
-			this.value.setOntologyClass(criteria.getValue());
-			this.setEnabled(true);
-			table.setRowHeight(row, instance.getPreferredSize().height);
-		}
-		return instance;
-
+		return getComponent(table, value, isSelected, row, column);
 	}
 
 	public Object getCellEditorValue() {
 		criteria.setSubject((OntologyClass) subject.getSelectedItem());
 		criteria.setCondition((String) condition.getSelectedItem());
 		criteria.setValue(value.getOntologyClass());
+		if (subCriteria != null && subCriteria.getRowCount() > 0) {
+			criteria.setAny(anyAll.isSelected());
+			criteria.setSubCriteria(new ArrayList<Criteria>());
+			for (Object obj: subCriteria.getListOfRowLists()) {
+				List rowList = (List) obj;
+				criteria.getSubCriteria().add((Criteria) rowList.get(0));
+			}
+		}
 		return criteria;
+	}
+
+	public Component getTableCellRendererComponent(JTable table, Object value,
+			boolean isSelected, boolean hasFocus, int row, int column) {
+		return getComponent(table, value, isSelected, row, column);
 	}
 	
 }
