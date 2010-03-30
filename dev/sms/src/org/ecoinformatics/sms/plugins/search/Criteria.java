@@ -11,7 +11,7 @@ public class Criteria  {
 	private OntologyClass value;
 	
 	private boolean group = false;
-	private boolean any = true;
+	private boolean all = true;
 	private List<Criteria> subCriteria;
 	
 	public OntologyClass getSubject() {
@@ -45,19 +45,19 @@ public class Criteria  {
 	public void setSubCriteria(List<Criteria> subCriteria) {
 		this.subCriteria = subCriteria;
 	}
-	public boolean isAny() {
-		return any;
+	public boolean isAll() {
+		return all;
 	}
-	public void setAny(boolean any) {
-		this.any = any;
+	public void setAll(boolean all) {
+		this.all = all;
 	}
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		if (isGroup()) {
-			if (isAny()) {
-				sb.append("Match Any ");
-			} else {
+			if (isAll()) {
 				sb.append("Match All ");
+			} else {
+				sb.append("Match Any ");
 			}
 			sb.append(" [");
 			if (subCriteria != null) {

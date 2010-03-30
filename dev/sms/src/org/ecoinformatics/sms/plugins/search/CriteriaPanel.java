@@ -1,6 +1,5 @@
 package org.ecoinformatics.sms.plugins.search;
 
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -9,14 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
-import javax.swing.AbstractCellEditor;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
 
 import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Entity;
@@ -29,15 +24,12 @@ import org.ecoinformatics.sms.plugins.ui.OntologyClassField;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.CustomList;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 
-public class CriteriaRenderer extends AbstractCellEditor implements 
-	TableCellRenderer,
-	TableCellEditor {
+public class CriteriaPanel extends JPanel {
 
 	private Criteria criteria;
 	
 	private JPanel criteriaPanel;
 	private JPanel subcriteriaPanel;
-	private JPanel instance;
 	private JComboBox subject;
 	private JComboBox condition;
 	private OntologyClassField value;
@@ -45,10 +37,12 @@ public class CriteriaRenderer extends AbstractCellEditor implements
 	private JCheckBox anyAll;
 	private CustomList subCriteria;
 	
-	public CriteriaRenderer(int level) {
+	public CriteriaPanel(Criteria criteria) {
+		super();
 		
-		instance = WidgetFactory.makePanel();
-		instance.setLayout(new BoxLayout(instance, BoxLayout.Y_AXIS));
+		this.criteria = criteria;
+		
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		// change the filter class based on what is selected 
 		ItemListener subjectListener = new ItemListener() {
@@ -78,15 +72,15 @@ public class CriteriaRenderer extends AbstractCellEditor implements
 		criteriaPanel.add(condition);
 		criteriaPanel.add(value);
 		
-		instance.add(criteriaPanel);
+		this.add(criteriaPanel);
 		
 		subcriteriaPanel = WidgetFactory.makePanel(5);
 
-		if (level > 0) {
+		if (criteria.isGroup()) {
 			
 			anyAll = WidgetFactory.makeCheckBox("Match All", false);
 			String[] colNames = new String[] {"Subcriteria"};
-			Object[] editors = new Object[] {new CriteriaRenderer(--level) };
+			Object[] editors = new Object[] {new CriteriaRenderer(0) };
 			subCriteria = WidgetFactory.makeList(
 					colNames, 
 					editors, 
@@ -115,68 +109,27 @@ public class CriteriaRenderer extends AbstractCellEditor implements
 
 			subcriteriaPanel.add(anyAll);
 			subcriteriaPanel.add(subCriteria);
-			instance.add(subcriteriaPanel);
-		}
-		
-	}
-	
-	private Component getComponent(JTable table, Object value,
-			boolean isSelected, int row, int column) {
-		
-		if (value instanceof Criteria) {
-			criteria = (Criteria) value;
+			this.add(subcriteriaPanel);
 			
-			//set visibility
-			criteriaPanel.setVisible(!criteria.isGroup());
-			subcriteriaPanel.setVisible(criteria.isGroup());
-			
-			subject.setSelectedItem(criteria.getSubject());
-			condition.setSelectedItem(criteria.getCondition());
-			this.value.setOntologyClass(criteria.getValue());
-			
-			if (criteria.isGroup()) {
-				anyAll.setSelected(criteria.isAll());
-				subCriteria.removeAllRows();
-				if (criteria.getSubCriteria() != null) {
-					for (Criteria c: criteria.getSubCriteria()) {
-						List rowList = new ArrayList();
-						rowList.add(c);
-						subCriteria.addRow(rowList);
-					}
+			anyAll.setSelected(criteria.isAll());
+			subCriteria.removeAllRows();
+			if (criteria.getSubCriteria() != null) {
+				for (Criteria c: criteria.getSubCriteria()) {
+					List rowList = new ArrayList();
+					rowList.add(c);
+					subCriteria.addRow(rowList);
 				}
 			}
-			
-			table.setRowHeight(instance.getPreferredSize().height + 5);
 		}
-		return instance;
+		
+		//set visibility
+		criteriaPanel.setVisible(!criteria.isGroup());
+		subcriteriaPanel.setVisible(criteria.isGroup());
+		
+		subject.setSelectedItem(criteria.getSubject());
+		condition.setSelectedItem(criteria.getCondition());
+		this.value.setOntologyClass(criteria.getValue());
 
-	}
-	
-	public Component getTableCellEditorComponent(JTable table, Object value,
-			boolean isSelected, int row, int column) {
-		return getComponent(table, value, isSelected, row, column);
-	}
-
-	public Object getCellEditorValue() {
-		criteria.setSubject((OntologyClass) subject.getSelectedItem());
-		criteria.setCondition((String) condition.getSelectedItem());
-		criteria.setValue(value.getOntologyClass());
-		if (subCriteria != null && subCriteria.getRowCount() > 0) {
-			criteria.setAll(anyAll.isSelected());
-			criteria.setSubCriteria(new ArrayList<Criteria>());
-			for (Object obj: subCriteria.getListOfRowLists()) {
-				List rowList = (List) obj;
-				criteria.getSubCriteria().add((Criteria) rowList.get(0));
-			}
-		}
-		return criteria;
-	}
-
-	public Component getTableCellRendererComponent(JTable table, Object value,
-			boolean isSelected, boolean hasFocus, int row, int column) {
-		CriteriaPanel panel = new CriteriaPanel((Criteria) value);
-		table.setRowHeight(row, panel.getPreferredSize().height + 5);
-		return panel;
 	}
 	
 }
