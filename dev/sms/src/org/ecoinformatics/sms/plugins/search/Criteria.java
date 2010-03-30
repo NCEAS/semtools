@@ -52,7 +52,25 @@ public class Criteria  {
 		this.any = any;
 	}
 	public String toString() {
-		return subject + " " + condition + " " + value; 
+		StringBuffer sb = new StringBuffer();
+		if (isGroup()) {
+			if (isAny()) {
+				sb.append("Match Any ");
+			} else {
+				sb.append("Match All ");
+			}
+			sb.append(" [");
+			if (subCriteria != null) {
+				for (Criteria c: subCriteria) {
+					sb.append(c.toString());
+					sb.append(", ");
+				}
+			}
+			sb.append("]");
+		} else {
+			sb.append(subject + " " + condition + " " + value);
+		}
+		return sb.toString(); 
 	}
 	
 }

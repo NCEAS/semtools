@@ -152,7 +152,7 @@ public class CriteriaRenderer extends AbstractCellEditor implements
 				}
 			}
 			
-			table.setRowHeight(row, instance.getPreferredSize().height + 5);
+			table.setRowHeight(instance.getPreferredSize().height + 5);
 		}
 		return instance;
 

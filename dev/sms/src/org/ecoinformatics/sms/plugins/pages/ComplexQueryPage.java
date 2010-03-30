@@ -108,7 +108,7 @@ public class ComplexQueryPage extends AbstractUIPage {
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
 		// Query list
-		JPanel queryListPanel = WidgetFactory.makePanel(10);
+		JPanel queryListPanel = WidgetFactory.makePanel();
 		queryListLabel = WidgetFactory.makeLabel("Conditions:", false);
 		queryListPanel.add(queryListLabel);
 		String[] colNames = new String[] {"Conditions"};
@@ -116,7 +116,7 @@ public class ComplexQueryPage extends AbstractUIPage {
 		queryList = WidgetFactory.makeList(
 				colNames, 
 				editors, 
-				3, //displayRows, 
+				10, //displayRows, 
 				true, //showAddButton, 
 				false, //showEditButton, 
 				false, //showDuplicateButton, 
