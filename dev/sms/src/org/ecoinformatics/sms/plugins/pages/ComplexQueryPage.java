@@ -176,58 +176,44 @@ public class ComplexQueryPage extends AbstractUIPage {
 		
 		for (int i = 0; i < queryList.getListOfRowLists().size(); i++) {
 			
-			// get the query page
+			// get the Criteria object from the list
 			List rowList = (List) queryList.getListOfRowLists().get(i);
-			AnnotationQueryPage aqp = (AnnotationQueryPage) rowList.get(0);
+			Criteria criteria = (Criteria) rowList.get(0);
 			
-			Characteristic currentCharacteristic;
-			Standard currentStandard;
-			Protocol currentProtocol;
-			Entity currentEntity;
-			Triple context;
-			
-			// get the values form the page
-			try {
-				currentCharacteristic = new Characteristic(
-						aqp.getSimpleAnnotationPanel().getObservationCharacteristic().getURI());
-				characteristics.add(currentCharacteristic);
-			} catch (Exception e) {
-				currentCharacteristic = null;
+			if (criteria.isGroup()) {
+				for (Criteria subcriteria: criteria.getSubCriteria()) {
+					// what criteria were given?
+					OntologyClass subject = subcriteria.getSubject();
+					OntologyClass value = subcriteria.getValue();
+					if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Entity.class))) {
+						entities.add(value);
+					}
+					if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Characteristic.class))) {
+						characteristics.add(value);
+					}
+					if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Standard.class))) {
+						standards.add(value);
+					}
+					if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Protocol.class))) {
+						protocols.add(value);
+					}
+					
+					// TODO: get context from the Criteria
+					Triple context = null;
+					if (context != null) {
+						contexts.add(context);
+					}
+				}
 			}
-	
-			try {
-				currentStandard = new Standard(aqp.getSimpleAnnotationPanel().getObservationStandard().getURI());
-				standards.add(currentStandard);
-			} catch (Exception e) {
-				currentStandard = null;
-			}
-			
-			try {
-				currentProtocol = new Protocol(aqp.getSimpleAnnotationPanel().getObservationProtocol().getURI());
-				protocols.add(currentProtocol);
-			} catch (Exception e) {
-				currentProtocol = null;
-			}
-			
-			try {
-				currentEntity = new Entity(aqp.getSimpleAnnotationPanel().getObservationEntity().getURI());
-				entities.add(currentEntity);
-			} catch (Exception e) {
-				currentEntity = null;
-			}
-			
-			try {
-				context = aqp.getContextTriplePanel().getContextTriple();
-			} catch (Exception e) {
-				context = null;
-			}
-			if (context != null) {
-				contexts.add(context);
+			else {
+			// TODO: handle no grouping
 			}
 			
 		}
 		
-		// TODO: handle AND/OR
+		// TODO: handle ANY/ALL
+		// TODO: handle is/is not
+		// TODO: handle groups
 		
 		// generate the query
 		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getMatchingAnnotations(
