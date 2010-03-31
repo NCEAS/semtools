@@ -123,7 +123,7 @@ public class ComplexQueryPage extends AbstractUIPage {
 				false //showMoveDownButton
 				);		
 		// add
-		queryList.setCustomAddAction(new AbstractAction() {
+		queryList.setCustomAddAction(new AbstractAction("Add Group") {
 			public void actionPerformed(ActionEvent e) {
 	
 				Criteria criteria = new Criteria();
@@ -182,26 +182,32 @@ public class ComplexQueryPage extends AbstractUIPage {
 			
 			if (criteria.isGroup()) {
 				for (Criteria subcriteria: criteria.getSubCriteria()) {
-					// what criteria were given?
-					OntologyClass subject = subcriteria.getSubject();
-					OntologyClass value = subcriteria.getValue();
-					if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Entity.class))) {
-						entities.add(value);
-					}
-					if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Characteristic.class))) {
-						characteristics.add(value);
-					}
-					if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Standard.class))) {
-						standards.add(value);
-					}
-					if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Protocol.class))) {
-						protocols.add(value);
-					}
 					
-					// TODO: get context from the Criteria
-					Triple context = null;
-					if (context != null) {
-						contexts.add(context);
+					// handle context
+					if (criteria.isContext()) {
+						Triple context = criteria.getContextTriple();
+						if (context != null) {
+							contexts.add(context);
+						}
+					} else {
+						// what criteria were given?
+						OntologyClass subject = subcriteria.getSubject();
+						OntologyClass value = subcriteria.getValue();
+						if (value == null) {
+							continue;
+						}
+						if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Entity.class))) {
+							entities.add(value);
+						}
+						if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Characteristic.class))) {
+							characteristics.add(value);
+						}
+						if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Standard.class))) {
+							standards.add(value);
+						}
+						if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Protocol.class))) {
+							protocols.add(value);
+						}
 					}
 				}
 			}

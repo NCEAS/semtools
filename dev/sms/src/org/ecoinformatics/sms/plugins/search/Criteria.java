@@ -2,6 +2,7 @@ package org.ecoinformatics.sms.plugins.search;
 
 import java.util.List;
 
+import org.ecoinformatics.sms.annotation.Triple;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 
 public class Criteria  {
@@ -10,6 +11,9 @@ public class Criteria  {
 	private String condition;
 	private OntologyClass value;
 	
+	private boolean context = false;
+	private Triple contextTriple;
+
 	private boolean group = false;
 	private boolean all = true;
 	private List<Criteria> subCriteria;
@@ -50,6 +54,18 @@ public class Criteria  {
 	}
 	public void setAll(boolean all) {
 		this.all = all;
+	}
+	public boolean isContext() {
+		return context;
+	}
+	public void setContext(boolean context) {
+		this.context = context;
+	}
+	public Triple getContextTriple() {
+		return contextTriple;
+	}
+	public void setContextTriple(Triple contextTriple) {
+		this.contextTriple = contextTriple;
 	}
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
