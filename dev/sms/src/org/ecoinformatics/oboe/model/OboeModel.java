@@ -5,11 +5,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.HashMap;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.io.PrintStream;
 
-
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 
 public class OboeModel {
 
@@ -193,21 +200,111 @@ public class OboeModel {
 			 ci.toPrintStream(p);
 		 }
 	 }
+	 
+	 private void toRDF(OutputStream p)
+	 	throws Exception
+	 {
+		 Model model = ModelFactory.createDefaultModel();
+		 String uri    = RDFConstant.URI;
+		 String namespace    = RDFConstant.NAMESPACE;
+		 model.setNsPrefix(namespace,uri);
+		 
+		 // Put the entity information to the model
+		 Property property = model.createProperty(uri, RDFConstant.ENTITY_TYPE);
+		 Map<Long, Resource> entId2resource = new HashMap<Long, Resource>();
+		 for(EntityInstance ei: this.m_entityInstances){
+			 Resource r = model.createResource(uri+RDFConstant.ENTITY+ei.getEntId());
+			 entId2resource.put(ei.getEntId(), r);
+			 
+			 r.addProperty(property, ei.getEntityType().getName());
+		 }
+		 
+		// Put the observation information to the model
+		 Property propertyEntId = model.createProperty(uri, RDFConstant.ENTITY_ID);
+		 Property propertyObsType = model.createProperty(uri, RDFConstant.OBSERVATION_TYPE);
+		 Map<Long, Resource> obsId2resource = new HashMap<Long, Resource>();
+		 for(ObservationInstance oi: this.m_observationInstances){
+			 Resource r = model.createResource(uri+RDFConstant.OBSERVATION+oi.getObsId());
+			 obsId2resource.put(oi.getObsId(), r);
+			 
+			 r.addProperty(propertyObsType, oi.getObsType().getLabel());
+			 
+			 RDFNode objectEndId = entId2resource.get(oi.getEntity().getEntId());
+			 Statement statement = model.createStatement(r, propertyEntId, objectEndId);
+			 model.add(statement);
+		 }
+		
+		// Put the measurement information to the model
+		 Property propertyObsId = model.createProperty(uri, RDFConstant.OBSERVATION_ID);
+		 Property propertyMeasType = model.createProperty(uri, RDFConstant.MEASUREMENT_TYPE);
+		 Property propertyMeasValue = model.createProperty(uri, RDFConstant.MEASUREMENT_VALUE);
+		 for(MeasurementInstance mi: this.m_measurementInstances){
+			 Resource r = model.createResource(uri+RDFConstant.MEASUREMENT+mi.getMeasId());
+			 r.addProperty(propertyMeasType, mi.getMeasurementType().getLabel());
+			 
+			 RDFNode objectObsId = obsId2resource.get(mi.getObservationInstance().getObsId());	
+			 Statement statement1 = model.createStatement(r, propertyObsId, objectObsId);			 
+			 model.add(statement1);
+			 
+			 RDFNode objectMeasValue = model.createLiteral(mi.getMeasValue());
+			 Statement statement2 = model.createStatement(r, propertyMeasValue, objectMeasValue); 
+			 model.add(statement2);
+		 }
+		 
+		// Put the context information to the model
+		 for(ContextInstance ci: this.m_contextInstances){
+			 Long obsId = ci.getObservationInstance().getObsId();
+			 String relationship = ci.getContextType().getRelationship().getName();
+			 Long contextObsId = ci.getContextObservationInstance().getObsId();
+			 
+			 Resource subjectResource =  obsId2resource.get(obsId);			 
+			 Property predicateProperty = model.createProperty(uri, relationship);
+			 RDFNode objectRDFNode = obsId2resource.get(contextObsId);
+			 
+			 Statement statement = model.createStatement(subjectResource, predicateProperty, objectRDFNode);
+			 model.add(statement);
+		 }
+		 
+		 // Output the model to the file
+		 model.write(p);
+	 }
+	 
+	 
 	 /**
+	  * output the materialized data to CSV file
 	  * @param csvFileName: the absolute file name to store the CSV file 
 	  */
 	 public void toCSV(String csvFileName)
 	 	throws FileNotFoundException, Exception
 	 {
-		 //FileOutputStream out; 
 		 PrintStream p; 
 		 
 		 try {
-			//out = new FileOutputStream(csvFileName);
-			//p = new PrintStream(out);
 			p = new PrintStream( csvFileName );
 			toPrintStream(p);
 			p.close();
+			
+		} catch (FileNotFoundException e) {			
+			e.printStackTrace();
+			throw e;
+		}
+	 }
+	 
+	 /**
+	  * print the materialized data to RDF file
+	  * 
+	  * @param rdfFileName
+	  * @throws FileNotFoundException
+	  * @throws Exception
+	  */
+	 public void toRDF(String rdfFileName)
+	 	throws FileNotFoundException, Exception
+	 {
+		 OutputStream out;
+		 try {			
+			out = new FileOutputStream(rdfFileName);			 
+			toRDF(out);
+			out.close();
 			
 		} catch (FileNotFoundException e) {			
 			e.printStackTrace();

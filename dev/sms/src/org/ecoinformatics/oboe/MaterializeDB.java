@@ -505,7 +505,8 @@ public class MaterializeDB {
 	 * @throws Exception 
 	 */
 	public static OboeModel MaterializeDB(
-			String emlFileName, String dataFileName, String annotFileName, String oboeFileName) 
+			String emlFileName, String dataFileName, String annotFileName, String oboeFileName,
+			String rdfFileName) 
 		throws Exception		
 	{
 		//1. read data
@@ -571,6 +572,7 @@ public class MaterializeDB {
 		
 		
 		OBOE.toCSV(oboeFileName);
+		OBOE.toRDF(rdfFileName);
 		
 		return OBOE;	
 	}
@@ -613,6 +615,7 @@ public class MaterializeDB {
 		String annotFileName = Constant.localOutputUriPrefix + args[0] + Constant.C_ANNOT_SPEC_FILE_SUFFIX;
 		String dataFileName = Constant.localOutputUriPrefix +args[0] + "-n"+args[1]+ Constant.C_DATA_FILE_SUFFIX;
 		String oboeFileName = Constant.localOutputUriPrefix +args[0] + "-n"+args[1]+Constant.C_OUT_CSV_FILE_SUFFIX;
+		String rdfFileName =  Constant.localOutputUriPrefix +args[0] + "-n"+args[1]+Constant.C_OUT_RDF_FILE_SUFFIX;
 		
 		int numOfRows = Integer.parseInt(args[1]);
 		
@@ -621,10 +624,11 @@ public class MaterializeDB {
 		System.out.println("annotFileName="+annotFileName);
 		System.out.println("dataFileName="+dataFileName);
 		System.out.println("oboeFileName="+oboeFileName);
+		System.out.println("rdfFileName="+rdfFileName);
 		System.out.println("numOfRows="+numOfRows+"\n");
 		
 		try {
-			OboeModel OBOE = MaterializeDB(emlFileName,dataFileName, annotFileName, oboeFileName);
+			OboeModel OBOE = MaterializeDB(emlFileName,dataFileName, annotFileName, oboeFileName, rdfFileName);
 			System.out.println("********************\nOutput OBOE file is in: "+oboeFileName+"\n********************");
 		} catch (FileNotFoundException e) {			
 			e.printStackTrace();
