@@ -29,19 +29,18 @@ public class CriteriaPanel extends JPanel {
 	private Criteria criteria;
 	
 	private JPanel criteriaPanel;
-	private JPanel subcriteriaPanel;
 	private JComboBox subject;
 	private JComboBox condition;
 	private OntologyClassField value;
 	
+	private JPanel subcriteriaPanel;
 	private JCheckBox anyAll;
 	private CustomList subCriteria;
 	
-	public CriteriaPanel(Criteria criteria) {
+	
+	public CriteriaPanel(boolean isGroup) {
 		super();
-		
-		this.criteria = criteria;
-		
+				
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		// change the filter class based on what is selected 
@@ -75,12 +74,13 @@ public class CriteriaPanel extends JPanel {
 		this.add(criteriaPanel);
 		
 		subcriteriaPanel = WidgetFactory.makePanel(5);
+		anyAll = WidgetFactory.makeCheckBox("Match All", false);
 
-		if (criteria.isGroup()) {
-			
-			anyAll = WidgetFactory.makeCheckBox("Match All", false);
+		// only create the subcriteria list if this is a grouping criteria (infinite loop possible otherwise)
+		if (isGroup) {
 			String[] colNames = new String[] {"Subcriteria"};
-			Object[] editors = new Object[] {new CriteriaRenderer(0) };
+			// non-group criteria are rendered by this list
+			Object[] editors = new Object[] {new CriteriaRenderer(false) };
 			subCriteria = WidgetFactory.makeList(
 					colNames, 
 					editors, 
@@ -92,10 +92,11 @@ public class CriteriaPanel extends JPanel {
 					false, //showMoveUpButton, 
 					false //showMoveDownButton
 					);		
-			// add
+			// add action
 			subCriteria.setCustomAddAction(new AbstractAction() {
 				public void actionPerformed(ActionEvent e) {
-		
+					
+					// we add non-group criteria at this point
 					Criteria criteria = new Criteria();
 					criteria.setGroup(false);
 					
@@ -105,12 +106,60 @@ public class CriteriaPanel extends JPanel {
 					
 				}
 			});
+			
+			// add the subcriteria widgets to the panel
 			subcriteriaPanel.setLayout(new BoxLayout(subcriteriaPanel, BoxLayout.X_AXIS));
-
 			subcriteriaPanel.add(anyAll);
 			subcriteriaPanel.add(subCriteria);
 			this.add(subcriteriaPanel);
-			
+		}
+		
+		// set visibility for group/non-group
+		criteriaPanel.setVisible(!isGroup);
+		subcriteriaPanel.setVisible(isGroup);
+		
+	}
+	
+	/**
+	 * gets the current state of the criteria in this panel when editing stops
+	 * @return criteria as it exists in this panel
+	 */
+	public Criteria getCriteria() {
+		// main criteria options
+		criteria.setSubject((OntologyClass) subject.getSelectedItem());
+		criteria.setCondition((String) condition.getSelectedItem());
+		criteria.setValue(value.getOntologyClass());
+		criteria.setAll(anyAll.isSelected());
+		
+		// if there are subcriteria, add them
+		if (subCriteria != null && subCriteria.getRowCount() > 0) {
+			criteria.setSubCriteria(new ArrayList<Criteria>());
+			for (Object obj: subCriteria.getListOfRowLists()) {
+				List rowList = (List) obj;
+				criteria.getSubCriteria().add((Criteria) rowList.get(0));
+			}
+		}
+		return criteria;
+	}
+	
+	/**
+	 * sets the panel's widgets to reflect the value of the Criteria object
+	 * @param criteria
+	 */
+	public void setCriteria(Criteria criteria) {
+		this.criteria = criteria;
+		
+		//set visibility for what we are showing
+		criteriaPanel.setVisible(!criteria.isGroup());
+		subcriteriaPanel.setVisible(criteria.isGroup());
+		
+		// set the values in the UI
+		subject.setSelectedItem(criteria.getSubject());
+		condition.setSelectedItem(criteria.getCondition());
+		this.value.setOntologyClass(criteria.getValue());
+		
+		// are there subcriteria to show?
+		if (criteria.isGroup()) {
 			anyAll.setSelected(criteria.isAll());
 			subCriteria.removeAllRows();
 			if (criteria.getSubCriteria() != null) {
@@ -121,15 +170,6 @@ public class CriteriaPanel extends JPanel {
 				}
 			}
 		}
-		
-		//set visibility
-		criteriaPanel.setVisible(!criteria.isGroup());
-		subcriteriaPanel.setVisible(criteria.isGroup());
-		
-		subject.setSelectedItem(criteria.getSubject());
-		condition.setSelectedItem(criteria.getCondition());
-		this.value.setOntologyClass(criteria.getValue());
-
 	}
 	
 }

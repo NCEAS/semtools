@@ -34,6 +34,7 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -72,13 +73,13 @@ public class ComplexQueryPage extends AbstractUIPage {
 		
 	// query list
 	private CustomList queryList;
-	private JLabel queryListLabel;
 	
 	// the final query
 	private Query query;
 	
 	// docids from the annotation query
 	private List<String> docids = new ArrayList<String>();
+	private JCheckBox anyAll;
 	
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -107,12 +108,9 @@ public class ComplexQueryPage extends AbstractUIPage {
 		
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
-		// Query list
-		JPanel queryListPanel = WidgetFactory.makePanel();
-		queryListLabel = WidgetFactory.makeLabel("Conditions:", false);
-		queryListPanel.add(queryListLabel);
+		// Query list		
 		String[] colNames = new String[] {"Conditions"};
-		Object[] editors = new Object[] {new CriteriaRenderer(1) };
+		Object[] editors = new Object[] {new CriteriaRenderer(true) };
 		queryList = WidgetFactory.makeList(
 				colNames, 
 				editors, 
@@ -138,34 +136,15 @@ public class ComplexQueryPage extends AbstractUIPage {
 				
 			}
 		});
-		/**
-		// edit
-		queryList.setCustomEditAction(new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
-				List rowList = queryList.getSelectedRowList();
-				AnnotationQueryPage aqp = (AnnotationQueryPage) rowList.get(0);
-				
-				// show the dialog
-				ModalDialog dialog = 
-					new ModalDialog(
-							aqp, 
-							UIController.getInstance().getCurrentActiveWindow(), 
-							UISettings.POPUPDIALOG_WIDTH,
-							UISettings.POPUPDIALOG_HEIGHT);
 
-				// get the response back
-				if (dialog.USER_RESPONSE == ModalDialog.OK_OPTION) {
-					// make sure the UI reflects the changes
-					queryList.revalidate();
-					queryList.repaint();
+		// the any/all checkbox
+		anyAll = WidgetFactory.makeCheckBox("Match All", false);
 
-				}
-				
-			}
-		});
-		**/
+		JPanel queryListPanel = WidgetFactory.makePanel();
 		
+		queryListPanel.add(anyAll);
 		queryListPanel.add(queryList);
+		
 		queryListPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
 		this.add(queryListPanel);
