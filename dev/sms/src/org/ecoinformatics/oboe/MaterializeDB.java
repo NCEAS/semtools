@@ -629,7 +629,9 @@ public class MaterializeDB {
 		
 		try {
 			OboeModel OBOE = MaterializeDB(emlFileName,dataFileName, annotFileName, oboeFileName, rdfFileName);
-			System.out.println("********************\nOutput OBOE file is in: "+oboeFileName+"\n********************");
+			System.out.println("********************\nOutput OBOE CSV file is in: "+oboeFileName+
+					"\nOutput OBOE RDF file is in: "+rdfFileName+
+					"\n********************");
 		} catch (FileNotFoundException e) {			
 			e.printStackTrace();
 		} catch (Exception e) {			
