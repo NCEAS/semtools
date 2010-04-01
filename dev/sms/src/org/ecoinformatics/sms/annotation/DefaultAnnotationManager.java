@@ -35,6 +35,7 @@ package org.ecoinformatics.sms.annotation;
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.OntologyManager;
 import org.ecoinformatics.sms.AnnotationManager;
+import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 
 import java.util.HashMap;
@@ -234,6 +235,11 @@ public class DefaultAnnotationManager implements AnnotationManager {
             result.add(c);
       return result;
    }
+   
+   public List<Annotation> getMatchingAnnotations(Criteria criteria) {
+	   return getAnnotations();
+   }
+
 
    /**
     * Get annotations that contain an entity in the given list and a 

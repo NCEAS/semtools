@@ -34,7 +34,9 @@ package org.ecoinformatics.sms;
 
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Triple;
+import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.ontology.OntologyClass;
+
 import java.util.List;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -130,6 +132,13 @@ public interface AnnotationManager {
    public List<OntologyClass> getOntologyClasses(Annotation a,
            boolean addSubclasses, boolean addSuperclasses);
 
+   /**
+    * Get Annotations that match the given Criteria
+    * @param criteria Criteria to match
+    * @return list of matching annotations
+    */
+   public List<Annotation> getMatchingAnnotations(Criteria criteria);
+   
    /**
     * Get annotations that contain an entity in the given list and a 
     * measurement with a characteristic and standard in the given lists
