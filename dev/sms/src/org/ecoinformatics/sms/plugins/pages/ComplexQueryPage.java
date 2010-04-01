@@ -45,9 +45,9 @@ import org.ecoinformatics.sms.annotation.Entity;
 import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
 import org.ecoinformatics.sms.annotation.Triple;
+import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
-import org.ecoinformatics.sms.plugins.search.Criteria;
 import org.ecoinformatics.sms.plugins.search.CriteriaRenderer;
 
 import edu.ucsb.nceas.morpho.Morpho;

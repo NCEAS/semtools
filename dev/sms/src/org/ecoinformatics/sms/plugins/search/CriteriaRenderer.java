@@ -8,6 +8,8 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
+import org.ecoinformatics.sms.annotation.search.Criteria;
+
 public class CriteriaRenderer 
 	extends AbstractCellEditor 
 		implements 

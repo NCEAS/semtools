@@ -1,4 +1,4 @@
-package org.ecoinformatics.sms.plugins.search;
+package org.ecoinformatics.sms.annotation.search;
 
 import java.util.List;
 
