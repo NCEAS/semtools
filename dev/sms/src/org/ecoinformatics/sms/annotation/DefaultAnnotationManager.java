@@ -37,7 +37,6 @@ import org.ecoinformatics.sms.OntologyManager;
 import org.ecoinformatics.sms.AnnotationManager;
 import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.ontology.OntologyClass;
-import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 
 import java.util.HashMap;
 import java.util.List;
@@ -885,19 +884,19 @@ public class DefaultAnnotationManager implements AnnotationManager {
 				if (value == null) {
 					return 0;
 				}
-				if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Entity.class))) {
+				if (subject != null && subject.equals(Annotation.OBOE_CLASSES.get(Entity.class))) {
 					entities.add(value);
 					return hasMatchingEntity(a, entities);
 				}
-				if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Characteristic.class))) {
+				if (subject != null && subject.equals(Annotation.OBOE_CLASSES.get(Characteristic.class))) {
 					characteristics.add(value);
 					return hasMatchingCharacteristic(a, characteristics);
 				}
-				if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Standard.class))) {
+				if (subject != null && subject.equals(Annotation.OBOE_CLASSES.get(Standard.class))) {
 					standards.add(value);
 					return hasMatchingStandard(a, standards);
 				}
-				if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Protocol.class))) {
+				if (subject != null && subject.equals(Annotation.OBOE_CLASSES.get(Protocol.class))) {
 					protocols.add(value);
 					return hasMatchingProtocol(a, protocols);
 				}

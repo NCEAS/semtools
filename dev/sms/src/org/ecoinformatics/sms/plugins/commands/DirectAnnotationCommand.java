@@ -243,13 +243,13 @@ public class DirectAnnotationCommand implements Command {
 				// we don't edit this directly
 				return false;
 			case AnnotationTableModel.OBSERVATION_ROW:
-				ontologyPage.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Entity.class));
+				ontologyPage.setFilterClass(Annotation.OBOE_CLASSES.get(Entity.class));
 				if (currentObservation != null) {
 					currentClass = currentObservation.getEntity();
 				}
 				break;
 			case AnnotationTableModel.CHARACTERISTIC_ROW:
-				ontologyPage.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Characteristic.class));
+				ontologyPage.setFilterClass(Annotation.OBOE_CLASSES.get(Characteristic.class));
 				if (currentMeasurement != null) {
 					if (!currentMeasurement.getCharacteristics().isEmpty()) {
 						currentCharacteristic = currentMeasurement.getCharacteristics().get(0);
@@ -258,14 +258,14 @@ public class DirectAnnotationCommand implements Command {
 				}
 				break;
 			case AnnotationTableModel.STANDARD_ROW:
-				ontologyPage.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Standard.class));
+				ontologyPage.setFilterClass(Annotation.OBOE_CLASSES.get(Standard.class));
 				if (currentMeasurement != null) {
 					currentStandard = currentMeasurement.getStandard();
 					currentClass = currentStandard;
 				}
 				break;
 			case AnnotationTableModel.PROTOCOL_ROW:
-				ontologyPage.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Protocol.class));
+				ontologyPage.setFilterClass(Annotation.OBOE_CLASSES.get(Protocol.class));
 				if (currentMeasurement != null) {
 					currentProtocol = currentMeasurement.getProtocol();
 					currentClass = currentProtocol;

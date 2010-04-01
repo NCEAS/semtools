@@ -26,10 +26,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 import java.util.Map.Entry;
 
@@ -101,10 +99,7 @@ public class AnnotationPlugin
 
     public static final String PHYSICAL_URI_TAG_NAME = "physicalURI";
     
-    // for filtering
-    public static Map<Class,OntologyClass> OBOE_CLASSES = new HashMap<Class, OntologyClass>();
-
-	private MorphoFrame morphoFrame = null;
+    private MorphoFrame morphoFrame = null;
 	
 	private GUIAction annotateAction = null;
 
@@ -383,7 +378,7 @@ public class AnnotationPlugin
 		}
 		// initialize the static classes
 		Hashtable<String, String> oboeClasses = Morpho.getConfiguration().getHashtable("oboeClasses", "className", "classURI");
-		OBOE_CLASSES.clear();
+		Annotation.OBOE_CLASSES.clear();
 		for (Entry<String, String> entry: oboeClasses.entrySet()) {
 			String name = entry.getKey();
 			String uri = entry.getValue();
@@ -396,7 +391,7 @@ public class AnnotationPlugin
 					oboeClass = new OntologyClass();
 				}
 				oboeClass.setURI(uri);
-				OBOE_CLASSES.put(objectClass.getClass(), oboeClass);
+				Annotation.OBOE_CLASSES.put(objectClass.getClass(), oboeClass);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

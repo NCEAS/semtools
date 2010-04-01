@@ -38,6 +38,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import org.ecoinformatics.sms.SMS;
+import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Entity;
 import org.ecoinformatics.sms.annotation.Measurement;
@@ -47,7 +48,6 @@ import org.ecoinformatics.sms.ontology.Ontology;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.ontology.OntologyObjectProperty;
 import org.ecoinformatics.sms.ontology.OntologyProperty;
-import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
@@ -91,7 +91,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		JPanel entityLabelPanel = WidgetFactory.makePanel(2);
 		entityLabelPanel.add(WidgetFactory.makeLabel("Entity:", false));
 		observationEntity = OntologyClassField.makeLabel("", false, null);
-		observationEntity.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Entity.class));
+		observationEntity.setFilterClass(Annotation.OBOE_CLASSES.get(Entity.class));
 		entityLabelPanel.add(observationEntity);
 		
 		entityPanel.add(entityLabelPanel);
@@ -107,7 +107,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		characteristicLabelPanel.add(WidgetFactory.makeLabel("Characteristic:",
 				false));
 		observationCharacteristic = OntologyClassField.makeLabel("", false, null);
-		observationCharacteristic.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Characteristic.class));
+		observationCharacteristic.setFilterClass(Annotation.OBOE_CLASSES.get(Characteristic.class));
 		characteristicLabelPanel.add(observationCharacteristic);
 		
 		characteristicPanel.add(characteristicLabelPanel);
@@ -122,7 +122,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		JPanel standardLabelPanel = WidgetFactory.makePanel(2);
 		standardLabelPanel.add(WidgetFactory.makeLabel("Standard:", false));
 		observationStandard = OntologyClassField.makeLabel("", false, null);
-		observationStandard.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Standard.class));
+		observationStandard.setFilterClass(Annotation.OBOE_CLASSES.get(Standard.class));
 
 		standardLabelPanel.add(observationStandard);
 		standardPanel.add(standardLabelPanel);
@@ -138,7 +138,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		JPanel protocolLabelPanel = WidgetFactory.makePanel(2);
 		protocolLabelPanel.add(WidgetFactory.makeLabel("Protocol:", false));
 		observationProtocol = OntologyClassField.makeLabel("", false, null);
-		observationProtocol.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Protocol.class));
+		observationProtocol.setFilterClass(Annotation.OBOE_CLASSES.get(Protocol.class));
 
 		protocolLabelPanel.add(observationProtocol);
 		protocolPanel.add(protocolLabelPanel);
@@ -155,7 +155,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		JPanel measurementLabelPanel = WidgetFactory.makePanel(3);
 		measurementLabelPanel.add(WidgetFactory.makeLabel("Measurement:", false));
 		observationMeasurement = OntologyClassField.makeLabel("", true, null);
-		observationMeasurement.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Measurement.class));
+		observationMeasurement.setFilterClass(Annotation.OBOE_CLASSES.get(Measurement.class));
 		measurementLabelPanel.add(observationMeasurement);
 		
 		measurementPanel.add(measurementLabelPanel);
@@ -203,7 +203,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		JPanel measurementPanel = WidgetFactory.makePanel(2);
 		measurementPanel.add(WidgetFactory.makeLabel("The ", false, null));
 		observationMeasurement = OntologyClassField.makeLabel("", true, null);
-		observationMeasurement.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Measurement.class));
+		observationMeasurement.setFilterClass(Annotation.OBOE_CLASSES.get(Measurement.class));
 		measurementPanel.add(observationMeasurement);
 		measurementPanel.add(WidgetFactory.makeLabel(" was recorded.", false, null));
 		measurementPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray));
@@ -222,13 +222,13 @@ public class SimpleAnnotationPanel extends JPanel {
 		characteristicPanel.add(WidgetFactory.makeLabel("The ", false, null));
 		
 		observationCharacteristic = OntologyClassField.makeLabel("", true, null);
-		observationCharacteristic.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Characteristic.class));
+		observationCharacteristic.setFilterClass(Annotation.OBOE_CLASSES.get(Characteristic.class));
 		characteristicPanel.add(observationCharacteristic);
 		
 		characteristicPanel.add(WidgetFactory.makeLabel(" of the ", false, null));
 		
 		observationEntity = OntologyClassField.makeLabel("", true, null);
-		observationEntity.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Entity.class));
+		observationEntity.setFilterClass(Annotation.OBOE_CLASSES.get(Entity.class));
 		characteristicPanel.add(observationEntity);
 		characteristicPanel.add(WidgetFactory.makeLabel(" was recorded ", false, null));
 		
@@ -242,7 +242,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		standardPanel.add(WidgetFactory.makeLabel(" using the ", false, null));
 
 		observationStandard = OntologyClassField.makeLabel("", true, null);
-		observationStandard.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Standard.class));
+		observationStandard.setFilterClass(Annotation.OBOE_CLASSES.get(Standard.class));
 
 		standardPanel.add(observationStandard);
 		standardPanel.add(WidgetFactory.makeLabel(" standard, ", false, null));
@@ -250,7 +250,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		standardPanel.add(WidgetFactory.makeLabel("and the ", false, null));
 
 		observationProtocol = OntologyClassField.makeLabel("", true, null);
-		observationProtocol.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Protocol.class));
+		observationProtocol.setFilterClass(Annotation.OBOE_CLASSES.get(Protocol.class));
 		standardPanel.add(observationProtocol);
 
 		standardPanel.add(WidgetFactory.makeLabel(" protocol.", false, null));

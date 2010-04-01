@@ -36,10 +36,10 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Relationship;
-import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.ui.OntologyClassField;
 
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
@@ -175,7 +175,7 @@ public class AddContextPage extends AbstractUIPage {
 
 		// context
 		contextRelationship = OntologyClassField.makeLabel("<relationship>", false, null);
-		contextRelationship.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Relationship.class));
+		contextRelationship.setFilterClass(Annotation.OBOE_CLASSES.get(Relationship.class));
 		contextPanel.add(contextRelationship);
 		
 		contextPanel.add(WidgetFactory.makeLabel(" the ", false, null));

@@ -32,10 +32,10 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Entity;
 import org.ecoinformatics.sms.annotation.Relationship;
 import org.ecoinformatics.sms.annotation.Triple;
-import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
@@ -74,21 +74,21 @@ public class ContextTriplePanel extends JPanel {
 		
 		// entity A
 		entityA = OntologyClassField.makeLabel("", false, null);
-		entityA.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Entity.class));
+		entityA.setFilterClass(Annotation.OBOE_CLASSES.get(Entity.class));
 		contextPanel.add(entityA);
 		
 		contextPanel.add(WidgetFactory.makeLabel(" was ", false, null));
 
 		// context
 		contextRelationship = OntologyClassField.makeLabel("", false, null);
-		contextRelationship.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Relationship.class));
+		contextRelationship.setFilterClass(Annotation.OBOE_CLASSES.get(Relationship.class));
 		contextPanel.add(contextRelationship);
 		
 		contextPanel.add(WidgetFactory.makeLabel(" the ", false, null));
 		
 		// entity B
 		entityB = OntologyClassField.makeLabel("", false, null);
-		entityB.setFilterClass(AnnotationPlugin.OBOE_CLASSES.get(Entity.class));
+		entityB.setFilterClass(Annotation.OBOE_CLASSES.get(Entity.class));
 		contextPanel.add(entityB);
 		
 		contextPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,

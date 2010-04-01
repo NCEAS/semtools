@@ -13,13 +13,13 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
+import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Entity;
 import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
 import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.ontology.OntologyClass;
-import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.ui.OntologyClassField;
 
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.CustomList;
@@ -52,10 +52,10 @@ public class CriteriaPanel extends JPanel {
 			}
 		};
 		Object[] subjectValues = new OntologyClass[] {
-				AnnotationPlugin.OBOE_CLASSES.get(Entity.class), 
-				AnnotationPlugin.OBOE_CLASSES.get(Characteristic.class), 
-				AnnotationPlugin.OBOE_CLASSES.get(Standard.class), 
-				AnnotationPlugin.OBOE_CLASSES.get(Protocol.class)};
+				Annotation.OBOE_CLASSES.get(Entity.class), 
+				Annotation.OBOE_CLASSES.get(Characteristic.class), 
+				Annotation.OBOE_CLASSES.get(Standard.class), 
+				Annotation.OBOE_CLASSES.get(Protocol.class)};
 		subject = WidgetFactory.makePickList(subjectValues, false, 0, subjectListener);
 		
 		Object[] conditionValues = new String[] {"is", "is not"};

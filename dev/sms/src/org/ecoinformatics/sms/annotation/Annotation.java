@@ -32,8 +32,10 @@
  */
 package org.ecoinformatics.sms.annotation;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -359,6 +361,12 @@ public class Annotation {
    private List<Ontology> _ontologies = new ArrayList();
    private List<Observation> _observations = new ArrayList();
    private List<Mapping> _mappings = new ArrayList();
+   
+   /**
+    * Maps an Annotation Java Class to a specific OBOE OntologyClass
+    */
+   public static Map<Class,OntologyClass> OBOE_CLASSES = new HashMap<Class, OntologyClass>();
+
    public static String ANNOTATION_NS =
       "http://ecoinformatics.org/sms/annotation.0.9";
 
