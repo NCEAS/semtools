@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
 
+import org.ecoinformatics.sms.plugins.pages.ComplexQueryPage;
 import org.ecoinformatics.sms.plugins.pages.CompoundQueryPage;
 import org.ecoinformatics.sms.plugins.search.ResultSetComparator;
 
@@ -51,7 +52,7 @@ import org.ecoinformatics.sms.plugins.search.ResultSetComparator;
 public class CompoundAnnotationSearchCommand implements Command {
 
 
-	private CompoundQueryPage cqp;
+	private ComplexQueryPage cqp;
 
 	/**
 	 * Constructor of AnnotationSearchCommand
@@ -75,7 +76,7 @@ public class CompoundAnnotationSearchCommand implements Command {
 		if (morphoFrame != null) {
 			// easier to perform searches over and over
 			if (cqp == null) {
-				cqp = new CompoundQueryPage();
+				cqp = new ComplexQueryPage();
 			}
 			// show the dialog
 			ModalDialog dialog = 

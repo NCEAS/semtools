@@ -58,6 +58,12 @@ import edu.ucsb.nceas.morpho.query.Query;
 import edu.ucsb.nceas.morpho.util.UISettings;
 import edu.ucsb.nceas.utilities.OrderedMap;
 
+/**
+ * @deprecated in favor of the ComplexQueryPage
+ * @see ComplexQueryPage		
+ * @author leinfelder
+ *
+ */
 public class CompoundQueryPage extends AbstractUIPage {
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
