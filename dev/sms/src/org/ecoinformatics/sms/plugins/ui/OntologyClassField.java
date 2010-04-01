@@ -67,9 +67,13 @@ public class OntologyClassField extends JTextField {
 		this.ontologyClass = ontologyClass;
 		if (ontologyClass != null) {
 			this.setText(ontologyClass.getName());
+			this.setToolTipText(ontologyClass.getName());
 		}
 		else {
 			this.setText("");
+			if (filterClass != null) {
+				this.setToolTipText(filterClass.getName());
+			}
 		}
 		this.setCaretPosition(0);
 		this.revalidate();
