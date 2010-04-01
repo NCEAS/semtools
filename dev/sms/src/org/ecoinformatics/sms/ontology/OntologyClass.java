@@ -131,7 +131,7 @@ public class OntologyClass {
         if(!(obj instanceof OntologyClass))
             return false;
         OntologyClass c = (OntologyClass) obj;
-        if(c.getURI().equals(getURI()))
+        if(c != null && c.getURI().equals(getURI()))
             return true;
         return false;
     }
