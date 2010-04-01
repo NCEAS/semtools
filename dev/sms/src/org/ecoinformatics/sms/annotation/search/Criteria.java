@@ -7,7 +7,7 @@ import org.ecoinformatics.sms.ontology.OntologyClass;
 
 public class Criteria  {
 
-	private OntologyClass subject;
+	private Class subject;
 	private String condition;
 	private OntologyClass value;
 	
@@ -18,10 +18,10 @@ public class Criteria  {
 	private boolean all = true;
 	private List<Criteria> subCriteria;
 	
-	public OntologyClass getSubject() {
+	public Class getSubject() {
 		return subject;
 	}
-	public void setSubject(OntologyClass subject) {
+	public void setSubject(Class subject) {
 		this.subject = subject;
 	}
 	public String getCondition() {

@@ -879,24 +879,24 @@ public class DefaultAnnotationManager implements AnnotationManager {
 				}
 			} else {
 				// what criteria was given?
-				OntologyClass subject = criteria.getSubject();
+				Class subject = criteria.getSubject();
 				OntologyClass value = criteria.getValue();
 				if (value == null) {
 					return 0;
 				}
-				if (subject != null && subject.equals(Annotation.OBOE_CLASSES.get(Entity.class))) {
+				if (subject != null && subject.equals(Entity.class)) {
 					entities.add(value);
 					return hasMatchingEntity(a, entities);
 				}
-				if (subject != null && subject.equals(Annotation.OBOE_CLASSES.get(Characteristic.class))) {
+				if (subject != null && subject.equals(Characteristic.class)) {
 					characteristics.add(value);
 					return hasMatchingCharacteristic(a, characteristics);
 				}
-				if (subject != null && subject.equals(Annotation.OBOE_CLASSES.get(Standard.class))) {
+				if (subject != null && subject.equals(Standard.class)) {
 					standards.add(value);
 					return hasMatchingStandard(a, standards);
 				}
-				if (subject != null && subject.equals(Annotation.OBOE_CLASSES.get(Protocol.class))) {
+				if (subject != null && subject.equals(Protocol.class)) {
 					protocols.add(value);
 					return hasMatchingProtocol(a, protocols);
 				}

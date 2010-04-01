@@ -5,7 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
@@ -51,6 +53,7 @@ public class CriteriaPanel extends JPanel {
 				value.setFilterClass((OntologyClass) source.getSelectedItem());
 			}
 		};
+		// use the mapped OntologyClasses for the drop down
 		Object[] subjectValues = new OntologyClass[] {
 				Annotation.OBOE_CLASSES.get(Entity.class), 
 				Annotation.OBOE_CLASSES.get(Characteristic.class), 
@@ -126,8 +129,17 @@ public class CriteriaPanel extends JPanel {
 	 * @return criteria as it exists in this panel
 	 */
 	public Criteria getCriteria() {
-		// main criteria options
-		criteria.setSubject((OntologyClass) subject.getSelectedItem());
+		// find the Java class we want for the selected OntologyClass - it is the key in the map
+		OntologyClass selectedSubject = (OntologyClass) subject.getSelectedItem();
+		Iterator<Entry<Class, OntologyClass>> subjectIter = Annotation.OBOE_CLASSES.entrySet().iterator();
+		while (subjectIter.hasNext()) {
+			Entry<Class, OntologyClass> entry = subjectIter.next();
+			if (entry.getValue().equals(selectedSubject)) {
+				criteria.setSubject(entry.getKey());
+				break;
+			}
+		}
+		
 		criteria.setCondition((String) condition.getSelectedItem());
 		criteria.setValue(value.getOntologyClass());
 		criteria.setAll(anyAll.isSelected());
@@ -155,7 +167,7 @@ public class CriteriaPanel extends JPanel {
 		subcriteriaPanel.setVisible(criteria.isGroup());
 		
 		// set the values in the UI
-		subject.setSelectedItem(criteria.getSubject());
+		subject.setSelectedItem(Annotation.OBOE_CLASSES.get(criteria.getSubject()));
 		condition.setSelectedItem(criteria.getCondition());
 		this.value.setOntologyClass(criteria.getValue());
 		
