@@ -40,13 +40,7 @@ import javax.swing.JPanel;
 
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
-import org.ecoinformatics.sms.annotation.Characteristic;
-import org.ecoinformatics.sms.annotation.Entity;
-import org.ecoinformatics.sms.annotation.Protocol;
-import org.ecoinformatics.sms.annotation.Standard;
-import org.ecoinformatics.sms.annotation.Triple;
 import org.ecoinformatics.sms.annotation.search.Criteria;
-import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.search.CriteriaRenderer;
 
@@ -167,69 +161,23 @@ public class ComplexQueryPage extends AbstractUIPage {
 
 	private void generateQuery() {
 
-		List<OntologyClass> characteristics = new ArrayList<OntologyClass>();
-		List<OntologyClass> standards = new ArrayList<OntologyClass>();
-		List<OntologyClass> protocols = new ArrayList<OntologyClass>();
-		List<OntologyClass> entities = new ArrayList<OntologyClass>();
-		List<Triple> contexts = new ArrayList<Triple>();
-
+		// holds the subcriteria in the customlist
+		Criteria criteria = new Criteria();
+		criteria.setGroup(true);
+		criteria.setAll(anyAll.isSelected());
+		List<Criteria> subCriteria= new ArrayList<Criteria>();
 		
 		for (int i = 0; i < queryList.getListOfRowLists().size(); i++) {
-			
 			// get the Criteria object from the list
 			List rowList = (List) queryList.getListOfRowLists().get(i);
-			Criteria criteria = (Criteria) rowList.get(0);
-			
-			if (criteria.isGroup()) {
-				for (Criteria subcriteria: criteria.getSubCriteria()) {
-					
-					// handle context
-					if (criteria.isContext()) {
-						Triple context = criteria.getContextTriple();
-						if (context != null) {
-							contexts.add(context);
-						}
-					} else {
-						// what criteria were given?
-						OntologyClass subject = subcriteria.getSubject();
-						OntologyClass value = subcriteria.getValue();
-						if (value == null) {
-							continue;
-						}
-						if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Entity.class))) {
-							entities.add(value);
-						}
-						if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Characteristic.class))) {
-							characteristics.add(value);
-						}
-						if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Standard.class))) {
-							standards.add(value);
-						}
-						if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Protocol.class))) {
-							protocols.add(value);
-						}
-					}
-				}
-			}
-			else {
-			// TODO: handle no grouping
-			}
-			
+			Criteria c = (Criteria) rowList.get(0);
+			subCriteria.add(c);
 		}
-		
-		// TODO: handle ANY/ALL
-		// TODO: handle is/is not
-		// TODO: handle groups
+		criteria.setSubCriteria(subCriteria);
 		
 		// generate the query
-		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getMatchingAnnotations(
-				entities, 
-				characteristics, 
-				standards,
-				protocols,
-				contexts,
-				true);
-		
+		List<Annotation> annotations = 
+			SMS.getInstance().getAnnotationManager().getMatchingAnnotations(criteria);
 		
 		// get the query text
 		String querySpec = AnnotationPlugin.getDocQuery(annotations);

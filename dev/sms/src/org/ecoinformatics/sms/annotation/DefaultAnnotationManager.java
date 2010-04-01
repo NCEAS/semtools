@@ -37,6 +37,7 @@ import org.ecoinformatics.sms.OntologyManager;
 import org.ecoinformatics.sms.AnnotationManager;
 import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.ontology.OntologyClass;
+import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 
 import java.util.HashMap;
 import java.util.List;
@@ -237,7 +238,16 @@ public class DefaultAnnotationManager implements AnnotationManager {
    }
    
    public List<Annotation> getMatchingAnnotations(Criteria criteria) {
-	   return getAnnotations();
+	   //let the fun begin!
+	   List<Annotation> results = new ArrayList<Annotation>();
+	   for(Annotation annotation : getAnnotations()) {
+		   int match = matchesCriteria(annotation, criteria);
+		   if (match < 0) {
+			   continue;
+		   }
+		   results.add(annotation);
+	   }
+	   return results;
    }
 
 
@@ -842,6 +852,76 @@ public class DefaultAnnotationManager implements AnnotationManager {
          return result;
       addSuperclasses(result);
       return result;
+   }
+   
+   /** 
+    * This method is called recursively on the subcriteria, building up a weighted return
+    * @param a the Annotation to be evaluated for matching
+    * @param criteria potentially complex 
+    * @return
+    */
+   private int matchesCriteria(Annotation a, Criteria criteria) {
+	   
+	   //simple first case
+	   if (!criteria.isGroup()) {
+		   // everything in a list
+			List<OntologyClass> characteristics = new ArrayList<OntologyClass>();
+			List<OntologyClass> standards = new ArrayList<OntologyClass>();
+			List<OntologyClass> protocols = new ArrayList<OntologyClass>();
+			List<OntologyClass> entities = new ArrayList<OntologyClass>();
+			List<Triple> contexts = new ArrayList<Triple>();
+			
+			// try context
+			if (criteria.isContext()) {
+				Triple context = criteria.getContextTriple();
+				if (context != null) {
+					contexts.add(context);
+					return hasMatchingContext(a, contexts);
+				}
+			} else {
+				// what criteria was given?
+				OntologyClass subject = criteria.getSubject();
+				OntologyClass value = criteria.getValue();
+				if (value == null) {
+					return 0;
+				}
+				if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Entity.class))) {
+					entities.add(value);
+					return hasMatchingEntity(a, entities);
+				}
+				if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Characteristic.class))) {
+					characteristics.add(value);
+					return hasMatchingCharacteristic(a, characteristics);
+				}
+				if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Standard.class))) {
+					standards.add(value);
+					return hasMatchingStandard(a, standards);
+				}
+				if (subject != null && subject.equals(AnnotationPlugin.OBOE_CLASSES.get(Protocol.class))) {
+					protocols.add(value);
+					return hasMatchingProtocol(a, protocols);
+				}
+			}
+	   }
+	   else {
+		   // iterate through the subcriteria, keeping track of the match weight
+		   int weight = 0;
+		   if (criteria.getSubCriteria() != null) {
+			   for (Criteria subcriteria: criteria.getSubCriteria()) {
+				   // recurse here
+				   int match = matchesCriteria(a, subcriteria);
+				   // if we require perfect matches, then stop if we missed one
+				   if (match < 0 && criteria.isAll()) {
+					   return -1;
+				   }
+				   // otherwise keep going
+				   weight += match;
+			   }
+		   }
+		   return weight;
+	   }
+	   
+	   return -1;
    }
    
    /**
