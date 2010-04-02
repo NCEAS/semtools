@@ -67,7 +67,9 @@ public class CriteriaRenderer
 	
 	public static void main(String[] args) {
 		JTable table = new JTable(new Object[][] {new Object[] {new Criteria()}}, new Object[][] {new Object[] {"Criteria"}} );
-		table.getColumnModel().getColumn(0).setCellRenderer(new CriteriaRenderer(true));
+		CriteriaRenderer re = new CriteriaRenderer(true);
+		table.getColumnModel().getColumn(0).setCellRenderer(re);
+		table.getColumnModel().getColumn(0).setCellEditor(re);
 		JFrame frame = new JFrame();
 		frame.add(table);
 		frame.setVisible(true);
