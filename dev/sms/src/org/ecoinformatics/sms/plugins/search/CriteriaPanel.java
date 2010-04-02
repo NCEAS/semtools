@@ -174,6 +174,8 @@ public class CriteriaPanel extends JPanel {
 		// are there subcriteria to show?
 		if (criteria.isGroup()) {
 			anyAll.setSelected(criteria.isAll());
+			// stop editing before removing any rows
+			subCriteria.fireEditingStopped();
 			subCriteria.removeAllRows();
 			if (criteria.getSubCriteria() != null) {
 				for (Criteria c: criteria.getSubCriteria()) {

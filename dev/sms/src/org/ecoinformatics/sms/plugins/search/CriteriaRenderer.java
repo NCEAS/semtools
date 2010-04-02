@@ -20,6 +20,9 @@ public class CriteriaRenderer
 	
 	private CriteriaPanel criteriaPanelEditor;
 	
+	private CriteriaPanel criteriaPanelRenderer;
+
+	
 	public CriteriaRenderer(boolean isGroup) {
 		criteriaPanelEditor = new CriteriaPanel(isGroup);
 	}
@@ -51,13 +54,14 @@ public class CriteriaRenderer
 	// different panel instance for the renderer - very important!
 	public Component getTableCellRendererComponent(JTable table, Object value,
 			boolean isSelected, boolean hasFocus, int row, int column) {
-		CriteriaPanel criteriaPanelRenderer = null;
-		// get the value to render
+		//CriteriaPanel criteriaPanelRenderer = null;
 		// get the existing Criteria value
 		if (value instanceof Criteria) {
 			Criteria c = (Criteria) value;
 			// make a renderer panel
-			criteriaPanelRenderer = new CriteriaPanel(c.isGroup());
+			if (criteriaPanelRenderer == null) {
+				criteriaPanelRenderer = new CriteriaPanel(c.isGroup());
+			}
 			// set the existing value
 			criteriaPanelRenderer.setCriteria(c);
 			table.setRowHeight(criteriaPanelRenderer.getPreferredSize().height + 5);

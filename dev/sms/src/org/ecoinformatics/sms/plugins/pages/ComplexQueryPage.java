@@ -117,7 +117,8 @@ public class ComplexQueryPage extends AbstractUIPage {
 				false //showMoveDownButton
 				);		
 		// add
-		queryList.setCustomAddAction(new AbstractAction("Add Group") {
+		//queryList.setCustomAddAction(new AbstractAction("Add Group") {
+		queryList.setCustomAddAction(new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 	
 				Criteria criteria = new Criteria();
