@@ -20,6 +20,9 @@ understandable to the rest of us.  Most importantly, try to keep the
 top-level directories organized and to a minimum.  A structure that
 has worked for other projects is:
 
+Terminology: 
+sms: semantic mediation system
+
 semtools
    |
    |-- trunk
