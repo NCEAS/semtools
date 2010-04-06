@@ -75,9 +75,9 @@ public class CompoundAnnotationSearchCommand implements Command {
 		// QueryDialog Create and show as modal
 		if (morphoFrame != null) {
 			// easier to perform searches over and over
-			//if (cqp == null) {
+			if (cqp == null) {
 				cqp = new ComplexQueryPage();
-			//}
+			}
 			// show the dialog
 			ModalDialog dialog = 
 				new ModalDialog(
