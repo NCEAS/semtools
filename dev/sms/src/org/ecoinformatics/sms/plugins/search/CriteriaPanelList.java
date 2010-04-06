@@ -43,9 +43,9 @@ public class CriteriaPanelList extends JPanel {
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		this.add(anyAll);
 		this.add(subcriteriaPanel);
-		this.add(Box.createHorizontalGlue());
+		//this.add(Box.createHorizontalGlue());
 		
-		this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
+		this.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, Color.gray));
 
 		
 	}

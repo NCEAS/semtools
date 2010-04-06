@@ -92,7 +92,7 @@ public class CriteriaPanel extends JPanel {
 		
 		WidgetFactory.setPrefMaxSizes(criteriaPanel, new Dimension(350, WizardSettings.WIZARD_CONTENT_SINGLE_LINE_DIMS.height + 5));
 		
-		criteriaPanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.yellow));
+		//criteriaPanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.yellow));
 		
 		// context triple
 		contextPanel = new ContextTriplePanel();
@@ -127,7 +127,7 @@ public class CriteriaPanel extends JPanel {
 		buttonPanel.add(addContextButton);
 		buttonPanel.add(removeButton);
 		
-		buttonPanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.blue));
+		//buttonPanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.blue));
 		
 		// group the content panel
 		JPanel contentPanel = WidgetFactory.makePanel();
@@ -143,7 +143,7 @@ public class CriteriaPanel extends JPanel {
 		this.add(Box.createHorizontalGlue());
 		
 		//this.setMaximumSize(new Dimension(300,100));
-		this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
+		this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, Color.gray));
 		
 		// set visibility for group/non-group
 		setCriteria(c);
@@ -201,6 +201,9 @@ public class CriteriaPanel extends JPanel {
 		if (criteria.isGroup()) {
 			subCriteria.setCriteria(criteria);
 		}
+		// show buttons?
+		boolean showButtons = (criteria.getSubCriteria() == null || criteria.getSubCriteria().size() == 0);
+		buttonPanel.setVisible(showButtons);
 	}
 }
 class ListActionListener implements ActionListener {
