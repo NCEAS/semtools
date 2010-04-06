@@ -34,7 +34,7 @@ import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
 
 public class CriteriaPanel extends JPanel {
 
-	public final Dimension LIST_BUTTON_DIMS = new Dimension(45, 30);
+	public static final Dimension LIST_BUTTON_DIMS = new Dimension(45, 30);
 	
 	private Criteria criteria;
 	
@@ -49,9 +49,6 @@ public class CriteriaPanel extends JPanel {
 	private ContextTriplePanel contextPanel;
 	
 	private JPanel buttonPanel;
-	private JButton addButton;
-	private JButton addGroupButton;
-	private JButton addContextButton;
 	private JButton removeButton;
 	
 	public CriteriaPanel(Criteria c) {
@@ -107,24 +104,13 @@ public class CriteriaPanel extends JPanel {
 			subcriteriaPanel.add(subCriteria);
 		}
 		
-		// add
-		ActionListener addListener = new ListActionListener(ListActionListener.ADD);
-		addButton = WidgetFactory.makeJButton("+", addListener, LIST_BUTTON_DIMS);
-		// group
-		ActionListener addGroupListener = new ListActionListener(ListActionListener.ADD_GROUP);
-		addGroupButton = WidgetFactory.makeJButton("+G", addGroupListener, LIST_BUTTON_DIMS);
-		// context
-		ActionListener addContextListener = new ListActionListener(ListActionListener.ADD_CONTEXT);
-		addContextButton = WidgetFactory.makeJButton("+C", addContextListener, LIST_BUTTON_DIMS);
+		
 		// remove button
-		ActionListener removeListener = new ListActionListener(ListActionListener.REMOVE);
+		ActionListener removeListener = new PanelActionListener(PanelActionListener.REMOVE);
 		removeButton = WidgetFactory.makeJButton("-", removeListener, LIST_BUTTON_DIMS);
 		
 		buttonPanel = WidgetFactory.makePanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
-		buttonPanel.add(addButton);
-		buttonPanel.add(addGroupButton);
-		buttonPanel.add(addContextButton);
 		buttonPanel.add(removeButton);
 		
 		//buttonPanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.blue));
@@ -186,12 +172,6 @@ public class CriteriaPanel extends JPanel {
 	public void setCriteria(Criteria criteria) {
 		this.criteria = criteria;
 		
-		//set visibility for what we are showing
-		criteriaPanel.setVisible(!criteria.isGroup());
-		criteriaPanel.setVisible(!(criteria.isContext() || criteria.isGroup()));
-		contextPanel.setVisible(criteria.isContext());
-		subcriteriaPanel.setVisible(criteria.isGroup());
-		
 		// set the values in the UI
 		subject.setSelectedItem(Annotation.OBOE_CLASSES.get(criteria.getSubject()));
 		condition.setSelectedItem(criteria.getCondition());
@@ -201,12 +181,24 @@ public class CriteriaPanel extends JPanel {
 		if (criteria.isGroup()) {
 			subCriteria.setCriteria(criteria);
 		}
+		
+		calculateVisibility();
+		
+	}
+	
+	public void calculateVisibility() {
+		//set visibility for what we are showing
+		criteriaPanel.setVisible(!criteria.isGroup());
+		criteriaPanel.setVisible(!(criteria.isContext() || criteria.isGroup()));
+		contextPanel.setVisible(criteria.isContext());
+		subcriteriaPanel.setVisible(criteria.isGroup());
+		
 		// show buttons?
 		boolean showButtons = (criteria.getSubCriteria() == null || criteria.getSubCriteria().size() == 0);
-		buttonPanel.setVisible(showButtons);
+		//buttonPanel.setVisible(showButtons);
 	}
 }
-class ListActionListener implements ActionListener {
+class PanelActionListener implements ActionListener {
 	
 	private int mode;
 	
@@ -215,7 +207,7 @@ class ListActionListener implements ActionListener {
 	static final int ADD_GROUP = 2;
 	static final int ADD_CONTEXT = 3;
 
-	public ListActionListener(int mode) {
+	public PanelActionListener(int mode) {
 		this.mode = mode;
 	}
 	

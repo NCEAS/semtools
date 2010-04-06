@@ -1,11 +1,15 @@
 package org.ecoinformatics.sms.plugins.search;
 
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
@@ -20,6 +24,11 @@ public class CriteriaPanelList extends JPanel {
 	private JPanel subcriteriaPanel;
 	private JCheckBox anyAll;
 	
+	private JPanel buttonPanel;
+	private JButton addButton;
+	private JButton addGroupButton;
+	private JButton addContextButton;
+	
 	
 	public CriteriaPanelList(Criteria c) {
 		super();
@@ -32,6 +41,7 @@ public class CriteriaPanelList extends JPanel {
 		// add the subcriteria widgets to the panel
 		subcriteriaPanel = WidgetFactory.makePanel();
 		subcriteriaPanel.setLayout(new BoxLayout(subcriteriaPanel, BoxLayout.Y_AXIS));
+		subcriteriaPanel.setAlignmentY(TOP_ALIGNMENT);
 		subcriteriaPanel.removeAll();
 		if (criteria.getSubCriteria() != null) {
 			for (Criteria sc: criteria.getSubCriteria()) {
@@ -40,13 +50,34 @@ public class CriteriaPanelList extends JPanel {
 			}
 		}
 		
+		// add
+		ActionListener addListener = new ListActionListener(ListActionListener.ADD);
+		addButton = WidgetFactory.makeJButton("+", addListener, CriteriaPanel.LIST_BUTTON_DIMS);
+		// group
+		ActionListener addGroupListener = new ListActionListener(ListActionListener.ADD_GROUP);
+		addGroupButton = WidgetFactory.makeJButton("+G", addGroupListener, CriteriaPanel.LIST_BUTTON_DIMS);
+		// context
+		ActionListener addContextListener = new ListActionListener(ListActionListener.ADD_CONTEXT);
+		addContextButton = WidgetFactory.makeJButton("+C", addContextListener, CriteriaPanel.LIST_BUTTON_DIMS);
+		
+		buttonPanel = WidgetFactory.makePanel();
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+		buttonPanel.add(addButton);
+		buttonPanel.add(addGroupButton);
+		buttonPanel.add(addContextButton);
+		
+		JPanel optionPanel = WidgetFactory.makePanel();
+		optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.Y_AXIS));
+		optionPanel.setAlignmentY(TOP_ALIGNMENT);
+		optionPanel.add(anyAll);
+		optionPanel.add(buttonPanel);
+		
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		this.add(anyAll);
+		this.add(optionPanel);
 		this.add(subcriteriaPanel);
 		//this.add(Box.createHorizontalGlue());
 		
 		this.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, Color.gray));
-
 		
 	}
 	
@@ -88,6 +119,65 @@ public class CriteriaPanelList extends JPanel {
 		}
 		
 		subcriteriaPanel.revalidate();
+	}
+	
+}
+class ListActionListener implements ActionListener {
+	
+	private int mode;
+	
+	static final int ADD = 0;
+	static final int ADD_GROUP = 2;
+	static final int ADD_CONTEXT = 3;
+
+	public ListActionListener(int mode) {
+		this.mode = mode;
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		switch (this.mode) {
+		case ADD:
+			doAdd(e);
+			break;
+		case ADD_GROUP:
+			doAdd(e);
+			break;
+		case ADD_CONTEXT:
+			doAdd(e);
+			break;
+		// do add handles them all
+		default:
+			doAdd(e);
+			break;
+		}
+	}
+	public void doAdd(ActionEvent e) {
+		// get the parent list to add to
+		JButton source = (JButton) e.getSource();
+		Container parent = source.getParent();
+		CriteriaPanelList cpl = null;
+		while (parent != null) {
+			// get the list that is holding the criteria
+			if (parent instanceof CriteriaPanelList) {
+				cpl = (CriteriaPanelList) parent;
+				break;
+			}
+			parent = parent.getParent();
+		}
+		// the parent criteria we will be adding to
+		Criteria parentCriteria = cpl.getCriteria();		
+		List<Criteria> sc = parentCriteria.getSubCriteria();
+		if (sc == null) {
+			sc = new ArrayList<Criteria>();
+		}
+		Criteria c = new Criteria();
+		c.setGroup(mode == ADD_GROUP);
+		c.setContext(mode == ADD_CONTEXT);
+		sc.add(c);
+		// set the subcriteria and the list's criteria
+		parentCriteria.setSubCriteria(sc);
+		cpl.setCriteria(parentCriteria);
+		
 	}
 	
 }
