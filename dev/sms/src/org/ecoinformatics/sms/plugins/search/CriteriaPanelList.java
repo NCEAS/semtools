@@ -53,13 +53,17 @@ public class CriteriaPanelList extends JPanel {
 		// add
 		ActionListener addListener = new ListActionListener(ListActionListener.ADD);
 		addButton = WidgetFactory.makeJButton("+", addListener, CriteriaPanel.LIST_BUTTON_DIMS);
+		addButton.setToolTipText("Add Criteria");
 		// group
 		ActionListener addGroupListener = new ListActionListener(ListActionListener.ADD_GROUP);
-		addGroupButton = WidgetFactory.makeJButton("+G", addGroupListener, CriteriaPanel.LIST_BUTTON_DIMS);
+		addGroupButton = WidgetFactory.makeJButton("[+]", addGroupListener, CriteriaPanel.LIST_BUTTON_DIMS);
+		addGroupButton.setToolTipText("Add Group");
+
 		// context
 		ActionListener addContextListener = new ListActionListener(ListActionListener.ADD_CONTEXT);
-		addContextButton = WidgetFactory.makeJButton("+C", addContextListener, CriteriaPanel.LIST_BUTTON_DIMS);
-		
+		addContextButton = WidgetFactory.makeJButton("<+>", addContextListener, CriteriaPanel.LIST_BUTTON_DIMS);
+		addContextButton.setToolTipText("Add Context");
+
 		buttonPanel = WidgetFactory.makePanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 		buttonPanel.add(addButton);

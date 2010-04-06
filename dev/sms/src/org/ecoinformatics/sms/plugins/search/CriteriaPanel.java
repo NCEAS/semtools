@@ -34,7 +34,7 @@ import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
 
 public class CriteriaPanel extends JPanel {
 
-	public static final Dimension LIST_BUTTON_DIMS = new Dimension(45, 30);
+	public static final Dimension LIST_BUTTON_DIMS = new Dimension(55, 30);
 	
 	private Criteria criteria;
 	
