@@ -69,9 +69,10 @@ public class ContextTriplePanel extends JPanel {
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		// Context
-		JPanel contextPanel = WidgetFactory.makePanel(2);
-		contextPanel.add(WidgetFactory.makeLabel("The Observation was made where the ", false, null));
-		
+		JPanel contextPanel = WidgetFactory.makePanel();
+		//contextPanel.add(WidgetFactory.makeLabel("The Observation was made where the ", false, null));
+		contextPanel.add(WidgetFactory.makeLabel("Context:", false, null));
+
 		// entity A
 		entityA = OntologyClassField.makeLabel("", false, null);
 		entityA.setFilterClass(Annotation.OBOE_CLASSES.get(Entity.class));
@@ -96,7 +97,7 @@ public class ContextTriplePanel extends JPanel {
 		
 		this.add(contextPanel);
 
-		this.add(WidgetFactory.makeDefaultSpacer());
+		//this.add(WidgetFactory.makeDefaultSpacer());
 
 	}
 	
