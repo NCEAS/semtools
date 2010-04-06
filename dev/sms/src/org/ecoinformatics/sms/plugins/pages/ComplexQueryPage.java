@@ -28,13 +28,10 @@
 
 package org.ecoinformatics.sms.plugins.pages;
 
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -42,11 +39,10 @@ import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
-import org.ecoinformatics.sms.plugins.search.CriteriaRenderer;
+import org.ecoinformatics.sms.plugins.search.CriteriaPanelList;
 
 import edu.ucsb.nceas.morpho.Morpho;
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
-import edu.ucsb.nceas.morpho.plugins.datapackagewizard.CustomList;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
 import edu.ucsb.nceas.morpho.query.Query;
@@ -66,15 +62,13 @@ public class ComplexQueryPage extends AbstractUIPage {
 	// *
 		
 	// query list
-	private CustomList queryList;
+	private CriteriaPanelList queryList;
 	
 	// the final query
 	private Query query;
 	
 	// docids from the annotation query
-	private List<String> docids = new ArrayList<String>();
-	private JCheckBox anyAll;
-	
+	private List<String> docids = new ArrayList<String>();	
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
@@ -103,41 +97,17 @@ public class ComplexQueryPage extends AbstractUIPage {
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
 		// Query list		
-		String[] colNames = new String[] {"Conditions"};
-		Object[] editors = new Object[] {new CriteriaRenderer(true) };
-		queryList = WidgetFactory.makeList(
-				colNames, 
-				editors, 
-				10, //displayRows, 
-				true, //showAddButton, 
-				false, //showEditButton, 
-				false, //showDuplicateButton, 
-				true, //showDeleteButton, 
-				false, //showMoveUpButton, 
-				false //showMoveDownButton
-				);		
-		// add
-		//queryList.setCustomAddAction(new AbstractAction("Add Group") {
-		queryList.setCustomAddAction(new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
-	
-				Criteria criteria = new Criteria();
-				criteria.setGroup(true);
-				
-				List rowList = new ArrayList();
-				rowList.add(criteria);
-				queryList.addRow(rowList);
-				
-				
-			}
-		});
-
-		// the any/all checkbox
-		anyAll = WidgetFactory.makeCheckBox("Match All", false);
+		Criteria c = new Criteria();
+		c.setGroup(true);
+		List<Criteria> subcriteria = new ArrayList<Criteria>();
+		Criteria sc = new Criteria();
+		sc.setGroup(false);
+		subcriteria.add(sc);
+		c.setSubCriteria(subcriteria);
+		queryList = new CriteriaPanelList(c);
 
 		JPanel queryListPanel = WidgetFactory.makePanel();
 		
-		queryListPanel.add(anyAll);
 		queryListPanel.add(queryList);
 		
 		queryListPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
@@ -162,19 +132,8 @@ public class ComplexQueryPage extends AbstractUIPage {
 
 	private void generateQuery() {
 
-		// holds the subcriteria in the customlist
-		Criteria criteria = new Criteria();
-		criteria.setGroup(true);
-		criteria.setAll(anyAll.isSelected());
-		List<Criteria> subCriteria= new ArrayList<Criteria>();
-		
-		for (int i = 0; i < queryList.getListOfRowLists().size(); i++) {
-			// get the Criteria object from the list
-			List rowList = (List) queryList.getListOfRowLists().get(i);
-			Criteria c = (Criteria) rowList.get(0);
-			subCriteria.add(c);
-		}
-		criteria.setSubCriteria(subCriteria);
+		// look up the criteria
+		Criteria criteria = queryList.getCriteria();
 		
 		// generate the query
 		List<Annotation> annotations = 

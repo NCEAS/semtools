@@ -1,7 +1,10 @@
 package org.ecoinformatics.sms.plugins.search;
 
-import java.awt.GridLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -9,9 +12,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
@@ -22,13 +26,16 @@ import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
 import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.ontology.OntologyClass;
+import org.ecoinformatics.sms.plugins.ui.ContextTriplePanel;
 import org.ecoinformatics.sms.plugins.ui.OntologyClassField;
 
-import edu.ucsb.nceas.morpho.plugins.datapackagewizard.CustomList;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
+import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
 
 public class CriteriaPanel extends JPanel {
 
+	public final Dimension LIST_BUTTON_DIMS = new Dimension(45, 30);
+	
 	private Criteria criteria;
 	
 	private JPanel criteriaPanel;
@@ -37,14 +44,18 @@ public class CriteriaPanel extends JPanel {
 	private OntologyClassField value;
 	
 	private JPanel subcriteriaPanel;
-	private JCheckBox anyAll;
-	private CustomList subCriteria;
+	private CriteriaPanelList subCriteria;
 	
+	private ContextTriplePanel contextPanel;
 	
-	public CriteriaPanel(boolean isGroup) {
+	private JPanel buttonPanel;
+	private JButton addButton;
+	private JButton addGroupButton;
+	private JButton addContextButton;
+	private JButton removeButton;
+	
+	public CriteriaPanel(Criteria c) {
 		super();
-				
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		// change the filter class based on what is selected 
 		ItemListener subjectListener = new ItemListener() {
@@ -60,67 +71,82 @@ public class CriteriaPanel extends JPanel {
 				Annotation.OBOE_CLASSES.get(Standard.class), 
 				Annotation.OBOE_CLASSES.get(Protocol.class)};
 		subject = WidgetFactory.makePickList(subjectValues, false, 0, subjectListener);
+		WidgetFactory.setPrefMaxSizes(subject, WizardSettings.WIZARD_CONTENT_LABEL_DIMS);
 		
 		Object[] conditionValues = new String[] {"is", "is not"};
 		condition = WidgetFactory.makePickList(conditionValues, false, 0, null);
-		
+		WidgetFactory.setPrefMaxSizes(condition, WizardSettings.WIZARD_CONTENT_LABEL_DIMS);
+
 		value = OntologyClassField.makeLabel("", false, null);
 		value.setFilterClass((OntologyClass) subject.getSelectedItem());
+		WidgetFactory.setPrefMaxSizes(value, WizardSettings.WIZARD_CONTENT_LABEL_DIMS);
 		
 		// make the panel
-		criteriaPanel = WidgetFactory.makePanel();
-		criteriaPanel.setLayout(new GridLayout(1,3));
+		criteriaPanel = WidgetFactory.makePanel(1);
+		//criteriaPanel.setLayout(new GridLayout(1,3));
+		//criteriaPanel.setLayout(new BoxLayout(criteriaPanel, BoxLayout.X_AXIS));
 
 		criteriaPanel.add(subject);
 		criteriaPanel.add(condition);
 		criteriaPanel.add(value);
 		
-		this.add(criteriaPanel);
+		WidgetFactory.setPrefMaxSizes(criteriaPanel, new Dimension(350, WizardSettings.WIZARD_CONTENT_SINGLE_LINE_DIMS.height + 5));
 		
-		subcriteriaPanel = WidgetFactory.makePanel(5);
-		anyAll = WidgetFactory.makeCheckBox("Match All", false);
-
+		criteriaPanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.yellow));
+		
+		// context triple
+		contextPanel = new ContextTriplePanel();
+		
+		subcriteriaPanel = WidgetFactory.makePanel();
 		// only create the subcriteria list if this is a grouping criteria (infinite loop possible otherwise)
-		if (isGroup) {
-			String[] colNames = new String[] {"Subcriteria"};
-			// non-group criteria are rendered by this list
-			Object[] editors = new Object[] {new CriteriaRenderer(false) };
-			subCriteria = WidgetFactory.makeList(
-					colNames, 
-					editors, 
-					4, //displayRows, 
-					true, //showAddButton, 
-					false, //showEditButton, 
-					false, //showDuplicateButton, 
-					true, //showDeleteButton, 
-					false, //showMoveUpButton, 
-					false //showMoveDownButton
-					);		
-			// add action
-			subCriteria.setCustomAddAction(new AbstractAction() {
-				public void actionPerformed(ActionEvent e) {
-					
-					// we add non-group criteria at this point
-					Criteria criteria = new Criteria();
-					criteria.setGroup(false);
-					
-					List rowList = new ArrayList();
-					rowList.add(criteria);
-					subCriteria.addRow(rowList);
-					
-				}
-			});
+		if (c.isGroup()) {
+			subCriteria = new CriteriaPanelList(c);
 			
 			// add the subcriteria widgets to the panel
-			subcriteriaPanel.setLayout(new BoxLayout(subcriteriaPanel, BoxLayout.X_AXIS));
-			subcriteriaPanel.add(anyAll);
+			subcriteriaPanel.setLayout(new BoxLayout(subcriteriaPanel, BoxLayout.Y_AXIS));
 			subcriteriaPanel.add(subCriteria);
-			this.add(subcriteriaPanel);
 		}
 		
+		// add
+		ActionListener addListener = new ListActionListener(ListActionListener.ADD);
+		addButton = WidgetFactory.makeJButton("+", addListener, LIST_BUTTON_DIMS);
+		// group
+		ActionListener addGroupListener = new ListActionListener(ListActionListener.ADD_GROUP);
+		addGroupButton = WidgetFactory.makeJButton("+G", addGroupListener, LIST_BUTTON_DIMS);
+		// context
+		ActionListener addContextListener = new ListActionListener(ListActionListener.ADD_CONTEXT);
+		addContextButton = WidgetFactory.makeJButton("+C", addContextListener, LIST_BUTTON_DIMS);
+		// remove button
+		ActionListener removeListener = new ListActionListener(ListActionListener.REMOVE);
+		removeButton = WidgetFactory.makeJButton("-", removeListener, LIST_BUTTON_DIMS);
+		
+		buttonPanel = WidgetFactory.makePanel();
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+		buttonPanel.add(addButton);
+		buttonPanel.add(addGroupButton);
+		buttonPanel.add(addContextButton);
+		buttonPanel.add(removeButton);
+		
+		buttonPanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.blue));
+		
+		// group the content panel
+		JPanel contentPanel = WidgetFactory.makePanel();
+		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+		contentPanel.add(criteriaPanel);
+		contentPanel.add(contextPanel);
+		contentPanel.add(subcriteriaPanel);
+		
+		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		//this.setLayout(new GridLayout(1,2));
+		this.add(contentPanel);
+		this.add(buttonPanel);
+		this.add(Box.createHorizontalGlue());
+		
+		//this.setMaximumSize(new Dimension(300,100));
+		this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
+		
 		// set visibility for group/non-group
-		criteriaPanel.setVisible(!isGroup);
-		subcriteriaPanel.setVisible(isGroup);
+		setCriteria(c);
 		
 	}
 	
@@ -129,6 +155,12 @@ public class CriteriaPanel extends JPanel {
 	 * @return criteria as it exists in this panel
 	 */
 	public Criteria getCriteria() {
+		
+		// get the criteria as it exists from the panel of lists
+		if (subCriteria != null) {
+			this.criteria = subCriteria.getCriteria();
+		}
+		
 		// find the Java class we want for the selected OntologyClass - it is the key in the map
 		OntologyClass selectedSubject = (OntologyClass) subject.getSelectedItem();
 		Iterator<Entry<Class, OntologyClass>> subjectIter = Annotation.OBOE_CLASSES.entrySet().iterator();
@@ -142,16 +174,8 @@ public class CriteriaPanel extends JPanel {
 		
 		criteria.setCondition((String) condition.getSelectedItem());
 		criteria.setValue(value.getOntologyClass());
-		criteria.setAll(anyAll.isSelected());
+		//criteria.setAll(anyAll.isSelected());
 		
-		// if there are subcriteria, add them
-		if (subCriteria != null && subCriteria.getRowCount() > 0) {
-			criteria.setSubCriteria(new ArrayList<Criteria>());
-			for (Object obj: subCriteria.getListOfRowLists()) {
-				List rowList = (List) obj;
-				criteria.getSubCriteria().add((Criteria) rowList.get(0));
-			}
-		}
 		return criteria;
 	}
 	
@@ -164,6 +188,8 @@ public class CriteriaPanel extends JPanel {
 		
 		//set visibility for what we are showing
 		criteriaPanel.setVisible(!criteria.isGroup());
+		criteriaPanel.setVisible(!(criteria.isContext() || criteria.isGroup()));
+		contextPanel.setVisible(criteria.isContext());
 		subcriteriaPanel.setVisible(criteria.isGroup());
 		
 		// set the values in the UI
@@ -173,18 +199,112 @@ public class CriteriaPanel extends JPanel {
 		
 		// are there subcriteria to show?
 		if (criteria.isGroup()) {
-			anyAll.setSelected(criteria.isAll());
-			// stop editing before removing any rows
-			subCriteria.fireEditingStopped();
-			subCriteria.removeAllRows();
-			if (criteria.getSubCriteria() != null) {
-				for (Criteria c: criteria.getSubCriteria()) {
-					List rowList = new ArrayList();
-					rowList.add(c);
-					subCriteria.addRow(rowList);
-				}
+			subCriteria.setCriteria(criteria);
+		}
+	}
+}
+class ListActionListener implements ActionListener {
+	
+	private int mode;
+	
+	static final int ADD = 0;
+	static final int REMOVE = 1;
+	static final int ADD_GROUP = 2;
+	static final int ADD_CONTEXT = 3;
+
+	public ListActionListener(int mode) {
+		this.mode = mode;
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		switch (this.mode) {
+		case ADD:
+			doAdd(e);
+			break;
+		case ADD_GROUP:
+			doAdd(e);
+			break;
+		case ADD_CONTEXT:
+			doAdd(e);
+			break;
+		case REMOVE:
+			doRemove(e);
+			break;
+		// do add handles them all
+		default:
+			doAdd(e);
+			break;
+		}
+	}
+	public void doAdd(ActionEvent e) {
+		// get the parent list to add to
+		JButton source = (JButton) e.getSource();
+		Container parent = source.getParent();
+		CriteriaPanelList cpl = null;
+		CriteriaPanel cp = null;
+
+		while (parent != null) {
+			// get the actual panel holding this criteria
+			if (parent instanceof CriteriaPanel) {
+				cp = (CriteriaPanel) parent;
 			}
+			// get the list that is holding the criteria
+			if (parent instanceof CriteriaPanelList) {
+				cpl = (CriteriaPanelList) parent;
+				break;
+			}
+			parent = parent.getParent();
+		}
+		// the parent criteria we will be adding to
+		Criteria parentCriteria = null;				
+		// the criteria for this panel that is being clicked
+		Criteria criteria = cp.getCriteria();
+		if (criteria.isGroup()) {
+			parentCriteria = criteria;
+		} else {
+			// get the list's criteria, to add to the sibling subcriteria
+			parentCriteria = cpl.getCriteria();		
+		}
+		List<Criteria> sc = parentCriteria.getSubCriteria();
+		if (sc == null) {
+			sc = new ArrayList<Criteria>();
+		}
+		Criteria c = new Criteria();
+		c.setGroup(mode == ADD_GROUP);
+		c.setContext(mode == ADD_CONTEXT);
+		sc.add(c);
+		// set the subcriteria and the list's criteria
+		parentCriteria.setSubCriteria(sc);
+		if (criteria.isGroup()) {
+			cp.setCriteria(parentCriteria);
+		} else {
+			cpl.setCriteria(parentCriteria);
 		}
 	}
 	
+	
+	public void doRemove(ActionEvent e) {
+		JButton source = (JButton) e.getSource();
+		Container parent = source.getParent();
+		CriteriaPanelList cpl = null;
+		CriteriaPanel cp = null;
+
+		while (parent != null) {
+			// get the actual panel we want to remove
+			if (parent instanceof CriteriaPanel) {
+				cp = (CriteriaPanel) parent;
+			}
+			// get the list to remove it from
+			if (parent instanceof CriteriaPanelList) {
+				cpl = (CriteriaPanelList) parent;
+				break;
+			}
+			parent = parent.getParent();
+		}
+		// get the list's criteria, and remove ourselves from the subcriteria
+		Criteria parentCriteria = cpl.getCriteria();
+		Criteria criteria = cp.getCriteria();
+		parentCriteria.getSubCriteria().remove(criteria);
+		cpl.setCriteria(parentCriteria);
+	}
 }

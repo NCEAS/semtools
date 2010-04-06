@@ -24,7 +24,7 @@ public class CriteriaRenderer
 
 	
 	public CriteriaRenderer(boolean isGroup) {
-		criteriaPanelEditor = new CriteriaPanel(isGroup);
+		criteriaPanelEditor = new CriteriaPanel(null);
 	}
 	
 	public Component getTableCellEditorComponent(JTable table, Object value,
@@ -35,7 +35,7 @@ public class CriteriaRenderer
 			criteria = (Criteria) value;
 			// make an editor panel if needed
 			if (criteriaPanelEditor == null) {
-				criteriaPanelEditor = new CriteriaPanel(criteria.isGroup());
+				criteriaPanelEditor = new CriteriaPanel(criteria);
 			}
 			// set the existing value
 			criteriaPanelEditor.setCriteria(criteria);
@@ -60,7 +60,7 @@ public class CriteriaRenderer
 			Criteria c = (Criteria) value;
 			// make a renderer panel
 			if (criteriaPanelRenderer == null) {
-				criteriaPanelRenderer = new CriteriaPanel(c.isGroup());
+				criteriaPanelRenderer = new CriteriaPanel(c);
 			}
 			// set the existing value
 			criteriaPanelRenderer.setCriteria(c);
