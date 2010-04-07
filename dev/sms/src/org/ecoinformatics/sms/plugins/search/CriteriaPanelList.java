@@ -67,8 +67,8 @@ public class CriteriaPanelList extends JPanel {
 		buttonPanel = WidgetFactory.makePanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 		buttonPanel.add(addButton);
-		buttonPanel.add(addGroupButton);
 		buttonPanel.add(addContextButton);
+		buttonPanel.add(addGroupButton);
 		
 		JPanel optionPanel = WidgetFactory.makePanel();
 		optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.Y_AXIS));
