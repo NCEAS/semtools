@@ -210,11 +210,9 @@ public class OboeModel {
 		 model.setNsPrefix(namespace,uri);
 		 
 		 // Put the entity information to the model
-		 Property property = model.createProperty(uri, RDFConstant.ENTITY_TYPE);
-		 Map<Long, Resource> entId2resource = new HashMap<Long, Resource>();
+		 Property property = model.createProperty(uri, RDFConstant.ENTITY_TYPE);		 
 		 for(EntityInstance ei: this.m_entityInstances){
 			 Resource r = model.createResource(uri+RDFConstant.ENTITY+ei.getEntId());
-			 entId2resource.put(ei.getEntId(), r);
 			 
 			 r.addProperty(property, ei.getEntityType().getName());
 		 }
@@ -222,16 +220,23 @@ public class OboeModel {
 		// Put the observation information to the model
 		 Property propertyEntId = model.createProperty(uri, RDFConstant.ENTITY_ID);
 		 Property propertyObsType = model.createProperty(uri, RDFConstant.OBSERVATION_TYPE);
-		 Map<Long, Resource> obsId2resource = new HashMap<Long, Resource>();
 		 for(ObservationInstance oi: this.m_observationInstances){
 			 Resource r = model.createResource(uri+RDFConstant.OBSERVATION+oi.getObsId());
-			 obsId2resource.put(oi.getObsId(), r);
 			 
 			 r.addProperty(propertyObsType, oi.getObsType().getLabel());
 			 
-			 RDFNode objectEndId = entId2resource.get(oi.getEntity().getEntId());
-			 Statement statement = model.createStatement(r, propertyEntId, objectEndId);
-			 model.add(statement);
+			 //add it's entity resource to this observation to represent <r has_entity_id refR>
+			 //Way 1: This does not work, because we need to make sure that r reference some EXISTING entity resource
+			 //r.addProperty(propertyEntId,new Long(oi.getEntity().getEntId()).toString());
+			 
+			 //Way 2: this need to reference an existing resource, so, we retrieve it first
+			 Resource refR = model.getResource(uri+RDFConstant.ENTITY+oi.getEntity().getEntId());
+			 //RDFNode objectEndId = entId2resource.get(oi.getEntity().getEntId());
+			 r.addProperty(propertyEntId,refR);
+			 
+			 //Way 3: use statement, works too
+			 //Statement statement = model.createStatement(r, propertyEntId, refR);
+			 //model.add(statement);
 		 }
 		
 		// Put the measurement information to the model
@@ -242,9 +247,10 @@ public class OboeModel {
 			 Resource r = model.createResource(uri+RDFConstant.MEASUREMENT+mi.getMeasId());
 			 r.addProperty(propertyMeasType, mi.getMeasurementType().getLabel());
 			 
-			 RDFNode objectObsId = obsId2resource.get(mi.getObservationInstance().getObsId());	
-			 Statement statement1 = model.createStatement(r, propertyObsId, objectObsId);			 
-			 model.add(statement1);
+			 Resource refR = model.getResource(uri+RDFConstant.OBSERVATION+mi.getObservationInstance().getObsId());
+			 r.addProperty(propertyObsId, refR);
+			 //Statement statement1 = model.createStatement(r, propertyObsId, objectObsId);			 
+			 //model.add(statement1);
 			 
 			 RDFNode objectMeasValue = model.createLiteral(mi.getMeasValue());
 			 Statement statement2 = model.createStatement(r, propertyMeasValue, objectMeasValue); 
@@ -257,9 +263,9 @@ public class OboeModel {
 			 String relationship = ci.getContextType().getRelationship().getName();
 			 Long contextObsId = ci.getContextObservationInstance().getObsId();
 			 
-			 Resource subjectResource =  obsId2resource.get(obsId);			 
+			 Resource subjectResource = model.getResource(uri+RDFConstant.OBSERVATION+obsId);
 			 Property predicateProperty = model.createProperty(uri, relationship);
-			 RDFNode objectRDFNode = obsId2resource.get(contextObsId);
+			 Resource objectRDFNode = model.getResource(uri+RDFConstant.OBSERVATION+contextObsId);
 			 
 			 Statement statement = model.createStatement(subjectResource, predicateProperty, objectRDFNode);
 			 model.add(statement);
