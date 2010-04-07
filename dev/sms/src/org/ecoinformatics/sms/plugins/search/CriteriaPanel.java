@@ -76,6 +76,8 @@ public class CriteriaPanel extends JPanel {
 		Object[] conditionValues = new String[] {"is", "is not"};
 		condition = WidgetFactory.makePickList(conditionValues, false, 0, null);
 		WidgetFactory.setPrefMaxSizes(condition, PICKLIST_DIMS);
+		// TODO: implement "is not" functionality
+		condition.setEnabled(false);
 
 		value = OntologyClassField.makeLabel("", false, null);
 		value.setFilterClass((OntologyClass) subject.getSelectedItem());
@@ -176,8 +178,12 @@ public class CriteriaPanel extends JPanel {
 		this.criteria = criteria;
 		
 		// set the values in the UI
-		subject.setSelectedItem(Annotation.OBOE_CLASSES.get(criteria.getSubject()));
-		condition.setSelectedItem(criteria.getCondition());
+		if (criteria.getSubject() != null) {
+			subject.setSelectedItem(Annotation.OBOE_CLASSES.get(criteria.getSubject()));
+		}
+		if (criteria.getCondition() != null) {
+			condition.setSelectedItem(criteria.getCondition());
+		}
 		this.value.setOntologyClass(criteria.getValue());
 		
 		// are there subcriteria to show?
