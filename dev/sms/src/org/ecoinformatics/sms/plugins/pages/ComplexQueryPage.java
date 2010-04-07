@@ -88,9 +88,13 @@ public class ComplexQueryPage extends AbstractUIPage {
 		
 		JLabel desc = WidgetFactory
 				.makeHTMLLabel(
-						"<b>Annotation Search</b> "
-								+ "Specify one or more search criteria",
-						2);
+						"<b>Annotation Search</b> " +
+						"Specify one or more search criteria. <br><br>" +
+						"<b>Entity</b>, <b>Characteristic</b>, <b>MeasurementStandard</b>, and <b>Protocol</b> classes can be specified individually, " +
+						"or a <b>Measurement</b> type can be selected as a template. <br>" +
+						"<b>Context</b> criteria can also be added. <br>" +
+						"Criteria can be combined in <b>groups</b>.</p>",
+						5);
 		this.add(desc);
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
