@@ -35,6 +35,12 @@ package org.ecoinformatics.sms.annotation;
 import java.util.List;
 import java.util.ArrayList;
 
+import org.ecoinformatics.sms.SMS;
+import org.ecoinformatics.sms.ontology.Ontology;
+import org.ecoinformatics.sms.ontology.OntologyClass;
+import org.ecoinformatics.sms.ontology.OntologyObjectProperty;
+import org.ecoinformatics.sms.ontology.OntologyProperty;
+
 /**
  * Objects of this class represent observation ameasurements
  */
@@ -49,6 +55,51 @@ public class Measurement implements Comparable<Measurement>{
    private String _value;
    private boolean _isKey;
 
+   
+   private static OntologyClass getTopSuperClass(OntologyClass c) {
+	   List<OntologyClass> superClasses = SMS.getInstance().getOntologyManager().getNamedSuperclasses(c);
+	   if (superClasses != null) {
+		   for (OntologyClass sc: superClasses) {
+			   return getTopSuperClass(sc);
+		   }
+	   }
+	   return c;
+   }
+   
+   public static List<OntologyClass> lookupRestrictionClasses(OntologyClass measurement, Class clazz) {
+		
+	   //use the top-most superclass of the given measurement - this will be the oboe ontology
+	   OntologyClass measurementSuperclass = getTopSuperClass(measurement);
+	   Ontology oboeOntology = measurementSuperclass.getOntology();
+	   
+		OntologyProperty property = null;
+		List<OntologyClass> classes = null;
+		
+		if (clazz.equals(Entity.class)) {
+			// get the entity
+			property = new OntologyObjectProperty(oboeOntology, "measurementFor");
+			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+		}
+		if (clazz.equals(Characteristic.class)) {
+			// get the characteristic
+			property = new OntologyObjectProperty(oboeOntology, "ofCharacteristic");
+			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+		}
+		if (clazz.equals(Standard.class)) {
+			// get the standard
+			property = new OntologyObjectProperty(oboeOntology, "usesStandard");
+			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+		}
+		if (clazz.equals(Protocol.class)) {
+			// get the protocol
+			property = new OntologyObjectProperty(oboeOntology, "usesProtocol");
+			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+		}
+		
+		return classes;
+		
+	}
+   
    /** 
     * Set the label of the measurement
     * @param label the measurement label

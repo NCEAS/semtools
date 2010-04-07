@@ -37,7 +37,6 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Entity;
@@ -46,8 +45,6 @@ import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
 import org.ecoinformatics.sms.ontology.Ontology;
 import org.ecoinformatics.sms.ontology.OntologyClass;
-import org.ecoinformatics.sms.ontology.OntologyObjectProperty;
-import org.ecoinformatics.sms.ontology.OntologyProperty;
 
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
@@ -303,13 +300,11 @@ public class SimpleAnnotationPanel extends JPanel {
 		
 		// assume the filter class has the OBOE ontology
 		Ontology oboeOntology = observationMeasurement.getFilterClass().getOntology();
-		OntologyProperty property = null;
 		List<OntologyClass> classes = null;
 		
 		// get the entity
 		try {
-			property = new OntologyObjectProperty(oboeOntology, "measurementFor");
-			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+			classes = Measurement.lookupRestrictionClasses(measurement, Entity.class);
 			observationEntity.setOntologyClass(classes.get(0));
 		} catch (Exception ex) {
 			Log.debug(30, "ignoring measurement entity template exception");
@@ -317,8 +312,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		}
 		// get the characteristic
 		try {
-			property = new OntologyObjectProperty(oboeOntology, "ofCharacteristic");
-			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+			classes = Measurement.lookupRestrictionClasses(measurement, Characteristic.class);
 			observationCharacteristic.setOntologyClass(classes.get(0));
 		} catch (Exception ex) {
 			Log.debug(30, "ignoring measurement characteristic template exception");
@@ -326,8 +320,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		}
 		// get the standard
 		try {
-			property = new OntologyObjectProperty(oboeOntology, "usesStandard");
-			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+			classes = Measurement.lookupRestrictionClasses(measurement, Standard.class);
 			observationStandard.setOntologyClass(classes.get(0));
 		} catch (Exception ex) {
 			Log.debug(30, "ignoring measurement standard template exception");
@@ -335,8 +328,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		}
 		// get the protocol
 		try {
-			property = new OntologyObjectProperty(oboeOntology, "usesProtocol");
-			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+			classes = Measurement.lookupRestrictionClasses(measurement, Protocol.class);
 			observationProtocol.setOntologyClass(classes.get(0));
 		} catch (Exception ex) {
 			Log.debug(30, "ignoring measurement protocol template exception");

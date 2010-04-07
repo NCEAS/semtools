@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Entity;
+import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
 import org.ecoinformatics.sms.annotation.search.Criteria;
@@ -67,7 +68,8 @@ public class CriteriaPanel extends JPanel {
 				Annotation.OBOE_CLASSES.get(Entity.class), 
 				Annotation.OBOE_CLASSES.get(Characteristic.class), 
 				Annotation.OBOE_CLASSES.get(Standard.class), 
-				Annotation.OBOE_CLASSES.get(Protocol.class)};
+				Annotation.OBOE_CLASSES.get(Protocol.class),
+				Annotation.OBOE_CLASSES.get(Measurement.class)};
 		subject = WidgetFactory.makePickList(subjectValues, false, 0, subjectListener);
 		WidgetFactory.setPrefMaxSizes(subject, PICKLIST_DIMS);
 		

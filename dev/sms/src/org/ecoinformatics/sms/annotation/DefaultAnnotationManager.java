@@ -900,6 +900,30 @@ public class DefaultAnnotationManager implements AnnotationManager {
 					protocols.add(value);
 					return hasMatchingProtocol(a, protocols);
 				}
+				// expand the measurement template if given
+				if (subject != null && subject.equals(Measurement.class)) {
+					List<OntologyClass> classes = null;
+					// entity
+					classes = Measurement.lookupRestrictionClasses(value, Entity.class);
+					if (classes != null) {
+						entities.addAll(classes);
+					}
+					// characteristic
+					classes = Measurement.lookupRestrictionClasses(value, Characteristic.class);
+					if (classes != null) {
+						characteristics.addAll(classes);
+					}
+					// standard
+					classes = Measurement.lookupRestrictionClasses(value, Standard.class);
+					if (classes != null) {
+						standards.addAll(classes);
+					}
+					// protocol
+					classes = Measurement.lookupRestrictionClasses(value, Protocol.class);
+					if (classes != null) {
+						protocols.addAll(classes);
+					}
+				}
 			}
 	   }
 	   else {
