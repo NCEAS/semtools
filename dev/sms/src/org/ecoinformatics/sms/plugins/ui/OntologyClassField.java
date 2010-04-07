@@ -46,6 +46,8 @@ import edu.ucsb.nceas.morpho.util.UISettings;
  */
 public class OntologyClassField extends JTextField {
 	
+	public static final  Dimension DEFAULT_DIMS = new Dimension(150,20);
+	
 	public static final DataFlavor ontologyClassFlavor = new DataFlavor(OntologyClass.class, null);
 	
 	private OntologyClass ontologyClass;
@@ -157,7 +159,7 @@ public class OntologyClassField extends JTextField {
 			text = "";
 		}
 		if (dims == null) {
-			dims = WizardSettings.WIZARD_CONTENT_LABEL_DIMS;
+			dims = DEFAULT_DIMS;
 		}
 		OntologyClassField label = new OntologyClassField(text);
 
