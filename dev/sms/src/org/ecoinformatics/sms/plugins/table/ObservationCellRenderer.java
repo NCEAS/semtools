@@ -102,6 +102,7 @@ public class ObservationCellRenderer extends JLabel implements
 			setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 		}
 		setText((value == null) ? "" : value.toString());
+		setToolTipText((value == null) ? "" : value.toString());
 		return this;
 	}
 
