@@ -35,6 +35,7 @@ import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
 public class CriteriaPanel extends JPanel {
 
 	public static final Dimension LIST_BUTTON_DIMS = new Dimension(55, 30);
+	public static final  Dimension PICKLIST_DIMS = new Dimension(100,30);
 	
 	private Criteria criteria;
 	
@@ -68,18 +69,18 @@ public class CriteriaPanel extends JPanel {
 				Annotation.OBOE_CLASSES.get(Standard.class), 
 				Annotation.OBOE_CLASSES.get(Protocol.class)};
 		subject = WidgetFactory.makePickList(subjectValues, false, 0, subjectListener);
-		WidgetFactory.setPrefMaxSizes(subject, WizardSettings.WIZARD_CONTENT_LABEL_DIMS);
+		WidgetFactory.setPrefMaxSizes(subject, PICKLIST_DIMS);
 		
 		Object[] conditionValues = new String[] {"is", "is not"};
 		condition = WidgetFactory.makePickList(conditionValues, false, 0, null);
-		WidgetFactory.setPrefMaxSizes(condition, WizardSettings.WIZARD_CONTENT_LABEL_DIMS);
+		WidgetFactory.setPrefMaxSizes(condition, PICKLIST_DIMS);
 
 		value = OntologyClassField.makeLabel("", false, null);
 		value.setFilterClass((OntologyClass) subject.getSelectedItem());
 		WidgetFactory.setPrefMaxSizes(value, WizardSettings.WIZARD_CONTENT_LABEL_DIMS);
 		
 		// make the panel
-		criteriaPanel = WidgetFactory.makePanel(1);
+		criteriaPanel = WidgetFactory.makePanel();
 		//criteriaPanel.setLayout(new GridLayout(1,3));
 		//criteriaPanel.setLayout(new BoxLayout(criteriaPanel, BoxLayout.X_AXIS));
 
@@ -87,7 +88,7 @@ public class CriteriaPanel extends JPanel {
 		criteriaPanel.add(condition);
 		criteriaPanel.add(value);
 		
-		WidgetFactory.setPrefMaxSizes(criteriaPanel, new Dimension(350, WizardSettings.WIZARD_CONTENT_SINGLE_LINE_DIMS.height + 5));
+		WidgetFactory.setPrefMaxSizes(criteriaPanel, new Dimension(350, WizardSettings.WIZARD_CONTENT_SINGLE_LINE_DIMS.height + 10));
 		
 		//criteriaPanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.yellow));
 		
