@@ -66,7 +66,7 @@ public class Test {
 
             // get annotation manager
             AnnotationManager annotationManager = SMS.getInstance().getAnnotationManager();
-            annotationManager.importAnnotation(connection.getInputStream(), "annot1");
+            annotationManager.importAnnotation(connection.getInputStream(), url.toString());
 
             // build up simple query
             //Ontology gceOnt = new Ontology(metacat + "gce.1.1");

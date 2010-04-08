@@ -48,16 +48,16 @@ public interface AnnotationManager {
    /**
     * Import an annotation into the manager
     * @param r the semantic annotation 
-    * @param id the identifier to assign to the annotation
+    * @param source location of the annotation
     */
-   public void importAnnotation(InputStream is, String id) throws Exception;
+   public void importAnnotation(InputStream is, String source) throws Exception;
    
    /**
     * Import an annotation into the manager
     * @param r the semantic annotation 
-    * @param id the identifier to assign to the annotation
+    * @param source location of the annotation
     */
-   public void importAnnotation(Annotation annot, String id) throws Exception;
+   public void importAnnotation(Annotation annot, String source) throws Exception;
 
 
    /**

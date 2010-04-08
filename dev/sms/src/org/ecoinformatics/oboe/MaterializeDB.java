@@ -130,10 +130,11 @@ public class MaterializeDB {
 	{
 	
 		String annot1 = annotFileName;
+		URL url = null;
 	    URLConnection connection = null;
 	    
 		try {
-			URL url = new URL(annot1);
+			url = new URL(annot1);
 			connection = url.openConnection();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -144,7 +145,7 @@ public class MaterializeDB {
 	    // get annotation manager
 	    AnnotationManager annotationManager = SMS.getInstance().getAnnotationManager();
 	    try {
-			annotationManager.importAnnotation(connection.getInputStream(), "annot1");
+			annotationManager.importAnnotation(connection.getInputStream(), url.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e) {

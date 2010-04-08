@@ -149,7 +149,7 @@ public class Test2 {
            throws Exception {
       URL url = new URL(urlStr);
       URLConnection connection = url.openConnection();
-      mgr.importAnnotation(connection.getInputStream(), urlStr);
+      mgr.importAnnotation(connection.getInputStream(), url.toString());
    }
 
 }

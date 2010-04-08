@@ -65,8 +65,8 @@ public class DefaultAnnotationManager implements AnnotationManager {
     * @param r the semantic annotation 
     * @param id the identifier to assign to the annotation
     */
-   public void importAnnotation(InputStream is, String id) throws Exception {
-      importAnnotation(Annotation.read(is), id);
+   public void importAnnotation(InputStream is, String source) throws Exception {
+      importAnnotation(Annotation.read(is), source);
    }
    
    /**
@@ -74,8 +74,8 @@ public class DefaultAnnotationManager implements AnnotationManager {
     * @param r the semantic annotation 
     * @param id the identifier to assign to the annotation
     */
-   public void importAnnotation(Annotation ann, String id) throws Exception {
-      _annotations.put(id, ann);
+   public void importAnnotation(Annotation ann, String source) throws Exception {
+      _annotations.put(ann.getURI(), ann);
    }
 
    /**
