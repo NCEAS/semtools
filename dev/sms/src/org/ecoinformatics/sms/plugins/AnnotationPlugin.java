@@ -318,7 +318,7 @@ public class AnnotationPlugin
 	}
 	
 	// TODO: search Metacat for annotations
-	private void initializeAnnotations(String forDocid) {
+	private static void initializeAnnotations(String forDocid) {
 		Log.debug(30, "initializing annotations for docid: " + forDocid);
 		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
 		String querySpec = getAnnotationQuery();
@@ -330,7 +330,8 @@ public class AnnotationPlugin
 		for (Vector row: resultVector) {
 			String docid = (String) row.get(ResultSet.DOCIDINDEX);
 			try {
-				InputStream is = new FileInputStream(fds.openFile(docid));
+				File fileSource = fds.openFile(docid);
+				InputStream is = new FileInputStream(fileSource);
 				Annotation annotation = Annotation.read(is);
 				// if we are filtering, skip any docs that don't match
 				if (forDocid != null) {
@@ -349,7 +350,7 @@ public class AnnotationPlugin
 					}
 				}
 				Log.debug(30, "importing annotation: " + docid);
-				SMS.getInstance().getAnnotationManager().importAnnotation(annotation, docid);
+				SMS.getInstance().getAnnotationManager().importAnnotation(annotation, fileSource.toURI().toString());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -507,7 +508,8 @@ public class AnnotationPlugin
 			annotation.setURI(id);
 			
 			//save in the manager
-			SMS.getInstance().getAnnotationManager().importAnnotation(annotation, annotation.getURI());
+			// TODO: source should actually be a source
+			SMS.getInstance().getAnnotationManager().importAnnotation(annotation, null);
 			
 		}
 		catch (Exception e) {
