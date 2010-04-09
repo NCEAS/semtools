@@ -50,8 +50,8 @@ import java.io.OutputStream;
  */
 public class DefaultAnnotationManager implements AnnotationManager {
 
-   private SMS _sms;
-   private HashMap<String, Annotation> _annotations = new HashMap();
+   protected SMS _sms;
+   protected HashMap<String, Annotation> _annotations = new HashMap();
 
    /**
     * Default constuctor
