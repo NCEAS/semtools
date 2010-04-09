@@ -169,7 +169,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
     */
    public List<Annotation> getAnnotations() {
       List<Annotation> results = new ArrayList();
-      for(String id : getAnnotationIds()) {
+      for(String id : _annotations.keySet()) {
          Annotation a = null;
          try {
             a = getAnnotation(id);
@@ -190,7 +190,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
     */
    public List<Annotation> getAnnotations(String emlPackage, String dataTable) {
       List<Annotation> results = new ArrayList<Annotation>();
-      for(String id : getAnnotationIds()) {
+      for(String id : _annotations.keySet()) {
          Annotation a = null;
          try {
             a = getAnnotation(id);
