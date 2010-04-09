@@ -147,6 +147,8 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 		dbAnnotation = context.newObject(DbAnnotation.class);
 		dbAnnotation.setIdentifier(annotation.getURI());
 		dbAnnotation.setSource(source);
+		dbAnnotation.setEmlPackage(annotation.getEMLPackage());
+		dbAnnotation.setDataTable(annotation.getDataTable());
 		// observations
 		for (Observation o: annotation.getObservations()) {
 			DbObservation dbObservation = context.newObject(DbObservation.class);
@@ -204,9 +206,13 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     */
    public void importAnnotation(Annotation annotation, String source) throws Exception {
 	   if (source != null) {
+		   // add to the db index
 		   DbAnnotation dbAnnotation = createDbAnnotation(annotation, source);
+		   // remove from the working set
+		   _annotations.remove(annotation.getURI());
 	   } else {
-		   _annotations.put(annotation.getURI(), annotation);
+		   // add to the working set only
+		   super.importAnnotation(annotation, source);
 	   }
    }
 
@@ -337,21 +343,33 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     * @return the annotations
     */
    public List<Annotation> getAnnotations(String emlPackage, String dataTable) {
-	   //TODO: add parameters to the dbObject
-      List<Annotation> results = new ArrayList<Annotation>();
-      for(String id : getAnnotationIds()) {
-         Annotation a = null;
-         try {
-            a = getAnnotation(id);
-            if (a.getEMLPackage().equals(emlPackage)) {
-            	if (dataTable == null || dataTable.equals(a.getDataTable())) {
-            		results.add(a);
-            	}
-            }
-         }catch(Exception e) {
-            e.printStackTrace();
-         }
-      }
+	   // get the working set first
+	   List<Annotation> results = super.getAnnotations(emlPackage, dataTable);
+	   
+	   ObjectContext context = DataContext.createDataContext();
+		
+		// look up the annotations
+		final Expression expression = 
+			Expression.fromString(
+					"emlPackage = $emlPackage and dataTable = $dataTable");
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("emlPackage", emlPackage);
+		params.put("dataTable", dataTable);
+		SelectQuery query = new SelectQuery(DbAnnotation.class, expression.expWithParameters(params));
+		List<DbAnnotation> values = context.performQuery(query);
+		if (values != null) {
+			for (DbAnnotation dbAnnotation: values) {
+				try {
+					results.add(getAnnotation(dbAnnotation));
+				} catch (AnnotationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
       return results;
    }
 
