@@ -531,6 +531,15 @@ public class AnnotationPlugin
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				annotation.write(baos);
 				File annotationFile = fds.saveFile(id, new StringReader(baos.toString()));
+				
+				// import the annotation now that we have a real file source
+				try {
+					SMS.getInstance().getAnnotationManager().importAnnotation(annotation, annotationFile.toURI().toString());
+				}
+				catch (Exception e) {
+					Log.debug(5, "Error saving annotation: " + annotation);
+					e.printStackTrace();
+				}
 			}
 		}
 	}
