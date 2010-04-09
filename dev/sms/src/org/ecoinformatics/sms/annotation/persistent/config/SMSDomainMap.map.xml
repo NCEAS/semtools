@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-map xmlns="http://cayenne.apache.org/schema/3.0/modelMap"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://cayenne.apache.org/schema/3.0/modelMap http://cayenne.apache.org/schema/3.0/modelMap.xsd"
+  project-version="3.0.0.1">
+	<property name="defaultPackage" value="org.ecoinformatics.sms.annotation.persistent"/>
+	<db-entity name="ANNOTATION">
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="identifier" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="source" type="VARCHAR" isMandatory="true" length="255"/>
+	</db-entity>
+	<db-entity name="CHARACTERISTIC">
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="measurement_id" type="INTEGER"/>
+		<db-attribute name="type" type="VARCHAR" length="255"/>
+	</db-entity>
+	<db-entity name="CONTEXT">
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="observation_a_id" type="INTEGER"/>
+		<db-attribute name="observation_b_id" type="INTEGER"/>
+		<db-attribute name="relationship" type="VARCHAR" length="255"/>
+	</db-entity>
+	<db-entity name="MEASUREMENT">
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="observation_id" type="INTEGER"/>
+		<db-attribute name="protocol" type="VARCHAR" length="255"/>
+		<db-attribute name="standard" type="VARCHAR" length="255"/>
+	</db-entity>
+	<db-entity name="OBSERVATION">
+		<db-attribute name="annotation_id" type="INTEGER"/>
+		<db-attribute name="entity" type="VARCHAR" length="255"/>
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+	</db-entity>
+	<obj-entity name="DbAnnotation" className="org.ecoinformatics.sms.annotation.persistent.DbAnnotation" dbEntityName="ANNOTATION">
+		<obj-attribute name="identifier" type="java.lang.String" db-attribute-path="identifier"/>
+		<obj-attribute name="source" type="java.lang.String" db-attribute-path="source"/>
+	</obj-entity>
+	<obj-entity name="DbCharacteristic" className="org.ecoinformatics.sms.annotation.persistent.DbCharacteristic" dbEntityName="CHARACTERISTIC">
+		<obj-attribute name="type" type="java.lang.String" db-attribute-path="type"/>
+	</obj-entity>
+	<obj-entity name="DbContext" className="org.ecoinformatics.sms.annotation.persistent.DbContext" dbEntityName="CONTEXT">
+		<obj-attribute name="relationship" type="java.lang.String" db-attribute-path="relationship"/>
+	</obj-entity>
+	<obj-entity name="DbMeasurement" className="org.ecoinformatics.sms.annotation.persistent.DbMeasurement" dbEntityName="MEASUREMENT">
+		<obj-attribute name="protocol" type="java.lang.String" db-attribute-path="protocol"/>
+		<obj-attribute name="standard" type="java.lang.String" db-attribute-path="standard"/>
+	</obj-entity>
+	<obj-entity name="DbObservation" className="org.ecoinformatics.sms.annotation.persistent.DbObservation" dbEntityName="OBSERVATION">
+		<obj-attribute name="entity" type="java.lang.String" db-attribute-path="entity"/>
+	</obj-entity>
+	<db-relationship name="observations" source="ANNOTATION" target="OBSERVATION" toMany="true">
+		<db-attribute-pair source="id" target="annotation_id"/>
+	</db-relationship>
+	<db-relationship name="measurement" source="CHARACTERISTIC" target="MEASUREMENT" toMany="false">
+		<db-attribute-pair source="measurement_id" target="id"/>
+	</db-relationship>
+	<db-relationship name="observation" source="CONTEXT" target="OBSERVATION" toMany="false">
+		<db-attribute-pair source="observation_a_id" target="id"/>
+	</db-relationship>
+	<db-relationship name="observation_b" source="CONTEXT" target="OBSERVATION" toMany="false">
+		<db-attribute-pair source="observation_b_id" target="id"/>
+	</db-relationship>
+	<db-relationship name="characteristics" source="MEASUREMENT" target="CHARACTERISTIC" toMany="true">
+		<db-attribute-pair source="id" target="measurement_id"/>
+	</db-relationship>
+	<db-relationship name="observation" source="MEASUREMENT" target="OBSERVATION" toMany="false">
+		<db-attribute-pair source="observation_id" target="id"/>
+	</db-relationship>
+	<db-relationship name="annotation" source="OBSERVATION" target="ANNOTATION" toMany="false">
+		<db-attribute-pair source="annotation_id" target="id"/>
+	</db-relationship>
+	<db-relationship name="contexts" source="OBSERVATION" target="CONTEXT" toMany="true">
+		<db-attribute-pair source="id" target="observation_a_id"/>
+	</db-relationship>
+	<db-relationship name="measurements" source="OBSERVATION" target="MEASUREMENT" toMany="true">
+		<db-attribute-pair source="id" target="observation_id"/>
+	</db-relationship>
+	<obj-relationship name="observations" source="DbAnnotation" target="DbObservation" deleteRule="Deny" db-relationship-path="observations"/>
+	<obj-relationship name="observation" source="DbContext" target="DbObservation" deleteRule="Nullify" db-relationship-path="observation"/>
+	<obj-relationship name="observationB" source="DbContext" target="DbObservation" deleteRule="Nullify" db-relationship-path="observation_b"/>
+	<obj-relationship name="characteristics" source="DbMeasurement" target="DbCharacteristic" deleteRule="Deny" db-relationship-path="characteristics"/>
+	<obj-relationship name="observation" source="DbMeasurement" target="DbObservation" deleteRule="Nullify" db-relationship-path="observation"/>
+	<obj-relationship name="annotation" source="DbObservation" target="DbAnnotation" deleteRule="Nullify" db-relationship-path="annotation"/>
+	<obj-relationship name="contexts" source="DbObservation" target="DbContext" deleteRule="Deny" db-relationship-path="contexts"/>
+	<obj-relationship name="measurements" source="DbObservation" target="DbMeasurement" deleteRule="Deny" db-relationship-path="measurements"/>
+</data-map>
