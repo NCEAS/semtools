@@ -1064,7 +1064,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
     * Helper method to add all superclasses of the given classes
     * @param classes the class list being added to
     */
-   private void addSuperclasses(List<OntologyClass> classes) {
+   protected void addSuperclasses(List<OntologyClass> classes) {
       OntologyManager ontMgr = _sms.getOntologyManager();
       List<OntologyClass> superclasses = new ArrayList();
       for(OntologyClass c : classes)
@@ -1080,7 +1080,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
     * Helper method to add all subclasses of the given classes
     * @param classes the class list being added to
     */
-   private void addSubclasses(List<OntologyClass> classes) {
+   protected void addSubclasses(List<OntologyClass> classes) {
       OntologyManager ontMgr = _sms.getOntologyManager();
       List<OntologyClass> subclasses = new ArrayList();
       for(OntologyClass c : classes)
@@ -1096,7 +1096,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
     * Helper method to get all entities of an observation
     * @param o the observation
     */
-   private List<Entity> getAllEntities(Observation o) {
+   protected List<Entity> getAllEntities(Observation o) {
       List<Entity> result = new ArrayList();
       if(o.getEntity() != null)
          result.add(o.getEntity());
@@ -1113,7 +1113,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
     * @param second second list
     * @return
     */
-   private boolean overlaps(List first, List second) {
+   protected boolean overlaps(List first, List second) {
       if(first == null || second == null)
          return false;
       for(Object x : first) 
