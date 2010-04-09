@@ -13,11 +13,27 @@ import org.ecoinformatics.sms.annotation.persistent.DbObservation;
  */
 public abstract class _DbAnnotation extends CayenneDataObject {
 
+    public static final String DATA_TABLE_PROPERTY = "dataTable";
+    public static final String EML_PACKAGE_PROPERTY = "emlPackage";
     public static final String IDENTIFIER_PROPERTY = "identifier";
     public static final String SOURCE_PROPERTY = "source";
     public static final String OBSERVATIONS_PROPERTY = "observations";
 
     public static final String ID_PK_COLUMN = "id";
+
+    public void setDataTable(String dataTable) {
+        writeProperty("dataTable", dataTable);
+    }
+    public String getDataTable() {
+        return (String)readProperty("dataTable");
+    }
+
+    public void setEmlPackage(String emlPackage) {
+        writeProperty("emlPackage", emlPackage);
+    }
+    public String getEmlPackage() {
+        return (String)readProperty("emlPackage");
+    }
 
     public void setIdentifier(String identifier) {
         writeProperty("identifier", identifier);

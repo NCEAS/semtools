@@ -5,6 +5,8 @@
   project-version="3.0.0.1">
 	<property name="defaultPackage" value="org.ecoinformatics.sms.annotation.persistent"/>
 	<db-entity name="ANNOTATION">
+		<db-attribute name="dataTable" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="emlPackage" type="VARCHAR" isMandatory="true" length="255"/>
 		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
 		<db-attribute name="identifier" type="VARCHAR" isMandatory="true" length="255"/>
 		<db-attribute name="source" type="VARCHAR" isMandatory="true" length="255"/>
@@ -32,6 +34,8 @@
 		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
 	</db-entity>
 	<obj-entity name="DbAnnotation" className="org.ecoinformatics.sms.annotation.persistent.DbAnnotation" dbEntityName="ANNOTATION">
+		<obj-attribute name="dataTable" type="java.lang.String" db-attribute-path="dataTable"/>
+		<obj-attribute name="emlPackage" type="java.lang.String" db-attribute-path="emlPackage"/>
 		<obj-attribute name="identifier" type="java.lang.String" db-attribute-path="identifier"/>
 		<obj-attribute name="source" type="java.lang.String" db-attribute-path="source"/>
 	</obj-entity>
@@ -75,12 +79,12 @@
 	<db-relationship name="measurements" source="OBSERVATION" target="MEASUREMENT" toMany="true">
 		<db-attribute-pair source="id" target="observation_id"/>
 	</db-relationship>
-	<obj-relationship name="observations" source="DbAnnotation" target="DbObservation" deleteRule="Deny" db-relationship-path="observations"/>
+	<obj-relationship name="observations" source="DbAnnotation" target="DbObservation" deleteRule="Cascade" db-relationship-path="observations"/>
 	<obj-relationship name="observation" source="DbContext" target="DbObservation" deleteRule="Nullify" db-relationship-path="observation"/>
 	<obj-relationship name="observationB" source="DbContext" target="DbObservation" deleteRule="Nullify" db-relationship-path="observation_b"/>
-	<obj-relationship name="characteristics" source="DbMeasurement" target="DbCharacteristic" deleteRule="Deny" db-relationship-path="characteristics"/>
+	<obj-relationship name="characteristics" source="DbMeasurement" target="DbCharacteristic" deleteRule="Cascade" db-relationship-path="characteristics"/>
 	<obj-relationship name="observation" source="DbMeasurement" target="DbObservation" deleteRule="Nullify" db-relationship-path="observation"/>
 	<obj-relationship name="annotation" source="DbObservation" target="DbAnnotation" deleteRule="Nullify" db-relationship-path="annotation"/>
-	<obj-relationship name="contexts" source="DbObservation" target="DbContext" deleteRule="Deny" db-relationship-path="contexts"/>
-	<obj-relationship name="measurements" source="DbObservation" target="DbMeasurement" deleteRule="Deny" db-relationship-path="measurements"/>
+	<obj-relationship name="contexts" source="DbObservation" target="DbContext" deleteRule="Cascade" db-relationship-path="contexts"/>
+	<obj-relationship name="measurements" source="DbObservation" target="DbMeasurement" deleteRule="Cascade" db-relationship-path="measurements"/>
 </data-map>
