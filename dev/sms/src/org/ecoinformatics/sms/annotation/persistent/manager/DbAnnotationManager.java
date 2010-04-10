@@ -377,14 +377,26 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
    public List<Annotation> getMatchingAnnotations(Criteria criteria) {
 	   //let the fun begin!
 	   List<Annotation> results = new ArrayList<Annotation>();
-	   for(Annotation annotation : getAnnotations()) {
-		   int match = matchesCriteria(annotation, criteria);
-		   if (match < 0) {
-			   continue;
-		   }
-		   results.add(annotation);
-	   }
-	   return results;
+
+	   // get the expression string
+	   String expressionString = criteriaAsExpression(criteria);
+	   
+	   Expression expression = Expression.fromString(expressionString.toString());
+
+	   ObjectContext context = DataContext.createDataContext();
+	   SelectQuery query = new SelectQuery(DbAnnotation.class, expression);
+	   List<DbAnnotation> values = context.performQuery(query);
+	   for (DbAnnotation dbAnnotation: values) {
+		   try {
+			   results.add(getAnnotation(dbAnnotation));
+			} catch (AnnotationException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+      }
+     
+      return results;
    }
 
 
@@ -402,34 +414,8 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   
 	   List<Annotation> results = new ArrayList<Annotation>();
 	   
-	   String entityString = createExpressionString(entities, "observations.entity", "or");
-	   String characterString = createExpressionString(entities, "observations.measurements.characteristics.type", "or");
-	   String standardString = createExpressionString(entities, "observations.measurements.standard", "or");
-	   String protocolString = createExpressionString(entities, "observations.measurements.protocol", "or");
-	   //TODO: context
-	   
-	   StringBuffer combined = new StringBuffer();
-	   if (entityString != null) {
-		   combined.append(entityString);
-	   }
-	   if (characterString != null) {
-		   combined.append(" and ");
-		   combined.append(" (");
-		   combined.append(characterString);
-		   combined.append(")");
-	   }
-	   if (standardString != null) {
-		   combined.append(" and ");
-		   combined.append(" (");
-		   combined.append(standardString);
-		   combined.append(")");
-	   }
-	   if (protocolString != null) {
-		   combined.append(" and ");
-		   combined.append(" (");
-		   combined.append(protocolString);
-		   combined.append(")");
-	   }
+	   // using "or" instead of "and" for more results, even though these are not ranked yet.
+	   String combined = createExpresstionString(entities, characteristics, standards, protocols, contexts, "or");
 	   
 	   Expression expression = Expression.fromString(combined.toString());
 
@@ -1110,20 +1096,156 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
       return -1;
    }
    
-   private static String createExpressionString(List<OntologyClass> entities, String path, String operator) {
-	   StringBuffer entityString = new StringBuffer();
-	   if (entities != null && entities.isEmpty()) {
-		   Iterator<OntologyClass> iter = entities.iterator();
-		   while (iter.hasNext()) {
-			   OntologyClass entity = iter.next();
-			   entityString.append(path + " = '");
-			   entityString.append(entity.getURI());
-			   entityString.append("'");
-			   if (iter.hasNext()) {
-				   entityString.append(" " + operator + " ");
+   /** 
+    * This method is called recursively on the subcriteria, building up a weighted return
+    * @param a the Annotation to be evaluated for matching
+    * @param criteria potentially complex 
+    * @return
+    */
+   private static String criteriaAsExpression(Criteria criteria) {
+	   
+	   StringBuffer expression = new StringBuffer();
+	   
+	   //simple first case
+	   if (!criteria.isGroup()) {
+		   // everything in a list
+			List<OntologyClass> characteristics = new ArrayList<OntologyClass>();
+			List<OntologyClass> standards = new ArrayList<OntologyClass>();
+			List<OntologyClass> protocols = new ArrayList<OntologyClass>();
+			List<OntologyClass> entities = new ArrayList<OntologyClass>();
+			List<Triple> contexts = new ArrayList<Triple>();
+			
+			// try context
+			if (criteria.isContext()) {
+				Triple context = criteria.getContextTriple();
+				if (context != null) {
+					contexts.add(context);
+					//TODO: context triples
+				}
+			} else {
+				// what criteria were given?
+				Class subject = criteria.getSubject();
+				OntologyClass value = criteria.getValue();
+				if (value == null) {
+					return null;
+				}
+				if (subject != null && subject.equals(Entity.class)) {
+					entities.add(value);
+				}
+				if (subject != null && subject.equals(Characteristic.class)) {
+					characteristics.add(value);
+				}
+				if (subject != null && subject.equals(Standard.class)) {
+					standards.add(value);
+				}
+				if (subject != null && subject.equals(Protocol.class)) {
+					protocols.add(value);
+				}
+				// expand the measurement template if given
+				if (subject != null && subject.equals(Measurement.class)) {
+					List<OntologyClass> classes = null;
+					// entity
+					classes = Measurement.lookupRestrictionClasses(value, Entity.class);
+					if (classes != null) {
+						entities.addAll(classes);
+					}
+					// characteristic
+					classes = Measurement.lookupRestrictionClasses(value, Characteristic.class);
+					if (classes != null) {
+						characteristics.addAll(classes);
+					}
+					// standard
+					classes = Measurement.lookupRestrictionClasses(value, Standard.class);
+					if (classes != null) {
+						standards.addAll(classes);
+					}
+					// protocol
+					classes = Measurement.lookupRestrictionClasses(value, Protocol.class);
+					if (classes != null) {
+						protocols.addAll(classes);
+					}
+				}
+			}
+			// now construct the expression from the given class lists
+			String operator = "or";
+			expression.append(
+					createExpresstionString(entities, characteristics, standards, protocols, contexts, operator));
+			
+	   }
+	   else {
+		   // iterate through the subcriteria
+		   if (criteria.getSubCriteria() != null) {
+			   String operator = "or";
+			   if (criteria.isAll()) {
+				   operator = "and";
+			   }
+			   Iterator<Criteria> iter = criteria.getSubCriteria().iterator();
+			   while (iter.hasNext()) {
+				   Criteria subcriteria = iter.next();
+				   // recurse here
+				   String subExpression = criteriaAsExpression(subcriteria);
+				   expression.append(subExpression);
+				   if (iter.hasNext()) {
+					   expression.append(" " + operator + " ");
+				   }   
 			   }
 		   }
-		   return entityString.toString();
+	   }
+	   
+	   return expression.toString();
+   }
+
+   private static String createExpresstionString(List<OntologyClass> entities,
+           List<OntologyClass> characteristics, List<OntologyClass> standards,
+           List<OntologyClass> protocols, List<Triple> contexts, String operator) {
+	   
+	   String entityString = createExpressionString(entities, "observations.entity", "or");
+	   String characterString = createExpressionString(characteristics, "observations.measurements.characteristics.type", "or");
+	   String standardString = createExpressionString(standards, "observations.measurements.standard", "or");
+	   String protocolString = createExpressionString(protocols, "observations.measurements.protocol", "or");
+	   //TODO: context
+	   
+	   StringBuffer combined = new StringBuffer();
+	   if (entityString != null) {
+		   combined.append(entityString);
+	   }
+	   if (characterString != null) {
+		   combined.append(" " + operator + " ");
+		   combined.append(" (");
+		   combined.append(characterString);
+		   combined.append(")");
+	   }
+	   if (standardString != null) {
+		   combined.append(" " + operator + " ");
+		   combined.append(" (");
+		   combined.append(standardString);
+		   combined.append(")");
+	   }
+	   if (protocolString != null) {
+		   combined.append(" " + operator + " ");
+		   combined.append(" (");
+		   combined.append(protocolString);
+		   combined.append(")");
+	   }
+	   
+	   return combined.toString();
+	   
+   }
+   
+   private static String createExpressionString(List<OntologyClass> classes, String path, String operator) {
+	   StringBuffer expression = new StringBuffer();
+	   if (classes != null && !classes.isEmpty()) {
+		   Iterator<OntologyClass> iter = classes.iterator();
+		   while (iter.hasNext()) {
+			   OntologyClass oc = iter.next();
+			   expression.append(path + " = '");
+			   expression.append(oc.getURI());
+			   expression.append("'");
+			   if (iter.hasNext()) {
+				   expression.append(" " + operator + " ");
+			   }
+		   }
+		   return expression.toString();
 	   }
 	   return null;
    }
