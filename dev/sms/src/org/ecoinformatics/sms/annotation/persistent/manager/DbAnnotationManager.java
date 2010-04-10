@@ -38,8 +38,8 @@ import org.apache.cayenne.conf.Configuration;
 import org.apache.cayenne.conf.DefaultConfiguration;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.commons.lang.StringUtils;
 import org.ecoinformatics.sms.SMS;
-import org.ecoinformatics.sms.OntologyManager;
 import org.ecoinformatics.sms.AnnotationManager;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.AnnotationException;
@@ -65,8 +65,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -485,10 +483,25 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     */
    public List<OntologyClass> getActiveCharacteristics() {
       List<OntologyClass> results = new ArrayList();
-      for(Annotation a : getAnnotations())
-         for(OntologyClass c : a.getOntologyClasses())
-            if(c instanceof Characteristic && !results.contains(c))
-               results.add(c);
+      ObjectContext context = DataContext.createDataContext();
+		
+		// look up the observation entities
+		SelectQuery query = new SelectQuery(DbCharacteristic.class);
+		List<DbCharacteristic> values = context.performQuery(query);
+		if (values != null) {
+			for (DbCharacteristic dbc: values) {
+				OntologyClass c = null;
+				try {
+					c = new Characteristic(dbc.getType());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(c !=null && !results.contains(c)) {
+					results.add(c);
+				}
+			}
+		}
       return results;
    }
 
@@ -513,10 +526,25 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     */
    public List<OntologyClass> getActiveStandards() {
       List<OntologyClass> results = new ArrayList();
-      for(Annotation a : getAnnotations())
-         for(OntologyClass c : a.getOntologyClasses())
-            if(c instanceof Standard && !results.contains(c))
-               results.add(c);
+      ObjectContext context = DataContext.createDataContext();
+		
+		// look up the observation entities
+		SelectQuery query = new SelectQuery(DbMeasurement.class);
+		List<DbMeasurement> values = context.performQuery(query);
+		if (values != null) {
+			for (DbMeasurement dbm: values) {
+				OntologyClass c = null;
+				try {
+					c = new Standard(dbm.getStandard());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(c !=null && !results.contains(c)) {
+					results.add(c);
+				}
+			}
+		}
       return results;
    }
 
@@ -547,30 +575,33 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
       if((characteristics == null || characteristics.isEmpty()) &&
               (standards == null || standards.isEmpty()))
          return getActiveEntities();
+      
       List<OntologyClass> results = new ArrayList();
-      for(Annotation a : getAnnotations())
-         for(Observation o : a.getObservations()) {
-            boolean found = false;
-            for(Measurement m : o.getMeasurements()) {
-               if(standards != null && !standards.isEmpty() && !standards.contains(m.getStandard()))
-                  continue;
-               if(characteristics == null || characteristics.isEmpty()) {
-                  found = true;
-                  break;
-               }
-               for(Characteristic c : m.getCharacteristics())
-                  if(characteristics.contains(c)) {
-                     found = true;
-                     break;
-                  }
-               if(found)
-                  break;
-            }
-            if(found)
-               for(Entity e : getAllEntities(o))
-                  if(!results.contains(e))
-                     results.add(e);
-         }
+      
+      String charExpression = createExpressionString(characteristics, "measurements.characteristics.type", "or");
+      String stdExpression = createExpressionString(characteristics, "measurements.standard", "or");
+      String combined = StringUtils.join(new String[] {charExpression, stdExpression}, " or ");
+     
+      Expression expression = Expression.fromString(combined);
+      
+      ObjectContext context = DataContext.createDataContext();
+	  SelectQuery query = new SelectQuery(DbObservation.class, expression);
+      List<DbObservation> values = context.performQuery(query);
+      if (values != null) {
+    	  for (DbObservation dbo: values) {
+    		  OntologyClass c = null;
+    		  try {
+    			  c = new Entity(dbo.getEntity());
+    		  } catch (Exception e) {
+    			  // TODO Auto-generated catch block
+    			  e.printStackTrace();
+    		  }
+    		  if(c !=null && !results.contains(c)) {
+    			  results.add(c);
+    		  }
+    	  }
+      }
+      
       return results;
    }
 
@@ -670,21 +701,31 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
               (standards == null || standards.isEmpty()))
          return getActiveCharacteristics();
       List<OntologyClass> results = new ArrayList();
-      for(Annotation a : getAnnotations())
-         for(Observation o : a.getObservations()) {
-            if(entities != null && !entities.isEmpty() && 
-                    !overlaps(entities, getAllEntities(o))) 
-               continue;
-            for(Measurement m : o.getMeasurements()) {
-               if(standards != null && !standards.isEmpty() &&
-                       !standards.contains(m.getStandard()))
-                  continue;
-               // found a match
-               for(Characteristic c : m.getCharacteristics())
-                  if(!results.contains(c))
-                     results.add(c);
-            }
-         }
+      
+      String entityExpression = createExpressionString(entities, "measurement.observation.entity", "or");
+      String charExpression = createExpressionString(standards, "measurement.standard", "or");
+      String combined = StringUtils.join(new String[] {entityExpression, charExpression}, " or ");
+     
+      Expression expression = Expression.fromString(combined);
+      
+      ObjectContext context = DataContext.createDataContext();
+	  SelectQuery query = new SelectQuery(DbCharacteristic.class, expression);
+      List<DbCharacteristic> values = context.performQuery(query);
+      if (values != null) {
+    	  for (DbCharacteristic dbc: values) {
+    		  OntologyClass c = null;
+    		  try {
+    			  c = new Characteristic(dbc.getType());
+    		  } catch (Exception e) {
+    			  // TODO Auto-generated catch block
+    			  e.printStackTrace();
+    		  }
+    		  if(c !=null && !results.contains(c)) {
+    			  results.add(c);
+    		  }
+    	  }
+      }
+      
       return results;
    }
 
@@ -785,26 +826,30 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
               (characteristics == null || characteristics.isEmpty()))
          return getActiveStandards();
       List<OntologyClass> results = new ArrayList();
-      for(Annotation a : getAnnotations())
-         for(Observation o : a.getObservations()) {
-            if(entities != null && !entities.isEmpty() && 
-                    !overlaps(entities, getAllEntities(o))) 
-               continue;
-            for(Measurement m : o.getMeasurements()) {
-               boolean found = false;
-               if(characteristics != null && !characteristics.isEmpty()) {
-                  for(Characteristic c : m.getCharacteristics())
-                     if(characteristics.contains(c)) {
-                        found = true;
-                        break;
-                     }
-               }else
-                  found = true;
-               Standard s = m.getStandard();
-               if(found && !results.contains(s))
-                  results.add(s);
-            }
-         }
+      
+      String entityExpression = createExpressionString(entities, "observation.entity", "or");
+      String charExpression = createExpressionString(characteristics, "characteristics.type", "or");
+      String combined = StringUtils.join(new String[] {entityExpression, charExpression}, " or ");
+     
+      Expression expression = Expression.fromString(combined);
+      
+      ObjectContext context = DataContext.createDataContext();
+	  SelectQuery query = new SelectQuery(DbMeasurement.class, expression);
+      List<DbMeasurement> values = context.performQuery(query);
+      if (values != null) {
+    	  for (DbMeasurement dbm: values) {
+    		  OntologyClass c = null;
+    		  try {
+    			  c = new Standard(dbm.getStandard());
+    		  } catch (Exception e) {
+    			  // TODO Auto-generated catch block
+    			  e.printStackTrace();
+    		  }
+    		  if(c !=null && !results.contains(c)) {
+    			  results.add(c);
+    		  }
+    	  }
+      }
       return results;
    }
 
@@ -1199,42 +1244,43 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
            List<OntologyClass> characteristics, List<OntologyClass> standards,
            List<OntologyClass> protocols, List<Triple> contexts, String operator) {
 	   
+	   List<String> terms = new ArrayList<String>();
+	   
 	   String entityString = createExpressionString(entities, "observations.entity", "or");
 	   String characterString = createExpressionString(characteristics, "observations.measurements.characteristics.type", "or");
 	   String standardString = createExpressionString(standards, "observations.measurements.standard", "or");
 	   String protocolString = createExpressionString(protocols, "observations.measurements.protocol", "or");
 	   //TODO: context
 	   
-	   StringBuffer combined = new StringBuffer();
 	   if (entityString != null) {
-		   combined.append(entityString);
+		   terms.add(entityString);
 	   }
 	   if (characterString != null) {
-		   combined.append(" " + operator + " ");
-		   combined.append(" (");
-		   combined.append(characterString);
-		   combined.append(")");
+		   terms.add(characterString);
 	   }
 	   if (standardString != null) {
-		   combined.append(" " + operator + " ");
-		   combined.append(" (");
-		   combined.append(standardString);
-		   combined.append(")");
+		   terms.add(standardString);
 	   }
 	   if (protocolString != null) {
-		   combined.append(" " + operator + " ");
-		   combined.append(" (");
-		   combined.append(protocolString);
-		   combined.append(")");
+		   terms.add(protocolString);
 	   }
 	   
-	   return combined.toString();
+	   String combined = StringUtils.join(
+			   terms, 
+			   " " + operator + " ");
+	   
+	   if (combined != null && combined.length() == 0) {
+		   combined = null;
+	   }
+	   
+	   return combined;
 	   
    }
    
    private static String createExpressionString(List<OntologyClass> classes, String path, String operator) {
 	   StringBuffer expression = new StringBuffer();
 	   if (classes != null && !classes.isEmpty()) {
+		   expression.append("(");
 		   Iterator<OntologyClass> iter = classes.iterator();
 		   while (iter.hasNext()) {
 			   OntologyClass oc = iter.next();
@@ -1245,6 +1291,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 				   expression.append(" " + operator + " ");
 			   }
 		   }
+		   expression.append(")");
 		   return expression.toString();
 	   }
 	   return null;
