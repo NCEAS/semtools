@@ -61,6 +61,7 @@ import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -398,157 +399,54 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
    public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
            List<OntologyClass> characteristics, List<OntologyClass> standards,
            List<OntologyClass> protocols, List<Triple> contexts) {
-	   int criteria = 5;
-	   if (entities == null || entities.isEmpty()) {
-		   criteria--;
+	   
+	   List<Annotation> results = new ArrayList<Annotation>();
+	   
+	   String entityString = createExpressionString(entities, "observations.entity", "or");
+	   String characterString = createExpressionString(entities, "observations.measurements.characteristics.type", "or");
+	   String standardString = createExpressionString(entities, "observations.measurements.standard", "or");
+	   String protocolString = createExpressionString(entities, "observations.measurements.protocol", "or");
+	   //TODO: context
+	   
+	   StringBuffer combined = new StringBuffer();
+	   if (entityString != null) {
+		   combined.append(entityString);
 	   }
-	   if (characteristics == null || characteristics.isEmpty()) {
-		   criteria--;
+	   if (characterString != null) {
+		   combined.append(" and ");
+		   combined.append(" (");
+		   combined.append(characterString);
+		   combined.append(")");
 	   }
-	   if (standards == null || standards.isEmpty()) {
-		   criteria--;
+	   if (standardString != null) {
+		   combined.append(" and ");
+		   combined.append(" (");
+		   combined.append(standardString);
+		   combined.append(")");
 	   }
-	   if (protocols == null || protocols.isEmpty()) {
-		   criteria--;
+	   if (protocolString != null) {
+		   combined.append(" and ");
+		   combined.append(" (");
+		   combined.append(protocolString);
+		   combined.append(")");
 	   }
-	   if (contexts == null || contexts.isEmpty()) {
-		   criteria--;
-	   }
-      // find matches
-      List<Annotation> rankedResults = new ArrayList<Annotation>();
-      SortedMap<Integer, List<Annotation>> rankedResultMap = new TreeMap<Integer, List<Annotation>>();
-      for(Annotation annot : getAnnotations()) {
-    	 // decremented for each type of match
-    	 int rank = criteria;
-    	 int weight = -1;
-         weight = hasMatchingEntity(annot, entities);
-         if(weight < 0) {
-            //continue;
-         }
-         rank -= weight;
-         weight = hasMatchingCharacteristic(annot, characteristics);
-         if (weight < 0) {
-            //continue;
-         }
-         rank -= weight;
-         weight = hasMatchingStandard(annot, standards);
-         if (weight < 0) {
-            //continue;
-         }
-         rank -= weight;
-         weight = hasMatchingProtocol(annot, protocols);
-         if (weight < 0) {
-             //continue;
-         }
-         rank -= weight;
-         weight = hasMatchingContext(annot, contexts);
-         if (weight < 0) {
-             //continue;
-         }
-         rank -= weight;
-         // criteria were given and it didn't match any of the criteria
-         if (rank >= (criteria*2) && criteria != 0) {
-        	 continue;
-         }
-         // put the result in the correct bucket
-         List<Annotation> results = rankedResultMap.get(rank);
-         if (results == null) {
-        	 results = new ArrayList<Annotation>();
-        	 rankedResultMap.put(rank, results);
-         }
-         if(!results.contains(annot)) {
-            results.add(annot);
-         }
+	   
+	   Expression expression = Expression.fromString(combined.toString());
+
+	   ObjectContext context = DataContext.createDataContext();
+	   SelectQuery query = new SelectQuery(DbAnnotation.class, expression);
+	   List<DbAnnotation> values = context.performQuery(query);
+	   for (DbAnnotation dbAnnotation: values) {
+		   try {
+			   results.add(getAnnotation(dbAnnotation));
+			} catch (AnnotationException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
       }
-      // combine the results in order from the map
-      for (List<Annotation> results: rankedResultMap.values()) {
-    	  rankedResults.addAll(results);
-      }
-      return rankedResults;
-   }
-
-   /**
-    * Get annotations that contain an entity in the given list and a 
-    * measurement with a characteristic and standard in the given lists
-    * @param entities the entity classes to search for
-    * @param characteristics the characteristic classes to search for
-    * @param standards the measurement standard classes to search for
-    * @param searchSubclasses if true, search subclasses of the given classes
-    * @return the matching annotations
-    */
-   public List<Annotation> getMatchingAnnotations(List<OntologyClass> entities,
-           List<OntologyClass> characteristics, List<OntologyClass> standards,
-           List<OntologyClass> protocols, List<Triple> contexts, boolean searchSubclasses) {
-      if(!searchSubclasses)
-         return getMatchingAnnotations(entities, characteristics, standards, protocols, contexts);
-      List<OntologyClass> entSubs = new ArrayList(entities);
-      List<OntologyClass> charSubs = new ArrayList(characteristics);
-      List<OntologyClass> stdSubs = new ArrayList(standards);
-      List<OntologyClass> protSubs = new ArrayList(protocols);
-      // TODO: add subclasses to the triples
-      List<Triple> contextSubs = new ArrayList<Triple>(contexts);
-      addSubclasses(entSubs);
-      addSubclasses(charSubs);
-      addSubclasses(stdSubs);
-      addSubclasses(protSubs);
-      return getMatchingAnnotations(entSubs, charSubs, stdSubs, protSubs, contextSubs);
-   }
-
-   /**
-    * Get annotations that contain the given entity, characteristic, and standard
-    * @param entity the entity class to search for
-    * @param characteristic the characteristic classto search for
-    * @param standard the measurement standard class to search for
-    * @return the matching annotations
-    */
-   public List<Annotation> getMatchingAnnotations(OntologyClass entity,
-           OntologyClass characteristic, OntologyClass standard, OntologyClass protocol,
-           Triple context) {
-      List<OntologyClass> entities = new ArrayList();
-      if(entity != null)
-         entities.add(entity);
-      List<OntologyClass> characteristics = new ArrayList();
-      if(characteristic != null)
-         characteristics.add(characteristic);
-      List<OntologyClass> standards = new ArrayList();
-      if(standard != null)
-         standards.add(standard);
-      List<OntologyClass> protocols = new ArrayList();
-      if(protocol != null)
-         protocols.add(protocol);
-      List<Triple> contexts = new ArrayList();
-      if(context != null)
-         contexts.add(context);
-      return getMatchingAnnotations(entities, characteristics, standards, protocols, contexts);
-   }
-
-   /**
-    * Get annotations that contain the given entity, characteristic, and standard
-    * @param entity the entity class to search for
-    * @param characteristic the characteristic classto search for
-    * @param standard the measurement standard class to search for
-    * @param searchSubclasses if true, search subclasses of the given classes
-    * @return the matching annotations
-    */
-   public List<Annotation> getMatchingAnnotations(OntologyClass entity,
-           OntologyClass characteristic, OntologyClass standard, 
-           OntologyClass protocol, Triple context, boolean searchSubclasses) {
-      List<OntologyClass> entities = new ArrayList();
-      if(entity != null)
-         entities.add(entity);
-      List<OntologyClass> characteristics = new ArrayList();
-      if(characteristic != null)
-         characteristics.add(characteristic);
-      List<OntologyClass> standards = new ArrayList();
-      if(standard != null)
-         standards.add(standard);
-      List<OntologyClass> protocols = new ArrayList();
-      if(protocol != null)
-         protocols.add(protocol);
-      List<Triple> contexts = new ArrayList();
-      if(context != null)
-         contexts.add(context);
-      return getMatchingAnnotations(entities, characteristics, standards, protocols, contexts, searchSubclasses);
+     
+      return results;
    }
 
    /**
@@ -1210,6 +1108,24 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
             if(protocols.contains(m.getProtocol()))
                return 1;
       return -1;
+   }
+   
+   private static String createExpressionString(List<OntologyClass> entities, String path, String operator) {
+	   StringBuffer entityString = new StringBuffer();
+	   if (entities != null && entities.isEmpty()) {
+		   Iterator<OntologyClass> iter = entities.iterator();
+		   while (iter.hasNext()) {
+			   OntologyClass entity = iter.next();
+			   entityString.append(path + " = '");
+			   entityString.append(entity.getURI());
+			   entityString.append("'");
+			   if (iter.hasNext()) {
+				   entityString.append(" " + operator + " ");
+			   }
+		   }
+		   return entityString.toString();
+	   }
+	   return null;
    }
 
    public static void main(String[] args) {
