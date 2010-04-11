@@ -960,7 +960,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 				Triple context = criteria.getContextTriple();
 				if (context != null) {
 					contexts.add(context);
-					//TODO: context triples
 				}
 			} else {
 				// what criteria were given?
@@ -1045,7 +1044,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   String characterString = createExpressionString(characteristics, "observations.measurements.characteristics.type", "or");
 	   String standardString = createExpressionString(standards, "observations.measurements.standard", "or");
 	   String protocolString = createExpressionString(protocols, "observations.measurements.protocol", "or");
-	   //TODO: context
+	   String contextString = createContextExpressionString(contexts, "or");
 	   
 	   if (entityString != null) {
 		   terms.add(entityString);
@@ -1058,6 +1057,9 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   }
 	   if (protocolString != null) {
 		   terms.add(protocolString);
+	   }
+	   if (contextString != null) {
+		   terms.add(contextString);
 	   }
 	   
 	   String combined = StringUtils.join(
@@ -1082,6 +1084,54 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 			   expression.append(path + " = '");
 			   expression.append(oc.getURI());
 			   expression.append("'");
+			   if (iter.hasNext()) {
+				   expression.append(" " + operator + " ");
+			   }
+		   }
+		   expression.append(")");
+		   return expression.toString();
+	   }
+	   return null;
+   }
+   
+   private static String createContextExpressionString(List<Triple> contextTriples, String operator) {
+	   StringBuffer expression = new StringBuffer();
+	   if (contextTriples != null && !contextTriples.isEmpty()) {
+		   expression.append("(");
+		   Iterator<Triple> iter = contextTriples.iterator();
+		   while (iter.hasNext()) {
+			   Triple contextTriple = iter.next();
+			   
+			   List<String> terms = new ArrayList<String>();
+			   StringBuffer aTerm = new StringBuffer();
+			   StringBuffer bTerm = new StringBuffer();
+			   StringBuffer cTerm = new StringBuffer();
+
+			   if (contextTriple.a != null) {
+				   aTerm.append("observations.contexts.observation.entity = '");
+				   aTerm.append(contextTriple.a.getURI());
+				   aTerm.append("'");
+				   terms.add(aTerm.toString());
+			   }
+			   if (contextTriple.b != null) {
+				   bTerm.append("observations.contexts.relationship = '");
+				   bTerm.append(contextTriple.b.getURI());
+				   bTerm.append("'");
+				   terms.add(bTerm.toString());
+			   }
+			   if (contextTriple.c != null) {
+				   cTerm.append("observations.contexts.observationB.entity = '");
+				   cTerm.append(contextTriple.c.getURI());
+				   cTerm.append("'");
+				   terms.add(cTerm.toString());
+			   }
+			   
+			   String combined = StringUtils.join(terms, " and ");
+			   
+			   expression.append("(");
+			   expression.append(combined);
+			   expression.append(")");
+
 			   if (iter.hasNext()) {
 				   expression.append(" " + operator + " ");
 			   }
