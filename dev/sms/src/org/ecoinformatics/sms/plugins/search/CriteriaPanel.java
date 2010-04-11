@@ -25,6 +25,7 @@ import org.ecoinformatics.sms.annotation.Entity;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
+import org.ecoinformatics.sms.annotation.Triple;
 import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.ui.ContextTriplePanel;
@@ -151,6 +152,11 @@ public class CriteriaPanel extends JPanel {
 		// get the criteria as it exists from the panel of lists
 		if (subCriteria != null) {
 			this.criteria = subCriteria.getCriteria();
+		}
+		//handle context
+		if (criteria.isContext()) {
+			Triple ct = contextPanel.getContextTriple();
+			criteria.setContextTriple(ct);
 		}
 		
 		// find the Java class we want for the selected OntologyClass - it is the key in the map
