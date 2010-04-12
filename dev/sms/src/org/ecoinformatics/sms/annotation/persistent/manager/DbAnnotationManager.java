@@ -444,7 +444,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   List<Annotation> results = new ArrayList<Annotation>();
 	   
 	   // using "or" instead of "and" for more results, even though these are not ranked yet.
-	   String combined = createExpresstionString(entities, characteristics, standards, protocols, contexts, "or");
+	   String combined = createExpresstionString(entities, characteristics, standards, protocols, contexts, "=", "or");
 	   
 	   Expression expression = Expression.fromString(combined.toString());
 
@@ -609,8 +609,8 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
       
       List<OntologyClass> results = new ArrayList();
       
-      String charExpression = createExpressionString(characteristics, "measurements.characteristics.type", "or");
-      String stdExpression = createExpressionString(characteristics, "measurements.standard", "or");
+      String charExpression = createExpressionString(characteristics, "measurements.characteristics.type", "=", "or");
+      String stdExpression = createExpressionString(characteristics, "measurements.standard", "=", "or");
       String combined = StringUtils.join(new String[] {charExpression, stdExpression}, " or ");
      
       Expression expression = Expression.fromString(combined);
@@ -733,8 +733,8 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
          return getActiveCharacteristics();
       List<OntologyClass> results = new ArrayList();
       
-      String entityExpression = createExpressionString(entities, "measurement.observation.entity", "or");
-      String charExpression = createExpressionString(standards, "measurement.standard", "or");
+      String entityExpression = createExpressionString(entities, "measurement.observation.entity", "=", "or");
+      String charExpression = createExpressionString(standards, "measurement.standard", "=", "or");
       String combined = StringUtils.join(new String[] {entityExpression, charExpression}, " or ");
      
       Expression expression = Expression.fromString(combined);
@@ -858,8 +858,8 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
          return getActiveStandards();
       List<OntologyClass> results = new ArrayList();
       
-      String entityExpression = createExpressionString(entities, "observation.entity", "or");
-      String charExpression = createExpressionString(characteristics, "characteristics.type", "or");
+      String entityExpression = createExpressionString(entities, "observation.entity", "=", "or");
+      String charExpression = createExpressionString(characteristics, "characteristics.type", "=", "or");
       String combined = StringUtils.join(new String[] {entityExpression, charExpression}, " or ");
      
       Expression expression = Expression.fromString(combined);
@@ -1037,9 +1037,14 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 				}
 			}
 			// now construct the expression from the given class lists
-			String operator = "or";
+			String operator = "=";
+			if (criteria.getCondition().equals(Criteria.ISNOT)) {
+				operator = "!=";
+			}
+			String conditionalOperator = "or";
+
 			expression.append(
-					createExpresstionString(entities, characteristics, standards, protocols, contexts, operator));
+					createExpresstionString(entities, characteristics, standards, protocols, contexts, operator, conditionalOperator));
 			
 	   }
 	   else {
@@ -1067,14 +1072,14 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 
    private static String createExpresstionString(List<OntologyClass> entities,
            List<OntologyClass> characteristics, List<OntologyClass> standards,
-           List<OntologyClass> protocols, List<Triple> contexts, String operator) {
+           List<OntologyClass> protocols, List<Triple> contexts, String relationalOperator, String conditionalOperator) {
 	   
 	   List<String> terms = new ArrayList<String>();
 	   
-	   String entityString = createExpressionString(entities, "observations.entity", "or");
-	   String characterString = createExpressionString(characteristics, "observations.measurements.characteristics.type", "or");
-	   String standardString = createExpressionString(standards, "observations.measurements.standard", "or");
-	   String protocolString = createExpressionString(protocols, "observations.measurements.protocol", "or");
+	   String entityString = createExpressionString(entities, "observations.entity", relationalOperator, "or");
+	   String characterString = createExpressionString(characteristics, "observations.measurements.characteristics.type", relationalOperator, "or");
+	   String standardString = createExpressionString(standards, "observations.measurements.standard", relationalOperator, "or");
+	   String protocolString = createExpressionString(protocols, "observations.measurements.protocol", relationalOperator, "or");
 	   String contextString = createContextExpressionString(contexts, "or");
 	   
 	   if (entityString != null) {
@@ -1095,7 +1100,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   
 	   String combined = StringUtils.join(
 			   terms, 
-			   " " + operator + " ");
+			   " " + conditionalOperator + " ");
 	   
 	   if (combined != null && combined.length() == 0) {
 		   combined = null;
@@ -1105,18 +1110,18 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   
    }
    
-   private static String createExpressionString(List<OntologyClass> classes, String path, String operator) {
+   private static String createExpressionString(List<OntologyClass> classes, String path, String relationalOperator, String conditionalOperator) {
 	   StringBuffer expression = new StringBuffer();
 	   if (classes != null && !classes.isEmpty()) {
 		   expression.append("(");
 		   Iterator<OntologyClass> iter = classes.iterator();
 		   while (iter.hasNext()) {
 			   OntologyClass oc = iter.next();
-			   expression.append(path + " = '");
+			   expression.append(path + " " + relationalOperator + " '");
 			   expression.append(oc.getURI());
 			   expression.append("'");
 			   if (iter.hasNext()) {
-				   expression.append(" " + operator + " ");
+				   expression.append(" " + conditionalOperator + " ");
 			   }
 		   }
 		   expression.append(")");

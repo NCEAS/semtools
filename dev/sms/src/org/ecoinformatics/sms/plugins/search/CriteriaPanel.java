@@ -75,11 +75,10 @@ public class CriteriaPanel extends JPanel {
 		subject = WidgetFactory.makePickList(subjectValues, false, 0, subjectListener);
 		WidgetFactory.setPrefMaxSizes(subject, PICKLIST_DIMS);
 		
-		Object[] conditionValues = new String[] {"is", "is not"};
+		Object[] conditionValues = new String[] {Criteria.IS, Criteria.ISNOT};
 		condition = WidgetFactory.makePickList(conditionValues, false, 0, null);
 		WidgetFactory.setPrefMaxSizes(condition, PICKLIST_DIMS_SMALL);
-		// TODO: implement "is not" functionality
-		condition.setEnabled(false);
+		//condition.setEnabled(false);
 
 		value = OntologyClassField.makeLabel("", false, null);
 		value.setFilterClass((OntologyClass) subject.getSelectedItem());

@@ -6,6 +6,10 @@ import org.ecoinformatics.sms.annotation.Triple;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 
 public class Criteria  {
+	
+	public static final String IS = "is";
+
+	public static final String ISNOT = "is not";
 
 	private Class subject;
 	private String condition;
