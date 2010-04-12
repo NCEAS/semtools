@@ -50,6 +50,7 @@ import org.ecoinformatics.sms.annotation.Entity;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Protocol;
+import org.ecoinformatics.sms.annotation.Relationship;
 import org.ecoinformatics.sms.annotation.Standard;
 import org.ecoinformatics.sms.annotation.Triple;
 import org.ecoinformatics.sms.annotation.persistent.DbAnnotation;
@@ -169,24 +170,54 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 					dbMeasurement.addToCharacteristics(dbCharacteristic);
 				}
 			}
-			// contexts
-			for (Context c: o.getContexts()) {
-				DbContext dbContext = context.newObject(DbContext.class);
-				dbContext.setObservation(dbObservation);
-				dbContext.setRelationship((c.getRelationship() == null) ? null : c.getRelationship().getURI());
-				// TODO: follow the observation b's contexts all the way down...
-				DbObservation dbObservationB = context.newObject(DbObservation.class);
-				dbObservationB.setEntity((c.getObservation() == null || c.getObservation().getEntity() == null) ? null : c.getObservation().getEntity().getURI());
-				dbContext.setObservationB(dbObservationB);
-				
-				dbObservation.addToContexts(dbContext);
-			}
+			// contexts, recursively.
+			// if we don't want to expand them fully, then set to false.
+			expandContexts(o, dbObservation, context, true);
 		}
 		
 		context.commitChanges();
 		
 		return dbAnnotation;
 		
+	}
+	
+	/**
+	 * Adds contexts - optionally added recursively so that synthetic transitive contexts are stored
+	 * Context is transitive in the sense that:
+	 * A rel B; 
+	 * B rel C; 
+	 * therefore: A rel C
+	 * @param o the Observation to expand contexts
+	 * @param dbObservation the dbObservation that will have these expanded contexts
+	 * @param context the data object context (for new objects and transactions)
+	 * @param recursive - should this be done recursively (such that transitive context is captured)
+	 */
+	private static void expandContexts(Observation o, DbObservation dbObservation, ObjectContext context, boolean recursive) {
+		List<Context> contexts = o.getContexts();
+		if (contexts == null || contexts.isEmpty()) {
+			return;
+		}
+		for (Context c: contexts) {
+			DbContext dbContext = context.newObject(DbContext.class);
+			dbContext.setObservation(dbObservation);
+			
+			// the relationship
+			Relationship relationship = c.getRelationship();
+			dbContext.setRelationship((relationship == null) ? null : relationship.getURI());
+
+			// the target observation
+			Observation observation = c.getObservation();
+			DbObservation dbObservationB = context.newObject(DbObservation.class);
+			dbObservationB.setEntity((observation == null || observation.getEntity() == null) ? null : observation.getEntity().getURI());
+			dbContext.setObservationB(dbObservationB);
+			
+			dbObservation.addToContexts(dbContext);
+			
+			// call again to capture transitive context relationships
+			if (recursive) {
+				expandContexts(observation, dbObservation, context, recursive);
+			}
+		}
 	}
 	
    /**
@@ -1145,7 +1176,9 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
    public static void main(String[] args) {
 		try {
 	
-			String annot1 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-ex1-annot.xml";
+			//String annot1 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-ex1-annot.xml";
+			String annot1 = "file:///Users/leinfelder/.semtools/profiles/benriver/data/benriver/20.52";
+
 	        URL url = new URL(annot1);
 	
 	        // get annotation manager
@@ -1155,23 +1188,26 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 			
 	        // look up the db annotation directly
 			//DbAnnotation dbAnnotation = getDbAnnotation(annotation);
-	        DbAnnotation dbAnnotation = query("%Centimeter");
+	        DbAnnotation dbAnnotation = query("%");
 	        
 			// print it out
-			System.out.println(dbAnnotation);
+			System.out.println("Annotation: " + dbAnnotation);
+			System.out.println();
 			List<DbObservation> dbObservations = dbAnnotation.getObservations();
 			for (DbObservation dbo: dbObservations) {
-				System.out.println(dbo);
+				System.out.println("Observation: " + dbo);
+				System.out.println();
 				for (DbMeasurement dbm: dbo.getMeasurements()) {
-					System.out.println(dbm);
+					//System.out.println(dbm);
 				}
 				for (DbContext dbc: dbo.getContexts()) {
-					System.out.println(dbc);
+					//System.out.println(dbc);
 					System.out.println("--------");
 					System.out.println(dbc.getObservation());
 					System.out.println(dbc.getRelationship());
 					System.out.println(dbc.getObservationB());
 				}
+				System.out.println();
 			}
 			
 			
