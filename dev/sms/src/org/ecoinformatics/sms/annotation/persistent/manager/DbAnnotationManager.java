@@ -75,6 +75,7 @@ import java.net.URL;
  */
 public class DbAnnotationManager extends DefaultAnnotationManager {
 
+	private ObjectContext context;
 
    /**
     * Default constuctor
@@ -86,6 +87,8 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   DefaultConfiguration conf = new DefaultConfiguration();			
 	   conf.addClassPath("org/ecoinformatics/sms/annotation/persistent/config");
 	   Configuration.initializeSharedConfiguration(conf);
+	   
+	   context = DataContext.createDataContext();
    }
 
 	/**
@@ -109,10 +112,8 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	 * @param annotation
 	 * @return dbAnnotation object for the given Annotation, if it exists
 	 */
-	public static DbAnnotation getDbAnnotation(Annotation annotation) {
-		
-		ObjectContext context = DataContext.createDataContext();
-		
+	public DbAnnotation getDbAnnotation(Annotation annotation) {
+				
 		DbAnnotation dbAnnotation = null;
 
 		// look up the annotation if it exists
@@ -133,10 +134,8 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	 * @param source
 	 * @return
 	 */
-	public static DbAnnotation createDbAnnotation(Annotation annotation, String source) {
-				
-		ObjectContext context = DataContext.createDataContext();
-		
+	public DbAnnotation createDbAnnotation(Annotation annotation, String source) {
+						
 		// look up the annotation
 		DbAnnotation dbAnnotation = getDbAnnotation(annotation);
 		if (dbAnnotation != null) {
@@ -199,23 +198,26 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 		}
 		for (Context c: contexts) {
 			DbContext dbContext = context.newObject(DbContext.class);
-			dbContext.setObservation(dbObservation);
 			
 			// the relationship
 			Relationship relationship = c.getRelationship();
 			dbContext.setRelationship((relationship == null) ? null : relationship.getURI());
 
 			// the target observation
-			Observation observation = c.getObservation();
+			Observation observationB = c.getObservation();
 			DbObservation dbObservationB = context.newObject(DbObservation.class);
-			dbObservationB.setEntity((observation == null || observation.getEntity() == null) ? null : observation.getEntity().getURI());
+			dbObservationB.setEntity((observationB == null || observationB.getEntity() == null) ? null : observationB.getEntity().getURI());
 			dbContext.setObservationB(dbObservationB);
 			
+			System.out.println("Adding context " + o + " --- " + c.getMadlib());
+			
+			//do one or the other, otherwise you duplicate
+			//dbContext.setObservation(dbObservation);
 			dbObservation.addToContexts(dbContext);
 			
 			// call again to capture transitive context relationships
 			if (recursive) {
-				expandContexts(observation, dbObservation, context, recursive);
+				expandContexts(observationB, dbObservation, context, recursive);
 			}
 		}
 	}
@@ -271,9 +273,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
       // remove from the working set
       super.removeAnnotation(id);
       
-      //remove from the index
-      ObjectContext context = DataContext.createDataContext();
-		
+      //remove from the index		
 		// look up the annotation 
 		final Expression expression = Expression.fromString("identifier = $identifier");
 		Map<String, String> params = new HashMap<String, String>();
@@ -301,8 +301,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   }
 	   
 	   // is it in the index?
-	   ObjectContext context = DataContext.createDataContext();
-		
 		// look up the annotation 
 		final Expression expression = Expression.fromString("identifier = $identifier");
 		Map<String, String> params = new HashMap<String, String>();
@@ -331,8 +329,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 		}
 
 		// look it up in the index
-      ObjectContext context = DataContext.createDataContext();
-		
 		// look up the annotation 
 		final Expression expression = Expression.fromString("identifier = $identifier");
 		Map<String, String> params = new HashMap<String, String>();
@@ -356,7 +352,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   // get the working set first
 	   List<String> results = super.getAnnotationIds();
 	   // add ids from the index
-	   ObjectContext context = DataContext.createDataContext();
 	   SelectQuery query = new SelectQuery(DbAnnotation.class);
 	   List<DbAnnotation> values = context.performQuery(query);
 	   for (DbAnnotation a: values) {
@@ -376,8 +371,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   // get the working set first
 	   List<Annotation> results = super.getAnnotations(emlPackage, dataTable);
 	   
-	   ObjectContext context = DataContext.createDataContext();
-		
 		// look up the annotations
 		final Expression expression = 
 			Expression.fromString(
@@ -412,7 +405,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   
 	   Expression expression = Expression.fromString(expressionString.toString());
 
-	   ObjectContext context = DataContext.createDataContext();
 	   SelectQuery query = new SelectQuery(DbAnnotation.class, expression);
 	   List<DbAnnotation> values = context.performQuery(query);
 	   for (DbAnnotation dbAnnotation: values) {
@@ -448,7 +440,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   
 	   Expression expression = Expression.fromString(combined.toString());
 
-	   ObjectContext context = DataContext.createDataContext();
 	   SelectQuery query = new SelectQuery(DbAnnotation.class, expression);
 	   List<DbAnnotation> values = context.performQuery(query);
 	   for (DbAnnotation dbAnnotation: values) {
@@ -470,8 +461,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     */
    public List<OntologyClass> getActiveEntities() {
 	      List<OntologyClass> results = new ArrayList();
-
-		ObjectContext context = DataContext.createDataContext();
 		
 		// look up the observation entities
 		SelectQuery query = new SelectQuery(DbObservation.class);
@@ -514,7 +503,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     */
    public List<OntologyClass> getActiveCharacteristics() {
       List<OntologyClass> results = new ArrayList();
-      ObjectContext context = DataContext.createDataContext();
 		
 		// look up the observation entities
 		SelectQuery query = new SelectQuery(DbCharacteristic.class);
@@ -557,7 +545,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     */
    public List<OntologyClass> getActiveStandards() {
       List<OntologyClass> results = new ArrayList();
-      ObjectContext context = DataContext.createDataContext();
 		
 		// look up the observation entities
 		SelectQuery query = new SelectQuery(DbMeasurement.class);
@@ -615,7 +602,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
      
       Expression expression = Expression.fromString(combined);
       
-      ObjectContext context = DataContext.createDataContext();
 	  SelectQuery query = new SelectQuery(DbObservation.class, expression);
       List<DbObservation> values = context.performQuery(query);
       if (values != null) {
@@ -739,7 +725,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
      
       Expression expression = Expression.fromString(combined);
       
-      ObjectContext context = DataContext.createDataContext();
 	  SelectQuery query = new SelectQuery(DbCharacteristic.class, expression);
       List<DbCharacteristic> values = context.performQuery(query);
       if (values != null) {
@@ -864,7 +849,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
      
       Expression expression = Expression.fromString(combined);
       
-      ObjectContext context = DataContext.createDataContext();
 	  SelectQuery query = new SelectQuery(DbMeasurement.class, expression);
       List<DbMeasurement> values = context.performQuery(query);
       if (values != null) {
@@ -1192,8 +1176,10 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	        annotationManager.importAnnotation(annotation, url.toString());
 			
 	        // look up the db annotation directly
-			//DbAnnotation dbAnnotation = getDbAnnotation(annotation);
-	        DbAnnotation dbAnnotation = query("%");
+			//DbAnnotation dbAnnotation = ((DbAnnotationManager)annotationManager).getDbAnnotation(annotation);
+	 	   //ObjectContext context = DataContext.createDataContext();
+	 	   ObjectContext context = ((DbAnnotationManager)annotationManager).context;
+	        DbAnnotation dbAnnotation = query("%", context);
 	        
 			// print it out
 			System.out.println("Annotation: " + dbAnnotation);
@@ -1202,10 +1188,12 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 			for (DbObservation dbo: dbObservations) {
 				System.out.println("Observation: " + dbo);
 				System.out.println();
-				for (DbMeasurement dbm: dbo.getMeasurements()) {
-					//System.out.println(dbm);
-				}
-				for (DbContext dbc: dbo.getContexts()) {
+//				for (DbMeasurement dbm: dbo.getMeasurements()) {
+//					System.out.println(dbm);
+//				}
+				List<DbContext> contexts = dbo.getContexts();
+				System.out.println("Context count: " + contexts.size());
+				for (DbContext dbc: contexts) {
 					//System.out.println(dbc);
 					System.out.println("--------");
 					System.out.println(dbc.getObservation());
@@ -1222,8 +1210,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 
 	}
    
-   private static DbAnnotation query(String param) {
-	   ObjectContext context = DataContext.createDataContext();
+   private static DbAnnotation query(String param, ObjectContext context) {
 		
 		DbAnnotation dbAnnotation = null;
 
