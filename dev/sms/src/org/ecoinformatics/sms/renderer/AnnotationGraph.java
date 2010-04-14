@@ -36,13 +36,21 @@ public class AnnotationGraph {
 		styleMap.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
 		//styleMap.put(mxConstants.STYLE_OPACITY, 50);
 		//styleMap.put(mxConstants.STYLE_FONTCOLOR, "#774400");
-		stylesheet.putCellStyle("ROUNDED", styleMap);
+		stylesheet.putCellStyle("Rounded", styleMap);
+		
+		Map<String, Object> observationStyleMap = new HashMap<String, Object>();
+		observationStyleMap.put(mxConstants.STYLE_FILLCOLOR, "#EEEEEE");
+		stylesheet.putCellStyle("Observation", observationStyleMap);
+		
+		Map<String, Object> measurementStyleMap = new HashMap<String, Object>();
+		measurementStyleMap.put(mxConstants.STYLE_FILLCOLOR, "#DDDDDD");
+		stylesheet.putCellStyle("Measurement", measurementStyleMap);
 		
 		// the edge style
 		Map<String, Object> edgeStyleMap = new HashMap<String, Object>();
 		edgeStyleMap.put(mxConstants.STYLE_ELBOW, mxConstants.ELBOW_VERTICAL);
 		edgeStyleMap.put(mxConstants.STYLE_EDGE, mxConstants.EDGESTYLE_ELBOW);
-		stylesheet.putCellStyle("EDGE", edgeStyleMap);
+		stylesheet.putCellStyle("Edge", edgeStyleMap);
 
 		graph.setStylesheet(stylesheet);
 
@@ -53,8 +61,10 @@ public class AnnotationGraph {
 		int width = 80;
 		int height = 30;
 		int observationOffset = 0;
-		String style = "defaultVertex;ROUNDED";
-		String edgeStyle = "defaultEdge;EDGE";
+		String style = "defaultVertex;Rounded";
+		String observationStyle = "defaultVertex;Rounded;Observation";
+		String measurementStyle = "defaultVertex;Rounded;Measurement";
+		String edgeStyle = "defaultEdge;Edge";
 
 		
 		// keep track of the observation cells
@@ -73,7 +83,7 @@ public class AnnotationGraph {
 				
 				// add observation
 				Object observationNode = 
-					graph.insertVertex(observationCell, null, observation, x, y, width, height, style);
+					graph.insertVertex(observationCell, null, observation, x, y, width, height, observationStyle);
 
 				observationMap.put(observation, (mxCell)observationNode);
 				
@@ -89,7 +99,7 @@ public class AnnotationGraph {
 					
 					// add measurement
 					Object measurementNode = 
-						graph.insertVertex(observationCell, null, measurement.getLabel(), x, y, width, height, style);
+						graph.insertVertex(observationCell, null, measurement.getLabel(), x, y, width, height, measurementStyle);
 					
 					graph.insertEdge(observationCell, null, "hasMeasurement", observationNode, measurementNode, null);
 					
