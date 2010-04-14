@@ -29,8 +29,11 @@
 package org.ecoinformatics.sms.plugins.pages;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -100,9 +103,16 @@ public class ViewAnnotationPage extends AbstractUIPage {
 		
 		// annotation graph
 		JPanel annotationGraphPanel = WidgetFactory.makePanel();
-		annotationGraphPanel.add(WidgetFactory.makeLabel("Graph:", false));
 		// create the graph
-		Component graphComponent = AnnotationGraph.createAnnotationGraph(annotation);
+		final Component graphComponent = AnnotationGraph.createAnnotationGraph(annotation);
+		JButton refreshButton = WidgetFactory.makeJButton("Re-Layout", new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AnnotationGraph.layoutGraph(graphComponent);
+			}
+			
+		});
+		//annotationGraphPanel.add(WidgetFactory.makeLabel("Graph:", false));
+		annotationGraphPanel.add(refreshButton);
 		annotationGraphPanel.add(graphComponent);
 		annotationGraphPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
