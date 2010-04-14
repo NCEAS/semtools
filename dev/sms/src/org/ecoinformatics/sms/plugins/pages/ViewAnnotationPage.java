@@ -90,17 +90,6 @@ public class ViewAnnotationPage extends AbstractUIPage {
 		tabPane = new JTabbedPane();
 		this.add(tabPane);
 				
-		// annotation XML
-		JPanel annotationPanel = WidgetFactory.makePanel();
-		annotationPanel.add(WidgetFactory.makeLabel("Annotation:", false));
-		annotationXML = WidgetFactory.makeTextArea("", 20, false);
-		JScrollPane annotationScrollPane = new JScrollPane(annotationXML);
-		annotationPanel.add(annotationScrollPane);
-		annotationPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
-				8 * WizardSettings.PADDING));
-		
-		tabPane.insertTab("Annotation XML", null, annotationPanel, "View XML source", 0);
-		
 		// annotation graph
 		JPanel annotationGraphPanel = WidgetFactory.makePanel();
 		// create the graph
@@ -117,7 +106,18 @@ public class ViewAnnotationPage extends AbstractUIPage {
 		annotationGraphPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
 		
-		tabPane.insertTab("Annotation Graph", null, annotationGraphPanel, "View graph", 1);
+		tabPane.insertTab("Annotation Graph", null, annotationGraphPanel, "View graph", 0);
+		
+		// annotation XML
+		JPanel annotationPanel = WidgetFactory.makePanel();
+		annotationPanel.add(WidgetFactory.makeLabel("Annotation:", false));
+		annotationXML = WidgetFactory.makeTextArea("", 20, false);
+		JScrollPane annotationScrollPane = new JScrollPane(annotationXML);
+		annotationPanel.add(annotationScrollPane);
+		annotationPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
+				8 * WizardSettings.PADDING));
+		
+		tabPane.insertTab("Annotation XML", null, annotationPanel, "View XML source", 1);
 
 
 	}
