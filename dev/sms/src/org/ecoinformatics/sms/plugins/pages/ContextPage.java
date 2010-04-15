@@ -28,32 +28,21 @@
 
 package org.ecoinformatics.sms.plugins.pages;
 
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.ecoinformatics.sms.annotation.Annotation;
-import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.sms.annotation.Mapping;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
-import org.ecoinformatics.sms.annotation.Relationship;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
-import org.ecoinformatics.sms.plugins.commands.ContextCommand;
+import org.ecoinformatics.sms.plugins.context.ContextPanelList;
 
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
-import edu.ucsb.nceas.morpho.plugins.datapackagewizard.CustomList;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
-import edu.ucsb.nceas.morpho.util.GUIAction;
 import edu.ucsb.nceas.morpho.util.StateChangeEvent;
 import edu.ucsb.nceas.morpho.util.StateChangeListener;
-import edu.ucsb.nceas.morpho.util.StateChangeMonitor;
 import edu.ucsb.nceas.utilities.OrderedMap;
 
 public class ContextPage extends AbstractUIPage implements StateChangeListener {
@@ -75,15 +64,15 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 	private Observation observation;
 	
 	// context options
-	private CustomList contextList;
-	private JLabel contextListLabel;
-	private JLabel contextObservationLabel;
+	private ContextPanelList contextList;
 	
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
 
-	public ContextPage() {
+	public ContextPage(Annotation a) {
+		this.annotation = a;
+
 		init();
 	}
 
@@ -97,9 +86,7 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		JPanel descPanel = WidgetFactory.makePanel(2); 
-		descPanel.add(WidgetFactory.makeLabel("Observation:", false));
-		contextObservationLabel = WidgetFactory.makeLabel("", true, null);
-		descPanel.add(contextObservationLabel);
+		descPanel.add(WidgetFactory.makeHTMLLabel("The Observation was made where...", 1));
 		descPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
 		
@@ -107,42 +94,8 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 				
 		// Context list
 		JPanel contextListPanel = WidgetFactory.makePanel(5);
-		contextListLabel = WidgetFactory.makeLabel("Context:", false);
-		contextListPanel.add(contextListLabel);
-		//String[] colNames = new String[] {"Relationship", "Observation"};
-		String[] colNames = new String[] {"Context"};
-		Object[] editors = null; // no direct editing
-		contextList = WidgetFactory.makeList(
-				colNames, 
-				editors, 
-				3, //displayRows, 
-				true, //showAddButton, 
-				true, //showEditButton, 
-				false, //showDuplicateButton, 
-				true, //showDeleteButton, 
-				false, //showMoveUpButton, 
-				false //showMoveDownButton
-				);
 		
-		// add the data later
-		
-		// add the custom add action
-		GUIAction addAction = new GUIAction("Add Context", null, new ContextCommand(ContextCommand.ADD));
-		contextList.setCustomAddAction(addAction);
-		
-		// edit action
-		contextList.setCustomEditAction(new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
-				doEdit();
-			}
-		});
-		
-		// remove action
-		contextList.setCustomDeleteAction(new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
-				doRemove();
-			}
-		});
+		contextList = new ContextPanelList(annotation);
 		
 		contextListPanel.add(contextList);
 		contextListPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
@@ -151,57 +104,16 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 
 	}
 	
-	private void doEdit() {
-		List rowList = contextList.getSelectedRowList();
-		Context selectedContext = (Context) rowList.get(CONTEXT_INDEX);
-		// the context command takes care of the rest
-		ContextCommand contextCommand = new ContextCommand(ContextCommand.EDIT);
-		contextCommand.setCurrentContext(selectedContext);
-		contextCommand.execute(null);
-	}
-	
-	private void doRemove() {
-		List rowList = contextList.getSelectedRowList();
-		Context selectedContext = (Context) rowList.get(CONTEXT_INDEX);
-		// get the existing context
-		List<Context> existingContexts = observation.getContexts();
-		for (Context context: existingContexts) {
-			if (selectedContext.equals(context)) {
-				observation.removeContext(context);
-				AnnotationPlugin.saveAnnotation(annotation);
-				// fire change event
-				StateChangeEvent annotationEvent = new StateChangeEvent(this, AnnotationPlugin.ANNOTATION_CHANGE_EVENT);
-				StateChangeMonitor.getInstance().notifyStateChange(annotationEvent);
-				// done
-				break;
-			}
-		}		
-	}
-	
 	public void setObservation(Observation observation) {
 		this.observation = observation;
 	}
 	
 	private void populateList() {
-		contextList.removeAllRows();
 		if (this.observation == null) {
 			return;
 		}
-		// set the label text
-		contextObservationLabel.setText(observation.toString());
 		// set the existing entries
-		List<Context> existingContexts = observation.getContexts();
-		for (Context context: existingContexts) {
-			Relationship relationship = context.getRelationship();
-			Observation target = context.getObservation();
-			
-			List<Object> rowList = new ArrayList<Object>();
-			//rowList.add(observation);
-			//rowList.add(relationship);
-			//rowList.add(target);
-			rowList.add(context);
-			contextList.addRow(rowList);			
-		}
+		contextList.setObservation(observation);	
 	}
 	
 	public void handleStateChange(StateChangeEvent event) {
@@ -214,9 +126,10 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 		
 	}
 	
+	// TODO: handle edits
 	private void handleSelectColumn() {
 		observation = null;
-		annotation = AnnotationPlugin.getCurrentActiveAnnotation();
+		//annotation = AnnotationPlugin.getCurrentActiveAnnotation();
 		String attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
 		if (attributeName != null && annotation != null) {
 			Mapping mapping = annotation.getMapping(attributeName);

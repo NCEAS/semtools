@@ -895,7 +895,7 @@ public class AnnotationPlugin
 					tabPane.addTab(AnnotationTabPane.TAB_NAMES.get(1), madLib);
 										
 					// add the context tab
-					ContextPage contextTab = new ContextPage();
+					ContextPage contextTab = new ContextPage(annotation);
 					StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SELECT_DATATABLE_COLUMN, contextTab);
 					StateChangeMonitor.getInstance().addStateChangeListener(ANNOTATION_CHANGE_EVENT, contextTab);
 					
