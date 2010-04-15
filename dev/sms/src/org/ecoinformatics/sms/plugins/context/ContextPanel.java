@@ -28,10 +28,14 @@
 
 package org.ecoinformatics.sms.plugins.context;
 
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -66,6 +70,8 @@ public class ContextPanel extends JPanel {
 	private Observation currentObservation;
 	private Relationship relationship;
 	private List<Observation> existingObservations;
+	
+	private JButton removeButton;
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
@@ -107,15 +113,24 @@ public class ContextPanel extends JPanel {
 		this.add(contextPanel);
 		
 		// Relationship
-		JPanel relationshipPanel = WidgetFactory.makePanel(1);
+		JPanel relationshipPanel = WidgetFactory.makePanel();
 		
 		// Relationship is identifying
 		observationIsIdentifying = WidgetFactory.makeCheckBox("Relationship is Identifying?", false);
 		relationshipPanel.add(observationIsIdentifying);
+		
+		ActionListener removeListener = new PanelActionListener(PanelActionListener.REMOVE);
+		removeButton = WidgetFactory.makeJButton("-", removeListener, ContextPanel.LIST_BUTTON_DIMS);
+		removeButton.setToolTipText("Remove Context");
+		
+		relationshipPanel.add(removeButton);
+		
 		relationshipPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
-		
 		this.add(relationshipPanel);
+		
+		
+		
 		
 	}
 
@@ -166,3 +181,52 @@ public class ContextPanel extends JPanel {
 		this.observationLabel.setText(currentObservation.toString());
 	}
 }
+class PanelActionListener implements ActionListener {
+	
+	private int mode;
+	
+	static final int REMOVE = 1;
+
+	public PanelActionListener(int mode) {
+		this.mode = mode;
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		switch (this.mode) {
+		case REMOVE:
+			doRemove(e);
+			break;
+		// do add handles them all
+		default:
+			doRemove(e);
+			break;
+		}
+	}
+	
+	
+	public void doRemove(ActionEvent e) {
+		JButton source = (JButton) e.getSource();
+		Container parent = source.getParent();
+		ContextPanelList cpl = null;
+		ContextPanel cp = null;
+
+		while (parent != null) {
+			// get the actual panel we want to remove
+			if (parent instanceof ContextPanel) {
+				cp = (ContextPanel) parent;
+			}
+			// get the list to remove it from
+			if (parent instanceof ContextPanelList) {
+				cpl = (ContextPanelList) parent;
+				break;
+			}
+			parent = parent.getParent();
+		}
+		// get the list's observation, and remove ourselves from the contexts
+		Observation parentObservation = cpl.getObservation();
+		Context context = cp.getContext();
+		parentObservation.getContexts().remove(context);
+		cpl.setObservation(parentObservation);
+	}
+}
+
