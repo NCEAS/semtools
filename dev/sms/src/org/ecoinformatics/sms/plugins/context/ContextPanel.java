@@ -28,12 +28,15 @@
 
 package org.ecoinformatics.sms.plugins.context;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -57,6 +60,7 @@ public class ContextPanel extends JPanel {
 	// *
 	
 	public static final Dimension LIST_BUTTON_DIMS = new Dimension(55, 30);
+	public static final  Dimension PICKLIST_DIMS = new Dimension(150,30);
 		
 	// context options
 	private JComboBox observationList;
@@ -87,8 +91,8 @@ public class ContextPanel extends JPanel {
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 				
 		// Observation
-		JPanel contextPanel = WidgetFactory.makePanel(2);
-		contextPanel.add(WidgetFactory.makeLabel("...the ", false, null));
+		JPanel contextPanel = WidgetFactory.makePanel();
+		//contextPanel.add(WidgetFactory.makeLabel("...the ", false, null));
 		
 		// entity
 		observationLabel = WidgetFactory.makeLabel("", true, null);
@@ -97,40 +101,42 @@ public class ContextPanel extends JPanel {
 		
 		contextPanel.add(WidgetFactory.makeLabel(" was ", false, null));
 
-		// context
+		// relationship
 		contextRelationship = OntologyClassField.makeLabel("<relationship>", false, null);
 		contextRelationship.setFilterClass(Annotation.OBOE_CLASSES.get(Relationship.class));
+		WidgetFactory.setPrefMaxSizes(contextRelationship, WizardSettings.WIZARD_CONTENT_LABEL_DIMS);
 		contextPanel.add(contextRelationship);
 		
 		contextPanel.add(WidgetFactory.makeLabel(" the ", false, null));
 		
 		// other entity
 		observationList = WidgetFactory.makePickList(null, false, 0, null);
+		WidgetFactory.setPrefMaxSizes(observationList, PICKLIST_DIMS);
 		contextPanel.add(observationList);
+		
 		
 		contextPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
-		this.add(contextPanel);
-		
-		// Relationship
-		JPanel relationshipPanel = WidgetFactory.makePanel();
 		
 		// Relationship is identifying
-		observationIsIdentifying = WidgetFactory.makeCheckBox("Relationship is Identifying?", false);
-		relationshipPanel.add(observationIsIdentifying);
+		observationIsIdentifying = WidgetFactory.makeCheckBox("Identifying?", false);
 		
 		ActionListener removeListener = new PanelActionListener(PanelActionListener.REMOVE);
 		removeButton = WidgetFactory.makeJButton("-", removeListener, ContextPanel.LIST_BUTTON_DIMS);
 		removeButton.setToolTipText("Remove Context");
 		
+		// Relationship panel
+		JPanel relationshipPanel = WidgetFactory.makePanel();
+		relationshipPanel.add(observationIsIdentifying);
 		relationshipPanel.add(removeButton);
+		//relationshipPanel.add(Box.createHorizontalGlue());
 		
-		relationshipPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
-				8 * WizardSettings.PADDING));
-		this.add(relationshipPanel);
+		contextPanel.add(relationshipPanel);
+		contextPanel.add(Box.createHorizontalGlue());
+		this.add(contextPanel);
+		//this.add(relationshipPanel);
 		
-		
-		
+		this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray));
 		
 	}
 

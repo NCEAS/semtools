@@ -40,7 +40,6 @@ import org.ecoinformatics.sms.plugins.context.ContextPanelList;
 
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
-import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
 import edu.ucsb.nceas.utilities.OrderedMap;
 
 public class ContextPage extends AbstractUIPage {
@@ -83,20 +82,19 @@ public class ContextPage extends AbstractUIPage {
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		JPanel descPanel = WidgetFactory.makePanel(2); 
-		descPanel.add(WidgetFactory.makeHTMLLabel("The Observation was made where...", 1));
-		descPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
-				8 * WizardSettings.PADDING));
+		descPanel.add(WidgetFactory.makeHTMLLabel("The Observation was made where the...", 1));
+		//descPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 8 * WizardSettings.PADDING));
 		
 		this.add(descPanel);
 				
 		// Context list
-		JPanel contextListPanel = WidgetFactory.makePanel(5);
+		JPanel contextListPanel = WidgetFactory.makePanel(6);
 		
 		contextList = new ContextPanelList(annotation);
-		
 		contextListPanel.add(contextList);
-		contextListPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
-				8 * WizardSettings.PADDING));
+		
+		//contextListPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 8 * WizardSettings.PADDING));
+		
 		this.add(contextListPanel);
 
 	}

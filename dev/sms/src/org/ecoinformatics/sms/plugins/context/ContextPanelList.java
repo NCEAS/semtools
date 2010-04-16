@@ -1,16 +1,15 @@
 package org.ecoinformatics.sms.plugins.context;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Context;
@@ -43,7 +42,7 @@ public class ContextPanelList extends JPanel {
 
 		// context
 		ActionListener addContextListener = new ListActionListener(ListActionListener.ADD_CONTEXT);
-		addContextButton = WidgetFactory.makeJButton("<+>", addContextListener, ContextPanel.LIST_BUTTON_DIMS);
+		addContextButton = WidgetFactory.makeJButton("+", addContextListener, ContextPanel.LIST_BUTTON_DIMS);
 		addContextButton.setToolTipText("Add Context");
 
 		buttonPanel = WidgetFactory.makePanel();
@@ -57,9 +56,10 @@ public class ContextPanelList extends JPanel {
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		this.add(optionPanel);
-		this.add(contextsPanel);
 		
-		this.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, Color.gray));
+		JScrollPane contextScrollPane = new JScrollPane(contextsPanel);
+		this.add(contextScrollPane);
+		
 		
 	}
 	
@@ -104,7 +104,8 @@ public class ContextPanelList extends JPanel {
 				contextsPanel.add(cp);	
 			}
 		}
-		
+		// since it is in a scrollpane, we need to be more forceful with the refresh
+		contextsPanel.repaint();
 		contextsPanel.revalidate();
 	}
 	
