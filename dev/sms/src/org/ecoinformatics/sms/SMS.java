@@ -32,6 +32,7 @@
 package org.ecoinformatics.sms;
 
 import org.ecoinformatics.sms.annotation.DefaultAnnotationManager;
+import org.ecoinformatics.sms.annotation.persistent.manager.DbAnnotationManager;
 
 /**
  * @author Shawn Bowers
@@ -72,7 +73,9 @@ public class SMS {
 			e.printStackTrace();
 		}
 
-        _annotationManager = new DefaultAnnotationManager(this);
+        //_annotationManager = new DefaultAnnotationManager(this);
+        _annotationManager = new DbAnnotationManager(this);
+
     }
     
     public static SMS getInstance() {
