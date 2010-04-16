@@ -210,7 +210,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 			dbObservationB.setEntity((observationB == null || observationB.getEntity() == null) ? null : observationB.getEntity().getURI());
 			dbContext.setObservationB(dbObservationB);
 			
-			System.out.println("Adding context " + o + " --- " + c.getMadlib());
+			//System.out.println("Adding context " + o + " --- " + c.getMadlib());
 			
 			//do one or the other, otherwise you duplicate
 			//dbContext.setObservation(dbObservation);
