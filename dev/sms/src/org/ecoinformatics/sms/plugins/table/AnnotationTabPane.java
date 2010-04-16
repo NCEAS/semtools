@@ -10,6 +10,7 @@ import javax.swing.event.ChangeListener;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.pages.AnnotationPage;
+import org.ecoinformatics.sms.plugins.pages.ContextPage;
 
 import edu.ucsb.nceas.morpho.util.Log;
 import edu.ucsb.nceas.morpho.util.StateChangeEvent;
@@ -31,10 +32,16 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 	
 	private int previousTab = -1;
 
+	private Annotation annotation;
+	
 	private AnnotationPage annotationPage;
 	
-	public AnnotationTabPane(int tabPlacement) {
+	private ContextPage contextPage;
+
+	
+	public AnnotationTabPane(Annotation a, int tabPlacement) {
 		super(tabPlacement);
+		this.annotation = a;
 		
 		// add a change listener
 		this.addChangeListener(new ChangeListener() {
@@ -61,6 +68,7 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 		// get the annotation page no matter what
 		if (getTabCount() == TAB_NAMES.size()) {
 			annotationPage = (AnnotationPage) getComponentAt(TAB_NAMES.indexOf(COLUMN_ANNOTATION));
+			contextPage = (ContextPage) getComponentAt(TAB_NAMES.indexOf(CONTEXT_ANNOTATION));
 		}
 	}
 	
@@ -72,6 +80,10 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 
 		if (currentTab == TAB_NAMES.indexOf(COLUMN_ANNOTATION)) {
 			persistColumnAnnotation();
+		}
+		
+		if (currentTab == TAB_NAMES.indexOf(CONTEXT_ANNOTATION)) {
+			persistContextAnnotation();
 		}
 		
 		// always set the annotation
@@ -91,6 +103,12 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 			}
 		}
 		
+		if (currentTab != TAB_NAMES.indexOf(CONTEXT_ANNOTATION)) {
+			if (previousTab == TAB_NAMES.indexOf(CONTEXT_ANNOTATION)) {
+				persistContextAnnotation();
+			}
+		}
+		
 		// always set the latest state in the annotation tab
 		showColumnAnnotation();
 		
@@ -98,7 +116,7 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 	}
 	
 	private void persistColumnAnnotation() {
-		Annotation annotation = annotationPage.getAnnotation();
+		annotation = annotationPage.getAnnotation();
 		if (annotation != null) {
 
 			Log.debug(40, "Persisting Annotation: " + annotation.getURI() );
@@ -108,8 +126,18 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 		}
 	}
 	
+	private void persistContextAnnotation() {
+		annotation = contextPage.getAnnotation();
+		if (annotation != null) {
+
+			Log.debug(40, "Persisting Annotation from Context page: " + annotation.getURI() );
+
+			// save
+			AnnotationPlugin.saveAnnotation(annotation);
+		}
+	}
+	
 	private void showColumnAnnotation() {
-		Annotation annotation = AnnotationPlugin.getCurrentActiveAnnotation();
 		String attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
 		if (annotationPage != null) {
 			// reset the UI
@@ -120,6 +148,11 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 				annotationPage.setAnnotation(annotation);
 				annotationPage.editAttribute(attributeName);
 			}
+		}
+		
+		// refresh the view
+		if (contextPage != null) {
+			contextPage.handleSelectColumn();
 		}
 		
 	}

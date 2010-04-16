@@ -41,13 +41,10 @@ import org.ecoinformatics.sms.plugins.context.ContextPanelList;
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
-import edu.ucsb.nceas.morpho.util.StateChangeEvent;
-import edu.ucsb.nceas.morpho.util.StateChangeListener;
 import edu.ucsb.nceas.utilities.OrderedMap;
 
-public class ContextPage extends AbstractUIPage implements StateChangeListener {
+public class ContextPage extends AbstractUIPage {
 
-	private static final int CONTEXT_INDEX = 0;
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
 
@@ -108,6 +105,12 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 		this.observation = observation;
 	}
 	
+	public Annotation getAnnotation() {
+		//get the latest version of the contexts
+		contextList.getObservation();
+		return annotation;
+	}
+	
 	private void populateList() {
 		if (this.observation == null) {
 			return;
@@ -116,20 +119,8 @@ public class ContextPage extends AbstractUIPage implements StateChangeListener {
 		contextList.setObservation(observation);	
 	}
 	
-	public void handleStateChange(StateChangeEvent event) {
-		if (event.getChangedState().equals(StateChangeEvent.SELECT_DATATABLE_COLUMN)) {
-			handleSelectColumn();
-		}
-		else if (event.getChangedState().equals(AnnotationPlugin.ANNOTATION_CHANGE_EVENT)) {
-			this.populateList();
-		}
-		
-	}
-	
-	// TODO: handle edits
-	private void handleSelectColumn() {
+	public void handleSelectColumn() {
 		observation = null;
-		//annotation = AnnotationPlugin.getCurrentActiveAnnotation();
 		String attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
 		if (attributeName != null && annotation != null) {
 			Mapping mapping = annotation.getMapping(attributeName);

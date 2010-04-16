@@ -875,7 +875,7 @@ public class AnnotationPlugin
 					 
 					
 					// add the table panel to a tab pane
-					AnnotationTabPane tabPane = new AnnotationTabPane(JTabbedPane.TOP);
+					AnnotationTabPane tabPane = new AnnotationTabPane(annotation, JTabbedPane.TOP);
 					tabPane.addTab(AnnotationTabPane.TAB_NAMES.get(0), annotationTablePanel);
 					
 					// add the madlib column view
@@ -896,8 +896,6 @@ public class AnnotationPlugin
 										
 					// add the context tab
 					ContextPage contextTab = new ContextPage(annotation);
-					StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SELECT_DATATABLE_COLUMN, contextTab);
-					StateChangeMonitor.getInstance().addStateChangeListener(ANNOTATION_CHANGE_EVENT, contextTab);
 					
 					tabPane.addTab(AnnotationTabPane.TAB_NAMES.get(2), contextTab);
 					

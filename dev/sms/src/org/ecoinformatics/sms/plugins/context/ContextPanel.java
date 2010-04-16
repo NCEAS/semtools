@@ -173,6 +173,10 @@ public class ContextPanel extends JPanel {
 	}
 	
 	public Context getContext() {
+		//harvest the current values
+		currentContext.setObservation(getSelectedObservation());
+		currentContext.setIdentifying(getIsIdentifying());
+		currentContext.setRelationship(getRelationship());
 		return this.currentContext;
 	}
 	
