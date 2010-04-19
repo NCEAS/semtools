@@ -28,10 +28,12 @@
 
 package org.ecoinformatics.sms.plugins.pages;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -180,16 +182,18 @@ public class AnnotationPage extends AbstractUIPage {
 			this.add(descPanel);
 		}
 		else {
-			this.add(WidgetFactory.makeDefaultSpacer());			
+			//this.add(WidgetFactory.makeDefaultSpacer());			
 		}
 		
 		// Attribute Label
-		JPanel attributeLabelPanel = WidgetFactory.makePanel(1);
-		attributeLabelPanel.add(WidgetFactory.makeLabel("Attribute:", false));
-		attributeLabel = WidgetFactory.makeLabel("?", false);
+		JPanel attributeLabelPanel = WidgetFactory.makePanel(2);
+		attributeLabelPanel.add(WidgetFactory.makeLabel("Attribute:", true));
+		attributeLabel = WidgetFactory.makeLabel("?", true);
 		attributeLabelPanel.add(attributeLabel);
-		attributeLabelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
-				8 * WizardSettings.PADDING));
+//		attributeLabelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
+//				8 * WizardSettings.PADDING));
+		//attributeLabelPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray));
+//		WidgetFactory.addTitledBorder(attributeLabelPanel, "Attribute");
 		this.add(attributeLabelPanel);
 		//this.add(WidgetFactory.makeDefaultSpacer());				
 		

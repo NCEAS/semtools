@@ -36,6 +36,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
@@ -203,7 +204,14 @@ public class SimpleAnnotationPanel extends JPanel {
 		observationMeasurement.setFilterClass(Annotation.OBOE_CLASSES.get(Measurement.class));
 		measurementPanel.add(observationMeasurement);
 		measurementPanel.add(WidgetFactory.makeLabel(" was recorded.", false, null));
-		measurementPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray));
+		measurementPanel.setBorder(
+				BorderFactory.createTitledBorder(
+						BorderFactory.createMatteBorder(1, 0, 0, 0, Color.gray), 
+						"Measurement", 
+						TitledBorder.LEFT, 
+						TitledBorder.TOP,
+						WizardSettings.WIZARD_CONTENT_BOLD_FONT,
+						WizardSettings.WIZARD_CONTENT_TEXT_COLOR));
 		
 		// listen for the measurement to be set
 		observationMeasurement.addActionListener(
@@ -271,16 +279,23 @@ public class SimpleAnnotationPanel extends JPanel {
 		// put them together
 		JPanel classesPanel = WidgetFactory.makePanel();
 		classesPanel.setLayout(new BoxLayout(classesPanel, BoxLayout.Y_AXIS));
-		classesPanel.add(WidgetFactory.makeDefaultSpacer());
+		//classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		classesPanel.add(characteristicPanel);
 		classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		classesPanel.add(standardPanel);
-		classesPanel.add(WidgetFactory.makeDefaultSpacer());
+		//classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		if (showHelp) {
 			classesPanel.add(helpPanel);
 			classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		}
-		//classesPanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
+		classesPanel.setBorder(
+				BorderFactory.createTitledBorder(
+						BorderFactory.createMatteBorder(1, 0, 0, 0, Color.gray), 
+						"OR", 
+						TitledBorder.LEFT, 
+						TitledBorder.TOP,
+						WizardSettings.WIZARD_CONTENT_BOLD_FONT,
+						WizardSettings.WIZARD_CONTENT_TEXT_COLOR));
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
