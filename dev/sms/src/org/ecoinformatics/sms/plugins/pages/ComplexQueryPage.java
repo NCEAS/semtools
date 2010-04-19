@@ -34,6 +34,7 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
@@ -127,7 +128,8 @@ public class ComplexQueryPage extends AbstractUIPage {
 		
 		queryListPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
-		this.add(queryListPanel);
+
+		this.add(new JScrollPane(queryListPanel));
 
 		this.add(WidgetFactory.makeDefaultSpacer());
 
