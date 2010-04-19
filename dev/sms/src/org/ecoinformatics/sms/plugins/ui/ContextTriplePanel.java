@@ -124,6 +124,11 @@ public class ContextTriplePanel extends JPanel {
 
 	public void setContextTriple(Triple contextTriple) {
 		this.contextTriple = contextTriple;
+		if (contextTriple != null) {
+			entityA.setOntologyClass(contextTriple.a);
+			contextRelationship.setOntologyClass(contextTriple.b);
+			entityB.setOntologyClass(contextTriple.c);
+		}
 	}
 
 	public String toString() {

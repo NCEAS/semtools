@@ -197,6 +197,12 @@ public class CriteriaPanel extends JPanel {
 			subCriteria.setCriteria(criteria);
 		}
 		
+		//handle context
+		if (criteria.isContext()) {
+			Triple ct = criteria.getContextTriple();
+			contextPanel.setContextTriple(ct);
+		}
+		
 		calculateVisibility();
 		
 	}
