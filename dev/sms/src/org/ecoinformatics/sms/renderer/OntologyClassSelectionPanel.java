@@ -348,12 +348,15 @@ public class OntologyClassSelectionPanel extends JPanel {
 				result.add(root);
 				return result;
 			} else {
-				// check ontology labels for more match potential
-				List<String> labels = SMS.getInstance().getOntologyManager().getNamedClassLabels(cls);
-				for (String label: labels) {
-					if (approxMatch(label, str)) {
-						result.add(root);
-						return result;
+				boolean searchLabels = false;
+				if (searchLabels) {
+					// check ontology labels for more match potential
+					List<String> labels = SMS.getInstance().getOntologyManager().getNamedClassLabels(cls);
+					for (String label: labels) {
+						if (approxMatch(label, str)) {
+							result.add(root);
+							return result;
+						}
 					}
 				}
 			}
