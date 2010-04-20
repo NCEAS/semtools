@@ -63,8 +63,7 @@ public class ViewAnnotationCommand implements Command {
 					vap, 
 					UIController.getInstance().getCurrentActiveWindow(), 
 					UISettings.POPUPDIALOG_WIDTH,
-					UISettings.POPUPDIALOG_HEIGHT,
-					true);
+					UISettings.POPUPDIALOG_HEIGHT);
 		
 	}
 
