@@ -82,10 +82,13 @@ public class CompoundAnnotationSearchCommand implements Command {
 			ModalDialog dialog = 
 				new ModalDialog(
 						cqp, 
-						UIController.getInstance().getCurrentActiveWindow(), 
+						morphoFrame, 
 						UISettings.POPUPDIALOG_WIDTH,
-						UISettings.POPUPDIALOG_HEIGHT);
-
+						UISettings.POPUPDIALOG_HEIGHT,
+						false);
+			dialog.setModal(false);
+			dialog.setVisible(true);
+			
 			// get the response back
 			if (dialog.USER_RESPONSE == ModalDialog.OK_OPTION) {
 				List<String> orderedDocids = cqp.getDocids();

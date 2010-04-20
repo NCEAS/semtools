@@ -99,7 +99,10 @@ public class AnnotationCommand implements Command {
 					annotationPage,
 					UIController.getInstance().getCurrentActiveWindow(),
 					UISettings.POPUPDIALOG_WIDTH,
-					UISettings.POPUPDIALOG_HEIGHT);
+					UISettings.POPUPDIALOG_HEIGHT,
+					false);
+		dialog.setModal(false);
+		dialog.setVisible(true);
 		
 		//get the response back
 		return (dialog.USER_RESPONSE == ModalDialog.OK_OPTION);
