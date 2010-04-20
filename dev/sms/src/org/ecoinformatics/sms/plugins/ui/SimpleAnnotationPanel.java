@@ -203,6 +203,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		observationMeasurement = OntologyClassField.makeLabel("", true, null);
 		observationMeasurement.setFilterClass(Annotation.OBOE_CLASSES.get(Measurement.class));
 		measurementPanel.add(observationMeasurement);
+		//measurementPanel.add(OntologyClassField.wrapField(observationMeasurement));
 		measurementPanel.add(WidgetFactory.makeLabel(" was recorded.", false, null));
 		measurementPanel.setBorder(
 				BorderFactory.createTitledBorder(
@@ -222,46 +223,46 @@ public class SimpleAnnotationPanel extends JPanel {
 				});
 		
 		// Characteristic and Entity
-		JPanel characteristicPanel = WidgetFactory.makePanel(1);
+		JPanel characteristicPanel = WidgetFactory.makePanel(2);
 		
 		characteristicPanel.add(WidgetFactory.makeLabel("The ", false, null));
 		
 		observationCharacteristic = OntologyClassField.makeLabel("", true, null);
 		observationCharacteristic.setFilterClass(Annotation.OBOE_CLASSES.get(Characteristic.class));
-		characteristicPanel.add(observationCharacteristic);
+		characteristicPanel.add(OntologyClassField.wrapField(observationCharacteristic));
 		
 		characteristicPanel.add(WidgetFactory.makeLabel(" of the ", false, null));
 		
 		observationEntity = OntologyClassField.makeLabel("", true, null);
 		observationEntity.setFilterClass(Annotation.OBOE_CLASSES.get(Entity.class));
-		characteristicPanel.add(observationEntity);
+		characteristicPanel.add(OntologyClassField.wrapField(observationEntity));
 		characteristicPanel.add(WidgetFactory.makeLabel(" was recorded ", false, null));
 		
-		characteristicPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0,
-				0, 8 * WizardSettings.PADDING));
+//		characteristicPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0,
+//				0, 8 * WizardSettings.PADDING));
 		
 	
 		// Standard and Protocol
-		JPanel standardPanel = WidgetFactory.makePanel(1);
+		JPanel standardPanel = WidgetFactory.makePanel(2);
 				
 		standardPanel.add(WidgetFactory.makeLabel(" using the ", false, null));
 
 		observationStandard = OntologyClassField.makeLabel("", true, null);
 		observationStandard.setFilterClass(Annotation.OBOE_CLASSES.get(Standard.class));
 
-		standardPanel.add(observationStandard);
+		standardPanel.add(OntologyClassField.wrapField(observationStandard));
 		standardPanel.add(WidgetFactory.makeLabel(" standard, ", false, null));
 
 		standardPanel.add(WidgetFactory.makeLabel("and the ", false, null));
 
 		observationProtocol = OntologyClassField.makeLabel("", true, null);
 		observationProtocol.setFilterClass(Annotation.OBOE_CLASSES.get(Protocol.class));
-		standardPanel.add(observationProtocol);
+		standardPanel.add(OntologyClassField.wrapField(observationProtocol));
 
 		standardPanel.add(WidgetFactory.makeLabel(" protocol.", false, null));
 
-		standardPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
-				8 * WizardSettings.PADDING));
+//		standardPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
+//				8 * WizardSettings.PADDING));
 		
 
 		// the help panel
@@ -281,7 +282,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		classesPanel.setLayout(new BoxLayout(classesPanel, BoxLayout.Y_AXIS));
 		//classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		classesPanel.add(characteristicPanel);
-		classesPanel.add(WidgetFactory.makeDefaultSpacer());
+		//classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		classesPanel.add(standardPanel);
 		//classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		if (showHelp) {

@@ -32,7 +32,6 @@ import org.ecoinformatics.sms.plugins.ui.ContextTriplePanel;
 import org.ecoinformatics.sms.plugins.ui.OntologyClassField;
 
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
-import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
 
 public class CriteriaPanel extends JPanel {
 
@@ -91,9 +90,9 @@ public class CriteriaPanel extends JPanel {
 
 		criteriaPanel.add(subject);
 		criteriaPanel.add(condition);
-		criteriaPanel.add(value);
+		criteriaPanel.add(OntologyClassField.wrapField(value));
 		
-		WidgetFactory.setPrefMaxSizes(criteriaPanel, new Dimension(400, WizardSettings.WIZARD_CONTENT_SINGLE_LINE_DIMS.height + 10));
+		WidgetFactory.setPrefMaxSizes(criteriaPanel, new Dimension(400, OntologyClassField.DEFAULT_DIMS.height + 20));
 		
 		//criteriaPanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.yellow));
 		

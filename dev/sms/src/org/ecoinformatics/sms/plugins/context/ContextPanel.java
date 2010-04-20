@@ -105,7 +105,7 @@ public class ContextPanel extends JPanel {
 		contextRelationship = OntologyClassField.makeLabel("<relationship>", false, null);
 		contextRelationship.setFilterClass(Annotation.OBOE_CLASSES.get(Relationship.class));
 		WidgetFactory.setPrefMaxSizes(contextRelationship, WizardSettings.WIZARD_CONTENT_LABEL_DIMS);
-		contextPanel.add(contextRelationship);
+		contextPanel.add(OntologyClassField.wrapField(contextRelationship));
 		
 		contextPanel.add(WidgetFactory.makeLabel(" the ", false, null));
 		

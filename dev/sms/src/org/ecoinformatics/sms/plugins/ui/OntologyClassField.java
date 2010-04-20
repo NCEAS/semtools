@@ -1,7 +1,9 @@
 package org.ecoinformatics.sms.plugins.ui;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
@@ -20,11 +22,16 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.ontology.OntologyClass;
@@ -45,7 +52,7 @@ import edu.ucsb.nceas.morpho.util.Log;
  */
 public class OntologyClassField extends JTextField {
 	
-	public static final  Dimension DEFAULT_DIMS = new Dimension(150,20);
+	public static final Dimension DEFAULT_DIMS = new Dimension(150,20);
 	
 	public static final DataFlavor ontologyClassFlavor = new DataFlavor(OntologyClass.class, null);
 	
@@ -102,6 +109,11 @@ public class OntologyClassField extends JTextField {
 		this.filterClass = filterClass;
 		if (filterClass != null) {
 			this.setToolTipText(filterClass.getName());
+			// set the label border if we have it wrapped
+			Container parent = this.getParent();
+			if (parent instanceof OntologyClassFieldPanel) {
+				setPanelBorder((OntologyClassFieldPanel) parent, filterClass.getName());
+			}
 		}
 	}
 
@@ -112,6 +124,31 @@ public class OntologyClassField extends JTextField {
 		return ontologyClass.getName();
 	}
 
+	public static JPanel wrapField(OntologyClassField field) {
+		OntologyClassFieldPanel panel = new OntologyClassFieldPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.add(field);
+		if (field.getFilterClass() != null) {
+			setPanelBorder(panel, field.getFilterClass().getName());
+		}
+		
+		return panel;
+		
+	}
+	
+	public static void setPanelBorder(OntologyClassFieldPanel panel, String title) {
+		Font titleFont = new Font("Sans-Serif", Font.PLAIN, 8);
+		Border existingBorder = BorderFactory.createEmptyBorder();
+		panel.setBorder(
+				BorderFactory.createTitledBorder(
+						existingBorder, 
+						title, 
+						TitledBorder.CENTER, 
+						TitledBorder.ABOVE_BOTTOM, 
+						titleFont, 
+						WizardSettings.WIZARD_CONTENT_TEXT_COLOR));
+	}
+	
 	public static OntologyClassField makeLabel(String text,
 			boolean hiliteRequired, Dimension dims) {
 
@@ -403,6 +440,8 @@ public class OntologyClassField extends JTextField {
 			}
 		}
 	}
-
-
+}
+// for ID purposes
+class OntologyClassFieldPanel extends JPanel {
+	
 }

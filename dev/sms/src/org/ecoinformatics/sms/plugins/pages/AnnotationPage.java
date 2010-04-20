@@ -186,7 +186,7 @@ public class AnnotationPage extends AbstractUIPage {
 		}
 		
 		// Attribute Label
-		JPanel attributeLabelPanel = WidgetFactory.makePanel(2);
+		JPanel attributeLabelPanel = WidgetFactory.makePanel(1);
 		attributeLabelPanel.add(WidgetFactory.makeLabel("Attribute:", true));
 		attributeLabel = WidgetFactory.makeLabel("?", true);
 		attributeLabelPanel.add(attributeLabel);

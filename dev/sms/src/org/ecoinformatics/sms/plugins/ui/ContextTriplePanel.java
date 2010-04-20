@@ -71,26 +71,26 @@ public class ContextTriplePanel extends JPanel {
 		// Context
 		JPanel contextPanel = WidgetFactory.makePanel();
 		//contextPanel.add(WidgetFactory.makeLabel("The Observation was made where the ", false, null));
-		contextPanel.add(WidgetFactory.makeLabel("Context:", false, null));
+		//contextPanel.add(WidgetFactory.makeLabel("Context:", false, null));
 
 		// entity A
 		entityA = OntologyClassField.makeLabel("", false, null);
 		entityA.setFilterClass(Annotation.OBOE_CLASSES.get(Entity.class));
-		contextPanel.add(entityA);
+		contextPanel.add(OntologyClassField.wrapField(entityA));
 		
 		contextPanel.add(WidgetFactory.makeLabel(" was ", false, null));
 
 		// context
 		contextRelationship = OntologyClassField.makeLabel("", false, null);
 		contextRelationship.setFilterClass(Annotation.OBOE_CLASSES.get(Relationship.class));
-		contextPanel.add(contextRelationship);
+		contextPanel.add(OntologyClassField.wrapField(contextRelationship));
 		
 		contextPanel.add(WidgetFactory.makeLabel(" the ", false, null));
 		
 		// entity B
 		entityB = OntologyClassField.makeLabel("", false, null);
 		entityB.setFilterClass(Annotation.OBOE_CLASSES.get(Entity.class));
-		contextPanel.add(entityB);
+		contextPanel.add(OntologyClassField.wrapField(entityB));
 		
 		contextPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
