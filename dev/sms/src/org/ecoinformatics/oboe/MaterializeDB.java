@@ -568,11 +568,13 @@ public class MaterializeDB {
 		long t2 = System.currentTimeMillis();
 		
 		//System.out.println(OBOE);
-		System.out.println("\n-----------\nTime used: " + (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
+		System.out.println("\n-----------\nTime used (Materialization): " + (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
 		
-		
+		t1 = System.currentTimeMillis();
 		OBOE.toCSV(oboeFileName);
-		OBOE.toRDF(rdfFileName);
+		OBOE.toRDF(rdfFileName);		
+		t2 = System.currentTimeMillis();
+		System.out.println("\n-----------\nTime used (File writing): " + (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
 		
 		return OBOE;	
 	}
