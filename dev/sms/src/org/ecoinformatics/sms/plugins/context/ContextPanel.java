@@ -139,6 +139,13 @@ public class ContextPanel extends JPanel {
 		this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray));
 		
 	}
+	
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		contextRelationship.setEnabled(enabled);
+		observationIsIdentifying.setEnabled(enabled);
+		observationList.setEnabled(enabled);
+	}
 
 	public Observation getSelectedObservation() {
 		return (Observation) observationList.getSelectedItem();

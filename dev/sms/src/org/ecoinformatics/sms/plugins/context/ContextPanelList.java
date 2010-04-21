@@ -60,7 +60,18 @@ public class ContextPanelList extends JPanel {
 		JScrollPane contextScrollPane = new JScrollPane(contextsPanel);
 		this.add(contextScrollPane);
 		
-		
+	}
+	
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		addContextButton.setEnabled(enabled);
+		// set each context panel
+		if (contextsPanel != null && contextsPanel.getComponentCount() > 0) {
+			for (Object obj: contextsPanel.getComponents()) {
+				ContextPanel cp = (ContextPanel) obj;
+				cp.setEnabled(enabled);
+			}
+		}
 	}
 	
 	/**

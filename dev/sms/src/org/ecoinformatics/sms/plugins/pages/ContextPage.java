@@ -73,6 +73,7 @@ public class ContextPage extends AbstractUIPage {
 		this.annotation = a;
 
 		init();
+		setEnabled(false);
 	}
 
 	/**
@@ -101,6 +102,11 @@ public class ContextPage extends AbstractUIPage {
 				
 		this.add(contextListPanel);
 
+	}
+	
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		contextList.setEnabled(enabled);
 	}
 	
 	public void setObservation(Observation observation) {
@@ -133,6 +139,7 @@ public class ContextPage extends AbstractUIPage {
 		}
 		this.setObservation(observation);
 		this.populateList();
+		this.setEnabled(observation != null);
 	}
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
