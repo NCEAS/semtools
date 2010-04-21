@@ -1,0 +1,11 @@
+1. eg10-annot-spec.txt
+   10 observation types, each of which has one measurement type, no key, no distinct specification.
+2. eg10-1-annot-spec.txt
+   10 observation types, each of which has one measurement type. 
+   Every measurement type is marked with key yes.
+   No distinct specification. 
+3. eg10-2-annot-spec.txt
+   10 observation types, each of which has one measurement type. 
+   Every measurement type is marked with key yes.
+   Every observation type is marked with distinct.
+

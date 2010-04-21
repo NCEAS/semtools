@@ -1,52 +1,52 @@
 <?xml version="1.0"?>
 <sms:annotation xmlns:sms="http://ecoinformatics.org/sms/annotation.0.9">
    <sms:observation label="o1" distinct="yes">
-      <sms:entity id="oboe:e1"/>
+      <sms:entity id="oboe#:e1"/>
       <sms:measurement label="m1" precision="1.0" key="yes">
       </sms:measurement>
    </sms:observation>
    <sms:observation label="o2" distinct="yes">
-      <sms:entity id="oboe:e2"/>
+      <sms:entity id="oboe#:e2"/>
       <sms:measurement label="m2" precision="1.0" key="yes">
       </sms:measurement>
    </sms:observation>
    <sms:observation label="o3" distinct="yes">
-      <sms:entity id="oboe:e3"/>
+      <sms:entity id="oboe#:e3"/>
       <sms:measurement label="m3" precision="1.0" key="yes">
       </sms:measurement>
    </sms:observation>
    <sms:observation label="o4" distinct="yes">
-      <sms:entity id="oboe:e4"/>
+      <sms:entity id="oboe#:e4"/>
       <sms:measurement label="m4" precision="1.0" key="yes">
       </sms:measurement>
    </sms:observation>
    <sms:observation label="o5" distinct="yes">
-      <sms:entity id="oboe:e5"/>
+      <sms:entity id="oboe#:e5"/>
       <sms:measurement label="m5" precision="1.0" key="yes">
       </sms:measurement>
    </sms:observation>
    <sms:observation label="o6" distinct="yes">
-      <sms:entity id="oboe:e6"/>
+      <sms:entity id="oboe#:e6"/>
       <sms:measurement label="m6" precision="1.0" key="yes">
       </sms:measurement>
    </sms:observation>
    <sms:observation label="o7" distinct="yes">
-      <sms:entity id="oboe:e7"/>
+      <sms:entity id="oboe#:e7"/>
       <sms:measurement label="m7" precision="1.0" key="yes">
       </sms:measurement>
    </sms:observation>
    <sms:observation label="o8" distinct="yes">
-      <sms:entity id="oboe:e8"/>
+      <sms:entity id="oboe#:e8"/>
       <sms:measurement label="m8" precision="1.0" key="yes">
       </sms:measurement>
    </sms:observation>
    <sms:observation label="o9" distinct="yes">
-      <sms:entity id="oboe:e9"/>
+      <sms:entity id="oboe#:e9"/>
       <sms:measurement label="m9" precision="1.0" key="yes">
       </sms:measurement>
    </sms:observation>
    <sms:observation label="o10" distinct="yes">
-      <sms:entity id="oboe:e10"/>
+      <sms:entity id="oboe#:e10"/>
       <sms:measurement label="m10" precision="1.0" key="yes">
       </sms:measurement>
    </sms:observation>

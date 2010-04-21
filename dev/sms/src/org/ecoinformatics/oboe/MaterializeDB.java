@@ -516,11 +516,10 @@ public class MaterializeDB {
 		if(test){
 			dataset = TestData.setTestData1(rowStruct);				
 		}else{
-			//dataset = //readDataFromDataManager(emlFileName,rowStruct);
 			dataset = CSVDataReader.read(dataFileName, rowStruct);			
 		}
 		System.out.println("rowStruct = "+ rowStruct);
-		System.out.println("dataset = "+ dataset);
+		//System.out.println("dataset = "+ dataset);
 		
 		//2. read annotation
 		Annotation A = null;

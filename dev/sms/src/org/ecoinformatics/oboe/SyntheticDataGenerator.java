@@ -23,13 +23,16 @@ public class SyntheticDataGenerator {
 	{
 		
 		//1. read annotation specification files to annotation structure
+		System.out.println("1. Read annotation specification file ...");
 		AnnotationSpecifier a = new AnnotationSpecifier();
 		a.readAnnotationSpecFile(inAnnotSpecFileName);
 		
 		//2. write to annotation files (for consistency checking purpose, this will not be used in the generation process)
+		System.out.println("2. Write to annotation files ...");
 		a.WriteAnnotation(outAnnotFileName);
 		
 		//3. generate dataset
+		System.out.println("3. Generate datasets ...");
 		DataGenerator generator = new DataGenerator(); 
 		generator.setRownum(numOfRows);
 		generator.setAnnotation(a.getAnnotation());
@@ -38,6 +41,7 @@ public class SyntheticDataGenerator {
 		generator.GenerateTopDown(); 
 		
 		//4. write dataset
+		System.out.println("4. Write datasets ...");
 		generator.WriteData(outDataFileName); 		
 	}
 	

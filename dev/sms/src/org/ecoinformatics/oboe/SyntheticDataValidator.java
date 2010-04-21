@@ -22,10 +22,12 @@ public class SyntheticDataValidator {
 	{
 		
 		//1. Read annotation specification files to annotation structure
+		System.out.println("1. Read annotation specification files ...");
 		AnnotationSpecifier a = new AnnotationSpecifier();
 		a.readAnnotationSpecFile(inAnnotSpecFileName);
 		
 		//2. Validate dataset
+		System.out.println("2. Validate dataset ...");
 		DataGenerator generator = new DataGenerator(); 
 		generator.setRownum(numOfRows);
 		generator.setAnnotation(a.getAnnotation());

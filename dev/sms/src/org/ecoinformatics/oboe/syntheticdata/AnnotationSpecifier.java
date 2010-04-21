@@ -66,6 +66,12 @@ public class AnnotationSpecifier{
 	}
 	
 	
+	/**
+	 * Write the annotation (read from annotation specification file) to an annotation file (for further checking)
+	 * 
+	 * @param outAnnotFileName
+	 * @throws IOException
+	 */
 	public void WriteAnnotation(String outAnnotFileName) throws IOException
 	{
 		FileOutputStream annotOutputStream = new FileOutputStream(outAnnotFileName);
@@ -76,9 +82,9 @@ public class AnnotationSpecifier{
 		// Write the annotation to an annotation file
 		m_annotation.write(annotOutputStream);
 		annotOutputStream.close();
-		System.out.println("m_annotation is written to file: " + outAnnotFileName);
+		System.out.println("key2distinctfactor:" + m_key2distinctfactor);
 		
-		System.out.println("\nkey2distinctfactor:" + m_key2distinctfactor);
+		System.out.println("\nm_annotation is written to file: " + outAnnotFileName+"\n");
 	}
 
 	/**
@@ -114,7 +120,7 @@ public class AnnotationSpecifier{
 		try {
 			while((line = r.readLine())!=null){				
 				if(!line.startsWith(m_comment)){
-					System.out.println(line);
+					//System.out.println(line);
 					extractAnnotation(line);	
 				}
 			}

@@ -96,7 +96,7 @@ public class DataGenerator {
 			List<Measurement> curObsMeasurementList = obsType.getMeasurements();
 			measurementSet.addAll(curObsMeasurementList);				
 		}
-		System.out.println("All measurements: " + measurementSet);
+		//System.out.println("All measurements: " + measurementSet);
 		return measurementSet;		
 	}
 	
@@ -209,9 +209,8 @@ public class DataGenerator {
 		//2. get the order of observation types for which to generate data: 
 		//   from most independent observation types to most dependent observation types 
 		List<Observation> contextObsList = compOrderedObsList();
-		System.out.println("m_obsType2contexObsType="+m_obsType2contexObsType);
-		//List measurementSetList = compOrderedMeasurementSetList();
-		System.out.println("contextObsList="+contextObsList);
+		//System.out.println("m_obsType2contexObsType="+m_obsType2contexObsType);
+		//System.out.println("contextObsList="+contextObsList);
 		
 		Map<String,List> measurement2ValueList = new TreeMap<String, List>();
 		
@@ -219,7 +218,7 @@ public class DataGenerator {
 		for(Observation obsType: contextObsList){
 			generateUniqueRow(obsType,measurement2ValueList);			
 		}
-		System.out.println("measurement2uniqueRowValueSet="+measurement2ValueList);
+		//System.out.println("measurement2uniqueRowValueSet="+measurement2ValueList);
 		
 		//4. Generate rows with non-unique values
 		for(int i=contextObsList.size()-1; i>=0; i--){
@@ -233,13 +232,20 @@ public class DataGenerator {
 		}
 		
 		boolean rc = Validate(measurement2ValueList);
-		System.out.println("VALIDate value = "+rc);
+		System.out.println("\nVALID value = "+rc);
 		
 		flattenDataTopDown(measurement2ValueList);
 	}
 	
 	
 	
+	/**
+	 * Output the generated synthetic data to the given file
+	 * 
+	 * @param outDataFileName
+	 * @throws FileNotFoundException
+	 * @throws Exception
+	 */
 	public void WriteData(String outDataFileName) throws FileNotFoundException, Exception
 	{
 		PrintStream dataPrintStream = new PrintStream(outDataFileName);
@@ -259,6 +265,7 @@ public class DataGenerator {
 	 */
 	public Map<String, List> readData(String inDataFileName) throws FileNotFoundException,IOException, Exception
 	{
+		
 		BufferedReader bufferedReader = null; 
 		bufferedReader = new BufferedReader(new FileReader(inDataFileName));
 		
@@ -290,9 +297,9 @@ public class DataGenerator {
 		try {
 			int lineno = 0;
 			while((line = r.readLine())!=null){
-				if((lineno)<=10){
-					System.out.println(line);
-				}
+				//if((lineno)<=10){
+				//	System.out.println(line);
+				//}
 				if(lineno>0){ //skip the first row because it's the row structure
 					extractOneRow(line,colnum);
 				}
@@ -1132,7 +1139,7 @@ public class DataGenerator {
 			m_rowStruct.add(measLabel);
 			List<Integer> valueList = entry.getValue();
 			
-			System.out.println(measLabel+":"+valueList);
+			//System.out.println(measLabel+":"+valueList);
 			//System.out.println("measLabel="+measLabel+" valueList="+valueList);
 			//2. make sure that this value list contains exactly the needed number of rows
 			if(valueList.size()!=m_rownum){
@@ -1202,7 +1209,7 @@ public class DataGenerator {
 			}
 		}
 		
-		System.out.println("measurement2ValueList="+measurement2ValueList);
+		//System.out.println("measurement2ValueList="+measurement2ValueList);
 		
 		return measurement2ValueList;
 	}
