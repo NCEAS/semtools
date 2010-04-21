@@ -28,12 +28,13 @@
 
 package org.ecoinformatics.sms.plugins.pages;
 
-import java.awt.Color;
+import java.awt.Dialog;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -41,6 +42,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
@@ -127,8 +129,7 @@ public class AnnotationPage extends AbstractUIPage {
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-		JPanel descPanel = WidgetFactory.makePanel(5);
-		descPanel.setLayout(new GridLayout(2,1));
+		JPanel descPanel = WidgetFactory.makePanel(3);
 		JLabel desc = WidgetFactory
 				.makeHTMLLabel(
 						"<b>Select the Observation Entity, Characteristic, Standard and Protocol for the selected attribute.</b> "
@@ -137,6 +138,7 @@ public class AnnotationPage extends AbstractUIPage {
 						, 3);
 		descPanel.add(desc);
 		
+		final AnnotationPage pageRef = this;
 		// help button
 	    Command command = new Command() {
 	      private JDialog helpDialog = null;
@@ -156,7 +158,13 @@ public class AnnotationPage extends AbstractUIPage {
 	        		"<p>The observation 'isDistinct=yes' constraint is somewhat similar, but promoted to the level of the observation." +
 	        		"<br>It states that if two of the observation instances are of the same entity instance, then the these observation instances are the same instance (i.e., there is only one 'distinct' or 'unique' observation).</p>"
 	        		+ "</body> </html>";
-	          helpDialog = new HelpDialog(title, helpText);
+	        	Window owner = SwingUtilities.getWindowAncestor(pageRef);
+	        	if (owner instanceof Frame) {
+	        		helpDialog = new HelpDialog((Frame)owner, title, helpText);
+	        	}
+	        	if (owner instanceof Dialog) {
+	        		helpDialog = new HelpDialog((Dialog)owner, title, helpText);
+	        	}
 	        }
 	        Point loc = getLocationOnScreen();
 	        int wd = getWidth();
@@ -166,7 +174,7 @@ public class AnnotationPage extends AbstractUIPage {
 	        helpDialog.setLocation( (int)loc.getX() + wd/2 - dwd/2, (int)loc.getY() + ht/2 - dht/2);
 	        helpDialog.setSize(HelpDialog.HELP_DIALOG_SIZE);
 	        helpDialog.setVisible(true);
-	        helpDialog.toFront();
+	        //helpDialog.toFront();
 
 	      }
 	    };
@@ -174,15 +182,9 @@ public class AnnotationPage extends AbstractUIPage {
 	    GUIAction helpAction = new GUIAction("More information about Semantic Annotation", null, command);
 		JButton helpButton = new HyperlinkButton(helpAction);
 		
-		//this.add(WidgetFactory.makePanel(1).add(helpButton));
-		descPanel.add(helpButton);
-		
 		// actually show the help
 		if (showAll) {
 			this.add(descPanel);
-		}
-		else {
-			//this.add(WidgetFactory.makeDefaultSpacer());			
 		}
 		
 		// Attribute Label
@@ -190,18 +192,12 @@ public class AnnotationPage extends AbstractUIPage {
 		attributeLabelPanel.add(WidgetFactory.makeLabel("Attribute:", true));
 		attributeLabel = WidgetFactory.makeLabel("?", true);
 		attributeLabelPanel.add(attributeLabel);
-//		attributeLabelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
-//				8 * WizardSettings.PADDING));
-		//attributeLabelPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray));
-//		WidgetFactory.addTitledBorder(attributeLabelPanel, "Attribute");
+		attributeLabelPanel.add(helpButton);
 		this.add(attributeLabelPanel);
-		//this.add(WidgetFactory.makeDefaultSpacer());				
 		
 		//add the main panel here
 		simpleAnnotationPanel = new SimpleAnnotationPanel(true, showAll);
 		this.add(simpleAnnotationPanel);
-
-		//this.add(WidgetFactory.makeDefaultSpacer());
 		
 		// Measurement Label
 		JPanel measurementPanel = WidgetFactory.makePanel(2);
