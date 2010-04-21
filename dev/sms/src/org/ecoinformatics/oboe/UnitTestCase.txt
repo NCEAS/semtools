@@ -1,0 +1,17 @@
+Unit test cases
+
+=========
+1. Test the materialization of context with and without chain
+   S1. Generate data using eg20-annot-spec.txt
+       This step can be skiped if the two output files already exist. 
+       "./SyntheticDataGenerator eg20 10"
+       Make sure there is output: eg20-annot.xml and eg20-n10-data.txt   
+   S2. materialize DB using eg20 
+       (1) Change the switch on: TEST_CONTEXT = true //to see the output 
+       (2) Makre sure the existence of the two files: eg20-annot.xml and eg20-n10-data.txt   
+       (3) Run the following commands:
+           "./MaterializeDB eg20 10 true" //test the case without chain
+           "./MaterializeDB eg20 10 false" //test the case with chain   
+
+2. 
+   

@@ -3,7 +3,7 @@ Readme for using package "org.ecoinformatics.oboe".
 Last changed: March 18, 2010, Thursday
 
 ===============
-This package contains content for two main parts
+This package contains content for the following parts with separate entrances. 
 1.  Materialize a plain text file to OBOE file
     Entrance: MaterializaDB.java
     The detailed parameter specification to use this function, see the comments in the main() function of this class

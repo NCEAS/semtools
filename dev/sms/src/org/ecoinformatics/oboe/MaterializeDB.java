@@ -17,7 +17,7 @@ import java.util.TreeMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-
+import org.ecoinformatics.oboe.Debugger;
 import org.ecoinformatics.datamanager.DataManager;
 import org.ecoinformatics.datamanager.database.DatabaseConnectionPoolInterface;
 import org.ecoinformatics.datamanager.database.pooling.DatabaseConnectionPoolFactory;
@@ -43,9 +43,11 @@ import org.ecoinformatics.sms.SMS;
 //import org.ecoinformatics.owlifier.*;
 import org.ecoinformatics.sms.annotation.*;
 
+
 public class MaterializeDB {
 
 	private static boolean test = false;
+	private static final boolean TEST_CONTEXT = false;
 	
 	private static ArrayList readDataFromDataManager(String emlFileName,ArrayList<String> oRowStruct)
 	{
@@ -464,6 +466,18 @@ public class MaterializeDB {
 	
 	/**
 	 * Materialize context instances
+	 * E.g., 
+	 * A -->B-->C 
+	 * B -->C
+	 * 
+	 * if chain is false: 
+	 * To materialize B, we need to put the information about B, C together for B.
+	 * To materialize A, we need to put the information about A, B together for A. (note, here, without C because C is in the chain)
+	 * 
+	 * if chain is true
+	 * To materialize B, we need to put the information about B, C together for B.
+	 * To materialize A, we need to put the information about A, B, C together for A.
+	 * This way, the materialized database uses more space.
 	 * 
 	 * @param contextIdx
 	 * @param A
@@ -471,6 +485,115 @@ public class MaterializeDB {
 	 * @throws Exception 
 	 */
 	private static void MaterializeContext(
+			Map<Observation, ObservationInstance> contextIdx, 
+			Annotation A, OboeModel ioOBOE,
+			boolean bMaterializeChain) throws Exception
+	{
+		Iterator<Entry<Observation, ObservationInstance>> iter = contextIdx.entrySet().iterator(); 
+		while(iter.hasNext()){
+			Entry<Observation, ObservationInstance> entry = iter.next();
+			Observation obsType = entry.getKey();
+			ObservationInstance obsInstance = entry.getValue();
+			
+			MaterializeOneObsContect(contextIdx,A,ioOBOE,bMaterializeChain,obsType,obsInstance);
+			
+//			List<Context> contextList = obsType.getContexts();
+//			
+//			for(Context c: contextList){
+//				Observation contextObsType = c.getObservation();
+//				ObservationInstance contextObsInstance = contextIdx.get(contextObsType);
+//				
+//				//create a new context instance and put it into oboe
+//				ContextInstance contextInstance = new ContextInstance(obsInstance,c,contextObsInstance);
+//								
+//				boolean added = ioOBOE.AddContextInstance(contextInstance);
+//				if(added){
+//					System.out.println(Debugger.getCallerPosition()+"Add contextInstance="+contextInstance);
+//				}
+//				
+//				//With the chain switch on, materialize the chain contexts.
+//				if(bMaterializeChain){					
+//					while(true){
+//						Observation chainContextObsType = contextObsInstance.getObsType();
+//						if(chainContextObsType==null){
+//							break;
+//						}
+//						ObservationInstance chainContextObsInstance = contextIdx.get(chainContextObsType);
+//						if(chainContextObsInstance==null){
+//							break;
+//						}
+//						ContextInstance chainContextInstance = new ContextInstance(obsInstance,c,chainContextObsInstance);
+//						
+//						added = ioOBOE.AddContextInstance(chainContextInstance);
+//						if(added){
+//							System.out.println(Debugger.getCallerPosition()+"Add contextInstance="+contextInstance);
+//						}
+//						
+//						contextObsInstance = chainContextObsInstance;
+//					}
+//				}
+//			}
+		}
+	}
+	
+	/**
+	 * For the given observation type (obsTypeToExpand), 
+	 * find its DIREECT context instances, and link them to the given observation instance (obsInstance)
+	 * 
+	 * If (bMaterializeChain) is true, 
+	 * this will link ALL the CHAIN context instance(s) to obsInstance.
+	 * 
+	 * If (bMaterializeChain) is false, 
+	 * this will link ONLY the DIRECT context instance(s) to obsInstance.
+	 * 
+	 * @param contextIdx
+	 * @param A
+	 * @param ioOBOE
+	 * @param bMaterializeChain
+	 * @param obsTypeToExpand
+	 * @param obsInstance
+	 * @throws Exception
+	 */
+	private static void MaterializeOneObsContect(
+			Map<Observation, ObservationInstance> contextIdx, 
+			Annotation A, OboeModel ioOBOE,
+			boolean bMaterializeChain,
+			Observation obsTypeToExpand,
+			ObservationInstance obsInstance) throws Exception
+	{
+		//Get all the context types of this observation type
+		List<Context> contextList = obsTypeToExpand.getContexts();
+		
+		//For each context type, get the context observation type and context observation instance
+		for(Context c: contextList){
+			Observation contextObsType = c.getObservation();
+			ObservationInstance contextObsInstance = contextIdx.get(contextObsType);
+			
+			//create a new context instance and put it into oboe
+			ContextInstance contextInstance = new ContextInstance(obsInstance,c,contextObsInstance);
+							
+			boolean added = ioOBOE.AddContextInstance(contextInstance);
+			if(added&&TEST_CONTEXT){
+				System.out.println(Debugger.getCallerPosition()+"Add contextInstance="+contextInstance);
+			}
+			
+			//With the chain switch on, materialize the chain contexts.
+			if(bMaterializeChain){					
+				MaterializeOneObsContect(contextIdx,A,ioOBOE,bMaterializeChain,contextObsType,obsInstance);
+			}
+		}
+	}
+	
+	/**
+	 * Materialize context instances with chains
+	 * 
+	 * 
+	 * @param contextIdx
+	 * @param A
+	 * @param ioOBOE
+	 * @throws Exception 
+	 */
+	private static void MaterializeContextChain(
 			Map<Observation, ObservationInstance> contextIdx, 
 			Annotation A, OboeModel ioOBOE) throws Exception
 	{
@@ -491,13 +614,13 @@ public class MaterializeDB {
 				ContextInstance contextInstance = new ContextInstance(obsInstance,c,contextObsInstance);
 								
 				boolean added = ioOBOE.AddContextInstance(contextInstance);
-				//if(added){
-				//	System.out.println("Add contextInstance="+contextInstance);
-				//}
+				if(added){
+					System.out.println(Debugger.getCallerPosition()+"Add contextInstance="+contextInstance);
+				}
 			}
 		}
 	}
-	
+
 	/**
 	 * @author cao
 	 * @param dataFileName
@@ -505,12 +628,17 @@ public class MaterializeDB {
 	 * @param oboeFilePrefix
 	 * @throws Exception 
 	 */
-	public static OboeModel MaterializeDB(
-			String emlFileName, String dataFileName, String annotFileName, String oboeFileName,
-			String rdfFileName) 
+	public static OboeModel MateriaDB(
+			final String emlFileName, String dataFileName, String annotFileName, String oboeFileName,
+			String rdfFileName, boolean bMaterializeContextChain) 
 		throws Exception		
 	{
+		
+		String funcName =  Debugger.getWhoCalledMe();		
+		String stackTraceCaller = Debugger.getStackTraceCaller();
+		String linePos = Debugger.getCallerPosition();
 		//1. read data
+		System.out.println(Debugger.getCallerPosition()+"1. Read data ...");
 		ArrayList<String> rowStruct = new ArrayList<String>();
 		ArrayList dataset = null; 		//each element is a row, which is also an arraylist		
 		if(test){
@@ -518,10 +646,11 @@ public class MaterializeDB {
 		}else{
 			dataset = CSVDataReader.read(dataFileName, rowStruct);			
 		}
-		System.out.println("rowStruct = "+ rowStruct);
+		System.out.println(Debugger.getCallerPosition()+"rowStruct = "+ rowStruct);
 		//System.out.println("dataset = "+ dataset);
 		
 		//2. read annotation
+		System.out.println(Debugger.getCallerPosition() +"2. Read annotation ...");
 		Annotation A = null;
 		if(annotFileName.endsWith(".xml")){ //this is an annotation file
 			A = readAnnotation(annotFileName);
@@ -533,7 +662,8 @@ public class MaterializeDB {
 			A = a.getAnnotation();
 		}
         
-        //3. materialization
+        //3. Materialization
+		System.out.println(Debugger.getCallerPosition()+"3. Materialization ...");
 		long t1 = System.currentTimeMillis();
 		OboeModel OBOE = new OboeModel();
 		Map<ObsTypeKey, EntityInstance> entIdx = 
@@ -544,37 +674,34 @@ public class MaterializeDB {
 		for(int i=0;i<dataset.size();i++){
 			ArrayList row = (ArrayList)dataset.get(i);
 			//System.out.println("i="+i+", dataset size="+dataset.size());
-			//Step 1: define measurement instances
+			//Step 3.1: define measurement instances
 			Set<MeasurementInstance> measSet = CrtMeasurement(rowStruct, row,A);
 			
-			//Step 2: partitiono the measurement instances according to observation types
+			//Step 3.2: partition the measurement instances according to observation types
 			Map<Observation, Set<MeasurementInstance>> obsType2MeasIdx = PartitionMeas(measSet, A);
 			
 			Map contextIdx = new TreeMap();
 			for(Observation obsType : obsType2MeasIdx.keySet()){
-				//Step 3: Find or create the entity instance for each observation type partition
+				//Step 3.3: Find or create the entity instance for each observation type partition
 				EntityInstance entInstance = MaterializeEntity(obsType, obsType2MeasIdx, entIdx, A, OBOE);
 				
-				//Step 4: Find or create the observation instance for each observation type partition
+				//Step 3.4: Find or create the observation instance for each observation type partition
 				MaterializeObs(obsType, entInstance,obsType2MeasIdx,obsIdx,contextIdx,A, OBOE);
 			}
 			
-			//if(i==50){
-			//	System.out.println("test.");
-			//}
-			//Step 5: Assign the context observation instances
-			MaterializeContext(contextIdx, A, OBOE);
+			//Step 3.5: Assign the context observation instances
+			MaterializeContext(contextIdx, A, OBOE, bMaterializeContextChain);
 		}
 		long t2 = System.currentTimeMillis();
 		
 		//System.out.println(OBOE);
-		System.out.println("\n-----------\nTime used (Materialization): " + (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
+		System.out.println("\n-----------\n"+Debugger.getCallerPosition()+"Time used (Materialization): " + (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
 		
 		t1 = System.currentTimeMillis();
 		OBOE.toCSV(oboeFileName);
 		OBOE.toRDF(rdfFileName);		
 		t2 = System.currentTimeMillis();
-		System.out.println("\n-----------\nTime used (File writing): " + (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
+		System.out.println(Debugger.getCallerPosition()+"Time used (File writing): " + (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
 		
 		return OBOE;	
 	}
@@ -597,20 +724,8 @@ public class MaterializeDB {
 	 */
 	public static void main(String[] args) {
 		
-		//if(args.length!=4){
-		//	System.out.println("Usage: ./MaterializeDB <0. Eml file name> <1. data file name> " +
-		//			"<2. annotation [specification] file name> " +
-		//			"<3. output OBOE file prefix>");
-		//		return;
-		//}
-		// Get input parameters
-		//String emlFileName = Constant.localOutputUriPrefix + args[0];
-		//String dataFileName = Constant.localOutputUriPrefix + args[1];
-		//String annotFileName = Constant.localOutputUriPrefix + args[2]; 
-		//String oboeFileName = Constant.localOutputUriPrefix +args[3];
-		
-		if(args.length!=2){
-			System.out.println("Usage: ./MaterializeDB <1. file prefix name> <2. row num>");
+		if(args.length!=2&&args.length!=3){
+			System.out.println("Usage: ./MaterializeDB <1. file prefix name> <2. row num> [<3. bool: materialize context chain>]");
 			return;
 		}
 		String emlFileName = Constant.localOutputUriPrefix + args[0] + Constant.C_EML_FILE_SUFFIX;
@@ -620,17 +735,24 @@ public class MaterializeDB {
 		String rdfFileName =  Constant.localOutputUriPrefix +args[0] + "-n"+args[1]+Constant.C_OUT_RDF_FILE_SUFFIX;
 		
 		int numOfRows = Integer.parseInt(args[1]);
+		boolean bMaterializeContextChain = false;
+		if(args.length==3){
+			bMaterializeContextChain = Boolean.parseBoolean(args[2]);
+		}
 		
-		// Confirm parameters
+		// 1. Confirm parameters
 		System.out.println("emlFileName="+emlFileName);
 		System.out.println("annotFileName="+annotFileName);
 		System.out.println("dataFileName="+dataFileName);
 		System.out.println("oboeFileName="+oboeFileName);
 		System.out.println("rdfFileName="+rdfFileName);
-		System.out.println("numOfRows="+numOfRows+"\n");
+		System.out.println("numOfRows="+numOfRows);
+		System.out.println("materialize context chain ="+bMaterializeContextChain+"\n---------------\n");
 		
+		
+		// 2. Materialize DB
 		try {
-			OboeModel OBOE = MaterializeDB(emlFileName,dataFileName, annotFileName, oboeFileName, rdfFileName);
+			OboeModel OBOE = MateriaDB(emlFileName,dataFileName, annotFileName, oboeFileName, rdfFileName, bMaterializeContextChain);
 			System.out.println("********************\nOutput OBOE CSV file is in: "+oboeFileName+
 					"\nOutput OBOE RDF file is in: "+rdfFileName+
 					"\n********************");
