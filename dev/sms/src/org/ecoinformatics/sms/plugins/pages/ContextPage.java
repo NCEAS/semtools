@@ -28,7 +28,10 @@
 
 package org.ecoinformatics.sms.plugins.pages;
 
+import java.awt.GridLayout;
+
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import org.ecoinformatics.sms.annotation.Annotation;
@@ -82,8 +85,11 @@ public class ContextPage extends AbstractUIPage {
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		JPanel descPanel = WidgetFactory.makePanel(2); 
+		descPanel.setLayout(new GridLayout(2,1));
 		descPanel.add(WidgetFactory.makeHTMLLabel("The Observation was made where the...", 1));
-		//descPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 8 * WizardSettings.PADDING));
+		final ContextPage pageRef = this;
+		JButton helpButton = Help.createHelpButton(pageRef, "What's this?");
+		descPanel.add(helpButton);
 		
 		this.add(descPanel);
 				
@@ -92,9 +98,7 @@ public class ContextPage extends AbstractUIPage {
 		
 		contextList = new ContextPanelList(annotation);
 		contextListPanel.add(contextList);
-		
-		//contextListPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 8 * WizardSettings.PADDING));
-		
+				
 		this.add(contextListPanel);
 
 	}

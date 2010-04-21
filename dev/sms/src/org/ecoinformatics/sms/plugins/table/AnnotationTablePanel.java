@@ -50,6 +50,7 @@ import javax.swing.table.TableCellRenderer;
 
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.commands.DirectAnnotationCommand;
+import org.ecoinformatics.sms.plugins.pages.Help;
 
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.util.Command;
@@ -129,11 +130,14 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 		GUIAction reorderAction = new GUIAction("Reorder the columns", null, reorderCommand);
 		JButton reorder = new HyperlinkButton(reorderAction);
 		
-//		annotationScrollPane.setCorner(JScrollPane.LOWER_LEFT_CORNER, reorder);
-
+		// the help button
+		final AnnotationTablePanel pageRef = this;
+		JButton helpButton = Help.createHelpButton(pageRef, "Information about Semantic Annotation");
+		
 		JPanel descPanel = WidgetFactory.makePanel(3);
-		descPanel.setLayout(new GridLayout(2, 1));
+		descPanel.setLayout(new GridLayout(3, 1));
 		descPanel.add(WidgetFactory.makeHTMLLabel("<p>Double click cells to directly edit the Annotation</p>", 1));
+		descPanel.add(helpButton);
 		descPanel.add(reorder);
 		
 		this.add(descPanel);

@@ -46,6 +46,7 @@ import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
 import org.ecoinformatics.sms.ontology.Ontology;
 import org.ecoinformatics.sms.ontology.OntologyClass;
+import org.ecoinformatics.sms.plugins.pages.Help;
 
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
@@ -60,13 +61,6 @@ public class SimpleAnnotationPanel extends JPanel {
 	
 	// for Measurement "template"
 	private OntologyClassField observationMeasurement;
-
-	public static String MEASUREMENT_HELP = "The <b>Measurement</b> defines rules for what Characteristics of which Entities can be taken using certain Standards and Protocols.";
-
-	public static String ENTITY_HELP = "The <b>Entity</b> is the 'thing' being observed. If the diameter of a tree is measured, the Entity will be the tree.";
-	public static String CHARACTERISTIC_HELP = "The <b>Characteristic</b> is the property being measured. If the diameter of a tree is measured, the Characteristic will be the diameter (length).";
-	public static String STANDARD_HELP = "The <b>Standard</b> is the unit used for the measurement. If the diameter of a tree is measured, the Standard will be a length unit (meters).";
-	public static String PROTOCOL_HELP = "The <b>Protocol</b> is the method used for taking the measurement. If the diameter of a tree is measured at breast height, this will be the Protocol.";
 
 	public SimpleAnnotationPanel(boolean madLib, boolean showHelp) {
 		super();
@@ -93,7 +87,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		entityLabelPanel.add(observationEntity);
 		
 		entityPanel.add(entityLabelPanel);
-		entityPanel.add(WidgetFactory.makeHTMLLabel(ENTITY_HELP, 2));
+		entityPanel.add(WidgetFactory.makeHTMLLabel(Help.ENTITY_HELP, 2));
 		entityPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
 
@@ -109,7 +103,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		characteristicLabelPanel.add(observationCharacteristic);
 		
 		characteristicPanel.add(characteristicLabelPanel);
-		characteristicPanel.add(WidgetFactory.makeHTMLLabel(CHARACTERISTIC_HELP, 2));
+		characteristicPanel.add(WidgetFactory.makeHTMLLabel(Help.CHARACTERISTIC_HELP, 2));
 		characteristicPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0,
 				0, 8 * WizardSettings.PADDING));
 
@@ -124,7 +118,7 @@ public class SimpleAnnotationPanel extends JPanel {
 
 		standardLabelPanel.add(observationStandard);
 		standardPanel.add(standardLabelPanel);
-		standardPanel.add(WidgetFactory.makeHTMLLabel(STANDARD_HELP, 2));
+		standardPanel.add(WidgetFactory.makeHTMLLabel(Help.STANDARD_HELP, 2));
 
 		standardPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
@@ -140,7 +134,7 @@ public class SimpleAnnotationPanel extends JPanel {
 
 		protocolLabelPanel.add(observationProtocol);
 		protocolPanel.add(protocolLabelPanel);
-		protocolPanel.add(WidgetFactory.makeHTMLLabel(PROTOCOL_HELP, 2));
+		protocolPanel.add(WidgetFactory.makeHTMLLabel(Help.PROTOCOL_HELP, 2));
 
 		protocolPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
@@ -157,7 +151,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		measurementLabelPanel.add(observationMeasurement);
 		
 		measurementPanel.add(measurementLabelPanel);
-		measurementPanel.add(WidgetFactory.makeHTMLLabel(MEASUREMENT_HELP, 2));
+		measurementPanel.add(WidgetFactory.makeHTMLLabel(Help.MEASUREMENT_HELP, 2));
 		measurementPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0,
 				0, 8 * WizardSettings.PADDING));
 		WidgetFactory.addTitledBorder(measurementPanel, "Measurement Type");
@@ -268,11 +262,11 @@ public class SimpleAnnotationPanel extends JPanel {
 		// the help panel
 		JPanel helpPanel = WidgetFactory.makePanel();
 		helpPanel.setLayout(new GridLayout(5,1));
-		helpPanel.add(WidgetFactory.makeHTMLLabel(MEASUREMENT_HELP, 1));
-		helpPanel.add(WidgetFactory.makeHTMLLabel(ENTITY_HELP, 1));
-		helpPanel.add(WidgetFactory.makeHTMLLabel(CHARACTERISTIC_HELP, 1));
-		helpPanel.add(WidgetFactory.makeHTMLLabel(STANDARD_HELP, 1));
-		helpPanel.add(WidgetFactory.makeHTMLLabel(PROTOCOL_HELP, 1));
+		helpPanel.add(WidgetFactory.makeHTMLLabel(Help.MEASUREMENT_HELP, 1));
+		helpPanel.add(WidgetFactory.makeHTMLLabel(Help.ENTITY_HELP, 1));
+		helpPanel.add(WidgetFactory.makeHTMLLabel(Help.CHARACTERISTIC_HELP, 1));
+		helpPanel.add(WidgetFactory.makeHTMLLabel(Help.STANDARD_HELP, 1));
+		helpPanel.add(WidgetFactory.makeHTMLLabel(Help.PROTOCOL_HELP, 1));
 		helpPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
 		

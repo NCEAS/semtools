@@ -28,21 +28,14 @@
 
 package org.ecoinformatics.sms.plugins.pages;
 
-import java.awt.Dialog;
-import java.awt.Frame;
 import java.awt.GridLayout;
-import java.awt.Point;
-import java.awt.Window;
-import java.awt.event.ActionEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
@@ -58,10 +51,6 @@ import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
 import edu.ucsb.nceas.morpho.plugins.DataPackageWizardInterface;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
-import edu.ucsb.nceas.morpho.plugins.datapackagewizard.pages.HelpDialog;
-import edu.ucsb.nceas.morpho.util.Command;
-import edu.ucsb.nceas.morpho.util.GUIAction;
-import edu.ucsb.nceas.morpho.util.HyperlinkButton;
 import edu.ucsb.nceas.morpho.util.Log;
 import edu.ucsb.nceas.utilities.OrderedMap;
 
@@ -104,9 +93,6 @@ public class AnnotationPage extends AbstractUIPage {
 	private Standard currentStandard;
 	private Protocol currentProtocol;
 	
-	private String MEASUREMENT_HELP_TEXT = "The Measurement 'Is Key' when it identifies the uniqueness of an Observation instance. Multiple measurements may be combined as a compound key.";
-	private String OBSERVATION_HELP_TEXT = "The Observation 'Is Distinct' when the observation Entity identifies the uniqueness of the observation Instance.";
-
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
 
@@ -132,55 +118,16 @@ public class AnnotationPage extends AbstractUIPage {
 		JPanel descPanel = WidgetFactory.makePanel(3);
 		JLabel desc = WidgetFactory
 				.makeHTMLLabel(
-						"<b>Select the Observation Entity, Characteristic, Standard and Protocol for the selected attribute.</b> "
+						"<b>Select the Measurement template for the given attribute</b>, " +
+						"<br>or select the Observation Entity, Characteristic, Standard and Protocol for the selected attribute."
 						+ "<br>The Ontology Browser can be used to locate classes in specific ontologies."
-						+ "<br>Clicking the spyglass will launch the browser for that annotation class."
+						+ "<br>Clicking the field will launch the browser for that annotation class."
 						, 3);
 		descPanel.add(desc);
 		
-		final AnnotationPage pageRef = this;
 		// help button
-	    Command command = new Command() {
-	      private JDialog helpDialog = null;
-	      public void execute(ActionEvent ae) {
-
-	        if(helpDialog == null) {
-	        	String title = "Help with Semantic Annotations";
-	        	String helpText = 
-	        		"<html> <body>"
-	        		+ "<p><b>Measurement (Is Key)</b></p>"
-	        		+ "<p>The measurement 'iskey' attribute in the annotation syntax is a constraint, much like (primary) key constraints in relational databases." +
-	        		"<br>A measurement 'isKey = yes' constraint states that a particular measurement (characteristic-value pair) determines the identity of the corresponding entity instance." +
-	        		"<br>For example, if we have a plot entity with a label characteristic measurement, and state that this measurement is a key, then each occurrence of the label value in a row of the dataset relates to the same entity instance (see example below)." +
-	        		"<br>For instance, each site label '1' would denote a unique site instance, each site label '2' would denote a different site instance, and so on." +
-	        		"<br>If multiple measurements in an observation have an 'isKey = yes' constraint, then each measurement serves as a partial key, i.e., the identity of the entity instance is determined by a combination of the corresponding characteristic-value pairs (and not by just one of the pairs).</p>" +
-	        		"<p><b>Observation (Is Distinct)</b></p>" +
-	        		"<p>The observation 'isDistinct=yes' constraint is somewhat similar, but promoted to the level of the observation." +
-	        		"<br>It states that if two of the observation instances are of the same entity instance, then the these observation instances are the same instance (i.e., there is only one 'distinct' or 'unique' observation).</p>"
-	        		+ "</body> </html>";
-	        	Window owner = SwingUtilities.getWindowAncestor(pageRef);
-	        	if (owner instanceof Frame) {
-	        		helpDialog = new HelpDialog((Frame)owner, title, helpText);
-	        	}
-	        	if (owner instanceof Dialog) {
-	        		helpDialog = new HelpDialog((Dialog)owner, title, helpText);
-	        	}
-	        }
-	        Point loc = getLocationOnScreen();
-	        int wd = getWidth();
-	        int ht = getHeight();
-	        int dwd = HelpDialog.HELP_DIALOG_SIZE.width;
-	        int dht = HelpDialog.HELP_DIALOG_SIZE.height;
-	        helpDialog.setLocation( (int)loc.getX() + wd/2 - dwd/2, (int)loc.getY() + ht/2 - dht/2);
-	        helpDialog.setSize(HelpDialog.HELP_DIALOG_SIZE);
-	        helpDialog.setVisible(true);
-	        //helpDialog.toFront();
-
-	      }
-	    };
-	    
-	    GUIAction helpAction = new GUIAction("More information about Semantic Annotation", null, command);
-		JButton helpButton = new HyperlinkButton(helpAction);
+		final AnnotationPage pageRef = this;
+		JButton helpButton = Help.createHelpButton(pageRef, "What's this?");
 		
 		// actually show the help
 		if (showAll) {
@@ -218,7 +165,7 @@ public class AnnotationPage extends AbstractUIPage {
 				8 * WizardSettings.PADDING));
 		
 		measurementPanel.add(measurementLabelPanel);
-		measurementPanel.add(WidgetFactory.makeHTMLLabel(MEASUREMENT_HELP_TEXT , 2));
+		measurementPanel.add(WidgetFactory.makeHTMLLabel(Help.MEASUREMENT_ISKEY_HELP, 2));
 		if (showAll) {
 			this.add(measurementPanel);
 			this.add(WidgetFactory.makeDefaultSpacer());
@@ -243,7 +190,7 @@ public class AnnotationPage extends AbstractUIPage {
 				8 * WizardSettings.PADDING));
 		
 		observationPanel.add(labelPanel);
-		observationPanel.add(WidgetFactory.makeHTMLLabel(OBSERVATION_HELP_TEXT , 2));
+		observationPanel.add(WidgetFactory.makeHTMLLabel(Help.OBSERVATION_ISKEY_HELP, 2));
 		if (showAll) {
 			this.add(observationPanel);
 			this.add(WidgetFactory.makeDefaultSpacer());
