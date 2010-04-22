@@ -29,13 +29,17 @@
 package org.ecoinformatics.sms.plugins.pages;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
@@ -73,6 +77,9 @@ public class AnnotationPage extends AbstractUIPage {
 	
 	private boolean showAll = true;
 	
+	// edit toggle
+	JToggleButton editButton;
+	
 	private JLabel attributeLabel;
 
 	// observation
@@ -99,11 +106,14 @@ public class AnnotationPage extends AbstractUIPage {
 	public AnnotationPage(boolean showAll) {
 		this.showAll = showAll;
 		init();
-		setFieldsEnabled(false);
+		setEnabled(false);
 	}
 
-	private void setFieldsEnabled(boolean enabled) {		
-		this.simpleAnnotationPanel.setEnabled(enabled);
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		simpleAnnotationPanel.setEnabled(enabled);
+		editButton.setSelected(enabled);
+
 	}
 	
 	/**
@@ -129,17 +139,33 @@ public class AnnotationPage extends AbstractUIPage {
 		final AnnotationPage pageRef = this;
 		JButton helpButton = Help.createHelpButton(pageRef, "What's this?");
 		
+		// edit button
+		AbstractAction toggleAction = new AbstractAction("Edit") {
+			public void actionPerformed(ActionEvent e) {
+				if (editButton.isSelected()) {
+					// active only if we have an observation
+					pageRef.setEnabled(currentAttributeName != null);
+				}
+				else {
+					pageRef.setEnabled(false);
+				}
+			}
+		};
+		editButton = new JToggleButton(toggleAction);
+		
 		// actually show the help
 		if (showAll) {
 			this.add(descPanel);
 		}
 		
 		// Attribute Label
-		JPanel attributeLabelPanel = WidgetFactory.makePanel(1);
+		JPanel attributeLabelPanel = WidgetFactory.makePanel();
 		attributeLabelPanel.add(WidgetFactory.makeLabel("Attribute:", true));
 		attributeLabel = WidgetFactory.makeLabel("?", true);
 		attributeLabelPanel.add(attributeLabel);
 		attributeLabelPanel.add(helpButton);
+		attributeLabelPanel.add(Box.createHorizontalGlue());
+		attributeLabelPanel.add(editButton);
 		this.add(attributeLabelPanel);
 		
 		//add the main panel here
@@ -200,7 +226,9 @@ public class AnnotationPage extends AbstractUIPage {
 
 	public void editAttribute(String attributeName) {
 		this.currentAttributeName = attributeName;
-		this.setFieldsEnabled(currentAttributeName != null);
+		// initially the panel is not in edit mode
+		//this.setEnabled(currentAttributeName != null);
+		this.setEnabled(false);
 		
 		try {
 			// what are we editing:
