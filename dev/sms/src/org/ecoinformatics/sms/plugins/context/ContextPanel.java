@@ -145,6 +145,7 @@ public class ContextPanel extends JPanel {
 		contextRelationship.setEnabled(enabled);
 		observationIsIdentifying.setEnabled(enabled);
 		observationList.setEnabled(enabled);
+		removeButton.setEnabled(enabled);
 	}
 
 	public Observation getSelectedObservation() {
