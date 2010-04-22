@@ -30,8 +30,6 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 		TAB_NAMES.add(CONTEXT_ANNOTATION);
 	}
 	
-	private int previousTab = -1;
-
 	private Annotation annotation;
 	
 	private AnnotationPage annotationPage;
@@ -60,7 +58,7 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 			handleSelectColumn();
 		}
 		if (event.getChangedState().equals(AnnotationPlugin.ANNOTATION_CHANGE_EVENT)) {
-			showColumnAnnotation();
+			showAnnotation();
 		}
 	}
 	
@@ -73,71 +71,17 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 	}
 	
 	private void handleSelectColumn() {
-
-		// save the state of the annotation if we are on the annotation tab
-		int currentTab = getSelectedIndex();
-		Log.debug(40, "Column selected, Tab = " + currentTab );
-
-		if (currentTab == TAB_NAMES.indexOf(COLUMN_ANNOTATION)) {
-			persistColumnAnnotation();
-		}
-		
-		if (currentTab == TAB_NAMES.indexOf(CONTEXT_ANNOTATION)) {
-			persistContextAnnotation();
-		}
-		
-		// always set the annotation
-		showColumnAnnotation();
-		
+		// show the annotation
+		showAnnotation();
 	}
 	
 	private void handleSelectTab() {
-		
-		// save when moving away from the annotation tab
-		int currentTab = getSelectedIndex();
-		Log.debug(40, "Tab selected, Tab = " + currentTab );
-
-		if (currentTab != TAB_NAMES.indexOf(COLUMN_ANNOTATION)) {
-			if (previousTab == TAB_NAMES.indexOf(COLUMN_ANNOTATION)) {
-				persistColumnAnnotation();
-			}
-		}
-		
-		if (currentTab != TAB_NAMES.indexOf(CONTEXT_ANNOTATION)) {
-			if (previousTab == TAB_NAMES.indexOf(CONTEXT_ANNOTATION)) {
-				persistContextAnnotation();
-			}
-		}
-		
-		// always set the latest state in the annotation tab
-		showColumnAnnotation();
-		
-		previousTab = currentTab;
+		// show the latest state in the tabs
+		showAnnotation();
 	}
 	
-	private void persistColumnAnnotation() {
-		annotation = annotationPage.getAnnotation();
-		if (annotation != null) {
-
-			Log.debug(40, "Persisting Annotation: " + annotation.getURI() );
-
-			// save
-			AnnotationPlugin.saveAnnotation(annotation);
-		}
-	}
-	
-	private void persistContextAnnotation() {
-		annotation = contextPage.getAnnotation();
-		if (annotation != null) {
-
-			Log.debug(40, "Persisting Annotation from Context page: " + annotation.getURI() );
-
-			// save
-			AnnotationPlugin.saveAnnotation(annotation);
-		}
-	}
-	
-	private void showColumnAnnotation() {
+	private void showAnnotation() {
+		// refresh the annotation column view
 		String attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
 		if (annotationPage != null) {
 			// reset the UI
@@ -150,7 +94,7 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 			}
 		}
 		
-		// refresh the view
+		// refresh the context view
 		if (contextPage != null) {
 			contextPage.handleSelectColumn();
 		}

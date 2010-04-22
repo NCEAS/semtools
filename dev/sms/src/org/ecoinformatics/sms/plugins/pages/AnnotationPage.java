@@ -49,6 +49,7 @@ import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
+import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.ui.SimpleAnnotationPanel;
 
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
@@ -148,6 +149,13 @@ public class AnnotationPage extends AbstractUIPage {
 				}
 				else {
 					pageRef.setEnabled(false);
+					// save the current state
+					annotation = pageRef.getAnnotation();
+					if (annotation != null) {
+						Log.debug(40, "Persisting Annotation: " + annotation.getURI() );
+						// save
+						AnnotationPlugin.saveAnnotation(annotation);
+					}
 				}
 			}
 		};

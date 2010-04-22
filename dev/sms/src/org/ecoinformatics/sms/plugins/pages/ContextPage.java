@@ -46,6 +46,7 @@ import org.ecoinformatics.sms.plugins.context.ContextPanelList;
 
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
+import edu.ucsb.nceas.morpho.util.Log;
 import edu.ucsb.nceas.utilities.OrderedMap;
 
 public class ContextPage extends AbstractUIPage {
@@ -102,6 +103,13 @@ public class ContextPage extends AbstractUIPage {
 				}
 				else {
 					pageRef.setEnabled(false);
+					// save annotation
+					annotation = pageRef.getAnnotation();
+					if (annotation != null) {
+						Log.debug(40, "Persisting Annotation from Context page: " + annotation.getURI() );
+						// save
+						AnnotationPlugin.saveAnnotation(annotation);
+					}
 				}
 			}
 		};
