@@ -28,11 +28,14 @@
 
 package org.ecoinformatics.sms.plugins.pages;
 
-import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Mapping;
@@ -65,6 +68,9 @@ public class ContextPage extends AbstractUIPage {
 	// context options
 	private ContextPanelList contextList;
 	
+	// edit toggle
+	JToggleButton editButton;
+	
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
@@ -85,14 +91,35 @@ public class ContextPage extends AbstractUIPage {
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		JPanel descPanel = WidgetFactory.makePanel(2); 
-		descPanel.setLayout(new GridLayout(2,1));
-		descPanel.add(WidgetFactory.makeHTMLLabel("The Observation was made where the...", 1));
 		final ContextPage pageRef = this;
-		JButton helpButton = Help.createHelpButton(pageRef, "What's this?");
-		descPanel.add(helpButton);
+
+		// edit button
+		AbstractAction toggleAction = new AbstractAction("Edit") {
+			public void actionPerformed(ActionEvent e) {
+				if (editButton.isSelected()) {
+					// active only if we have an observation
+					pageRef.setEnabled(observation != null);
+				}
+				else {
+					pageRef.setEnabled(false);
+				}
+			}
+		};
+		editButton = new JToggleButton(toggleAction);
 		
-		this.add(descPanel);
+		// help button
+		JButton helpButton = Help.createHelpButton(pageRef, "What's this?");
+		
+		JPanel lineOnePanel = WidgetFactory.makePanel(); 
+		lineOnePanel.add(WidgetFactory.makeLabel("The Observation was made where the...", false, null));
+		lineOnePanel.add(Box.createHorizontalGlue());
+		lineOnePanel.add(editButton);
+		
+		JPanel topPanel = WidgetFactory.makePanel(1);
+		topPanel.add(helpButton);
+			
+		this.add(lineOnePanel);
+		this.add(topPanel);
 				
 		// Context list
 		JPanel contextListPanel = WidgetFactory.makePanel(6);
@@ -107,6 +134,7 @@ public class ContextPage extends AbstractUIPage {
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		contextList.setEnabled(enabled);
+		editButton.setSelected(enabled);
 	}
 	
 	public void setObservation(Observation observation) {
@@ -139,7 +167,9 @@ public class ContextPage extends AbstractUIPage {
 		}
 		this.setObservation(observation);
 		this.populateList();
-		this.setEnabled(observation != null);
+		// disable editing initially until edit toggle is depressed
+		//this.setEnabled(observation != null);
+		this.setEnabled(false);
 	}
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
