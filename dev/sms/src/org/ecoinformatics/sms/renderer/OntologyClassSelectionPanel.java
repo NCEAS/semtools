@@ -1,9 +1,9 @@
 /**
  *    '$RCSfile$'
  *
- *     '$Author: berkley $'
- *       '$Date: 2009-08-05 15:47:01 -0700 (Wed, 05 Aug 2009) $'
- *   '$Revision: 20194 $'
+ *     '$Author$'
+ *       '$Date$'
+ *   '$Revision$'
  *
  *  For Details: http://kepler-project.org
  *

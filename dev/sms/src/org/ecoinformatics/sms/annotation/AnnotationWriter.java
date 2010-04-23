@@ -2,9 +2,9 @@
 /**
  *    '$RCSfile: AnnotationWriter.java,v $'
  *
- *     '$Author: bowers $'
- *       '$Date: 2008-06-02 19:51:10 $'
- *   '$Revision: 1.1 $'
+ *     '$Author$'
+ *       '$Date$'
+ *   '$Revision$'
  *
  *  For Details: http://daks.ucdavis.edu
  *

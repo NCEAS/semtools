@@ -7,9 +7,9 @@
  *    Authors: Chad Berkley
  *    Release: @release@
  *
- *   '$Author: tao $'
- *     '$Date: 2009-04-21 21:11:40 $'
- * '$Revision: 1.2 $'
+ *   '$Author$'
+ *     '$Date$'
+ * '$Revision$'
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

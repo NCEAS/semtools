@@ -1,9 +1,9 @@
 /**
  *    '$RCSfile: Owlifier.java,v $'
  *
- *     '$Author: bowers $'
- *       '$Date: 2007/12/09 17:20:31 $'
- *   '$Revision: 1.16 $'
+ *     '$Author$'
+ *       '$Date$'
+ *   '$Revision$'
  *
  *  For Details: http://daks.ucdavis.edu
  *

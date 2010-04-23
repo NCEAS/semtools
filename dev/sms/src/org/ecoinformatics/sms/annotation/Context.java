@@ -1,9 +1,9 @@
 /**
  *    '$RCSfile: Context.java,v $'
  *
- *     '$Author: bowers $'
- *       '$Date: 2008-06-02 19:51:10 $'
- *   '$Revision: 1.1 $'
+ *     '$Author$'
+ *       '$Date$'
+ *   '$Revision$'
  *
  *  For Details: http://daks.ucdavis.edu
  *
@@ -112,7 +112,7 @@ public class Context implements Comparable<Context>{
     
     public String getMadlib() {
     	StringBuffer sb = new StringBuffer();
-    	sb.append("The Observation was ");
+    	//sb.append("The Observation was ");
     	if (_relationship != null) {
     		sb.append(_relationship.toString());
     	}

@@ -1,9 +1,9 @@
 /**
  *    '$RCSfile: SMS.java,v $'
  *
- *     '$Author: bowers $'
- *       '$Date: 2007/05/25 16:13:14 $'
- *   '$Revision: 1.7 $'
+ *     '$Author$'
+ *       '$Date$'
+ *   '$Revision$'
  *
  *  For Details: http://daks.ucdavis.edu
  *

@@ -1,9 +1,9 @@
 /**
  *    '$RCSfile: Ontology.java,v $'
  *
- *     '$Author: bowers $'
- *       '$Date: 2007/05/21 20:25:10 $'
- *   '$Revision: 1.1 $'
+ *     '$Author$'
+ *       '$Date$'
+ *   '$Revision$'
  *
  *  For Details: http://daks.ucdavis.edu
  *

@@ -5,9 +5,9 @@
  *    Authors: @authors@
  *    Release: @release@
  *
- *   '$Author: leinfelder $'
- *     '$Date: 2004-04-06 01:27:05 $'
- * '$Revision: 1.15 $'
+ *   '$Author$'
+ *     '$Date$'
+ * '$Revision$'
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
