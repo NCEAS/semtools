@@ -42,6 +42,10 @@ public class PostgresDB {
 	Connection m_conn = null;
 	
 	String m_insertEntityInstance ="INSERT INTO " +m_entityInstanceTable + " VALUES(?,?,?);";
+	String m_insertObservationInstance ="INSERT INTO " +m_obsInstanceTable + " VALUES(?,?,?,?);";
+	String m_insertMeasurementInstance ="INSERT INTO " +m_measInstanceTable + " VALUES(?,?,?,?,?);";
+	String m_insertContextInstance ="INSERT INTO " +m_contextInstanceTable + " VALUES(?,?,?,?,?);";
+	
 	
 	String m_insertObservationType = "INSERT INTO " + m_obsTypeTable + " VALUES(?,?,?,?);";
 	String m_insertMeasurementType = "INSERT INTO " + m_measTypeTable + " VALUES(?,?,?,?,?,?)";
@@ -84,13 +88,16 @@ public class PostgresDB {
 			}
 		}
 	}
+	
+	
 	/**
 	 * Form the SQL to insert entity instances
 	 * @param ei
 	 * @return
+	 * @deprecated
 	 */
 	private String formEntityInstanceSQL(EntityInstance ei){
-		String sql = "INSERT INTO " +m_entityInstanceTable + " values("+
+		String sql = "INSERT INTO " +m_entityInstanceTable + " VALUES("+
 					ei.getUniqueRecordId()+","+ //used to join with the observation instance table
 					ei.getEntId()+"," +			//used to join with the observation instance table
 					ei.getEntityType().getName()+");";
@@ -99,25 +106,28 @@ public class PostgresDB {
 		return sql;
 	}
 	
-//	private String formEntityTypeSQL(Entity et){
-//		String sql = "INSERT INTO " +m_entityTypeTable + " values("+
-//					et.getOntology().getPrefix()+","+ //used to join with the observation instance table
-//					et.getURI()+"," +			//used to join with the observation instance table
-//					et.getName()+");";
-//		
-//		//System.out.println(Debugger.getCallerPosition()+"sql="+sql);
-//		return sql;
-//	}
+	/**
+	 * Set the parameters for inserting entity instances
+	 * 
+	 * @param pstmt
+	 * @param ei
+	 * @throws SQLException
+	 */
+	private void setEntityInstanceParam(PreparedStatement pstmt, EntityInstance ei) 
+		throws SQLException
+	{
+		pstmt.setString(1, ei.getUniqueRecordId());
+		pstmt.setLong(2, ei.getEntId());
+		pstmt.setString(3, ei.getEntityType().getName());		
+	}
+	
 	
 	/**
 	 * For the SQL to insert observation instances 
-	 * (record id, entity id, observation id, observation type label)	 
-	 * [1] entity unique record id
-	 * [2] entity id
-	 * [3] observation id
-	 * [4] observation type label
+	 * See "setObsInstanceParam" for field explanation
 	 * @param oi
 	 * @return
+	 * @deprecated
 	 */
 	private String formObsInstanceSQL(ObservationInstance oi){
 		String sql = "INSERT INTO " +m_obsInstanceTable + " values("+
@@ -131,12 +141,38 @@ public class PostgresDB {
 	}
 	
 	/**
+	 * Set the parameters for inserting observation instances
+	 * [1] entity unique record id
+	 * [2] entity id
+	 * [3] observation id
+	 * [4] observation type label 
+	 * @param pstmt
+	 * @param ei
+	 * @throws SQLException
+	 */
+	private void setObsInstanceParam(PreparedStatement pstmt, ObservationInstance oi) 
+		throws SQLException
+	{
+		pstmt.setString(1, oi.getEntity().getUniqueRecordId());
+		pstmt.setLong(2, oi.getEntity().getEntId());
+		pstmt.setLong(3, oi.getObsId());
+		pstmt.setString(4, oi.getObsType().getLabel());		
+	}
+			
+//	private String formEntityTypeSQL(Entity et){
+//	String sql = "INSERT INTO " +m_entityTypeTable + " values("+
+//				et.getOntology().getPrefix()+","+ //used to join with the observation instance table
+//				et.getURI()+"," +			//used to join with the observation instance table
+//				et.getName()+");";
+//	
+//	//System.out.println(Debugger.getCallerPosition()+"sql="+sql);
+//	return sql;
+//}
+	
+	/**
 	 * Form the sql to insert observation type of annotation
+	 * See "setObsTypeParam" for field explanation
 	 * 
-	 * (1) Annotation id
-	 * (2) Observation type label
-	 * (3) Observation entity type name
-	 * (4) isDistinct
 	 * @param ot
 	 * @return
 	 * @deprecated
@@ -176,13 +212,7 @@ public class PostgresDB {
 	
 	/**
 	 * For the sql to insert measurement type
-	 * [1] Measurement type char(16), 
-	 * [2] Observation label varchar(64),
-	 * [3] iskey boolean,
-	 * [4] characteristic char(64),
-	 * [5] standard char(16),
-	 * [6] protocal varchar(256);
-	
+	 * See "setMeasTypeParam" for field explanation
 	 * @param mt
 	 * @return
 	 * @deprecated
@@ -247,15 +277,11 @@ public class PostgresDB {
 	
 	/**
 	 * Form the SQL to insert the measurement instances
-	 * (1) unique record id, 
-	 * (2) observation id, 
-	 * (3) measurement id, 
-	 * (4) measurement type id, 
-	 * (5) measurement value
+	 * See "setMeasInstanceParam" for field explanations
 	 * 
-	 * (1) + (2) together is used to join with observation instance
 	 * @param mi
 	 * @return
+	 * @deprecated
 	 */
 	private String formMeasInstanceSQL(MeasurementInstance mi){
 		String sql = "INSERT INTO " + m_measInstanceTable + " values("+
@@ -269,10 +295,53 @@ public class PostgresDB {
 		return sql;
 	}
 	
+	/**
+	 * Set the parameters for inserting measurement instances
+	 * (1) unique record id, 
+	 * (2) observation id, 
+	 * (3) measurement id, 
+	 * (4) measurement type id, 
+	 * (5) measurement value
+	 * 
+	 * (1) + (2) together is used to join with observation instance
+	 * 
+	 * @param pstmt
+	 * @param ei
+	 * @throws SQLException
+	 */
+	private void setMeasInstanceParam(PreparedStatement pstmt, MeasurementInstance mi) 
+		throws SQLException
+	{
+		pstmt.setString(1, mi.getObservationInstance().getEntity().getUniqueRecordId());
+		pstmt.setLong(2, mi.getObservationInstance().getObsId());
+		pstmt.setLong(3, mi.getMeasId());
+		pstmt.setString(4, mi.getMeasurementType().getLabel());		
+		pstmt.setString(5, mi.getMeasValue());
+	}
 	
 	
 	/**
 	 * Form the SQL to insert the context instances
+	 * See "setContextInstanceParam" for the fields explanation
+	 * @param ci 
+	 * @return
+	 * @deprecated
+	 */
+	private String formContextInstanceSQL(ContextInstance ci){
+		String sql = "INSERT INTO " +m_contextInstanceTable + " values("+
+				ci.getObservationInstance().getEntity().getUniqueRecordId()+","+
+				ci.getContextObservationInstance().getEntity().getUniqueRecordId()+","+
+				ci.getObservationInstance().getObsId()+","+
+				ci.getContextObservationInstance().getObsId()+","+
+				ci.getContextType().getRelationship().getName()+");";
+		
+		System.out.println(Debugger.getCallerPosition()+"sql="+sql);
+		return sql;		
+	}
+	
+	
+	/**
+	 * Set the parameters for inserting context instances
 	 * (1) unique record id of observation instance 
 	 * (2) id of observation instance
 	 * (3) unique record id of context observation instance
@@ -282,20 +351,18 @@ public class PostgresDB {
 	 * (1) + (2) together is used to join with observation instance
 	 * (3) + (4) together is used to join with observation instance  
 	 * (5) is used to join with context relationship
-	 * 
-	 * @param ci
-	 * @return
+	 * @param pstmt
+	 * @param ei
+	 * @throws SQLException
 	 */
-	private String formContextInstanceSQL(ContextInstance ci){
-		String sql = "INSERT INTO " +m_contextInstanceTable + " values("+
-				ci.getObservationInstance().getEntity().getUniqueRecordId()+","+
-				ci.getObservationInstance().getObsId()+","+
-				ci.getContextObservationInstance().getEntity().getUniqueRecordId()+","+
-				ci.getContextObservationInstance().getObsId()+","+
-				ci.getContextType().getRelationship().getName()+");";
-		
-		System.out.println(Debugger.getCallerPosition()+"sql="+sql);
-		return sql;		
+	private void setContextInstanceParam(PreparedStatement pstmt, ContextInstance ci) 
+		throws SQLException
+	{
+		pstmt.setString(1, ci.getObservationInstance().getEntity().getUniqueRecordId());
+		pstmt.setString(2, ci.getContextObservationInstance().getEntity().getUniqueRecordId());
+		pstmt.setLong(3, ci.getObservationInstance().getObsId());
+		pstmt.setLong(4, ci.getContextObservationInstance().getObsId());
+		pstmt.setString(5, ci.getContextType().getRelationship().getName());
 	}
 	
 	/**
@@ -335,28 +402,41 @@ public class PostgresDB {
 	/**
 	 * Import the data instances
 	 * @param oboe
+	 * @throws SQLException 
 	 */
-	public void importInstance(OboeModel oboe)
+	public void importInstance(OboeModel oboe) throws SQLException
 	{
-		//entity instance 
+		PreparedStatement pstmtEntity = m_conn.prepareStatement(this.m_insertEntityInstance);
+		PreparedStatement pstmtObs = m_conn.prepareStatement(this.m_insertObservationInstance);
+		PreparedStatement pstmtMeas = m_conn.prepareStatement(this.m_insertMeasurementInstance);
+		PreparedStatement pstmtContext = m_conn.prepareStatement(this.m_insertContextInstance);
+		
+		 //entity instance 
 		 for(EntityInstance ei: oboe.m_entityInstances){
-			 formEntityInstanceSQL(ei);
+			 //formEntityInstanceSQL(ei);
+			 this.setEntityInstanceParam(pstmtEntity, ei);
+			 pstmtEntity.execute();
 		 }
 		 
 		 //observation instance
 		 for(ObservationInstance oi: oboe.m_observationInstances){
-			 oi.getObsId();
-			 formObsInstanceSQL(oi); 
+			 //formObsInstanceSQL(oi);
+			 this.setObsInstanceParam(pstmtObs, oi);
+			 pstmtObs.execute();
 		 }
 
 		 //measurement instance
 		 for(MeasurementInstance mi: oboe.m_measurementInstances){
-			 formMeasInstanceSQL(mi);
+			 //formMeasInstanceSQL(mi);
+			 this.setMeasInstanceParam(pstmtMeas, mi);
+			 pstmtMeas.execute();
 		 }
 
 		 //context instance
 		 for(ContextInstance ci: oboe.m_contextInstances){
-			 formContextInstanceSQL(ci);
+			 //formContextInstanceSQL(ci);
+			 this.setContextInstanceParam(pstmtContext, ci);
+			 pstmtContext.execute();
 		 }
 	}
 		
