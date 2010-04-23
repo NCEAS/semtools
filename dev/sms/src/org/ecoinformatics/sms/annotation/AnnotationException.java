@@ -1,5 +1,5 @@
 /**
- *    '$RCSfile: AnnotationException.java,v $'
+ *    '$Id$'
  *
  *     '$Author$'
  *       '$Date$'

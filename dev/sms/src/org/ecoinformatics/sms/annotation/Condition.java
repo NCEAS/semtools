@@ -1,5 +1,5 @@
 /**
- *    '$RCSfile: Condition.java,v $'
+ *    '$Id$'
  *
  *     '$Author$'
  *       '$Date$'

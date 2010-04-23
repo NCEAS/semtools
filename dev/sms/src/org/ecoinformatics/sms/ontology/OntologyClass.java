@@ -1,5 +1,5 @@
 /**
- *    '$RCSfile: OntologyClass.java,v $'
+ *    '$Id$'
  *
  *     '$Author$'
  *       '$Date$'

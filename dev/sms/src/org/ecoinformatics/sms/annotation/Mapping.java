@@ -1,5 +1,5 @@
 /**
- *    '$RCSfile: Mapping.java,v $'
+ *    '$Id$'
  *
  *     '$Author$'
  *       '$Date$'

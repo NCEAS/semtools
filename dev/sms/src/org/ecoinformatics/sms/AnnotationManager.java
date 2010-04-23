@@ -1,6 +1,6 @@
 
 /**
- *    '$RCSfile: AnnotationManager.java,v $'
+ *    '$Id$'
  *
  *     '$Author$'
  *       '$Date$'

@@ -1,5 +1,5 @@
 /**
- *    '$RCSfile: Relationship.java,v $'
+ *    '$Id$'
  *
  *     '$Author$'
  *       '$Date$'

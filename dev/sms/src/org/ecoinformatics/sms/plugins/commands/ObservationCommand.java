@@ -1,5 +1,5 @@
 /**
- *  '$RCSfile: EditColumnMetaDataCommand.java,v $'
+ *  '$Id$'
  *  Copyright: 2000 Regents of the University of California and the
  *              National Center for Ecological Analysis and Synthesis
  *    Authors: @tao@

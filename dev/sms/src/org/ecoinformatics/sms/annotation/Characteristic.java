@@ -1,5 +1,5 @@
 /**
- *    '$RCSfile: Characteristic.java,v $'
+ *    '$Id$'
  *
  *     '$Author$'
  *       '$Date$'

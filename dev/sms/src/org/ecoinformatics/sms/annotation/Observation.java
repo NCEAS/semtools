@@ -1,6 +1,6 @@
 
 /**
- *    '$RCSfile: Observation.java,v $'
+ *    '$Id$'
  *
  *     '$Author$'
  *       '$Date$'

@@ -1,5 +1,5 @@
 /**
- *    '$RCSfile: SMS.java,v $'
+ *    '$Id$'
  *
  *     '$Author$'
  *       '$Date$'

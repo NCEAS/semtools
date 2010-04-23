@@ -1,5 +1,5 @@
 /**
- *    '$RCSfile: Entity.java,v $'
+ *    '$Id$'
  *
  *     '$Author$'
  *       '$Date$'

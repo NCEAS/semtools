@@ -1,5 +1,5 @@
 /**
- *  '$RCSfile: UsageRights.java,v $'
+ *  '$Id$'
  *    Purpose: A class that handles xml messages passed by the
  *             package wizard
  *  Copyright: 2000 Regents of the University of California and the
