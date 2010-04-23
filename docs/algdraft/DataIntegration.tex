@@ -1,0 +1,78 @@
+\documentclass[10pt]{article}
+%\title{}
+%\author{}
+%\date{}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{a4}
+\usepackage{color}
+\renewcommand\floatpagefraction{0.99}
+\renewcommand\topfraction{0.99}
+\renewcommand\bottomfraction{0.99}
+\renewcommand\textfraction{.05}
+\setcounter{totalnumber}{5}
+
+%\setlength{\parindent}{0pt}
+\setlength\topmargin{0in}
+\setlength\headheight{0in}
+\setlength\headsep{0in}
+\setlength\textheight{8.5in}
+\setlength\textwidth{6.5in}
+\setlength\oddsidemargin{0in}
+\setlength\evensidemargin{0in}
+
+\newtheorem{example}{Example}[section]
+\newtheorem{definition}{Definition}[section]
+\newcommand{\from}[2]{{\bf[{\sc from #1:} #2]}}
+
+\title{Data integration}
+\author{}
+\begin{document}
+\maketitle
+
+\section{Materialize Database}
+
+{\bf HP:}{Copy the materials from materiazeDB to here. Skip now.}
+
+\section{Query rewriting}
+
+What kinds of queries? 
+
+The information that users can have: metadata about the table. 
+
+In the scientific data, it is unrealistic for the users to know the
+table structure to perform the query. 
+
+IR-style query: 
+\begin{itemize}
+\item KQ1: Give me the datasets that contain species ``Picea rubens'' observations.
+\item KQ2: give me the datasets that have measurements on ``area''
+  characteristics. 
+\item KQ3: Give me the datasets that contain species ``Picea rubens''
+  observations in ``California''. 
+\item KQ: Give me the records....
+\end{itemize}
+
+IR-style summarization query: 
+\begin{itemize}
+SQ1: Give me the dataset that contains at least five ``Picea rubens'' observations.
+SQ2: Give me the datasets that have measurements with average ``area''
+bigger than 5.0 square feet. 
+SQ3: 
+\end{itemize}
+
+Use the materialized database, we would have four tables for all the datasets: 
+entity, observation, measurement, context. 
+and 4 tables for entity types, observation types, measurement types,
+and context relationships.
+
+To answer KQ1: it's simple join between 
+
+\section{Experiments}
+
+1. Materialize DB (time + space) \\
+2. Query over materialized DB 
+3. 
+
+\end{document}
+
