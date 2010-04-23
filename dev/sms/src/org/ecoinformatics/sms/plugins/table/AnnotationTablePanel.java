@@ -134,7 +134,7 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 		final AnnotationTablePanel pageRef = this;
 		JButton helpButton = Help.createHelpButton(pageRef, "Information about Semantic Annotation");
 		
-		JPanel descPanel = WidgetFactory.makePanel(3);
+		JPanel descPanel = WidgetFactory.makePanel(4);
 		descPanel.setLayout(new GridLayout(3, 1));
 		descPanel.add(WidgetFactory.makeHTMLLabel("<p>Double click cells to directly edit the Annotation</p>", 1));
 		descPanel.add(helpButton);
