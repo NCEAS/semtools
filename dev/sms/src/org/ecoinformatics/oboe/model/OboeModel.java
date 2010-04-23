@@ -18,13 +18,17 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 
+import org.ecoinformatics.oboe.Debugger;
+import org.ecoinformatics.oboe.datastorage.PostgresDB;
+import org.ecoinformatics.sms.annotation.*;
+
 public class OboeModel {
 
-	 private List<EntityInstance> m_entityInstances;
-	 private List<ObservationInstance> m_observationInstances;
-	 private List<MeasurementInstance> m_measurementInstances;
+	 public List<EntityInstance> m_entityInstances;
+	 public List<ObservationInstance> m_observationInstances;
+	 public List<MeasurementInstance> m_measurementInstances;
 	 
-	 private List<ContextInstance> m_contextInstances;
+	 public List<ContextInstance> m_contextInstances;
 	 
 	 //index from oi --> ci list, used in materialize DB
 	 private Map<ObservationInstance, List<ContextInstance>> m_oi2ciList;
@@ -277,6 +281,24 @@ public class OboeModel {
 	 
 	 
 	 /**
+	  * Import this the materialized dataset and the annotation (with type information) to databases
+	  * 
+	  * @param A
+	 * @throws Exception 
+	  */
+	 public void toRDB(String annotationFileName, Annotation A) throws Exception
+	 {
+		 System.out.println(Debugger.getCallerPosition()+"Begin...");
+		 PostgresDB db = new PostgresDB();
+		 
+		 db.open();
+		 db.importAnnotation(A, annotationFileName); //export type information
+		 db.importInstance(this); //export data instance information.
+		 db.close();
+		 System.out.println(Debugger.getCallerPosition()+"End...");
+	 }
+	 
+	 /**
 	  * output the materialized data to CSV file
 	  * @param csvFileName: the absolute file name to store the CSV file 
 	  */
@@ -316,5 +338,20 @@ public class OboeModel {
 			e.printStackTrace();
 			throw e;
 		}
+	 }
+	 
+
+	 
+	 /**
+	  * Show the space used for this materialized OBOE view
+	  */
+	 public void calSpace()
+	 {
+		 System.out.println("Number of entities:"+m_entityInstances.size());
+		 System.out.println("Number of observations:"+m_observationInstances.size());
+		 System.out.println("Number of measurements:" + m_measurementInstances.size());
+		 System.out.println("Number of contexts:" + m_contextInstances.size());
+		 
+		 System.out.println("Assistating structure size:" + (m_oi2ciList.size() + m_oi2miList.size()));
 	 }
 }

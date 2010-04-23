@@ -10,6 +10,8 @@ import org.ecoinformatics.sms.annotation.Entity;
 public class EntityInstance {
 	private static long gEntId=0;
 	
+	private String m_uniqueRecordId;
+	
 	private long entId;
 	private Entity entityType;
 	
@@ -34,6 +36,20 @@ public class EntityInstance {
 	public void setEntityType(Entity entityType) {
 		this.entityType = entityType;
 	}
+	
+	public String getUniqueRecordId() {
+		return m_uniqueRecordId;
+	}
+	
+	public String getUniqueEntityId()
+	{
+		return (m_uniqueRecordId+"_eid_"+entId);
+	}
+
+	public void setUniqueRecordId(String mUniqueRecordId) {
+		m_uniqueRecordId = mUniqueRecordId;
+	}
+	
 	public OboeModel getOboe() {
 		return oboe;
 	}
@@ -51,6 +67,7 @@ public class EntityInstance {
 	{
 		String str = "[ei";
 		str += entId;
+		str += ",rid="+m_uniqueRecordId+",";
 		str +="("+ entityType.getName()+")";
 		str +="]";
 		return str;

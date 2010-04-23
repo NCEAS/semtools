@@ -34,7 +34,7 @@ package org.ecoinformatics.sms.annotation;
 /**
  * Objects of this class represent observation contexts
  */
-public class Context{
+public class Context implements Comparable<Context>{
 
     /**
      * Default constructor
@@ -152,5 +152,25 @@ public class Context{
 		
 		boolean cmp3 = (_isIdentifying==o.isIdentifying());
 		return cmp3;
+	}
+
+	/**
+	 * For comparing two contexts
+	 * @author cao
+	 */
+	public int compareTo(Context c)	
+	{
+		
+		int cmp1 = _observation.getLabel().compareTo(c.getObservation().getLabel());
+		
+		if(cmp1!=0) return cmp1;
+		
+		int cmp2=0;
+		if(_relationship!=null||c.getRelationship()!=null){
+			cmp2 = _relationship.getURI().compareTo(c.getRelationship().getURI());
+		}
+		if(cmp2!=0) return cmp2;
+		
+		return 0;
 	}
 } 

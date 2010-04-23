@@ -27,7 +27,6 @@ import org.ecoinformatics.datamanager.parser.Attribute;
 import org.ecoinformatics.datamanager.parser.AttributeList;
 import org.ecoinformatics.datamanager.parser.DataPackage;
 import org.ecoinformatics.datamanager.parser.Entity;
-//import org.ecoinformatics.owlifier.OwlifierSpreadsheet;
 import org.ecoinformatics.oboe.model.ConditionInstance;
 import org.ecoinformatics.oboe.model.ContextInstance;
 import org.ecoinformatics.oboe.model.EntityInstance;
@@ -303,13 +302,15 @@ public class MaterializeDB {
 	 */
 	private static EntityInstance MaterializeEntity(
 			Observation obsType, 
+			String uniqueRecordIdPrefix,
 			Map<Observation, Set<MeasurementInstance>> obsType2MeasIdx, 
 			Map<ObsTypeKey, EntityInstance> entIdx, 
 			Annotation A, OboeModel OBOE)
 	{
 		String keyValue = GetObsTypeKeys(obsType, obsType2MeasIdx); 
 		List<Measurement> keyMeasTypes = obsType.getKeyMeasurements();
-		
+		String uniqueRecordId = uniqueRecordIdPrefix + obsType.getLabel();
+		//System.out.println(Debugger.getCallerPosition()+",keyValue="+keyValue+",keyMeasTypes="+keyMeasTypes);
 		boolean hasKey = false;
 		EntityInstance entityInstance = null;
 		
@@ -337,7 +338,9 @@ public class MaterializeDB {
 		if(crtNewEntityInstance){
 			org.ecoinformatics.sms.annotation.Entity entType = obsType.getEntity();
 			entityInstance = new EntityInstance(entType);
-			//System.out.println("New ei: " + entityInstance);
+			entityInstance.setUniqueRecordId(uniqueRecordId);
+			
+			//System.out.println(Debugger.getCallerPosition()+"New ei: " + entityInstance);
 			OBOE.AddEntityInstance(entityInstance);
 			
 			if(hasKey){
@@ -671,11 +674,23 @@ public class MaterializeDB {
 		Map<ObsTypeKey, ObservationInstance> obsIdx = 
 			new TreeMap<ObsTypeKey, ObservationInstance>(); //<ObsTypeId, KeyVal> --> observation instance
 		
+		//given a data file name, e.g., /Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/oboedb/eg20-n10-data.txt
+		//get the pure file name, e.g, eg20-n10-data.txt
+		int pos = dataFileName.lastIndexOf('/');
+		String pureFileName = dataFileName;
+		if(pos>0&&pos+1<dataFileName.length()){
+			pureFileName = dataFileName.substring(pos+1);
+		}
+		String uniqueRecordIdPrefix;
 		for(int i=0;i<dataset.size();i++){
+			// uniqueRecordId is like eg20-n10-data.txt_R0_Cm1
+			uniqueRecordIdPrefix =  pureFileName + "_R"+i+"_C";
+			//System.out.println(Debugger.getCallerPosition()+"uniqueRecordIdPrefix="+uniqueRecordIdPrefix);
+			
 			ArrayList row = (ArrayList)dataset.get(i);
 			//System.out.println("i="+i+", dataset size="+dataset.size());
 			//Step 3.1: define measurement instances
-			Set<MeasurementInstance> measSet = CrtMeasurement(rowStruct, row,A);
+			Set<MeasurementInstance> measSet = CrtMeasurement(rowStruct,row,A);
 			
 			//Step 3.2: partition the measurement instances according to observation types
 			Map<Observation, Set<MeasurementInstance>> obsType2MeasIdx = PartitionMeas(measSet, A);
@@ -683,7 +698,7 @@ public class MaterializeDB {
 			Map contextIdx = new TreeMap();
 			for(Observation obsType : obsType2MeasIdx.keySet()){
 				//Step 3.3: Find or create the entity instance for each observation type partition
-				EntityInstance entInstance = MaterializeEntity(obsType, obsType2MeasIdx, entIdx, A, OBOE);
+				EntityInstance entInstance = MaterializeEntity(obsType, uniqueRecordIdPrefix,obsType2MeasIdx, entIdx, A, OBOE);
 				
 				//Step 3.4: Find or create the observation instance for each observation type partition
 				MaterializeObs(obsType, entInstance,obsType2MeasIdx,obsIdx,contextIdx,A, OBOE);
@@ -696,10 +711,13 @@ public class MaterializeDB {
 		
 		//System.out.println(OBOE);
 		System.out.println("\n-----------\n"+Debugger.getCallerPosition()+"Time used (Materialization): " + (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
+		OBOE.calSpace();
+		System.out.println("\n-----------\n");
 		
 		t1 = System.currentTimeMillis();
 		OBOE.toCSV(oboeFileName);
-		OBOE.toRDF(rdfFileName);		
+		OBOE.toRDF(rdfFileName);
+		OBOE.toRDB(annotFileName,A);
 		t2 = System.currentTimeMillis();
 		System.out.println(Debugger.getCallerPosition()+"Time used (File writing): " + (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
 		
