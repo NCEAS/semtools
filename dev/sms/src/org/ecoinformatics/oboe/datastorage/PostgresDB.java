@@ -46,9 +46,12 @@ public class PostgresDB {
 	String m_insertMeasurementInstance ="INSERT INTO " +m_measInstanceTable + " VALUES(?,?,?,?,?);";
 	String m_insertContextInstance ="INSERT INTO " +m_contextInstanceTable + " VALUES(?,?,?,?,?);";
 	
-	
+	String m_insertAnnotation = "INSERT INTO annotation(annot_uri) VALUES(?);";
 	String m_insertObservationType = "INSERT INTO " + m_obsTypeTable + " VALUES(?,?,?,?);";
-	String m_insertMeasurementType = "INSERT INTO " + m_measTypeTable + " VALUES(?,?,?,?,?,?)";
+	String m_insertMeasurementType = "INSERT INTO " + m_measTypeTable + " VALUES(?,?,?,?,?,?,?)";
+	String m_insertContextType = "INSERT INTO " + m_contextTypeTable + " VALUES(?,?,?,?,?)";
+	
+	String m_maxAnnotationIdSql = "SELECT last_value FROM annot_id_seq;";
 	
 	/**
 	 * Open the postgres connection 
@@ -201,13 +204,38 @@ public class PostgresDB {
 	 * @param ot
 	 * @throws SQLException
 	 */
-	private void setObsTypeParam(PreparedStatement pstmt, String annotationId, Observation ot) 
+	private void setObsTypeParam(PreparedStatement pstmt, long annotationId, Observation ot) 
 		throws SQLException
 	{
-		pstmt.setString(1, annotationId);
+		pstmt.setLong(1, annotationId);
 		pstmt.setString(2,ot.getLabel());
 		pstmt.setString(3, ot.getEntity().getName());
 		pstmt.setBoolean(4, ot.isDistinct());
+	}
+	
+	
+	/**
+	 * Set the parameters for insertion to context type table
+	 * (1) annotation id
+	 * (2) observation type label
+	 * (3) context observation type label
+	 * (4) context relationship name
+	 * (5) is identifying
+	 * 
+	 * @param pstmtContext
+	 * @param annotationId
+	 * @param obsType
+	 * @param context
+	 * @throws SQLException
+	 */
+	private void setContextTypeParam(PreparedStatement pstmtContext, Long annotationId,
+			Observation obsType, Context context) throws SQLException
+	{
+		pstmtContext.setLong(1, annotationId);
+		pstmtContext.setString(2, obsType.getLabel());
+		pstmtContext.setString(3, context.getObservation().getLabel());
+		pstmtContext.setString(4, context.getRelationship().getName());
+		pstmtContext.setBoolean(5, context.isIdentifying());		
 	}
 	
 	/**
@@ -243,19 +271,21 @@ public class PostgresDB {
 	
 	/**
 	 * Set the parameters for insertion to observation type table
-	 * [1] Measurement type char(16), 
-	 * [2] Observation label varchar(64),
-	 * [3] iskey boolean,
-	 * [4] characteristic char(64),
-	 * [5] standard char(16),
-	 * [6] protocal varchar(256);
+	 * [1] Annotation id (long)
+	 * [2] Measurement type char(16), 
+	 * [3] Observation label varchar(64),
+	 * [4] iskey boolean,
+	 * [5] characteristic char(64),
+	 * [6] standard char(16),
+	 * [7] protocal varchar(256);
+	 * 
 	 * @param stmt
 	 * @param ot
 	 * @param mt
 	 * @return
 	 * @throws SQLException 
 	 */
-	private void setMeasTypeParam(PreparedStatement stmt, Observation ot, Measurement mt) throws SQLException{
+	private void setMeasTypeParam(PreparedStatement stmt, Long annotId,Observation ot, Measurement mt) throws SQLException{
 		String standardName = "";
 		String protocalName= "";
 		
@@ -267,12 +297,13 @@ public class PostgresDB {
 			protocalName = mt.getProtocol().getName();
 		}
 		
-		stmt.setString(1,mt.getLabel());
-		stmt.setString(2,ot.getLabel());
-		stmt.setBoolean(3,mt.isKey());
-		stmt.setString(4,null);
-		stmt.setString(5,standardName);
-		stmt.setString(6, protocalName);
+		stmt.setLong(1,annotId);
+		stmt.setString(2,mt.getLabel());
+		stmt.setString(3,ot.getLabel());
+		stmt.setBoolean(4,mt.isKey());
+		stmt.setString(5,null);
+		stmt.setString(6,standardName);
+		stmt.setString(7, protocalName);
 	}
 	
 	/**
@@ -366,6 +397,43 @@ public class PostgresDB {
 	}
 	
 	/**
+	 * Return the maximum annotation id 
+	 * @return
+	 * @throws SQLException
+	 */
+	private long getMaxAnnotId() throws SQLException
+	{
+		Statement stmt = m_conn.createStatement();
+		
+		ResultSet rs = stmt.executeQuery(m_maxAnnotationIdSql);
+		long maxAnnotId = 1;
+		while(rs.next()){
+			maxAnnotId = rs.getLong(1);
+			break;
+		}
+		
+		return maxAnnotId;
+	}
+	
+	/**
+	 * Insert the annotation URI to the table, and get the last annotation. 
+	 * 
+	 * @param annotationUri
+	 * @return
+	 * @throws SQLException
+	 */
+	private long insAnnotationFile(String annotationUri) throws SQLException
+	{
+		PreparedStatement pstmt = m_conn.prepareStatement(m_insertAnnotation);
+		pstmt.setString(1, annotationUri);
+		pstmt.execute();
+		pstmt.close();
+		
+		long maxAnnotId = getMaxAnnotId();
+		return maxAnnotId;
+	}
+	
+	/**
 	 * import the annotation type information
 	 * @param A
 	 * @throws SQLException 
@@ -378,25 +446,39 @@ public class PostgresDB {
 		//Set<Measurement> measurementTypeSet = new TreeSet<Measurement>();
 		Set<Context> contextTypeSet = new TreeSet<Context>();
 		
-		String annotationId = A.getURI();
-		if(annotationId==null){
-			annotationId = annotationFileName;
+		String annotationUri = A.getURI();
+		if(annotationUri==null){
+			annotationUri = annotationFileName;
 		}
-		System.out.println(Debugger.getCallerPosition()+",annotationId="+annotationId);
+		
+		long annotationId = insAnnotationFile(annotationUri);
+		System.out.println(Debugger.getCallerPosition()+",annotationUri="+annotationUri+",annotationId="+annotationId);
 		
 		PreparedStatement pstmtObs = m_conn.prepareStatement(m_insertObservationType);
 		PreparedStatement pstmtMeas = m_conn.prepareStatement(m_insertMeasurementType);
+		PreparedStatement pstmtContext = m_conn.prepareStatement(m_insertContextType);
 		for(Observation obsType: obsTypeList){
+			//Add this observation type
 			setObsTypeParam(pstmtObs,annotationId,obsType);			
 			pstmtObs.execute();
-			//entityTypeSet.add(obs.getEntity());
+			
+			//Add the measurement types related to this observation type
 			for(Measurement meas: obsType.getMeasurements()){
-				setMeasTypeParam(pstmtMeas,obsType,meas);
+				setMeasTypeParam(pstmtMeas,annotationId,obsType,meas);
 				pstmtMeas.execute();
 			}
-			//measurementTypeSet.addAll();
-			contextTypeSet.addAll(obsType.getContexts());
+			
+			//Add the context types related to this observation type
+			for(Context context: obsType.getContexts()){
+				setContextTypeParam(pstmtContext,annotationId,obsType,context);
+				System.out.println(Debugger.getCallerPosition()+pstmtContext.toString());
+				pstmtContext.execute();
+			}
 		}
+		
+		pstmtContext.close();
+		pstmtMeas.close();
+		pstmtObs.close();
 	}
 	
 	/**
