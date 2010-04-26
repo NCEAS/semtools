@@ -64,7 +64,10 @@ import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
 import edu.ucsb.nceas.morpho.datapackage.AccessionNumber;
 import edu.ucsb.nceas.morpho.datapackage.DataViewContainerPanel;
 import edu.ucsb.nceas.morpho.datapackage.DataViewer;
+import edu.ucsb.nceas.morpho.datastore.DataStoreInterface;
 import edu.ucsb.nceas.morpho.datastore.FileSystemDataStore;
+import edu.ucsb.nceas.morpho.datastore.MetacatDataStore;
+import edu.ucsb.nceas.morpho.datastore.MetacatUploadException;
 import edu.ucsb.nceas.morpho.framework.ConfigXML;
 import edu.ucsb.nceas.morpho.framework.MorphoFrame;
 import edu.ucsb.nceas.morpho.framework.UIController;
@@ -517,26 +520,52 @@ public class AnnotationPlugin
 	}
 	
 	// TODO: handle remote locations
-	public static void serializeAnnotation(String packageId) {
+	public static void serializeAnnotation(String packageId, String location) {
 		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
-		
+		MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
+
 		// get the annotations for this datapackage
 		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId, null);		
 		for (Annotation annotation: annotations) {	
 			String id = annotation.getURI();
-			// save if no file for this docid
-			if (fds.status(id).equals(FileSystemDataStore.NONEXIST)) {
-				//save in local store
+			
+			// local
+			if (location.equals(AbstractDataPackage.LOCAL) || location.equals(AbstractDataPackage.BOTH)) {
+				// save if no file for this docid
+				if (fds.status(id).equals(DataStoreInterface.NONEXIST)) {
+					//save in local store
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					annotation.write(baos);
+					File annotationFile = fds.saveFile(id, new StringReader(baos.toString()));
+					
+					// import the annotation now that we have a real file source
+					try {
+						SMS.getInstance().getAnnotationManager().importAnnotation(annotation, annotationFile.toURI().toString());
+					}
+					catch (Exception e) {
+						Log.debug(5, "Error saving annotation: " + annotation);
+						e.printStackTrace();
+					}
+				}
+			}
+			
+			// network
+			if (location.equals(AbstractDataPackage.METACAT) || location.equals(AbstractDataPackage.BOTH)) {
+				String metacatStatus = mds.status(id);
+				//save in metacat
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				annotation.write(baos);
-				File annotationFile = fds.saveFile(id, new StringReader(baos.toString()));
-				
-				// import the annotation now that we have a real file source
 				try {
-					SMS.getInstance().getAnnotationManager().importAnnotation(annotation, annotationFile.toURI().toString());
-				}
-				catch (Exception e) {
-					Log.debug(5, "Error saving annotation: " + annotation);
+					File annotationFile = null;
+					if (metacatStatus.equals(DataStoreInterface.UPDATE)) {
+						annotationFile = mds.saveFile(id, new StringReader(baos.toString()));
+					}
+					else if (metacatStatus.equals(DataStoreInterface.NONEXIST)) {
+						annotationFile = mds.newFile(id, new StringReader(baos.toString()));
+					}
+					// TODO: anything with the saved file? pointer to the source?
+				} catch (MetacatUploadException e) {
+					Log.debug(5, "Error saving annotation to network: " + annotation);
 					e.printStackTrace();
 				}
 			}
@@ -694,7 +723,8 @@ public class AnnotationPlugin
 		// get the old and new ids for the package tha was saved
 		String oldId = saveEvent.getInitialId();
 		String newId = saveEvent.getFinalId();
-		
+		String location = saveEvent.getLocation();
+			
 		// get all the annotations for the original docid
 		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(oldId, null);
 		for (Annotation annotation: annotations) {
@@ -703,7 +733,7 @@ public class AnnotationPlugin
 			// save the annotation
 			saveAnnotation(annotation);
 			// serialize to disk
-			serializeAnnotation(newId);
+			serializeAnnotation(newId, location);
 		}
 	}
 	

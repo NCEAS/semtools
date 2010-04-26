@@ -58,7 +58,8 @@ public class SaveAnnotationCommand implements Command {
 		AbstractDataPackage adp = UIController.getInstance().getCurrentAbstractDataPackage();
 		String packageId = adp.getPackageId();
 		
-		AnnotationPlugin.serializeAnnotation(packageId);
+		// TODO: option to handle network save
+		AnnotationPlugin.serializeAnnotation(packageId, AbstractDataPackage.LOCAL);
 		
 		JOptionPane.showMessageDialog(UIController.getInstance().getCurrentActiveWindow(), "Annotations Saved!");
 	}
