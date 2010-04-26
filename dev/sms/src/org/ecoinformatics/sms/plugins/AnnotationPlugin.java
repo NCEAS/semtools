@@ -252,7 +252,6 @@ public class AnnotationPlugin
 	    
 	    GUIAction searchAction = new GUIAction("Search Annotations...",
                 null,
-                //new AnnotationSearchCommand());
                 new CompoundAnnotationSearchCommand());
 	    searchAction.setMenuItemPosition(menuPosition++);
 	    searchAction.setToolTipText("Search Annotations...");

@@ -43,7 +43,6 @@ import java.util.Vector;
 import java.awt.event.ActionEvent;
 
 import org.ecoinformatics.sms.plugins.pages.ComplexQueryPage;
-import org.ecoinformatics.sms.plugins.pages.CompoundQueryPage;
 import org.ecoinformatics.sms.plugins.search.ResultSetComparator;
 
 /**
