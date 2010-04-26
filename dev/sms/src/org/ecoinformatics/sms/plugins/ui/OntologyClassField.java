@@ -22,8 +22,11 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -37,6 +40,7 @@ import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.renderer.OntologyClassSelectionPanel;
 
+import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
 import edu.ucsb.nceas.morpho.util.Log;
 
@@ -340,7 +344,7 @@ public class OntologyClassField extends JTextField {
 	 * Constructs and shows the popup ontology browser tree
 	 * @param source the textfield that the popup is "editing"
 	 */
-	public static void showPopupDialog(OntologyClassField source) {
+	public static void showPopupDialog(final OntologyClassField source) {
 		
 		if (!source.isEnabled()) {
 			return;
@@ -413,7 +417,27 @@ public class OntologyClassField extends JTextField {
 		source.editing = true;
 		source.selectionPanel = selectionPanel;
 		
-		popup.setContentPane(selectionPanel);
+		// the select button
+		boolean showSelect = true;
+		if (showSelect) {
+			AbstractAction selectAction = new AbstractAction() {
+				public void actionPerformed(ActionEvent e) {
+					source.stopEditing(true, false);
+				}
+			};
+			JButton selectButton = WidgetFactory.makeJButton("Select", selectAction);
+			JPanel containerPanel = WidgetFactory.makePanel();
+			containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
+			containerPanel.add(selectionPanel);
+			JPanel buttonPanel = WidgetFactory.makePanel();
+			buttonPanel.add(Box.createHorizontalGlue());
+			buttonPanel.add(selectButton);
+			containerPanel.add(buttonPanel);
+			popup.setContentPane(containerPanel);
+		} else {
+			popup.setContentPane(selectionPanel);
+		}
+		
 		popup.pack();
 		popup.setVisible(true);
 		popup.toFront();
