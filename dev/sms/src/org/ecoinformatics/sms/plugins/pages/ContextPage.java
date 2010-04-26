@@ -113,7 +113,9 @@ public class ContextPage extends AbstractUIPage {
 				}
 			}
 		};
-		editButton = new JToggleButton(toggleAction);
+		//editButton = new JToggleButton(toggleAction);
+		editButton = WidgetFactory.makeCheckBox("Edit", false);
+		editButton.addActionListener(toggleAction);
 		
 		// help button
 		JButton helpButton = Help.createHelpButton(pageRef, "What's this?");

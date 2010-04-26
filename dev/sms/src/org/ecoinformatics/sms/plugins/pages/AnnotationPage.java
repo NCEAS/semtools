@@ -159,7 +159,9 @@ public class AnnotationPage extends AbstractUIPage {
 				}
 			}
 		};
-		editButton = new JToggleButton(toggleAction);
+		//editButton = new JToggleButton(toggleAction);
+		editButton = WidgetFactory.makeCheckBox("Edit", false);
+		editButton.addActionListener(toggleAction);
 		
 		// actually show the help
 		if (showAll) {
