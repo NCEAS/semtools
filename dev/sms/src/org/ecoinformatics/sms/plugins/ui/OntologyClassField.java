@@ -63,9 +63,7 @@ public class OntologyClassField extends JTextField {
 	private OntologyClass ontologyClass;
 	private OntologyClass filterClass;
 	private OntologyClassSelectionPanel selectionPanel;
-	//private Popup popup = null;
-	private JDialog popup = null;
-	private boolean isPopupShowing = false;
+	private static JDialog popup = null;
 	private boolean editing = false;
 
 	public OntologyClassField(String text) {
@@ -175,29 +173,22 @@ public class OntologyClassField extends JTextField {
 
 		// listen to the click
 		MouseListener mListener = new MouseAdapter() {
-
 			public void mouseClicked(MouseEvent e) {
 				OntologyClassField source = (OntologyClassField) e.getSource();
-				Log.debug(40, "mouseClicked, dialogIsShowing: "  + source.isPopupShowing);
-				if (source.isPopupShowing) {
-					// save and close
-					source.closePopup(true);
-				} else {
+				Log.debug(40, "mouseClicked, editing: "  + source.editing);
 					// show dialog
 					OntologyClassField.showPopupDialog(source);
-				}
 			}
-
 		};
 		label.addMouseListener(mListener);
 		
-		// listen to the keys
+		// listen to the key events
 		KeyListener kListener = new KeyAdapter() {
 			private void doKey(KeyEvent e) {
 				OntologyClassField source = (OntologyClassField) e.getSource();
 				
 				// start off with the popup if not already showing
-				if (!source.isPopupShowing) {
+				if (!source.editing) {
 					showPopupDialog(source);
 				}
 
@@ -210,24 +201,25 @@ public class OntologyClassField extends JTextField {
 				OntologyClassField source = (OntologyClassField) e.getSource();
 				// get out of here!
 				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-					if (source.isPopupShowing) {
-						source.closePopup(false);;
+					if (source.editing) {
+						source.stopEditing(false, false);
 						return;
 					}
 				}			
 			}
 			public void keyTyped(KeyEvent e) {
 				// only do this for keys that have characters
-				doKey(e);				
+				doKey(e);
 			}
 
 		};
 		label.addKeyListener(kListener);
 		
+		// focus listener - probably not needed now
 		FocusListener fListener = new FocusAdapter() {
             public void focusLost(FocusEvent e) {
 				OntologyClassField source = (OntologyClassField) e.getSource();
-				Log.debug(40, "focusLost, source.isPopupShowing=" + source.isPopupShowing);
+				Log.debug(40, "focus lost, editing=" + source.editing);
 
 				// check what gained the focus
 				Component gained = e.getOppositeComponent();
@@ -237,16 +229,16 @@ public class OntologyClassField extends JTextField {
 				}
 				
 				// save and leave 
-				if (source.isPopupShowing) {
-					source.closePopup(true);
+				if (source.editing) {
+					source.stopEditing(true, false);
 					return;
 				}
             }
             
 		};
-		label.addFocusListener(fListener);
+		//label.addFocusListener(fListener);
 		
-		// handle drop events for OntologyClass objects that are dagged into the field
+		// handle drop events for OntologyClass objects that are dragged into the field
 		TransferHandler dropHandler = new TransferHandler() {
 			public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
 				//TODO: check flavors
@@ -298,12 +290,11 @@ public class OntologyClassField extends JTextField {
 	 * closes the popup, optionally saving the value that was selected
 	 * @param save
 	 */
-	private void closePopup(boolean save) {
+	private void stopEditing(boolean save, boolean close) {
 		if (save) {
 			syncSource();
 		}
-		isPopupShowing = false;
-		editing = false;
+		//editing = false;
 		// did someone move the popup?
 		Point currentPosition = popup.getLocation();
 		if (currentPosition.equals(initialPosition)) {
@@ -311,7 +302,10 @@ public class OntologyClassField extends JTextField {
 		} else {
 			lastPosition = currentPosition;
 		}
-		popup.hide();
+		if (close) {
+			popup.setVisible(false);
+			selectionPanel = null;
+		}
 	}
 	
 	/**
@@ -319,13 +313,13 @@ public class OntologyClassField extends JTextField {
 	 * Also notifies the field listeners that the value has been set
 	 */
 	private void syncSource() {
-		if (this.selectionPanel == null) {
+		if (selectionPanel == null) {
 			return;
 		}
 		// get the response back
 		OntologyClass selectedClass = null;
-		if (this.selectionPanel.getOntologyClasses() !=null && this.selectionPanel.getOntologyClasses().size() > 0) {
-			selectedClass = this.selectionPanel.getOntologyClasses().get(0);
+		if (selectionPanel.getOntologyClasses() !=null && selectionPanel.getOntologyClasses().size() > 0) {
+			selectedClass = selectionPanel.getOntologyClasses().get(0);
 		}
 		this.setOntologyClass(selectedClass);
 		this.notifyListeners();
@@ -347,12 +341,57 @@ public class OntologyClassField extends JTextField {
 	 * @param source the textfield that the popup is "editing"
 	 */
 	public static void showPopupDialog(OntologyClassField source) {
-		OntologyClassSelectionPanel selectionPanel = new OntologyClassSelectionPanel(false);
 		
 		if (!source.isEnabled()) {
 			return;
 		}
+
+		OntologyClassSelectionPanel selectionPanel = null;
+		selectionPanel = new OntologyClassSelectionPanel(true);
+		 // set the size of the contents so it's not too large
+		selectionPanel.setPreferredSize(new Dimension(400, 300));
+       
+		if (popup == null) {
+	        
+	        // get the owning frame for this field, or null if it is in a non-modal dialog
+	        Frame owner = null; //UIController.getInstance().getCurrentActiveWindow();
+	        Component parent = source;
+	        while (parent != null) {
+	        	parent = parent.getParent();
+	        	if (parent instanceof Frame) {
+	        		owner = (Frame) parent;
+	        		break;
+	        	}
+	        	if (parent instanceof JDialog) {
+	        		owner = null;
+	        		break;
+	        	}
+	        }
+	        
+	        // make the popup
+	        popup = new JDialog(owner, "Ontology Browser", false);
+			
+			int x = source.getLocationOnScreen().x;
+	        int y = source.getLocationOnScreen().y + source.getSize().height;
+	        
+			initialPosition = new Point(x,y);
+			if (lastPosition != null) {
+				popup.setLocation(lastPosition);
+			} else {
+				popup.setLocation(initialPosition);
+			}
+			// add window close listener
+			popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			final OntologyClassField sourceRef = source;
+			popup.addWindowListener(new WindowAdapter() {
+				public void windowClosed(WindowEvent e) {
+					sourceRef.stopEditing(false, true);
+				}
+			});
+			
+		}
 		
+		// set the contents
 		try {
 			OntologyClass currentClass = source.getOntologyClass();
 			OntologyClass filterClass = source.getFilterClass();
@@ -361,63 +400,23 @@ public class OntologyClassField extends JTextField {
 			if (currentClass != null) {
 				selectionPanel.doSelect(currentClass);
 			}
+			selectionPanel.validate();
+			
+			// listen for double click on the tree
+			MouseListener doubleClickTreeListener = source.new TreeMouseListener(source);
+			selectionPanel.setTreeMouseListener(doubleClickTreeListener);
 		} catch (Exception e) {
 			//ignore
 		}
 		
-		//clear out the text area
+		//begin editing on this field
 		source.editing = true;
+		source.selectionPanel = selectionPanel;
 		
-		int x = source.getLocationOnScreen().x;
-        int y = source.getLocationOnScreen().y + source.getSize().height;
-        
-        // set the size of the contents so it's not too large
-        selectionPanel.setPreferredSize(new Dimension(400, 300));
-
-		//Popup popup = PopupFactory.getSharedInstance().getPopup(source, selectionPanel, x, y);
-		//popup.show();
-
-        // get the owning frame for this field, or null if it is in a non-modal dialog
-        Frame owner = null; //UIController.getInstance().getCurrentActiveWindow();
-        Component parent = source;
-        while (parent != null) {
-        	parent = parent.getParent();
-        	if (parent instanceof Frame) {
-        		owner = (Frame) parent;
-        		break;
-        	}
-        	if (parent instanceof JDialog) {
-        		owner = null;
-        		break;
-        	}
-        }
-		JDialog popup = new JDialog(owner, "Ontology Browser", false);
 		popup.setContentPane(selectionPanel);
-		initialPosition = new Point(x,y);
-		if (lastPosition != null) {
-			popup.setLocation(lastPosition);
-		} else {
-			popup.setLocation(initialPosition);
-		}
-		// add window close listener
-		popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		final OntologyClassField sourceRef = source;
-		popup.addWindowListener(new WindowAdapter() {
-			public void windowClosed(WindowEvent e) {
-				sourceRef.closePopup(false);
-			}
-		});
 		popup.pack();
 		popup.setVisible(true);
-		
-		// set the popup
-		source.popup = popup;
-		source.selectionPanel = selectionPanel;
-		source.isPopupShowing = true;
-
-		// listen for double click on the tree
-		MouseListener doubleClickTreeListener = source.new TreeMouseListener(source);
-		source.selectionPanel.setTreeMouseListener(doubleClickTreeListener);
+		popup.toFront();
 		
 	}
 	
@@ -434,8 +433,8 @@ public class OntologyClassField extends JTextField {
 		}
 		public void mousePressed(MouseEvent e) {
 			if (e.getClickCount() > 1) {
-				if (label.isPopupShowing) {
-					label.closePopup(true);
+				if (label.editing) {
+					label.stopEditing(true, false);
 				}
 			}
 		}
