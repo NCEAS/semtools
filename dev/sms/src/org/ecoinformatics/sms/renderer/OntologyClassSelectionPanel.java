@@ -88,6 +88,7 @@ import org.ecoinformatics.sms.plugins.ui.OntologyClassField;
 import org.ecoinformatics.sms.renderer.treetable.OntologyTreeCellRenderer;
 import org.ecoinformatics.sms.renderer.treetable.OntologyTreeModel;
 
+import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.pages.JTreeTable;
 import edu.ucsb.nceas.morpho.util.Log;
 
@@ -193,7 +194,7 @@ public class OntologyClassSelectionPanel extends JPanel {
 		panel1.add(Box.createHorizontalGlue());
 		
 		// set up search button
-		_searchBtn = new JButton("Search");
+		_searchBtn = WidgetFactory.makeJButton("Search", null);
 		_searchTxt = new JTextField(14);
 		_searchBtn.addActionListener(new ClassSearchButtonListener());
 		_searchTxt.addActionListener(new ClassSearchButtonListener());
