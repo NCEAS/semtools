@@ -395,7 +395,9 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 					"emlPackage = $emlPackage and dataTable = $dataTable");
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("emlPackage", emlPackage);
-		params.put("dataTable", dataTable);
+		if (dataTable != null) {
+			params.put("dataTable", dataTable);
+		}
 		SelectQuery query = new SelectQuery(DbAnnotation.class, expression.expWithParameters(params));
 		List<DbAnnotation> values = context.performQuery(query);
 		if (values != null) {
