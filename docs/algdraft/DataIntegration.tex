@@ -50,15 +50,13 @@ IR-style query:
   characteristics. 
 \item KQ3: Give me the datasets that contain species ``Picea rubens''
   observations in ``California''. 
-\item KQ: Give me the records....
 \end{itemize}
 
 IR-style summarization query: 
 \begin{itemize}
-SQ1: Give me the dataset that contains at least five ``Picea rubens'' observations.
-SQ2: Give me the datasets that have measurements with average ``area''
+\item SQ1: Give me the dataset that contains at least five distinct ``Picea rubens'' observations.
+\item SQ2: Give me the datasets that have measurements with average ``area''
 bigger than 5.0 square feet. 
-SQ3: 
 \end{itemize}
 
 Use the materialized database, we would have four tables for all the datasets: 
@@ -68,11 +66,135 @@ and context relationships.
 
 To answer KQ1: it's simple join between 
 
+How to perform query rewriting? 
+m1:
+
+data1 --> table 1
+data2 --> table 2 
+When we put the data as data tables, we add a unique record id for
+each row in the data. This is used to get the unique record id. 
+
+Metadata
+Table definition
+
+Table column definition
+
+Map annotation information 
+
+\begin{example}
+KQ1: <concept>: <cond>
+Concept can be observation, measurement, characteristic, standard,
+unit, etc. 
+
+Use query rewriting method: 
+For KQ1, give me the datasets that contain species ``Picea rubens''
+observations.
+concept = observation, cond is species = ``Picea rubens''; 
+
+The first step is to find the dataset that contain all the metadata. 
+From the annotation, find the {\em measurement type} with {\em
+  Characteristic} species. 
+Here, it is $m_3$. From the mapping, we find that the attribute in the
+table is {\em spp}. 
+
+The second step is to find the data file which really have this
+value. 
+For this one, we find the data table, and do a select on the table
+content. 
+
+Use materialized database: 
+The first step is the same, after we know the data file, then we
+search the table {\em measurement\_instance} with the {\em mvalue=``Picea rubens''}. 
+
+In this example, the computation cost is to search the different data
+tables. To reduce this computation cost, we can materialize just the
+measurement values. (How to do this? ) need more details. 
+
+Half materialized: how to perform query over it. 
+\end{example}
+
+\begin{example}
+SQ1: Give me the dataset that contains at least five distinct ``Picea
+rubens'' observations.
+
+The first step is to find the datasets that contain the metadata. 
+The second step is to perform a query over the materialized database. 
+%select mlabel, mvalue, count(*) as cnt from measurement_instance
+%group by mvalue,mlabel having count(*)>=2;
+
+Using the query rewriting, 
+First, we find the data tables that contain the needed concepts. 
+In each table, we need to figure out the distinct observations. 
+From $m_i$ $obstype_i$, all the other measurements that are of
+$obstype_i$. 
+Group by the key measurements of $obstype_i$ if distinct yes.
+If this observation type does not have any context, then the key
+measurements are all the measurements directly defined under this
+observatioin type. Otherwise, i.e., this observation type has context,
+then the key measurements are all the measurements in the context
+chain. 
+\end{example}
+
+\begin{example}
+KQ3: Give me the datasets that contain species ``Picea rubens''
+  observations in ``California''. 
+
+Species = ``Picea rubens'' and observation has context {\em in}
+another observation which has measurement of value ``California''. 
+\end{example}
+
+Using materializedDB, we can answer the query this way
+First, Species --> mlabel, observation type 
+
+select mtype, olabel from measurement\_type  \\
+where chracteristic = 'Species';  \\
+
+For the olabel found, \\
+select context\_olabel\\
+from context\_relationship\\
+where olabel = 'olabel'; 
+
+context\_olabel\_set is a set containing all the observation type
+labels in the context chain. 
+
+SELECT record\_id\\
+FROM observation\_instance oi, observation\_instance coi,
+context\_instance ci,
+measurement\_instance mi, measurement\_instance cmi \\
+WHERE mi.oid=ci.oid AND ci.oid = oi.oid and  cmi.oid=coi.oid AND ci.context\_oid =
+coi.oid and oi.otype = 'olabel' and coi.otype $\in$
+context\_olabel\_set
+AND mi.mvalue=`Picea rubens' and cmi.mvalue='California';\\
+
+Use query rewriting, what I can do? 
+It's the same till to getting context\_olabel\_set. 
+
+Get the asked condition columns and the context columns, 
+
+select record\_id from data\q_tables
+where condition column 1='value1' and (context column1 = 'context
+value' or context column2 = `context value', etc.);
+
+
+\begin{example}
+SQ2: Give me the datasets that have measurements with average ``area''
+bigger than 5.0 square feet. 
+\end{example}
+
+
 \section{Experiments}
 
-1. Materialize DB (time + space) \\
-2. Query over materialized DB 
-3. 
+Synthetic data generator. 
+
+Algorithm to materialize DB. 
+Report the time and space. 
+
+Synthetic query generator. 
+
+Test algorithm to perform query over materiazed DB.
+Test algorithm to perform query-rewriting over materiazed DB.
+
+Test algorithm for half-materialized data.
 
 \end{document}
 
