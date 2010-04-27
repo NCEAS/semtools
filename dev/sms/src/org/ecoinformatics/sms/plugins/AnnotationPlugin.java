@@ -21,6 +21,7 @@ import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,6 +41,7 @@ import javax.swing.table.TableColumnModel;
 
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
+import org.ecoinformatics.sms.annotation.AnnotationException;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.ontology.OntologyClass;
@@ -724,17 +726,42 @@ public class AnnotationPlugin
 		String oldId = saveEvent.getInitialId();
 		String newId = saveEvent.getFinalId();
 		String location = saveEvent.getLocation();
-			
+		boolean duplicate = saveEvent.isDuplicate();
+		
 		// get all the annotations for the original docid
 		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(oldId, null);
 		for (Annotation annotation: annotations) {
-			// set the updated packageId
-			annotation.setEMLPackage(newId);
-			// save the annotation
-			saveAnnotation(annotation);
-			// serialize to disk
-			serializeAnnotation(newId, location);
+			if (duplicate) {
+				try {
+					// copy the annotation
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					annotation.write(baos);
+					Annotation annotationCopy = Annotation.read(new ByteArrayInputStream(baos.toByteArray()));
+					// make an id for the annotation
+					AccessionNumber an = new AccessionNumber(Morpho.thisStaticInstance);
+					String annotationId = an.getNextId();
+					// set the data package association and the id
+					annotationCopy.setEMLPackage(newId);
+					annotationCopy.setURI(annotationId);
+					// save the copy
+					saveAnnotation(annotationCopy);
+					// serialize the copy
+					serializeAnnotation(newId, location);
+				} catch (AnnotationException e) {
+					Log.debug(5, "Error saving Annotation duplicate");
+					e.printStackTrace();
+				}
+			}
+			else {
+				// set the updated packageId
+				annotation.setEMLPackage(newId);
+				// save the annotation
+				saveAnnotation(annotation);
+				// serialize to disk
+				serializeAnnotation(newId, location);
+			}
 		}
+		
 	}
 	
 	/**
