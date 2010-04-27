@@ -33,6 +33,7 @@ import java.util.Vector;
 import java.util.Map.Entry;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.UIManager;
@@ -732,6 +733,19 @@ public class AnnotationPlugin
 		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(oldId, null);
 		for (Annotation annotation: annotations) {
 			if (duplicate) {
+				// prompt?
+				boolean saveDuplicate = false;
+				int response = 
+					JOptionPane.showConfirmDialog(
+							null, 
+							"Would you like to copy the existing Annotation information to the new package?\n" +
+							"id = " + annotation.getURI(),
+							"Duplicate Annotation?", JOptionPane.YES_NO_OPTION);
+				saveDuplicate = (response == JOptionPane.YES_OPTION);
+				if (!saveDuplicate) {
+					continue;
+				}
+				
 				try {
 					// copy the annotation
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();
