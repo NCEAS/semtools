@@ -1,5 +1,6 @@
 package org.ecoinformatics.sms.plugins.ui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -64,10 +65,13 @@ public class OntologyClassField extends JTextField {
 	
 	private static Point lastPosition = null;
 	
+	private static JDialog popup = null;
+	
+	private static OntologyClassField currentField;
+	
 	private OntologyClass ontologyClass;
 	private OntologyClass filterClass;
 	private OntologyClassSelectionPanel selectionPanel;
-	private static JDialog popup = null;
 	private boolean editing = false;
 
 	public OntologyClassField(String text) {
@@ -309,6 +313,8 @@ public class OntologyClassField extends JTextField {
 		if (close) {
 			popup.setVisible(false);
 			selectionPanel = null;
+			// make sure we are not highlighted
+			currentField.setBorder(new JTextField().getBorder());
 		}
 	}
 	
@@ -388,7 +394,7 @@ public class OntologyClassField extends JTextField {
 			popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			final OntologyClassField sourceRef = source;
 			popup.addWindowListener(new WindowAdapter() {
-				public void windowClosed(WindowEvent e) {
+				public void windowClosing(WindowEvent e) {
 					sourceRef.stopEditing(false, true);
 				}
 			});
@@ -413,9 +419,19 @@ public class OntologyClassField extends JTextField {
 			//ignore
 		}
 		
-		//begin editing on this field
+		// begin editing on this field
 		source.editing = true;
 		source.selectionPanel = selectionPanel;
+		
+		// highlight the field
+		if (currentField != null) {
+			currentField.setBorder(new JTextField().getBorder());
+		}
+		source.setBorder(
+				BorderFactory.createCompoundBorder(
+						BorderFactory.createLineBorder(Color.BLUE, 2), 
+						new JTextField().getBorder()));
+		currentField = source;
 		
 		// the select button
 		boolean showSelect = true;
