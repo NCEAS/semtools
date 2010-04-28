@@ -1,63 +1,189 @@
-\documentclass[10pt]{article}
-%\title{}
-%\author{}
-%\date{}
+\documentclass[conference]{IEEEtran}
+
 \usepackage{algorithm}
 \usepackage{algorithmic}
-\usepackage{a4}
-\usepackage{color}
 \renewcommand\floatpagefraction{0.99}
 \renewcommand\topfraction{0.99}
 \renewcommand\bottomfraction{0.99}
 \renewcommand\textfraction{.05}
 \setcounter{totalnumber}{5}
 
-%\setlength{\parindent}{0pt}
-\setlength\topmargin{0in}
-\setlength\headheight{0in}
-\setlength\headsep{0in}
-\setlength\textheight{8.5in}
-\setlength\textwidth{6.5in}
-\setlength\oddsidemargin{0in}
-\setlength\evensidemargin{0in}
-
 \newtheorem{example}{Example}[section]
 \newtheorem{definition}{Definition}[section]
 \newcommand{\from}[2]{{\bf[{\sc from #1:} #2]}}
 
-\title{Data integration}
-\author{}
+\hyphenation{op-tical net-works semi-conduc-tor}
+
 \begin{document}
+
+\title{Querying Integrated Ecological Data}
+
+% author names and affiliations
+% use a multiple column layout for up to three different
+% affiliations
+\author{\IEEEauthorblockN{Michael Shell}
+\IEEEauthorblockA{School of Electrical and\\Computer Engineering\\
+Georgia Institute of Technology\\
+Atlanta, Georgia 30332--0250\\
+Email: http://www.michaelshell.org/contact.html}
+\and
+\IEEEauthorblockN{Homer Simpson}
+\IEEEauthorblockA{Twentieth Century Fox\\
+Springfield, USA\\
+Email: homer@thesimpsons.com}
+\and
+\IEEEauthorblockN{James Kirk\\ and Montgomery Scott}
+\IEEEauthorblockA{Starfleet Academy\\
+San Francisco, California 96678-2391\\
+Telephone: (800) 555--1212\\
+Fax: (888) 555--1212}}
+
 \maketitle
 
-\section{Materialize Database}
+
+\begin{abstract}
+%\boldmath
+The abstract goes here.
+\end{abstract}
+% IEEEtran.cls defaults to using nonbold math in the Abstract.
+% This preserves the distinction between vectors and scalars. However,
+% if the conference you are submitting to favors bold math in the abstract,
+% then you can use LaTeX's standard command \boldmath at the very start
+% of the abstract to achieve this. Many IEEE journals/conferences frown on
+% math in the abstract anyway.
+
+% no keywords
+
+\section{Introduction}
+In this work, we study the query processing over integrated ecological
+data through OBOE model\cite{DBLP:conf/er/BowersMS0}, a conceptual model used to interpret
+observation and measurement data. 
+
+Contributions of this work:
+\begin{itemize}
+\item Formalize the queries over observation and measurement query.
+\item Propose three methods to evaluate queries. 
+\end{itemize}
+
+\section{Related work}
+
+This is related
+
+\section{Data model and query}
+
+In the ecological domain, observation and measurement data are the
+core. As a consequence, people are more interested in finding datasets
+related to specific observation and measurements. 
+
+\subsection{Data model}
+
+We a scientist contributes dataset into the data repository, generally
+each dataset is converted to a data table. 
+So, the database contains metadata about each dataset, the data table
+definition (e.g., attribute/column name, attribute type, etc). 
+
+To formalize the senario, we use $D$ to denote the set of data tables. Let $d$ be one data table, 
+$d[attr]$ or $d[idx]$ represents the set of values for the attribute
+$attr$ or for the $idx$-th attribut. 
+
+Generally, the dataset is connected to the OBOE model using
+annotations. 
+
+\from{HP}{Put the screendump of annotation.}
+
+Map annotation information 
+Through the annotation, 
+We use $A$ to denote the annotation of one dataset. 
+
+
+
+
+\from{HP}{Another way to organize the data is to store them in one big
+data table with three columns data\_file, attribute\_name,
+attribute\_value. The problem with this organizationo is that the
+attribute\_value are different types. } 
+
+
+
+%Implementation consideration: 
+%When we put the data to data tables, we add a unique record id for
+%each row in the data. This is used to get the unique record id. 
+
+
+\subsection{Observation and measurement query}
+
+Given dataset in Figure \ref{}. 
+
+
+\begin{itemize}
+\item $Q_1$: Give me the datasets that contain species ``Picea rubens'' observations.
+%$Q_2$: Give me the datasets that have measurements on ``area''  characteristics. 
+\item $Q_2$: Give me the datasets that contain species ``Picea rubens''
+  observations in ``California''. 
+\item $Q_3$: Give me the dataset that contains at least five distinct ``Picea rubens'' observations.
+\item $Q_4$: Give me the datasets that have measurements with average ``area''
+bigger than 5.0 square feet. 
+\end{itemize}
+
+
+We formalize the queries as follows. 
+
+\begin{definition}
+KQ1: $<concept>:<cond>$
+Here, <concept> can be observation, measurement, characteristic, standard,
+unit, etc.. 
+<cond> is in the form of $func([distinct]~attr)~op~value$, here $op$ can be some
+algorithmmic operators $=$, $\neq$, $>$, or $<$. 
+$func$ are aggregation functions including sum, average, min and max. 
+
+The result is a set of $d$, $\{d|d\in D \wedge (value~op~dv = true |dv\in d[attr])\}$.
+\end{definition}
+
+For each of such result, we denote that $d~s.t.~KQ$ meaning that
+dataset $d$ satisfies the query. 
+ 
+This is the baseline keyword style query. 
+The following two queries are the basic queries. 
+
+\begin{definition}
+KQ2: $Q_1~context(Q_1.concept,Q_2)~Q_2 $, here $Q_i$ is a basic query
+in the form of $<concept>:<cond>$. 
+\end{definition}
+
+\begin{example}
+The given example queries can be represented in the formal query
+format. 
+\begin{itemize}
+\item $Q_1 = Observation: Species='Picea rubens'$
+\item $Q_2 = <Observation_1: Species='Picea rubens'>
+  IN(Observation_1,Observation_2) <Observation_2:
+  measurement_{unknown}=`California'>$
+\item $Q_3 = Observation: Species='Picea rubens' \wedge
+  count(distinct~Species)\geq 5$ \from{HP}{TODO}
+\item $Q_4$ 
+\end{itemize}
+
+\end{example}
+
+
+\section{Querying annotated and integrated ecological data}
+
+All the datasets can be imported to a RDBMS for 
+
+To answer such queries, a naive method is to 
+
+\subsection{Materialized database}
+
 
 {\bf HP:}{Copy the materials from materiazeDB to here. Skip now.}
 
-\section{Query rewriting}
+\subsection{Query rewriting}
 
-What kinds of queries? 
 
 The information that users can have: metadata about the table. 
 
 In the scientific data, it is unrealistic for the users to know the
 table structure to perform the query. 
-
-IR-style query: 
-\begin{itemize}
-\item KQ1: Give me the datasets that contain species ``Picea rubens'' observations.
-\item KQ2: give me the datasets that have measurements on ``area''
-  characteristics. 
-\item KQ3: Give me the datasets that contain species ``Picea rubens''
-  observations in ``California''. 
-\end{itemize}
-
-IR-style summarization query: 
-\begin{itemize}
-\item SQ1: Give me the dataset that contains at least five distinct ``Picea rubens'' observations.
-\item SQ2: Give me the datasets that have measurements with average ``area''
-bigger than 5.0 square feet. 
-\end{itemize}
 
 Use the materialized database, we would have four tables for all the datasets: 
 entity, observation, measurement, context. 
@@ -66,30 +192,9 @@ and context relationships.
 
 To answer KQ1: it's simple join between 
 
-How to perform query rewriting? 
-m1:
-
-data1 --> table 1
-data2 --> table 2 
-When we put the data as data tables, we add a unique record id for
-each row in the data. This is used to get the unique record id. 
-
-Metadata
-Table definition
-
-Table column definition
-
-Map annotation information 
-
 \begin{example}
-KQ1: <concept>: <cond>
-Concept can be observation, measurement, characteristic, standard,
-unit, etc. 
-
-Use query rewriting method: 
-For KQ1, give me the datasets that contain species ``Picea rubens''
-observations.
-concept = observation, cond is species = ``Picea rubens''; 
+Take KQ1 as example. 
+concept = observation, cond is {\em species = ``Picea rubens''}; 
 
 The first step is to find the dataset that contain all the metadata. 
 From the annotation, find the {\em measurement type} with {\em
@@ -114,8 +219,7 @@ Half materialized: how to perform query over it.
 \end{example}
 
 \begin{example}
-SQ1: Give me the dataset that contains at least five distinct ``Picea
-rubens'' observations.
+We use $SQ_1$ as an example. 
 
 The first step is to find the datasets that contain the metadata. 
 The second step is to perform a query over the materialized database. 
@@ -175,11 +279,31 @@ select record\_id from data\_tables
 where condition column 1='value1' and (context column1 = 'context
 value' or context column2 = `context value', etc.);
 
-
 \begin{example}
 SQ2: Give me the datasets that have measurements with average ``area''
 bigger than 5.0 square feet. 
 \end{example}
+
+Use materialized database: 
+Analysis: ``Area'' is the context of some observation.
+Area --> mlabel, observation type
+
+From the context observation lable, find the observation labels, \\
+select olabel\\
+from context\_relationship\\
+where context\_olabel = 'olabel'; 
+
+Let olabel\_set  be the set containing all the observation type
+labels that use ``Area'' as context. 
+
+SELECT oi.record\_id \\
+FROM observation\_instance oi, measurement\_instance mi, 
+observation\_instance coi, measurement\_instance cmi,context\_instance ci\\
+WHERE (mi.oid=ci.oid AND ci.oid = oi.oid) and (cmi.oid=coi.oid AND ci.context\_oid =
+coi.oid) AND coi.otype $\in$ olabel\_set 
+AND cmi.mlabel=`Area'
+GROUP BY cmi.oid
+HAVING avg(cmi.mvalue)>5.0in;
 
 
 \section{Experiments}
@@ -195,6 +319,20 @@ Test algorithm to perform query over materiazed DB.
 Test algorithm to perform query-rewriting over materiazed DB.
 
 Test algorithm for half-materialized data.
+
+\section{Conclusion}
+
+
+%\bibliographystyle{abbrv}
+%\bibliography{model}
+%\bibliographystyle{IEEEtran}
+%\bibliography{IEEEabrv,DataIntegration}
+
+
+%\begin{thebibliography}{1}
+%\bibliographystyle{abbrv}
+%\bibliography{model}
+%\end{thebibliography}
 
 \end{document}
 
