@@ -62,6 +62,8 @@ import org.ecoinformatics.sms.plugins.table.DataTableModelListener;
 import org.ecoinformatics.sms.plugins.table.ScrollBarAdjustmentListener;
 import org.ecoinformatics.sms.renderer.OntologyClassSelectionPanel;
 
+import com.hp.hpl.jena.rdf.arp.impl.Location;
+
 import edu.ucsb.nceas.morpho.Morpho;
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
 import edu.ucsb.nceas.morpho.datapackage.AccessionNumber;
@@ -80,6 +82,7 @@ import edu.ucsb.nceas.morpho.plugins.ServiceExistsException;
 import edu.ucsb.nceas.morpho.plugins.ServiceProvider;
 import edu.ucsb.nceas.morpho.query.Query;
 import edu.ucsb.nceas.morpho.query.ResultSet;
+import edu.ucsb.nceas.morpho.util.DeleteEvent;
 import edu.ucsb.nceas.morpho.util.GUIAction;
 import edu.ucsb.nceas.morpho.util.Log;
 import edu.ucsb.nceas.morpho.util.SaveEvent;
@@ -289,6 +292,7 @@ public class AnnotationPlugin
 		StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME, this);
 		StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SELECT_DATA_VIEWER, this);
 		StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SAVE_DATAPACKAGE, this);
+		StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.DELETE_DATAPACKAGE, this);
 		
 		//initialize the ontologies
 		initializeOntologies();
@@ -522,6 +526,31 @@ public class AnnotationPlugin
 		}
 	}
 	
+	public static void deleteAnnotations(String packageId, String location) {
+		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
+		MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
+		
+		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId, null);
+		for (Annotation annotation: annotations) {
+			try {
+				String annotationId = annotation.getURI();
+				// remove from manager
+				SMS.getInstance().getAnnotationManager().removeAnnotation(annotationId);
+				// remove from storage
+				if (location.equals(AbstractDataPackage.LOCAL) || location.equals(AbstractDataPackage.BOTH)) {
+					fds.deleteFile(annotationId);
+				}
+				if (location.equals(AbstractDataPackage.METACAT) || location.equals(AbstractDataPackage.BOTH)) {
+					mds.deleteFile(annotationId);
+				}
+			} catch (Exception e) {
+				Log.debug(5, "Error removing annotation: " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
 	// TODO: handle remote locations
 	public static void serializeAnnotation(String packageId, String location) {
 		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
@@ -719,6 +748,10 @@ public class AnnotationPlugin
 			SaveEvent saveEvent = (SaveEvent) event;
 			handleSaveEvent(saveEvent);
 		}
+		if (event instanceof DeleteEvent) {
+			DeleteEvent deleteEvent = (DeleteEvent) event;
+			handleDeleteEvent(deleteEvent);
+		}
 
 	}
 	
@@ -775,7 +808,16 @@ public class AnnotationPlugin
 				serializeAnnotation(newId, location);
 			}
 		}
+	}
+	
+	private void handleDeleteEvent(DeleteEvent deleteEvent) {
+	
+		// get the information from the event
+		String docid = deleteEvent.getId();
+		String location = deleteEvent.getLocation();
 		
+		// delete the associated annotations
+		deleteAnnotations(docid, location);
 	}
 	
 	/**
