@@ -471,7 +471,7 @@ public class PostgresDB {
 			//Add the context types related to this observation type
 			for(Context context: obsType.getContexts()){
 				setContextTypeParam(pstmtContext,annotationId,obsType,context);
-				System.out.println(Debugger.getCallerPosition()+pstmtContext.toString());
+				//System.out.println(Debugger.getCallerPosition()+pstmtContext.toString());
 				pstmtContext.execute();
 			}
 		}
