@@ -35,7 +35,7 @@
 
 \begin{document}
 
-\title{Querying Integrated Ecological Data}
+\title{Querying Integrated Scientific Observation and Measurement Data}
 
 % author names and affiliations
 % use a multiple column layout for up to three different
@@ -94,14 +94,32 @@ queries that people are interested to ask.
 
 \section{Data model, annotation and query}\label{sec:dataquery}
 
-In the ecology domain, most data people collected are observation and
-measurement data. {\bf Add one sentence to explain this.}
-Naturally, when searching ecological data, people are more interested in finding datasets
-related to specific observation and measurement. 
+In many scientific domains (e.g., ecology, hydrology, earth science, geology), people collect observation and
+measurement data. Such data record the observed value of some real
+world entity at some specific place. E.g., ecologist studying the
+growth pattern and treatments often need to record the tree height,
+The collected data reflect the fact the tree height of a specific tree is 1.0in on
+May 1, 2009 and 1.5in on May 1, 2010. ({\bf check whether this is
+  realistic or not.})
+
+In scientific domains where people collect observation and measurement data, there are
+several commonly used and widely recognized canonical
+concepts(\cite{oboe, om}). 
+In this paper, we refer these concepts as OM concetps. 
+The canonical concepts include {\em observation}, {\em measurement},
+{\em characteristic}, {\em standard}, {\em protoca} or ({\em procedure}). 
+For example, {\bf add an example to illustrate these concepts. }
+
+When a user poses a query, it is unrealistic for a him/her to know the 
+underlying data structure of the data.  
+But they all know the well recognized OM conceps as discussed above. 
+So, naturally, when searching such scientific data, people are more interested in finding datasets
+related to such concepts, e.g., specific observation and measurement. 
+
 In this section, we first illustrate the data model. Then, we
 formalize the queries that scientists in this domain tend to ask. 
 
-\subsection{Data model}
+\subsection{Data model}\label{sec:datamodel}
 
 When a scientist contributes dataset into the data repository, generally
 each dataset is converted to a data table\cite{tdar} or treated as a separate
@@ -124,10 +142,12 @@ information.
 %When we put the data to data tables, we add a unique record id for
 %each row in the data. This is used to get the unique record id. 
 
-\subsection{Annotation}
+\subsection{Annotation}\label{sec:annotation}.
 In the Ecology domain, people are using annotations to connect
 datasets to the OBOE model. 
 {\bf TODO: Put a screen-dump of annotation.}
+When some annotations are done over data tables, the system keeps the
+information $\langle AnnotId, DTableId\rangle$.
 
 Map annotation information 
 We use $A$ to denote the annotation of one dataset. 
@@ -146,11 +166,11 @@ Very often, more than one observation can be made on one entity.
 
 ``AnnotId'' denotes the resource (e.g., data table) the annotation is on.
 
-{\bf TODO:} Describe the constraints in annotation
+{\bf TODO: Describe the constraints in annotation}
 
-\subsection{Observation and measurement query}
+\subsection{Observation and measurement (OM) query}
 
-{\bf TODO: Have a running example from.}
+{\bf TODO: Have a running example from here.}
 Observation and measurement (OM) query
 
 \begin{definition}[Basic OM query]\label{def:basic_omq}
@@ -244,50 +264,85 @@ our strategies in answering the queries.
 
 \subsection{Query rewriting}\label{sec:queryrewrite}
 
-For query rewriting, the first step is to find the candidate data
-tables and the attribute name lists that can be used to answer our queries. 
-To find the candidate data table, the metadata tables and annotation
-tables are searched. 
-When the candidate data tables and the needed attributes are known, 
-the second step translate the needed queries over the candidate data
-tables.   
+As described in Section \ref{sec:dataquery}, 
+a user's query generally does not contain the underlying data
+structure because the user cannot get such information. 
+On the contrary, they formulate their query with the well recognized
+OM concept terminologies such as observation
+measurement, characteristic, etc. 
+To answer such query from the original data model (i.e., dataset
+metadata and data tables), we need to {\em rewrite} the quey over the
+real data table. 
+In what follows, we first sketch the re-writing process. Then, we
+detailed the procedure in using the data model and
+structures. Finally, we include the process for the more complicated
+cases (e.g., with distinct, aggregate). 
 
-When a query {\tt concept:cond} is given, the {\tt concept} can only be interpreted using
-annotations. When seeing a basic concept (observation, measurement,
-characteristic, protocal), their related concepts information can be
-retrieved through $A.MeasType$, $A.ObsType$. 
+Roughly speaking, the query rewriting consists of two steps:
+\begin{itemize}
+\item From the given query, find the relevant data tables and
+  attributes that need to be used answer the given query. 
+\item Translate the given query to queries over the relevant data
+  tables. 
+\end{itemize}
 
-From the {\em measuremen type} and $A.Map$, we can get the attribute
-names; Then, using the attribute names and the metadata table (with
-table and column definition), we can get the candidate data tables
-with their corresponding attribute lists. 
+{\bf TODO: put a figure here to illustrate the steps}. 
 
-If there is context, we need to use $A.ContextType$. 
+The first step is to map the OM query to the real data structure. 
+We can utilize the annotation structure $A.Map$ which keeps the correspondences between
+measurement type and table attributes. 
+So, when the given concept is {\em measurement}, we can directly get
+its related attribute names and annotation id $AnnotId$. 
+In case that the given OM concept is a non-measurement concept, we can use
+other Annotation structures $A.*$ to figure out the measurementt types. 
+E.g., if the OM concept is Characteristic ``Species'', we can use
+$A.MeasType$ to get the measurement type id. 
 
+As mentioned in Section \ref{sec:annotation}, when some annotations are done over data tables, the system keeps the
+information $\langle AnnotId, DTableId\rangle$. 
+With the $AnnotId$, we can ge the data table information from the
+metadata  $\langle AnnotId, DTableId\rangle$. 
+Then, we get the relevant data table information and the needed attribute
+information.
+
+Let $RD$ be the set of relevant data tables and $d_{a_1} \cdots d_{a_m}$
+are the related attributes for table $d\in RD$. We can translate the original OM query to SQL queries
+over the data tables.  
+
+{\tt 
+SELECT DISTINCT d.record\_id\\
+FROM d\\
+WHERE $f(d_{a_1} \cdots d_{a_m}) = true$\\
+$[$GROUP BY$]$\\
+$[$HAVING$]$
+}
+
+The above describes the process for the most basic OM query. 
+However, in the real application, people ask queries with distinct
+observation or entity constraints. Also, people ask queries about
+different observatitons using context. 
+
+{\bf TODO: Discuss how to deal with the distinct constraints. }
 If there is distinct constraint, need to find the key measurements. 
 then, perform ``group by'' operation. 
+
+{\bf TODO: Discuss how to deal with context}. 
+If there is context, we need to use $A.ContextType$. 
+
+% Use the materialized database, we would have four tables for all the datasets: 
+% entity, observation, measurement, context. 
+% and 4 tables for entity types, observation types, measurement types,
+% and context relationships.
+
+\begin{example}
+{\bf TODO: refine this example}
+Take KQ1 as example. 
+concept = observation, cond is {\em species = ``Picea rubens''}; 
 
 From the annotation, find the {\em measurement type} with {\em
   Characteristic} species. 
 Here, it is $m_3$. From the mapping, we find that the attribute in the
 table is {\em spp}. 
-
-The information that users can have: metadata about the table. 
-
-In the scientific data, it is unrealistic for the users to know the
-table structure to perform the query. 
-
-Use the materialized database, we would have four tables for all the datasets: 
-entity, observation, measurement, context. 
-and 4 tables for entity types, observation types, measurement types,
-and context relationships.
-
-To answer KQ1: it's simple join between 
-
-\begin{example}
-Take KQ1 as example. 
-concept = observation, cond is {\em species = ``Picea rubens''}; 
-
 
 
 The second step is to find the data file which really have this
