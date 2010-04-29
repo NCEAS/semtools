@@ -1,12 +1,31 @@
 \documentclass[conference]{IEEEtran}
 
+\ifCLASSINFOpdf
+  % \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../pdf/}{../jpeg/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+  % \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../eps/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.eps}
+\fi
+
 \usepackage{algorithm}
 \usepackage{algorithmic}
-\renewcommand\floatpagefraction{0.99}
-\renewcommand\topfraction{0.99}
-\renewcommand\bottomfraction{0.99}
-\renewcommand\textfraction{.05}
-\setcounter{totalnumber}{5}
+ \renewcommand\floatpagefraction{0.99}
+ \renewcommand\topfraction{0.99}
+ \renewcommand\bottomfraction{0.99}
+ \renewcommand\textfraction{.05}
+ \setcounter{totalnumber}{5}
 
 \newtheorem{example}{Example}[section]
 \newtheorem{definition}{Definition}[section]
@@ -45,75 +64,128 @@ Fax: (888) 555--1212}}
 %\boldmath
 The abstract goes here.
 \end{abstract}
-% IEEEtran.cls defaults to using nonbold math in the Abstract.
-% This preserves the distinction between vectors and scalars. However,
-% if the conference you are submitting to favors bold math in the abstract,
-% then you can use LaTeX's standard command \boldmath at the very start
-% of the abstract to achieve this. Many IEEE journals/conferences frown on
-% math in the abstract anyway.
 
 % no keywords
 
 \section{Introduction}
 In this work, we study the query processing over integrated ecological
-data through OBOE model\cite{DBLP:conf/er/BowersMS0}, a conceptual model used to interpret
+data through OBOE model\cite{DBLP:conf/er/BowersMS08}, a conceptual model used to interpret
 observation and measurement data. 
 
+\subsection{Background}
+Introduce OBOE, annotation
+Give an example of them.
+
+\subsection{Contribution and paper organization}
 Contributions of this work:
 \begin{itemize}
 \item Formalize the queries over observation and measurement query.
 \item Propose three methods to evaluate queries. 
 \end{itemize}
 
-\section{Related work}
+This paper is organized as follows. 
+Section \ref{sec:relatedwork} reviews works that are related to this
+research. Section \ref{sec:dataquery} formalize the data model and the
+queries that people are interested to ask. 
 
-This is related
+\section{Related work}\label{sec:relatedwork}
 
-\section{Data model and query}
 
-In the ecological domain, observation and measurement data are the
-core. As a consequence, people are more interested in finding datasets
-related to specific observation and measurements. 
+
+\section{Data model, annotation and query}\label{sec:dataquery}
+
+In the ecology domain, most data people collected are observation and
+measurement data. {\bf Add one sentence to explain this.}
+Naturally, when searching ecological data, people are more interested in finding datasets
+related to specific observation and measurement. 
+In this section, we first illustrate the data model. Then, we
+formalize the queries that scientists in this domain tend to ask. 
 
 \subsection{Data model}
 
-We a scientist contributes dataset into the data repository, generally
-each dataset is converted to a data table. 
+When a scientist contributes dataset into the data repository, generally
+each dataset is converted to a data table\cite{tdar} or treated as a separate
+object entity\cite{knb}. 
 So, the database contains metadata about each dataset, the data table
 definition (e.g., attribute/column name, attribute type, etc). 
-
-To formalize the senario, we use $D$ to denote the set of data tables. Let $d$ be one data table, 
+%\from{HP}{Another way to organize the data is to store them in one big
+%data table with three columns data\_file, attribute\_name,
+%attribute\_value. The problem with this organization is that the
+%attribute\_value are different types. } 
+To formalize the scenario, we use $D$ to denote the set of data
+tables. Each data table contains metadata about the attribute
+definition.  Sometimes, we also use {\em column} to denote the attribute. 
+Let $d$ be one data table, 
 $d[attr]$ or $d[idx]$ represents the set of values for the attribute
-$attr$ or for the $idx$-th attribut. 
-
-Generally, the dataset is connected to the OBOE model using
-annotations. 
-
-\from{HP}{Put the screendump of annotation.}
-
-Map annotation information 
-Through the annotation, 
-We use $A$ to denote the annotation of one dataset. 
-
-
-
-
-\from{HP}{Another way to organize the data is to store them in one big
-data table with three columns data\_file, attribute\_name,
-attribute\_value. The problem with this organizationo is that the
-attribute\_value are different types. } 
-
-
-
-%Implementation consideration: 
+$attr$ or for the $idx$-th attribute. 
+Besides the dataset, in the data store, we also keep the annotation
+information. 
+%Implementation detail (no need to put it in the paper): 
 %When we put the data to data tables, we add a unique record id for
 %each row in the data. This is used to get the unique record id. 
 
+\subsection{Annotation}
+In the Ecology domain, people are using annotations to connect
+datasets to the OBOE model. 
+{\bf TODO: Put a screen-dump of annotation.}
+
+Map annotation information 
+We use $A$ to denote the annotation of one dataset. 
+More specifically,
+To describe an observation, we need to denote on which entity (object in the
+real world) the observation is made.
+Very often, more than one observation can be made on one entity.   
+\begin{itemize}
+\item A.ObsType = $\{\langle \underline{AnnotId,ObsTypeId}, EntTypeId,
+  isDistinct \rangle\}$ 
+\item A.MeasType = $\{\langle \underline{AnnotId, MeasTypeId}, ObsTypeId,
+  CharType, StdType, ProtType, Precision, isKey \rangle\}$ 
+\item A.ContextType = $\{\langle \underline{AnnotId, ObsTypeId, ContextObsTypeId, RelType}, isIdentify\rangle\}$
+\item A.Map = $\{\langle \underline{AnnotId,MeasTypeId, ResAttribute, Cond}, Val\rangle\}$
+\end{itemize}
+
+``AnnotId'' denotes the resource (e.g., data table) the annotation is on.
+
+{\bf TODO:} Describe the constraints in annotation
 
 \subsection{Observation and measurement query}
 
-Given dataset in Figure \ref{}. 
+{\bf TODO: Have a running example from.}
+Observation and measurement (OM) query
 
+\begin{definition}[Basic OM query]\label{def:basic_omq}
+A basic observation and measurement query is defined as $Q$::={\tt
+  concept:cond}. 
+Here, {\tt concept} is the main term in an observation model. 
+In using the OBOE model, it can be observation, measurement,
+characteristic or standard. 
+{\tt cond} is in the form of $f([distinct]~attr)~op~value$ where $op$ is
+basic operator from $\{=, \neq, >, <\}$ and $f$ is an
+aggregation function from $\{sum, avg, count, min, max\}$. 
+\end{definition}
+
+\begin{definition}\label{def:qresult}
+The result of a query $Q$ is a set of data objects (e.g., data tables) 
+$\{d|d\in D \wedge d~satisfies~{\tt cond}\}$. 
+%$\{d|d\in D \wedge (value~op~dv = true, dv\in d[attr])\}$. 
+For each of such result $d$, we use $d~s.t.~Q$ to denote that
+data object $d$ satisfies the query. 
+\end{definition}
+ 
+Definition \ref{def:basic_omq} can formulate queries on the
+one specific observation and measurement. 
+However, it fails to catch the observation context relationship. 
+E.g., {\bf TODO: }
+So, we generalize the basic OM query to contextualized OM query as
+follows. 
+
+\begin{definition}[Contextualized OM query]\label{def:context_omq}
+$CQ$::=$Q_1~${\tt context}($Q_1.concept, Q_2.concept$)$~Q_2$. Here $Q_i$ is a basic query
+in the form of {\tt concept:cond}. 
+\end{definition}
+
+Given the dataset in Figure \ref{}. 
+People may ask the following queries. 
 
 \begin{itemize}
 \item $Q_1$: Give me the datasets that contain species ``Picea rubens'' observations.
@@ -125,60 +197,80 @@ Given dataset in Figure \ref{}.
 bigger than 5.0 square feet. 
 \end{itemize}
 
-
-We formalize the queries as follows. 
-
-\begin{definition}
-KQ1: $<concept>:<cond>$
-Here, <concept> can be observation, measurement, characteristic, standard,
-unit, etc.. 
-<cond> is in the form of $func([distinct]~attr)~op~value$, here $op$ can be some
-algorithmmic operators $=$, $\neq$, $>$, or $<$. 
-$func$ are aggregation functions including sum, average, min and max. 
-
-The result is a set of $d$, $\{d|d\in D \wedge (value~op~dv = true |dv\in d[attr])\}$.
-\end{definition}
-
-For each of such result, we denote that $d~s.t.~KQ$ meaning that
-dataset $d$ satisfies the query. 
- 
-This is the baseline keyword style query. 
-The following two queries are the basic queries. 
-
-\begin{definition}
-KQ2: $Q_1~context(Q_1.concept,Q_2)~Q_2 $, here $Q_i$ is a basic query
-in the form of $<concept>:<cond>$. 
-\end{definition}
+They can be formalized as the following queries. 
 
 \begin{example}
 The given example queries can be represented in the formal query
 format. 
 \begin{itemize}
-\item $Q_1 = Observation: Species='Picea rubens'$
-\item $Q_2 = <Observation_1: Species='Picea rubens'>
-  IN(Observation_1,Observation_2) <Observation_2:
-  measurement_{unknown}=`California'>$
-\item $Q_3 = Observation: Species='Picea rubens' \wedge
-  count(distinct~Species)\geq 5$ \from{HP}{TODO}
-\item $Q_4$ 
+\item $Observation: \langle Species='Picea~rubens'\rangle$
+\item $Observation_1: \langle Species='Picea~rubens'\rangle$\\
+  $IN(Observation_1, Observation_2$) \\
+$Observation_2: \langle Meas_{unknown}=`California'\rangle$
+\item $Observation: \langle Species='Picea~rubens' $\\
+$\wedge
+  count(distinct~Species)\geq 5\rangle$
+\item $??$
 \end{itemize}
 
 \end{example}
 
+\section{Naive method}\label{sec:naive}
+Index the data with all the values, then search over values. 
+This may get wrong results. 
+
+{\bf Experiement: show the error rate (e.g., precision, recall, $F_1$ of this method.}
 
 \section{Querying annotated and integrated ecological data}
 
-All the datasets can be imported to a RDBMS for 
+As we analyzed in Section \ref{sec:relatedwork}, there are two extrems
+in querying integrated data. 
+One is to rewrite the original query to a series of new queries over
+the data; the other is to materialize the data to a consistent data
+model and then answer the query over the materialized database. 
+In Section \ref{sec:matdb} and \ref{sec:queryrewrite}, we introduce
+our strategies in answering the queries. 
 
-To answer such queries, a naive method is to 
-
-\subsection{Materialized database}
+\subsection{Framework and operators}
 
 
-{\bf HP:}{Copy the materials from materiazeDB to here. Skip now.}
+\subsection{Querying over Materialized database}\label{sec:matdb}
 
-\subsection{Query rewriting}
+\subsubsection{Materialize data}
 
+\subsubsection{Querying materialized database}
+
+
+
+\subsection{Query rewriting}\label{sec:queryrewrite}
+
+For query rewriting, the first step is to find the candidate data
+tables and the attribute name lists that can be used to answer our queries. 
+To find the candidate data table, the metadata tables and annotation
+tables are searched. 
+When the candidate data tables and the needed attributes are known, 
+the second step translate the needed queries over the candidate data
+tables.   
+
+When a query {\tt concept:cond} is given, the {\tt concept} can only be interpreted using
+annotations. When seeing a basic concept (observation, measurement,
+characteristic, protocal), their related concepts information can be
+retrieved through $A.MeasType$, $A.ObsType$. 
+
+From the {\em measuremen type} and $A.Map$, we can get the attribute
+names; Then, using the attribute names and the metadata table (with
+table and column definition), we can get the candidate data tables
+with their corresponding attribute lists. 
+
+If there is context, we need to use $A.ContextType$. 
+
+If there is distinct constraint, need to find the key measurements. 
+then, perform ``group by'' operation. 
+
+From the annotation, find the {\em measurement type} with {\em
+  Characteristic} species. 
+Here, it is $m_3$. From the mapping, we find that the attribute in the
+table is {\em spp}. 
 
 The information that users can have: metadata about the table. 
 
@@ -196,11 +288,7 @@ To answer KQ1: it's simple join between
 Take KQ1 as example. 
 concept = observation, cond is {\em species = ``Picea rubens''}; 
 
-The first step is to find the dataset that contain all the metadata. 
-From the annotation, find the {\em measurement type} with {\em
-  Characteristic} species. 
-Here, it is $m_3$. From the mapping, we find that the attribute in the
-table is {\em spp}. 
+
 
 The second step is to find the data file which really have this
 value. 
@@ -323,16 +411,8 @@ Test algorithm for half-materialized data.
 \section{Conclusion}
 
 
-%\bibliographystyle{abbrv}
-%\bibliography{model}
-%\bibliographystyle{IEEEtran}
-%\bibliography{IEEEabrv,DataIntegration}
-
-
-%\begin{thebibliography}{1}
-%\bibliographystyle{abbrv}
-%\bibliography{model}
-%\end{thebibliography}
+\bibliographystyle{IEEEtranS}
+\bibliography{IEEEabrv,DataIntegration}
 
 \end{document}
 
