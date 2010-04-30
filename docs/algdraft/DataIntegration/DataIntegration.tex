@@ -215,10 +215,10 @@ People may ask the following queries.
 \item $Q_3$: Give me the dataset that contains at least five distinct ``Picea rubens'' observations.
 \item $Q_4$: Give me the datasets that have trees with average ``height''
   than 20in in year 2009. 
-\item $Q_5$: an example on summarize one measure with respect to another.
-This could take two forms: one where the context forms the groups
-(like by year), and another where the two measurements are within the
-same context (like finding correlations).
+% Shawn: an example on summarize one measure with respect to another.
+% This could take two forms: one where the context forms the groups
+% (like by year), and another where the two measurements are within the
+% same context (like finding correlations).
 \end{itemize}
 
 They can be formalized as the following queries. 
@@ -240,7 +240,8 @@ $\wedge
 \end{example}
 
 \section{Naive method}\label{sec:naive}
-Index the data with all the values, then search over values. 
+A very direct way to help searching would be to index the data with
+the data with all the values, then search over these values. 
 This may get wrong results. 
 
 {\bf TODO: An example to show that the naive method give wrong answers.}
@@ -257,7 +258,7 @@ model and then answer the query over the materialized database.
 In Section \ref{sec:matdb} and \ref{sec:queryrewrite}, we introduce
 our strategies in answering the queries. 
 
-\subsection{Framework and operators}
+%\subsection{Framework and operators}
 
 \subsection{Query rewriting}\label{sec:queryrewrite}
 
@@ -384,11 +385,17 @@ materialized database.
 \subsection{Querying over materialized database}\label{sec:matdb}
 
 The previous section shows the method to rewrite a given query. 
-In this section, we would discribe another strategy. 
+However, as we analyzed, the computation cost may be higher when the
+candidate data tables are many. In this section, we propose another
+strategy to make use of the existing optimization strategies of
+current DBMS. 
 
-In this method, we merge the data in different tables into several
-core OBOE tables, denoted by $OBOE.*$
-In detail,
+The basic idea is to materialize the data into some centralized
+concept tables with instances of entities, observations, measurements
+and the contexts between observations. 
+We call such concept tables core OBOE tables, and denote them as
+$OBOE.*$. 
+In partibular, we have the following concept instance tables. 
 \begin{itemize}
 \item $OBOE.EntityIns=\{\langle \underline{EntId}, EntType\rangle\}$ for all the entity instances;
 \item $OBOE.ObsIns=\{\langle \underline{ObsId}, ObsType, EntId \rangle\}$ keeps all the observation instances;
@@ -396,10 +403,16 @@ In detail,
 \item $OBOE.ContextIns =\{\langle \underline{ObsId, ConextObsId, ContextType}\rangle\}$ for all the context instances;
 \end{itemize}
 
-\subsubsection{Materialize data}
+In what follows, we describe how to materialize the data into such
+concept instance tables in Section \ref{sec:materialilzedb} when
+considering all the distinct and context constratins. 
+Then, in Section \ref{sec:materialilzedb}, we describe our strategy to
+perform queries over materialized database. 
+
+\subsubsection{Materialize data}\label{sec:materialilzedb}
 {\bf: TODO: refine the writing in MaterializeDB and move them here.}
 
-\subsubsection{Querying materialized database}
+\subsubsection{Querying materialized database}\label{sec:materialilzedb}
 
 \begin{example} \label{eg:materialize_db_q1}
 Example \ref{eg:query_reqerite_q1} shows how to deal with $Q_1$ using
