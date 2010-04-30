@@ -213,8 +213,12 @@ People may ask the following queries.
 \item $Q_2$: Give me the datasets that contain species ``Picea rubens''
   observations in ``California''. 
 \item $Q_3$: Give me the dataset that contains at least five distinct ``Picea rubens'' observations.
-\item $Q_4$: Give me the datasets that have measurements with average ``area''
-bigger than 5.0 square feet. 
+\item $Q_4$: Give me the datasets that have trees with average ``height''
+  than 20in in year 2009. 
+\item $Q_5$: an example on summarize one measure with respect to another.
+This could take two forms: one where the context forms the groups
+(like by year), and another where the two measurements are within the
+same context (like finding correlations).
 \end{itemize}
 
 They can be formalized as the following queries. 
@@ -239,7 +243,9 @@ $\wedge
 Index the data with all the values, then search over values. 
 This may get wrong results. 
 
-{\bf Experiement: show the error rate (e.g., precision, recall, $F_1$ of this method.}
+{\bf TODO: An example to show that the naive method give wrong answers.}
+{\bf Experiement: show the error rate (e.g., precision, recall, (or
+  directly $F_1$) of this method.}
 
 \section{Querying annotated and integrated OM data}
 
@@ -300,6 +306,7 @@ Let $RD$ be the set of relevant data tables and $d_{a_1} \cdots d_{a_m}$
 are the related attributes for table $d\in RD$. We can translate the original OM query to SQL queries
 over the data tables.  
 
+[
 {\tt 
 SELECT DISTINCT d.record\_id\\
 FROM d\\
@@ -307,25 +314,49 @@ WHERE $f(d_{a_1} \cdots d_{a_m}) = true$\\
 $[$GROUP BY$]$\\
 $[$HAVING$]$
 }
+]
 
 The above describes the process for the most basic OM query. 
 However, in the real application, people ask queries with distinct
 observation or entity constraints. Also, people ask queries about
 different observatitons using context. 
 
-{\bf TODO: Discuss how to deal with the distinct constraints. }
-If there is distinct constraint, need to find the key measurements. 
-then, perform ``group by'' operation. 
+%Discuss how to deal with the distinct constraints.
+Many times, a user may want to find {\em distinct} observations or
+entities. In this case, the above simple solution cannot work
+correctly because it treats observations in different rows as the same
+observation. So, we need to use the annotation to figure out what
+distinguishes one observation from another. 
+When an observation type is denoted with {\em distinct yes} and some
+of its measurement types are denoted with {\em key yes}, 
+the values of the measurements on the key measurement types can
+uniquely distinguish one observation from the other. 
+To implement this, in SQL, we can perform ``group by'' operations on
+the key measurement types of the observations. 
 
-{\bf TODO: Discuss how to deal with context}. 
-If there is context, we need to use $A.ContextType$. 
+%Discuss how to deal with context
+The above description discusses cases without context. 
+However, in real application, the observation has context. 
+When the context is not {\em identifying}, i.e., the context value
+does not affect the uniqueness of one observation, this can be
+processed as the basic way. 
+When the context is denoted with {\em identifying yes}, it means the
+identity of one observation also depend on the contextual
+observation. 
+In this case, we need to figure out the all the key measurement types
+of one observation, then the ``GROUP BY'' operation should be on all
+these key measurement types. 
 
-% Use the materialized database, we would have four tables for all the datasets: 
-% entity, observation, measurement, context. 
-% and 4 tables for entity types, observation types, measurement types,
-% and context relationships.
+{\bf TODO: put an example here.}
+
+In this case, there is no need to change the SQL scripts.
+the only change are the relevant attribute set $d_{a_1} \cdots
+d_{a_m}$, which corresponds to not only the measurement types that
+directly related to the observation, but also the measurement types
+that are in the identifying context chain of the observation. 
 
 \begin{example}\label{eg:query_reqerite_q1}
+{\bf TODO: refine this example} 
 Take $Q_1$ as example. The {\tt concept} is ``observation'' and {\tt cond} is {\em species = ``Picea rubens''}; 
 
 From the annotation $A.MeasType$, we can find the measurement type
@@ -334,7 +365,10 @@ From the mapping $A.Map$, we further find that the attribute {\em spp} that the
 measurement type $m_3$ is mapped to. 
 
 The second step is to find the data file which really have this value. 
-For this one, we find the data table, and do a selection on the table content. 
+For this one, we find the data table, and do a selection on the table
+content. 
+
+{\bf TODO: SQL here.} 
 \end{example}
 
 From the above description, we can tell that the computation cost is to search the different data
