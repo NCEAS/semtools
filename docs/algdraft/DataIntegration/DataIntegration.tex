@@ -241,7 +241,7 @@ This may get wrong results.
 
 {\bf Experiement: show the error rate (e.g., precision, recall, $F_1$ of this method.}
 
-\section{Querying annotated and integrated ecological data}
+\section{Querying annotated and integrated OM data}
 
 As we analyzed in Section \ref{sec:relatedwork}, there are two extrems
 in querying integrated data. 
@@ -252,15 +252,6 @@ In Section \ref{sec:matdb} and \ref{sec:queryrewrite}, we introduce
 our strategies in answering the queries. 
 
 \subsection{Framework and operators}
-
-
-\subsection{Querying over Materialized database}\label{sec:matdb}
-
-\subsubsection{Materialize data}
-
-\subsubsection{Querying materialized database}
-
-
 
 \subsection{Query rewriting}\label{sec:queryrewrite}
 
@@ -334,31 +325,53 @@ If there is context, we need to use $A.ContextType$.
 % and 4 tables for entity types, observation types, measurement types,
 % and context relationships.
 
-\begin{example}
-{\bf TODO: refine this example}
-Take KQ1 as example. 
-concept = observation, cond is {\em species = ``Picea rubens''}; 
+\begin{example}\label{eg:query_reqerite_q1}
+Take $Q_1$ as example. The {\tt concept} is ``observation'' and {\tt cond} is {\em species = ``Picea rubens''}; 
 
-From the annotation, find the {\em measurement type} with {\em
-  Characteristic} species. 
-Here, it is $m_3$. From the mapping, we find that the attribute in the
-table is {\em spp}. 
+From the annotation $A.MeasType$, we can find the measurement type
+$m_3$ with the characteristic {\em species}. 
+From the mapping $A.Map$, we further find that the attribute {\em spp} that the
+measurement type $m_3$ is mapped to. 
 
+The second step is to find the data file which really have this value. 
+For this one, we find the data table, and do a selection on the table content. 
+\end{example}
 
-The second step is to find the data file which really have this
-value. 
-For this one, we find the data table, and do a select on the table
-content. 
+From the above description, we can tell that the computation cost is to search the different data
+tables. This way, for each candidate data table, we need to send an
+SQL query to the server for evaluation purpose.
+If the number of candidate data tables are small. This method should
+work well. However, when we have a lot of candidate data tables, the
+efficiency may be affected. 
+In what follows, we introduce another strategy, which logically merge
+the data content in different tables and perform queries ober the
+materialized database. 
 
-Use materialized database: 
-The first step is the same, after we know the data file, then we
-search the table {\em measurement\_instance} with the {\em mvalue=``Picea rubens''}. 
+\subsection{Querying over materialized database}\label{sec:matdb}
 
-In this example, the computation cost is to search the different data
-tables. To reduce this computation cost, we can materialize just the
-measurement values. (How to do this? ) need more details. 
+The previous section shows the method to rewrite a given query. 
+In this section, we would discribe another strategy. 
 
-Half materialized: how to perform query over it. 
+In this method, we merge the data in different tables into several
+core OBOE tables, denoted by $OBOE.*$
+In detail,
+\begin{itemize}
+\item $OBOE.EntityIns=\{\langle \underline{EntId}, EntType\rangle\}$ for all the entity instances;
+\item $OBOE.ObsIns=\{\langle \underline{ObsId}, ObsType, EntId \rangle\}$ keeps all the observation instances;
+\item $OBOE.MeasIns=\{\langle \underline{MeasId}, ObsId, MeasType, Val\rangle\}$ for all the measurement instances;
+\item $OBOE.ContextIns =\{\langle \underline{ObsId, ConextObsId, ContextType}\rangle\}$ for all the context instances;
+\end{itemize}
+
+\subsubsection{Materialize data}
+{\bf: TODO: refine the writing in MaterializeDB and move them here.}
+
+\subsubsection{Querying materialized database}
+
+\begin{example} \label{eg:materialize_db_q1}
+Example \ref{eg:query_reqerite_q1} shows how to deal with $Q_1$ using
+the query rewriting method. 
+Using the  materialized database, the first step is the same.
+After we know the data file, then we search the table {\em measurement\_instance} with the {\em mvalue=``Picea rubens''}. 
 \end{example}
 
 \begin{example}
