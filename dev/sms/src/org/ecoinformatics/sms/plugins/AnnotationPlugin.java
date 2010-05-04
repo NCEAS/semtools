@@ -317,6 +317,7 @@ public class AnnotationPlugin
 			WindowAdapter windowListener = new WindowAdapter() {
 				public void windowClosed(WindowEvent we) {
 					String docid = morphoFrame.getAbstractDataPackage().getAccessionNumber();
+					clearAnnotations(docid);
 					initializeAnnotations(docid);
 					removeStateChangeListeners(dataViewContainerPanel);
 					morphoFrame.removeWindowListener(this);		
@@ -349,14 +350,6 @@ public class AnnotationPlugin
 						// not what we are looking for
 						continue;
 					}
-					else {
-						// remove the current existing annotations for EML
-						List<Annotation> existingAnnotations = SMS.getInstance().getAnnotationManager().getAnnotations(forDocid, null);
-						for (Annotation existingAnnotation: existingAnnotations) {
-							Log.debug(30, "removing annotation: " + existingAnnotation.getURI());
-							SMS.getInstance().getAnnotationManager().removeAnnotation(existingAnnotation.getURI());
-						}
-					}
 				}
 				Log.debug(30, "importing annotation: " + docid);
 				SMS.getInstance().getAnnotationManager().importAnnotation(annotation, fileSource.toURI().toString());
@@ -366,6 +359,24 @@ public class AnnotationPlugin
 		}
 		
 	}
+	
+	/**
+	 * Remove annotations that exist for a given doc id
+	 * @param forDocid
+	 */
+	private static void clearAnnotations(String forDocid) {
+		// remove the current existing annotations for EML
+		List<Annotation> existingAnnotations = SMS.getInstance().getAnnotationManager().getAnnotations(forDocid, null);
+		for (Annotation existingAnnotation: existingAnnotations) {
+			Log.debug(30, "removing annotation: " + existingAnnotation.getURI());
+			try {
+				SMS.getInstance().getAnnotationManager().removeAnnotation(existingAnnotation.getURI());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	
 	public static void initializeOntologies() {
 		// clear the ontologies that are loaded
