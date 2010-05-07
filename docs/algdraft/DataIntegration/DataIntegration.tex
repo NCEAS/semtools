@@ -27,8 +27,8 @@
  \renewcommand\textfraction{.05}
  \setcounter{totalnumber}{5}
 
-\newtheorem{example}{Example}[section]
-\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{\bf Example}[section]
+\newtheorem{definition}{\bf Definition}[section]
 \newcommand{\from}[2]{{\bf[{\sc from #1:} #2]}}
 
 \hyphenation{op-tical net-works semi-conduc-tor}
@@ -380,7 +380,7 @@ OM concepts satisfy given keyword and context conditions.
 
 \begin{definition}[Basic OM query]\label{def:basic_omq}
 A basic observation and measurement query is defined as 
-\[Q::={\tt OMconcept:}\langle{\tt cond}\rangle}\]. 
+\[Q::={\tt OMconcept:}\langle{\tt cond}\rangle}\]
 Here, 
 \begin{itemize}
 \item {\tt OMconcept} refers to one of the major OM terminologies. 
@@ -505,7 +505,7 @@ Roughly speaking, the query rewriting consists of two steps:
   tables. 
 \end{itemize}
 
-{\bf TODO: put a figure here to illustrate the steps}. 
+\from{HP}{todo:put a figure here to illustrate the steps}. 
 
 The first step is to map the OM query to the real data structure. 
 We can utilize the annotation structure $A.Map$ which keeps the correspondences between
@@ -610,7 +610,7 @@ chain. }
 
 %Analysis of this method. 
 
-{\bf Execution cost analysis:} 
+{\bf Cost analysis:} 
 From the above description, we can tell that the computation cost is to search the different data
 tables. This way, for each candidate data table, we need to send an
 SQL query to the server for evaluation purpose.
@@ -634,7 +634,7 @@ concept tables with instances of entities, observations, measurements
 and the contexts between observations. 
 We call such concept tables core OBOE tables, and denote them as
 $OBOE.*$. 
-In partibular, we have the following concept instance tables. 
+In particular, we have the following concept instance tables. 
 \begin{itemize}
 %\item $EI$ = $\{(\underline{ei_{id}}, et_{id})\}$ for all the entity instances;
 \item $OI$ = $\{(\underline{oi_{id}}, ot_{id}, ei_{id})\}$ keeps
@@ -648,7 +648,6 @@ In partibular, we have the following concept instance tables.
   annotation information in $CT$. 
 \end{itemize}
 
-
 In what follows, we describe how to materialize the data into such
 concept instance tables in Section \ref{sec:materialilzedb} when
 considering all the distinct and context constratins. 
@@ -656,13 +655,16 @@ Then, in Section \ref{sec:query_materialilzedb}, we describe our strategy to
 perform queries over materialized database. 
 
 \subsubsection{Materialize data}\label{sec:materialilzedb}
-{\bf: TODO: refine the writing in MaterializeDB and move them here.}
+\from{HP}{TODO: refine the writing in MaterializeDB and move them here.}
 
 \subsubsection{Querying materialized database}\label{sec:query_materialilzedb}
 
 Once the data are materialized using the annotation constraints, we
 can perform the query over them. In what follows, we describe how to
 use the materialized data to answer the query. 
+
+\from{HP}{TODO:Formalize the translation of operators in the OM
+  query}. 
 
 When the given query is a basic OM query, i.e., there is not context
 in the query. 
@@ -820,6 +822,18 @@ another observation for ``State'' of value ``California''.
 In the first step, we need to find the context type id $tmp\_ct\_id$
 that satisfy the context relationship. 
 
+{\tt 
+\begin{tabular}{l}
+SELECT $ct.ct_{id} as tmp\_ct_\id$\\
+FROM OT as ot, OT as cot, CT as ct\\
+WHERE $ct.ot_{id} = ot.ot_{id}$ AND \\
+      $\qquad ct.cot_{id}= cot.ot_{id}$ AND \\
+      $\qquad ct.Rel='IN'$ AND $ot.et='tree'$;
+\end{tabular}
+}
+
+Then, the next step is to find the distinct data sets. 
+
 \vspace{0.1in}
 {\tt 
 \begin{tabular}{l}
@@ -848,26 +862,18 @@ $\qquad$ AND $ci.ct_{id} = tmp\_ct\_id)$\\
 %where condition column 1='value1' and (context column1 = 'context
 %value' or context column2 = `context value', etc.);
 
-\from{HP}{Need to refinement the following. }
-
-=============
-
 Now let's think about the query $Q_4$ with aggregation and context
 requirement. 
+% Give me the data sets that have trees with average ``height''
+%  than 20.0 in ``California''.
+$Q_4 = Observation_1: \langle avg(distinct~tree.height)\geq 20.0 \rangle$ 
+$\wedge IN(Observation_1, Observation_2)$\\
+$\wedge Observation_2: \langle State='California'\rangle$
+
 
 Also, in the first step, we discover the context type id $tmp\_ct\_id$
 that satisfy the context relationship. 
-Use materialized database: 
-Analysis: ``Area'' is the context of some observation.
-Area --> mlabel, observation type
 
-From the context observation lable, find the observation labels, \\
-select olabel\\
-from context\_relationship\\
-where context\_olabel = 'olabel'; 
-
-Let olabel\_set  be the set containing all the observation type
-labels that use ``Area'' as context. 
 
 \vspace{0.1in}
 {\tt 
@@ -878,13 +884,21 @@ $\quad\qquad MT~as~mt, MT~as~cmt,$ \\
 WHERE $(mi.oi_{id}=ci.oi_{id})$ AND $(cmi.oi_{id}=ci.coi_{id})$ AND\\
 $\qquad (mi.mt_{id}=mt.mt_{id})$ AND $(cmi.mt_{id}=cmt.mt_{id})$ AND\\
 $\qquad (mt.A_{id}=AD.A_{id})$\\
-$\qquad$ AND $cmi.Cha=`State'$\\
+$\qquad$ AND $mt.Cha=`height'$\\
+$\qquad$ AND $cmt.Cha=`State'$\\
+$\qquad$ AND $cmi.mVal=`California'$\\
 $\qquad$ AND $ci.ct_{id} = tmp\_ct\_id)$\\
-GROUP BY $cmi.oid$\\
-HAVING $avg(cmi.mVal)>5.0$;
+GROUP BY $AD.d_{id}, oi_{id}$\\
+HAVING $avg(mi.mVal)>5.0$;
 \end{tabular}
 }
 \vspace{0.1in}
+
+Note that, in the above example, there is only one context.
+In the real application, there may be multiple context observations,
+or even context chains. In this case, we need to get {\em all} the
+context and get the intersection of the results. 
+
 
 \subsection{Query partially materialized database}
 As we analyzed in the first two sub-sections, 
