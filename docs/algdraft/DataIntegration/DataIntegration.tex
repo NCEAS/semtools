@@ -68,13 +68,138 @@ The abstract goes here.
 % no keywords
 
 \section{Introduction}
-In this work, we study the query processing over integrated ecological
-data through OBOE model\cite{DBLP:conf/er/BowersMS08}, a conceptual model used to interpret
-observation and measurement data. 
+In this work, we study the query processing over scientific
+observation and measurement data using OBOE
+model\cite{DBLP:conf/er/BowersMS08}. OBOE model is a conceptual model
+used to interpret observation and measurement data. 
 
 \subsection{Background}
-Introduce OBOE, annotation
-Give an example of them.
+
+%Application background
+In many scientific domains (e.g., ecology, hydrology, earth science,
+geology), people collect observational data. Such data
+record the observed value of some real world entity at some specific
+place and time. E.g., ecologists studying relationship between the 
+growth pattern and the treatments often need to record the tree
+heights. The collected data reflect the fact the tree height of a
+specific tree is 30.1in on May 1, 2009 and 30.3in on May 1, 2010. 
+
+%Characteristics of scientific observational data: non-normalized
+Almost all such scientific data do not follow database higher normal
+forms. Generally, scientists have their way in interpreting their
+data, but they are not ready for any normalization process. 
+For example, Table \ref{tb:dataset} is a simplified but typical dataset collected by
+a scientist who study the growth pattern of trees. 
+Obviously, the ``plt'' of the first two rows is the same place, and
+the ``plt'' of the last two rows is the same. 
+Here, their area information is redundant. 
+In the real application, many columns have redundant information. 
+
+%HP: this one has the coordinates, it's troublesome to explain. 
+%% \begin{table}[htb]
+%% \begin{center}
+%% \begin{tabular}{|l|l|l|l|l|}
+%% \hline
+%% code & no & ht & plt & area\\\hline
+%% piru & 1 & 35.8 & $(34^{\circ}8'3N,118^{\circ}14'37W)$ & 4.0\\\hline
+%% piru & 2 & 36.2 & $(34^{\circ}8'3N,118^{\circ}14'37W)$ & 4.0\\\hline
+%% piru & 1 & 25.7 & $(36^{\circ}10'30N,115^{\circ}8'11W)$ & 3.0 \\\hline
+%% %abba & 1 & 15.6 & $(36^{\circ}10'30N,115^{\circ}8'11W)$ & 3.0\\\hline
+%% capo & 1 & 15.6 & $(36^{\circ}10'30N,115^{\circ}8'11W)$ & 3.0\\\hline
+%% \end{tabular}
+%% \end{center}
+%% \caption{Dataset}
+%% \label{tb:dataset}
+%% \end{table}
+
+
+\begin{table}[htb]
+\begin{center}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+code & no & ht & plt & area\\\hline
+piru & 1 & 35.8 & California & 4.0\\\hline
+piru & 2 & 36.2 & California & 4.0\\\hline
+piru & 1 & 25.7 & Oregon & 3.0 \\\hline
+%capo & 1 & 7.8 & Oregon & 3.0\\\hline
+Oriental poppy& 1 & 7.8 & Oregon & 3.0\\\hline 
+\end{tabular}
+\end{center}
+\caption{Dataset}
+\label{tb:dataset}
+\end{table}
+%HP: California poppy info
+%Oregon iris: http://en.wikipedia.org/wiki/List_of_native_Oregon_plants
+%http://en.wikipedia.org/wiki/California_poppy
+
+
+%Introduce major concepts
+In scientific domains where people collect observation and measurement
+data, there are several commonly used and widely recognized canonical
+concepts(\cite{oboe, om}). 
+In this paper, we refer these concepts as OM concepts. 
+The canonical concepts include {\em observation}, {\em measurement},
+{\em characteristic}, {\em standard}, {\em protocol} or ({\em procedure}). 
+For example, {\bf add an example to illustrate these concepts. }
+
+
+%Introduce annotation, Motivation to use annotation
+Generally, every scientific dataset goes into the data repository with
+some metadata, e.g., Dublin core metadata\cite{***}, Darwin core metadata\cite{***}. 
+However, all these metadata are at the dataset level, they did not
+provide enough information for the data {\em content} inside the
+dataset. 
+To better make use of the data content in the repository, more systems
+are embracing the ideas of having metadata on the data content. 
+E.g., Some systems \cite{tdar} provides a mechanism to collect the
+column/attribute level metadata, some system \cite{semtools} uses
+{\em annotation} to add more semantic information to the data
+content. In this work, we follow the terminology in \cite{semtools} and
+use the term {\em annotation} to distinguish the 
+metadata on the data content from those on data objects at a coarser
+granularity. 
+%How to represent the annotation and the symbols used
+We propose tools for scientists to provide annotations to scientific
+observational data. 
+\from{HP}{Put a screen-dump of annotation.}
+
+
+%Challenge to query such data
+\from{HP}{Queries to such data and challenges to answer such queries.}
+When a user formulates a query, it is unrealistic for a him/her to know the 
+underlying data structure of the data.  
+But they all know the well recognized OM concepts as discussed above. 
+So, naturally, when searching such scientific data, people are more
+interested in finding datasets related to such OM terminologies as observation
+measurement, characteristic, etc. 
+Given the dataset in Table \ref{tb:dataset}. 
+People may ask the following queries. 
+
+\begin{example}\label{eg:query}
+Simple and summarization queries: 
+\begin{itemize}
+\item $Q_1$: Give me the data sets that contain species ``Picea rubens'' observations.
+%$Q_2$: Give me the data sets that have measurements on ``area''  characteristics. 
+\item $Q_2$: Give me the data sets that contain species ``Picea rubens''
+  observations in ``California''. 
+\item $Q_3$: Give me the data sets that contain at least five distinct
+  ``Picea rubens'' observations.
+\item $Q_4$: Give me the data sets that have trees with average ``height''
+  than 20.0 in ``California''. 
+% Shawn: an example on summarize one measure with respect to another.
+% This could take two forms: one where the context forms the groups
+% (like by year), and another where the two measurements are within the
+% same context (like finding correlations).
+\end{itemize}
+\end{example}
+
+
+\from{HP}{Current data integration effort}
+
+\from{HP}{Our effort in querying observational data: introduce OBOE, query}
+
+\from{HP}{Need re-organization. The description in the
+  following several sections may be moved to here later.}
 
 \subsection{Contribution and paper organization}
 Contributions of this work:
@@ -90,95 +215,156 @@ queries that people are interested to ask.
 
 \section{Related work}\label{sec:relatedwork}
 
-
+\from{HP}{This will come after the real problem definition and the
+  solution. The description in the following several sections may be
+  moved to here later.}
 
 \section{Data model, annotation and query}\label{sec:dataquery}
 
-In many scientific domains (e.g., ecology, hydrology, earth science, geology), people collect observation and
-measurement data. Such data record the observed value of some real
-world entity at some specific place. E.g., ecologist studying the
-growth pattern and treatments often need to record the tree height,
-The collected data reflect the fact the tree height of a specific tree is 1.0in on
-May 1, 2009 and 1.5in on May 1, 2010. ({\bf check whether this is
-  realistic or not.})
 
-In scientific domains where people collect observation and measurement data, there are
-several commonly used and widely recognized canonical
-concepts(\cite{oboe, om}). 
-In this paper, we refer these concepts as OM concetps. 
-The canonical concepts include {\em observation}, {\em measurement},
-{\em characteristic}, {\em standard}, {\em protoca} or ({\em procedure}). 
-For example, {\bf add an example to illustrate these concepts. }
 
-When a user poses a query, it is unrealistic for a him/her to know the 
-underlying data structure of the data.  
-But they all know the well recognized OM conceps as discussed above. 
-So, naturally, when searching such scientific data, people are more interested in finding datasets
-related to such concepts, e.g., specific observation and measurement. 
 
 In this section, we first illustrate the data model. Then, we
 formalize the queries that scientists in this domain tend to ask. 
 
 \subsection{Data model}\label{sec:datamodel}
 
-When a scientist contributes dataset into the data repository, generally
-each dataset is converted to a data table\cite{tdar} or treated as a separate
-object entity\cite{knb}. 
-So, the database contains metadata about each dataset, the data table
-definition (e.g., attribute/column name, attribute type, etc). 
-%\from{HP}{Another way to organize the data is to store them in one big
+%Data model: Data, attribute, data value set
+When a scientist contributes data into an integrated data repository,
+a widely accepted way is to convert each dataset to a data
+table\cite{tdar} or treated as a separate object entity\cite{knb}. 
+{\bf (HP: is it really widely used? any other system uses this
+  way?. Add more citations here.)}
+In using this method, the database contains metadata of each
+dataset and the definition of the data table (e.g., attribute/column
+name, attribute type, etc). 
+
+
+%HP: 
+%An alternative way to organize the data is to store them in one big
 %data table with three columns data\_file, attribute\_name,
-%attribute\_value. The problem with this organization is that the
-%attribute\_value are different types. } 
-To formalize the scenario, we use $D$ to denote the set of data
-tables. Each data table contains metadata about the attribute
-definition.  Sometimes, we also use {\em column} to denote the attribute. 
-Let $d$ be one data table, 
-$d[attr]$ or $d[idx]$ represents the set of values for the attribute
-$attr$ or for the $idx$-th attribute. 
-Besides the dataset, in the data store, we also keep the annotation
-information. 
-%Implementation detail (no need to put it in the paper): 
+%attribute\_value. The problem with this structure is that the
+%attribute\_value are different types.
+In our work, we focus on querying this kind of data repository (or
+databases). To formalize the scenario, we use $D$ to denote the set of data
+tables in the data repository and $d$ to refer to a specific data
+table. Each data table $d$ contains metadata about the attribute
+definition $Attr_{d}$. Sometimes, we also use {\em column} to refer to an
+attribute. 
+Given one data table $d$, an attribute $attr_i \in Attr_{d}$ or column index $i$, 
+$d[attr_i]$ or $d[i]$ represents the set of values for the attribute
+$attr_i$ or for the $i$-th column.
+%HP: Implementation detail (no need to put it in the paper): 
 %When we put the data to data tables, we add a unique record id for
 %each row in the data. This is used to get the unique record id. 
 
-\subsection{Annotation}\label{sec:annotation}.
-In the Ecology domain, people are using annotations to connect
-datasets to the OBOE model. 
-{\bf TODO: Put a screen-dump of annotation.}
-When some annotations are done over data tables, the system keeps the
-information $\langle AnnotId, DTableId\rangle$.
+\subsection{Annotation}\label{sec:annotation}
 
-Map annotation information 
+
+
+%What kinds of annotation information is needed. 
+
 We use $A$ to denote the annotation of one dataset. 
-More specifically,
-To describe an observation, we need to denote on which entity (object in the
-real world) the observation is made.
-Very often, more than one observation can be made on one entity.   
+Internally, we keep the following information for the
+annotation. 
+
+For data table $d$ with annotation $A$, the system keeps the
+information $AD$ = $\{(d_{id}, A_{id}, d_{meta})\}$.
+As we described before, we have four main objects to describe: 
+observation type (OT), measurement type (MT), and
+context type (CT), and the mapping (Map) from the measurement type to
+resource attributes.  
+So, the annotation contains the following information. 
+
 \begin{itemize}
-\item A.ObsType = $\{\langle \underline{AnnotId,ObsTypeId}, EntTypeId,
-  isDistinct \rangle\}$ 
-\item A.MeasType = $\{\langle \underline{AnnotId, MeasTypeId}, ObsTypeId,
-  CharType, StdType, ProtType, Precision, isKey \rangle\}$ 
-\item A.ContextType = $\{\langle \underline{AnnotId, ObsTypeId, ContextObsTypeId, RelType}, isIdentify\rangle\}$
-\item A.Map = $\{\langle \underline{AnnotId,MeasTypeId, ResAttribute, Cond}, Val\rangle\}$
+\item $A.OT$ = $\{(\underline{A_{id},ot_{id}}, et, isDistinct)\}$ to
+  describe an observation type, which denotes on which
+  entity type (object in the real world) the observation is made. 
+Very often, more than one observation can be made on one entity. Thus,{\em
+  isDistinct} is used to denote whether the same value of key
+meaasurements of an obbservation types can uniquely identify one
+observation or not. 
+\item $A.MT$ = $\{(\underline{A_{id}, mt_{id}}, ot_{id},isKey,
+  Cha, \cdots)\}$. Generally, $MT$ contains information about
+  characteristic ($Cha$), Standard, Protocol and Precisio. We do not include them
+  here to make the description clearer. Here, {\em isKey} is used to denote
+  whether one measurement type is the key measurement for the
+  observation type $OT_{id}$ or not. 
+\item $A.CT$ = $\{(\underline{A_{id}, ot_{id}, cot_{id},
+  Rel}, isIdentify)\}$ where $cot$ represents the context observation
+  type. 
+\item $A.Map$ = $\{(\underline{A_{id},mt_{id}, attr_i, Cond},
+  Val\}$
 \end{itemize}
 
-``AnnotId'' denotes the resource (e.g., data table) the annotation is on.
+We use the following example to illustrate the concepts in the
+annotation. 
 
-{\bf TODO: Describe the constraints in annotation}
+
+
+\begin{example}
+$A.OT$ = \{($A_1, OT_1$, tree, false),($A_1, OT_2$, GeoSpot, true) \}
+  denotes that annotation $A_1$ are for two observation types. One
+  type $OT_1$ is on real world entity ``tree'' and the values of its key measurements
+  do not uniquely identify a distinct observation. The other type
+  $OT_2$ is for real world entity ``GeoSpot'' (i.e., geospatial
+  location) and its key measurement types can identify it's unique
+  observations. \from{HP}{Introduce key measurements before this.}
+
+$A.MT$ =\{($A_1, MT_1, OT_1$, Species, true), 
+($A_1, MT_2, OT_1$, SpecNo, true), 
+($A_1, MT_3, OT_1$, Height, false),
+($A_1, MT_4, OT_2$, Plot\_State, true), 
+($A_1, MT_5, OT_2$, Plot\_Area, false)\} represents that $OT_1$
+(for ``tree'') has three measurement types ($MT_1, MT_2$, $MT_3$) for characteristics
+``Species'', ``SpecNo'', and ``Height''. The fist two measurement
+  types together form the key measurement type for $OT_1$. 
+$OT_2$ (for ``GeoSpot'') has one key measurement type $MT_4$ for
+  characteristic ``Plot\_State'' and another measurement type $MT_5$
+  for characteristic ``Plot\_Area''. 
+
+$A.CT$ = \{($A_1$,$OT_1$, $OT_2$, within, true)\}. It shows that
+observation of a {\em tree} is within the context of a geo-spatial
+location. And this context is used to identify the uniqueness of the
+observation. E.g., a tree with species name ``piru'' and species no
+$1$ in California
+%$(34^{\circ}8'3N,118^{\circ}14'37W)$ (Los Angeles in California) 
+is different from a tree with 
+the same species name ``piru'' at Oregon. 
+%location $36^{\circ}10'30N,115^{\circ}8'11W$ (Las Vegas in
+%California). 
+
+%HP coordinates material: 
+%http://www.traveljournals.net/explore/united_states/map/u1662328/los_angeles.html
+%http://en.wikipedia.org/wiki/Las_Vegas,_Nevada
+
+$A.Map$ = \{($A_1$, $MT_1$, ``code'', ``eq `piru''', ``Picea rubens''),
+%($A_1$, $MT_1$, ``code'', ``eq `abba''', ``Abies balsamea''),
+%($A_1$, $MT_1$, ``code'', ``eq `capo''', ``California poppy''),
+($A_1$, $MT_2$,``no'', null,), 
+($A_1$, $MT_3$, ``plt'', null,), 
+($A_1$, $MT_4$,``area'', null,\}. 
+The first mapping rules maps ``code''
+attribute to the measurement type $MT_1$ (for ``Species''
+characteristic) and change the value to ``Picea rubens'' if the code
+is ``piru''. The meaning of the other mapping rules are very
+obvious here, so we skip the details. 
+\end{example}
+
 
 \subsection{Observation and measurement (OM) query}
+Above we defined the data model and the annotation, in this
+sub-section, we define the queries that scientists are interested in
+We denote the queries on the observational data as {\em Observation
+and measurement (OM) query}. 
 
-{\bf TODO: Have a running example from here.}
-Observation and measurement (OM) query
+In using the observational data, people are generally interested in
+the following concepts: {\em observation, measurement,characteristic or standard}. 
 
 \begin{definition}[Basic OM query]\label{def:basic_omq}
 A basic observation and measurement query is defined as $Q$::={\tt
   concept:cond}. 
 Here, {\tt concept} is the main term in an observation model. 
-In using the OBOE model, it can be observation, measurement,
-characteristic or standard. 
 {\tt cond} is in the form of $f([distinct]~attr)~op~value$ where $op$ is
 basic operator from $\{=, \neq, >, <\}$ and $f$ is an
 aggregation function from $\{sum, avg, count, min, max\}$. 
@@ -187,15 +373,19 @@ aggregation function from $\{sum, avg, count, min, max\}$.
 \begin{definition}\label{def:qresult}
 The result of a query $Q$ is a set of data objects (e.g., data tables) 
 $\{d|d\in D \wedge d~satisfies~{\tt cond}\}$. 
-%$\{d|d\in D \wedge (value~op~dv = true, dv\in d[attr])\}$. 
 For each of such result $d$, we use $d~s.t.~Q$ to denote that
 data object $d$ satisfies the query. 
 \end{definition}
+
+Based on the different {\tt cond} definition, ``$d~satisfies~{\tt cond}$''
+is translated into different formulas. 
+E.g., if {\tt cond} is defined that the value of attribute ``area'' need to be
+smaller than $3.0$, then, ``$d~satisfies~{\tt cond}$'' is translated to
+``$dv<3.0|dv\in d[area]$''.
  
 Definition \ref{def:basic_omq} can formulate queries on the
 one specific observation and measurement. 
-However, it fails to catch the observation context relationship. 
-E.g., {\bf TODO: }
+In real application, we need to consider the context relationship. 
 So, we generalize the basic OM query to contextualized OM query as
 follows. 
 
@@ -204,28 +394,10 @@ $CQ$::=$Q_1~${\tt context}($Q_1.concept, Q_2.concept$)$~Q_2$. Here $Q_i$ is a ba
 in the form of {\tt concept:cond}. 
 \end{definition}
 
-Given the dataset in Figure \ref{}. 
-People may ask the following queries. 
+For example, the queries in Example \ref{eg:query} can be formalized
+as the following formal OM queries. 
 
-\begin{itemize}
-\item $Q_1$: Give me the datasets that contain species ``Picea rubens'' observations.
-%$Q_2$: Give me the datasets that have measurements on ``area''  characteristics. 
-\item $Q_2$: Give me the datasets that contain species ``Picea rubens''
-  observations in ``California''. 
-\item $Q_3$: Give me the dataset that contains at least five distinct ``Picea rubens'' observations.
-\item $Q_4$: Give me the datasets that have trees with average ``height''
-  than 20in in year 2009. 
-% Shawn: an example on summarize one measure with respect to another.
-% This could take two forms: one where the context forms the groups
-% (like by year), and another where the two measurements are within the
-% same context (like finding correlations).
-\end{itemize}
-
-They can be formalized as the following queries. 
-
-\begin{example}
-The given example queries can be represented in the formal query
-format. 
+%\begin{example}
 \begin{itemize}
 \item $Observation: \langle Species='Picea~rubens'\rangle$
 \item $Observation_1: \langle Species='Picea~rubens'\rangle$\\
@@ -237,35 +409,53 @@ $\wedge
 \item $??$
 \end{itemize}
 
-\end{example}
+%\end{example}
 
-\section{Naive method}\label{sec:naive}
-A very direct way to help searching would be to index the data with
-the data with all the values, then search over these values. 
-This may get wrong results. 
 
-{\bf TODO: An example to show that the naive method give wrong answers.}
-{\bf Experiement: show the error rate (e.g., precision, recall, (or
-  directly $F_1$) of this method.}
+%\from{HP}{Add experiement: show the error rate (e.g., precision, recall, (or
+%  directly $F_1$) of this method.? not needed?}
 
 \section{Querying annotated and integrated OM data}
+
+In this section, we discuss several methods that we can use to
+answer OM queries over scientific observational data with
+annotations. 
+
+%\subsection{Naive method}\label{sec:naive}
+
+A very direct way search such data is to extract all the content in
+the data cells and index them, this way, the system may help answer
+very simple queries with the help of some thesaurus. 
+For example, for $Q_1$ in Example \ref{eg:query}, as long as we can
+translate the abbreviation ``piru'' in the dataset to ``Picea rubens''
+based on some predefined thesaurus. We can find the results. 
+Even for this kind of simple query, however, if we want to find
+observation of ``California poppy'', an approximate match may return
+the dataset in Table \ref{tb:dataset} as a result because it contains
+both {\em California} and {\em Poppy}.
+If such compound word search can be alleviated using some existing
+techniques \cite{***}, %citation on compound word querying. 
+it is almost impossible to directly use such IR-style system to answer a query
+in the form of $Q_3$ and $Q_4$. 
+I.e., answer queries with context. 
+
+This naive method cannot answer the desired query. It is because it
+fails to catch the semantics in the data. 
+In what follows, we would use the annotation during our search to get
+more semantic support. 
 
 As we analyzed in Section \ref{sec:relatedwork}, there are two extrems
 in querying integrated data. 
 One is to rewrite the original query to a series of new queries over
 the data; the other is to materialize the data to a consistent data
 model and then answer the query over the materialized database. 
-In Section \ref{sec:matdb} and \ref{sec:queryrewrite}, we introduce
-our strategies in answering the queries. 
-
-%\subsection{Framework and operators}
+We what follows we work from these two directions to leverage the
+semantic information in answering such queries. 
 
 \subsection{Query rewriting}\label{sec:queryrewrite}
 
 As described in Section \ref{sec:dataquery}, 
-a user's query generally does not contain the underlying data
-structure because the user cannot get such information. 
-On the contrary, they formulate their query with the well recognized
+an OM query is represented using 
 OM concept terminologies such as observation
 measurement, characteristic, etc. 
 To answer such query from the original data model (i.e., dataset
@@ -290,16 +480,16 @@ The first step is to map the OM query to the real data structure.
 We can utilize the annotation structure $A.Map$ which keeps the correspondences between
 measurement type and table attributes. 
 So, when the given concept is {\em measurement}, we can directly get
-its related attribute names and annotation id $AnnotId$. 
+its related attribute names and annotation id $A_{id}$. 
 In case that the given OM concept is a non-measurement concept, we can use
 other Annotation structures $A.*$ to figure out the measurementt types. 
 E.g., if the OM concept is Characteristic ``Species'', we can use
 $A.MeasType$ to get the measurement type id. 
 
 As mentioned in Section \ref{sec:annotation}, when some annotations are done over data tables, the system keeps the
-information $\langle AnnotId, DTableId\rangle$. 
-With the $AnnotId$, we can ge the data table information from the
-metadata  $\langle AnnotId, DTableId\rangle$. 
+information $\langle A_{id}, DTableId\rangle$. 
+With the $A_{id}$, we can ge the data table information from the
+metadata  $\langle A_{id}, DTableId\rangle$. 
 Then, we get the relevant data table information and the needed attribute
 information.
 
@@ -397,11 +587,15 @@ We call such concept tables core OBOE tables, and denote them as
 $OBOE.*$. 
 In partibular, we have the following concept instance tables. 
 \begin{itemize}
-\item $OBOE.EntityIns=\{\langle \underline{EntId}, EntType\rangle\}$ for all the entity instances;
-\item $OBOE.ObsIns=\{\langle \underline{ObsId}, ObsType, EntId \rangle\}$ keeps all the observation instances;
-\item $OBOE.MeasIns=\{\langle \underline{MeasId}, ObsId, MeasType, Val\rangle\}$ for all the measurement instances;
-\item $OBOE.ContextIns =\{\langle \underline{ObsId, ConextObsId, ContextType}\rangle\}$ for all the context instances;
+\item $OBOE.EI$ = $\{(\underline{ei_{id}}, et_{id})\}$ for all the entity instances;
+\item $OBOE.OI$ = $\{(\underline{oi_{id}}, ot_{id}, ei_{id})\}$ keeps
+  all the observation instances;
+\item $OBOE.MI$ = $\{(\underline{mi_{id}}, oi_{id}, mt_{id},
+  mVal)\}$ for all the measurement instances;
+\item $OBOE.CI =\{(\underline{oi_{id},coi_{id},ct_{id}})\}$ for
+  all the context instances;
 \end{itemize}
+
 
 In what follows, we describe how to materialize the data into such
 concept instance tables in Section \ref{sec:materialilzedb} when
@@ -418,16 +612,37 @@ perform queries over materialized database.
 Example \ref{eg:query_reqerite_q1} shows how to deal with $Q_1$ using
 the query rewriting method. 
 Using the  materialized database, the first step is the same.
-After we know the data file, then we search the table {\em measurement\_instance} with the {\em mvalue=``Picea rubens''}. 
+After we know the data file, then we search the OBOE.MI with the
+condition that {\em mVal=``Picea rubens''}.
 \end{example}
 
-\begin{example}
-We use $SQ_1$ as an example. 
+{\tt 
+SELECT distinct $AD.d_{id}$\\
+FROM MI, MT, AD\\ 
+WHERE $MT.Cha='Species'$ \\
+AND $MI.mVal = `Picea rubens'$\\
+AND $MI.mt_{id}=MT.mt_{id}$ AND $MT.A_{id}=AD.A_{id}$; %\#Join the MI and MT tables
+}
 
-The first step is to find the datasets that contain the metadata. 
-The second step is to perform a query over the materialized database. 
-%select mlabel, mvalue, count(*) as cnt from measurement_instance
-%group by mvalue,mlabel having count(*)>=2;
+In this example, the computation cost is the selection cost of the
+measurement instance table. 
+It should be faster than the query rewriting. 
+
+If the query has some restriction on the aggregate result, we can
+easily add the GROUP BY and HAVING clause to deal with it. 
+We take $Q_3$ as an example, which asks for data sets that contain at
+least five distinct ``Picea rubens'' observations.
+The SQL query can be written as: \\
+{\tt 
+SELECT distinct $d_{id}$\\
+FROM MI, MT\\ 
+WHERE $MT.Cha='Species'$ \\
+AND $MI.mVal = `Picea rubens'$\\
+AND $MI.mt_{id}=MT.mt_{id}$\\
+GROUP BY $d_{id},oi_{id}$\\
+HAVING COUNT(*)$>$5; %\#Join the MI and MT tables
+}
+
 
 Using the query rewriting, 
 First, we find the data tables that contain the needed concepts. 
@@ -440,38 +655,37 @@ measurements are all the measurements directly defined under this
 observatioin type. Otherwise, i.e., this observation type has context,
 then the key measurements are all the measurements in the context
 chain. 
-\end{example}
+%\end{example}
 
-\begin{example}
-KQ3: Give me the datasets that contain species ``Picea rubens''
-  observations in ``California''. 
+When we are given contextualized query, e.g., $Q_2$. 
+Give me the datasets that contain species ``Picea rubens'' observations in ``California''. 
 
 Species = ``Picea rubens'' and observation has context {\em in}
 another observation which has measurement of value ``California''. 
-\end{example}
 
-Using materializedDB, we can answer the query this way
-First, Species --> mlabel, observation type 
 
-select mtype, olabel from measurement\_type  \\
-where chracteristic = 'Species';  \\
+%Using materializedDB, we can answer the query this way
+%First, from the Characteristic ``Species'', we can get  --> mlabel, observation type 
 
-For the olabel found, \\
-select context\_olabel\\
-from context\_relationship\\
-where olabel = 'olabel'; 
+%select mtype, olabel from measurement\_type  \\
+%where chracteristic = 'Species';  \\
 
-context\_olabel\_set is a set containing all the observation type
-labels in the context chain. 
 
+{\tt 
 SELECT record\_id\\
-FROM observation\_instance oi, observation\_instance coi,
-context\_instance ci,
-measurement\_instance mi, measurement\_instance cmi \\
-WHERE mi.oid=ci.oid AND ci.oid = oi.oid and  cmi.oid=coi.oid AND ci.context\_oid =
-coi.oid and oi.otype = 'olabel' and coi.otype $\in$
-context\_olabel\_set
-AND mi.mvalue=`Picea rubens' and cmi.mvalue='California';\\
+FROM CI as ci, MI as mi, MI as cmi,MT as mt, MT as cmt, \\
+WHERE $mi.oi_{id}=ci.oi_{id}$ AND $cmi.oi_{id}=ci.coi_{id}$ \\
+AND $ci.coi_{id} = coi.oi_{id}$ AND oi.otype = 'olabel' \\
+AND mi.mvalue=`Picea rubens' AND cmi.mvalue='California'\\
+AND MT.mt_{id}=mi.mt_{id} AND MT.mLabel = 'Species'\\
+AND CMT.mt_{id}=cmi.mt_{id} AND cmt.mLabel=`State'\\
+AND coi.otype IN (\\
+\verb|    |SELECT context\_olabel\\
+\verb|    |FROM context\_relationship\\
+\verb|    |WHERE olabel = 'olabel');
+}
+The sub-query finds the set containing all the observation type
+labels in the context chain.
 
 Use query rewriting, what I can do? 
 It's the same till to getting context\_olabel\_set. 
