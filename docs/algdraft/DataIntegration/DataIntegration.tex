@@ -40,18 +40,18 @@
 % author names and affiliations
 % use a multiple column layout for up to three different
 % affiliations
-\author{\IEEEauthorblockN{Michael Shell}
+\author{\IEEEauthorblockN{Author1}
 \IEEEauthorblockA{School of Electrical and\\Computer Engineering\\
 Georgia Institute of Technology\\
 Atlanta, Georgia 30332--0250\\
 Email: http://www.michaelshell.org/contact.html}
 \and
-\IEEEauthorblockN{Homer Simpson}
+\IEEEauthorblockN{Author2}
 \IEEEauthorblockA{Twentieth Century Fox\\
 Springfield, USA\\
 Email: homer@thesimpsons.com}
 \and
-\IEEEauthorblockN{James Kirk\\ and Montgomery Scott}
+\IEEEauthorblockN{Author3}
 \IEEEauthorblockA{Starfleet Academy\\
 San Francisco, California 96678-2391\\
 Telephone: (800) 555--1212\\
@@ -67,7 +67,7 @@ The abstract goes here.
 
 % no keywords
 
-\section{Introduction}
+\section{Introduction}\label{sec:intro}
 In this work, we study the query processing over scientific
 observation and measurement data using OBOE
 model\cite{DBLP:conf/er/BowersMS08}. OBOE model is a conceptual model
@@ -164,16 +164,26 @@ observational data.
 \from{HP}{Put a screen-dump of annotation.}
 
 
-%Challenge to query such data
-\from{HP}{Queries to such data and challenges to answer such queries.}
-When a user formulates a query, it is unrealistic for a him/her to know the 
+%Queries to such data and challenges to answer such queries.
+The internal data structure of such scientific data repository is
+generally unknown to a user who wants to pose a query to such scientific data
+repository and get some useful information. 
+So, it is unrealistic for a him/her to formulate a query based on the 
 underlying data structure of the data.  
-But they all know the well recognized OM concepts as discussed above. 
-So, naturally, when searching such scientific data, people are more
-interested in finding datasets related to such OM terminologies as observation
-measurement, characteristic, etc. 
+The easiest query they can pose to such data repository are keyword-query. 
+Such keyword style query works well for the dataset metadata
+(e.g., contributor information, dataset description, etc) using the
+current Information Retrieval (IR) techniques. However, it
+is far from enough to be used to search the data content because the
+data content need to be interpreted with semantics. 
+It is important in the scientific domain to have typical
+kinds of queries. One fact we can use is that the domain
+scientists know well the widely used OM concepts as discussed above. 
+So, naturally, when searching such scientific data, they can provide
+the concept information to restrain their queries and to find data sets
+related to such OM terminologies. 
 Given the dataset in Table \ref{tb:dataset}. 
-People may ask the following queries. 
+People may ask the following observation and measurement (OM) queries. 
 
 \begin{example}\label{eg:query}
 Simple and summarization queries: 
@@ -192,11 +202,11 @@ Simple and summarization queries:
 % same context (like finding correlations).
 \end{itemize}
 \end{example}
-
+\from{HP}{Challenges to answer such queries: uniqueness}
 
 \from{HP}{Current data integration effort}
 
-\from{HP}{Our effort in querying observational data: introduce OBOE, query}
+\from{HP}{Our effort in querying observational data: introduce OBOE}
 
 \from{HP}{Need re-organization. The description in the
   following several sections may be moved to here later.}
@@ -204,14 +214,17 @@ Simple and summarization queries:
 \subsection{Contribution and paper organization}
 Contributions of this work:
 \begin{itemize}
-\item Formalize the queries over observation and measurement query.
-\item Propose three methods to evaluate queries. 
+\item We formulate a canonical set of queries over observation and
+  measurement scientific data repository. Such formal queries can
+  formalize most OM concepts related searches. 
+\item We propose three methods to evaluate such OM
+  queries. \from{HP}{Elaborate the three methods.}
 \end{itemize}
 
 This paper is organized as follows. 
 Section \ref{sec:relatedwork} reviews works that are related to this
-research. Section \ref{sec:dataquery} formalize the data model and the
-queries that people are interested to ask. 
+research. Section \ref{sec:dataquery} formalizes the data model and the
+queries that people are interested to ask.  
 
 \section{Related work}\label{sec:relatedwork}
 
@@ -263,7 +276,6 @@ $attr_i$ or for the $i$-th column.
 
 
 %What kinds of annotation information is needed. 
-
 We use $A$ to denote the annotation of one dataset. 
 Internally, we keep the following information for the
 annotation. 
@@ -277,23 +289,23 @@ resource attributes.
 So, the annotation contains the following information. 
 
 \begin{itemize}
-\item $A.OT$ = $\{(\underline{A_{id},ot_{id}}, et, isDistinct)\}$ to
+\item $OT$ = $\{(\underline{A_{id},ot_{id}}, et, isDistinct)\}$ to
   describe an observation type, which denotes on which
   entity type (object in the real world) the observation is made. 
 Very often, more than one observation can be made on one entity. Thus,{\em
   isDistinct} is used to denote whether the same value of key
 meaasurements of an obbservation types can uniquely identify one
 observation or not. 
-\item $A.MT$ = $\{(\underline{A_{id}, mt_{id}}, ot_{id},isKey,
+\item $MT$ = $\{(\underline{A_{id}, mt_{id}}, ot_{id},isKey,
   Cha, \cdots)\}$. Generally, $MT$ contains information about
-  characteristic ($Cha$), Standard, Protocol and Precisio. We do not include them
+  characteristic ($Cha$), Standard, Protocol and Precision. We do not include them
   here to make the description clearer. Here, {\em isKey} is used to denote
   whether one measurement type is the key measurement for the
   observation type $OT_{id}$ or not. 
-\item $A.CT$ = $\{(\underline{A_{id}, ot_{id}, cot_{id},
-  Rel}, isIdentify)\}$ where $cot$ represents the context observation
+\item $CT$ = $\{(\underline{A_{id}, ct_{id}}, ot_{id}, cot_{id}, Rel,
+  isIdentify)\}$ where $cot$ represents the context observation
   type. 
-\item $A.Map$ = $\{(\underline{A_{id},mt_{id}, attr_i, Cond},
+\item $Map$ = $\{(\underline{A_{id},mt_{id}, attr_i, MapCond},
   Val\}$
 \end{itemize}
 
@@ -303,7 +315,7 @@ annotation.
 
 
 \begin{example}
-$A.OT$ = \{($A_1, OT_1$, tree, false),($A_1, OT_2$, GeoSpot, true) \}
+$OT$ = \{($A_1, OT_1$, tree, false),($A_1, OT_2$, GeoSpot, true) \}
   denotes that annotation $A_1$ are for two observation types. One
   type $OT_1$ is on real world entity ``tree'' and the values of its key measurements
   do not uniquely identify a distinct observation. The other type
@@ -311,7 +323,7 @@ $A.OT$ = \{($A_1, OT_1$, tree, false),($A_1, OT_2$, GeoSpot, true) \}
   location) and its key measurement types can identify it's unique
   observations. \from{HP}{Introduce key measurements before this.}
 
-$A.MT$ =\{($A_1, MT_1, OT_1$, Species, true), 
+$MT$ =\{($A_1, MT_1, OT_1$, Species, true), 
 ($A_1, MT_2, OT_1$, SpecNo, true), 
 ($A_1, MT_3, OT_1$, Height, false),
 ($A_1, MT_4, OT_2$, Plot\_State, true), 
@@ -323,7 +335,7 @@ $OT_2$ (for ``GeoSpot'') has one key measurement type $MT_4$ for
   characteristic ``Plot\_State'' and another measurement type $MT_5$
   for characteristic ``Plot\_Area''. 
 
-$A.CT$ = \{($A_1$,$OT_1$, $OT_2$, within, true)\}. It shows that
+$CT$ = \{($A_1$,$OT_1$, $OT_2$, within, true)\}. It shows that
 observation of a {\em tree} is within the context of a geo-spatial
 location. And this context is used to identify the uniqueness of the
 observation. E.g., a tree with species name ``piru'' and species no
@@ -338,7 +350,7 @@ the same species name ``piru'' at Oregon.
 %http://www.traveljournals.net/explore/united_states/map/u1662328/los_angeles.html
 %http://en.wikipedia.org/wiki/Las_Vegas,_Nevada
 
-$A.Map$ = \{($A_1$, $MT_1$, ``code'', ``eq `piru''', ``Picea rubens''),
+$Map$ = \{($A_1$, $MT_1$, ``code'', ``eq `piru''', ``Picea rubens''),
 %($A_1$, $MT_1$, ``code'', ``eq `abba''', ``Abies balsamea''),
 %($A_1$, $MT_1$, ``code'', ``eq `capo''', ``California poppy''),
 ($A_1$, $MT_2$,``no'', null,), 
@@ -353,45 +365,63 @@ obvious here, so we skip the details.
 
 
 \subsection{Observation and measurement (OM) query}
-Above we defined the data model and the annotation, in this
-sub-section, we define the queries that scientists are interested in
-We denote the queries on the observational data as {\em Observation
+Above we defined the data model and the annotation. In this
+sub-section, we formalize the queries that scientists are interested
+in. We denote the queries on the observational data as {\em Observation
 and measurement (OM) query}. 
 
-In using the observational data, people are generally interested in
-the following concepts: {\em observation, measurement,characteristic or standard}. 
+As discussed in Section \ref{sec:intro}, it is generally impossible for a
+scientist to formulate an OM query using the internal data structure
+of a dataset because such data structures differ from contributors to
+contributors. More realistically, they can pose queries
+(Example \ref{eg:query}) related to key OM concepts, e.g., {\em
+  observation, measurement,characteristic, and standard}, and these
+OM concepts satisfy given keyword and context conditions. 
 
 \begin{definition}[Basic OM query]\label{def:basic_omq}
-A basic observation and measurement query is defined as $Q$::={\tt
-  concept:cond}. 
-Here, {\tt concept} is the main term in an observation model. 
-{\tt cond} is in the form of $f([distinct]~attr)~op~value$ where $op$ is
-basic operator from $\{=, \neq, >, <\}$ and $f$ is an
+A basic observation and measurement query is defined as 
+\[Q::={\tt OMconcept:}\langle{\tt cond}\rangle}\]. 
+Here, 
+\begin{itemize}
+\item {\tt OMconcept} refers to one of the major OM terminologies. 
+\item 
+$\langle${\tt cond}$\rangle$ is in the form of 
+{\tt f([distinct entity.]measurement) op value} 
+where {\tt op} is a basic operator from $\{=, \neq, >, <\}$ 
+and {\tt f} is an
 aggregation function from $\{sum, avg, count, min, max\}$. 
+{\tt distinct} and {\tt entity} are optional. 
+\end{itemize}
+\from{HP}{The symbol fonts are a little bit messy...need to
+  distinguish between the keywords and variables.}
 \end{definition}
 
-\begin{definition}\label{def:qresult}
+\begin{definition}[Result of OM query]\label{def:qresult}
 The result of a query $Q$ is a set of data objects (e.g., data tables) 
-$\{d|d\in D \wedge d~satisfies~{\tt cond}\}$. 
+\{$d|d\in D \wedge d~satisfies~\langle ${\tt cond} $\rangle$\}. 
 For each of such result $d$, we use $d~s.t.~Q$ to denote that
-data object $d$ satisfies the query. 
+an data object $d$ satisfies the query. 
 \end{definition}
 
-Based on the different {\tt cond} definition, ``$d~satisfies~{\tt cond}$''
-is translated into different formulas. 
-E.g., if {\tt cond} is defined that the value of attribute ``area'' need to be
+Based on the different $\langle${\tt cond}$\rangle$ definitions,
+``$d~satisfies~\langle${\tt cond}$\rangle$''
+is translated differently. 
+E.g., if $\langle${\tt cond}$\rangle$ is defined that the value of ``{\em area}'' need to be
 smaller than $3.0$, then, ``$d~satisfies~{\tt cond}$'' is translated to
 ``$dv<3.0|dv\in d[area]$''.
  
-Definition \ref{def:basic_omq} can formulate queries on the
+Definition \ref{def:basic_omq} can formulate queries on
 one specific observation and measurement. 
 In real application, we need to consider the context relationship. 
+\from{HP}{E.g., etc.}
 So, we generalize the basic OM query to contextualized OM query as
 follows. 
 
-\begin{definition}[Contextualized OM query]\label{def:context_omq}
-$CQ$::=$Q_1~${\tt context}($Q_1.concept, Q_2.concept$)$~Q_2$. Here $Q_i$ is a basic query
-in the form of {\tt concept:cond}. 
+\begin{definition}[Contextualized OM query]\label{def:context_omq} A
+  contextualized OM query is defined as:
+\[CQ ::=Q_i \wedge {\tt context}(Q_i.{\tt OMconcept}, Q_j.{\tt
+  OMconcept})\wedge Q_j\]
+Here, $Q_i, Q_j$ are basic queries.
 \end{definition}
 
 For example, the queries in Example \ref{eg:query} can be formalized
@@ -401,12 +431,15 @@ as the following formal OM queries.
 \begin{itemize}
 \item $Observation: \langle Species='Picea~rubens'\rangle$
 \item $Observation_1: \langle Species='Picea~rubens'\rangle$\\
-  $IN(Observation_1, Observation_2$) \\
-$Observation_2: \langle Meas_{unknown}=`California'\rangle$
-\item $Observation: \langle Species='Picea~rubens' $\\
-$\wedge
-  count(distinct~Species)\geq 5\rangle$
-\item $??$
+  $\wedge IN(Observation_1, Observation_2$) \\
+$\wedge Observation_2: \langle Meas_{unknown}=`California'\rangle$
+\item $Observation: \langle Species='Picea~rubens'$\\
+$\wedge count(distinct~Species)\geq 5\rangle$
+\item $Observation_1: \langle avg(distinct~tree.height)\geq 20.0 \rangle$ 
+$\wedge IN(Observation_1, Observation_2)$\\
+$\wedge Observation_2: \langle State='California'\rangle$\\
+%Give me the data sets that have trees with average ``height''
+%  than 20.0 in ``California''
 \end{itemize}
 
 %\end{example}
@@ -417,39 +450,37 @@ $\wedge
 
 \section{Querying annotated and integrated OM data}
 
-In this section, we discuss several methods that we can use to
+In this section, we propose several methods that can be used to
 answer OM queries over scientific observational data with
 annotations. 
 
 %\subsection{Naive method}\label{sec:naive}
-
-A very direct way search such data is to extract all the content in
-the data cells and index them, this way, the system may help answer
+A very direct way to search such data is to extract all the content in
+the data cells and index them. This way the system may help answer
 very simple queries with the help of some thesaurus. 
 For example, for $Q_1$ in Example \ref{eg:query}, as long as we can
 translate the abbreviation ``piru'' in the dataset to ``Picea rubens''
-based on some predefined thesaurus. We can find the results. 
-Even for this kind of simple query, however, if we want to find
+based on some predefined thesaurus, we can find the results. 
+However, even for this kind of simple query, if we want to find
 observation of ``California poppy'', an approximate match may return
 the dataset in Table \ref{tb:dataset} as a result because it contains
 both {\em California} and {\em Poppy}.
-If such compound word search can be alleviated using some existing
+If the search problem caused by the compound words can be alleviated using some existing
 techniques \cite{***}, %citation on compound word querying. 
-it is almost impossible to directly use such IR-style system to answer a query
+it is still almost impossible to directly use such IR-style system to answer a query
 in the form of $Q_3$ and $Q_4$. 
-I.e., answer queries with context. 
-
-This naive method cannot answer the desired query. It is because it
-fails to catch the semantics in the data. 
-In what follows, we would use the annotation during our search to get
-more semantic support. 
+This naive method cannot be directly used answer the desired queries. It is because it
+fails to catch the semantics of the context and uniqueness of observations in the data. 
+In what follows, we utilize the annotation information to get
+more semantic support, and provide new strategies to answer the
+queries. 
 
 As we analyzed in Section \ref{sec:relatedwork}, there are two extrems
 in querying integrated data. 
 One is to rewrite the original query to a series of new queries over
 the data; the other is to materialize the data to a consistent data
 model and then answer the query over the materialized database. 
-We what follows we work from these two directions to leverage the
+In what follows we work from these two directions to leverage the
 semantic information in answering such queries. 
 
 \subsection{Query rewriting}\label{sec:queryrewrite}
@@ -497,15 +528,18 @@ Let $RD$ be the set of relevant data tables and $d_{a_1} \cdots d_{a_m}$
 are the related attributes for table $d\in RD$. We can translate the original OM query to SQL queries
 over the data tables.  
 
-[
+
+\vspace{0.1in}
 {\tt 
-SELECT DISTINCT d.record\_id\\
-FROM d\\
+\begin{tabular}{l} 
+SELECT DISTINCT $d_{id}$\\
+FROM $d$\\
 WHERE $f(d_{a_1} \cdots d_{a_m}) = true$\\
-$[$GROUP BY$]$\\
-$[$HAVING$]$
+$[$GROUP BY {\em distinct requirement}$]$\\
+$[$HAVING {\em aggregation condition}$]$;
+\end{tabular}
 }
-]
+\vspace{0.1in}
 
 The above describes the process for the most basic OM query. 
 However, in the real application, people ask queries with distinct
@@ -562,6 +596,21 @@ content.
 {\bf TODO: SQL here.} 
 \end{example}
 
+\from{HP}{Refine the process of $Q_2$.\\
+For the first step, we find the data tables that contain the needed concepts. 
+In each table, we need to figure out the distinct observations. 
+From $m_i$ $obstype_i$, all the other measurements that are of
+$obstype_i$. 
+Group by the key measurements of $obstype_i$ if distinct yes.
+If this observation type does not have any context, then the key
+measurements are all the measurements directly defined under this
+observatioin type. Otherwise, i.e., this observation type has context,
+then the key measurements are all the measurements in the context
+chain. }
+
+%Analysis of this method. 
+
+{\bf Execution cost analysis:} 
 From the above description, we can tell that the computation cost is to search the different data
 tables. This way, for each candidate data table, we need to send an
 SQL query to the server for evaluation purpose.
@@ -572,7 +621,7 @@ In what follows, we introduce another strategy, which logically merge
 the data content in different tables and perform queries ober the
 materialized database. 
 
-\subsection{Querying over materialized database}\label{sec:matdb}
+\subsection{Querying materialized database}\label{sec:matdb}
 
 The previous section shows the method to rewrite a given query. 
 However, as we analyzed, the computation cost may be higher when the
@@ -587,81 +636,180 @@ We call such concept tables core OBOE tables, and denote them as
 $OBOE.*$. 
 In partibular, we have the following concept instance tables. 
 \begin{itemize}
-\item $OBOE.EI$ = $\{(\underline{ei_{id}}, et_{id})\}$ for all the entity instances;
-\item $OBOE.OI$ = $\{(\underline{oi_{id}}, ot_{id}, ei_{id})\}$ keeps
-  all the observation instances;
-\item $OBOE.MI$ = $\{(\underline{mi_{id}}, oi_{id}, mt_{id},
-  mVal)\}$ for all the measurement instances;
-\item $OBOE.CI =\{(\underline{oi_{id},coi_{id},ct_{id}})\}$ for
-  all the context instances;
+%\item $EI$ = $\{(\underline{ei_{id}}, et_{id})\}$ for all the entity instances;
+\item $OI$ = $\{(\underline{oi_{id}}, ot_{id}, ei_{id})\}$ keeps
+  all the observation instances where $ot_{id}$ is used to link to the
+  annotation information in $OT$; 
+\item $MI$ = $\{(\underline{mi_{id}}, oi_{id}, mt_{id},
+  mVal)\}$ for all the measurement instances where $mt_{id}$ is used to link to the
+  annotation information in $MT$; 
+\item $CI =\{(\underline{oi_{id},coi_{id},ct_{id}})\}$ for
+  all the context instances where $ct_{id}$ is used to link to the
+  annotation information in $CT$. 
 \end{itemize}
 
 
 In what follows, we describe how to materialize the data into such
 concept instance tables in Section \ref{sec:materialilzedb} when
 considering all the distinct and context constratins. 
-Then, in Section \ref{sec:materialilzedb}, we describe our strategy to
+Then, in Section \ref{sec:query_materialilzedb}, we describe our strategy to
 perform queries over materialized database. 
 
 \subsubsection{Materialize data}\label{sec:materialilzedb}
 {\bf: TODO: refine the writing in MaterializeDB and move them here.}
 
-\subsubsection{Querying materialized database}\label{sec:materialilzedb}
+\subsubsection{Querying materialized database}\label{sec:query_materialilzedb}
 
-\begin{example} \label{eg:materialize_db_q1}
+Once the data are materialized using the annotation constraints, we
+can perform the query over them. In what follows, we describe how to
+use the materialized data to answer the query. 
+
+When the given query is a basic OM query, i.e., there is not context
+in the query. 
+Then, we can form a template query as the following;
+
+\begin{figure}[htb]
+{\tt
+\begin{tabular}{l}
+SELECT $[$DISTINCT$]$ $AD.d_{id}$\\
+FROM $AD, MI~as~mi, MT~as~mt[$, {\em other tables}$]$\\
+$[$WHERE    {\em table join condition, \\
+$\qquad\qquad$ AND selection condition}$]$,\\
+$[$GROUP BY {\em distinct requirement} $]$\\
+$[$HAVING   {\em aggregation condition} $]$;
+\end{tabular}
+}
+\caption{SQL template to answer OM using materialized DB}
+\label{fig:sql_matdb_basic_omq}
+\end{figure}
+
+In particular, 
+
+\vspace{0.1in}
+\begin{tabular}{l}
+$table~join~condition=$\\
+%$\qquad (mi.oi_{id}=ci.oi_{id})~AND~(cmi.oi_{id}=ci.coi_{id})~AND$\\
+$\qquad (mi.mt_{id}=mt.mt_{id})~AND~(mt.A_{id}=AD.A_{id})$
+\end{tabular}
+\vspace{0.1in}
+
+For the very basic query (e.g., $Q_1$ in Example \ref{eg:query}), the
+SQL generally need only the first three clauses. 
+If the query has some restriction on the aggregated result, the {\tt
+  GROUP BY} and {\tt HAVING} clauses to deal with it. 
+
+We use $Q_1$ and $Q_3$ to illustrate the query on the materialized
+database. 
+can be answered using the above
+template. 
 Example \ref{eg:query_reqerite_q1} shows how to deal with $Q_1$ using
 the query rewriting method. 
-Using the  materialized database, the first step is the same.
-After we know the data file, then we search the OBOE.MI with the
-condition that {\em mVal=``Picea rubens''}.
+
+\begin{example} \label{eg:materialize_db_q1}
+Using the  materialized database,  we just need to search the MI table
+with the condition that {\em mVal=``Picea rubens''}.
+
+\vspace{0.1in}
+{\tt 
+\begin{tabular}{l}
+SELECT DISTINCT $AD.d_{id}$\\
+FROM $AD, MI~as~mi, MT~as~mt$\\ 
+WHERE $mt.Cha='Species'$ \\
+$\qquad\quad$ AND $mi.mVal = `Picea~rubens'$\\
+$\qquad\quad$ AND $mi.mt_{id}=mt.mt_{id}$\\
+$\qquad\quad$ AND $mi.A_{id}=AD.A_{id}$; 
+%\#Join the MI and MT tables
+\end{tabular}
+}
+\vspace{0.1in}
+
+For $Q_3$, which asks for data sets that contain at
+least five distinct ``Picea rubens'' observations.
+The SQL query can be written as: 
+
+\vspace{0.1in}
+{\tt 
+\begin{tabular}{l}
+SELECT distinct $AD.d_{id}$\\
+FROM $AD, MI~as~mi, MT~as~mt$\\
+WHERE $mt.Cha='Species'$ \\
+$\qquad\quad$ AND $mi.mVal = `Picea rubens'$\\
+$\qquad\quad$ AND $mi.mt_{id}=mt.mt_{id}$\\
+$\qquad\quad$ AND $mt.A_{id}=AD.A_{id}$\\
+GROUP BY $d_{id},oi_{id}$\\
+HAVING COUNT(*)$>$5; 
+}
+\end{tabular}
+}
+\vspace{0.1in}
 \end{example}
 
-{\tt 
-SELECT distinct $AD.d_{id}$\\
-FROM MI, MT, AD\\ 
-WHERE $MT.Cha='Species'$ \\
-AND $MI.mVal = `Picea rubens'$\\
-AND $MI.mt_{id}=MT.mt_{id}$ AND $MT.A_{id}=AD.A_{id}$; %\#Join the MI and MT tables
+For this kind of query, the computation cost is the selection cost of the
+measurement instance (MI) table. 
+Compared with the query rewriting strategy, which need to pose the
+query over multiple data tables, this query should answer the queries
+more efficiently. 
+
+Figure \ref{fig:sql_matdb_basic_omq} shows the SQL template to process
+the basic OM query without context. In case the OM query has context,
+we need to add the context into consideration. 
+
+\begin{enumerate}
+\item The first step is similar to that in the basic OM query
+  processing. Besides this, we need to figure out what are the concept
+  obserbationi types of the needed observations.  
+\item \label{step:singlesql} Form an SQL for the observation and every of its context
+  observations. 
+\item Intersect all the SQLs from Step \ref{step:singlesql}). 
+\end{enumerate}
+
+
+\begin{figure}[htb]
+{\tt
+\begin{tabular}{l}
+SELECT $[$DISTINCT$]$ $AD.d_{id}$\\
+FROM $AD, CI~as~ci,MI~as~mi, MT~as~mt$\\
+$\qquad MI~as~cmi, MT~as~cmt[,$ {\em other tables}$]$\\
+$[$WHERE    {\em table join condition, \\
+$\qquad\qquad$ AND selection condition}$]$,\\
+$[$GROUP BY {\em distinct requirement} $]$\\
+$[$HAVING   {\em aggregation condition} $]$;
+\end{tabular}
 }
+\caption{SQL template to answer contextualized OM using materialized DB}
+\label{fig:sql_matdb_context_omq}
+\end{figure}
 
-In this example, the computation cost is the selection cost of the
-measurement instance table. 
-It should be faster than the query rewriting. 
+In this case, the table join condition is much more complex since we
+need to use the context instance table $ci$ to connect the
+observation and context observation table. 
+In particular,
 
-If the query has some restriction on the aggregate result, we can
-easily add the GROUP BY and HAVING clause to deal with it. 
-We take $Q_3$ as an example, which asks for data sets that contain at
-least five distinct ``Picea rubens'' observations.
-The SQL query can be written as: \\
+\vspace{0.1in}
 {\tt 
-SELECT distinct $d_{id}$\\
-FROM MI, MT\\ 
-WHERE $MT.Cha='Species'$ \\
-AND $MI.mVal = `Picea rubens'$\\
-AND $MI.mt_{id}=MT.mt_{id}$\\
-GROUP BY $d_{id},oi_{id}$\\
-HAVING COUNT(*)$>$5; %\#Join the MI and MT tables
+\begin{tabular}{l}
+$table~join~condition=$\\
+$\qquad (mi.oi_{id}=ci.oi_{id})$ AND $(cmi.oi_{id}=ci.coi_{id})$ AND\\
+$\qquad (mi.mt_{id}=mt.mt_{id})$ AND $(cmi.mt_{id}=cmt.mt_{id})$ AND\\
+$\qquad (mt.A_{id}=AD.A_{id})$
+\end{tabular}
 }
+\vspace{0.1in}
 
+{\bf Execution cost analysis:} From the join condition, we can see that the expensive cost comes from
+the join operation between the measurement instance, context
+measurement instance, and context instance table. 
+As we analyzed in Section \ref{sec:materialilzedb}, the two tables with
+growing space are measurement instance table and context instance
+table. 
+ 
+{\bf Example:} When we are given contextualized query, e.g., $Q_2$, which asks for
+the datasets that contain species ``Picea rubens'' observations in
+``California''. 
 
-Using the query rewriting, 
-First, we find the data tables that contain the needed concepts. 
-In each table, we need to figure out the distinct observations. 
-From $m_i$ $obstype_i$, all the other measurements that are of
-$obstype_i$. 
-Group by the key measurements of $obstype_i$ if distinct yes.
-If this observation type does not have any context, then the key
-measurements are all the measurements directly defined under this
-observatioin type. Otherwise, i.e., this observation type has context,
-then the key measurements are all the measurements in the context
-chain. 
-%\end{example}
-
-When we are given contextualized query, e.g., $Q_2$. 
-Give me the datasets that contain species ``Picea rubens'' observations in ``California''. 
-
-Species = ``Picea rubens'' and observation has context {\em in}
-another observation which has measurement of value ``California''. 
+In the first step, we get the requirement is on Characteristic
+``Species'' with value ($mVal$) ``Picea rubens'' and observation has context {\em in}
+another observation for ``State'' of value ``California''. 
 
 
 %Using materializedDB, we can answer the query this way
@@ -669,38 +817,46 @@ another observation which has measurement of value ``California''.
 
 %select mtype, olabel from measurement\_type  \\
 %where chracteristic = 'Species';  \\
+In the first step, we need to find the context type id $tmp\_ct\_id$
+that satisfy the context relationship. 
 
-
+\vspace{0.1in}
 {\tt 
-SELECT record\_id\\
-FROM CI as ci, MI as mi, MI as cmi,MT as mt, MT as cmt, \\
-WHERE $mi.oi_{id}=ci.oi_{id}$ AND $cmi.oi_{id}=ci.coi_{id}$ \\
-AND $ci.coi_{id} = coi.oi_{id}$ AND oi.otype = 'olabel' \\
-AND mi.mvalue=`Picea rubens' AND cmi.mvalue='California'\\
-AND MT.mt_{id}=mi.mt_{id} AND MT.mLabel = 'Species'\\
-AND CMT.mt_{id}=cmi.mt_{id} AND cmt.mLabel=`State'\\
-AND coi.otype IN (\\
-\verb|    |SELECT context\_olabel\\
-\verb|    |FROM context\_relationship\\
-\verb|    |WHERE olabel = 'olabel');
+\begin{tabular}{l}
+SELECT DISTINCT AD.d_{id}\\
+FROM $AD, CI~as~ci, MI~as~mi, MT~as~mt,$ \\
+$\quad\qquad MI~as~cmi, MT~as~cmt,$ \\
+WHERE $(mi.oi_{id}=ci.oi_{id})$ AND $(cmi.oi_{id}=ci.coi_{id})$ AND\\
+$\qquad (mi.mt_{id}=mt.mt_{id})$ AND $(cmi.mt_{id}=cmt.mt_{id})$ AND\\
+$\qquad (mt.A_{id}=AD.A_{id})$\\
+$\qquad$ AND $mi.mVal=`Picea rubens'$ \\
+$\qquad$ AND $cmi.mVal='California'$\\
+$\qquad$ AND $mt.Cha = 'Species'$\\
+$\qquad$ AND $cmt.Cha=`State'$\\
+$\qquad$ AND $ci.ct_{id} = tmp\_ct\_id)$\\
+\end{tabular}
 }
-The sub-query finds the set containing all the observation type
-labels in the context chain.
+\vspace{0.1in}
 
-Use query rewriting, what I can do? 
-It's the same till to getting context\_olabel\_set. 
 
-Get the asked condition columns and the context columns, 
+%Use query rewriting, what I can do? 
+%It's the same till to getting context\_olabel\_set. 
 
-select record\_id from data\_tables
-where condition column 1='value1' and (context column1 = 'context
-value' or context column2 = `context value', etc.);
+%Get the asked condition columns and the context columns, 
 
-\begin{example}
-SQ2: Give me the datasets that have measurements with average ``area''
-bigger than 5.0 square feet. 
-\end{example}
+%select record\_id from data\_tables
+%where condition column 1='value1' and (context column1 = 'context
+%value' or context column2 = `context value', etc.);
 
+\from{HP}{Need to refinement the following. }
+
+=============
+
+Now let's think about the query $Q_4$ with aggregation and context
+requirement. 
+
+Also, in the first step, we discover the context type id $tmp\_ct\_id$
+that satisfy the context relationship. 
 Use materialized database: 
 Analysis: ``Area'' is the context of some observation.
 Area --> mlabel, observation type
@@ -713,15 +869,36 @@ where context\_olabel = 'olabel';
 Let olabel\_set  be the set containing all the observation type
 labels that use ``Area'' as context. 
 
-SELECT oi.record\_id \\
-FROM observation\_instance oi, measurement\_instance mi, 
-observation\_instance coi, measurement\_instance cmi,context\_instance ci\\
-WHERE (mi.oid=ci.oid AND ci.oid = oi.oid) and (cmi.oid=coi.oid AND ci.context\_oid =
-coi.oid) AND coi.otype $\in$ olabel\_set 
-AND cmi.mlabel=`Area'
-GROUP BY cmi.oid
-HAVING avg(cmi.mvalue)>5.0in;
+\vspace{0.1in}
+{\tt 
+\begin{tabular}{l}
+SELECT DISTINCT AD.d_{id} \\
+FROM $AD, CI~as~ci, MI~as~mi, MI~as~cmi,$ \\
+$\quad\qquad MT~as~mt, MT~as~cmt,$ \\
+WHERE $(mi.oi_{id}=ci.oi_{id})$ AND $(cmi.oi_{id}=ci.coi_{id})$ AND\\
+$\qquad (mi.mt_{id}=mt.mt_{id})$ AND $(cmi.mt_{id}=cmt.mt_{id})$ AND\\
+$\qquad (mt.A_{id}=AD.A_{id})$\\
+$\qquad$ AND $cmi.Cha=`State'$\\
+$\qquad$ AND $ci.ct_{id} = tmp\_ct\_id)$\\
+GROUP BY $cmi.oid$\\
+HAVING $avg(cmi.mVal)>5.0$;
+\end{tabular}
+}
+\vspace{0.1in}
 
+\subsection{Query partially materialized database}
+As we analyzed in the first two sub-sections, 
+the query-rewriting suffers the multiple queries posed on different
+candidate dataset. The querying of materialized database suffers from
+the multiple self-join operation of the measurement instance (MI)
+table, which has the most amount of information. 
+
+In this section, we propose to materialize only the measurement
+instance and also put the measurement instance and context measurement
+instances together in the same table to avoid the expensive
+computation cost. 
+
+\from{HP}{Let's see how this can work. }
 
 \section{Experiments}
 
@@ -736,6 +913,8 @@ Test algorithm to perform query over materiazed DB.
 Test algorithm to perform query-rewriting over materiazed DB.
 
 Test algorithm for half-materialized data.
+
+
 
 \section{Conclusion}
 
