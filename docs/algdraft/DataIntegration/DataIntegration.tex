@@ -280,21 +280,25 @@ We use $A$ to denote the annotation of one dataset.
 Internally, we keep the following information for the
 annotation. 
 
-For data table $d$ with annotation $A$, the system keeps the
-information $AD$ = $\{(d_{id}, A_{id}, d_{meta})\}$.
-As we described before, we have four main objects to describe: 
+For a data table $d$ with annotation $A$, the system keeps the
+corresponding information between them in $AD$ tables. 
+Besides it, we also have four main concepts to describe: 
 observation type (OT), measurement type (MT), and
 context type (CT), and the mapping (Map) from the measurement type to
 resource attributes.  
 So, the annotation contains the following information. 
 
 \begin{itemize}
+\item $AD$ = $\{(d_{id}, A_{id}, d_{meta})\}$ to keep the information
+  of data sets $d_{id}$-s and their related annotations
+  $A_{id}$. Here, $d_{meta}$ is an abstract attribute for all the
+  other metadata of $d_{id}$. 
 \item $OT$ = $\{(\underline{A_{id},ot_{id}}, et, isDistinct)\}$ to
-  describe an observation type, which denotes on which
+  describe an observation type. It denotes on which
   entity type (object in the real world) the observation is made. 
 Very often, more than one observation can be made on one entity. Thus,{\em
   isDistinct} is used to denote whether the same value of key
-meaasurements of an obbservation types can uniquely identify one
+measurements of an obbservation types can uniquely identify one
 observation or not. 
 \item $MT$ = $\{(\underline{A_{id}, mt_{id}}, ot_{id},isKey,
   Cha, \cdots)\}$. Generally, $MT$ contains information about
@@ -305,8 +309,10 @@ observation or not.
 \item $CT$ = $\{(\underline{A_{id}, ct_{id}}, ot_{id}, cot_{id}, Rel,
   isIdentify)\}$ where $cot$ represents the context observation
   type. 
-\item $Map$ = $\{(\underline{A_{id},mt_{id}, attr_i, MapCond},
-  Val\}$
+\item $Map$ = $\{(\underline{A_{id},mt_{id}, attr_i, mapCond, mapVal},
+  Val\}$. This structure denotes the correspondences between an
+  measurement type ($mt_{id}$ and an attribute $attr_i$ in an dataset
+  $d_{id}$ for a given condition $mapCond$. 
 \end{itemize}
 
 We use the following example to illustrate the concepts in the
@@ -429,13 +435,13 @@ as the following formal OM queries.
 
 %\begin{example}
 \begin{itemize}
-\item $Observation: \langle Species='Picea~rubens'\rangle$
-\item $Observation_1: \langle Species='Picea~rubens'\rangle$\\
+\item $Q_1$ = $Observation: \langle Species='Picea~rubens'\rangle$
+\item $Q_2$ = $Observation_1: \langle Species='Picea~rubens'\rangle$\\
   $\wedge IN(Observation_1, Observation_2$) \\
 $\wedge Observation_2: \langle Meas_{unknown}=`California'\rangle$
-\item $Observation: \langle Species='Picea~rubens'$\\
+\item $Q_3$ = $Observation: \langle Species='Picea~rubens'$\\
 $\wedge count(distinct~Species)\geq 5\rangle$
-\item $Observation_1: \langle avg(distinct~tree.height)\geq 20.0 \rangle$ 
+\item $Q_4$ = $Observation_1: \langle avg(distinct~tree.height)\geq 20.0 \rangle$ 
 $\wedge IN(Observation_1, Observation_2)$\\
 $\wedge Observation_2: \langle State='California'\rangle$\\
 %Give me the data sets that have trees with average ``height''
@@ -487,47 +493,71 @@ semantic information in answering such queries.
 
 As described in Section \ref{sec:dataquery}, 
 an OM query is represented using 
-OM concept terminologies such as observation
+OM concept terminologies such as observation, 
 measurement, characteristic, etc. 
-To answer such query from the original data model (i.e., dataset
-metadata and data tables), we need to {\em rewrite} the quey over the
-real data table. 
-In what follows, we first sketch the re-writing process. Then, we
-detailed the procedure in using the data model and
-structures. Finally, we include the process for the more complicated
+To answer such queries from the original data model (i.e., dataset 
+metadata and translated data tables), 
+we need to {\em rewrite} the OM query over the real data tables. 
+In what follows, we first sketch the re-writing process. 
+Then, we detail the procedure in using the data model and structures. 
+Finally, we include the process for the more complicated
 cases (e.g., with distinct, aggregate). 
 
+%Framework of query rewriting
 Roughly speaking, the query rewriting consists of two steps:
 \begin{itemize}
-\item From the given query, find the relevant data tables and
-  attributes that need to be used answer the given query. 
-\item Translate the given query to queries over the relevant data
+\item From the given query, search the database metadata and
+  annotation information to find the relevant data tables and
+  attributes that need to be used to answer the given query. 
+\item Translate the given OM query to queries over the relevant data
   tables. 
 \end{itemize}
 
 \from{HP}{todo:put a figure here to illustrate the steps}. 
 
-The first step is to map the OM query to the real data structure. 
-We can utilize the annotation structure $A.Map$ which keeps the correspondences between
-measurement type and table attributes. 
-So, when the given concept is {\em measurement}, we can directly get
+%Elaborate the first step
+The first step is to map the OM concepts in the query to the real data
+structure. 
+With the annotation structures $OT$, $CT$, and $MT$, any given OM
+concepts can be linked to a measurement type $mt_{id}$. 
+Then, the annotation structure $Map$ can be used to bridge OM concepts and data sets. 
+Utilizing $Map$, we can find the attributes $attr_i$ and the
+annotation $A_{id}$).
+E.g., when the given concept is {\em measurement}, we can directly get
 its related attribute names and annotation id $A_{id}$. 
 In case that the given OM concept is a non-measurement concept, we can use
-other Annotation structures $A.*$ to figure out the measurementt types. 
-E.g., if the OM concept is Characteristic ``Species'', we can use
-$A.MeasType$ to get the measurement type id. 
+other annotation structures to figure out the measurementt types. 
+E.g., if the OM concept is {\em characteristic} ``Species'', we can use
+$MT$ to get the measurement type id $mt_{id}$. 
+After we get $A_{id}$, we can quickly find the dataset id $d_{id}$
+using $AD$ metadata table (Section \ref{sec:annotation}). 
+Then, we get the relevant data tables and the needed attributes. 
 
-As mentioned in Section \ref{sec:annotation}, when some annotations are done over data tables, the system keeps the
-information $\langle A_{id}, DTableId\rangle$. 
-With the $A_{id}$, we can ge the data table information from the
-metadata  $\langle A_{id}, DTableId\rangle$. 
-Then, we get the relevant data table information and the needed attribute
-information.
+%Elaborate the second step
+Let $D_{cand}$ be the set of relevant (or candidate) data tables and $d_{a_1} \cdots d_{a_m}$
+are the related attributes for table $d\in D_{cand}$. 
+The second step translates the original OM query to SQL queries over the data tables.  
 
-Let $RD$ be the set of relevant data tables and $d_{a_1} \cdots d_{a_m}$
-are the related attributes for table $d\in RD$. We can translate the original OM query to SQL queries
-over the data tables.  
+In particular, for each candidate data table $d$,  
+the translation process works in the following rules. 
 
+\begin{itemize}
+\item The SELECT clause always get the distinct $d_{id}$ and/or
+  record id $r_{id}$ (when it is needed);
+\item The FROM clause has table $d \in D_{cand}$;
+\item The WHERE clause contains all the function $f(\cdot)$ in the OM
+  query;
+\item When there is distinct constraint on entity or observation, the
+  GROUP BY clause contains of all the attributes corresponding to the
+  {\em key measurement types} of the entity or observation. we detail
+  all process of getting the key measurement types of an observation
+  later. 
+\item The aggregation requirement in $f(\cdot)$ is translated to
+  HAVING clause. 
+\end{itemize}
+
+Based on these rules, an OM query can be translated to the following
+SQL scripts. 
 
 \vspace{0.1in}
 {\tt 
@@ -541,17 +571,18 @@ $[$HAVING {\em aggregation condition}$]$;
 }
 \vspace{0.1in}
 
-The above describes the process for the most basic OM query. 
-However, in the real application, people ask queries with distinct
+The above describes the process for the OM query. 
+In real application, people ask queries with distinct
 observation or entity constraints. Also, people ask queries about
 different observatitons using context. 
+The following elaborate the details in processing these two cases. 
 
-%Discuss how to deal with the distinct constraints.
-Many times, a user may want to find {\em distinct} observations or
-entities. In this case, the above simple solution cannot work
-correctly because it treats observations in different rows as the same
-observation. So, we need to use the annotation to figure out what
-distinguishes one observation from another. 
+%In detail,  how to deal with the distinct constraints.
+When a query with distinct constraints, e.g., find data sets with {\em distinct} observations or
+entities. To deal with this case, 
+we need to be able to figure out what distinguishes one observation
+from another. Here, one observation type's key measurement types can
+play this role well. 
 When an observation type is denoted with {\em distinct yes} and some
 of its measurement types are denoted with {\em key yes}, 
 the values of the measurements on the key measurement types can
@@ -559,10 +590,10 @@ uniquely distinguish one observation from the other.
 To implement this, in SQL, we can perform ``group by'' operations on
 the key measurement types of the observations. 
 
-%Discuss how to deal with context
-The above description discusses cases without context. 
-However, in real application, the observation has context. 
-When the context is not {\em identifying}, i.e., the context value
+%In detail, how to deal with context
+When the given OM query has context, we need to consider two cases. 
+In the first case the context is not {\em identifying} to its
+observation types, i.e., the context value
 does not affect the uniqueness of one observation, this can be
 processed as the basic way. 
 When the context is denoted with {\em identifying yes}, it means the
@@ -571,32 +602,50 @@ observation.
 In this case, we need to figure out the all the key measurement types
 of one observation, then the ``GROUP BY'' operation should be on all
 these key measurement types. 
-
-{\bf TODO: put an example here.}
-
+\from{HP}{Put an example here.}
 In this case, there is no need to change the SQL scripts.
 the only change are the relevant attribute set $d_{a_1} \cdots
 d_{a_m}$, which corresponds to not only the measurement types that
 directly related to the observation, but also the measurement types
 that are in the identifying context chain of the observation. 
 
+\from{HP}{Put a specific routine to get key measurements of
+  observation and/or entity.}
+
+
 \begin{example}\label{eg:query_reqerite_q1}
 {\bf TODO: refine this example} 
-Take $Q_1$ as example. The {\tt concept} is ``observation'' and {\tt cond} is {\em species = ``Picea rubens''}; 
+Take $Q_1$ ($Observation: \langle Species='Picea~rubens'\rangle$) as
+example. 
+The {\tt OMconcept} is ``observation'' and {\tt cond} is ``{\em species = `Picea rubens'}''; 
 
-From the annotation $A.MeasType$, we can find the measurement type
+From the annotation $MT$, we can find the measurement type
 $m_3$ with the characteristic {\em species}. 
-From the mapping $A.Map$, we further find that the attribute {\em spp} that the
+From the mapping $Map$, we further find that the attribute {\em spp} that the
 measurement type $m_3$ is mapped to. 
 
-The second step is to find the data file which really have this value. 
+The second step is to find the data sets which really have this value. 
 For this one, we find the data table, and do a selection on the table
 content. 
 
-{\bf TODO: SQL here.} 
+\vspace{0.1in}
+{\tt 
+\begin{tabular}{l} 
+SELECT DISTINCT $d_{id}$\\
+FROM $d$\\
+WHERE $spp = 'piru'$
+\end{tabular}
+}
+\vspace{0.1in}
+
 \end{example}
 
-\from{HP}{Refine the process of $Q_2$.\\
+\begin{example}
+Take $Q_3$ ($Observation:$\\
+$\langle Species='Picea~rubens'$$\wedge count(distinct~Species)\geq
+5\rangle$) as an example. 
+
+\from{HP}{Refine\\
 For the first step, we find the data tables that contain the needed concepts. 
 In each table, we need to figure out the distinct observations. 
 From $m_i$ $obstype_i$, all the other measurements that are of
@@ -608,8 +657,21 @@ observatioin type. Otherwise, i.e., this observation type has context,
 then the key measurements are all the measurements in the context
 chain. }
 
-%Analysis of this method. 
+\vspace{0.1in}
+{\tt 
+\begin{tabular}{l} 
+SELECT DISTINCT $d_{id}$\\
+FROM $d$\\
+WHERE $spp = 'piru'$\\
+GROUP BY $d_{id}$, $spp$\\
+HAVING count($d_{id}$,$spp$) $\geq 5$\\
+\end{tabular}
+}
+\vspace{0.1in}
 
+\end{example}
+
+%Analysis of this method. 
 {\bf Cost analysis:} 
 From the above description, we can tell that the computation cost is to search the different data
 tables. This way, for each candidate data table, we need to send an
@@ -624,16 +686,32 @@ materialized database.
 \subsection{Querying materialized database}\label{sec:matdb}
 
 The previous section shows the method to rewrite a given query. 
-However, as we analyzed, the computation cost may be higher when the
-candidate data tables are many. In this section, we propose another
-strategy to make use of the existing optimization strategies of
+However, as we analyzed, the computation cost may be very high when
+there are many candidate data tables. 
+In this section, we propose another strategy to answer the given OM
+query by making use of the existing optimization strategies of
 current DBMS. 
 
-The basic idea is to materialize the data into some centralized
-concept tables with instances of entities, observations, measurements
-and the contexts between observations. 
-We call such concept tables core OBOE tables, and denote them as
+%rough idea of this strategy
+In this strategy, we do not directly work on the original data table
+$D$. On the other hand, we {\em materialize} the original data-sets to
+centralized concept tables with instances of entities, observations, measurements
+and contexts. Such concept tables are called core OBOE tables, and denoted as
 $OBOE.*$. 
+Then, the query process works on the materialized databases (i.e., the
+conceptual data tables). 
+
+%structure of this sub-section
+In what follows, we first describe the structure of the core
+conceptual tables and present our algorithm to materialize the data into such
+concept instance tables in Section \ref{sec:materialilzedb}. Our
+algorithm considers all the distinct and context constraints. 
+Then, Section \ref{sec:query_materialilzedb} provides the detailed
+process of performing queries over materialized database. 
+
+\subsubsection{Materialize data}\label{sec:materialilzedb}
+
+%Structure of conceptual instances
 In particular, we have the following concept instance tables. 
 \begin{itemize}
 %\item $EI$ = $\{(\underline{ei_{id}}, et_{id})\}$ for all the entity instances;
@@ -648,20 +726,13 @@ In particular, we have the following concept instance tables.
   annotation information in $CT$. 
 \end{itemize}
 
-In what follows, we describe how to materialize the data into such
-concept instance tables in Section \ref{sec:materialilzedb} when
-considering all the distinct and context constratins. 
-Then, in Section \ref{sec:query_materialilzedb}, we describe our strategy to
-perform queries over materialized database. 
-
-\subsubsection{Materialize data}\label{sec:materialilzedb}
 \from{HP}{TODO: refine the writing in MaterializeDB and move them here.}
 
 \subsubsection{Querying materialized database}\label{sec:query_materialilzedb}
 
 Once the data are materialized using the annotation constraints, we
-can perform the query over them. In what follows, we describe how to
-use the materialized data to answer the query. 
+can perform the OM query over them. 
+%In what follows, we describe how to use the materialized data to answer the query. 
 
 \from{HP}{TODO:Formalize the translation of operators in the OM
   query}. 
@@ -735,7 +806,7 @@ The SQL query can be written as:
 SELECT distinct $AD.d_{id}$\\
 FROM $AD, MI~as~mi, MT~as~mt$\\
 WHERE $mt.Cha='Species'$ \\
-$\qquad\quad$ AND $mi.mVal = `Picea rubens'$\\
+$\qquad\quad$ AND $mi.mVal = `Picea~rubens'$\\
 $\qquad\quad$ AND $mi.mt_{id}=mt.mt_{id}$\\
 $\qquad\quad$ AND $mt.A_{id}=AD.A_{id}$\\
 GROUP BY $d_{id},oi_{id}$\\
