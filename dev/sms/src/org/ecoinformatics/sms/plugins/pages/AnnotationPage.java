@@ -146,6 +146,7 @@ public class AnnotationPage extends AbstractUIPage {
 				if (editButton.isSelected()) {
 					// active only if we have an observation
 					pageRef.setEnabled(currentAttributeName != null);
+					editButton.setText("Save");
 				}
 				else {
 					pageRef.setEnabled(false);
@@ -156,11 +157,12 @@ public class AnnotationPage extends AbstractUIPage {
 						// save
 						AnnotationPlugin.saveAnnotation(annotation);
 					}
+					editButton.setText("Edit");
 				}
 			}
 		};
-		//editButton = new JToggleButton(toggleAction);
-		editButton = WidgetFactory.makeCheckBox("Edit", false);
+		editButton = new JToggleButton(toggleAction);
+		//editButton = WidgetFactory.makeCheckBox("Edit", false);
 		editButton.addActionListener(toggleAction);
 		
 		// actually show the help
