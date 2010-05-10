@@ -118,7 +118,7 @@ public class OntologyClassField extends JTextField {
 			// set the label border if we have it wrapped
 			Container parent = this.getParent();
 			if (parent instanceof OntologyClassFieldPanel) {
-				setPanelBorder((OntologyClassFieldPanel) parent, filterClass.getName());
+				setPanelBorder((OntologyClassFieldPanel) parent, filterClass.getName(), TitledBorder.ABOVE_BOTTOM);
 			}
 		}
 	}
@@ -135,14 +135,22 @@ public class OntologyClassField extends JTextField {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(field);
 		if (field.getFilterClass() != null) {
-			setPanelBorder(panel, field.getFilterClass().getName());
+			setPanelBorder(panel, field.getFilterClass().getName(), TitledBorder.ABOVE_BOTTOM);
 		}
-		
 		return panel;
-		
 	}
 	
-	public static void setPanelBorder(OntologyClassFieldPanel panel, String title) {
+	public static JPanel wrapField(OntologyClassField field, String label) {
+		OntologyClassFieldPanel panel = new OntologyClassFieldPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.add(field);
+		if (field.getFilterClass() != null) {
+			setPanelBorder(panel, label, TitledBorder.ABOVE_TOP);
+		}
+		return panel;	
+	}
+	
+	public static void setPanelBorder(OntologyClassFieldPanel panel, String title, int location) {
 		Font titleFont = new Font("Sans-Serif", Font.PLAIN, 8);
 		Border existingBorder = BorderFactory.createEmptyBorder();
 		panel.setBorder(
@@ -150,7 +158,7 @@ public class OntologyClassField extends JTextField {
 						existingBorder, 
 						title, 
 						TitledBorder.CENTER, 
-						TitledBorder.ABOVE_BOTTOM, 
+						location, 
 						titleFont, 
 						WizardSettings.WIZARD_CONTENT_TEXT_COLOR));
 	}
