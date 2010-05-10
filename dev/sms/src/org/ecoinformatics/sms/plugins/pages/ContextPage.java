@@ -100,6 +100,7 @@ public class ContextPage extends AbstractUIPage {
 				if (editButton.isSelected()) {
 					// active only if we have an observation
 					pageRef.setEnabled(observation != null);
+					editButton.setText("Save");
 				}
 				else {
 					pageRef.setEnabled(false);
@@ -110,11 +111,12 @@ public class ContextPage extends AbstractUIPage {
 						// save
 						AnnotationPlugin.saveAnnotation(annotation);
 					}
+					editButton.setText("Edit");
 				}
 			}
 		};
-		//editButton = new JToggleButton(toggleAction);
-		editButton = WidgetFactory.makeCheckBox("Edit", false);
+		editButton = new JToggleButton(toggleAction);
+		//editButton = WidgetFactory.makeCheckBox("Edit", false);
 		editButton.addActionListener(toggleAction);
 		
 		// help button
@@ -145,6 +147,11 @@ public class ContextPage extends AbstractUIPage {
 		super.setEnabled(enabled);
 		contextList.setEnabled(enabled);
 		editButton.setSelected(enabled);
+		if (enabled) {
+			editButton.setText("Save");
+		} else {
+			editButton.setText("Edit");
+		}
 	}
 	
 	public void setObservation(Observation observation) {
