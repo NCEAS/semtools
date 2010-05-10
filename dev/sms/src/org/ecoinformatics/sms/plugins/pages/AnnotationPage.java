@@ -114,6 +114,11 @@ public class AnnotationPage extends AbstractUIPage {
 		super.setEnabled(enabled);
 		simpleAnnotationPanel.setEnabled(enabled);
 		editButton.setSelected(enabled);
+		if (enabled) {
+			editButton.setText("Save");
+		} else {
+			editButton.setText("Edit");
+		}
 
 	}
 	
