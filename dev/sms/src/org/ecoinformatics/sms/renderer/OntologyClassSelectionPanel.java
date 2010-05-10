@@ -212,10 +212,6 @@ public class OntologyClassSelectionPanel extends JPanel {
 		treePanel.add(panel1);
 		treePanel.add(Box.createRigidArea(new Dimension(0, 2)));
 		treePanel.add(treeView);
-		if (showSearch) {
-			treePanel.add(Box.createRigidArea(new Dimension(0, 5)));
-			treePanel.add(searchPanel);
-		}
 
 		// top portion
 		JPanel panel7 = new JPanel();
@@ -236,6 +232,10 @@ public class OntologyClassSelectionPanel extends JPanel {
 		panel.add(panel8);
 		panel.add(Box.createRigidArea(new Dimension(0, 2)));
 		panel.add(commentView);
+		if (showSearch) {
+			panel.add(Box.createRigidArea(new Dimension(0, 5)));
+			panel.add(searchPanel);
+		}
 
 		//panel.setMaximumSize(new Dimension(width, height));
 		//panel.setPreferredSize(new Dimension(width, height));
