@@ -39,6 +39,8 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
 
+import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
+import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.pages.HelpDialog;
 import edu.ucsb.nceas.morpho.util.Command;
 import edu.ucsb.nceas.morpho.util.GUIAction;
@@ -118,6 +120,7 @@ public class Help  {
 		GUIAction helpAction = 
 			new GUIAction(label, null, command);
 		JButton helpButton = new HyperlinkButton(helpAction);
+		WidgetFactory.setPrefMaxSizes(helpButton, WizardSettings.WIZARD_CONTENT_LABEL_DIMS);
 		return helpButton;
 	}
 }

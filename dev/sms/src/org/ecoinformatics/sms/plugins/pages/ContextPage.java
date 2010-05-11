@@ -120,18 +120,15 @@ public class ContextPage extends AbstractUIPage {
 		editButton.addActionListener(toggleAction);
 		
 		// help button
-		JButton helpButton = Help.createHelpButton(pageRef, "What's this?");
+		JButton helpButton = Help.createHelpButton(pageRef, "Help");
 		
 		JPanel lineOnePanel = WidgetFactory.makePanel(); 
 		lineOnePanel.add(WidgetFactory.makeLabel("The Observation was made where the...", false, null));
 		lineOnePanel.add(Box.createHorizontalGlue());
+		lineOnePanel.add(helpButton);
 		lineOnePanel.add(editButton);
-		
-		JPanel topPanel = WidgetFactory.makePanel(1);
-		topPanel.add(helpButton);
 			
 		this.add(lineOnePanel);
-		this.add(topPanel);
 				
 		// Context list
 		JPanel contextListPanel = WidgetFactory.makePanel(6);
