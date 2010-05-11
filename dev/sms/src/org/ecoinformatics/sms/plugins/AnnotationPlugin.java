@@ -1009,7 +1009,7 @@ public class AnnotationPlugin
 					tabPane.addTab(AnnotationTabPane.TAB_NAMES.get(2), annotationTablePanel);
 					
 					// add the graph
-					Component graphComponent = AnnotationGraph.createAnnotationGraph(annotation);
+					Component graphComponent = AnnotationGraph.createAnnotationGraph(annotation, true);
 					tabPane.addTab(AnnotationTabPane.TAB_NAMES.get(3), graphComponent);
 					
 					// tabPane listens for column selection
