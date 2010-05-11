@@ -109,7 +109,7 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 		
 		// the graph
 		if (annotationGraph != null) {
-			annotationGraph = AnnotationGraph.createAnnotationGraph(annotation);
+			annotationGraph = AnnotationGraph.createAnnotationGraph(annotation, true);
 			setComponentAt(TAB_NAMES.indexOf(GRAPH_ANNOTATION), annotationGraph);
 		}
 	}

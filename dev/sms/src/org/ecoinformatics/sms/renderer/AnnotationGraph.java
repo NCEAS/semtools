@@ -31,7 +31,7 @@ import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 
 public class AnnotationGraph {
 	
-	public static Component createAnnotationGraph(Annotation annotation) {
+	public static Component createAnnotationGraph(Annotation annotation, boolean contextOnly) {
 		
 		// the graph
 		mxGraph graph = new mxGraph();
@@ -97,6 +97,10 @@ public class AnnotationGraph {
 					graph.insertVertex(observationCell, null, observation, x, y, width, height, observationStyle);
 
 				observationMap.put(observation, (mxCell)observationNode);
+				
+				if (contextOnly) {
+					continue;
+				}
 				
 				for (Measurement measurement: observation.getMeasurements()) {
 					
@@ -182,6 +186,10 @@ public class AnnotationGraph {
 		//add to the page
 		mxGraphComponent graphComponent = new mxGraphComponent(graph);
 		
+		if (contextOnly) {
+			layoutGraph(graphComponent);
+		}
+		
 		JPanel panel = WidgetFactory.makePanel(9);
 		panel.add(graphComponent);
 		
@@ -197,8 +205,8 @@ public class AnnotationGraph {
 			Object parent = graph.getDefaultParent();
 			
 			//mxGraphLayout layout = new mxFastOrganicLayout(graph);
-			//mxHierarchicalLayout layout = new mxHierarchicalLayout(graph, SwingConstants.WEST);
-			mxHierarchicalLayout layout = new mxHierarchicalLayout(graph, SwingConstants.NORTH);
+			mxHierarchicalLayout layout = new mxHierarchicalLayout(graph, SwingConstants.WEST);
+			//mxHierarchicalLayout layout = new mxHierarchicalLayout(graph, SwingConstants.NORTH);
 			layout.setDisableEdgeStyle(false);
 			layout.execute(parent);
 			
