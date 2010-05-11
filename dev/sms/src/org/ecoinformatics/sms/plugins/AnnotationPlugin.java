@@ -60,6 +60,7 @@ import org.ecoinformatics.sms.plugins.table.AnnotationTableModel;
 import org.ecoinformatics.sms.plugins.table.AnnotationTablePanel;
 import org.ecoinformatics.sms.plugins.table.DataTableModelListener;
 import org.ecoinformatics.sms.plugins.table.ScrollBarAdjustmentListener;
+import org.ecoinformatics.sms.renderer.AnnotationGraph;
 
 import edu.ucsb.nceas.morpho.Morpho;
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
@@ -992,32 +993,24 @@ public class AnnotationPlugin
 					// listen for data model changes
 					TableModelListener dataModelListener = new DataTableModelListener(adp, annotationTableModel, dataViewer, entityIndex);
 					dataViewer.getDataTable().getModel().addTableModelListener(dataModelListener);
-					 
-					
-					// add the table panel to a tab pane
+
+					// the TAB pane
 					AnnotationTabPane tabPane = new AnnotationTabPane(annotation, JTabbedPane.TOP);
-					tabPane.addTab(AnnotationTabPane.TAB_NAMES.get(0), annotationTablePanel);
-					
-					// add the madlib column view
+
+					// add the column view
 					AnnotationPage madLib = new AnnotationPage(false);
-					//StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SELECT_DATATABLE_COLUMN, madLib);
-					
-					// if we want scrolling
-//					JScrollPane madLibScroll = new JScrollPane(madLib);
-//					Dimension dim = 
-//						 new Dimension(
-//								 AnnotationTablePanel.rowHeaderDim.width, 
-//								 (AnnotationTableModel.ROW_COUNT) * AnnotationTablePanel.rowHeaderDim.height);
-//					madLibScroll.setPreferredSize(dim);					
-//					tabPane.addTab("Column View", madLibScroll);
-					
-					// just the panel, no scrolling
-					tabPane.addTab(AnnotationTabPane.TAB_NAMES.get(1), madLib);
+					tabPane.addTab(AnnotationTabPane.TAB_NAMES.get(0), madLib);
 										
 					// add the context tab
 					ContextPage contextTab = new ContextPage(annotation);
+					tabPane.addTab(AnnotationTabPane.TAB_NAMES.get(1), contextTab);
 					
-					tabPane.addTab(AnnotationTabPane.TAB_NAMES.get(2), contextTab);
+					// add the full table view to the tab pane
+					tabPane.addTab(AnnotationTabPane.TAB_NAMES.get(2), annotationTablePanel);
+					
+					// add the graph
+					Component graphComponent = AnnotationGraph.createAnnotationGraph(annotation);
+					tabPane.addTab(AnnotationTabPane.TAB_NAMES.get(3), graphComponent);
 					
 					// tabPane listens for column selection
 					StateChangeMonitor.getInstance().addStateChangeListener(StateChangeEvent.SELECT_DATATABLE_COLUMN, tabPane);

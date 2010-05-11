@@ -1,5 +1,6 @@
 package org.ecoinformatics.sms.plugins.table;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.pages.AnnotationPage;
 import org.ecoinformatics.sms.plugins.pages.ContextPage;
+import org.ecoinformatics.sms.renderer.AnnotationGraph;
 
 import edu.ucsb.nceas.morpho.util.Log;
 import edu.ucsb.nceas.morpho.util.StateChangeEvent;
@@ -20,14 +22,17 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 	
 	public static List<String> TAB_NAMES = new ArrayList<String>();
 	
-	public static String FULL_ANNOTATION = "Full Annotation";
 	public static String COLUMN_ANNOTATION = "Column Annotation";
 	public static String CONTEXT_ANNOTATION = "Context Annotation";
+	public static String GRAPH_ANNOTATION = "Graph Annotation";
+	public static String FULL_ANNOTATION = "Full Annotation";
+
 	
 	static {
-		TAB_NAMES.add(FULL_ANNOTATION);
 		TAB_NAMES.add(COLUMN_ANNOTATION);
 		TAB_NAMES.add(CONTEXT_ANNOTATION);
+		TAB_NAMES.add(FULL_ANNOTATION);
+		TAB_NAMES.add(GRAPH_ANNOTATION);
 	}
 	
 	private Annotation annotation;
@@ -35,6 +40,8 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 	private AnnotationPage annotationPage;
 	
 	private ContextPage contextPage;
+	
+	private Component annotationGraph;
 
 	
 	public AnnotationTabPane(Annotation a, int tabPlacement) {
@@ -67,6 +74,7 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 		if (getTabCount() == TAB_NAMES.size()) {
 			annotationPage = (AnnotationPage) getComponentAt(TAB_NAMES.indexOf(COLUMN_ANNOTATION));
 			contextPage = (ContextPage) getComponentAt(TAB_NAMES.indexOf(CONTEXT_ANNOTATION));
+			annotationGraph = getComponentAt(TAB_NAMES.indexOf(GRAPH_ANNOTATION));
 		}
 	}
 	
@@ -99,6 +107,11 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 			contextPage.handleSelectColumn();
 		}
 		
+		// the graph
+		if (annotationGraph != null) {
+			annotationGraph = AnnotationGraph.createAnnotationGraph(annotation);
+			setComponentAt(TAB_NAMES.indexOf(GRAPH_ANNOTATION), annotationGraph);
+		}
 	}
 	
 }

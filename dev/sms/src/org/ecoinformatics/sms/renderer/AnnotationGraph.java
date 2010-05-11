@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import org.ecoinformatics.sms.annotation.Annotation;
@@ -21,6 +22,8 @@ import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxGraph;
 import com.mxgraph.view.mxStylesheet;
+
+import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 
 public class AnnotationGraph {
 	
@@ -165,12 +168,13 @@ public class AnnotationGraph {
 			}
 		}
 		
-		
-		
 		//add to the page
 		mxGraphComponent graphComponent = new mxGraphComponent(graph);
 		
-		return graphComponent;
+		JPanel panel = WidgetFactory.makePanel(5);
+		panel.add(graphComponent);
+		
+		return panel;
 		
 	}
 
