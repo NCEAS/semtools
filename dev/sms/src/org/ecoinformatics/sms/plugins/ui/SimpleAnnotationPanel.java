@@ -195,12 +195,12 @@ public class SimpleAnnotationPanel extends JPanel {
 		// Measurement template
 		JPanel measurementPanel = WidgetFactory.makePanel(2);
 		//measurementPanel.add(Box.createHorizontalGlue());
-		measurementPanel.add(WidgetFactory.makeLabel("Choose a Measurement template ", false, null));
+		measurementPanel.add(WidgetFactory.makeLabel("Select the Measurement template used: ", false, null));
 		observationMeasurement = OntologyClassField.makeLabel("", true, null);
 		observationMeasurement.setFilterClass(Annotation.OBOE_CLASSES.get(Measurement.class));
 		//measurementPanel.add(OntologyClassField.wrapField(observationMeasurement, "The Measurement template used"));
 		measurementPanel.add(observationMeasurement);
-		measurementPanel.add(WidgetFactory.makeLabel(" or select classes below", false, null));
+		//measurementPanel.add(WidgetFactory.makeLabel(" or select classes below", false, null));
 		measurementPanel.add(Box.createHorizontalGlue());
 //		measurementPanel.setBorder(
 //				BorderFactory.createTitledBorder(

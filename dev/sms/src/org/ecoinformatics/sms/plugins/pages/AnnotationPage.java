@@ -181,9 +181,10 @@ public class AnnotationPage extends AbstractUIPage {
 		
 		// Attribute Label
 		JPanel attributeLabelPanel = WidgetFactory.makePanel();
-		attributeLabelPanel.add(WidgetFactory.makeLabel("Attribute:", true));
+		attributeLabelPanel.add(WidgetFactory.makeLabel("Current Attribute:", false, null));
 		attributeLabel = WidgetFactory.makeLabel("?", true);
 		attributeLabelPanel.add(attributeLabel);
+		attributeLabelPanel.add(WidgetFactory.makeLabel("(select a column to begin)", false, null));
 		attributeLabelPanel.add(Box.createHorizontalGlue());
 		attributeLabelPanel.add(helpButton);
 		attributeLabelPanel.add(editButton);
