@@ -147,7 +147,7 @@ public class AnnotationPage extends AbstractUIPage {
 		
 		// help button
 		final AnnotationPage pageRef = this;
-		JButton helpButton = Help.createHelpButton(pageRef, "What's this?");
+		JButton helpButton = Help.createHelpButton(pageRef, "Help");
 		
 		// edit button
 		AbstractAction toggleAction = new AbstractAction("Edit") {
@@ -184,9 +184,10 @@ public class AnnotationPage extends AbstractUIPage {
 		attributeLabelPanel.add(WidgetFactory.makeLabel("Attribute:", true));
 		attributeLabel = WidgetFactory.makeLabel("?", true);
 		attributeLabelPanel.add(attributeLabel);
-		attributeLabelPanel.add(helpButton);
 		attributeLabelPanel.add(Box.createHorizontalGlue());
+		attributeLabelPanel.add(helpButton);
 		attributeLabelPanel.add(editButton);
+		
 		this.add(attributeLabelPanel);
 		
 		//add the main panel here

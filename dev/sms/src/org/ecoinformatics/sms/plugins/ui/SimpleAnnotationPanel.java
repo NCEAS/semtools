@@ -34,6 +34,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
@@ -193,20 +194,22 @@ public class SimpleAnnotationPanel extends JPanel {
 				
 		// Measurement template
 		JPanel measurementPanel = WidgetFactory.makePanel(2);
-		measurementPanel.add(WidgetFactory.makeLabel("The ", false, null));
+		//measurementPanel.add(Box.createHorizontalGlue());
+		measurementPanel.add(WidgetFactory.makeLabel("Choose a Measurement template ", false, null));
 		observationMeasurement = OntologyClassField.makeLabel("", true, null);
 		observationMeasurement.setFilterClass(Annotation.OBOE_CLASSES.get(Measurement.class));
+		//measurementPanel.add(OntologyClassField.wrapField(observationMeasurement, "The Measurement template used"));
 		measurementPanel.add(observationMeasurement);
-		//measurementPanel.add(OntologyClassField.wrapField(observationMeasurement));
-		measurementPanel.add(WidgetFactory.makeLabel(" was recorded.", false, null));
-		measurementPanel.setBorder(
-				BorderFactory.createTitledBorder(
-						BorderFactory.createMatteBorder(1, 0, 0, 0, Color.gray), 
-						"Measurement", 
-						TitledBorder.LEFT, 
-						TitledBorder.TOP,
-						WizardSettings.WIZARD_CONTENT_BOLD_FONT,
-						WizardSettings.WIZARD_CONTENT_TEXT_COLOR));
+		measurementPanel.add(WidgetFactory.makeLabel(" or select classes below", false, null));
+		measurementPanel.add(Box.createHorizontalGlue());
+//		measurementPanel.setBorder(
+//				BorderFactory.createTitledBorder(
+//						BorderFactory.createMatteBorder(1, 0, 0, 0, Color.gray), 
+//						null, //"Measurement Template", 
+//						TitledBorder.RIGHT, 
+//						TitledBorder.TOP,
+//						WizardSettings.WIZARD_CONTENT_BOLD_FONT,
+//						WizardSettings.WIZARD_CONTENT_TEXT_COLOR));
 		
 		// listen for the measurement to be set
 		observationMeasurement.addActionListener(
