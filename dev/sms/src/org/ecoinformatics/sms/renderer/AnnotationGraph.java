@@ -1,7 +1,9 @@
 package org.ecoinformatics.sms.renderer;
 
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JPanel;
@@ -16,6 +18,8 @@ import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Relationship;
 import org.ecoinformatics.sms.annotation.Standard;
 
+import com.mxgraph.layout.mxFastOrganicLayout;
+import com.mxgraph.layout.mxGraphLayout;
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
@@ -37,7 +41,7 @@ public class AnnotationGraph {
 		mxStylesheet stylesheet = graph.getStylesheet();
 		Map<String, Object> styleMap = new HashMap<String, Object>();
 		styleMap.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
-		//styleMap.put(mxConstants.STYLE_OPACITY, 50);
+		styleMap.put(mxConstants.STYLE_OPACITY, 50);
 		//styleMap.put(mxConstants.STYLE_FONTCOLOR, "#774400");
 		stylesheet.putCellStyle("Rounded", styleMap);
 		
@@ -53,31 +57,35 @@ public class AnnotationGraph {
 		Map<String, Object> edgeStyleMap = new HashMap<String, Object>();
 		edgeStyleMap.put(mxConstants.STYLE_ELBOW, mxConstants.ELBOW_VERTICAL);
 		edgeStyleMap.put(mxConstants.STYLE_EDGE, mxConstants.EDGESTYLE_ELBOW);
+		edgeStyleMap.put(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_BOTTOM);
 		stylesheet.putCellStyle("Edge", edgeStyleMap);
 
 		graph.setStylesheet(stylesheet);
 
 		
 		// for positioning
-		int x = 20;
-		int y = 20;
-		int width = 80;
-		int height = 30;
-		int observationOffset = 0;
+		double x = 20;
+		double y = 20;
+		double width = 80;
+		double height = 30;
+		double observationOffset = 0;
 		String style = "defaultVertex;Rounded";
 		String observationStyle = "defaultVertex;Rounded;Observation";
 		String measurementStyle = "defaultVertex;Rounded;Measurement";
-		String edgeStyle = "defaultEdge;Edge";
+		String observationEdgeStyle = "defaultEdge;Edge";
+		String edgeStyle = null;
+
 
 		
 		// keep track of the observation cells
 		Map<Observation, mxCell> observationMap = new HashMap<Observation, mxCell>();
 		int observationCount = 0;
 		for (Observation observation: annotation.getObservations()) {
-			// start at the left again
-			x = 20;
-			observationOffset = observationCount++ * width;
-			x += observationOffset;
+			// start at the top again
+			y = 5;
+			//observationOffset = observationCount++ * height;
+			observationOffset = 0;
+			y += observationOffset;
 
 			graph.getModel().beginUpdate();
 			try {
@@ -90,24 +98,20 @@ public class AnnotationGraph {
 
 				observationMap.put(observation, (mxCell)observationNode);
 				
-				// of entity
-//				Object entityNode = 
-//					graph.insertVertex(observationCell, null, observation.getEntity(), x, y + (height*2), width, height, style);
-//				graph.insertEdge(observationCell, null, "ofEntity", observationNode, entityNode, edgeStyle);
-
 				for (Measurement measurement: observation.getMeasurements()) {
 					
-					// shift over to right
-					x = (width*3) + observationOffset;
+					// shift down
+					y = (height*1.5) + observationOffset;
 					
 					// add measurement
 					Object measurementNode = 
 						graph.insertVertex(observationCell, null, measurement.getLabel(), x, y, width, height, measurementStyle);
 					
-					graph.insertEdge(observationCell, null, "hasMeasurement", observationNode, measurementNode, null);
+					graph.insertEdge(observationCell, null, "", observationNode, measurementNode, edgeStyle);
 					
-					// shift over to right
-					x = (width*6) + observationOffset;
+					// shift down
+					//y = (height*4) + observationOffset;
+					y = y + (height*1.5) + observationOffset;
 
 					// add characteristic, if available
 					Characteristic characteristic = null;
@@ -116,32 +120,36 @@ public class AnnotationGraph {
 					} catch (Exception e) {}
 					Object characteristicNode = 
 						graph.insertVertex(observationCell, null, characteristic, x, y, width, height, style);
-					graph.insertEdge(observationCell, null, "ofCharacteristic", measurementNode, characteristicNode, null);
+					graph.insertEdge(observationCell, null, "", measurementNode, characteristicNode, edgeStyle);
 					
+					// shift over
+					x += (width*.75);
 					// shift down
-					y += (height*2);
+					y = y + (height*.5) + observationOffset;
 					
 					// add standard
 					Standard standard = measurement.getStandard();
 					Object standardNode = 
 						graph.insertVertex(observationCell, null, standard, x, y, width, height, style);
-					graph.insertEdge(observationCell, null, "usesStandard", measurementNode, standardNode, null);
+					graph.insertEdge(observationCell, null, "", measurementNode, standardNode, edgeStyle);
 					
+					// shift over
+					x += (width*.75);
 					// shift down
-					y += (height*2);
+					y = y + (height*.5) + observationOffset;
 					
 					// add protocol
 					Protocol protocol = measurement.getProtocol();
 					Object protocolNode = 
 						graph.insertVertex(observationCell, null, protocol, x, y, width, height, style);
-					graph.insertEdge(observationCell, null, "usesProtocol", measurementNode, protocolNode, null);
+					graph.insertEdge(observationCell, null, "", measurementNode, protocolNode, edgeStyle);
 					
-					// shift down
-					y += (height*2);
+					// shift over
+					x += (width*.75);
 					
 				}
-				// shift down
-				y += height;
+				// shift over
+				//x += width;
 			}
 			finally {
 				graph.getModel().endUpdate();
@@ -150,6 +158,7 @@ public class AnnotationGraph {
 		
 		// process context edges/observation cells
 		Object[] observationCells = graph.getChildVertices(parent);
+		List<Object> observationEdges = new ArrayList<Object>();
 		for (int i = 0; i < observationCells.length; i++) {
 			mxCell observationCell = (mxCell) observationCells[i];
 			Object cellValue = observationCell.getValue();
@@ -163,15 +172,17 @@ public class AnnotationGraph {
 					Relationship relationship = context.getRelationship();
 					Object targetObservationCell = observationMap.get(targetObservation);
 					// add the context from one observation node to the other observation node
-					graph.insertEdge(parent, null, relationship, observationCell, targetObservationCell, edgeStyle);
+					Object edge = graph.insertEdge(parent, null, relationship, observationCell, targetObservationCell, observationEdgeStyle);
+					observationEdges.add(edge);
 				}	
 			}
 		}
+		graph.orderCells(true, observationEdges.toArray());
 		
 		//add to the page
 		mxGraphComponent graphComponent = new mxGraphComponent(graph);
 		
-		JPanel panel = WidgetFactory.makePanel(5);
+		JPanel panel = WidgetFactory.makePanel(9);
 		panel.add(graphComponent);
 		
 		return panel;
@@ -186,7 +197,8 @@ public class AnnotationGraph {
 			Object parent = graph.getDefaultParent();
 			
 			//mxGraphLayout layout = new mxFastOrganicLayout(graph);
-			mxHierarchicalLayout layout = new mxHierarchicalLayout(graph, SwingConstants.WEST);
+			//mxHierarchicalLayout layout = new mxHierarchicalLayout(graph, SwingConstants.WEST);
+			mxHierarchicalLayout layout = new mxHierarchicalLayout(graph, SwingConstants.NORTH);
 			layout.setDisableEdgeStyle(false);
 			layout.execute(parent);
 			
