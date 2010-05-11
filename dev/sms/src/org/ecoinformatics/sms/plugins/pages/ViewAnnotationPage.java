@@ -106,7 +106,7 @@ public class ViewAnnotationPage extends AbstractUIPage {
 		annotationGraphPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
 		
-		tabPane.insertTab("Annotation Graph", null, annotationGraphPanel, "View graph", 0);
+		//tabPane.addTab("Annotation Graph", null, annotationGraphPanel, "View graph");
 		
 		// annotation XML
 		JPanel annotationPanel = WidgetFactory.makePanel();
@@ -117,7 +117,7 @@ public class ViewAnnotationPage extends AbstractUIPage {
 		annotationPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
 		
-		tabPane.insertTab("Annotation XML", null, annotationPanel, "View XML source", 1);
+		tabPane.addTab("Annotation XML", null, annotationPanel, "View XML source");
 
 
 	}
