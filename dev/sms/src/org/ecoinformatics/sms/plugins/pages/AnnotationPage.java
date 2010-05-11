@@ -30,12 +30,14 @@ package org.ecoinformatics.sms.plugins.pages;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -87,6 +89,7 @@ public class AnnotationPage extends AbstractUIPage {
 	private JTextField observationLabel;
 	private JLabel observationLabelLabel;
 	private JCheckBox observationIsDistinct;
+	private JComboBox existingObservationList;
 	
 	// measurement
 	private JTextField measurementLabel;
@@ -113,6 +116,7 @@ public class AnnotationPage extends AbstractUIPage {
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		simpleAnnotationPanel.setEnabled(enabled);
+		existingObservationList.setEnabled(enabled);
 		editButton.setSelected(enabled);
 		if (enabled) {
 			editButton.setText("Save");
@@ -188,6 +192,13 @@ public class AnnotationPage extends AbstractUIPage {
 		//add the main panel here
 		simpleAnnotationPanel = new SimpleAnnotationPanel(true, showAll);
 		this.add(simpleAnnotationPanel);
+		
+		// same as other observation?
+		JPanel sameObservationPanel = WidgetFactory.makePanel(2);
+		sameObservationPanel.add(WidgetFactory.makeLabel("Same entity sample or individual as:", false, null));
+		existingObservationList = WidgetFactory.makePickList(null, false, 0, null);
+		sameObservationPanel.add(existingObservationList);
+		this.add(sameObservationPanel);
 		
 		// Measurement Label
 		JPanel measurementPanel = WidgetFactory.makePanel(2);
@@ -301,6 +312,16 @@ public class AnnotationPage extends AbstractUIPage {
 			try {
 				currentProtocol = currentMeasurement.getProtocol();
 				this.simpleAnnotationPanel.setObservationProtocol(currentProtocol);
+			} catch (Exception e) {
+			}
+			try {
+				List<Observation> existingObservations = annotation.getObservations();
+				existingObservationList.removeAllItems();
+				existingObservationList.addItem(null);
+				for (Observation o: existingObservations) {
+					existingObservationList.addItem(o);
+				}
+				existingObservationList.setSelectedItem(currentObservation);
 			} catch (Exception e) {
 			}
 		} catch (Exception e) {
