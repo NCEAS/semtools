@@ -301,15 +301,15 @@ public class MaterializeDB {
 	 * @return entity instance
 	 */
 	private static EntityInstance MaterializeEntity(
-			Observation obsType, 
-			String uniqueRecordIdPrefix,
+			Observation obsType,
+			String recordIdPrefix,
 			Map<Observation, Set<MeasurementInstance>> obsType2MeasIdx, 
 			Map<ObsTypeKey, EntityInstance> entIdx, 
 			Annotation A, OboeModel OBOE)
 	{
 		String keyValue = GetObsTypeKeys(obsType, obsType2MeasIdx); 
 		List<Measurement> keyMeasTypes = obsType.getKeyMeasurements();
-		String uniqueRecordId = uniqueRecordIdPrefix + obsType.getLabel();
+		String recordId = recordIdPrefix + obsType.getLabel();
 		//System.out.println(Debugger.getCallerPosition()+",keyValue="+keyValue+",keyMeasTypes="+keyMeasTypes);
 		boolean hasKey = false;
 		EntityInstance entityInstance = null;
@@ -338,7 +338,7 @@ public class MaterializeDB {
 		if(crtNewEntityInstance){
 			org.ecoinformatics.sms.annotation.Entity entType = obsType.getEntity();
 			entityInstance = new EntityInstance(entType);
-			entityInstance.setUniqueRecordId(uniqueRecordId);
+			entityInstance.setRecordId(recordId);
 			
 			//System.out.println(Debugger.getCallerPosition()+"New ei: " + entityInstance);
 			OBOE.AddEntityInstance(entityInstance);
@@ -637,9 +637,6 @@ public class MaterializeDB {
 		throws Exception		
 	{
 		
-		String funcName =  Debugger.getWhoCalledMe();		
-		String stackTraceCaller = Debugger.getStackTraceCaller();
-		String linePos = Debugger.getCallerPosition();
 		//1. read data
 		System.out.println(Debugger.getCallerPosition()+"1. Read data ...");
 		ArrayList<String> rowStruct = new ArrayList<String>();
@@ -672,6 +669,7 @@ public class MaterializeDB {
 		System.out.println(Debugger.getCallerPosition()+"3. Materialization ...");
 		long t1 = System.currentTimeMillis();
 		OboeModel OBOE = new OboeModel();
+		
 		Map<ObsTypeKey, EntityInstance> entIdx = 
 			new TreeMap<ObsTypeKey, EntityInstance>(); //<ObsTypeId, KeyVal> --> entity instance
 		Map<ObsTypeKey, ObservationInstance> obsIdx = 
@@ -684,10 +682,12 @@ public class MaterializeDB {
 		if(pos>0&&pos+1<dataFileName.length()){
 			pureFileName = dataFileName.substring(pos+1);
 		}
-		String uniqueRecordIdPrefix;
+		OBOE.setDatasetFile(pureFileName);
+		
+		String recordIdPrefix;
 		for(int i=0;i<dataset.size();i++){
 			// uniqueRecordId is like eg20-n10-data.txt_R0_Cm1
-			uniqueRecordIdPrefix =  pureFileName + "_R"+i+"_C";
+			recordIdPrefix =  "R"+i+"_C_";
 			//System.out.println(Debugger.getCallerPosition()+"uniqueRecordIdPrefix="+uniqueRecordIdPrefix);
 			
 			ArrayList row = (ArrayList)dataset.get(i);
@@ -701,7 +701,7 @@ public class MaterializeDB {
 			Map contextIdx = new TreeMap();
 			for(Observation obsType : obsType2MeasIdx.keySet()){
 				//Step 3.3: Find or create the entity instance for each observation type partition
-				EntityInstance entInstance = MaterializeEntity(obsType, uniqueRecordIdPrefix,obsType2MeasIdx, entIdx, A, OBOE);
+				EntityInstance entInstance = MaterializeEntity(obsType, recordIdPrefix,obsType2MeasIdx, entIdx, A, OBOE);
 				
 				//Step 3.4: Find or create the observation instance for each observation type partition
 				MaterializeObs(obsType, entInstance,obsType2MeasIdx,obsIdx,contextIdx,A, OBOE);
@@ -721,6 +721,7 @@ public class MaterializeDB {
 		OBOE.toCSV(oboeFileName);
 		OBOE.toRDF(rdfFileName);
 		OBOE.toRDB(annotFileName,A);
+		OBOE.saveInstanceId();
 		t2 = System.currentTimeMillis();
 		System.out.println(Debugger.getCallerPosition()+"Time used (File writing): " + (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
 		

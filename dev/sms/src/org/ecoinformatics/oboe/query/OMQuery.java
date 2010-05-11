@@ -11,10 +11,9 @@ import org.ecoinformatics.sms.annotation.Characteristic;
 
 import org.ecoinformatics.oboe.model.*;
 
-public class Query {
+public class OMQuery {
 	
 	private Observation m_qObsType = null;
-	//private Measurement m_qMeasurementType = null;
 	private MeasurementInstance m_queryMi = null;
 	private Context m_qContextType = null;
 	

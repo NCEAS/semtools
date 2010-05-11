@@ -7,7 +7,7 @@ import org.ecoinformatics.sms.annotation.*;
 import org.ecoinformatics.sms.annotation.Measurement;
 
 public class MeasurementInstance<T> implements Comparable<MeasurementInstance> {
-	private static long gMeasId=0;
+	//private static long gMeasId=0;
 	private Long measId;
 	private String measValue;
 	private ObservationInstance observationInstance;
@@ -18,13 +18,19 @@ public class MeasurementInstance<T> implements Comparable<MeasurementInstance> {
 	
 	public MeasurementInstance(Measurement _measType, String _measValue)
 	{
-		this.setMeasValue(_measValue);
-		this.setMeasurementType(_measType);		
+		setMeasValue(_measValue);
+		setMeasurementType(_measType);		
 	}
 	
 	public MeasurementInstance(Measurement _measType, ObservationInstance _obsInstance, String _measValue)
 	{
-		setMeasId(gMeasId++);
+		//if(gMeasId==0){
+		//	gMeasId = oboe.gOldMaxMeasId;
+		//}else{
+		//	gMeasId++;
+		//}
+		//setMeasId(gMeasId);
+		setMeasId((oboe.gOldMaxMeasId)++);
 		this.setMeasValue(_measValue);
 		this.setMeasurementType(_measType);
 		this.setObservationInstance(_obsInstance);

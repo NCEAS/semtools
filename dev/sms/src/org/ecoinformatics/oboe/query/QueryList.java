@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 public class QueryList {
-	ArrayList<Query> m_queryList = null;
+	ArrayList<OMQuery> m_queryList = null;
 	
 	public QueryList(){
-		m_queryList = new ArrayList<Query>(); 		
+		m_queryList = new ArrayList<OMQuery>(); 		
 	}
 	
 	/**
@@ -42,7 +42,7 @@ public class QueryList {
 	 * @param i
 	 * @return
 	 */
-	public Query getQuery(int i)
+	public OMQuery getQuery(int i)
 	{
 		return m_queryList.get(i);
 	}
@@ -62,7 +62,7 @@ public class QueryList {
 			while((oneQuery = r.readLine())!=null){
 				if(oneQuery.trim().length()>0&&oneQuery.startsWith(Constant.QUERY_COMMENT_PREFIX))
 					continue;
-				Query query = new Query();
+				OMQuery query = new OMQuery();
 				
 				query.parse(oneQuery);
 				m_queryList.add(query);
@@ -93,7 +93,7 @@ public class QueryList {
 	 */
 	public void setTest()
 	{
-		Query query = new Query();
+		OMQuery query = new OMQuery();
 		query.setTest();
 		m_queryList.add(query);
 	}

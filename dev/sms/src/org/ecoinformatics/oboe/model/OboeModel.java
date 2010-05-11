@@ -3,11 +3,14 @@ package org.ecoinformatics.oboe.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.HashMap;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
@@ -18,25 +21,31 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 
+import org.ecoinformatics.oboe.Constant;
 import org.ecoinformatics.oboe.Debugger;
 import org.ecoinformatics.oboe.datastorage.PostgresDB;
 import org.ecoinformatics.sms.annotation.*;
 
 public class OboeModel {
-
-	 public List<EntityInstance> m_entityInstances;
-	 public List<ObservationInstance> m_observationInstances;
-	 public List<MeasurementInstance> m_measurementInstances;
+	public static long gOldMaxEntId=0;
+	public static long gOldMaxObsId=0;
+	public static long gOldMaxMeasId=0;
+	
+	public List<EntityInstance> m_entityInstances;
+	public List<ObservationInstance> m_observationInstances;
+	public List<MeasurementInstance> m_measurementInstances;
+ 
+	public List<ContextInstance> m_contextInstances;
+ 
+	//index from oi --> ci list, used in materialize DB
+	private Map<ObservationInstance, List<ContextInstance>> m_oi2ciList;
+ 
+	//index from oi --> mi list, used in materialize DB
+	private Map<ObservationInstance, List<MeasurementInstance>> m_oi2miList;
+ 
+	private String m_datasetFile = "";
 	 
-	 public List<ContextInstance> m_contextInstances;
-	 
-	 //index from oi --> ci list, used in materialize DB
-	 private Map<ObservationInstance, List<ContextInstance>> m_oi2ciList;
-	 
-	 //index from oi --> mi list, used in materialize DB
-	 private Map<ObservationInstance, List<MeasurementInstance>> m_oi2miList;
-	 
-	 public OboeModel()
+	public OboeModel() throws IOException, Exception
 	 {
 		 m_entityInstances = new ArrayList<EntityInstance>();
 		 m_observationInstances = new ArrayList<ObservationInstance>();
@@ -45,8 +54,86 @@ public class OboeModel {
 		 
 		 m_oi2ciList = new TreeMap<ObservationInstance, List<ContextInstance>>();
 		 m_oi2miList = new TreeMap<ObservationInstance, List<MeasurementInstance>>();
+		  
+		 initializeInstanceId();
 	 }
-	 
+	
+	/**
+	 * From the property file, get the maximum entity/observation/measurement instance id
+	 * 
+	 * @throws IOException
+	 * @throws Exception
+	 */
+	private void initializeInstanceId() throws IOException,Exception
+	{
+		 // Read properties file.
+		 Properties prop = new Properties();
+		 try {
+			 //FIXME: where to put the property file???? 
+			 FileInputStream is = new FileInputStream(Constant.localOutputUriPrefix+"instanceid.properties");
+			 prop.load(is);
+		     String str = prop.getProperty("gMaxEndId");
+		     if(str!=null&&str.length()>0){
+		    	 gOldMaxEntId = Long.parseLong(str);
+		     }else{
+		    	 throw new Exception("Cannot get old maximum entity id.");
+		     }
+		     
+		     str = prop.getProperty("gMaxObsId");
+		     if(str!=null&&str.length()>0){
+		    	 gOldMaxObsId = Long.parseLong(str);
+		     }else{
+		    	 throw new Exception("Cannot get old maximum observation id.");
+		     }
+		     
+		     str = prop.getProperty("gMaxMeasId");
+		     if(str!=null&&str.length()>0){
+		    	 gOldMaxMeasId = Long.parseLong(str);
+		     }else{
+		    	 throw new Exception("Cannot get old maximum measurement id.");
+		     }
+		     is.close();
+		     System.out.println(Debugger.getCallerPosition()+
+					 	"gOldMaxEntId="+gOldMaxEntId+",gOldMaxObsId="+gOldMaxObsId+",gOldMaxMeasId="+gOldMaxMeasId);
+		 } catch (IOException e) {
+			 throw e;
+		 }
+		 
+	}
+	
+	/**
+	 * Save the maximum entity/observation/measurement instance id to the property file
+	 * @throws IOException
+	 * @throws Exception
+	 */
+	public void saveInstanceId() throws IOException,Exception
+	{
+		 // Write properties file.
+		 Properties prop = new Properties();
+		 try {
+			 FileOutputStream outs = new FileOutputStream(Constant.localOutputUriPrefix+"instanceid.properties");
+			 prop.setProperty("gMaxMeasId", (new Long(gOldMaxMeasId)).toString());
+			 prop.setProperty("gMaxObsId", (new Long(gOldMaxObsId)).toString());
+			 prop.setProperty("gMaxEndId", (new Long(gOldMaxEntId)).toString());
+			 prop.store(outs,"");
+			 //prop.store(outs,("gMaxObsId="+gOldMaxObsId));
+			 //prop.store(outs,("gMaxMeasId="+gOldMaxMeasId));
+		    outs.close();
+		    System.out.println(Debugger.getCallerPosition()+
+				 	"gOldMaxEntId="+gOldMaxEntId+",gOldMaxObsId="+gOldMaxObsId+",gOldMaxMeasId="+gOldMaxMeasId);
+		 } catch (IOException e) {
+			 throw e;
+		 }
+	}
+	
+	 public String getDatasetFile() {
+		 return m_datasetFile;
+	 }
+
+	 public void setDatasetFile(String mDatasetFile) {
+		 m_datasetFile = mDatasetFile;
+	 }
+
 	 public void AddEntityInstance(EntityInstance ei){
 		 m_entityInstances.add(ei);
 	 }
@@ -292,8 +379,8 @@ public class OboeModel {
 		 PostgresDB db = new PostgresDB();
 		 
 		 db.open();
-		 db.importAnnotation(A, annotationFileName); //export type information
-		 db.importInstance(this); //export data instance information.
+		 long annotId = db.importAnnotation(A, annotationFileName); //export type information
+		 db.importInstance(this,annotId); //export data instance information.
 		 db.close();
 		 System.out.println(Debugger.getCallerPosition()+"End...");
 	 }

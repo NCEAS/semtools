@@ -20,7 +20,7 @@ public class MDB extends PostgresDB{
 	 * @param query
 	 * @return
 	 */
-	private String translateQuery(Query query)
+	private String translateQuery(OMQuery query)
 	{
 		String sql = "";
 		sql +="SELECT DISTINCT record_id ";
@@ -35,13 +35,21 @@ public class MDB extends PostgresDB{
 		return sql;
 	}
 	
-	public OboeQueryResult query(Query query) throws Exception
+	/**
+	 * Perform a query over the materialized database
+	 * 
+	 * @param query
+	 * @return
+	 * @throws Exception
+	 */
+	public OboeQueryResult query(OMQuery query) throws Exception
 	{
 		OboeQueryResult queryResult = new OboeQueryResult();
 		
 		//open database connection
 		super.open();
 		
+		//translate the OM query to SQL query
 		String sql = translateQuery(query);
 		
 		Connection conn = super.getConnection();
@@ -54,7 +62,7 @@ public class MDB extends PostgresDB{
 		rs.close();
 		stmt.close();
 			
-		//close database connectioni
+		//close database connection
 		super.close();
 		
 		return queryResult;		

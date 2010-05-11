@@ -8,9 +8,10 @@ import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Entity;
 
 public class EntityInstance {
-	private static long gEntId=0;
+	//private static long gEntId=0;
 	
-	private String m_uniqueRecordId;
+	private long m_did;
+	private String m_recordId;
 	
 	private long entId;
 	private Entity entityType;
@@ -18,9 +19,31 @@ public class EntityInstance {
 	private OboeModel oboe;
 	private Annotation a;
 	
+	public long getDid() {
+		return m_did;
+	}
+
+	public void setDid(long did) {
+		m_did = did;
+	}
+
+	public String getRecordId() {
+		return m_recordId;
+	}
+
+	public void setRecordId(String mRecordId) {
+		m_recordId = mRecordId;
+	}
+
 	public EntityInstance(Entity _entityType)
 	{
-		setEntId(gEntId++);
+//		if(gEntId==0){
+//			gEntId = oboe.gOldMaxEntId;
+//		}else{
+//			gEntId++;
+//		}
+//		setEntId(gEntId);
+		setEntId((oboe.gOldMaxEntId)++);
 		setEntityType(_entityType);
 	}
 	
@@ -37,18 +60,15 @@ public class EntityInstance {
 		this.entityType = entityType;
 	}
 	
-	public String getUniqueRecordId() {
-		return m_uniqueRecordId;
-	}
 	
-	public String getUniqueEntityId()
-	{
-		return (m_uniqueRecordId+"_eid_"+entId);
-	}
+	//public String getUniqueEntityId()
+	//{
+	//	return (m_uniqueRecordId+"_eid_"+entId);
+	//}
 
-	public void setUniqueRecordId(String mUniqueRecordId) {
-		m_uniqueRecordId = mUniqueRecordId;
-	}
+	//public void setUniqueRecordId(String mUniqueRecordId) {
+	//	m_uniqueRecordId = mUniqueRecordId;
+	//}
 	
 	public OboeModel getOboe() {
 		return oboe;
@@ -65,9 +85,9 @@ public class EntityInstance {
 	
 	public String toString()
 	{
-		String str = "[ei";
+		String str = "[eid=";
 		str += entId;
-		str += ",rid="+m_uniqueRecordId+",";
+		str += ",did="+m_did+",rid="+m_recordId+",";
 		str +="("+ entityType.getName()+")";
 		str +="]";
 		return str;

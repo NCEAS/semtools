@@ -10,7 +10,7 @@ import java.util.Set;
 import org.ecoinformatics.sms.annotation.*;
 
 public class ObservationInstance implements Comparable<ObservationInstance>{
-	private static long gObsId = 0;
+	//private static long gObsId = 0;
 	private Long obsId;
 	private Observation obsType;
 	private EntityInstance entityInstance;
@@ -20,7 +20,13 @@ public class ObservationInstance implements Comparable<ObservationInstance>{
 	
 	public ObservationInstance(Observation _obsType, EntityInstance _entityInstance)
 	{
-		this.setObsId(gObsId++);
+//		if(gObsId==0){
+//			gObsId = oboe.gOldMaxObsId;
+//		}else{
+//			gObsId++;
+//		}
+//		this.setObsId(gObsId);
+		this.setObsId((oboe.gOldMaxObsId)++);
 		this.setObsType(_obsType);
 		this.setEntity(_entityInstance);
 	}

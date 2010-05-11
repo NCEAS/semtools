@@ -3,7 +3,7 @@ package org.ecoinformatics.oboe;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.ecoinformatics.oboe.query.Query;
+import org.ecoinformatics.oboe.query.OMQuery;
 import org.ecoinformatics.oboe.query.QueryList;
 import org.ecoinformatics.oboe.query.OboeQueryResult;
 import org.ecoinformatics.oboe.query.OboeQueryResultContainer;
@@ -42,7 +42,7 @@ public class QueryProcessor {
 		
 		//3. perform queries
 		for(int i=0;i<queryList.size();i++){
-			Query queryI = queryList.getQuery(i);
+			OMQuery queryI = queryList.getQuery(i);
 			OboeQueryResult queryResult = queryI.execute(queryStrategy);
 			queryResultList.add(queryResult);
 		}
