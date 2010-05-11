@@ -29,8 +29,8 @@ public class PostgresDB {
 	private String m_obsInstanceTable = "observation_instance";
 	
 	
-	private String m_measTypeTable = "measurement_type";
-	private String m_measInstanceTable = "measurement_instance";
+	protected String m_measTypeTable = "measurement_type";
+	protected String m_measInstanceTable = "measurement_instance";
 	
 	private String m_contextTypeTable = "context_relationship";
 	private String m_contextInstanceTable = "context_instance";
@@ -75,6 +75,11 @@ public class PostgresDB {
             System.out.println(Debugger.getCallerPosition()+"Couldn't connect: print out a stack trace and exit.");
             throw se;
         }
+	}
+	
+	public Connection getConnection()
+	{
+		return m_conn;
 	}
 	
 	/**
@@ -286,9 +291,13 @@ public class PostgresDB {
 	 * @throws SQLException 
 	 */
 	private void setMeasTypeParam(PreparedStatement stmt, Long annotId,Observation ot, Measurement mt) throws SQLException{
+		String characteristicName = "";
 		String standardName = "";
 		String protocalName= "";
 		
+		if(mt.getCharacteristics()!=null){
+			characteristicName = mt.getCharacteristics().get(0).getName();
+		}
 		if(mt.getStandard()!=null){
 			standardName = mt.getStandard().getName();
 		}
@@ -301,7 +310,7 @@ public class PostgresDB {
 		stmt.setString(2,mt.getLabel());
 		stmt.setString(3,ot.getLabel());
 		stmt.setBoolean(4,mt.isKey());
-		stmt.setString(5,null);
+		stmt.setString(5,characteristicName);
 		stmt.setString(6,standardName);
 		stmt.setString(7, protocalName);
 	}
@@ -452,7 +461,7 @@ public class PostgresDB {
 		}
 		
 		long annotationId = insAnnotationFile(annotationUri);
-		System.out.println(Debugger.getCallerPosition()+",annotationUri="+annotationUri+",annotationId="+annotationId);
+		System.out.println(Debugger.getCallerPosition()+"annotationUri="+annotationUri+", annotationId="+annotationId);
 		
 		PreparedStatement pstmtObs = m_conn.prepareStatement(m_insertObservationType);
 		PreparedStatement pstmtMeas = m_conn.prepareStatement(m_insertMeasurementType);

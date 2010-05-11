@@ -16,6 +16,12 @@ public class MeasurementInstance<T> implements Comparable<MeasurementInstance> {
 	private OboeModel oboe;
 	private Annotation a;
 	
+	public MeasurementInstance(Measurement _measType, String _measValue)
+	{
+		this.setMeasValue(_measValue);
+		this.setMeasurementType(_measType);		
+	}
+	
 	public MeasurementInstance(Measurement _measType, ObservationInstance _obsInstance, String _measValue)
 	{
 		setMeasId(gMeasId++);

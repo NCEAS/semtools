@@ -127,9 +127,10 @@ public class MaterializeDB {
 	 * @param annotFileName
 	 * @return
 	 */
-	private static Annotation readAnnotation(String annotFileName)
+	private static Annotation readRemoteAnnotation(String annotFileName)
 	{
 	
+		annotFileName = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-ex2-annot.xml";
 		String annot1 = annotFileName;
 		URL url = null;
 	    URLConnection connection = null;
@@ -167,7 +168,6 @@ public class MaterializeDB {
 	    
 	    for(Annotation a: annotations){
 	    	List<Mapping> mappingList = a.getMappings();
-	    	//System.out.println("a : EML package = " +a.getEMLPackage()+", Data Table = " + a.getDataTable());
 	    	System.out.println("a : mappingList size = " +mappingList.size());
 	    	for(Mapping m: mappingList){
 	    		System.out.println(m.getAttribute()+", " + m.getMeasurement().getLabel() +", "+m.getValue() +", "+m.getConditions());
@@ -656,7 +656,10 @@ public class MaterializeDB {
 		System.out.println(Debugger.getCallerPosition() +"2. Read annotation ...");
 		Annotation A = null;
 		if(annotFileName.endsWith(".xml")){ //this is an annotation file
-			A = readAnnotation(annotFileName);
+			//A = readRemoteAnnotation(annotFileName);
+			InputStream is = new FileInputStream(annotFileName);
+			A = Annotation.read(is);
+			//A = readAnnotation(annotFileName);
 		}else{
 			//this is an annotation specification file
 			AnnotationSpecifier a = new AnnotationSpecifier();
@@ -731,49 +734,60 @@ public class MaterializeDB {
 	 * @author cao
 	 * @param args
 	 * 
-	 * 
-	E.g., to set parameters in the Arguments field
-
-	er-2008-ex3-eml.xml //now this file is not used
-	er-2008-ex3-data.txt
-	er-2008-ex3-annot.xml
-	er-2008-ex3-oboe.csv
-
 	 */
 	public static void main(String[] args) {
 		
-		if(args.length!=2&&args.length!=3){
-			System.out.println("Usage: ./MaterializeDB <1. file prefix name> <2. row num> [<3. bool: materialize context chain>]");
+		boolean bMaterializeContextChain = true;
+		
+		//if(args.length!=2&&args.length!=3){
+			//System.out.println("Usage: ./MaterializeDB <1. file prefix name> <2. row num> [<3. bool: materialize context chain>]");
+			//System.out.println("[<3. bool: materialize context chain> default false\n");		
+			//return;
+		//}
+		//String emlFileName = Constant.localOutputUriPrefix + args[0] + Constant.C_EML_FILE_SUFFIX;
+		//String annotFileName = Constant.localOutputUriPrefix + args[0] + Constant.C_ANNOT_SPEC_FILE_SUFFIX;
+		//String dataFileName = Constant.localOutputUriPrefix +args[0] + "-n"+args[1]+ Constant.C_DATA_FILE_SUFFIX;
+		//String oboeFileName = Constant.localOutputUriPrefix +args[0] + "-n"+args[1]+Constant.C_OUT_CSV_FILE_SUFFIX;
+		//String rdfFileName =  Constant.localOutputUriPrefix +args[0] + "-n"+args[1]+Constant.C_OUT_RDF_FILE_SUFFIX;
+		//int numOfRows = Integer.parseInt(args[1]);
+		
+		//if(args.length==3){
+		//	bMaterializeContextChain = Boolean.parseBoolean(args[2]);
+		//}
+		
+		// E.g.
+		// ./MaterializeDB null er-2008-ex2-annot.xml er-2008-ex2-data.txt er-2008-ex2 
+		if(args.length<4||args.length>5){
+			System.out.println("Usage: ./MaterializeDB <1. eml file name> <2. annotation file name> " +
+					"<3. data file name> <4. output file prefix> [<5. bool: materialize context chain>]");
+			System.out.println("[<5. bool: materialize context chain> default false\n");
 			return;
 		}
-		String emlFileName = Constant.localOutputUriPrefix + args[0] + Constant.C_EML_FILE_SUFFIX;
-		String annotFileName = Constant.localOutputUriPrefix + args[0] + Constant.C_ANNOT_SPEC_FILE_SUFFIX;
-		String dataFileName = Constant.localOutputUriPrefix +args[0] + "-n"+args[1]+ Constant.C_DATA_FILE_SUFFIX;
-		String oboeFileName = Constant.localOutputUriPrefix +args[0] + "-n"+args[1]+Constant.C_OUT_CSV_FILE_SUFFIX;
-		String rdfFileName =  Constant.localOutputUriPrefix +args[0] + "-n"+args[1]+Constant.C_OUT_RDF_FILE_SUFFIX;
 		
-		int numOfRows = Integer.parseInt(args[1]);
-		boolean bMaterializeContextChain = false;
-		if(args.length==3){
-			bMaterializeContextChain = Boolean.parseBoolean(args[2]);
+		String emlFileName = Constant.localOutputUriPrefix + args[0]; 
+		String annotFileName = Constant.localOutputUriPrefix + args[1]; 
+		String dataFileName = Constant.localOutputUriPrefix +args[2];
+		String oboeFileName = Constant.localOutputUriPrefix +args[3] +Constant.C_OUT_CSV_FILE_SUFFIX;
+		String rdfFileName =  Constant.localOutputUriPrefix +args[3] +Constant.C_OUT_RDF_FILE_SUFFIX;
+		if(args.length==5){
+			bMaterializeContextChain = Boolean.parseBoolean(args[4]);
 		}
-		
+			
 		// 1. Confirm parameters
-		System.out.println("emlFileName="+emlFileName);
-		System.out.println("annotFileName="+annotFileName);
-		System.out.println("dataFileName="+dataFileName);
-		System.out.println("oboeFileName="+oboeFileName);
-		System.out.println("rdfFileName="+rdfFileName);
-		System.out.println("numOfRows="+numOfRows);
-		System.out.println("materialize context chain ="+bMaterializeContextChain+"\n---------------\n");
-		
+		System.out.println("\n"+Debugger.getCallerPosition()+"nemlFileName="+emlFileName);
+		System.out.println(Debugger.getCallerPosition()+"annotFileName="+annotFileName);
+		System.out.println(Debugger.getCallerPosition()+"dataFileName="+dataFileName);
+		System.out.println(Debugger.getCallerPosition()+"oboeFileName="+oboeFileName);
+		System.out.println(Debugger.getCallerPosition()+"rdfFileName="+rdfFileName);
+		System.out.println(Debugger.getCallerPosition()+"materialize context chain ="+bMaterializeContextChain+"\n---------------\n");
 		
 		// 2. Materialize DB
 		try {
 			OboeModel OBOE = MateriaDB(emlFileName,dataFileName, annotFileName, oboeFileName, rdfFileName, bMaterializeContextChain);
-			System.out.println("********************\nOutput OBOE CSV file is in: "+oboeFileName+
-					"\nOutput OBOE RDF file is in: "+rdfFileName+
-					"\n********************");
+			System.out.println(Debugger.getCallerPosition()+"********************\n" +
+					Debugger.getCallerPosition()+"Output OBOE CSV file is in: "+oboeFileName+"\n"+
+					Debugger.getCallerPosition()+"Output OBOE RDF file is in: "+rdfFileName+"\n"+
+					Debugger.getCallerPosition()+"********************");
 		} catch (FileNotFoundException e) {			
 			e.printStackTrace();
 		} catch (Exception e) {			

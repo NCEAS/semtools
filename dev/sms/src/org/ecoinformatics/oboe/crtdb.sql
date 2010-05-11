@@ -1,8 +1,13 @@
+
+#data
+#CREATE TABLE data_annotation(did bigint, annot_id bigint, dataset_file varchar(256)); 
+
 DROP TABLE context_relationship;
 DROP TABLE measurement_type;
 DROP TABLE observation_type;
 DROP TABLE annotation;
 DROP SEQUENCE annot_id_seq;
+
 DROP TABLE entity_instance;
 DROP TABLE observation_instance;
 DROP TABLE measurement_instance;

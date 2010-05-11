@@ -52,7 +52,7 @@ public class SyntheticDataValidator {
 	public static void main(String[] args)
 	{
 		if(args.length!=2){
-			System.out.println("Usage: ./MaterializeDB <0. file name prefix> <1. number of rows> ");
+			System.out.println("Usage: ./SyntheticDataValidator <0. file name prefix> <1. number of rows> ");
 			return;
 		}
 		

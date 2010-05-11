@@ -77,7 +77,7 @@ public class SyntheticDataGenerator {
 	 */
 	public static void main(String[] args) {
 		if(args.length!=2){
-			System.out.println("Usage: ./MaterializeDB <0. file name prefix> <1. number of rows> ");
+			System.out.println("Usage: ./SyntheticDataGenerator <0. file name prefix> <1. number of rows> ");
 			return;
 		}
 		
