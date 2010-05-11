@@ -111,7 +111,7 @@ public class AnnotationGraph {
 					
 					// shift down
 					//y = (height*4) + observationOffset;
-					y = y + (height*1.5) + observationOffset;
+					y = y + (height*1.3) + observationOffset;
 
 					// add characteristic, if available
 					Characteristic characteristic = null;
@@ -125,7 +125,7 @@ public class AnnotationGraph {
 					// shift over
 					x += (width*.75);
 					// shift down
-					y = y + (height*.5) + observationOffset;
+					y = y + (height*.75) + observationOffset;
 					
 					// add standard
 					Standard standard = measurement.getStandard();
@@ -136,7 +136,7 @@ public class AnnotationGraph {
 					// shift over
 					x += (width*.75);
 					// shift down
-					y = y + (height*.5) + observationOffset;
+					y = y + (height*.75) + observationOffset;
 					
 					// add protocol
 					Protocol protocol = measurement.getProtocol();
