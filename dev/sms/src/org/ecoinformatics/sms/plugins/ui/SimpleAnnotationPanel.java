@@ -194,22 +194,22 @@ public class SimpleAnnotationPanel extends JPanel {
 				
 		// Measurement template
 		JPanel measurementPanel = WidgetFactory.makePanel(2);
-		//measurementPanel.add(Box.createHorizontalGlue());
-		measurementPanel.add(WidgetFactory.makeLabel("Select the Measurement template used: ", false, null));
+		measurementPanel.add(Box.createHorizontalGlue());
+		measurementPanel.add(WidgetFactory.makeLabel("Use pre-configured measurement template: ", false, null));
 		observationMeasurement = OntologyClassField.makeLabel("", true, null);
 		observationMeasurement.setFilterClass(Annotation.OBOE_CLASSES.get(Measurement.class));
 		//measurementPanel.add(OntologyClassField.wrapField(observationMeasurement, "The Measurement template used"));
 		measurementPanel.add(observationMeasurement);
 		//measurementPanel.add(WidgetFactory.makeLabel(" or select classes below", false, null));
-		measurementPanel.add(Box.createHorizontalGlue());
-//		measurementPanel.setBorder(
-//				BorderFactory.createTitledBorder(
-//						BorderFactory.createMatteBorder(1, 0, 0, 0, Color.gray), 
-//						null, //"Measurement Template", 
-//						TitledBorder.RIGHT, 
-//						TitledBorder.TOP,
-//						WizardSettings.WIZARD_CONTENT_BOLD_FONT,
-//						WizardSettings.WIZARD_CONTENT_TEXT_COLOR));
+		//measurementPanel.add(Box.createHorizontalGlue());
+		measurementPanel.setBorder(
+				BorderFactory.createTitledBorder(
+						BorderFactory.createMatteBorder(1, 0, 0, 0, Color.gray), 
+						null, //"Measurement Template", 
+						TitledBorder.RIGHT, 
+						TitledBorder.TOP,
+						WizardSettings.WIZARD_CONTENT_BOLD_FONT,
+						WizardSettings.WIZARD_CONTENT_TEXT_COLOR));
 		
 		// listen for the measurement to be set
 		observationMeasurement.addActionListener(
@@ -221,7 +221,8 @@ public class SimpleAnnotationPanel extends JPanel {
 		
 		// Characteristic and Entity
 		JPanel characteristicPanel = WidgetFactory.makePanel(2);
-				
+		characteristicPanel.add(Box.createHorizontalGlue());
+
 		observationCharacteristic = OntologyClassField.makeLabel("", true, null);
 		observationCharacteristic.setFilterClass(Annotation.OBOE_CLASSES.get(Characteristic.class));
 		characteristicPanel.add(OntologyClassField.wrapField(observationCharacteristic, "The Characteristic"));
@@ -261,14 +262,14 @@ public class SimpleAnnotationPanel extends JPanel {
 			classesPanel.add(helpPanel);
 			classesPanel.add(WidgetFactory.makeDefaultSpacer());
 		}
-		classesPanel.setBorder(
-				BorderFactory.createTitledBorder(
-						BorderFactory.createMatteBorder(1, 0, 0, 0, Color.gray), 
-						"OR", 
-						TitledBorder.LEFT, 
-						TitledBorder.TOP,
-						WizardSettings.WIZARD_CONTENT_BOLD_FONT,
-						WizardSettings.WIZARD_CONTENT_TEXT_COLOR));
+//		classesPanel.setBorder(
+//				BorderFactory.createTitledBorder(
+//						BorderFactory.createMatteBorder(1, 0, 0, 0, Color.gray), 
+//						"Or", 
+//						TitledBorder.LEFT, 
+//						TitledBorder.TOP,
+//						WizardSettings.WIZARD_CONTENT_BOLD_FONT,
+//						WizardSettings.WIZARD_CONTENT_TEXT_COLOR));
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

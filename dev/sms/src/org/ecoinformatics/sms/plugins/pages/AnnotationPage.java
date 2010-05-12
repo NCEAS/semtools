@@ -28,11 +28,13 @@
 
 package org.ecoinformatics.sms.plugins.pages;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -42,6 +44,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.border.TitledBorder;
 
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
@@ -180,11 +183,12 @@ public class AnnotationPage extends AbstractUIPage {
 		}
 		
 		// Attribute Label
-		JPanel attributeLabelPanel = WidgetFactory.makePanel();
-		attributeLabelPanel.add(WidgetFactory.makeLabel("Current Attribute:", false, null));
-		attributeLabel = WidgetFactory.makeLabel("?", true);
+		JPanel attributeLabelPanel = WidgetFactory.makePanel(2);
+		attributeLabel = WidgetFactory.makeLabel("<none selected>", true);
+		
+		attributeLabelPanel.add(WidgetFactory.makeLabel("Selected Attribute:", false, null));
 		attributeLabelPanel.add(attributeLabel);
-		attributeLabelPanel.add(WidgetFactory.makeLabel("(select a column to begin)", false, null));
+		//attributeLabelPanel.add(WidgetFactory.makeLabel("(select a column to begin)", false, null));
 		attributeLabelPanel.add(Box.createHorizontalGlue());
 		attributeLabelPanel.add(helpButton);
 		attributeLabelPanel.add(editButton);
@@ -194,12 +198,21 @@ public class AnnotationPage extends AbstractUIPage {
 		//add the main panel here
 		simpleAnnotationPanel = new SimpleAnnotationPanel(true, showAll);
 		this.add(simpleAnnotationPanel);
+		this.add(WidgetFactory.makeDefaultSpacer());
 		
 		// same as other observation?
 		JPanel sameObservationPanel = WidgetFactory.makePanel(2);
-		sameObservationPanel.add(WidgetFactory.makeLabel("Same entity sample or individual as:", false, null));
+		sameObservationPanel.add(WidgetFactory.makeLabel("Measurements were taken on the same sample or individual as:", false, null));
 		existingObservationList = WidgetFactory.makePickList(null, false, 0, null);
 		sameObservationPanel.add(existingObservationList);
+		sameObservationPanel.setBorder(
+				BorderFactory.createTitledBorder(
+						BorderFactory.createMatteBorder(1, 0, 0, 0, Color.gray), 
+						null, 
+						TitledBorder.LEFT, 
+						TitledBorder.TOP,
+						WizardSettings.WIZARD_CONTENT_FONT,
+						WizardSettings.WIZARD_CONTENT_TEXT_COLOR));
 		this.add(sameObservationPanel);
 		
 		// Measurement Label
