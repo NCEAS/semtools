@@ -18,9 +18,15 @@ import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Relationship;
 import org.ecoinformatics.sms.annotation.Standard;
 
+import com.mxgraph.layout.mxCircleLayout;
+import com.mxgraph.layout.mxCompactTreeLayout;
+import com.mxgraph.layout.mxEdgeLabelLayout;
 import com.mxgraph.layout.mxFastOrganicLayout;
 import com.mxgraph.layout.mxGraphLayout;
+import com.mxgraph.layout.mxOrganicLayout;
+import com.mxgraph.layout.mxStackLayout;
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
+import com.mxgraph.layout.orthogonal.mxOrthogonalLayout;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxConstants;
@@ -56,7 +62,9 @@ public class AnnotationGraph {
 		// the edge style
 		Map<String, Object> edgeStyleMap = new HashMap<String, Object>();
 		edgeStyleMap.put(mxConstants.STYLE_ELBOW, mxConstants.ELBOW_VERTICAL);
+		//edgeStyleMap.put(mxConstants.STYLE_ELBOW, mxConstants.ELBOW_HORIZONTAL);
 		edgeStyleMap.put(mxConstants.STYLE_EDGE, mxConstants.EDGESTYLE_ELBOW);
+		//edgeStyleMap.put(mxConstants.STYLE_EDGE, mxConstants.EDGESTYLE_LOOP);
 		edgeStyleMap.put(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_BOTTOM);
 		stylesheet.putCellStyle("Edge", edgeStyleMap);
 
@@ -205,6 +213,10 @@ public class AnnotationGraph {
 			Object parent = graph.getDefaultParent();
 			
 			//mxGraphLayout layout = new mxFastOrganicLayout(graph);
+			//mxGraphLayout layout = new mxCircleLayout(graph);
+			//mxGraphLayout layout = new mxOrganicLayout(graph);
+			//mxGraphLayout layout = new mxCompactTreeLayout(graph);
+
 			mxHierarchicalLayout layout = new mxHierarchicalLayout(graph, SwingConstants.WEST);
 			//mxHierarchicalLayout layout = new mxHierarchicalLayout(graph, SwingConstants.NORTH);
 			layout.setDisableEdgeStyle(false);
