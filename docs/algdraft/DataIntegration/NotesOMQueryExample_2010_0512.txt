@@ -1,0 +1,22 @@
+
+Query examples
+1. Measurement : <height > 0>
+2. Measurement : <height>
+3. Observation : <height > 0>
+4. Observation : <tree . height > 0>
+5. Obs : tree.height > 10 && Obs : tree.diameter > 5
+6. Obs : tree . (height > 10 && diameter > 5)
+7. Obs : tree($x).height > 10 && Obs : tree($x).diameter > 5
+8. select d
+   from observation o1, measurement m1, measurement m2
+   where m1.observation = o1 and 
+         m2.observation = o1 and
+         o1.entity = tree and
+         o1.dataset = d and
+         m1.value > 10 and
+         m2.value > 5 and
+         m1.characteristic = height and
+         m2.characteristic = diameter
+6. OBSERVATION OF tree WHERE (height > 10 & diameter >
+5)
+7. MEASUREMENT WHERE height > 10
