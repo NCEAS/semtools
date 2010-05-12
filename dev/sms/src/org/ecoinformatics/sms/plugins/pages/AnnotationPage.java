@@ -31,6 +31,10 @@ package org.ecoinformatics.sms.plugins.pages;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -48,6 +52,7 @@ import javax.swing.border.TitledBorder;
 
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
+import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.sms.annotation.Entity;
 import org.ecoinformatics.sms.annotation.Mapping;
 import org.ecoinformatics.sms.annotation.Measurement;
@@ -203,7 +208,15 @@ public class AnnotationPage extends AbstractUIPage {
 		// same as other observation?
 		JPanel sameObservationPanel = WidgetFactory.makePanel(2);
 		sameObservationPanel.add(WidgetFactory.makeLabel("Measurements were taken on the same sample or individual as:", false, null));
-		existingObservationList = WidgetFactory.makePickList(null, false, 0, null);
+		ItemListener observationListener = new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				Observation obs = (Observation) existingObservationList.getSelectedItem();
+				if (obs != null) {
+					simpleAnnotationPanel.setObservationEntity(obs.getEntity());
+				}
+			}
+		};
+		existingObservationList = WidgetFactory.makePickList(null, false, 0, observationListener);
 		sameObservationPanel.add(existingObservationList);
 		sameObservationPanel.setBorder(
 				BorderFactory.createTitledBorder(
@@ -276,6 +289,17 @@ public class AnnotationPage extends AbstractUIPage {
 		try {
 			// what are we editing:
 			attributeLabel.setText(currentAttributeName);
+			
+			try {
+				List<Observation> existingObservations = annotation.getObservations();
+				existingObservationList.removeAllItems();
+				existingObservationList.addItem(null);
+				for (Observation o: existingObservations) {
+					existingObservationList.addItem(o);
+				}
+				
+			} catch (Exception e) {
+			}
 
 			// is there a measurement mapping for the attribute?
 			currentMapping = annotation.getMapping(currentAttributeName);
@@ -288,7 +312,10 @@ public class AnnotationPage extends AbstractUIPage {
 			
 			// is there an observation that uses that measurement?
 			currentObservation = annotation.getObservation(currentMeasurement);
-
+			
+			// select it in the existing list
+			existingObservationList.setSelectedItem(currentObservation);
+			
 			// try to set the text field values
 			try {
 				boolean distinct = currentObservation.isDistinct();
@@ -327,16 +354,6 @@ public class AnnotationPage extends AbstractUIPage {
 			try {
 				currentProtocol = currentMeasurement.getProtocol();
 				this.simpleAnnotationPanel.setObservationProtocol(currentProtocol);
-			} catch (Exception e) {
-			}
-			try {
-				List<Observation> existingObservations = annotation.getObservations();
-				existingObservationList.removeAllItems();
-				existingObservationList.addItem(null);
-				for (Observation o: existingObservations) {
-					existingObservationList.addItem(o);
-				}
-				existingObservationList.setSelectedItem(currentObservation);
 			} catch (Exception e) {
 			}
 		} catch (Exception e) {
@@ -443,7 +460,41 @@ public class AnnotationPage extends AbstractUIPage {
 			// don't save this at all
 			return annotation;
 		}
-
+		
+		// check if it is meant to be part of an existing observation
+		Observation selectedObservation = (Observation) existingObservationList.getSelectedItem();
+		if (selectedObservation != null) {
+			// use the selected one
+			if (currentObservation == null) {
+				currentObservation = selectedObservation;
+				currentObservation.addMeasurement(currentMeasurement);
+			}
+			// if they are different, swap them out
+			else if (!selectedObservation.equals(currentObservation)) {
+				currentObservation.removeMeasurement(currentMeasurement);
+				selectedObservation.addMeasurement(currentMeasurement);
+				// remove "empty observation"
+				if (currentObservation.getMeasurements().size() < 1) {
+					// check for contexts that reference the observation
+					for (Observation obs: annotation.getObservations()) {
+						// avoid concurrent modification error
+						Iterator<Context> iter = new ArrayList<Context>(obs.getContexts()).iterator();
+						while (iter.hasNext()) {
+							Context c = iter.next();
+							if (c.getObservation() != null && c.getObservation().equals(currentObservation)) {
+								obs.removeContext(c);
+								Log.debug(5, 
+										currentObservation + " provides context for " + obs 
+										+ "\nThis Context relationship has also been removed");
+							}
+						}
+					}
+					annotation.removeObservation(currentObservation);
+				}
+				currentObservation = selectedObservation;
+			}
+		}
+		
 		// the observation
 		if (currentObservation == null) {
 			currentObservation = new Observation();
@@ -453,6 +504,7 @@ public class AnnotationPage extends AbstractUIPage {
 			annotation.addObservation(currentObservation);
 			Log.debug(40, "Adding Observation: " + currentObservation);
 		}
+		
 		
 		// observation label
 		String label = observationLabel.getText();
@@ -623,6 +675,9 @@ public class AnnotationPage extends AbstractUIPage {
 		
 		// classes
 		simpleAnnotationPanel.reset();
+		
+		// existing observations
+		existingObservationList.removeAllItems();
 		
 	}
 
