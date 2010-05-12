@@ -37,7 +37,7 @@ import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 
 public class AnnotationGraph {
 	
-	public static Component createAnnotationGraph(Annotation annotation, boolean contextOnly) {
+	public static Component createAnnotationGraph(Annotation annotation, boolean showAll) {
 		
 		// the graph
 		mxGraph graph = new mxGraph();
@@ -106,7 +106,7 @@ public class AnnotationGraph {
 
 				observationMap.put(observation, (mxCell)observationNode);
 				
-				if (contextOnly) {
+				if (!showAll) {
 					continue;
 				}
 				
@@ -194,7 +194,7 @@ public class AnnotationGraph {
 		//add to the page
 		mxGraphComponent graphComponent = new mxGraphComponent(graph);
 		
-		if (contextOnly) {
+		if (!showAll) {
 			layoutGraph(graphComponent);
 		}
 		

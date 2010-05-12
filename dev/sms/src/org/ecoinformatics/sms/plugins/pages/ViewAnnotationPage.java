@@ -93,7 +93,7 @@ public class ViewAnnotationPage extends AbstractUIPage {
 		// annotation graph
 		JPanel annotationGraphPanel = WidgetFactory.makePanel();
 		// create the graph
-		final Component graphComponent = AnnotationGraph.createAnnotationGraph(annotation, false);
+		final Component graphComponent = AnnotationGraph.createAnnotationGraph(annotation, true);
 		JButton refreshButton = WidgetFactory.makeJButton("Re-Layout", new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AnnotationGraph.layoutGraph(graphComponent);
