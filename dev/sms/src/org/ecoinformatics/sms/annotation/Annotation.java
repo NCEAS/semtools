@@ -33,6 +33,7 @@
 package org.ecoinformatics.sms.annotation;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -111,7 +112,23 @@ public class Annotation {
     * @param o the observation 
     */
    public void removeObservation(Observation o) {
-      _observations.remove(o);
+      removeObservation(o, false);
+   }
+   
+   public void removeObservation(Observation o, boolean includeContext) {
+	   if (includeContext) {
+		   for (Observation obs: _observations) {
+				// avoid concurrent modification error
+				Iterator<Context> iter = new ArrayList<Context>(obs.getContexts()).iterator();
+				while (iter.hasNext()) {
+					Context c = iter.next();
+					if (c.getObservation() != null && c.getObservation().equals(o)) {
+						obs.removeContext(c);
+					}
+				}
+			}
+	   }
+	   _observations.remove(o);
    }
 
    /**
