@@ -76,6 +76,10 @@ public class RemoveCommand implements Command {
 
 		// get the annotation elements
 		Mapping mapping = annotation.getMapping(attributeName);
+		if (mapping == null) {
+			Log.debug(5, "No mapping exists for this column - cannot remove"); 
+			return;
+		}
 		Measurement measurement = mapping.getMeasurement();
 		Observation observation = annotation.getObservation(measurement);
 
@@ -90,23 +94,35 @@ public class RemoveCommand implements Command {
 				return;
 			}
 			
+			boolean removeContext = false;
+			
 			// check for contexts
 			for (Observation obs: annotation.getObservations()) {
 				for (Context c: obs.getContexts()) {
 					if (c.getObservation() != null && c.getObservation().equals(observation)) {
-						//TODO concurrent modification?
-						//obs.removeContext(c);
-						Log.debug(5, 
+						// prompt to remove context
+						int contextResonse = JOptionPane.showConfirmDialog(
+								morphoFrame, 
 								observation + " provides context for " + obs 
-								+ "\nRemove this Context relationship before removing " + observation);
-						return;
+								+ "\nShould this Context relationship also be removed?",
+								"Removing Observation from Context?", 
+								JOptionPane.YES_NO_CANCEL_OPTION);
+						
+						if (contextResonse == JOptionPane.YES_OPTION) {
+							removeContext = true;
+							break;
+						}
+						if (contextResonse == JOptionPane.CANCEL_OPTION) {
+							// stop
+							return;
+						}
 					}
 				}
 			}
 			// remove the mapping
 			annotation.removeMapping(mapping);
-			// remove the observation
-			annotation.removeObservation(observation);
+			// remove the observation, include context?
+			annotation.removeObservation(observation, removeContext);
 		}
 		
 		else if (toRemove.equals(Measurement.class)) {
