@@ -100,7 +100,7 @@ public class ContextPage extends AbstractUIPage {
 				if (editButton.isSelected()) {
 					// active only if we have an observation
 					pageRef.setEnabled(observation != null);
-					editButton.setText("Save");
+					editButton.setText("Apply");
 				}
 				else {
 					pageRef.setEnabled(false);
@@ -145,7 +145,7 @@ public class ContextPage extends AbstractUIPage {
 		contextList.setEnabled(enabled);
 		editButton.setSelected(enabled);
 		if (enabled) {
-			editButton.setText("Save");
+			editButton.setText("Apply");
 		} else {
 			editButton.setText("Edit");
 		}
