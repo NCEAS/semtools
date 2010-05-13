@@ -33,8 +33,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -52,7 +50,6 @@ import javax.swing.border.TitledBorder;
 
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
-import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.sms.annotation.Entity;
 import org.ecoinformatics.sms.annotation.Mapping;
 import org.ecoinformatics.sms.annotation.Measurement;
@@ -125,9 +122,11 @@ public class AnnotationPage extends AbstractUIPage {
 		super.setEnabled(enabled);
 		simpleAnnotationPanel.setEnabled(enabled);
 		existingObservationList.setEnabled(enabled);
+		observationIsDistinct.setEnabled(enabled);
+		measurementIsKey.setEnabled(enabled);
 		editButton.setSelected(enabled);
 		if (enabled) {
-			editButton.setText("Save");
+			editButton.setText("Apply");
 		} else {
 			editButton.setText("Edit");
 		}
@@ -163,7 +162,7 @@ public class AnnotationPage extends AbstractUIPage {
 				if (editButton.isSelected()) {
 					// active only if we have an observation
 					pageRef.setEnabled(currentAttributeName != null);
-					editButton.setText("Save");
+					editButton.setText("Apply");
 				}
 				else {
 					pageRef.setEnabled(false);
@@ -195,6 +194,13 @@ public class AnnotationPage extends AbstractUIPage {
 		attributeLabelPanel.add(attributeLabel);
 		//attributeLabelPanel.add(WidgetFactory.makeLabel("(select a column to begin)", false, null));
 		attributeLabelPanel.add(Box.createHorizontalGlue());
+		// Observation distinct
+		observationIsDistinct = WidgetFactory.makeCheckBox("Is Distinct?", false);
+		attributeLabelPanel.add(observationIsDistinct);
+		// measurement key
+		measurementIsKey = WidgetFactory.makeCheckBox("Is Key?", false);
+		attributeLabelPanel.add(measurementIsKey);
+		// help
 		attributeLabelPanel.add(helpButton);
 		attributeLabelPanel.add(editButton);
 		
@@ -213,6 +219,8 @@ public class AnnotationPage extends AbstractUIPage {
 				Observation obs = (Observation) existingObservationList.getSelectedItem();
 				if (obs != null) {
 					simpleAnnotationPanel.setObservationEntity(obs.getEntity());
+					observationIsDistinct.setSelected(obs.isDistinct());
+					observationLabel.setText(obs.getLabel());
 				}
 			}
 		};
@@ -240,11 +248,6 @@ public class AnnotationPage extends AbstractUIPage {
 		measurementLabelPanel.add(measurementLabel);
 		measurementLabelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
-		// measurement key
-		measurementIsKey = WidgetFactory.makeCheckBox("Is Key?", false);
-		measurementLabelPanel.add(measurementIsKey);
-		measurementLabelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
-				8 * WizardSettings.PADDING));
 		
 		measurementPanel.add(measurementLabelPanel);
 		measurementPanel.add(WidgetFactory.makeHTMLLabel(Help.MEASUREMENT_ISKEY_HELP, 2));
@@ -263,11 +266,6 @@ public class AnnotationPage extends AbstractUIPage {
 		observationLabel = WidgetFactory.makeOneLineShortTextField("");
 		observationLabel.setEnabled(false);
 		labelPanel.add(observationLabel);
-		labelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
-				8 * WizardSettings.PADDING));
-		// Observation distinct
-		observationIsDistinct = WidgetFactory.makeCheckBox("Is Distinct?", false);
-		labelPanel.add(observationIsDistinct);
 		labelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
 				8 * WizardSettings.PADDING));
 		
@@ -463,6 +461,7 @@ public class AnnotationPage extends AbstractUIPage {
 		
 		// check if it is meant to be part of an existing observation
 		Observation selectedObservation = (Observation) existingObservationList.getSelectedItem();
+		// if one is selected, we might do something with it.
 		if (selectedObservation != null) {
 			// use the selected one
 			if (currentObservation == null) {
@@ -475,23 +474,21 @@ public class AnnotationPage extends AbstractUIPage {
 				selectedObservation.addMeasurement(currentMeasurement);
 				// remove "empty observation"
 				if (currentObservation.getMeasurements().size() < 1) {
-					// check for contexts that reference the observation
-					for (Observation obs: annotation.getObservations()) {
-						// avoid concurrent modification error
-						Iterator<Context> iter = new ArrayList<Context>(obs.getContexts()).iterator();
-						while (iter.hasNext()) {
-							Context c = iter.next();
-							if (c.getObservation() != null && c.getObservation().equals(currentObservation)) {
-								obs.removeContext(c);
-								Log.debug(5, 
-										currentObservation + " provides context for " + obs 
-										+ "\nThis Context relationship has also been removed");
-							}
-						}
-					}
-					annotation.removeObservation(currentObservation);
+					annotation.removeObservation(currentObservation, true);
 				}
 				currentObservation = selectedObservation;
+			}
+		}
+		// nothing selected - could be new or they are splitting off
+		if (selectedObservation == null) {
+			// if they want to split off the observation make sure that happens
+			if (currentObservation != null) {
+				currentObservation.removeMeasurement(currentMeasurement);
+				// remove "empty observation"
+				if (currentObservation.getMeasurements().size() < 1) {
+					annotation.removeObservation(currentObservation, true);
+				}
+				currentObservation = null;
 			}
 		}
 		
@@ -504,13 +501,12 @@ public class AnnotationPage extends AbstractUIPage {
 			annotation.addObservation(currentObservation);
 			Log.debug(40, "Adding Observation: " + currentObservation);
 		}
-		
-		
+				
 		// observation label
-		String label = observationLabel.getText();
-		if (label != null && label.length() > 0) {
-			currentObservation.setLabel(label);
-		}
+//		String label = observationLabel.getText();
+//		if (label != null && label.length() > 0) {
+//			currentObservation.setLabel(label);
+//		}
 		
 		boolean distinct = observationIsDistinct.isSelected();
 		currentObservation.setDistinct(distinct);
