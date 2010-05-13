@@ -29,7 +29,6 @@
 package org.ecoinformatics.sms.plugins.pages;
 
 import java.awt.Color;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -237,44 +236,30 @@ public class AnnotationPage extends AbstractUIPage {
 		this.add(sameObservationPanel);
 		
 		// Measurement Label
-		JPanel measurementPanel = WidgetFactory.makePanel(2);
-		measurementPanel.setLayout(new GridLayout(1,2));
-		
-		JPanel measurementLabelPanel = WidgetFactory.makePanel(2);
+		JPanel measurementLabelPanel = WidgetFactory.makePanel();
 		measurementLabelLabel = WidgetFactory.makeLabel("Measurement:", false);
 		measurementLabelPanel.add(measurementLabelLabel);
-		measurementLabel = WidgetFactory.makeOneLineShortTextField("");
+		measurementLabel = WidgetFactory.makeOneLineTextField("");
 		measurementLabel.setEnabled(false);
 		measurementLabelPanel.add(measurementLabel);
-		measurementLabelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
-				8 * WizardSettings.PADDING));
-		
-		measurementPanel.add(measurementLabelPanel);
-		measurementPanel.add(WidgetFactory.makeHTMLLabel(Help.MEASUREMENT_ISKEY_HELP, 2));
+
 		if (showAll) {
-			this.add(measurementPanel);
-			this.add(WidgetFactory.makeDefaultSpacer());
+//			this.add(measurementLabelPanel);
+//			this.add(WidgetFactory.makeDefaultSpacer());
 		}
 		
 		// Observation Label
-		JPanel observationPanel = WidgetFactory.makePanel(2);
-		observationPanel.setLayout(new GridLayout(1,2));
-		
-		JPanel labelPanel = WidgetFactory.makePanel(2);
+		JPanel labelPanel = WidgetFactory.makePanel();
 		observationLabelLabel = WidgetFactory.makeLabel("Observation:", false);
 		labelPanel.add(observationLabelLabel);
-		observationLabel = WidgetFactory.makeOneLineShortTextField("");
+		observationLabel = WidgetFactory.makeOneLineTextField("");
 		observationLabel.setEnabled(false);
 		labelPanel.add(observationLabel);
-		labelPanel.setBorder(new javax.swing.border.EmptyBorder(0, 0, 0,
-				8 * WizardSettings.PADDING));
-		
-		observationPanel.add(labelPanel);
-		observationPanel.add(WidgetFactory.makeHTMLLabel(Help.OBSERVATION_ISKEY_HELP, 2));
 		if (showAll) {
-			this.add(observationPanel);
-			this.add(WidgetFactory.makeDefaultSpacer());
+//			this.add(labelPanel);
+//			this.add(WidgetFactory.makeDefaultSpacer());
 		}
+		this.add(Box.createVerticalGlue());
 	
 	}
 
