@@ -48,7 +48,6 @@ import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.commands.AnnotationCommand;
 import org.ecoinformatics.sms.plugins.commands.CompoundAnnotationSearchCommand;
-import org.ecoinformatics.sms.plugins.commands.ObservationCommand;
 import org.ecoinformatics.sms.plugins.commands.OntologyManagementCommand;
 import org.ecoinformatics.sms.plugins.commands.RemoveCommand;
 import org.ecoinformatics.sms.plugins.commands.SaveAnnotationCommand;
@@ -110,10 +109,6 @@ public class AnnotationPlugin
 	
 	private GUIAction annotateAction = null;
 
-	private GUIAction splitObservationAction;
-
-	private GUIAction mergeObservationAction;
-
 	private GUIAction removeObservationAction;
 
 	private GUIAction removeMeasurementAction;
@@ -152,36 +147,6 @@ public class AnnotationPlugin
 		annotateAction.setEnabled(false);
 
 		annotateAction.setEnabledOnStateChange(
-				StateChangeEvent.SELECT_DATATABLE_COLUMN,
-				true, GUIAction.EVENT_LOCAL);
-		
-		mergeObservationAction =
-			new GUIAction(
-				"Merge Observation",
-				null,
-				new ObservationCommand(true));
-		mergeObservationAction.setToolTipText(
-			"Selected columns are for the same Observation");
-		mergeObservationAction.setMenuItemPosition(menuPosition++);
-		mergeObservationAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
-		mergeObservationAction.setEnabled(false);
-
-		mergeObservationAction.setEnabledOnStateChange(
-				StateChangeEvent.SELECT_DATATABLE_COLUMN,
-				true, GUIAction.EVENT_LOCAL);
-		
-		splitObservationAction =
-			new GUIAction(
-				"Split Observation",
-				null,
-				new ObservationCommand(false));
-		splitObservationAction.setToolTipText(
-			"Selected columns are for different Observations");
-		splitObservationAction.setMenuItemPosition(menuPosition++);
-		splitObservationAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
-		splitObservationAction.setEnabled(false);
-
-		splitObservationAction.setEnabledOnStateChange(
 				StateChangeEvent.SELECT_DATATABLE_COLUMN,
 				true, GUIAction.EVENT_LOCAL);
 		
@@ -277,8 +242,6 @@ public class AnnotationPlugin
 		// add the custom actions
 		UIController controller = UIController.getInstance();
 		controller.addGuiAction(annotateAction);
-		controller.addGuiAction(mergeObservationAction);
-		controller.addGuiAction(splitObservationAction);
 		controller.addGuiAction(removeObservationAction);
 		controller.addGuiAction(removeMeasurementAction);
 		controller.addGuiAction(viewAction);
@@ -896,8 +859,6 @@ public class AnnotationPlugin
 				if (dataView != null) {
 					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(annotateAction, morphoFrame), true);
 					// separator
-					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(mergeObservationAction, morphoFrame), true);
-					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(splitObservationAction, morphoFrame), false);
 					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(removeObservationAction, morphoFrame), false);
 					dataView.addPopupMenuItem(UIController.getGUIActionCloneUsedByMorphoFrame(removeMeasurementAction, morphoFrame), false);
 				}
