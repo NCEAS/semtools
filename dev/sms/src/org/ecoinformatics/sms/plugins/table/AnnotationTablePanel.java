@@ -48,6 +48,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
 
+import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.commands.DirectAnnotationCommand;
 import org.ecoinformatics.sms.plugins.pages.Help;
@@ -149,6 +150,11 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 	public void handleStateChange(StateChangeEvent event) {
 		if (event.getChangedState().equals(AnnotationPlugin.ANNOTATION_CHANGE_EVENT)) {
 			AnnotationTableModel model = (AnnotationTableModel) annotationTable.getModel();
+			
+			//get the latest annotation
+			Annotation annotation = AnnotationPlugin.getCurrentActiveAnnotation();
+			model.setAnnotation(annotation);
+			
 			// remember the current selection state
 			int viewIndex = annotationTable.getSelectedColumn();
 			int modelIndex = -1;

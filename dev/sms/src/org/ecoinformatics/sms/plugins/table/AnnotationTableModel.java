@@ -69,6 +69,10 @@ public class AnnotationTableModel extends AttributiveCellTableModel {
 		this.columnIds = columns;
 	}
 	
+	public void setAnnotation(Annotation annotation) {
+		this.annotation = annotation;
+	}
+	
 	public Object[] getRowHeaders() {
 		List<Object> rows = new ArrayList<Object>();
 		//add the measurements

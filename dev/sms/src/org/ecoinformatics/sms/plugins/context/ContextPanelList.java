@@ -120,6 +120,10 @@ public class ContextPanelList extends JPanel {
 		contextsPanel.revalidate();
 	}
 	
+	public void setAnnotation(Annotation annotation) {
+		this.annotation = annotation;
+	}
+	
 }
 class ListActionListener implements ActionListener {
 	

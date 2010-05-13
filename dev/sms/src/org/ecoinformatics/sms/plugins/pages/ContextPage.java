@@ -161,6 +161,11 @@ public class ContextPage extends AbstractUIPage {
 		return annotation;
 	}
 	
+	public void setAnnotation(Annotation annotation) {
+		this.annotation = annotation;
+		contextList.setAnnotation(annotation);
+	}
+	
 	private void populateList() {
 		if (this.observation == null) {
 			return;

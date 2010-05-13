@@ -91,6 +91,8 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 	private void showAnnotation() {
 		// refresh the annotation column view
 		String attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
+		// get the latest
+		annotation = AnnotationPlugin.getCurrentActiveAnnotation();
 		if (annotationPage != null) {
 			// reset the UI
 			annotationPage.reset();
@@ -104,6 +106,7 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 		
 		// refresh the context view
 		if (contextPage != null) {
+			contextPage.setAnnotation(annotation);
 			contextPage.handleSelectColumn();
 		}
 		
