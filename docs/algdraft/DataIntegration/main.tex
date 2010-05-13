@@ -1,0 +1,83 @@
+\documentclass[conference]{IEEEtran}
+
+\ifCLASSINFOpdf
+  % \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../pdf/}{../jpeg/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+  % \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../eps/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.eps}
+\fi
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+ \renewcommand\floatpagefraction{0.99}
+ \renewcommand\topfraction{0.99}
+ \renewcommand\bottomfraction{0.99}
+ \renewcommand\textfraction{.05}
+ \setcounter{totalnumber}{5}
+
+\newtheorem{example}{\bf Example}[section]
+\newtheorem{definition}{\bf Definition}[section]
+\newcommand{\from}[2]{{\bf[{\sc from #1:} #2]}}
+
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+\begin{document}
+
+\title{Querying Integrated Scientific Observation and Measurement Data}
+
+% author names and affiliations
+% use a multiple column layout for up to three different
+% affiliations
+\author{\IEEEauthorblockN{Author1}
+\IEEEauthorblockA{School of Electrical and\\Computer Engineering\\
+Georgia Institute of Technology\\
+Atlanta, Georgia 30332--0250\\
+Email: http://www.michaelshell.org/contact.html}
+\and
+\IEEEauthorblockN{Author2}
+\IEEEauthorblockA{Twentieth Century Fox\\
+Springfield, USA\\
+Email: homer@thesimpsons.com}
+\and
+\IEEEauthorblockN{Author3}
+\IEEEauthorblockA{Starfleet Academy\\
+San Francisco, California 96678-2391\\
+Telephone: (800) 555--1212\\
+Fax: (888) 555--1212}}
+
+\maketitle
+
+
+\begin{abstract}
+%\boldmath
+The abstract goes here.
+\end{abstract}
+
+% no keywords
+
+\input{intro.tex}
+\input{related.tex}
+\input{modeldef.tex} %Shawn will work on this
+\input{method.tex} %Huiping will work on this
+\input{evaluation.tex}
+
+\section{Conclusion}
+
+
+\bibliographystyle{IEEEtranS}
+\bibliography{IEEEabrv,main}
+
+\end{document}
+

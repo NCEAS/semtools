@@ -1,0 +1,158 @@
+\section{Introduction}\label{sec:intro}
+In this work, we study the query processing over scientific
+observation and measurement data using OBOE
+model\cite{DBLP:conf/er/BowersMS08}. OBOE model is a conceptual model
+used to interpret observation and measurement data. 
+
+\subsection{Background}
+
+%Application background
+In many scientific domains (e.g., ecology, hydrology, earth science,
+geology), people collect observational data. Such data
+record the observed value of some real world entity at some specific
+place and time. E.g., ecologists studying relationship between the 
+growth pattern and the treatments often need to record the tree
+heights. The collected data reflect the fact the tree height of a
+specific tree is 30.1in on May 1, 2009 and 30.3in on May 1, 2010. 
+
+%Characteristics of scientific observational data: non-normalized
+Almost all such scientific data do not follow database higher normal
+forms. Generally, scientists have their way in interpreting their
+data, but they are not ready for any normalization process. 
+For example, Table \ref{tb:dataset} is a simplified but typical dataset collected by
+a scientist who study the growth pattern of trees. 
+Obviously, the ``plt'' of the first two rows is the same place, and
+the ``plt'' of the last two rows is the same. 
+Here, their area information is redundant. 
+In the real application, many columns have redundant information. 
+
+%HP: this one has the coordinates, it's troublesome to explain. 
+%% \begin{table}[htb]
+%% \begin{center}
+%% \begin{tabular}{|l|l|l|l|l|}
+%% \hline
+%% code & no & ht & plt & area\\\hline
+%% piru & 1 & 35.8 & $(34^{\circ}8'3N,118^{\circ}14'37W)$ & 4.0\\\hline
+%% piru & 2 & 36.2 & $(34^{\circ}8'3N,118^{\circ}14'37W)$ & 4.0\\\hline
+%% piru & 1 & 25.7 & $(36^{\circ}10'30N,115^{\circ}8'11W)$ & 3.0 \\\hline
+%% %abba & 1 & 15.6 & $(36^{\circ}10'30N,115^{\circ}8'11W)$ & 3.0\\\hline
+%% capo & 1 & 15.6 & $(36^{\circ}10'30N,115^{\circ}8'11W)$ & 3.0\\\hline
+%% \end{tabular}
+%% \end{center}
+%% \caption{Dataset}
+%% \label{tb:dataset}
+%% \end{table}
+
+
+\begin{table}[htb]
+\begin{center}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+code & no & ht & plt & area\\\hline
+piru & 1 & 35.8 & California & 4.0\\\hline
+piru & 2 & 36.2 & California & 4.0\\\hline
+piru & 1 & 25.7 & Oregon & 3.0 \\\hline
+%capo & 1 & 7.8 & Oregon & 3.0\\\hline
+Oriental poppy& 1 & 7.8 & Oregon & 3.0\\\hline 
+\end{tabular}
+\end{center}
+\caption{Dataset}
+\label{tb:dataset}
+\end{table}
+%HP: California poppy info
+%Oregon iris: http://en.wikipedia.org/wiki/List_of_native_Oregon_plants
+%http://en.wikipedia.org/wiki/California_poppy
+
+
+%Introduce major concepts
+In scientific domains where people collect observation and measurement
+data, there are several commonly used and widely recognized canonical
+concepts(\cite{oboe, om}). 
+In this paper, we refer these concepts as OM concepts. 
+The canonical concepts include {\em observation}, {\em measurement},
+{\em characteristic}, {\em standard}, {\em protocol} or ({\em procedure}). 
+For example, {\bf add an example to illustrate these concepts. }
+
+
+%Introduce annotation, Motivation to use annotation
+Generally, every scientific dataset goes into the data repository with
+some metadata, e.g., Dublin core metadata\cite{***}, Darwin core metadata\cite{***}. 
+However, all these metadata are at the dataset level, they did not
+provide enough information for the data {\em content} inside the
+dataset. 
+To better make use of the data content in the repository, more systems
+are embracing the ideas of having metadata on the data content. 
+E.g., Some systems \cite{tdar} provides a mechanism to collect the
+column/attribute level metadata, some system \cite{semtools} uses
+{\em annotation} to add more semantic information to the data
+content. In this work, we follow the terminology in \cite{semtools} and
+use the term {\em annotation} to distinguish the 
+metadata on the data content from those on data objects at a coarser
+granularity. 
+%How to represent the annotation and the symbols used
+We propose tools for scientists to provide annotations to scientific
+observational data. 
+\from{HP}{Put a screen-dump of annotation.}
+
+
+%Queries to such data and challenges to answer such queries.
+The internal data structure of such scientific data repository is
+generally unknown to a user who wants to pose a query to such scientific data
+repository and get some useful information. 
+So, it is unrealistic for a him/her to formulate a query based on the 
+underlying data structure of the data.  
+The easiest query they can pose to such data repository are keyword-query. 
+Such keyword style query works well for the dataset metadata
+(e.g., contributor information, dataset description, etc) using the
+current Information Retrieval (IR) techniques. However, it
+is far from enough to be used to search the data content because the
+data content need to be interpreted with semantics. 
+It is important in the scientific domain to have typical
+kinds of queries. One fact we can use is that the domain
+scientists know well the widely used OM concepts as discussed above. 
+So, naturally, when searching such scientific data, they can provide
+the concept information to restrain their queries and to find data sets
+related to such OM terminologies. 
+Given the dataset in Table \ref{tb:dataset}. 
+People may ask the following observation and measurement (OM) queries. 
+
+\begin{example}\label{eg:query}
+Simple and summarization queries: 
+\begin{itemize}
+\item $Q_1$: Give me the data sets that contain species ``Picea rubens'' observations.
+%$Q_2$: Give me the data sets that have measurements on ``area''  characteristics. 
+\item $Q_2$: Give me the data sets that contain species ``Picea rubens''
+  observations in ``California''. 
+\item $Q_3$: Give me the data sets that contain at least five distinct
+  ``Picea rubens'' observations.
+\item $Q_4$: Give me the data sets that have trees with average ``height''
+  than 20.0 in ``California''. 
+% Shawn: an example on summarize one measure with respect to another.
+% This could take two forms: one where the context forms the groups
+% (like by year), and another where the two measurements are within the
+% same context (like finding correlations).
+\end{itemize}
+\end{example}
+\from{HP}{Challenges to answer such queries: uniqueness}
+
+\from{HP}{Current data integration effort}
+
+\from{HP}{Our effort in querying observational data: introduce OBOE}
+
+\from{HP}{Need re-organization. The description in the
+  following several sections may be moved to here later.}
+
+\subsection{Contribution and paper organization}
+Contributions of this work:
+\begin{itemize}
+\item We formulate a canonical set of queries over observation and
+  measurement scientific data repository. Such formal queries can
+  formalize most OM concepts related searches. 
+\item We propose three methods to evaluate such OM
+  queries. \from{HP}{Elaborate the three methods.}
+\end{itemize}
+
+This paper is organized as follows. 
+Section \ref{sec:relatedwork} reviews works that are related to this
+research. Section \ref{sec:dataquery} formalizes the data model and the
+queries that people are interested to ask.  
