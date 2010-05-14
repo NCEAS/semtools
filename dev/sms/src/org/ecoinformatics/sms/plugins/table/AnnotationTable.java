@@ -28,7 +28,6 @@ package org.ecoinformatics.sms.plugins.table;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.table.TableCellRenderer;
@@ -37,6 +36,7 @@ import jp.gr.java_conf.tame.swing.table.CellSpan;
 import jp.gr.java_conf.tame.swing.table.MultiSpanCellTable;
 
 import org.ecoinformatics.sms.annotation.Observation;
+import org.ecoinformatics.sms.annotation.ObservationComparator;
 
 /**
  * Panel for viewing and editing data-centric Annotations
@@ -172,21 +172,4 @@ public class AnnotationTable extends MultiSpanCellTable {
 		this.revalidate();
 		this.repaint();
 	}
-}
-class ObservationComparator implements Comparator<Observation> {
-
-	public int compare(Observation o1, Observation o2) {
-		if (o1 == null && o2 == null) {
-			return 0;
-		}
-		if (o1.containsObservation(o2)) {
-			return 1;
-		}
-		else if (o2.containsObservation(o1)) {
-			return -1;
-		}
-		// default w/o context consideration
-		return o1.compareTo(o2);
-	}
-	
 }

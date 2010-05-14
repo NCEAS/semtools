@@ -2,6 +2,7 @@ package org.ecoinformatics.sms.renderer;
 
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
+import org.ecoinformatics.sms.annotation.ObservationComparator;
 import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Relationship;
 import org.ecoinformatics.sms.annotation.Standard;
@@ -88,7 +90,18 @@ public class AnnotationGraph {
 		// keep track of the observation cells
 		Map<Observation, mxCell> observationMap = new HashMap<Observation, mxCell>();
 		int observationCount = 0;
-		for (Observation observation: annotation.getObservations()) {
+		List<Observation> sortedObservations = annotation.getObservations();
+		boolean sort = true;
+		boolean includeContext = true;
+		if (sort) {
+			if (includeContext) {
+				Collections.sort(sortedObservations, new ObservationComparator());
+			} else {
+				Collections.sort(sortedObservations);
+			}
+		}
+		
+		for (Observation observation: sortedObservations) {
 			// start at the top again
 			y = 5;
 			//observationOffset = observationCount++ * height;

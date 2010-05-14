@@ -231,4 +231,4 @@ public class Observation implements Comparable {
    private List<Measurement> _measurements = new ArrayList();
    private List<Context> _contexts = new ArrayList();
    private boolean _isDistinct;
-} 
+}
