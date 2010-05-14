@@ -301,7 +301,8 @@ public class AnnotationPlugin
 		MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
 		String querySpec = getAnnotationQuery();
 		Query query = new Query(querySpec, Morpho.thisStaticInstance);
-		query.setSearchLocal(false);
+		// TODO: always search local?
+		query.setSearchLocal(true);
 		query.setSearchMetacat(false);
 		if (location.equals(AbstractDataPackage.LOCAL) || location.equals(AbstractDataPackage.BOTH)) {
 			query.setSearchLocal(true);
@@ -591,7 +592,7 @@ public class AnnotationPlugin
 					}
 					// TODO: anything with the saved file? pointer to the source?
 				} catch (MetacatUploadException e) {
-					Log.debug(5, "Error saving annotation to network: " + annotation);
+					Log.debug(5, "Error saving annotation to network: " + id);
 					e.printStackTrace();
 				}
 			}
@@ -901,6 +902,12 @@ public class AnnotationPlugin
 					String packageId = adp.getAccessionNumber();
 					int entityIndex = dataViewer.getEntityIndex();
 					String dataTable = String.valueOf(entityIndex);
+					String location = adp.getLocation();
+					
+					// TODO: make sure we have the annotation from the correct location
+					if (location.equals(AbstractDataPackage.LOCAL)) {
+						//initializeAnnotations(packageId, location);
+					}
 					
 					// look up the annotation if it exists, or make new one
 					List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId, dataTable);
