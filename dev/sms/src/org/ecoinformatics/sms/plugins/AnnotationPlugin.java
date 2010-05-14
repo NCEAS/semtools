@@ -72,6 +72,7 @@ import edu.ucsb.nceas.morpho.datastore.MetacatDataStore;
 import edu.ucsb.nceas.morpho.datastore.MetacatUploadException;
 import edu.ucsb.nceas.morpho.framework.ConfigXML;
 import edu.ucsb.nceas.morpho.framework.MorphoFrame;
+import edu.ucsb.nceas.morpho.framework.QueryRefreshInterface;
 import edu.ucsb.nceas.morpho.framework.UIController;
 import edu.ucsb.nceas.morpho.plugins.PluginInterface;
 import edu.ucsb.nceas.morpho.plugins.ServiceController;
@@ -104,6 +105,10 @@ public class AnnotationPlugin
     public static final String LOGICAL_URI_TAG_NAME = "logicalURI";
 
     public static final String PHYSICAL_URI_TAG_NAME = "physicalURI";
+    
+    public static final String ANNOTATION_LOCATION = AbstractDataPackage.LOCAL;
+    //public static final String ANNOTATION_LOCATION = AbstractDataPackage.METACAT;
+    //public static final String ANNOTATION_LOCATION = AbstractDataPackage.BOTH;
     
     private MorphoFrame morphoFrame = null;
 	
@@ -259,7 +264,7 @@ public class AnnotationPlugin
 		initializeOntologies();
 		
 		// initialize the annotations
-		initializeAnnotations(null);
+		initializeAnnotations(null, ANNOTATION_LOCATION);
 		
 	}
 	
@@ -277,9 +282,10 @@ public class AnnotationPlugin
 			final DataViewContainerPanel dataViewContainerPanel = morphoFrame.getDataViewContainerPanel();
 			WindowAdapter windowListener = new WindowAdapter() {
 				public void windowClosed(WindowEvent we) {
-					String docid = morphoFrame.getAbstractDataPackage().getAccessionNumber();
+					AbstractDataPackage adp = morphoFrame.getAbstractDataPackage();
+					String docid = adp.getAccessionNumber();
 					clearAnnotations(docid);
-					initializeAnnotations(docid);
+					initializeAnnotations(docid, adp.getLocation());
 					removeStateChangeListeners(dataViewContainerPanel);
 					morphoFrame.removeWindowListener(this);		
 				}
@@ -288,20 +294,36 @@ public class AnnotationPlugin
 		}
 	}
 	
-	// TODO: search Metacat for annotations
-	private static void initializeAnnotations(String forDocid) {
+	// load annotations from a given location
+	private static void initializeAnnotations(String forDocid, String location) {
 		Log.debug(30, "initializing annotations for docid: " + forDocid);
 		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
+		MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
 		String querySpec = getAnnotationQuery();
 		Query query = new Query(querySpec, Morpho.thisStaticInstance);
-		query.setSearchLocal(true);
+		query.setSearchLocal(false);
 		query.setSearchMetacat(false);
+		if (location.equals(AbstractDataPackage.LOCAL) || location.equals(AbstractDataPackage.BOTH)) {
+			query.setSearchLocal(true);
+		}
+		if (location.equals(AbstractDataPackage.METACAT) || location.equals(AbstractDataPackage.BOTH)) {
+			query.setSearchMetacat(true);
+		}
 		ResultSet rs = query.execute();
 		Vector<Vector> resultVector = rs.getResultsVector();
 		for (Vector row: resultVector) {
 			String docid = (String) row.get(ResultSet.DOCIDINDEX);
+			String isLocal = (String) row.get(ResultSet.ISLOCALINDEX);
+			String isMetacat = (String) row.get(ResultSet.ISMETACATINDEX);
+			File fileSource = null;
+			
 			try {
-				File fileSource = fds.openFile(docid);
+				if (isLocal.equals(QueryRefreshInterface.LOCALCOMPLETE)) {
+					fileSource = fds.openFile(docid);
+				}
+				else if (isMetacat.equals(QueryRefreshInterface.NETWWORKCOMPLETE)) {
+					fileSource = mds.openFile(docid);
+				}
 				InputStream is = new FileInputStream(fileSource);
 				Annotation annotation = Annotation.read(is);
 				// if we are filtering, skip any docs that don't match
