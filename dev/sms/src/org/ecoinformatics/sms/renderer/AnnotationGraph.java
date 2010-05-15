@@ -206,6 +206,7 @@ public class AnnotationGraph {
 		
 		//add to the page
 		mxGraphComponent graphComponent = new mxGraphComponent(graph);
+		graphComponent.setEnabled(false);
 		
 		if (!showAll) {
 			layoutGraph(graphComponent);
