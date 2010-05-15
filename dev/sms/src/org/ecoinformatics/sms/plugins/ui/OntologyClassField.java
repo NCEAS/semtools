@@ -123,11 +123,35 @@ public class OntologyClassField extends JTextField {
 		}
 	}
 
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		// make sure we are not highlighted
+		if (currentField != null) {
+			if (enabled) {
+				currentField.highlight();
+			}
+			else {
+				currentField.unhighlight();
+			}
+		}
+	}
+	
 	public String getText() {
 		if (editing || ontologyClass == null) {
 			return super.getText();
 		}
 		return ontologyClass.getName();
+	}
+	
+	public void unhighlight() {
+			this.setBorder(new JTextField().getBorder());
+	}
+	
+	public void highlight() {
+		setBorder(
+				BorderFactory.createCompoundBorder(
+					BorderFactory.createLineBorder(Color.BLUE, 2), 
+					new JTextField().getBorder()));
 	}
 
 	public static JPanel wrapField(OntologyClassField field) {
@@ -322,7 +346,7 @@ public class OntologyClassField extends JTextField {
 			popup.setVisible(false);
 			selectionPanel = null;
 			// make sure we are not highlighted
-			currentField.setBorder(new JTextField().getBorder());
+			unhighlight();
 		}
 	}
 	
@@ -332,6 +356,9 @@ public class OntologyClassField extends JTextField {
 	 */
 	private void syncSource() {
 		if (selectionPanel == null) {
+			return;
+		}
+		if (!isEnabled()) {
 			return;
 		}
 		// get the response back
@@ -433,12 +460,9 @@ public class OntologyClassField extends JTextField {
 		
 		// highlight the field
 		if (currentField != null) {
-			currentField.setBorder(new JTextField().getBorder());
+			currentField.unhighlight();
 		}
-		source.setBorder(
-				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder(Color.BLUE, 2), 
-						new JTextField().getBorder()));
+		source.highlight();
 		currentField = source;
 		
 		// the select button
