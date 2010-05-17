@@ -32,6 +32,7 @@
  */
 package org.ecoinformatics.sms.annotation;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -203,14 +204,30 @@ public class Observation implements Comparable {
    }
    
    protected String getFullString() {
-	   String desc = "";
+	   StringBuffer desc = new StringBuffer();
 	   if (_entity != null) {
-		   desc += _entity.toString();
+		   desc.append(_entity.toString());
 	   }
-	   if (_label != null) {
-		   desc += " (" + _label + ")"; 
+	   if (_measurements != null) {
+		   desc.append(" [");
+		   Iterator<Measurement> iter = _measurements.iterator();
+		   while (iter.hasNext()) {
+			   Measurement m = iter.next();
+			   Mapping mapping = m.getMapping();
+			   if (mapping != null) {
+				   desc.append(mapping.getAttribute());
+				   if (iter.hasNext()) {
+					   desc.append(", ");
+				   }
+			   }
+		   }
+		   desc.append("]");
 	   }
-	   return desc;
+	   // TODO: probably don't need label if we have the attributes
+//	   if (_label != null) {
+//		   desc.append(" (" + _label + ")"); 
+//	   }
+	   return desc.toString();
    }
    
    /**

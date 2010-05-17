@@ -49,7 +49,8 @@ public class Measurement implements Comparable<Measurement>{
    private String _label;
    private List<Characteristic> _characteristics = new ArrayList();
    private Standard _standard;
-   private Protocol _protocol;   
+   private Protocol _protocol;
+   private Mapping mapping;
    private List<Entity> _domainValues = new ArrayList();
    private double _precision = 1.0;
    private String _value;
@@ -148,7 +149,15 @@ public class Measurement implements Comparable<Measurement>{
       return _protocol;
    }
 
-   /** 
+   public Mapping getMapping() {
+		return mapping;
+	}
+
+	public void setMapping(Mapping mapping) {
+		this.mapping = mapping;
+	}
+
+	/** 
     * Set the measurement precision
     * @param precision the precision
     */
