@@ -1,0 +1,29 @@
+Small group: MOB, SB, BL
+5/17/2010
+
+Focused on grouping measurements under observations.
+
+initially
+o1[m1] - time      
+   alt: time[m1]
+o2[m2] - time
+   alt: utc[m2]
+o3[m3] - stream
+   alt: dis[m3]
+o4[m4] - stream
+   alt: temp[m4]
+
+after merge:
+o1[m1,m2] - time
+  alt: time,utc[]
+o3[m3,m4] - stream
+  alt: dis,temp[]
+
+cxt[o3 "during" o1]
+cxt[dis,temp "at"
+time,utc]
+
+
+Attribute: a1
+...
+Same individual or specimen as: Entity[a2, a3] [drop down v] (add) (remove)
