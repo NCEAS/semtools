@@ -13,6 +13,7 @@ import javax.swing.SwingConstants;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Context;
+import org.ecoinformatics.sms.annotation.Mapping;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.ObservationComparator;
@@ -129,8 +130,13 @@ public class AnnotationGraph {
 					y = (height*1.5) + observationOffset;
 					
 					// add measurement
+					String measurementString = measurement.getLabel();
+					Mapping mapping = measurement.getMapping();
+					if (mapping != null) {
+						measurementString = mapping.getAttribute();
+					}
 					Object measurementNode = 
-						graph.insertVertex(observationCell, null, measurement.getLabel(), x, y, width, height, measurementStyle);
+						graph.insertVertex(observationCell, null, measurementString, x, y, width, height, measurementStyle);
 					
 					graph.insertEdge(observationCell, null, "", observationNode, measurementNode, edgeStyle);
 					
