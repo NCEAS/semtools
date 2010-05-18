@@ -175,7 +175,11 @@ public class Observation implements Comparable {
     */
    public boolean containsObservation(Observation obs) {
       for (Context c: _contexts) {
-    	  if (c.getObservation().equals(obs)) {
+    	  Observation targetObs = c.getObservation();
+    	  if (targetObs == null) {
+    		  continue;
+    	  }
+    	  if (targetObs.equals(obs)) {
     		  return true;
     	  }
       }
