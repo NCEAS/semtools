@@ -58,7 +58,7 @@ public class AnnotationWriter {
    private static void _writeAnnotation(Annotation a, PrintStream s) {
       s.print("<sms:annotation");
       if(a.getURI() != null)
-         s.print(" xmlns=\"" + a.getURI() + "\"");
+         s.print(" id=\"" + a.getURI() + "\"");
       s.print(" xmlns:sms=\"" + Annotation.ANNOTATION_NS + "\"");
       for(Ontology o : a.getOntologies())
          s.print(" xmlns:" + o.getPrefix() + "=\"" + o.getURI() + "\"");

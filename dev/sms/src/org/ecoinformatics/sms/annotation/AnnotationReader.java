@@ -217,7 +217,11 @@ public class AnnotationReader {
          _error("annotation element missing 'dataTable' attribute");
       _annotation.setDataTable(att2.getValue().trim());
       // get the annotation uri (optional)
-      Attr att3 = _getAttribute(e, "xmlns");
+      Attr att3 = _getAttribute(e, "id");
+      if (att3 == null) {
+    	  // try old storage mechanism
+    	  att3 = _getAttribute(e, "xmlns");
+      }
       if(att3 != null)
          _annotation.setURI(att3.getValue().trim());
    }
