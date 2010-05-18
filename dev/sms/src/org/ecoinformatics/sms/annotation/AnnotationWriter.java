@@ -185,20 +185,23 @@ public class AnnotationWriter {
     * @param s the output stream
     */
    private static void _writeContext(Context c, PrintStream s) {
-      s.print(_indent2 + "<sms:context");
-      Observation o = c.getObservation();
-      if(o != null && o.getLabel() != null)
-         s.print(" observation=\"" + o.getLabel() + "\"");
-      if(c.isIdentifying())
-         s.print(" identifying=\"yes\"");
-      s.print(">\n");
-      Relationship r = c.getRelationship();
-      if(r != null && r.getOntology() != null)
-         s.print(_indent3 + "<sms:relationship id=\"" +
-                 r.getOntology().getPrefix() + ":" +
-                 r.getName() + "\"/>\n");
-      s.print(_indent2 + "</sms:context>\n");
-   }
+		Observation o = c.getObservation();
+		if (o == null) {
+			return;
+		}
+		s.print(_indent2 + "<sms:context");
+		if (o.getLabel() != null)
+			s.print(" observation=\"" + o.getLabel() + "\"");
+		if (c.isIdentifying())
+			s.print(" identifying=\"yes\"");
+		s.print(">\n");
+		Relationship r = c.getRelationship();
+		if (r != null && r.getOntology() != null)
+			s.print(_indent3 + "<sms:relationship id=\""
+					+ r.getOntology().getPrefix() + ":" + r.getName()
+					+ "\"/>\n");
+		s.print(_indent2 + "</sms:context>\n");
+	}
    /* the indent levels */
 
    private static String _indent1 = "   ";

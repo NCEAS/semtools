@@ -193,6 +193,9 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	 * @param recursive - should this be done recursively (such that transitive context is captured)
 	 */
 	private static void expandContexts(Observation o, DbObservation dbObservation, ObjectContext context, boolean recursive) {
+		if (o == null) {
+			return;
+		}
 		List<Context> contexts = o.getContexts();
 		if (contexts == null || contexts.isEmpty()) {
 			return;
