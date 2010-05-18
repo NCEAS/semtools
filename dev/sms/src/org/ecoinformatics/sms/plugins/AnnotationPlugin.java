@@ -493,7 +493,7 @@ public class AnnotationPlugin
 		return searchtext.toString();
 	}
 	
-	public static void saveAnnotation(Annotation annotation) {
+	public static boolean saveAnnotation(Annotation annotation) {
 		
 		try {
 			
@@ -518,7 +518,9 @@ public class AnnotationPlugin
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 	
 	public static void deleteAnnotations(String packageId, String location) {
@@ -547,7 +549,7 @@ public class AnnotationPlugin
 	}
 	
 	// TODO: handle remote locations
-	public static void serializeAnnotation(String packageId, String location) {
+	public static boolean serializeAnnotation(String packageId, String location) {
 		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
 		MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
 
@@ -560,29 +562,33 @@ public class AnnotationPlugin
 			if (location.equals(AbstractDataPackage.LOCAL) || location.equals(AbstractDataPackage.BOTH)) {
 				// save if no file for this docid
 				if (fds.status(id).equals(DataStoreInterface.NONEXIST)) {
-					//save in local store
-					ByteArrayOutputStream baos = new ByteArrayOutputStream();
-					annotation.write(baos);
-					File annotationFile = fds.saveFile(id, new StringReader(baos.toString()));
-					
-					// import the annotation now that we have a real file source
 					try {
+						//save in local store
+						ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						annotation.write(baos);
+						File annotationFile = fds.saveFile(id, new StringReader(baos.toString()));
+						
+						// import the annotation now that we have a real file source
 						SMS.getInstance().getAnnotationManager().importAnnotation(annotation, annotationFile.toURI().toString());
 					}
 					catch (Exception e) {
-						Log.debug(5, "Error saving annotation: " + annotation);
+						Log.debug(5, 
+								"Error saving annotation: " + id
+								+ "\nMessage: " + e.getMessage()
+								);
 						e.printStackTrace();
+						return false;
 					}
 				}
 			}
 			
 			// network
 			if (location.equals(AbstractDataPackage.METACAT) || location.equals(AbstractDataPackage.BOTH)) {
-				String metacatStatus = mds.status(id);
-				//save in metacat
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				annotation.write(baos);
-				try {
+				try {	
+					String metacatStatus = mds.status(id);
+					//save in metacat
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					annotation.write(baos);
 					File annotationFile = null;
 					if (metacatStatus.equals(DataStoreInterface.UPDATE)) {
 						annotationFile = mds.saveFile(id, new StringReader(baos.toString()));
@@ -592,11 +598,15 @@ public class AnnotationPlugin
 					}
 					// TODO: anything with the saved file? pointer to the source?
 				} catch (MetacatUploadException e) {
-					Log.debug(5, "Error saving annotation to network: " + id);
+					Log.debug(5, "Error saving annotation to network: " + id
+							+ "\nMessage: " + e.getMessage()
+							);
 					e.printStackTrace();
+					return false;
 				}
 			}
 		}
+		return true;
 	}
 	
 	/**
@@ -756,6 +766,7 @@ public class AnnotationPlugin
 		String newId = saveEvent.getFinalId();
 		String location = saveEvent.getLocation();
 		boolean duplicate = saveEvent.isDuplicate();
+		boolean success = true;
 		
 		// get all the annotations for the original docid
 		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(oldId, null);
@@ -788,7 +799,7 @@ public class AnnotationPlugin
 					// save the copy
 					saveAnnotation(annotationCopy);
 					// serialize the copy
-					serializeAnnotation(newId, location);
+					success = serializeAnnotation(newId, location);
 				} catch (AnnotationException e) {
 					Log.debug(5, "Error saving Annotation duplicate");
 					e.printStackTrace();
@@ -800,7 +811,7 @@ public class AnnotationPlugin
 				// save the annotation
 				saveAnnotation(annotation);
 				// serialize to disk
-				serializeAnnotation(newId, location);
+				success = serializeAnnotation(newId, location);
 			}
 		}
 	}
