@@ -60,6 +60,10 @@ public class AnnotationWriter {
       s.print(" xmlns:sms=\"" + Annotation.ANNOTATION_NS + "\"");
       for(Ontology o : a.getOntologies())
          s.print(" xmlns:" + o.getPrefix() + "=\"" + o.getURI() + "\"");
+      // schema location
+      s.print(" xmlns:xsi=\"" + "http://www.w3.org/2001/XMLSchema-instance" + "\"");
+      s.print(" xsi:schemaLocation=\"" + Annotation.ANNOTATION_NS  
+    		  + " " + Annotation.ANNOTATION_NS + "/sms-semannot.xsd\"");
       if(a.getURI() != null)
           s.print(" id=\"" + a.getURI() + "\"");
       if(a.getEMLPackage() != null)
