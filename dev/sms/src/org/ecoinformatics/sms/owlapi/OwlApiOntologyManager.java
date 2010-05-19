@@ -4,7 +4,6 @@
 package org.ecoinformatics.sms.owlapi;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,17 +18,18 @@ import org.ecoinformatics.sms.ontology.OntologyProperty;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAnnotationValue;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLClassExpression;
-import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.UnknownOWLOntologyException;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 /**
  * @author leinfelder
@@ -456,7 +456,10 @@ public class OwlApiOntologyManager implements OntologyManager {
 		}
 		StringBuffer labels = new StringBuffer();
 		for (OWLAnnotation annotation : owlOnt.getAnnotations()) {
-			
+			OWLAnnotationProperty property = annotation.getProperty();
+			if (!property.getIRI().equals(OWLRDFVocabulary.RDFS_LABEL.getIRI())) {
+				continue;
+			}
 			OWLAnnotationValue value = annotation.getValue();
 			if (value instanceof OWLLiteral) {
 				OWLLiteral literal = (OWLLiteral) value;
