@@ -301,13 +301,19 @@ public class AnnotationPlugin
 		MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
 		String querySpec = getAnnotationQuery();
 		Query query = new Query(querySpec, Morpho.thisStaticInstance);
-		// TODO: always search local?
+		// search local by default
 		query.setSearchLocal(true);
 		query.setSearchMetacat(false);
-		if (location.equals(AbstractDataPackage.LOCAL) || location.equals(AbstractDataPackage.BOTH)) {
+		if (location.equals(AbstractDataPackage.LOCAL)) {
 			query.setSearchLocal(true);
+			query.setSearchMetacat(false);
 		}
-		if (location.equals(AbstractDataPackage.METACAT) || location.equals(AbstractDataPackage.BOTH)) {
+		if (location.equals(AbstractDataPackage.METACAT)) {
+			query.setSearchLocal(false);
+			query.setSearchMetacat(true);
+		}
+		if (location.equals(AbstractDataPackage.BOTH)) {
+			query.setSearchLocal(true);
 			query.setSearchMetacat(true);
 		}
 		ResultSet rs = query.execute();
@@ -597,6 +603,8 @@ public class AnnotationPlugin
 						annotationFile = mds.newFile(id, new StringReader(baos.toString()));
 					}
 					// TODO: anything with the saved file? pointer to the source?
+					// TODO: set permissions for the annotation file
+					//mds.setAccess(id, null);
 				} catch (MetacatUploadException e) {
 					Log.debug(5, "Error saving annotation to network: " + id
 							+ "\nMessage: " + e.getMessage()
@@ -916,7 +924,7 @@ public class AnnotationPlugin
 					String location = adp.getLocation();
 					
 					// TODO: make sure we have the annotation from the correct location
-					if (location.equals(AbstractDataPackage.LOCAL)) {
+					if (!location.equals(AbstractDataPackage.LOCAL) && !location.equals("")) {
 						//initializeAnnotations(packageId, location);
 					}
 					
