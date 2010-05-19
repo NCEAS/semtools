@@ -57,9 +57,12 @@ public class SaveAnnotationCommand implements Command {
 		// saving annotations for current packageId 
 		AbstractDataPackage adp = UIController.getInstance().getCurrentAbstractDataPackage();
 		String packageId = adp.getPackageId();
-		
-		// TODO: option to handle network save
-		boolean success = AnnotationPlugin.serializeAnnotation(packageId, AbstractDataPackage.LOCAL);
+		String location = adp.getLocation();
+		// default save to local if there is none given (when eml has been edited and not yet saved, the location will be blank)
+		if (location == null || location.equals("")) {
+			location = AbstractDataPackage.LOCAL;
+		}
+		boolean success = AnnotationPlugin.serializeAnnotation(packageId, location);
 		if (success) {
 			JOptionPane.showMessageDialog(UIController.getInstance().getCurrentActiveWindow(), "Annotations Saved!");
 		} else {
