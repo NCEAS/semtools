@@ -301,7 +301,7 @@ public class AnnotationPlugin
 		MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
 		String querySpec = getAnnotationQuery();
 		Query query = new Query(querySpec, Morpho.thisStaticInstance);
-		// search both by default
+		// search BOTH by default
 		query.setSearchLocal(true);
 		query.setSearchMetacat(true);
 		if (location.equals(AbstractDataPackage.LOCAL)) {
@@ -323,9 +323,11 @@ public class AnnotationPlugin
 			try {
 				if (isLocal.equals(QueryRefreshInterface.LOCALCOMPLETE)) {
 					fileSource = fds.openFile(docid);
+					Log.debug(30, "loading annotation from LOCAL source: " + docid);
 				}
 				else if (isMetacat.equals(QueryRefreshInterface.NETWWORKCOMPLETE)) {
 					fileSource = mds.openFile(docid);
+					Log.debug(30, "loading annotation from METACAT source: " + docid);
 				}
 				InputStream is = new FileInputStream(fileSource);
 				Annotation annotation = Annotation.read(is);
@@ -509,7 +511,7 @@ public class AnnotationPlugin
 				if (SMS.getInstance().getAnnotationManager().isAnnotation(id)) {
 					SMS.getInstance().getAnnotationManager().removeAnnotation(id);
 				}
-				id = accNum.incRev(id);
+				//id = accNum.incRev(id);
 			}
 			annotation.setURI(id);
 			
@@ -554,60 +556,94 @@ public class AnnotationPlugin
 	public static boolean serializeAnnotation(String packageId, String location) {
 		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
 		MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
+		AccessionNumber accNum = new AccessionNumber(Morpho.thisStaticInstance);
 
 		// get the annotations for this datapackage
 		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId, null);		
 		for (Annotation annotation: annotations) {	
 			String id = annotation.getURI();
+			ByteArrayOutputStream baos = null;
+			File annotationFile = null;
+
+			// remove the old one if present
+			try {
+				if (SMS.getInstance().getAnnotationManager().isAnnotation(id)) {
+					SMS.getInstance().getAnnotationManager().removeAnnotation(id);
+				}
+			} catch (Exception e) {
+				Log.debug(5, "Error while saving annotation: " + id
+						+ "\nMessage: " + e.getMessage()
+						);
+				e.printStackTrace();
+				return false;
+			}
 			
-			// local
+			// local save
 			if (location.equals(AbstractDataPackage.LOCAL) || location.equals(AbstractDataPackage.BOTH)) {
-				// save if no file for this docid
-				if (fds.status(id).equals(DataStoreInterface.NONEXIST)) {
-					try {
-						//save in local store
-						ByteArrayOutputStream baos = new ByteArrayOutputStream();
-						annotation.write(baos);
-						File annotationFile = fds.saveFile(id, new StringReader(baos.toString()));
-						
-						// import the annotation now that we have a real file source
-						SMS.getInstance().getAnnotationManager().importAnnotation(annotation, annotationFile.toURI().toString());
+				try {
+					
+					// find the next available id
+					while (!fds.status(id).equals(DataStoreInterface.NONEXIST)) {
+						id = accNum.incRev(id);
 					}
-					catch (Exception e) {
-						Log.debug(5, 
-								"Error saving annotation: " + id
-								+ "\nMessage: " + e.getMessage()
-								);
-						e.printStackTrace();
-						return false;
-					}
+					// set it in the annotation
+					annotation.setURI(id);
+					// save to local store
+				
+					//save in local store
+					baos = new ByteArrayOutputStream();
+					annotation.write(baos);
+					annotationFile = fds.saveFile(id, new StringReader(baos.toString()));
+					
+				}
+				catch (Exception e) {
+					Log.debug(5, 
+							"Error saving annotation: " + id
+							+ "\nMessage: " + e.getMessage()
+							);
+					e.printStackTrace();
+					return false;
 				}
 			}
 			
 			// network
 			if (location.equals(AbstractDataPackage.METACAT) || location.equals(AbstractDataPackage.BOTH)) {
-				try {	
+				try {
 					String metacatStatus = mds.status(id);
-					//save in metacat
-					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					// resolve id conflict first
+					while (metacatStatus.equals(DataStoreInterface.CONFLICT)) {
+						id = accNum.incRev(id);
+						metacatStatus = mds.status(id);
+					}
+					annotation.setURI(id);
+					baos = new ByteArrayOutputStream();
 					annotation.write(baos);
-					File annotationFile = null;
+					// check if we will update or make new file
 					if (metacatStatus.equals(DataStoreInterface.UPDATE)) {
 						annotationFile = mds.saveFile(id, new StringReader(baos.toString()));
 					}
 					else if (metacatStatus.equals(DataStoreInterface.NONEXIST)) {
 						annotationFile = mds.newFile(id, new StringReader(baos.toString()));
 					}
-					// TODO: anything with the saved file? pointer to the source?
 					// TODO: set permissions for the annotation file
 					//mds.setAccess(id, null);
-				} catch (MetacatUploadException e) {
+				} catch (Exception e) {
 					Log.debug(5, "Error saving annotation to network: " + id
 							+ "\nMessage: " + e.getMessage()
 							);
 					e.printStackTrace();
 					return false;
 				}
+			}
+			// TODO: always re-import after save?
+			try {
+				SMS.getInstance().getAnnotationManager().importAnnotation(annotation, annotationFile.toURI().toString());
+			} catch (Exception e) {
+				Log.debug(5, "Error while reimporting saved annotation: " + id
+						+ "\nMessage: " + e.getMessage()
+						);
+				e.printStackTrace();
+				return false;
 			}
 		}
 		return true;
