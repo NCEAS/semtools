@@ -70,7 +70,7 @@ public class OboeModel {
 		 Properties prop = new Properties();
 		 try {
 			 //FIXME: where to put the property file???? 
-			 FileInputStream is = new FileInputStream(Constant.localOutputUriPrefix+"instanceid.properties");
+			 FileInputStream is = new FileInputStream(Constant.localUriPrefix+"instanceid.properties");
 			 prop.load(is);
 		     String str = prop.getProperty("gMaxEndId");
 		     if(str!=null&&str.length()>0){
@@ -111,7 +111,7 @@ public class OboeModel {
 		 // Write properties file.
 		 Properties prop = new Properties();
 		 try {
-			 FileOutputStream outs = new FileOutputStream(Constant.localOutputUriPrefix+"instanceid.properties");
+			 FileOutputStream outs = new FileOutputStream(Constant.localUriPrefix+"instanceid.properties");
 			 prop.setProperty("gMaxMeasId", (new Long(gOldMaxMeasId)).toString());
 			 prop.setProperty("gMaxObsId", (new Long(gOldMaxObsId)).toString());
 			 prop.setProperty("gMaxEndId", (new Long(gOldMaxEntId)).toString());

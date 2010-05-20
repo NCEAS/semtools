@@ -1,10 +1,19 @@
 package org.ecoinformatics.oboe.query;
 
 import java.io.BufferedReader;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.Statement;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.TreeMap;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.TreeSet;
+import java.util.Map.Entry;
 
 import org.ecoinformatics.oboe.Debugger;
 import org.ecoinformatics.sms.annotation.Context;
@@ -40,7 +49,7 @@ import org.ecoinformatics.oboe.model.*;
 //	observation (but the Plot observation is not).
 
 public class OMQuery {
-	List<OMQueryBasic> m_query; 
+	List<OMQueryBasic> m_query=null; 
 	Map<String, OMQueryBasic> m_queryIndex; 
 	
 	//this is null or size is zero, then, no context
@@ -48,6 +57,12 @@ public class OMQuery {
 	//Otherwise, they are just put together using logic OR.
  	Map<String, String> m_queryContext; 
 
+ 	public OMQuery()
+ 	{
+ 		m_query = new ArrayList<OMQueryBasic>();
+ 		m_queryIndex = new TreeMap<String, OMQueryBasic>();
+ 		m_queryContext = new TreeMap<String, String>();
+ 	}
 	/**
 	 * Parse the query text to a query structure
 	 * @param queryText
@@ -75,11 +90,14 @@ public class OMQuery {
 				String entityName = queryLines.get(++i).substring(Constant.BASIC_QUERY_ENTITY.length());				
 				oneBasicQuery.setEntityTypeName(entityName);
 				
-				//1.2. parse all the measurements belong to this entity
-				oneLine = queryLines.get(++i);				
-				while(oneLine.contains(Constant.MEASUREMENT_START)){
-					if((i+6)<queryLines.size()){
-						throw new Exception("Query is not valid, measurement is not right"+queryLines);
+				//1.2. parse all the measurements belong to this entity				
+				while(i<queryLines.size()){
+					oneLine = queryLines.get(++i);
+					if(!oneLine.contains(Constant.MEASUREMENT_START))
+						break;
+					
+					if((i+6)>queryLines.size()){
+						throw new Exception("Query is not valid, i="+i+",queryLines.size="+queryLines.size());
 					}
 					String cha = queryLines.get(++i).substring(Constant.CHARACTERISTIC.length());
 					String standard = queryLines.get(++i).substring(Constant.STANDARD.length());
@@ -89,11 +107,14 @@ public class OMQuery {
 					
 					int dnfNo = Integer.parseInt(DNFnoStr);
 					QueryMeasurement queryMeas = new QueryMeasurement();
-					queryMeas.setCharacteristic(cha);
-					queryMeas.setStandard(standard);
-					queryMeas.setCondition(condition);
+					queryMeas.setCharacteristicCond(cha);
+					queryMeas.setStandardCond(standard);
+					queryMeas.setValueCond(condition);
 					queryMeas.setAggregationFunc(aggregationFunc);
+					System.out.println(Debugger.getCallerPosition()+"dnfNo="+dnfNo+",queryMeas: "+queryMeas);
+					
 					oneBasicQuery.addMeasDNF(dnfNo, queryMeas);
+					System.out.println(Debugger.getCallerPosition()+"oneBasicQuery: "+oneBasicQuery);
 					
 					oneLine = queryLines.get(++i);
 					if(oneLine.equals(Constant.MEASUREMENT_END)==false){
@@ -101,7 +122,6 @@ public class OMQuery {
 					}
 				}
 				
-				oneLine = queryLines.get(++i);
 				if(oneLine.equals(Constant.BASIC_QUERY_END)==false){
 					throw new Exception("Query is in valid, entity does not have end symbol.");
 				}
@@ -115,6 +135,7 @@ public class OMQuery {
 					String bq1str = oneLine.substring(0, pos);
 					String bq2str = oneLine.substring(pos+Constant.CONTEXT_SEPARATOR.length());
 					m_queryContext.put(bq1str,bq2str);
+					oneLine = queryLines.get(++i);
 				}
 			}else{
 				throw new Exception("Query is in valid, It contains another section:"+oneLine);
@@ -135,16 +156,10 @@ public class OMQuery {
 		q.setQueryLabel("test");
 		q.setEntityTypeName("gce:Tree");
 		QueryMeasurement queryMeas = new QueryMeasurement();
-		queryMeas.setCharacteristic("TaxonomicTypeName");
-		queryMeas.setStandard(null);
-		queryMeas.setCondition("=Picea rubens");
+		queryMeas.setCharacteristicCond("=TaxonomicTypeName");
+		queryMeas.setStandardCond(null);
+		queryMeas.setValueCond("=Picea rubens");
 		q.addMeasDNF(1, queryMeas);
-		
-//		Characteristic characteristic = new Characteristic();
-//		characteristic.setName("TaxonomicTypeName");
-//		Measurement measurementType = new Measurement();
-//		measurementType.addCharacteristic(characteristic);
-//		m_queryMi = new MeasurementInstance(measurementType,"Picea rubens");
 	}
 	
 	/**
@@ -153,48 +168,110 @@ public class OMQuery {
 	public String toString()
 	{
 		String str="";
-//		if(m_queryMi!=null){
-//			Measurement mt = m_queryMi.getMeasurementType();
-//			str +="Measurment ";
-//			if(mt.getCharacteristics()!=null){
-//				Characteristic cha = mt.getCharacteristics().get(0);
-//				str += ("Characteristic "+cha.getName()+" is ");
-//			}
-//			String mVal = m_queryMi.getMeasValue();
-//			if(mVal!=null){
-//				str +=" Value: " + mVal;
-//			}
-//		}
+
 		for(int i=0;i<m_query.size();i++){
-			str+=m_query.get(i).toString()+"\n";
+			str+=m_query.get(i).toString()+", ";
 		}
-		str+="CONTEXT\n";
+		str+="Context: ";
 		str+=this.m_queryContext.toString();
 		
 		return str;
 	}
 	
-	/**
-	 * Get the list of query measurement instances
-	 * 	
-	 * @return
-	 */
-	public List<QueryMeasurement> getQueryMeasements(){
-		List<QueryMeasurement> queryMeasList = new ArrayList<QueryMeasurement>();
-		//queryMeasList.add(m_queryMi);
+	public List<ContextChain> getContextChains()
+	{
+		List<ContextChain> resultContextChain = new ArrayList<ContextChain>();
 		
-		return queryMeasList;
+		Set<Entry<String, String>> entrySet = m_queryContext.entrySet();
+		Set<String> basicQueryInContext = new HashSet<String>();
+		
+		//1.1 grouping the basic queries
+		List<Set<String> > tmpBasicQueryGroup = new ArrayList<Set<String> >();
+		for(Entry<String, String> entry: entrySet){
+			insertBasicQuery(tmpBasicQueryGroup,entry);
+			basicQueryInContext.add(entry.getKey());
+			basicQueryInContext.add(entry.getValue());
+		}
+		
+		//1.2 put the group context to chains
+		for(int i=0;i<tmpBasicQueryGroup.size();i++){
+			ContextChain newChain = new ContextChain();
+			Set<String> curBQset = tmpBasicQueryGroup.get(i);
+			for(String keyQueryLabel: curBQset){
+				String valueQueryLabel = m_queryContext.get(keyQueryLabel);
+				OMQueryBasic qKey = m_queryIndex.get(keyQueryLabel);
+				OMQueryBasic qValue = m_queryIndex.get(valueQueryLabel);
+				newChain.addGroup(qKey,qValue);				
+			}
+			resultContextChain.add(newChain);
+		}
+		
+		//2. insert the basic queries that are not in the context to a separate set
+		for(OMQueryBasic query: m_query){
+			if(!basicQueryInContext.contains(query.getQueryLabel())){
+				//Set<String> curBQset  = new HashSet<String>();
+				//curBQset.add(query.getQueryLabel());
+				//tmpBasicQueryGroup.add(curBQset);
+				ContextChain newChain = new ContextChain();
+				newChain.addGroup(query);//add this query as a single group
+				resultContextChain.add(newChain);
+			}
+		}
+		
+		return resultContextChain;
 	}
 	
-	/**
-	 * Get the measurement conditions
-	 * @return
-	 */
-	public String getQueryMeasurementString()
+	
+	private void insertBasicQuery(List<Set<String> > tmpBasicQuery, Entry<String, String> entry)
 	{
-		String str = "";
+		boolean inserted = false;		
+		String bq1 = entry.getKey();
+		String bq2 = entry.getValue();
 		
-		//TODO: a lot more to do
+		//check whether some of entry's string can be inserted to the list or not
+		for(int i=0;i<tmpBasicQuery.size();i++){
+			Set<String> curBQset = tmpBasicQuery.get(i);
+			boolean exist = curBQset.contains(bq1);
+			if(!exist)	exist = curBQset.contains(bq2);
+				
+			if(exist){
+				curBQset.add(bq1);
+				curBQset.add(bq2);
+				inserted = true;
+				break;
+			}
+		}
+		
+		//this pair does not belong to any existing group
+		if(inserted==false){
+			Set<String> curBQset  = new HashSet<String>();
+			curBQset.add(bq1);
+			curBQset.add(bq2);		
+			tmpBasicQuery.add(curBQset);
+		}
+	}
+	
+//	/**
+//	 * Get the list of query measurement instances
+//	 * 	
+//	 * @return
+//	 */
+//	public List<QueryMeasurement> getQueryMeasements(){
+//		List<QueryMeasurement> queryMeasList = new ArrayList<QueryMeasurement>();
+//		queryMeasList.add(m_queryMi);
+//		
+//		return queryMeasList;
+//	}
+	
+//	/**
+//	 * Get the measurement conditions
+//	 * @return
+//	 */
+//	public String getQueryMeasurementString()
+//	{
+//		String str = "";
+//		
+//		//TODO: a lot more to do
 //		List<QueryMeasurement> queryMeasList = getQueryMeasements();
 //		
 //		for(int i=0;i<queryMeasList.size();i++){
@@ -210,9 +287,39 @@ public class OMQuery {
 //				str += (" AND mi.mvalue '"+ cond+"'");
 //			}
 //		}
-		return str;
-	}
+//		return str;
+//	}
 	
+	/**
+	 * Perform a query over the materialized database
+	 * 
+	 * @param query
+	 * @return
+	 * @throws Exception
+	 */
+	private Set<OboeQueryResult> execute(MDB mdb, boolean resultWithRecord) 
+		throws Exception
+	{
+		Set<OboeQueryResult> resultSet = new TreeSet<OboeQueryResult>();
+		
+		//open database connection
+		mdb.open();
+		
+		//The results of each context query should be unioned
+		List<ContextChain> contextChains = getContextChains();
+		for(int i=0;i<contextChains.size(); i++){
+			ContextChain oneContextQuery = contextChains.get(i);
+			
+			Set<OboeQueryResult> oneDNFqueryResultSet = oneContextQuery.execute(mdb, resultWithRecord);
+		
+			resultSet.addAll(oneDNFqueryResultSet);			
+		}
+		
+		//close database connection
+		mdb.close();
+		
+		return resultSet;		
+	}
 	
 	/**
 	 * Based on different query evaluation strategy, perform query.
@@ -221,19 +328,21 @@ public class OMQuery {
 	 * @return
 	 * @throws Exception 
 	 */
-	public OboeQueryResult execute(int queryStrategy) throws Exception{
-		OboeQueryResult queryResult = null;
+	public Set<OboeQueryResult> execute(int queryStrategy, boolean resultWithRecord) 
+		throws Exception
+	{
+		Set<OboeQueryResult> queryResultSet = null;
 		if(queryStrategy == Constant.QUERY_REWRITE){
 			System.out.println(Debugger.getCallerPosition() + "To come...");
 			System.exit(0);
 			
 		}else if(queryStrategy == Constant.QUERY_MATERIALIZED_DB){
 			MDB materializedDB = new MDB();
-			queryResult = materializedDB.query(this);
+			queryResultSet = execute(materializedDB,resultWithRecord);			
 		}else if(queryStrategy == Constant.QUERY_PARTIAL_MATERIALIZED_DB){
 			System.out.println(Debugger.getCallerPosition() + "To come...");
 			System.exit(0);
 		}
-		return queryResult;
+		return queryResultSet;
 	}
 }

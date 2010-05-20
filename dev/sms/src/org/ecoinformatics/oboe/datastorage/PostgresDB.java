@@ -61,6 +61,22 @@ public class PostgresDB {
 	String m_maxMeasInstanceIdSql = "SELECT last_value FROM mid_seq;";
 	
 	
+	public String getMmeasTypeTable() {
+		return m_measTypeTable;
+	}
+
+	public void setMeasTypeTable(String mMeasTypeTable) {
+		m_measTypeTable = mMeasTypeTable;
+	}
+	
+	public String getMeasInstanceTable() {
+		return m_measInstanceTable;
+	}
+
+	public void setMeasInstanceTable(String mMeasInstanceTable) {
+		m_measInstanceTable = mMeasInstanceTable;
+	}
+	
 	/**
 	 * Open the postgres connection 
 	 * 
@@ -664,4 +680,5 @@ public class PostgresDB {
 		 }
 	}
 		
+	
 }

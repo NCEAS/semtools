@@ -9,20 +9,24 @@
 #
 #formated form
 BEGIN QUERY:1
+
 BEGIN QO:1
 EntityId:gce:Tree
 BEGIN QM:1
-Characteristic:gce:DBH
-Standard:oboe-units:Centimeter
+#Characteristic:gce:DBH
+#Standard:oboe-units:Centimeter
+Characteristic:dbh
+Standard:
 Cond:<=36.00
-Aggregation:null
+Aggregation:
 DNF:1
 END QM
 BEGIN QM:2
-Characteristic:oboe:EntityName
-Standard:null
+#Characteristic:oboe:EntityName
+Characteristic:tree
+Standard:
 Cond:=1
-Aggregation:null
+Aggregation:
 DNF:1
 END QM
 END QO

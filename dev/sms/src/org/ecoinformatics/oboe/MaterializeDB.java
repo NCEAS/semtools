@@ -765,11 +765,11 @@ public class MaterializeDB {
 			return;
 		}
 		
-		String emlFileName = Constant.localOutputUriPrefix + args[0]; 
-		String annotFileName = Constant.localOutputUriPrefix + args[1]; 
-		String dataFileName = Constant.localOutputUriPrefix +args[2];
-		String oboeFileName = Constant.localOutputUriPrefix +args[3] +Constant.C_OUT_CSV_FILE_SUFFIX;
-		String rdfFileName =  Constant.localOutputUriPrefix +args[3] +Constant.C_OUT_RDF_FILE_SUFFIX;
+		String emlFileName = Constant.localUriPrefix + args[0]; 
+		String annotFileName = Constant.localUriPrefix + args[1]; 
+		String dataFileName = Constant.localUriPrefix +args[2];
+		String oboeFileName = Constant.localUriPrefix +args[3] +Constant.C_OUT_CSV_FILE_SUFFIX;
+		String rdfFileName =  Constant.localUriPrefix +args[3] +Constant.C_OUT_RDF_FILE_SUFFIX;
 		if(args.length==5){
 			bMaterializeContextChain = Boolean.parseBoolean(args[4]);
 		}

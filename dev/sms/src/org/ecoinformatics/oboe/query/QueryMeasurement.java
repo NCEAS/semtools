@@ -1,35 +1,166 @@
 package org.ecoinformatics.oboe.query;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.Statement;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+import org.ecoinformatics.oboe.Debugger;
+
 public class QueryMeasurement {
 
-	private String characteristic ="";
-	private String standard ="";
-	private String condition ="";
+	private String characteristicCond ="";
+	private String standardCond ="";
+	private String valueCond ="";
 	private String aggregationFunc = "";
 	
-	public String getCharacteristic() {
-		return characteristic;
+	public String getCharacteristicCond() {
+		return characteristicCond;
 	}
-	public void setCharacteristic(String characteristic) {
-		this.characteristic = characteristic;
+	public void setCharacteristicCond(String characteristicCond) {
+		this.characteristicCond = characteristicCond;
 	}
-	public String getStandard() {
-		return standard;
+	public String getStandardCond() {
+		return standardCond;
 	}
-	public void setStandard(String standard) {
-		this.standard = standard;
+	public void setStandardCond(String _standardCond) {
+		this.standardCond = _standardCond;
 	}
-	public String getCondition() {
-		return condition;
+	public String getValueCond() {
+		return valueCond;
 	}
-	public void setCondition(String condition) {
-		this.condition = condition;
+	public void setValueCond(String _valueCond) {
+		this.valueCond = _valueCond;
 	}
 	public String getAggregationFunc() {
 		return aggregationFunc;
 	}
 	public void setAggregationFunc(String aggregationFunc) {
 		this.aggregationFunc = aggregationFunc;
+	}
+	
+//	public String toString(){
+//		String str="";
+//		if(characteristicCond!=null&&characteristicCond.trim().length()>0){
+//			str+="characteristicCond= ["+characteristicCond+"];";			
+//		}
+//		
+//		if(standardCond!=null&&standardCond.trim().length()>0){
+//			str+="standardCond= ["+standardCond+"];";			
+//		}
+//		
+//		if(valueCond!=null&&valueCond.trim().length()>0){
+//			str+="valueCond= ["+valueCond+"];";			
+//		}
+//		
+//		if(aggregationFunc!=null&&aggregationFunc.trim().length()>0){
+//			str+="aggregationFunc= ["+aggregationFunc+"];";			
+//		}
+//		
+//		return str;
+//	}
+	
+	//tested, ok
+	public String toString(){
+		String str="";
+		
+		if(aggregationFunc!=null&&aggregationFunc.trim().length()>0){
+			str += aggregationFunc+"(";			
+		}
+		if(characteristicCond!=null&&characteristicCond.trim().length()>0){
+			str += characteristicCond;			
+		}
+		if(aggregationFunc!=null&&aggregationFunc.trim().length()>0){
+			str += ")";			
+		}
+		if(valueCond!=null&&valueCond.trim().length()>0){
+			str += " "+valueCond;			
+		}
+		if(standardCond!=null&&standardCond.trim().length()>0){
+			str += " "+standardCond;			
+		}
+		
+		return str;
+	}
+	
+	/**
+	 * Form the sql for this basic query
+	 * 
+	 * @param mdb
+	 * @return
+	 */
+	private String formSQL(MDB mdb)
+	{
+		String sql = "SELECT DISTINCT did, record_id";
+		
+		sql +=" FROM "+mdb.getMeasInstanceTable()+" AS mi,"+ mdb.getMmeasTypeTable() + " AS mt ";
+		
+		if(valueCond!=null&&valueCond.trim().length()>0){
+			if(aggregationFunc!=null){
+				sql+="GROUP BY did ";
+				//FIXME: according to different aggregatioin function, need to do some type casting for mvalue
+				sql+="HAVING "+aggregationFunc+"(mvalue)"+valueCond;
+			}else{
+				sql += " WHERE mi.mvalue"+valueCond;
+				
+				if(characteristicCond!=null){
+					sql +=" AND mt.characteristic" + characteristicCond;
+				}
+				if(standardCond!=null){
+					sql +=" AND mt.standard" + standardCond;
+				}
+			}
+		}
+		System.out.println(Debugger.getCallerPosition()+"\n"+sql);
+		
+		return sql;
+	}
+	
+	/**
+	 * Execute one query measurement
+	 * 
+	 * @param mdb
+	 * @return
+	 * @throws Exception 
+	 */
+	public Set<OboeQueryResult> execute(MDB mdb) 
+		throws Exception
+	{
+		Set<OboeQueryResult> resultSet = new TreeSet<OboeQueryResult>();
+		
+		Connection conn = mdb.getConnection();
+		if(conn==null){
+			mdb.open();
+			conn = mdb.getConnection();
+		}
+		
+		//form sql query for this condition
+		String sql = formSQL(mdb);
+		
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		//ResultSetMetaData rsmd = rs.getMetaData();
+		//int numOfCols = rsmd.getColumnCount();
+		while(rs.next()){
+			OboeQueryResult queryResult = new OboeQueryResult();
+			
+			String datasetId = rs.getString(1);
+			queryResult.setDatasetId(datasetId);
+			
+			String recordId = rs.getString(2);
+			queryResult.setRecordId(recordId);
+			
+			resultSet.add(queryResult);
+		}
+		rs.close();
+		stmt.close();
+			
+		return resultSet;
 	}
 
 }

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.ecoinformatics.oboe.Debugger;
+
 public class QueryList {
 	List<OMQuery> m_queryList = null; //this is for averaging the results
 	
@@ -22,7 +24,7 @@ public class QueryList {
 	{
 		String str="";
 		for(int i=0;i<m_queryList.size();i++){
-			str += m_queryList.get(i).toString() + "\n";			
+			str += "i="+i+":"+m_queryList.get(i).toString() + "\n";			
 		}
 		return str;
 	}
@@ -59,11 +61,16 @@ public class QueryList {
 	{
 		String oneLine="";
 		try {
-			//OMQuery curQuery = new OMQuery();
 			while((oneLine = r.readLine())!=null){
 				oneLine = oneLine.trim();
-				if(oneLine.length()>0&&oneLine.startsWith(Constant.QUERY_COMMENT_PREFIX))
+				
+				if(oneLine.length()==0)
 					continue;
+				
+				if(oneLine.startsWith(Constant.QUERY_COMMENT_PREFIX))
+					continue;
+				
+				System.out.println(Debugger.getCallerPosition()+"oneLine="+oneLine);
 				
 				//put the lines within one query to oneQuery list and parse it later
 				if(oneLine.contains(Constant.QUERY_START)){
@@ -72,7 +79,9 @@ public class QueryList {
 					
 					while((oneLine = r.readLine())!=null){
 						oneLine = oneLine.trim();
-						if(oneLine.length()>0&&oneLine.startsWith(Constant.QUERY_COMMENT_PREFIX))
+						if(oneLine.length()==0)
+							continue;
+						if(oneLine.startsWith(Constant.QUERY_COMMENT_PREFIX))
 							continue;
 						
 						if(oneLine.contains(Constant.QUERY_END))
@@ -80,14 +89,12 @@ public class QueryList {
 						
 						oneQuery.add(oneLine);
 					}
-					//List<OMQuery> tmpQuery =
-					//if(tmpQuery!=null){
-					//	m_queryList.add(tmpQuery);
-					//}
 					
 					curQuery.parse(oneQuery);
 					m_queryList.add(curQuery);
 				}
+				//finish parsing the lines for one query
+				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -3,17 +3,18 @@ package org.ecoinformatics.oboe.query;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.ecoinformatics.oboe.Debugger;
 
 public class OboeQueryResultContainer {
-	ArrayList<OboeQueryResult> m_queryResult = null;
+	ArrayList<Set<OboeQueryResult> > m_queryResult = null;
 	
 	public OboeQueryResultContainer(){
-		m_queryResult = new ArrayList<OboeQueryResult>(); 		
+		m_queryResult = new ArrayList<Set<OboeQueryResult> >(); 		
 	}
 	
-	public void add(OboeQueryResult queryResult){
+	public void add(Set<OboeQueryResult> queryResult){
 		m_queryResult.add(queryResult);
 	}
 	

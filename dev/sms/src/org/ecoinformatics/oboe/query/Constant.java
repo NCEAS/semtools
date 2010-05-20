@@ -1,6 +1,8 @@
 package org.ecoinformatics.oboe.query;
 
 public class Constant {
+	
+	//used for passing query files
 	public static String QUERY_COMMENT_PREFIX = "#";
 	public static String QUERY_START = "BEGIN QUERY:";
 	public static String QUERY_END = "END QUERY";
@@ -21,10 +23,11 @@ public class Constant {
 	public static String AGGREGATION = "Aggregation:";
 	public static String DNFNO = "DNF:";
 	public static String CONTEXT_SEPARATOR = "->";
+	//
 	
 	//Query strategy, this need to be consistent with the values used to call QueryProcessor.main function
 	public static int QUERY_REWRITE = 1;
 	public static int QUERY_MATERIALIZED_DB = 2;
 	public static int QUERY_PARTIAL_MATERIALIZED_DB = 3;
-	
+
 }

@@ -14,7 +14,7 @@ BEGIN QO:1
 EntityId:Tree
 BEGIN QM:1
 Characteristic:Height
-Standard:oboe-units:Centimeter
+Standard:Centimeter
 Cond:<=36.00
 Aggregation:
 DNF:1
@@ -24,7 +24,7 @@ END QO
 BEGIN QO:2
 EntityId:PLOT
 BEGIN QM:1
-Characteristic:NAME
+Characteristic:Name
 Standard:
 Cond:
 Aggregation:

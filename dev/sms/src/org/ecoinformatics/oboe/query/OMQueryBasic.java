@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.Map.Entry;
 
 import org.ecoinformatics.oboe.model.*;
 
@@ -36,15 +39,15 @@ import org.ecoinformatics.oboe.model.*;
 //
 public class OMQueryBasic {
 	private String m_queryLabel;
-	private String m_entityTypeName; 
-	//private ObservationInstance m_queryObs;
+	private String m_entityTypeName;
+	
+	//Entry: Integer: DNF no; List<>: (AND) query measurements
+	//ALL the entries: disjunctive normal form (OR condition)
 	private Map<Integer,List<QueryMeasurement> > m_queryMeasDNF;
 	
-	//private List<List<MeasurementInstance> > m_queryMeasDNF; 
-	//disjunctive normal form (OR condition) of (AND) query measurements
 	
 	public OMQueryBasic()
-	{
+	{	
 		m_queryMeasDNF = new HashMap<Integer, List<QueryMeasurement> >();
 	}
 	
@@ -54,12 +57,6 @@ public class OMQueryBasic {
 	public void setQueryLabel(String mQueryLabel) {
 		m_queryLabel = mQueryLabel;
 	}
-//	public ObservationInstance getQueryObs() {
-//		return m_queryObs;
-//	}
-//	public void setQueryObs(ObservationInstance mQueryObs) {
-//		m_queryObs = mQueryObs;
-//	}
 	
 	public String getEntityTypeName() {
 		return m_entityTypeName;
@@ -76,6 +73,18 @@ public class OMQueryBasic {
 		m_queryMeasDNF = mQueryMeasDNF;
 	}
 	
+	//tested ok
+	public String toString()
+	{
+		String str=m_queryLabel+": "+m_entityTypeName;
+		for(Entry<Integer, List<QueryMeasurement>> entry: m_queryMeasDNF.entrySet()){
+			//str+=entry.getKey()+": ";
+			str+=entry.getValue();
+			//str+="]";
+		}
+		
+		return str;
+	}
 	public List<QueryMeasurement> getMeasDNF(int dnfNo){
 		return m_queryMeasDNF.get(dnfNo);
 	}
@@ -83,9 +92,74 @@ public class OMQueryBasic {
 	public void addMeasDNF(Integer dnfNo, QueryMeasurement queryMeas){
 		List<QueryMeasurement> dnfMeasList = m_queryMeasDNF.get(dnfNo);
 		if(dnfMeasList==null){
-			dnfMeasList = new ArrayList<QueryMeasurement>();			
+			dnfMeasList = new ArrayList<QueryMeasurement>();	
+			m_queryMeasDNF.put(dnfNo,dnfMeasList);
 		}
 		dnfMeasList.add(queryMeas);
+	}
+	
+	//one way is to form subqueries	
+//	public String formSQL(String tbName)
+//	{
+//		String condition = "";
+//		
+//		for(Map.Entry<Integer, List<QueryMeasurement>> entry: m_queryMeasDNF.entrySet()){
+//			List<QueryMeasurement> measAND = entry.getValue();
+//			if(measAND!=null){
+//				for(int i=0;i<measAND.size();i++){
+//					QueryMeasurement qm = measAND.get(i);
+//					String qmCond = qm.
+//				}
+//			}
+//		}
+//		
+//	}
+	
+	/**
+	 * Execute this query against the materialized database 
+	 * The other way is to form simple query and work on the results from the program
+	 * 
+	 * @param mdb
+	 * @return
+	 * @throws Exception 
+	 */
+	public Set<OboeQueryResult> execute(MDB mdb) throws Exception
+	{
+		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
+		
+		//for different DNF, union their results		
+		for(Map.Entry<Integer, List<QueryMeasurement>> entry: m_queryMeasDNF.entrySet()){
+			
+			//for the query measurement conditions ONE DNF, intersect all the results
+			List<QueryMeasurement> measAND = entry.getValue();
+			
+			Set<OboeQueryResult> oneDNFresult = executeDNF(mdb, measAND);
+			result.addAll(oneDNFresult);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Execute the query one DNF, i.e., all its conditions should be intersected 
+	 * 
+	 * @param mdb
+	 * @param measAND
+	 * @return
+	 * @throws Exception 
+	 */
+	private Set<OboeQueryResult> executeDNF(MDB mdb, List<QueryMeasurement> measAND)
+		throws Exception
+	{
+		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
+		
+		//for different DNF, union their results		
+		for(QueryMeasurement qm: measAND){
+			Set<OboeQueryResult> oneQMresult = qm.execute(mdb);
+			result.retainAll(oneQMresult);
+		}
+		
+		return result;
 	}
 	
 }

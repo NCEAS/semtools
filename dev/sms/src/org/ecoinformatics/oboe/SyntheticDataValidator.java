@@ -57,8 +57,8 @@ public class SyntheticDataValidator {
 		}
 		
 		// Get input parameters
-		String inAnnotSpecFileName = Constant.localOutputUriPrefix + args[0] + Constant.C_ANNOT_SPEC_FILE_SUFFIX;
-		String outDataSpecFileName = Constant.localOutputUriPrefix +args[0] + "-n"+args[1]+ Constant.C_DATA_FILE_SUFFIX;
+		String inAnnotSpecFileName = Constant.localUriPrefix + args[0] + Constant.C_ANNOT_SPEC_FILE_SUFFIX;
+		String outDataSpecFileName = Constant.localUriPrefix +args[0] + "-n"+args[1]+ Constant.C_DATA_FILE_SUFFIX;
 		
 		int numOfRows = Integer.parseInt(args[1]);
 		
