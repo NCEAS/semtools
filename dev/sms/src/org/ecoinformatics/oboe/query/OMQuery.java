@@ -181,7 +181,7 @@ public class OMQuery {
 	 */
 	public List<QueryMeasurement> getQueryMeasements(){
 		List<QueryMeasurement> queryMeasList = new ArrayList<QueryMeasurement>();
-		queryMeasList.add(m_queryMi);
+		//queryMeasList.add(m_queryMi);
 		
 		return queryMeasList;
 	}
@@ -195,21 +195,21 @@ public class OMQuery {
 		String str = "";
 		
 		//TODO: a lot more to do
-		List<QueryMeasurement> queryMeasList = getQueryMeasements();
-		
-		for(int i=0;i<queryMeasList.size();i++){
-			MeasurementInstance mi = queryMeasList.get(i);
-			Measurement mt = mi.getMeasurementType();
-			Characteristic cha = null;
-			if(mt.getCharacteristics()!=null){
-				cha = mt.getCharacteristics().get(0);
-				str += ("mi.mlabel= mt.mtype AND mt.characteristic='"+ cha+"'");
-			}
-			String mVal = mi.getMeasValue();
-			if(cha!=null&&mVal!=null){
-				str += (" AND mi.mvalue = '"+ mVal+"'");
-			}
-		}
+//		List<QueryMeasurement> queryMeasList = getQueryMeasements();
+//		
+//		for(int i=0;i<queryMeasList.size();i++){
+//			QueryMeasurement qm = queryMeasList.get(i);
+//			Measurement mt = qm.getMeasurementType();
+//			Characteristic cha = null;
+//			if(mt.getCharacteristics()!=null){
+//				cha = mt.getCharacteristics().get(0);
+//				str += ("mi.mlabel= mt.mtype AND mt.characteristic='"+ cha+"'");
+//			}
+//			String cond = qm.getCondition();
+//			if(cha!=null&&cond!=null){
+//				str += (" AND mi.mvalue '"+ cond+"'");
+//			}
+//		}
 		return str;
 	}
 	
