@@ -60,6 +60,7 @@ import org.ecoinformatics.sms.plugins.table.AnnotationTablePanel;
 import org.ecoinformatics.sms.plugins.table.DataTableModelListener;
 import org.ecoinformatics.sms.plugins.table.ScrollBarAdjustmentListener;
 import org.ecoinformatics.sms.renderer.AnnotationGraph;
+import org.w3c.dom.Node;
 
 import edu.ucsb.nceas.morpho.Morpho;
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
@@ -69,7 +70,6 @@ import edu.ucsb.nceas.morpho.datapackage.DataViewer;
 import edu.ucsb.nceas.morpho.datastore.DataStoreInterface;
 import edu.ucsb.nceas.morpho.datastore.FileSystemDataStore;
 import edu.ucsb.nceas.morpho.datastore.MetacatDataStore;
-import edu.ucsb.nceas.morpho.datastore.MetacatUploadException;
 import edu.ucsb.nceas.morpho.framework.ConfigXML;
 import edu.ucsb.nceas.morpho.framework.MorphoFrame;
 import edu.ucsb.nceas.morpho.framework.QueryRefreshInterface;
@@ -87,6 +87,7 @@ import edu.ucsb.nceas.morpho.util.SaveEvent;
 import edu.ucsb.nceas.morpho.util.StateChangeEvent;
 import edu.ucsb.nceas.morpho.util.StateChangeListener;
 import edu.ucsb.nceas.morpho.util.StateChangeMonitor;
+import edu.ucsb.nceas.utilities.XMLUtilities;
 
 public class AnnotationPlugin
 	implements PluginInterface, ServiceProvider, StateChangeListener {
@@ -552,6 +553,28 @@ public class AnnotationPlugin
 		
 	}
 	
+	public static void setAccess(String packageId, String annotationId) {
+		// TODO: better way to get this dp?
+		AbstractDataPackage adp = UIController.getInstance().getCurrentAbstractDataPackage();
+		if (!adp.getAccessionNumber().equals(packageId)) {
+			return;
+		}
+		String accessXML = null;
+		
+		// get the access node
+		Node accessNode = adp.getSubtree("access", 0);
+		try {
+			accessXML = XMLUtilities.getDOMTreeAsString(accessNode);
+			Log.debug(30, "Access XML: \n" + accessXML);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
+		mds.setAccess(annotationId, accessXML);
+		
+	}
+	
 	// TODO: handle remote locations
 	public static boolean serializeAnnotation(String packageId, String location) {
 		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
@@ -626,7 +649,7 @@ public class AnnotationPlugin
 						annotationFile = mds.newFile(id, new StringReader(baos.toString()));
 					}
 					// TODO: set permissions for the annotation file
-					//mds.setAccess(id, null);
+					setAccess(packageId, id);
 				} catch (Exception e) {
 					Log.debug(5, "Error saving annotation to network: " + id
 							+ "\nMessage: " + e.getMessage()
