@@ -1,0 +1,22 @@
+#data
+#tree,spp,yr,dbh
+#1,piru,2007,35.8
+#1,piru,2008,36.2
+#2,piru,2008,33.2
+#
+#natural form of queries
+#Q1: gce:Tree[gce:DBH > 36.00 oboe-units:Centimeter]
+#
+#formated form
+BEGIN QUERY:1
+BEGIN QO:1
+EntityId:gce:Tree
+BEGIN QM:1
+Characteristic:gce:DBH
+Standard:oboe-units:Centimeter
+Cond:>36.00
+Aggregation:null
+DNF:1
+END QM
+END QO
+END QUERY

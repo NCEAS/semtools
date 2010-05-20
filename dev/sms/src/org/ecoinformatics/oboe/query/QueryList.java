@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class QueryList {
-	ArrayList<OMQuery> m_queryList = null;
+	List<OMQuery> m_queryList = null; //this is for averaging the results
 	
 	public QueryList(){
 		m_queryList = new ArrayList<OMQuery>(); 		
@@ -50,22 +50,44 @@ public class QueryList {
 	
 	/**
 	 * Read from a file r all the queries
-	 * and put them to the query lsit
+	 * and put them to the query list
 	 * @param r
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
-	private void read(BufferedReader r) throws IOException
+	private void read(BufferedReader r) 
+		throws Exception
 	{
-		String oneQuery = "";
-		
+		String oneLine="";
 		try {
-			while((oneQuery = r.readLine())!=null){
-				if(oneQuery.trim().length()>0&&oneQuery.startsWith(Constant.QUERY_COMMENT_PREFIX))
+			//OMQuery curQuery = new OMQuery();
+			while((oneLine = r.readLine())!=null){
+				oneLine = oneLine.trim();
+				if(oneLine.length()>0&&oneLine.startsWith(Constant.QUERY_COMMENT_PREFIX))
 					continue;
-				OMQuery query = new OMQuery();
 				
-				query.parse(oneQuery);
-				m_queryList.add(query);
+				//put the lines within one query to oneQuery list and parse it later
+				if(oneLine.contains(Constant.QUERY_START)){
+					OMQuery curQuery = new OMQuery();
+					List<String> oneQuery = new ArrayList<String>();
+					
+					while((oneLine = r.readLine())!=null){
+						oneLine = oneLine.trim();
+						if(oneLine.length()>0&&oneLine.startsWith(Constant.QUERY_COMMENT_PREFIX))
+							continue;
+						
+						if(oneLine.contains(Constant.QUERY_END))
+							break;
+						
+						oneQuery.add(oneLine);
+					}
+					//List<OMQuery> tmpQuery =
+					//if(tmpQuery!=null){
+					//	m_queryList.add(tmpQuery);
+					//}
+					
+					curQuery.parse(oneQuery);
+					m_queryList.add(curQuery);
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -76,9 +98,9 @@ public class QueryList {
 	/**
 	 * Read the given query file to the query list
 	 * @param queryFile
-	 * @throws IOException
+	 * @throws IOException,Exception 
 	 */
-	public void read(String queryFile) throws IOException
+	public void read(String queryFile) throws IOException,Exception
 	{
 		BufferedReader bufferedReader = null; 
 		bufferedReader = new BufferedReader(new FileReader(queryFile));

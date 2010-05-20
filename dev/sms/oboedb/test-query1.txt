@@ -1,0 +1,39 @@
+#data
+#tree,spp,yr,dbh
+#1,piru,2007,35.8
+#1,piru,2008,36.2
+#2,piru,2008,33.2
+#
+#natural form of queries
+#Q1: Tree[Height>=6.0 in] -> Plot[Name], (Air[Temp] -> Site[Name])
+#
+BEGIN QUERY:1
+
+#basic query section
+BEGIN QO:1
+EntityId:Tree
+BEGIN QM:1
+Characteristic:Height
+Standard:oboe-units:Centimeter
+Cond:<=36.00
+Aggregation:
+DNF:1
+END QM
+END QO
+
+BEGIN QO:2
+EntityId:PLOT
+BEGIN QM:1
+Characteristic:NAME
+Standard:
+Cond:
+Aggregation:
+DNF:1
+END QM
+END QO
+
+#context section
+BEGIN CONTEXT
+1->2
+END CONTEXT
+END QUERY

@@ -1,0 +1,68 @@
+
+Shawn's examples summarized (in email on May 16) based on the discussion on May 21, 2010 (Wed).
+Huiping put here as a reference.  
+
+Depending on what "mode" you are in, the queries below could return
+either observations or datasets. Here are some examples of expressions
+and what they mean (assuming we are in "dataset mode"):
+
+* Tree
+
+This is a simple data discovery query that returns datasets that
+contain at least one observation of a Tree entity. This one isn't that
+interesting for us (at least in this simple form).
+
+* Tree[Height]
+
+This again is a simple data discovery query that returns datasets that
+contain at least one observation of a Tree entity where the Height of
+the Tree was measured. Again, not so interesting.
+
+* Tree[Height > 5 Meter]
+
+This one returns datasets that have at least one Tree observation
+containing a Height measurement with a value greater than 5 Meters.
+
+* Tree[Height > 5 Meter & DBH]
+
+This query combines the simple and (more) complex query constructs
+from above. It returns datasets that contain at least one Tree
+observation with a Height measurement of at least 5 Meters and a DBH
+measurement (but we don't care what the value is).
+
+* Tree[Height > 5 Meter], Soil[Acidity >= 7 pH]
+
+This one returns datasets that contain at least one Tree observation
+(having a measurement where the Height was greater than 5) and at
+least one Soil observation (having an Acidity measurement of 7 or
+greater).
+
+* Tree[Height > 5 Meter] -> Soil[Acidity >= 7pH]
+
+This query incorporates context via the "->" (arrow) symbol, which can
+be read as "contextualized by" or "has context". The query returns
+datasets that contain at least one Tree observation (with the
+corresponding height value) where the observation was taken within the
+context of a Soil observation (with the corresponding acidity value).
+
+* (Tree[Height], Plant[Biomass]) -> (Plot[Name], Air[Temp]) -> Site[Name]
+
+This query returns datasets that have Tree and Plant observations with
+Height and Biomass measurements, respectively, where these are
+contextualized by the same Plot and Air observations, and these Plot
+and Air observations are contextualized by the same Site observation.
+
+* Tree[Height] -> Plot[Name], (Air[Temp] -> Site[Name])
+
+This query shows a different grouping for context relationships: Tree
+observations are contextualized by a Plot observation and an Air
+observation, where the Air observation is contextualized by a Site
+observation (but the Plot observation is not).
+
+* Tree[avg(Height) > 7 Meter, Dbh < 4 Meter]
+
+This query demonstrates the aggregation. I think this should return
+datasets with at least one Tree observation containing Height and Dbh
+(with a value less than 4 meters) measurements such that the average
+Height of these is greater than 7 Meters. I need to think about what
+the semantics of this is a bit more.
