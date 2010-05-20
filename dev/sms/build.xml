@@ -17,7 +17,7 @@
 
 	<!-- override the morpho property -->
    	<property name="morpho.args" value=".semtools"/>
-	<property name="release" value="1.8.1semtools1"/>
+	<property name="release" value="1.8.1semtools4"/>
 	
    <target name="init" depends="morpho.init">
       <!-- Create the time stamp -->
