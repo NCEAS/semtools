@@ -7,7 +7,21 @@ import java.util.List;
 
 public class CSVDataReader {
 
-	public static ArrayList read(String dataFileName, ArrayList<String> oRowStruct)
+	/**
+	 * Read data file, the structure is put in oRowStruct, and the data type is put in oAttrType 
+	 * 
+	 * The first row is attribute names
+	 * The second row is attribute types
+	 * Later rows are data rows
+	 * 
+	 * @param dataFileName
+	 * @param oRowStruct
+	 * @return
+	 * @throws Exception
+	 */
+	public static List<ArrayList<String> > read(String dataFileName, 
+			ArrayList<String> oRowStruct,
+			ArrayList<String> oAttrType)
 		throws Exception
 	{
 		ArrayList dataset = new ArrayList();
@@ -22,6 +36,11 @@ public class CSVDataReader {
 					String[] attNames = line.split(",");
 					for(int i=0;i<attNames.length;i++){
 						oRowStruct.add(attNames[i]);
+					}
+				}else if(lineNo==1){
+					String[] attTypes = line.split(",");
+					for(int i=0;i<attTypes.length;i++){
+						oAttrType.add(attTypes[i]);
 					}
 				}else{
 					ArrayList<String> row = new ArrayList<String>();

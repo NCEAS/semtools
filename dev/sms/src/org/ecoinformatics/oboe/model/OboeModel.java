@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.HashMap;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -23,7 +22,7 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 
 import org.ecoinformatics.oboe.Constant;
 import org.ecoinformatics.oboe.Debugger;
-import org.ecoinformatics.oboe.datastorage.PostgresDB;
+import org.ecoinformatics.oboe.datastorage.MDB;
 import org.ecoinformatics.sms.annotation.*;
 
 public class OboeModel {
@@ -376,7 +375,7 @@ public class OboeModel {
 	 public void toRDB(String annotationFileName, Annotation A) throws Exception
 	 {
 		 System.out.println(Debugger.getCallerPosition()+"Begin...");
-		 PostgresDB db = new PostgresDB();
+		 MDB db = new MDB();
 		 
 		 db.open();
 		 long annotId = db.importAnnotation(A, annotationFileName); //export type information

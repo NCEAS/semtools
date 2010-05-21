@@ -4,7 +4,9 @@ import org.ecoinformatics.oboe.Debugger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class PostgresDB {
 	protected static int RECORD_ID_LEN = 16;
@@ -14,7 +16,31 @@ public class PostgresDB {
 	private String m_password = "nceas";
 	
 	protected Connection m_conn = null;
+	
+	protected String m_datasetAnnotTable = "data_annotation";
+	
+	protected String m_maxDatasetIdSql = "SELECT last_value FROM did_seq;";
+	
+	/**
+	 * Return the maximum dataset id
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
+	protected long getMaxDatasetId() throws SQLException
+	{
+		Statement stmt = m_conn.createStatement();
 		
+		ResultSet rs = stmt.executeQuery(m_maxDatasetIdSql);
+		long maxDatasetId = 1;
+		while(rs.next()){
+			maxDatasetId = rs.getLong(1);
+			break;
+		}
+		
+		return maxDatasetId;
+	}
+	
 	/**
 	 * Open the postgres connection 
 	 * 

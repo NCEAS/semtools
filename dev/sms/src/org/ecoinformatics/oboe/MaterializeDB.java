@@ -640,11 +640,12 @@ public class MaterializeDB {
 		//1. read data
 		System.out.println(Debugger.getCallerPosition()+"1. Read data ...");
 		ArrayList<String> rowStruct = new ArrayList<String>();
-		ArrayList dataset = null; 		//each element is a row, which is also an arraylist		
+		ArrayList<String> colType = new ArrayList<String>();
+		List dataset = null; 		//each element is a row, which is also an arraylist		
 		if(test){
 			dataset = TestData.setTestData1(rowStruct);				
 		}else{
-			dataset = CSVDataReader.read(dataFileName, rowStruct);			
+			dataset = CSVDataReader.read(dataFileName, rowStruct,colType);			
 		}
 		System.out.println(Debugger.getCallerPosition()+"rowStruct = "+ rowStruct);
 		//System.out.println("dataset = "+ dataset);

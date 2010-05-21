@@ -1,6 +1,5 @@
 package org.ecoinformatics.oboe.datastorage;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -44,10 +43,9 @@ public class MDB extends PostgresDB{
 	
 	private String m_contextTypeTable = "context_relationship";
 	private String m_contextInstanceTable = "context_instance";
-	private String m_mapTable = "map";
-	private String m_datasetAnnotTable = "data_annotation";
+	private String m_mapTable = "map";	
 	
-	String m_insertDatasetAnnot = "INSERT INTO " + m_datasetAnnotTable +"(annot_id,dataset_file) VALUES(?,?);";
+	protected String m_insertDatasetAnnot = "INSERT INTO " + m_datasetAnnotTable +"(annot_id,dataset_file) VALUES(?,?);";
 	String m_insertEntityInstance ="INSERT INTO " +m_entityInstanceTable + "(eid,did,record_id,etype) VALUES(?,?,?,?);";
 	String m_insertObservationInstance ="INSERT INTO " +m_obsInstanceTable + "(oid,did,record_id,eid,otypelabel) VALUES(?,?,?,?,?);";
 	String m_insertMeasurementInstance ="INSERT INTO " +m_measInstanceTable + "(mid,did,record_id,oid,mtypelabel,mvalue) VALUES(?,?,?,?,?,?);";
@@ -60,7 +58,6 @@ public class MDB extends PostgresDB{
 	String m_insertMap = "INSERT INTO " + m_mapTable + "(annot_id,mtypelabel,attrname,mapcond,mapval) VALUES(?,?,?,?,?);";
 	
 	String m_maxAnnotationIdSql = "SELECT last_value FROM annot_id_seq;";
-	String m_maxDatasetIdSql = "SELECT last_value FROM did_seq;";
 	String m_maxEntityInstanceIdSql = "SELECT last_value FROM eid_seq;";
 	String m_maxObsInstanceIdSql = "SELECT last_value FROM oid_seq;";
 	String m_maxMeasInstanceIdSql = "SELECT last_value FROM mid_seq;";
@@ -118,25 +115,7 @@ public class MDB extends PostgresDB{
 		return maxAnnotId;
 	}
 	
-	/**
-	 * Return the maximum dataset id
-	 * 
-	 * @return
-	 * @throws SQLException
-	 */
-	private long getMaxDatasetId() throws SQLException
-	{
-		Statement stmt = m_conn.createStatement();
-		
-		ResultSet rs = stmt.executeQuery(m_maxDatasetIdSql);
-		long maxDatasetId = 1;
-		while(rs.next()){
-			maxDatasetId = rs.getLong(1);
-			break;
-		}
-		
-		return maxDatasetId;
-	}
+	
 	
 	/**
 	 * Return the maximum entity instance id
