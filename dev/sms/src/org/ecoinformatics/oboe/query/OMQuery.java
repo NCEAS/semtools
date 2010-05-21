@@ -21,6 +21,7 @@ import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Characteristic;
 
+import org.ecoinformatics.oboe.datastorage.MDB;
 import org.ecoinformatics.oboe.model.*;
 
 //Example queries: 
@@ -336,8 +337,6 @@ public class OMQuery {
 		Set<OboeQueryResult> queryResultSet = null;
 		if(queryStrategy == Constant.QUERY_REWRITE){
 			System.out.println(Debugger.getCallerPosition() + "To come...");
-			System.exit(0);
-			
 		}else if(queryStrategy == Constant.QUERY_MATERIALIZED_DB){
 			MDB materializedDB = new MDB();
 			queryResultSet = execute(materializedDB,resultWithRecord);			
