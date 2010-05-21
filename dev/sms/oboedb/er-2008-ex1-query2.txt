@@ -11,18 +11,16 @@
 BEGIN QUERY:1
 
 BEGIN QO:1
-EntityId:gce:Tree
+
+EntityId: '%Tree%'
 BEGIN QM:1
-#Characteristic:gce:DBH
-#Standard:oboe-units:Centimeter
-Characteristic:dbh
+Characteristic:'DBH'
 Standard:
-Cond:<=36.00
+Cond:>35.2
 Aggregation:
 DNF:1
 END QM
 BEGIN QM:2
-#Characteristic:oboe:EntityName
 Characteristic:tree
 Standard:
 Cond:=1

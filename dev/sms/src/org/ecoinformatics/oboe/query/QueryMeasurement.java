@@ -93,29 +93,42 @@ public class QueryMeasurement {
 	 * @param mdb
 	 * @return
 	 */
-	private String formSQL(MDB mdb)
+	private String formSQL(MDB mdb, String entityNameCond)
 	{
 		String sql = "SELECT DISTINCT did, record_id";
 		
-		sql +=" FROM "+mdb.getMeasInstanceTable()+" AS mi,"+ mdb.getMmeasTypeTable() + " AS mt ";
+		sql +=" FROM "+mdb.getMeasInstanceTable()+" AS mi,"+ mdb.getMmeasTypeTable() + " AS mt, ";
+		sql += mdb.getObsTypeTable() +" AS ot ";
 		
 		if(valueCond!=null&&valueCond.trim().length()>0){
-			if(aggregationFunc!=null){
+			if(aggregationFunc!=null&&aggregationFunc.length()>0){
 				sql+="GROUP BY did ";
 				//FIXME: according to different aggregatioin function, need to do some type casting for mvalue
 				sql+="HAVING "+aggregationFunc+"(mvalue)"+valueCond;
 			}else{
-				sql += " WHERE mi.mvalue"+valueCond;
-				
-				if(characteristicCond!=null){
-					sql +=" AND mt.characteristic" + characteristicCond;
+				sql += " WHERE ";
+				sql +=" (mi.mvalue"+valueCond+") AND ";
+				if(entityNameCond.contains("%")){
+					sql +=" (mt.otypelabel = ot.otypelabel AND ot.ename ILIKE "+entityNameCond+") AND ";
+				}else{
+					sql +=" (mt.otypelabel = ot.otypelabel AND ot.ename="+entityNameCond+") AND ";
 				}
-				if(standardCond!=null){
-					sql +=" AND mt.standard" + standardCond;
+				sql +=" (mt.mtypelabel = mi.mtypelabel";
+				if(characteristicCond!=null&&characteristicCond.trim().length()>0){
+					if(characteristicCond.contains("%")){
+						sql += " AND mt.characteristic ILIKE " + characteristicCond+"";
+					}else{
+						sql += " AND mt.characteristic=" + characteristicCond+"";
+					}
 				}
+				if(standardCond!=null&&standardCond.trim().length()>0){
+					sql +=" AND mt.standard " + standardCond;
+				}
+				sql +=")";
 			}
 		}
-		System.out.println(Debugger.getCallerPosition()+"\n"+sql);
+		sql +=";";
+		System.out.println(Debugger.getCallerPosition()+" SQL: "+sql);
 		
 		return sql;
 	}
@@ -127,7 +140,7 @@ public class QueryMeasurement {
 	 * @return
 	 * @throws Exception 
 	 */
-	public Set<OboeQueryResult> execute(MDB mdb) 
+	public Set<OboeQueryResult> execute(MDB mdb, String entityNameCond) 
 		throws Exception
 	{
 		Set<OboeQueryResult> resultSet = new TreeSet<OboeQueryResult>();
@@ -139,7 +152,7 @@ public class QueryMeasurement {
 		}
 		
 		//form sql query for this condition
-		String sql = formSQL(mdb);
+		String sql = formSQL(mdb, entityNameCond);
 		
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
@@ -149,7 +162,7 @@ public class QueryMeasurement {
 		while(rs.next()){
 			OboeQueryResult queryResult = new OboeQueryResult();
 			
-			String datasetId = rs.getString(1);
+			Long datasetId = rs.getLong(1);
 			queryResult.setDatasetId(datasetId);
 			
 			String recordId = rs.getString(2);
@@ -159,7 +172,8 @@ public class QueryMeasurement {
 		}
 		rs.close();
 		stmt.close();
-			
+		
+		System.out.println(Debugger.getCallerPosition()+"One QM result="+resultSet);
 		return resultSet;
 	}
 

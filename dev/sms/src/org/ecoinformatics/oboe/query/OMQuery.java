@@ -307,6 +307,7 @@ public class OMQuery {
 		
 		//The results of each context query should be unioned
 		List<ContextChain> contextChains = getContextChains();
+		System.out.println(Debugger.getCallerPosition()+"contextChains = "+contextChains);
 		for(int i=0;i<contextChains.size(); i++){
 			ContextChain oneContextQuery = contextChains.get(i);
 			
@@ -315,6 +316,7 @@ public class OMQuery {
 			resultSet.addAll(oneDNFqueryResultSet);			
 		}
 		
+		System.out.println(Debugger.getCallerPosition()+"OMQuery result="+resultSet);
 		//close database connection
 		mdb.close();
 		
@@ -343,6 +345,8 @@ public class OMQuery {
 			System.out.println(Debugger.getCallerPosition() + "To come...");
 			System.exit(0);
 		}
+		
+		System.out.println(Debugger.getCallerPosition()+"Total queryResultSet="+queryResultSet);
 		return queryResultSet;
 	}
 }

@@ -25,6 +25,19 @@ public class ContextChain {
 		m_queryChain = mQueryChain;
 	}
 	
+	public String toString()
+	{
+		String str="";
+		for(Map.Entry<OMQueryBasic,OMQueryBasic> entry: m_queryChain.entrySet()){
+			str += "("+entry.getKey().getQueryLabel();
+			if(entry.getValue()!=null){
+				str +="->"+entry.getValue().getQueryLabel();
+			}
+			str += ") ";
+		}
+		return str;
+	}
+	
 	public void addGroup(OMQueryBasic oneQueryChain){
 		m_queryChain.put(oneQueryChain,null);
 	}
@@ -108,13 +121,28 @@ public class ContextChain {
 		
 		//TODO: 
 		Set<OMQueryBasic> chainQuerySet = new TreeSet<OMQueryBasic>();
-		
-		//The results need to be intersect-ed
-		for(OMQueryBasic q: chainQuerySet){
-			Set<OboeQueryResult> oneBasicQueryResult = q.execute(mdb);
-			result.retainAll(oneBasicQueryResult);
+		chainQuerySet.addAll(this.m_queryChain.keySet());
+		if(m_queryChain.values()!=null){
+			for(OMQueryBasic q: m_queryChain.values()){
+				if(q!=null){
+					chainQuerySet.add(q);
+				}
+			}
 		}
 		
+		//The results need to be intersect-ed
+		boolean first = true;
+		for(OMQueryBasic q: chainQuerySet){
+			Set<OboeQueryResult> oneBasicQueryResult = q.execute(mdb);
+			if(!first){
+				result.retainAll(oneBasicQueryResult);
+			}else{
+				result.addAll(oneBasicQueryResult);
+				first = false;
+			}
+		}
+		
+		System.out.println(Debugger.getCallerPosition()+"Context chain result="+result);
 		return result;
 	}
 }

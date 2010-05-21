@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 
+import org.ecoinformatics.oboe.Debugger;
 import org.ecoinformatics.oboe.model.*;
 
 
@@ -39,7 +40,7 @@ import org.ecoinformatics.oboe.model.*;
 //
 public class OMQueryBasic {
 	private String m_queryLabel;
-	private String m_entityTypeName;
+	private String m_entityTypeNameCond;
 	
 	//Entry: Integer: DNF no; List<>: (AND) query measurements
 	//ALL the entries: disjunctive normal form (OR condition)
@@ -58,11 +59,11 @@ public class OMQueryBasic {
 		m_queryLabel = mQueryLabel;
 	}
 	
-	public String getEntityTypeName() {
-		return m_entityTypeName;
+	public String getEntityTypeNameCond() {
+		return m_entityTypeNameCond;
 	}
 	public void setEntityTypeName(String mEntityTypeName) {
-		m_entityTypeName = mEntityTypeName;
+		m_entityTypeNameCond = mEntityTypeName;
 	}
 	
 	public Map<Integer,List<QueryMeasurement>> getQueryMeasDNF() {
@@ -76,7 +77,7 @@ public class OMQueryBasic {
 	//tested ok
 	public String toString()
 	{
-		String str=m_queryLabel+": "+m_entityTypeName;
+		String str=m_queryLabel+": "+m_entityTypeNameCond;
 		for(Entry<Integer, List<QueryMeasurement>> entry: m_queryMeasDNF.entrySet()){
 			//str+=entry.getKey()+": ";
 			str+=entry.getValue();
@@ -137,6 +138,7 @@ public class OMQueryBasic {
 			result.addAll(oneDNFresult);
 		}
 		
+		System.out.println(Debugger.getCallerPosition()+"Basic query result="+result);
 		return result;
 	}
 	
@@ -154,11 +156,17 @@ public class OMQueryBasic {
 		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
 		
 		//for different DNF, union their results		
+		boolean first= true;
 		for(QueryMeasurement qm: measAND){
-			Set<OboeQueryResult> oneQMresult = qm.execute(mdb);
-			result.retainAll(oneQMresult);
+			Set<OboeQueryResult> oneQMresult = qm.execute(mdb, m_entityTypeNameCond);
+			if(!first){
+				result.retainAll(oneQMresult);				
+			}else{
+				result.addAll(oneQMresult);
+				first=false;
+			}
 		}
-		
+		System.out.println(Debugger.getCallerPosition()+"oneDNF result="+result);
 		return result;
 	}
 	

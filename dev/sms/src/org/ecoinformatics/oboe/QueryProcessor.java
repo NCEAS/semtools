@@ -43,14 +43,14 @@ public class QueryProcessor {
 		QueryList queryList= new QueryList();
 		queryList.read(queryFile);
 		System.out.println(Debugger.getCallerPosition()+"queryList="+queryList);
-		System.exit(0);
 		
 	 	//3. perform queries
 		OboeQueryResultContainer queryResultContainer = new OboeQueryResultContainer();
 		for(int i=0;i<queryList.size();i++){
 			OMQuery queryI = queryList.getQuery(i);
+			System.out.println(Debugger.getCallerPosition()+"\n*****\nProcess query: "+queryI+"\n********");
 			Set<OboeQueryResult> queryResult = queryI.execute(queryStrategy, resultWithRecord);
-			System.out.println(Debugger.getCallerPosition()+"queryResult="+queryResult);
+			System.out.println(Debugger.getCallerPosition()+"i="+i+",result="+queryResult);
 			queryResultContainer.add(queryResult);
 		}
 		
