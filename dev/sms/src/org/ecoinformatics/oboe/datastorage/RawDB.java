@@ -33,7 +33,16 @@ public class RawDB extends PostgresDB{
 	{
 		long tbid = -1L;
 		
-		String sql = "SELECT did FROM "+super.m_datasetAnnotTable+" WHERE dataset_file='"+dataFileName.trim()+"';";
+		int pos = dataFileName.lastIndexOf("/");
+		String pureDataFileName = dataFileName.trim();
+		
+		if(pos>=0){
+			pureDataFileName = dataFileName.trim().substring(pos+1);
+		} 
+		
+		String sql = "SELECT did FROM "+super.m_datasetAnnotTable+" WHERE dataset_file='"+pureDataFileName+"';";
+		
+		System.out.println(Debugger.getCallerPosition()+"sql="+sql);
 		
 		//Check whether this data file exist in the data table or not, if it exists already, directly get the id
 		Statement stmt = m_conn.createStatement();		
@@ -50,7 +59,7 @@ public class RawDB extends PostgresDB{
 		if(tbid<0L){
 			String insSQL = "INSERT INTO " + m_datasetAnnotTable +"(dataset_file) VALUES(?);";
 			PreparedStatement pstmt = m_conn.prepareStatement(insSQL);
-			pstmt.setString(1,dataFileName.trim());
+			pstmt.setString(1,pureDataFileName);
 			pstmt.execute();
 			tbid = super.getMaxDatasetId();
 		}
@@ -103,9 +112,26 @@ public class RawDB extends PostgresDB{
 		String sql = formCrtTbSQL(tbName,rowStruct,colTypes);
 		
 		//Create the data table
-		Statement stmt = m_conn.createStatement();		
-		boolean rs = stmt.execute(sql);
-		stmt.close();
+		Statement stmt = null;
+		try {
+			stmt = m_conn.createStatement();
+			boolean rs = stmt.execute(sql);
+		} catch (SQLException e) {
+			System.out.println(Debugger.getCallerPosition()+","+e.getErrorCode()+","+e.getMessage()+","+e.getSQLState());
+			if(e.getSQLState().equals("42P07")){
+				String dropTbsql = "DROP TABLE " + tbName+";";
+				System.out.println(Debugger.getCallerPosition()+"EXECUTE: "+dropTbsql);
+				stmt.execute(dropTbsql);
+				System.out.println(Debugger.getCallerPosition()+"EXECUTE: "+sql);
+				stmt.execute(sql);
+			}else{
+				throw e;
+			}
+		}finally{
+			if(stmt!=null){
+				stmt.close();
+			}
+		}
 	}
 	
 	/**
@@ -161,14 +187,15 @@ public class RawDB extends PostgresDB{
 		for(int i=0;i<colTypes.size();i++){
 			String valStr = row.get(i);
 			String colType = colTypes.get(i);
+			//System.out.println(Debugger.getCallerPosition()+"i="+i+",colType="+colType);
 			if(colType.startsWith("int")){
-				pstmt.setLong(i, Integer.parseInt(valStr));
+				pstmt.setInt(i+1, Integer.parseInt(valStr));
 			}else if(colType.startsWith("bigint")){
-				pstmt.setLong(i, Long.parseLong(valStr));
+				pstmt.setLong(i+1, Long.parseLong(valStr));
 			}else if(colType.startsWith("numeric")){
-				pstmt.setDouble(i, Double.parseDouble(valStr));
+				pstmt.setDouble(i+1, Double.parseDouble(valStr));
 			}else{
-				pstmt.setString(i, valStr);
+				pstmt.setString(i+1, valStr);
 			}
 		}
 	}

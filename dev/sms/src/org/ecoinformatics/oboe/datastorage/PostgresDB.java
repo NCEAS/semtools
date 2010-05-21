@@ -21,8 +21,18 @@ public class PostgresDB {
 	
 	protected String m_maxDatasetIdSql = "SELECT last_value FROM did_seq;";
 	
+	//Table: test (col1 char(16), col2 char(16); 
+	//the selection can work here. 
+	//select col1, avg(cast (col2 as numeric)) from test 
+	//where col2 ~ '^[-]?[0-9]+' AND col2 !~ '[a-zA-Z]+' 
+	//and CAST (col2 AS numeric)>=5 
+	//group by col1 having (avg(cast (col2 as numeric))>10.0);
+	
+	public String m_DIGIT_RE = "'^[-]?[0-9]+'"; //this need to be more complete, how to make it allow leading and trailing spaces
+	public String m_STRING_RE = "'[a-zA-Z]+'"; //this need to be more complete
+	
 	/**
-	 * Return the maximum dataset id
+	 * Return the maximum data set id
 	 * 
 	 * @return
 	 * @throws SQLException

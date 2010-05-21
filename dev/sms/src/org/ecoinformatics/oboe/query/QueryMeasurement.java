@@ -96,40 +96,51 @@ public class QueryMeasurement {
 	 */
 	private String formSQL(MDB mdb, String entityNameCond)
 	{
-		String sql = "SELECT DISTINCT did, record_id";
+		String sql = "SELECT DISTINCT did, record_id, mvalue";
 		
 		sql +=" FROM "+mdb.getMeasInstanceTable()+" AS mi,"+ mdb.getMmeasTypeTable() + " AS mt, ";
 		sql += mdb.getObsTypeTable() +" AS ot ";
 		
 		if(valueCond!=null&&valueCond.trim().length()>0){
+			sql += " WHERE ";
+			
+			//value condition process
+			if(valueCond.contains("'")){ //string conditions has ', e.g., like 'California', = 'California'
+				sql +=" mi.mvalue "+valueCond+") AND ";
+			}else{//numeric conditions, e.g., >15.0
+				sql += "mi.mvalue ~ " + mdb.m_DIGIT_RE +" AND mi.mvalue !~ "+mdb.m_STRING_RE+" AND ";
+				sql +=" (CAST(mi.mvalue AS numeric)"+valueCond+") AND ";
+			}
+			
+			//entity name
+			if(entityNameCond.contains("%")){
+				sql +=" (mt.otypelabel = ot.otypelabel AND ot.ename ILIKE "+entityNameCond+") AND ";
+			}else{
+				sql +=" (mt.otypelabel = ot.otypelabel AND ot.ename="+entityNameCond+") AND ";
+			}
+			
+			//measurement type: characteristic, standard, etc.
+			sql +=" (mt.mtypelabel = mi.mtypelabel";
+			if(characteristicCond!=null&&characteristicCond.trim().length()>0){
+				if(characteristicCond.contains("%")){
+					sql += " AND mt.characteristic ILIKE " + characteristicCond+"";
+				}else{
+					sql += " AND mt.characteristic=" + characteristicCond+"";
+				}
+			}
+			if(standardCond!=null&&standardCond.trim().length()>0){
+				sql +=" AND mt.standard " + standardCond;
+			}
+			sql +=")";
+			
+			//aggregation
 			if(aggregationFunc!=null&&aggregationFunc.length()>0){
 				sql+="GROUP BY did ";
-				//FIXME: according to different aggregatioin function, need to do some type casting for mvalue
-				sql+="HAVING "+aggregationFunc+"(mvalue)"+valueCond;
-			}else{
-				sql += " WHERE ";
-				sql +=" (mi.mvalue"+valueCond+") AND ";
-				if(entityNameCond.contains("%")){
-					sql +=" (mt.otypelabel = ot.otypelabel AND ot.ename ILIKE "+entityNameCond+") AND ";
-				}else{
-					sql +=" (mt.otypelabel = ot.otypelabel AND ot.ename="+entityNameCond+") AND ";
-				}
-				sql +=" (mt.mtypelabel = mi.mtypelabel";
-				if(characteristicCond!=null&&characteristicCond.trim().length()>0){
-					if(characteristicCond.contains("%")){
-						sql += " AND mt.characteristic ILIKE " + characteristicCond+"";
-					}else{
-						sql += " AND mt.characteristic=" + characteristicCond+"";
-					}
-				}
-				if(standardCond!=null&&standardCond.trim().length()>0){
-					sql +=" AND mt.standard " + standardCond;
-				}
-				sql +=")";
+				sql+="HAVING "+aggregationFunc+"(CAST (mvalue AS numeric))"+valueCond;
 			}
 		}
 		sql +=";";
-		System.out.println(Debugger.getCallerPosition()+" SQL: "+sql);
+		System.out.println(Debugger.getCallerPosition()+" SQL: \n"+sql);
 		
 		return sql;
 	}
