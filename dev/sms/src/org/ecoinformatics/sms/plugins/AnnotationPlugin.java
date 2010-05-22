@@ -438,7 +438,7 @@ public class AnnotationPlugin
 	      searchtext.append((String)returnFieldList.elementAt(i));
 	      searchtext.append("</returnfield>\n");
 	    }
-	    searchtext.append("<owner>" + Morpho.thisStaticInstance.getUserName() + "</owner>\n");
+	    //searchtext.append("<owner>" + Morpho.thisStaticInstance.getUserName() + "</owner>\n");
 	    searchtext.append("<querygroup operator=\"UNION\">\n");
 	    searchtext.append("<queryterm casesensitive=\"true\" ");
 	    searchtext.append("searchmode=\"contains\">\n");
