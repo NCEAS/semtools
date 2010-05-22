@@ -197,6 +197,8 @@ public class ContextPanel extends JPanel {
 	public void setObservation(Observation contextObservation) {
 		this.currentObservation = contextObservation;
 		this.observationLabel.setText(currentObservation.toString());
+		this.observationLabel.setToolTipText(currentObservation.toString());
+
 	}
 }
 class PanelActionListener implements ActionListener {
