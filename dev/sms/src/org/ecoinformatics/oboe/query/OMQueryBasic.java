@@ -1,16 +1,21 @@
 package org.ecoinformatics.oboe.query;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import org.ecoinformatics.oboe.Debugger;
-import org.ecoinformatics.oboe.datastorage.MDB;
+import org.ecoinformatics.oboe.datastorage.*;
 import org.ecoinformatics.oboe.model.*;
+import org.ecoinformatics.oboe.util.Pair;
 
 
 // Query with one entity type: the measurement conditions can be AND and OR
@@ -118,9 +123,99 @@ public class OMQueryBasic {
 //	}
 	
 	/**
+	 * Perform the basic query oover the original raw data base
+	 * 
+	 * @param rawdb
+	 */
+	public Set<OboeQueryResult> execute(PostgresDB db, boolean resultWithRecord) throws Exception
+	{
+		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
+		
+		//for different DNF, union their results		
+		for(Map.Entry<Integer, List<QueryMeasurement>> entry: m_queryMeasDNF.entrySet()){
+			
+			//for the query measurement conditions ONE DNF, intersect all the results
+			List<QueryMeasurement> measAND = entry.getValue();
+			
+			Set<OboeQueryResult> oneDNFresult = null;
+			if(db instanceof MDB){
+				result = executeDNF((MDB)db,measAND);
+			}else if(db instanceof RawDB){
+				result = executeDNF((RawDB)db,measAND);
+			}else{
+				System.out.println(Debugger.getCallerPosition()+"Not implemented yet.");
+			}
+			result.addAll(oneDNFresult);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * For one DNF, using AND connect the conditions
+	 * 
+	 * @param rawdb
+	 * @param measAND
+	 * @return
+	 * @throws Exception
+	 */
+	private Set<OboeQueryResult> executeDNF(RawDB rawdb, List<QueryMeasurement> measAND)
+		throws Exception
+	{	
+		//1. find table id and related attribute names
+		Set<String> characteristics = new HashSet<String>();
+		Map<String, QueryMeasurement> cha2qm= new HashMap<String, QueryMeasurement>();
+		for(QueryMeasurement qm: measAND){
+			String chaCond = qm.getCharacteristicCond();
+			if(chaCond!=null&&chaCond.length()>0){
+				characteristics.add(chaCond);
+				cha2qm.put(chaCond, qm);
+			}
+		}
+		Map<Long, List<Pair>> tbAttribute = rawdb.retrieveTbAttribute(characteristics);
+		
+		//FIXME: get KEY measurements
+		
+		//2. form SQL and execute query, the results should be unioned since they come from data table
+		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
+		for(Map.Entry<Long, List<Pair>> entry: tbAttribute.entrySet()){
+			Long tbId = entry.getKey();
+			List<Pair> chaAttributeNamePairList= entry.getValue();//pair is <characteristic,attributename>
+			
+			String sql = "SELECT DISTINCT rid FROM " + rawdb.TB_PREFIX+tbId;
+			if(chaAttributeNamePairList!=null&&chaAttributeNamePairList.size()>0){
+				sql +=" WHERE (";
+				for(int i=0;i<chaAttributeNamePairList.size();i++){
+					Pair pair = chaAttributeNamePairList.get(i);
+					
+					QueryMeasurement qm = cha2qm.get(pair.getFirst());
+					String valueCond = qm.getValueCond();
+					if(i>0){
+						sql +=" AND ";
+					}
+					sql += pair.getSecond() + "=" + valueCond; 
+				}
+				sql +=")";
+			}
+			//FIXME: GROUP BY, HAVING condition
+			sql += ";";
+			
+			//3. execute sql
+			Set<OboeQueryResult> oneTbResult = rawdb.dataQuery(sql);
+			if(oneTbResult!=null&&oneTbResult.size()>0){
+				result.addAll(oneTbResult);
+			}
+		}
+		
+		System.out.println(Debugger.getCallerPosition()+"oneDNF result="+result);
+		return result;
+	}
+	
+	/**
 	 * Execute this query against the materialized database 
 	 * The other way is to form simple query and work on the results from the program
 	 * 
+	 * @deprecated
 	 * @param mdb
 	 * @return
 	 * @throws Exception 
@@ -131,6 +226,7 @@ public class OMQueryBasic {
 		
 		//for different DNF, union their results		
 		for(Map.Entry<Integer, List<QueryMeasurement>> entry: m_queryMeasDNF.entrySet()){
+			
 			
 			//for the query measurement conditions ONE DNF, intersect all the results
 			List<QueryMeasurement> measAND = entry.getValue();

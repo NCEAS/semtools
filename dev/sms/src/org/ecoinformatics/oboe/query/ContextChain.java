@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.ecoinformatics.oboe.Debugger;
-import org.ecoinformatics.oboe.datastorage.MDB;
+import org.ecoinformatics.oboe.datastorage.*;
 
 public class ContextChain {
 	Map<OMQueryBasic, OMQueryBasic> m_queryChain; //shall I use set or list or map, TODO
@@ -105,6 +105,68 @@ public class ContextChain {
 //	}
 	
 	/**
+	 * @deprecated
+	 */
+	public Set<OboeQueryResult> execute1(PostgresDB db, boolean resultWithRecord) 
+		throws Exception
+	{
+		Set<OboeQueryResult> result = null;
+		
+		if(db instanceof MDB){
+			result = execute((MDB)db,resultWithRecord);
+		}else if(db instanceof RawDB){
+			result = executeOverRawDB((RawDB)db,resultWithRecord);
+		}else{
+			System.out.println(Debugger.getCallerPosition()+"Not implemented yet.");
+		}
+		return result;
+	}
+	
+	/**
+	 * Execute one context query over original database
+	 * 
+	 * 1. Get the key measurement (for group by)
+	 * 2. Get the characteristics and their related attributes
+	 *  
+	 * @deprecated
+	 * @param db
+	 * @param resultWithRecord
+	 * @return
+	 * @throws Exception
+	 * 
+	 */
+	private Set<OboeQueryResult> executeOverRawDB(RawDB rawdb, boolean resultWithRecord) 
+		throws Exception
+	{
+		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
+		
+		//TODO: need to use a set or a map for chain queries??? 
+		Set<OMQueryBasic> chainQuerySet = getChainQuerySet();
+		Set<String> characteristicLabelSet = new TreeSet<String>();
+		
+		boolean first = false;
+		for(OMQueryBasic q: chainQuerySet){
+			//get the query measurement that need to be aggregated
+			//Set<QueryMeasurement> aggregateQueryMeas = q.calAggregateQueryMeas(); 
+			//	new TreeSet<QueryMeasurement>();
+				
+			//get the key measurements for the aggregation measurement
+			//Map<QueryMeasurement, List<String> > keyMeasurements = calKeyMeasurements();
+				
+			//execute each basic query and inersect the results
+			Set<OboeQueryResult> oneBasicQueryResult = q.execute(rawdb);
+			if(!first){
+				result.retainAll(oneBasicQueryResult);
+			}else{
+				result.addAll(oneBasicQueryResult);
+				first = false;
+			}
+		}
+		
+		return result;
+	}
+	
+	/**
 	 * Execute one context query
 	 * Perform each basic query, get their did and record id
 	 * Intersect their results (because it's in the context)
@@ -114,27 +176,19 @@ public class ContextChain {
 	 * @return
 	 * @throws Exception 
 	 */
-	public Set<OboeQueryResult> execute(MDB mdb, boolean resultWithRecord) 
+	private Set<OboeQueryResult> execute(PostgresDB db, boolean resultWithRecord) 
 		throws Exception
 	{
 		
 		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
 		
-		//TODO: 
-		Set<OMQueryBasic> chainQuerySet = new TreeSet<OMQueryBasic>();
-		chainQuerySet.addAll(this.m_queryChain.keySet());
-		if(m_queryChain.values()!=null){
-			for(OMQueryBasic q: m_queryChain.values()){
-				if(q!=null){
-					chainQuerySet.add(q);
-				}
-			}
-		}
+		//TODO: need to use a set or a map for chain queries??? 
+		Set<OMQueryBasic> chainQuerySet = getChainQuerySet();
 		
 		//The results need to be intersect-ed
 		boolean first = true;
 		for(OMQueryBasic q: chainQuerySet){
-			Set<OboeQueryResult> oneBasicQueryResult = q.execute(mdb);
+			Set<OboeQueryResult> oneBasicQueryResult = q.execute(db);
 			if(!first){
 				result.retainAll(oneBasicQueryResult);
 			}else{
@@ -146,4 +200,23 @@ public class ContextChain {
 		System.out.println(Debugger.getCallerPosition()+"Context chain result="+result);
 		return result;
 	}
+	
+	/**
+	 * Get the set of basic OM queries in this chain
+	 * 
+	 * @return
+	 */
+	private Set<OMQueryBasic> getChainQuerySet(){
+		Set<OMQueryBasic> chainQuerySet = new TreeSet<OMQueryBasic>();
+		chainQuerySet.addAll(this.m_queryChain.keySet());
+		if(m_queryChain.values()!=null){
+			for(OMQueryBasic q: m_queryChain.values()){
+				if(q!=null){
+					chainQuerySet.add(q);
+				}
+			}
+		}
+		return chainQuerySet;
+	}
+	
 }

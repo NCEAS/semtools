@@ -1,0 +1,10 @@
+
+TODO: 
+(1) OMQueryBasic:executeDNF() form SQL on rawDB
+(2) Preliminary Test
+
+(3) Synthetic query generator (control selectivity)
+(4) Test use Margaret's data 
+
+(5) Partial materializatiton
+(6) Naive query method (IR keyword, Triple store)

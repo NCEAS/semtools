@@ -22,6 +22,8 @@ import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Characteristic;
 
 import org.ecoinformatics.oboe.datastorage.MDB;
+import org.ecoinformatics.oboe.datastorage.RawDB;
+import org.ecoinformatics.oboe.datastorage.PostgresDB;
 import org.ecoinformatics.oboe.model.*;
 
 //Example queries: 
@@ -210,9 +212,6 @@ public class OMQuery {
 		//2. insert the basic queries that are not in the context to a separate set
 		for(OMQueryBasic query: m_query){
 			if(!basicQueryInContext.contains(query.getQueryLabel())){
-				//Set<String> curBQset  = new HashSet<String>();
-				//curBQset.add(query.getQueryLabel());
-				//tmpBasicQueryGroup.add(curBQset);
 				ContextChain newChain = new ContextChain();
 				newChain.addGroup(query);//add this query as a single group
 				resultContextChain.add(newChain);
@@ -223,6 +222,12 @@ public class OMQuery {
 	}
 	
 	
+	/**
+	 * put entry (observation query, context observation query) to the query group
+	 * 
+	 * @param tmpBasicQuery
+	 * @param entry
+	 */
 	private void insertBasicQuery(List<Set<String> > tmpBasicQuery, Entry<String, String> entry)
 	{
 		boolean inserted = false;		
@@ -298,13 +303,13 @@ public class OMQuery {
 	 * @return
 	 * @throws Exception
 	 */
-	private Set<OboeQueryResult> execute(MDB mdb, boolean resultWithRecord) 
+	private Set<OboeQueryResult> execute(PostgresDB db, boolean resultWithRecord) 
 		throws Exception
 	{
 		Set<OboeQueryResult> resultSet = new TreeSet<OboeQueryResult>();
 		
 		//open database connection
-		mdb.open();
+		db.open();
 		
 		//The results of each context query should be unioned
 		List<ContextChain> contextChains = getContextChains();
@@ -312,17 +317,53 @@ public class OMQuery {
 		for(int i=0;i<contextChains.size(); i++){
 			ContextChain oneContextQuery = contextChains.get(i);
 			
-			Set<OboeQueryResult> oneDNFqueryResultSet = oneContextQuery.execute(mdb, resultWithRecord);
+			Set<OboeQueryResult> oneDNFqueryResultSet = oneContextQuery.execute(db, resultWithRecord);
 		
 			resultSet.addAll(oneDNFqueryResultSet);			
 		}
 		
 		System.out.println(Debugger.getCallerPosition()+"OMQuery result="+resultSet);
 		//close database connection
-		mdb.close();
+		db.close();
 		
 		return resultSet;		
 	}
+	
+//	/**
+//	 * Perform a query over the original database
+//	 * 
+//	 * @param query
+//	 * @return
+//	 * @throws Exception
+//	 */
+//	private Set<OboeQueryResult> execute(RawDB rawdb, boolean resultWithRecord) 
+//		throws Exception
+//	{
+//		Set<OboeQueryResult> resultSet = new TreeSet<OboeQueryResult>();
+//		
+//		//open database connection
+//		rawdb.open();
+//		
+//		//The results of each context query should be unioned
+//		List<ContextChain> contextChains = getContextChains();
+//		System.out.println(Debugger.getCallerPosition()+"contextChains = "+contextChains);
+//		
+//		
+//		for(int i=0;i<contextChains.size(); i++){
+//			ContextChain oneContextQuery = contextChains.get(i);
+//			
+//			Set<OboeQueryResult> oneDNFqueryResultSet = oneContextQuery.execute(rawdb, resultWithRecord);
+//		
+//			resultSet.addAll(oneDNFqueryResultSet);			
+//		}
+//		
+//		System.out.println(Debugger.getCallerPosition()+"OMQuery result="+resultSet);
+//		
+//		//close database connection
+//		rawdb.close();
+//		
+//		return resultSet;		
+//	}
 	
 	/**
 	 * Based on different query evaluation strategy, perform query.
@@ -336,7 +377,8 @@ public class OMQuery {
 	{
 		Set<OboeQueryResult> queryResultSet = null;
 		if(queryStrategy == Constant.QUERY_REWRITE){
-			System.out.println(Debugger.getCallerPosition() + "To come...");
+			RawDB rawdb = new RawDB();
+			queryResultSet = execute(rawdb,resultWithRecord);
 		}else if(queryStrategy == Constant.QUERY_MATERIALIZED_DB){
 			MDB materializedDB = new MDB();
 			queryResultSet = execute(materializedDB,resultWithRecord);			

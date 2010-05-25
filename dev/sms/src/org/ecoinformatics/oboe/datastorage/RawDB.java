@@ -7,15 +7,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.ecoinformatics.oboe.CSVDataReader;
 import org.ecoinformatics.oboe.Debugger;
+import org.ecoinformatics.oboe.query.OboeQueryResult;
+//import org.ecoinformatics.oboe.query.ResultSetMetaData;
+import org.ecoinformatics.oboe.util.Pair;
 
 public class RawDB extends PostgresDB{
 	
-	private String TB_PREFIX = "tb";
+	public String TB_PREFIX = "tb";
 	
 	
 	/**
@@ -257,5 +265,91 @@ public class RawDB extends PostgresDB{
 		super.close();
 		
 		return tbName;
+	}
+	
+	
+	/**
+	 * For the given set of characteristics, get the tables (together with the related attributes) 
+	 * that have attributes for ALL the characteristics 
+	 * 
+	 * @param characteristics
+	 * @return pair is <characteristic,attributename>
+	 * @throws SQLException
+	 */
+	public Map<Long, List<Pair>> retrieveTbAttribute(Set<String> characteristics) throws SQLException
+	{
+		Map<Long, List<Pair>> tmpTbAttribute = new TreeMap<Long, List<Pair>>();
+		
+		//for each characteristic, get its related dataset id (i.e., annot_id) and attribute name)
+		for(String cha: characteristics){
+			String sql = "SELECT DISTINCT annot_id, attrname FROM measurement_type AS mt, map " +
+					"WHERE map.mtypelabel = mt.mtypelabel AND mt.characteristic="+cha+";";
+			
+			Statement stmt = m_conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+		
+			while(rs.next()){
+				Long annotId = rs.getLong(1);
+				String attrname = rs.getString(2);
+				
+				List<Pair> oneTbAttribute = tmpTbAttribute.get(annotId);
+				if(oneTbAttribute==null){
+					oneTbAttribute = new ArrayList<Pair>();
+					tmpTbAttribute.put(annotId, oneTbAttribute);
+				}
+				Pair newPair = new Pair(cha,attrname);
+				oneTbAttribute.add(newPair);
+			}
+			rs.close();
+			stmt.close();
+		}
+		
+		//get only the table ids which has all these characteristics since they are in AND logic 
+		Map<Long, List<Pair>> tbAttribute = new TreeMap<Long, List<Pair>>();
+		for(Map.Entry<Long, List<Pair>> entry: tmpTbAttribute.entrySet()){
+			//each data table need to have all these characteristics since they are in AND logic 
+			if(entry.getValue().size()==characteristics.size()){
+				tbAttribute.put(entry.getKey(), entry.getValue());
+			}
+		}
+		return tbAttribute;
+	}
+	
+	/**
+	 * Perform one data query and return the results 
+	 * 
+	 * @param sql
+	 * @return
+	 * @throws SQLException, Exception 
+	 */
+	public Set<OboeQueryResult> dataQuery(String sql) throws SQLException, Exception
+	{
+		Set<OboeQueryResult> resultSet = new TreeSet<OboeQueryResult>();
+		
+		if(m_conn==null){
+			open();
+		}
+		
+		Statement stmt = m_conn.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		ResultSetMetaData rsmd = rs.getMetaData();
+		int numOfCols = rsmd.getColumnCount();
+		while(rs.next()){
+			OboeQueryResult queryResult = new OboeQueryResult();
+			
+			Long datasetId = rs.getLong(1);
+			queryResult.setDatasetId(datasetId);
+			
+			if(numOfCols>=2){
+				String recordId = rs.getString(2);
+				queryResult.setRecordId(recordId);
+			}
+			resultSet.add(queryResult);
+		}
+		rs.close();
+		stmt.close();
+		
+		return resultSet;
 	}
 }
