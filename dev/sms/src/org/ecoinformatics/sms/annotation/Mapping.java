@@ -62,7 +62,10 @@ public class Mapping {
      * @param measurement the measurement
      */
     public void setMeasurement(Measurement measurement) {
-	_measurement = measurement;
+    	_measurement = measurement;
+		if (_measurement != null) {
+			_measurement.setMapping(this);
+		}
     }
 
     /**

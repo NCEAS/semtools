@@ -189,7 +189,7 @@ public class AnnotationReader {
       if(meas == null)
          _error("no measurement with label: " + label);
       m.setMeasurement(meas);
-      meas.setMapping(m);
+      //meas.setMapping(m);
       // get the value (optional)
       Attr att3 = _getAttribute(e, "value");
       if(att3 != null)
