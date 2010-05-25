@@ -300,7 +300,7 @@ public class AnnotationPlugin
 		Log.debug(30, "initializing annotations for docid: " + forDocid);
 		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
 		MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
-		String querySpec = getAnnotationQuery();
+		String querySpec = getAnnotationQuery(forDocid);
 		Query query = new Query(querySpec, Morpho.thisStaticInstance);
 		// search BOTH by default
 		query.setSearchLocal(true);
@@ -413,7 +413,7 @@ public class AnnotationPlugin
 		//SMS.getInstance().getOntologyManager().importOntology("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl");
 	}
 	
-	public static String getAnnotationQuery()
+	public static String getAnnotationQuery(String forDocid)
 	  {
 	  	ConfigXML config = Morpho.getConfiguration();
 	  	ConfigXML profile = Morpho.thisStaticInstance.getProfile();
@@ -439,11 +439,19 @@ public class AnnotationPlugin
 	      searchtext.append("</returnfield>\n");
 	    }
 	    //searchtext.append("<owner>" + Morpho.thisStaticInstance.getUserName() + "</owner>\n");
-	    searchtext.append("<querygroup operator=\"UNION\">\n");
+	    searchtext.append("<querygroup operator=\"INTERSECT\">\n");
 	    searchtext.append("<queryterm casesensitive=\"true\" ");
 	    searchtext.append("searchmode=\"contains\">\n");
 	    searchtext.append("<value>%</value>\n");
-	    searchtext.append("</queryterm></querygroup></pathquery>");
+	    searchtext.append("</queryterm>");
+	    if (forDocid != null) {
+		    searchtext.append("<queryterm casesensitive=\"true\" ");
+		    searchtext.append("searchmode=\"contains\">\n");
+		    searchtext.append("<value>" + forDocid + "</value>\n");
+			searchtext.append("<pathexpr>@emlPackage</pathexpr>\n");
+		    searchtext.append("</queryterm>");
+	    }
+	    searchtext.append("</querygroup></pathquery>");
 	    return searchtext.toString();
 	  }
 	
