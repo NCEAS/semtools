@@ -1,4 +1,5 @@
 
+DELETE FROM key_attr;
 DELETE FROM map;
 DELETE FROM context_relationship;
 DELETE FROM measurement_type;
@@ -15,7 +16,7 @@ DELETE FROM annotation;
 ALTER SEQUENCE annot_id_seq RESTART WITH 1;
 
 DROP TABLE map CASCADE;
-DROP TABLE context_relationship CASCADE;
+DROP TABLE context_type CASCADE;
 DROP TABLE measurement_type CASCADE;
 DROP TABLE observation_type CASCADE;
 
@@ -37,7 +38,7 @@ CREATE TABLE annotation(
 CREATE TABLE observation_type(
 	annot_id bigint REFERENCES annotation(annot_id),
 	otypelabel char(32), 
-	ename varchar(64), 
+	ename char(32), 
 	is_distinct boolean,
 	PRIMARY KEY (annot_id,otypelabel));
 	
@@ -51,7 +52,7 @@ CREATE TABLE measurement_type(
 	protocal varchar(256),
 	PRIMARY KEY (annot_id,mtypelabel));
 	
-CREATE TABLE context_relationship(
+CREATE TABLE context_type(
 	annot_id bigint REFERENCES annotation(annot_id),
 	otypelabel char(64),
 	context_otypelabel char(64),
@@ -64,6 +65,12 @@ CREATE TABLE map(
 	attrname char(16),
 	mapcond varchar(64),
 	mapval varchar(32));
+
+CREATE TABLE key_attr(
+	annot_id bigint, 
+	ename char(32),
+	keyattr varchar(256)
+	);
 	
 CREATE SEQUENCE did_seq;
 CREATE TABLE data_annotation(

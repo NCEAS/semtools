@@ -11,6 +11,8 @@ import java.util.TreeSet;
 
 import org.ecoinformatics.oboe.Debugger;
 import org.ecoinformatics.oboe.datastorage.MDB;
+import org.ecoinformatics.oboe.datastorage.RawDB;
+import org.ecoinformatics.oboe.util.Pair;
 
 public class QueryMeasurement {
 
@@ -187,6 +189,81 @@ public class QueryMeasurement {
 		
 		System.out.println(Debugger.getCallerPosition()+"One QM result="+resultSet);
 		return resultSet;
+	}
+	
+	/**
+	 * Execute aggregation query in the raw db
+	 * 
+	 * @param rawdb
+	 * @param resultWithRecord
+	 * @param annotId2KeyAttrList
+	 * @return
+	 * @throws Exception
+	 */
+	public Set<OboeQueryResult> executeAggQueryRawDB(RawDB rawdb, boolean resultWithRecord, Map<Long, 
+			List<String>>  annotId2KeyAttrList) throws Exception
+	{
+		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
+		
+		if((this.aggregationFunc==null)||(aggregationFunc.trim().length()==0)){
+			throw new Exception ("executeAggQueryRawDB aggregationFunc="+aggregationFunc);
+		}
+		if((this.valueCond==null)||(valueCond.trim().length()==0)){
+			throw new Exception ("executeAggQueryRawDB valueCond="+valueCond);
+		}
+		
+		String cha = this.characteristicCond; 
+		
+		Map<Long, List<Pair<String,String>>> tb2Attribute = rawdb.retrieveOneTbAttribute(cha);
+		
+		for(Map.Entry<Long, List<Pair<String,String> >> entry: tb2Attribute.entrySet()){
+			Long tbId = entry.getKey();
+			List<Pair<String,String>> chaAttributeNamePairList= entry.getValue();//pair is <characteristic,attribute name>
+			
+			String sql = "SELECT DISTINCT "+tbId +",";
+			if(resultWithRecord){
+				sql +="rid,"; //???
+			}
+			sql += aggregationFunc+"("+this.characteristicCond+") ";
+			sql += " FROM " + rawdb.TB_PREFIX+tbId;
+			
+			//where
+			if(chaAttributeNamePairList!=null&&chaAttributeNamePairList.size()>0){
+				sql +=" WHERE (";
+				for(int i=0;i<chaAttributeNamePairList.size();i++){
+					Pair<String,String> pair = chaAttributeNamePairList.get(i);
+					if(i>0){
+						sql +=" AND ";
+					}
+					sql += pair.getSecond() + "=" + valueCond; 
+				}
+				sql +=")";
+			}
+			
+			//group by clause
+			List<String> groupByAttName = annotId2KeyAttrList.get(tbId);
+			if(groupByAttName!=null&&groupByAttName.size()>0){
+				sql +=" GROUP BY " + tbId + ",";
+				for(int i=0;i<groupByAttName.size();i++){
+					String att = groupByAttName.get(i);
+					sql += "," + att;
+				}
+			}
+			
+			//HAVING clause
+			sql += aggregationFunc+"("+this.characteristicCond+")" + this.valueCond;
+			sql += ";";
+			
+			System.out.println(Debugger.getCallerPosition()+"sql="+sql);
+			
+			//3. execute sql
+			Set<OboeQueryResult> oneTbResult = rawdb.dataQuery(sql);
+			if(oneTbResult!=null&&oneTbResult.size()>0){
+				result.addAll(oneTbResult);
+			}
+		}
+		
+		return result;
 	}
 
 }

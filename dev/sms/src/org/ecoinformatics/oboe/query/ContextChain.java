@@ -142,17 +142,9 @@ public class ContextChain {
 		
 		//TODO: need to use a set or a map for chain queries??? 
 		Set<OMQueryBasic> chainQuerySet = getChainQuerySet();
-		Set<String> characteristicLabelSet = new TreeSet<String>();
 		
 		boolean first = false;
 		for(OMQueryBasic q: chainQuerySet){
-			//get the query measurement that need to be aggregated
-			//Set<QueryMeasurement> aggregateQueryMeas = q.calAggregateQueryMeas(); 
-			//	new TreeSet<QueryMeasurement>();
-				
-			//get the key measurements for the aggregation measurement
-			//Map<QueryMeasurement, List<String> > keyMeasurements = calKeyMeasurements();
-				
 			//execute each basic query and inersect the results
 			Set<OboeQueryResult> oneBasicQueryResult = q.execute(rawdb,resultWithRecord);
 			if(!first){

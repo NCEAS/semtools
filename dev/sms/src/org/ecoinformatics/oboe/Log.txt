@@ -1,7 +1,9 @@
 
-TODO: 
-(1) OMQueryBasic:executeDNF() form SQL on rawDB
-(2) Preliminary Test
+ Done:
+(1) OMQueryBasic:executeCNF() form SQL on rawDB
+
+TODO:
+(1) Preliminary Test of query rewriting with two test datasets
 
 (3) Synthetic query generator (control selectivity)
 (4) Test use Margaret's data 

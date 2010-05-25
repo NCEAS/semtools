@@ -34,14 +34,12 @@ public class MDB extends PostgresDB{
 	//private String m_entityTypeTable = "entity_type";
 	private String m_entityInstanceTable = "entity_instance";
 	
-	private String m_obsTypeTable = "observation_type";
 	private String m_obsInstanceTable = "observation_instance";
 	
-	protected String m_measTypeTable = "measurement_type";
-	protected String m_measInstanceTable = "measurement_instance";
-	//protected String m_measInstanceTable = "measurement_instance_num";
 	
-	private String m_contextTypeTable = "context_relationship";
+	protected String m_measInstanceTable = "measurement_instance";
+	
+
 	private String m_contextInstanceTable = "context_instance";
 	private String m_mapTable = "map";	
 	

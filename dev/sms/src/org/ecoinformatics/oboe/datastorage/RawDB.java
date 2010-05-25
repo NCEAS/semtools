@@ -276,37 +276,20 @@ public class RawDB extends PostgresDB{
 	 * @return pair is <characteristic,attributename>
 	 * @throws SQLException
 	 */
-	public Map<Long, List<Pair>> retrieveTbAttribute(Set<String> characteristics) throws SQLException
+	public Map<Long, List<Pair<String,String>>> retrieveTbAttribute(Set<String> characteristics) throws SQLException
 	{
-		Map<Long, List<Pair>> tmpTbAttribute = new TreeMap<Long, List<Pair>>();
+		Map<Long, List<Pair<String,String>>> tmpTbAttribute = new TreeMap<Long, List<Pair<String,String> >>();
 		
 		//for each characteristic, get its related dataset id (i.e., annot_id) and attribute name)
 		for(String cha: characteristics){
-			String sql = "SELECT DISTINCT annot_id, attrname FROM measurement_type AS mt, map " +
-					"WHERE map.mtypelabel = mt.mtypelabel AND mt.characteristic="+cha+";";
 			
-			Statement stmt = m_conn.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
-		
-			while(rs.next()){
-				Long annotId = rs.getLong(1);
-				String attrname = rs.getString(2);
-				
-				List<Pair> oneTbAttribute = tmpTbAttribute.get(annotId);
-				if(oneTbAttribute==null){
-					oneTbAttribute = new ArrayList<Pair>();
-					tmpTbAttribute.put(annotId, oneTbAttribute);
-				}
-				Pair newPair = new Pair(cha,attrname);
-				oneTbAttribute.add(newPair);
-			}
-			rs.close();
-			stmt.close();
+			Map<Long, List<Pair<String,String>>> oneTb2Attribute = retrieveOneTbAttribute(cha);
+			tmpTbAttribute.putAll(oneTb2Attribute);
 		}
 		
 		//get only the table ids which has all these characteristics since they are in AND logic 
-		Map<Long, List<Pair>> tbAttribute = new TreeMap<Long, List<Pair>>();
-		for(Map.Entry<Long, List<Pair>> entry: tmpTbAttribute.entrySet()){
+		Map<Long, List<Pair<String,String> >> tbAttribute = new TreeMap<Long, List<Pair<String,String> >>();
+		for(Map.Entry<Long, List<Pair<String,String> >> entry: tmpTbAttribute.entrySet()){
 			//each data table need to have all these characteristics since they are in AND logic 
 			if(entry.getValue().size()==characteristics.size()){
 				tbAttribute.put(entry.getKey(), entry.getValue());
@@ -315,6 +298,39 @@ public class RawDB extends PostgresDB{
 		return tbAttribute;
 	}
 	
+	/**
+	 * Get the table and its related attributes for one chalracteristic
+	 * @param cha
+	 * @return
+	 * @throws SQLException
+	 */
+	public Map<Long, List<Pair<String,String>>> retrieveOneTbAttribute(String cha) throws SQLException
+	{
+		Map<Long, List<Pair<String,String>>> oneTb2Attribute = new TreeMap<Long, List<Pair<String,String> >>();
+		
+		String sql = "SELECT DISTINCT annot_id, attrname FROM measurement_type AS mt, map " +
+		"WHERE map.mtypelabel = mt.mtypelabel AND mt.characteristic="+cha+";";
+
+		Statement stmt = m_conn.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		while(rs.next()){
+			Long annotId = rs.getLong(1);
+			String attrname = rs.getString(2);
+			
+			List<Pair<String,String> > oneTbAttribute = oneTb2Attribute.get(annotId);
+			if(oneTbAttribute==null){
+				oneTbAttribute = new ArrayList<Pair<String,String> >();
+				oneTb2Attribute.put(annotId, oneTbAttribute);
+			}
+			Pair<String,String> newPair = new Pair<String, String>(cha,attrname);
+			oneTbAttribute.add(newPair);
+		}
+		rs.close();
+		stmt.close();
+		
+		return oneTb2Attribute;
+	}
 	/**
 	 * Perform one data query and return the results 
 	 * 

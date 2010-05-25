@@ -1,6 +1,7 @@
 package org.ecoinformatics.oboe.query;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.ArrayList;
@@ -139,9 +140,9 @@ public class OMQueryBasic {
 			
 			Set<OboeQueryResult> oneDNFresult = null;
 			if(db instanceof MDB){
-				result = executeDNF((MDB)db,measAND);
+				result = executeOneCNF((MDB)db,resultWithRecord, measAND);
 			}else if(db instanceof RawDB){
-				result = executeDNF((RawDB)db,measAND);
+				result = executeOneCNF((RawDB)db,resultWithRecord, measAND);
 			}else{
 				System.out.println(Debugger.getCallerPosition()+"Not implemented yet.");
 			}
@@ -159,35 +160,98 @@ public class OMQueryBasic {
 	 * @return
 	 * @throws Exception
 	 */
-	private Set<OboeQueryResult> executeDNF(RawDB rawdb, List<QueryMeasurement> measAND)
+	private Set<OboeQueryResult> executeOneCNF(RawDB rawdb, boolean resultWithRecord, List<QueryMeasurement> measAND)
 		throws Exception
 	{	
+		
+		//1. Get the measurements that need to be aggregated
+		List<QueryMeasurement> aggMeas = new ArrayList<QueryMeasurement>();
+		List<QueryMeasurement> nonAggMeas = new ArrayList<QueryMeasurement>();
+		for(QueryMeasurement qm: measAND){
+			//This query measurement need to be aggregated
+			if(qm.getAggregationFunc()!=null&qm.getAggregationFunc().length()>0){
+				aggMeas.add(qm);
+			}else{
+				nonAggMeas.add(qm);
+			}
+		}
+		
+		//2. Get this entity's key characteristics <dataset id: list of key attributes> 
+		Map<Long, List<String>>  annotId2KeyAttrList = rawdb.calKeyAttr(m_entityTypeNameCond);
+		
+
+		//3. The results need to be intersect-ed result = result(each qm in aggMeas) AND result(nonAggMeas)
+		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
+		
+		//3.1 Execute each aggregate query measurements and "AND" their results
+		boolean first = true;
+		for(QueryMeasurement qm: aggMeas){
+			if(!first&&result.size()==0){
+				//this is not the first query, but no result, so, we don't need to execute other queries 
+				break;
+			}
+			Set<OboeQueryResult> oneAggQueryResult = qm.executeAggQueryRawDB(rawdb,resultWithRecord,annotId2KeyAttrList);
+			if(!first){
+				result.retainAll(oneAggQueryResult);
+			}else{
+				result.addAll(oneAggQueryResult);
+				first = false;
+			}
+		}
+		
+		//3.2. Execute the non-aggregate query measurement as a whole and "AND" its results with the previous step.
+		//TODO: check whether this is right or not
+		if(!first&&result.size()>0){
+			Set<OboeQueryResult> nonAggQueryResult = executeNonAggregateCNF(rawdb,resultWithRecord,nonAggMeas);
+			result.retainAll(nonAggQueryResult);
+		}
+		
+		System.out.println(Debugger.getCallerPosition()+"oneCNF result="+result);
+		return result;
+	}
+	
+	
+	/**
+	 * Perform a query with the "AND" query measurements without aggregation function
+	 * 
+	 * @param rawdb
+	 * @param nonAggMeasAND
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	private Set<OboeQueryResult> executeNonAggregateCNF(RawDB rawdb, boolean resultWithRecord, List<QueryMeasurement> nonAggMeasAND) 
+		throws SQLException, Exception
+	{
+		Set<OboeQueryResult> nonAggQueryResult = new TreeSet<OboeQueryResult>();
+		
 		//1. find table id and related attribute names
 		Set<String> characteristics = new HashSet<String>();
 		Map<String, QueryMeasurement> cha2qm= new HashMap<String, QueryMeasurement>();
-		for(QueryMeasurement qm: measAND){
+		for(QueryMeasurement qm: nonAggMeasAND){
 			String chaCond = qm.getCharacteristicCond();
 			if(chaCond!=null&&chaCond.length()>0){
 				characteristics.add(chaCond);
 				cha2qm.put(chaCond, qm);
 			}
 		}
-		Map<Long, List<Pair>> tbAttribute = rawdb.retrieveTbAttribute(characteristics);
+		Map<Long, List<Pair<String,String>> > tbAttribute = rawdb.retrieveTbAttribute(characteristics);
 		
-		//FIXME: get KEY measurements
-		
-		//2. form SQL and execute query, the results should be unioned since they come from data table
-		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
-		for(Map.Entry<Long, List<Pair>> entry: tbAttribute.entrySet()){
+		//2. form SQL and execute query, the results should be unioned since they come from data table		
+		for(Map.Entry<Long, List<Pair<String,String> >> entry: tbAttribute.entrySet()){
 			Long tbId = entry.getKey();
-			List<Pair> chaAttributeNamePairList= entry.getValue();//pair is <characteristic,attributename>
+			List<Pair<String,String>> chaAttributeNamePairList= entry.getValue();//pair is <characteristic,attribute name>
 			
-			String sql = "SELECT DISTINCT rid FROM " + rawdb.TB_PREFIX+tbId;
+			
+			String sql = "SELECT DISTINCT "+tbId;
+			if(resultWithRecord){
+				sql +=", rid ";
+			}
+			sql += " FROM " + rawdb.TB_PREFIX+tbId;
 			if(chaAttributeNamePairList!=null&&chaAttributeNamePairList.size()>0){
 				sql +=" WHERE (";
 				for(int i=0;i<chaAttributeNamePairList.size();i++){
-					Pair pair = chaAttributeNamePairList.get(i);
-					
+					Pair<String,String> pair = chaAttributeNamePairList.get(i);
 					QueryMeasurement qm = cha2qm.get(pair.getFirst());
 					String valueCond = qm.getValueCond();
 					if(i>0){
@@ -197,20 +261,17 @@ public class OMQueryBasic {
 				}
 				sql +=")";
 			}
-			//FIXME: GROUP BY, HAVING condition
 			sql += ";";
 			
 			//3. execute sql
 			Set<OboeQueryResult> oneTbResult = rawdb.dataQuery(sql);
 			if(oneTbResult!=null&&oneTbResult.size()>0){
-				result.addAll(oneTbResult);
+				nonAggQueryResult.addAll(oneTbResult);
 			}
 		}
 		
-		System.out.println(Debugger.getCallerPosition()+"oneDNF result="+result);
-		return result;
+		return nonAggQueryResult;
 	}
-	
 	/**
 	 * Execute this query against the materialized database 
 	 * The other way is to form simple query and work on the results from the program
@@ -220,7 +281,7 @@ public class OMQueryBasic {
 	 * @return
 	 * @throws Exception 
 	 */
-	public Set<OboeQueryResult> execute(MDB mdb) throws Exception
+	public Set<OboeQueryResult> execute(MDB mdb, boolean resultWithRid) throws Exception
 	{
 		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
 		
@@ -231,7 +292,7 @@ public class OMQueryBasic {
 			//for the query measurement conditions ONE DNF, intersect all the results
 			List<QueryMeasurement> measAND = entry.getValue();
 			
-			Set<OboeQueryResult> oneDNFresult = executeDNF(mdb, measAND);
+			Set<OboeQueryResult> oneDNFresult = executeOneCNF(mdb, resultWithRid, measAND);
 			result.addAll(oneDNFresult);
 		}
 		
@@ -247,7 +308,7 @@ public class OMQueryBasic {
 	 * @return
 	 * @throws Exception 
 	 */
-	private Set<OboeQueryResult> executeDNF(MDB mdb, List<QueryMeasurement> measAND)
+	private Set<OboeQueryResult> executeOneCNF(MDB mdb, boolean resultWithRid, List<QueryMeasurement> measAND)
 		throws Exception
 	{
 		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
