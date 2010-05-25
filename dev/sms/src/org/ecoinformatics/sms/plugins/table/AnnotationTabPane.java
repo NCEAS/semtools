@@ -93,27 +93,35 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 		String attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
 		// get the latest
 		annotation = AnnotationPlugin.getCurrentActiveAnnotation();
-		if (annotationPage != null) {
-			// reset the UI
-			annotationPage.reset();
-			// now set it
-			if (annotation != null) {
-				Log.debug(40, "Showing Annotation: " + annotation.getURI());
-				annotationPage.setAnnotation(annotation);
-				annotationPage.editAttribute(attributeName);
+		
+		// column annotation
+		if (getSelectedIndex() == TAB_NAMES.indexOf(COLUMN_ANNOTATION)) {
+			if (annotationPage != null) {
+				// reset the UI
+				annotationPage.reset();
+				// now set it
+				if (annotation != null) {
+					Log.debug(40, "Showing Annotation: " + annotation.getURI());
+					annotationPage.setAnnotation(annotation);
+					annotationPage.editAttribute(attributeName);
+				}
 			}
 		}
 		
-		// refresh the context view
-		if (contextPage != null) {
-			contextPage.setAnnotation(annotation);
-			contextPage.handleSelectColumn();
+		// the context view
+		if (getSelectedIndex() == TAB_NAMES.indexOf(CONTEXT_ANNOTATION)) {
+			if (contextPage != null) {
+				contextPage.setAnnotation(annotation);
+				contextPage.handleSelectColumn();
+			}
 		}
 		
 		// the graph
-		if (annotationGraph != null) {
-			annotationGraph = AnnotationGraph.createAnnotationGraph(annotation, true);
-			setComponentAt(TAB_NAMES.indexOf(GRAPH_ANNOTATION), annotationGraph);
+		if (getSelectedIndex() == TAB_NAMES.indexOf(GRAPH_ANNOTATION)) {
+			if (annotationGraph != null) {
+				annotationGraph = AnnotationGraph.createAnnotationGraph(annotation, true);
+				setComponentAt(TAB_NAMES.indexOf(GRAPH_ANNOTATION), annotationGraph);
+			}
 		}
 	}
 	
