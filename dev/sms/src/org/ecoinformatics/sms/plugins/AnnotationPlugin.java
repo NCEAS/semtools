@@ -784,21 +784,13 @@ public class AnnotationPlugin
 
 		// initialize data-table centric UI elements
 		if (event.getChangedState().equals(StateChangeEvent.CREATE_ENTITY_DATAPACKAGE_FRAME)) {
-			if (!isInitialized()) {
+			if (isInitialized()) {
 				// listen for the closed window event
 				initializeWindowAdapter();
-				// make the pop up for the data table
-				initPopup();
-				try {
-					buildAnnotationTable();
-				} catch (Exception e) {
-					Log.debug(5, "Could not build annotation table");
-					e.printStackTrace();
-				}
 			}
 		}
 		
-		// just build the annotation table and pop up - no window lisener
+		// just build the annotation table and pop up - no window listener
 		if (event.getChangedState().equals(StateChangeEvent.SELECT_DATA_VIEWER)) {
 			if (!isInitialized()) {
 				// make the pop up for the data table
