@@ -60,7 +60,7 @@ public class ContextPanel extends JPanel {
 	// *
 	
 	public static final Dimension LIST_BUTTON_DIMS = new Dimension(55, 30);
-	public static final  Dimension PICKLIST_DIMS = new Dimension(150,30);
+	public static final  Dimension PICKLIST_DIMS = new Dimension(250,30);
 		
 	// context options
 	private JComboBox observationList;
@@ -68,7 +68,7 @@ public class ContextPanel extends JPanel {
 	private OntologyClassField contextRelationship;
 	
 	// providing observation
-	private JLabel observationLabel;
+	//private JLabel observationLabel;
 
 	private Context currentContext;
 	private Observation currentObservation;
@@ -95,11 +95,11 @@ public class ContextPanel extends JPanel {
 		//contextPanel.add(WidgetFactory.makeLabel("...the ", false, null));
 		
 		// entity
-		observationLabel = WidgetFactory.makeLabel("", true, null);
-		observationLabel.setEnabled(false);
-		contextPanel.add(observationLabel);
+		//observationLabel = WidgetFactory.makeLabel("", true, null);
+		//observationLabel.setEnabled(false);
+		//contextPanel.add(observationLabel);
 		
-		contextPanel.add(WidgetFactory.makeLabel(" was ", false, null));
+		//contextPanel.add(WidgetFactory.makeLabel(" was ", false, null));
 
 		// relationship
 		contextRelationship = OntologyClassField.makeLabel("<relationship>", false, null);
@@ -196,8 +196,8 @@ public class ContextPanel extends JPanel {
 	
 	public void setObservation(Observation contextObservation) {
 		this.currentObservation = contextObservation;
-		this.observationLabel.setText(currentObservation.toString());
-		this.observationLabel.setToolTipText(currentObservation.toString());
+		//this.observationLabel.setText(currentObservation.toString());
+		//this.observationLabel.setToolTipText(currentObservation.toString());
 
 	}
 }

@@ -34,6 +34,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
@@ -65,6 +66,8 @@ public class ContextPage extends AbstractUIPage {
 	// annotation
 	private Annotation annotation;
 	private Observation observation;
+	
+	private JLabel observationLabel;
 	
 	// context options
 	private ContextPanelList contextList;
@@ -122,13 +125,24 @@ public class ContextPage extends AbstractUIPage {
 		// help button
 		JButton helpButton = Help.createHelpButton(pageRef, "Help");
 		
-		JPanel lineOnePanel = WidgetFactory.makePanel(); 
+		JPanel lineOnePanel = WidgetFactory.makePanel();
+		JPanel lineTwoPanel = WidgetFactory.makePanel();
+
 		lineOnePanel.add(WidgetFactory.makeLabel("The Observation was made where the...", false, null));
 		lineOnePanel.add(Box.createHorizontalGlue());
 		lineOnePanel.add(helpButton);
 		lineOnePanel.add(editButton);
-			
+		
+		//lineTwoPanel.add(WidgetFactory.makeLabel("The Observation was made where the", false, null));
+		lineTwoPanel.add(Box.createHorizontalGlue());
+		observationLabel = WidgetFactory.makeLabel("<observation>", true, null);
+		lineTwoPanel.add(observationLabel);
+		lineTwoPanel.add(WidgetFactory.makeLabel("was...", false, null));
+		lineTwoPanel.add(Box.createHorizontalGlue());
+		
 		this.add(lineOnePanel);
+		this.add(lineTwoPanel);
+		this.add(WidgetFactory.makeHalfSpacer());
 				
 		// Context list
 		JPanel contextListPanel = WidgetFactory.makePanel(6);
@@ -153,6 +167,11 @@ public class ContextPage extends AbstractUIPage {
 	
 	public void setObservation(Observation observation) {
 		this.observation = observation;
+		if (this.observation != null) {
+			observationLabel.setText(observation.toString());
+		} else {
+			observationLabel.setText("<observation>");
+		}
 	}
 	
 	public Annotation getAnnotation() {
@@ -167,9 +186,6 @@ public class ContextPage extends AbstractUIPage {
 	}
 	
 	private void populateList() {
-		if (this.observation == null) {
-			return;
-		}
 		// set the existing entries
 		contextList.setObservation(observation);	
 	}
