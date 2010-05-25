@@ -49,7 +49,9 @@ public class QueryProcessor {
 		for(int i=0;i<queryList.size();i++){
 			OMQuery queryI = queryList.getQuery(i);
 			System.out.println(Debugger.getCallerPosition()+"\n*****\nProcess query: "+queryI+"\n********");
+			
 			Set<OboeQueryResult> queryResult = queryI.execute(queryStrategy, resultWithRecord);
+						
 			System.out.println(Debugger.getCallerPosition()+"i="+i+",result="+queryResult);
 			queryResultContainer.add(queryResult);
 		}

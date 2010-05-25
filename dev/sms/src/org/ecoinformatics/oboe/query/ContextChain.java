@@ -154,7 +154,7 @@ public class ContextChain {
 			//Map<QueryMeasurement, List<String> > keyMeasurements = calKeyMeasurements();
 				
 			//execute each basic query and inersect the results
-			Set<OboeQueryResult> oneBasicQueryResult = q.execute(rawdb);
+			Set<OboeQueryResult> oneBasicQueryResult = q.execute(rawdb,resultWithRecord);
 			if(!first){
 				result.retainAll(oneBasicQueryResult);
 			}else{
@@ -176,7 +176,7 @@ public class ContextChain {
 	 * @return
 	 * @throws Exception 
 	 */
-	private Set<OboeQueryResult> execute(PostgresDB db, boolean resultWithRecord) 
+	public Set<OboeQueryResult> execute(PostgresDB db, boolean resultWithRecord) 
 		throws Exception
 	{
 		
@@ -188,7 +188,7 @@ public class ContextChain {
 		//The results need to be intersect-ed
 		boolean first = true;
 		for(OMQueryBasic q: chainQuerySet){
-			Set<OboeQueryResult> oneBasicQueryResult = q.execute(db);
+			Set<OboeQueryResult> oneBasicQueryResult = q.execute(db,resultWithRecord);
 			if(!first){
 				result.retainAll(oneBasicQueryResult);
 			}else{
