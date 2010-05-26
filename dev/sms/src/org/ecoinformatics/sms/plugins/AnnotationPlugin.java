@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.Map.Entry;
 
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
@@ -1084,6 +1085,10 @@ public class AnnotationPlugin
 					// add the tab pane to the panel
 					dataViewer.getHeaderPanel().add(BorderLayout.CENTER, tabPane);
 					
+					// intercept column selection using the tab pane
+					AnnotationListSelectionModel annotationSelectionListener = new AnnotationListSelectionModel(tabPane);
+					dataViewer.getDataTable().getColumnModel().setSelectionModel(annotationSelectionListener);
+					
 					Log.debug(30, "Set up annotation table...\n " 
 							+ "Data package: " + packageId 
 							+ ", entity: " + entityIndex 
@@ -1095,5 +1100,42 @@ public class AnnotationPlugin
 		}
 		
 	}
+	
+	class AnnotationListSelectionModel extends DefaultListSelectionModel {
+		private AnnotationTabPane pane;
+		
+		public AnnotationListSelectionModel(AnnotationTabPane p) {
+			this.pane = p;
+		}
+		
+		 public void setSelectionInterval(int index0, int index1) {
+			 if (canContinue()) {
+				 super.setSelectionInterval(index0, index1);
+			 }
+		 }
+		 
+		 public void addSelectionInterval(int index0, int index1) {
+			 if (canContinue()) {
+				 super.addSelectionInterval(index0, index1);
+			 }
+		 }
+
+		 
+		 private boolean canContinue() {
+			 if (pane.hasChanged()) {
+				int response = JOptionPane.showConfirmDialog(
+						pane, 
+						"Continue without applying changes?", 
+						"Unsaved changes", 
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
+				if (response == JOptionPane.NO_OPTION) {
+					return false;
+				}
+			 }
+			 return true;
+		 }
+	}
+	
 
 }
