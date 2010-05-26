@@ -1119,19 +1119,22 @@ public class AnnotationPlugin
 				 super.addSelectionInterval(index0, index1);
 			 }
 		 }
-
 		 
 		 private boolean canContinue() {
 			 if (pane.hasChanged()) {
 				int response = JOptionPane.showConfirmDialog(
 						pane, 
-						"Continue without applying changes?", 
+						"Apply changes before continuing?", 
 						"Unsaved changes", 
-						JOptionPane.YES_NO_OPTION,
+						JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE);
-				if (response == JOptionPane.NO_OPTION) {
+				if (response == JOptionPane.CANCEL_OPTION) {
 					return false;
 				}
+				if (response == JOptionPane.YES_OPTION) {
+					pane.applyChanges();
+				}
+				// NO_OPTION does nothing but continue
 			 }
 			 return true;
 		 }

@@ -206,6 +206,10 @@ public class ContextPage extends AbstractUIPage {
 		//this.setEnabled(observation != null);
 		this.setEnabled(false);
 	}
+	
+	public void applyChanges() {
+		editButton.doClick();
+	}
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *

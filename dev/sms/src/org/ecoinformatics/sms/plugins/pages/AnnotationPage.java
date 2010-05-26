@@ -346,6 +346,10 @@ public class AnnotationPage extends AbstractUIPage {
 
 	}
 	
+	public void applyChanges() {
+		editButton.doClick();
+	}
+	
 	public void setAnnotation(Annotation a) {
 		this.annotation = a;
 	}

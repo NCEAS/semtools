@@ -80,6 +80,23 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 		return hasChanged;
 	}
 	
+	public void applyChanges() {
+		if (getSelectedIndex() == AnnotationTabPane.TAB_NAMES.indexOf(AnnotationTabPane.CONTEXT_ANNOTATION)) {
+			if (contextPage != null) {
+				if (contextPage.isEnabled()) {
+					contextPage.applyChanges();
+				}
+			}
+		}
+		if (getSelectedIndex() == AnnotationTabPane.TAB_NAMES.indexOf(AnnotationTabPane.COLUMN_ANNOTATION)) {
+			if (annotationPage != null) {
+				if (annotationPage.isEnabled()) {
+					annotationPage.applyChanges();
+				}
+			}
+		}
+	}
+	
 	public void handleStateChange(StateChangeEvent event) {
 		initHandling();
 		
@@ -162,19 +179,29 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 		}
 		
 		public void setSelectedIndex(int index) {
-			
-			if (pane.hasChanged()) {
+			if (canContinue()) {
+				super.setSelectedIndex(index);
+			}
+		}
+		
+		private boolean canContinue() {
+			 if (pane.hasChanged()) {
 				int response = JOptionPane.showConfirmDialog(
 						pane, 
-						"Continue without applying changes?", 
+						"Apply changes before switching tabs?", 
 						"Unsaved changes", 
-						JOptionPane.YES_NO_OPTION,
+						JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE);
-				if (response == JOptionPane.NO_OPTION) {
-					return;
+				if (response == JOptionPane.CANCEL_OPTION) {
+					return false;
 				}
-			}
-		    super.setSelectedIndex(index);
-		}
+				if (response == JOptionPane.YES_OPTION) {
+					pane.applyChanges();
+				}
+				// NO_OPTION does nothing but continue
+			 }
+			 return true;
+		 }
 	}
+	
 }
