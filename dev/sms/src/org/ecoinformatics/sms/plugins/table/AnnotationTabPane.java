@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultSingleSelectionModel;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -46,6 +48,7 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 	
 	public AnnotationTabPane(Annotation a, int tabPlacement) {
 		super(tabPlacement);
+		this.setModel(new AnnotationTabPaneModel(this));
 		this.annotation = a;
 		
 		// add a change listener
@@ -56,6 +59,25 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 		        handleSelectTab();
 		    }
 		});
+	}
+	
+	public boolean hasChanged() {
+		boolean hasChanged = false;
+		if (getSelectedIndex() == AnnotationTabPane.TAB_NAMES.indexOf(AnnotationTabPane.CONTEXT_ANNOTATION)) {
+			if (contextPage != null) {
+				if (contextPage.isEnabled()) {
+					hasChanged = true;
+				}
+			}
+		}
+		if (getSelectedIndex() == AnnotationTabPane.TAB_NAMES.indexOf(AnnotationTabPane.COLUMN_ANNOTATION)) {
+			if (annotationPage != null) {
+				if (annotationPage.isEnabled()) {
+					hasChanged = true;
+				}
+			}
+		}
+		return hasChanged;
 	}
 	
 	public void handleStateChange(StateChangeEvent event) {
@@ -125,4 +147,34 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 		}
 	}
 	
+	/**
+	 * Use this selection model subclass to 'intercept' the tab selection event.
+	 * If there are unsaved changes, then we can continue (discard them), not continue, or maybe even 
+	 * save them TBD
+	 * @author leinfelder
+	 *
+	 */
+	class AnnotationTabPaneModel extends DefaultSingleSelectionModel {
+		private AnnotationTabPane pane;
+		
+		public AnnotationTabPaneModel(AnnotationTabPane p) {
+			this.pane = p;
+		}
+		
+		public void setSelectedIndex(int index) {
+			
+			if (pane.hasChanged()) {
+				int response = JOptionPane.showConfirmDialog(
+						pane, 
+						"Continue without applying changes?", 
+						"Unsaved changes", 
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
+				if (response == JOptionPane.NO_OPTION) {
+					return;
+				}
+			}
+		    super.setSelectedIndex(index);
+		}
+	}
 }
