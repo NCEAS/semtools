@@ -146,7 +146,10 @@ public class OMQueryBasic {
 			}else{
 				System.out.println(Debugger.getCallerPosition()+"Not implemented yet.");
 			}
-			result.addAll(oneDNFresult);
+			
+			if(oneDNFresult!=null){
+				result.addAll(oneDNFresult);
+			}
 		}
 		
 		return result;

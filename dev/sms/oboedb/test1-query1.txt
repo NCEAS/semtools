@@ -5,7 +5,7 @@
 #2,piru,2008,33.2
 #
 #natural form of queries
-#Q1: gce:Tree[gce:DBH > 36.00 oboe-units:Centimeter]
+#Q1: gce:Tree[gce:DBH > 35.00 oboe-units:Centimeter]
 #
 #formated form
 BEGIN QUERY:1
@@ -14,7 +14,7 @@ EntityId: '%Tree%'
 BEGIN QM:1
 Characteristic:'DBH'
 Standard:
-Cond:>35.2
+Cond:>35.0
 Aggregation:
 DNF:1
 END QM

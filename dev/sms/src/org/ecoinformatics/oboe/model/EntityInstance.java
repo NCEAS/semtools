@@ -11,7 +11,7 @@ public class EntityInstance {
 	//private static long gEntId=0;
 	
 	private long m_did;
-	private String m_recordId;
+	private Long m_recordId;
 	
 	private long entId;
 	private Entity entityType;
@@ -27,11 +27,11 @@ public class EntityInstance {
 		m_did = did;
 	}
 
-	public String getRecordId() {
+	public Long getRecordId() {
 		return m_recordId;
 	}
 
-	public void setRecordId(String mRecordId) {
+	public void setRecordId(Long mRecordId) {
 		m_recordId = mRecordId;
 	}
 

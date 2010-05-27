@@ -14,6 +14,13 @@
             <sms:standard id="oboe:DateTime"/>
         </sms:measurement>
     </sms:observation>
+    <sms:observation label="o3" distinct="yes">
+        <sms:entity id="gce:Site"/>
+        <sms:measurement label="m5" key="yes">
+            <sms:characteristic id="gce:Plot"/>
+            <sms:standard id="oboe:SiteName"/>
+        </sms:measurement>
+    </sms:observation>
     <sms:observation label="o2">
         <sms:entity id="gce:Tree"/>
         <sms:measurement label="m2" precision="0.1">
@@ -28,13 +35,17 @@
             <sms:characteristic id="oboe:EntityName"/>
             <sms:standard id="gce:LocalTreeNames"/>
         </sms:measurement>
-        <sms:context observation="o1">
+        <sms:context observation="o1" identifying="yes">
+            <sms:relationship id="gce:Within"/>
+        </sms:context>
+        <sms:context observation="o3" identifying="yes">
             <sms:relationship id="gce:Within"/>
         </sms:context>
     </sms:observation>
     <sms:map attribute="yr" measurement="m1"/>
     <sms:map attribute="dbh" measurement="m2" if="dbh ge 0"/>
     <sms:map attribute="tree" measurement="m4"/>
+    <sms:map attribute="plot" measurement="m5"/>
     <sms:map attribute="spp" measurement="m3" value="Picea rubens" 
 	   if="spp eq 'piru'"/>
     <sms:map attribute="spp" measurement="m3" value="Abies balsamea" 

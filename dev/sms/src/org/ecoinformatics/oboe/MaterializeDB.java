@@ -217,7 +217,7 @@ public class MaterializeDB {
 	 * @param A
 	 * @return
 	 */
-	private static Set<MeasurementInstance> CrtMeasurement(ArrayList rowStruct, ArrayList row, Annotation A)
+	private static Set<MeasurementInstance> CrtMeasurement(ArrayList rowStruct, ArrayList row, Annotation A, long recordId)
 	{
 		//Keep the set of new measurement instances
 		Set<MeasurementInstance> measSet = new TreeSet<MeasurementInstance>();
@@ -250,6 +250,7 @@ public class MaterializeDB {
 			
 				//create a new measurement instance and add it to the set
 				MeasurementInstance<String> mi = new MeasurementInstance<String>(measurementType, null, measVal);
+				mi.setRecordId(recordId);
 				measSet.add(mi);
 			} 
 			//end of dealing with each column
@@ -302,14 +303,15 @@ public class MaterializeDB {
 	 */
 	private static EntityInstance MaterializeEntity(
 			Observation obsType,
-			String recordIdPrefix,
+			//String recordIdPrefix,
+			Long recordId,
 			Map<Observation, Set<MeasurementInstance>> obsType2MeasIdx, 
 			Map<ObsTypeKey, EntityInstance> entIdx, 
 			Annotation A, OboeModel OBOE)
 	{
 		String keyValue = GetObsTypeKeys(obsType, obsType2MeasIdx); 
 		List<Measurement> keyMeasTypes = obsType.getKeyMeasurements();
-		String recordId = recordIdPrefix + obsType.getLabel();
+		//String recordId = recordIdPrefix + obsType.getLabel();
 		//System.out.println(Debugger.getCallerPosition()+",keyValue="+keyValue+",keyMeasTypes="+keyMeasTypes);
 		boolean hasKey = false;
 		EntityInstance entityInstance = null;
@@ -428,7 +430,8 @@ public class MaterializeDB {
 			Map<Observation, Set<MeasurementInstance>> obsType2MeasIdx, 
 			Map<ObsTypeKey, ObservationInstance> obsIdx, 
 			Map<Observation, ObservationInstance> ioContextIdx, 
-			Annotation A, OboeModel ioOBOE)
+			Annotation A, OboeModel ioOBOE,
+			long recordId)
 	{
 		String keyValue = GetObsTypeKeys(obsType, obsType2MeasIdx);
 		boolean crtNewObsInstance  = true;
@@ -448,6 +451,7 @@ public class MaterializeDB {
 		//need to create a new observation instance
 		if(crtNewObsInstance){
 			obsInstance = new ObservationInstance(obsType,entInstance);
+			obsInstance.setRecordId(recordId);
 			ioOBOE.AddObservationInstance(obsInstance);
 			//System.out.println("New oi: " + obsInstance);
 			if(obsType.isDistinct()){
@@ -685,16 +689,17 @@ public class MaterializeDB {
 		}
 		OBOE.setDatasetFile(pureFileName);
 		
-		String recordIdPrefix;
+		//String recordIdPrefix;
 		for(int i=0;i<dataset.size();i++){
 			// uniqueRecordId is like eg20-n10-data.txt_R0_Cm1
-			recordIdPrefix =  "R"+i+"_C_";
+			//recordIdPrefix =  "R"+i+"_C_";
+			long recordId = i;
 			//System.out.println(Debugger.getCallerPosition()+"uniqueRecordIdPrefix="+uniqueRecordIdPrefix);
 			
 			ArrayList row = (ArrayList)dataset.get(i);
 			//System.out.println("i="+i+", dataset size="+dataset.size());
 			//Step 3.1: define measurement instances
-			Set<MeasurementInstance> measSet = CrtMeasurement(rowStruct,row,A);
+			Set<MeasurementInstance> measSet = CrtMeasurement(rowStruct,row,A,recordId);
 			
 			//Step 3.2: partition the measurement instances according to observation types
 			Map<Observation, Set<MeasurementInstance>> obsType2MeasIdx = PartitionMeas(measSet, A);
@@ -702,10 +707,10 @@ public class MaterializeDB {
 			Map contextIdx = new TreeMap();
 			for(Observation obsType : obsType2MeasIdx.keySet()){
 				//Step 3.3: Find or create the entity instance for each observation type partition
-				EntityInstance entInstance = MaterializeEntity(obsType, recordIdPrefix,obsType2MeasIdx, entIdx, A, OBOE);
+				EntityInstance entInstance = MaterializeEntity(obsType, recordId,obsType2MeasIdx, entIdx, A, OBOE);
 				
 				//Step 3.4: Find or create the observation instance for each observation type partition
-				MaterializeObs(obsType, entInstance,obsType2MeasIdx,obsIdx,contextIdx,A, OBOE);
+				MaterializeObs(obsType, entInstance,obsType2MeasIdx,obsIdx,contextIdx,A, OBOE,recordId);
 			}
 			
 			//Step 3.5: Assign the context observation instances

@@ -2,11 +2,20 @@
  Done:
 (1) OMQueryBasic:executeCNF() form SQL on rawDB
 
+===
+May 26, 2010
+//Batch commands in Loading testing data, 
+MaterialilzeDB null test1-annot.xml test1-data.txt test1 
+MaterialilzeDB null test2-annot.xml test2-data.txt test2
+RawDataLoader test1-data.txt
+RawDataLoader test2-data.txt
+
 TODO:
 (1) Preliminary Test of query rewriting with two test datasets
-
+ 
 (3) Synthetic query generator (control selectivity)
 (4) Test use Margaret's data 
 
 (5) Partial materializatiton
 (6) Naive query method (IR keyword, Triple store)
+

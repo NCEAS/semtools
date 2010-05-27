@@ -30,24 +30,29 @@ public class CSVDataReader {
 
 			int lineNo = 0;
 			String line;
+			
 			while( (line = reader.readLine()) != null ) {
 				
 				if(lineNo==0){
 					String[] attNames = line.split(",");
+					oRowStruct.add("record_id");
 					for(int i=0;i<attNames.length;i++){
 						oRowStruct.add(attNames[i]);
 					}
 				}else if(lineNo==1){
 					String[] attTypes = line.split(",");
+					oAttrType.add("bigint");
 					for(int i=0;i<attTypes.length;i++){
 						oAttrType.add(attTypes[i]);
 					}
 				}else{
 					ArrayList<String> row = new ArrayList<String>();
 					String[] rowValues = line.split(",");
-					if(rowValues.length!=oRowStruct.size()){
+					if(rowValues.length!=oRowStruct.size()-1){
 						throw new Exception("Data structure attribute number is different row value number.");
 					}
+					Integer recordId = lineNo-2;
+					row.add(recordId.toString());
 					for(int i=0;i<rowValues.length;i++){
 						row.add(rowValues[i]);
 					}

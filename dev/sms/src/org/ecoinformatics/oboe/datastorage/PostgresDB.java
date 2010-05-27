@@ -163,29 +163,34 @@ public class PostgresDB {
 		Map<Long, List<String> > annotId2AttrList= new HashMap<Long, List<String>>();
 		
 		//1. form SQL to get the attributes with the given annot_id
-		String sql = "SELECT DISTINT annot_id, mt.otypelabel as otypelabel, attrname " +
+		String sql = "SELECT DISTINCT mt.annot_id as annot_id, mt.otypelabel as otypelabel, attrname " +
 				"FROM map, " + m_measTypeTable +" AS mt " +
-				"WHERE mt.annot_id = map.annot_id AND mt.mtypelabel=map.mtypelabel AND mt.isKey = 't' " +
-				"AND mt.annot_id IN (";
-		boolean first = true;
-		for(Long annotId : annotId_contextotypelabel.keySet()){
-			if(!first){
-				sql+=","+annotId;
-			}else{
-				sql+=annotId;
+				"WHERE mt.annot_id = map.annot_id AND mt.mtypelabel=map.mtypelabel AND mt.isKey = 't' "; 
+		
+		if(annotId_contextotypelabel!=null&&annotId_contextotypelabel.keySet().size()>0){
+			sql += "AND mt.annot_id IN (";
+			boolean first = true;
+			for(Long annotId : annotId_contextotypelabel.keySet()){
+				if(!first){
+					sql+=","+annotId;
+				}else{
+					sql+=annotId;
+				}
 			}
+			sql +=")";
 		}
-		sql +=");";
+		sql +=";";
 		
 		//2. execute the sql
 		Map<Long, Map> annotId2Otypeattr = new HashMap<Long, Map>();
 		Statement stmt = m_conn.createStatement();
+		System.out.println(Debugger.getCallerPosition()+"sql= "+sql);
 		ResultSet rs = stmt.executeQuery(sql);
 	
 		while(rs.next()){
 			Long annotId = rs.getLong(1);
-			String otypelabel = rs.getString(2);
-			String attrname = rs.getString(3);
+			String otypelabel = rs.getString(2).trim();
+			String attrname = rs.getString(3).trim();
 			Map otypeattr = annotId2Otypeattr.get(annotId);
 			if(otypeattr==null){
 				otypeattr = new HashMap<String, List>();
@@ -208,15 +213,18 @@ public class PostgresDB {
 			List<String> contextOtypeLabel = annotId_contextotypelabel.get(annotId);
 			Set<String> tmpOtypeLabelSet = (Set<String>)entry.getValue().keySet();
 			
-			//this temporary otype label set must contain all the context tyle label
-			//if(tmpOtypeLabel.size()==contextOtypeLabel.size()&&tmpOtypeLabel.containsAll(contextOtypeLabel))
-			List<String> attrList = new ArrayList<String>();
-			for(String tmpOtypeLabel:tmpOtypeLabelSet){
-				if(contextOtypeLabel.contains(tmpOtypeLabel)){
-					attrList.addAll((List<String>)entry.getValue().get(tmpOtypeLabel));
+			//this temporary otype label set must contain all the context type label
+			System.out.println(Debugger.getCallerPosition()+"tmpOtypeLabelSet="+tmpOtypeLabelSet+",entry="+tmpOtypeLabelSet);
+			
+			if(contextOtypeLabel!=null&&contextOtypeLabel.size()>0){
+				List<String> attrList = new ArrayList<String>();
+				for(String tmpOtypeLabel:tmpOtypeLabelSet){
+					if(contextOtypeLabel.contains(tmpOtypeLabel)){
+						attrList.addAll((List<String>)entry.getValue().get(tmpOtypeLabel));
+					}
 				}
+				annotId2AttrList.put(annotId, attrList);
 			}
-			annotId2AttrList.put(annotId, attrList);
 		}
 		return annotId2AttrList;
 	}

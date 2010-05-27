@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 
+import org.ecoinformatics.oboe.Constant;
 import org.ecoinformatics.oboe.query.OMQuery;
 import org.ecoinformatics.oboe.query.QueryList;
 import org.ecoinformatics.oboe.query.OboeQueryResult;
@@ -19,6 +20,8 @@ public class QueryProcessor {
 			System.out.println("\t <3. result form> 0: only has dataset id; 1, has dataset id and record id");
 			return;
 		}
+		
+		long t1 = System.currentTimeMillis();
 		
 		//1. process parameters
 		String queryFile = Constant.localUriPrefix+args[0];
@@ -56,7 +59,25 @@ public class QueryProcessor {
 			queryResultContainer.add(queryResult);
 		}
 		
+		long t2 = System.currentTimeMillis();
+		
+		System.out.println("\n-----------\n");
+		if(queryStrategy==org.ecoinformatics.oboe.query.Constant.QUERY_MATERIALIZED_DB){
+			System.out.println(Debugger.getCallerPosition() +" Query materialized database.");
+		}else if(queryStrategy==org.ecoinformatics.oboe.query.Constant.QUERY_REWRITE){
+			System.out.println(Debugger.getCallerPosition() +" Query raw database.");
+		}else{
+			System.out.println(Debugger.getCallerPosition() +" Query: other strategy.");
+		}
+		System.out.println(Debugger.getCallerPosition()+"Time used (Query): " 
+				+ (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
+		
 		//4. write the query result to the result file
-		queryResultContainer.write(queryResultFile);		
+		queryResultContainer.write(queryResultFile);
+		
+		long t3 = System.currentTimeMillis();
+		
+		System.out.println("\n-----------\n"+Debugger.getCallerPosition()+"Time used (Total=query+write out): " 
+				+ (t3-t1) +" ms" +" = "+ ((t3-t1)/1000) +"s\n-----------\n");
 	}
 }

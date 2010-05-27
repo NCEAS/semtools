@@ -24,6 +24,8 @@ public class RawDataLoader {
 		RawDB rawDB = new RawDB();
 		
 		rawDB.load(rawDataFile);
+		
+		System.out.println(Debugger.getCallerPosition()+"Finish loading data");
 	}
 
 }

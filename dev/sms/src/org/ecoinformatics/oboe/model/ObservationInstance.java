@@ -10,22 +10,16 @@ import java.util.Set;
 import org.ecoinformatics.sms.annotation.*;
 
 public class ObservationInstance implements Comparable<ObservationInstance>{
-	//private static long gObsId = 0;
 	private Long obsId;
 	private Observation obsType;
 	private EntityInstance entityInstance;
+	private Long m_recordId;
 	
 	private OboeModel oboe;
 	private Annotation a;
 	
 	public ObservationInstance(Observation _obsType, EntityInstance _entityInstance)
 	{
-//		if(gObsId==0){
-//			gObsId = oboe.gOldMaxObsId;
-//		}else{
-//			gObsId++;
-//		}
-//		this.setObsId(gObsId);
 		this.setObsId((oboe.gOldMaxObsId)++);
 		this.setObsType(_obsType);
 		this.setEntity(_entityInstance);
@@ -51,6 +45,14 @@ public class ObservationInstance implements Comparable<ObservationInstance>{
 	}
 	public void setEntity(EntityInstance _entityInstance) {
 		this.entityInstance = _entityInstance;
+	}
+	
+	public Long getRecordId() {
+		return m_recordId;
+	}
+
+	public void setRecordId(Long mRecordId) {
+		m_recordId = mRecordId;
 	}
 	
 	public OboeModel getOboe() {

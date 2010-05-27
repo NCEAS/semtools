@@ -31,15 +31,9 @@ import org.ecoinformatics.sms.annotation.Observation;
  */
 public class MDB extends PostgresDB{
 	
-	//private String m_entityTypeTable = "entity_type";
 	private String m_entityInstanceTable = "entity_instance";
-	
 	private String m_obsInstanceTable = "observation_instance";
-	
-	
 	protected String m_measInstanceTable = "measurement_instance";
-	
-
 	private String m_contextInstanceTable = "context_instance";
 	private String m_mapTable = "map";	
 	
@@ -59,7 +53,6 @@ public class MDB extends PostgresDB{
 	String m_maxEntityInstanceIdSql = "SELECT last_value FROM eid_seq;";
 	String m_maxObsInstanceIdSql = "SELECT last_value FROM oid_seq;";
 	String m_maxMeasInstanceIdSql = "SELECT last_value FROM mid_seq;";
-	
 	
 	public String getMmeasTypeTable() {
 		return m_measTypeTable;
@@ -185,10 +178,11 @@ public class MDB extends PostgresDB{
 	{
 		pstmt.setLong(1, ei.getEntId());
 		pstmt.setLong(2, did);
-		if(ei.getRecordId().length()>=RECORD_ID_LEN){
-			throw new Exception("Entity record id length is bigger than 16.");
-		}
-		pstmt.setString(3,ei.getRecordId());
+		//if(ei.getRecordId().length()>=RECORD_ID_LEN){
+		//	throw new Exception("Entity record id length is bigger than 16.");
+		//}
+		//pstmt.setString(3,ei.getRecordId());
+		pstmt.setLong(3,ei.getRecordId());
 		pstmt.setString(4, ei.getEntityType().getName());		
 	}
 	
@@ -208,7 +202,7 @@ public class MDB extends PostgresDB{
 	{
 		pstmt.setLong(1, oi.getObsId());
 		pstmt.setLong(2, did);
-		pstmt.setString(3, oi.getEntity().getRecordId());
+		pstmt.setLong(3, oi.getRecordId());
 		pstmt.setLong(4, oi.getEntity().getEntId());		
 		pstmt.setString(5, oi.getObsType().getLabel());		
 	}
@@ -316,7 +310,7 @@ public class MDB extends PostgresDB{
 	{	
 		pstmt.setLong(1, mi.getMeasId());
 		pstmt.setLong(2, did);
-		pstmt.setString(3, mi.getObservationInstance().getEntity().getRecordId());
+		pstmt.setLong(3, mi.getRecordId());
 		pstmt.setLong(4, mi.getObservationInstance().getObsId());		
 		pstmt.setString(5, mi.getMeasurementType().getLabel());		
 		pstmt.setString(6, mi.getMeasValue());
@@ -336,9 +330,9 @@ public class MDB extends PostgresDB{
 		throws SQLException
 	{
 		pstmt.setLong(1, did); //did
-		pstmt.setString(2, ci.getContextObservationInstance().getEntity().getRecordId()); //record id (inside did)
-		pstmt.setLong(3, ci.getObservationInstance().getObsId()); 			//observation instance id
-		pstmt.setLong(4, ci.getContextObservationInstance().getObsId()); 	//context observation instance id
+		pstmt.setLong(2, ci.getObservationInstance().getRecordId()); //record id (inside did)
+		pstmt.setLong(3, ci.getObservationInstance().getObsId()); 	 //observation instance id
+		pstmt.setLong(4, ci.getContextObservationInstance().getObsId()); //context observation instance id
 		pstmt.setString(5, ci.getContextType().getRelationship().getName()); //relationship name
 	}
 	

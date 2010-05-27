@@ -12,6 +12,7 @@ public class MeasurementInstance<T> implements Comparable<MeasurementInstance> {
 	private String measValue;
 	private ObservationInstance observationInstance;
 	private Measurement measurementType;
+	private Long m_recordId;
 	
 	private OboeModel oboe;
 	private Annotation a;
@@ -71,6 +72,15 @@ public class MeasurementInstance<T> implements Comparable<MeasurementInstance> {
 	public void setMeasurementType(Measurement measurementType) {
 		this.measurementType = measurementType;
 	}
+	
+	public Long getRecordId() {
+		return m_recordId;
+	}
+
+	public void setRecordId(Long mRecordId) {
+		m_recordId = mRecordId;
+	}
+	
 	public OboeModel getOboe() {
 		return oboe;
 	}
