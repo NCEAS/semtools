@@ -254,9 +254,8 @@ public class QueryMeasurement {
 			sql += aggregationFunc+"("+this.characteristicCond+")" + this.valueCond;
 			sql += ";";
 			
-			System.out.println(Debugger.getCallerPosition()+"sql="+sql);
-			
 			//3. execute sql
+			System.out.println(Debugger.getCallerPosition()+"sql= "+sql);
 			Set<OboeQueryResult> oneTbResult = rawdb.dataQuery(sql);
 			if(oneTbResult!=null&&oneTbResult.size()>0){
 				result.addAll(oneTbResult);

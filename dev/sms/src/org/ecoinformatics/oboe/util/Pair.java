@@ -24,4 +24,9 @@ public class Pair<T1,T2> {
 	public void setSecond(T2 second) {
 		this.second = second;
 	}
+	
+	public String toString(){
+		String str="("+first.toString()+","+second.toString()+")";
+		return str;
+	}
 }

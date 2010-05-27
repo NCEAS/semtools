@@ -308,15 +308,16 @@ public class RawDB extends PostgresDB{
 	{
 		Map<Long, List<Pair<String,String>>> oneTb2Attribute = new TreeMap<Long, List<Pair<String,String> >>();
 		
-		String sql = "SELECT DISTINCT annot_id, attrname FROM measurement_type AS mt, map " +
+		String sql = "SELECT DISTINCT mt.annot_id, attrname FROM measurement_type AS mt, map " +
 		"WHERE map.mtypelabel = mt.mtypelabel AND mt.characteristic="+cha+";";
 
+		System.out.println(Debugger.getCallerPosition()+"sql= " + sql);
 		Statement stmt = m_conn.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		while(rs.next()){
 			Long annotId = rs.getLong(1);
-			String attrname = rs.getString(2);
+			String attrname = rs.getString(2).trim();
 			
 			List<Pair<String,String> > oneTbAttribute = oneTb2Attribute.get(annotId);
 			if(oneTbAttribute==null){
@@ -346,6 +347,7 @@ public class RawDB extends PostgresDB{
 			open();
 		}
 		
+		//System.out.println(Debugger.getCallerPosition()+"sql= "+sql);
 		Statement stmt = m_conn.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
 		

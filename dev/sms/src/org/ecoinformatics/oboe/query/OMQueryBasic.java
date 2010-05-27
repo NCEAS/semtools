@@ -204,9 +204,13 @@ public class OMQueryBasic {
 		
 		//3.2. Execute the non-aggregate query measurement as a whole and "AND" its results with the previous step.
 		//TODO: check whether this is right or not
-		if(!first&&result.size()>0){
+		if(first||(!first&&result.size()>0)){
 			Set<OboeQueryResult> nonAggQueryResult = executeNonAggregateCNF(rawdb,resultWithRecord,nonAggMeas);
-			result.retainAll(nonAggQueryResult);
+			if(first){
+				result.addAll(nonAggQueryResult);
+			}else{
+				result.retainAll(nonAggQueryResult);
+			}
 		}
 		
 		System.out.println(Debugger.getCallerPosition()+"oneCNF result="+result);
@@ -246,9 +250,9 @@ public class OMQueryBasic {
 			List<Pair<String,String>> chaAttributeNamePairList= entry.getValue();//pair is <characteristic,attribute name>
 			
 			
-			String sql = "SELECT DISTINCT "+tbId;
+			String sql = "SELECT DISTINCT "+tbId +" AS did";
 			if(resultWithRecord){
-				sql +=", rid ";
+				sql +=", record_id ";
 			}
 			sql += " FROM " + rawdb.TB_PREFIX+tbId;
 			if(chaAttributeNamePairList!=null&&chaAttributeNamePairList.size()>0){
@@ -260,13 +264,14 @@ public class OMQueryBasic {
 					if(i>0){
 						sql +=" AND ";
 					}
-					sql += pair.getSecond() + "=" + valueCond; 
+					sql += pair.getSecond() + valueCond; 
 				}
 				sql +=")";
 			}
 			sql += ";";
 			
 			//3. execute sql
+			System.out.println(Debugger.getCallerPosition()+"sql= "+sql);
 			Set<OboeQueryResult> oneTbResult = rawdb.dataQuery(sql);
 			if(oneTbResult!=null&&oneTbResult.size()>0){
 				nonAggQueryResult.addAll(oneTbResult);

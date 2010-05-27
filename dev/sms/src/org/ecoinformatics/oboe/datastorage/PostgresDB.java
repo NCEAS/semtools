@@ -175,6 +175,7 @@ public class PostgresDB {
 					sql+=","+annotId;
 				}else{
 					sql+=annotId;
+					first = false;
 				}
 			}
 			sql +=")";
@@ -202,7 +203,7 @@ public class PostgresDB {
 				otypeattr.put(otypelabel, attrList);
 			}
 			attrList.add(attrname);
-			System.out.println(Debugger.getCallerPosition()+"annotId2Otypeattr="+annotId2Otypeattr);
+			//System.out.println(Debugger.getCallerPosition()+"annotId2Otypeattr="+annotId2Otypeattr);
 		}
 		rs.close();
 		stmt.close();
@@ -214,7 +215,7 @@ public class PostgresDB {
 			Set<String> tmpOtypeLabelSet = (Set<String>)entry.getValue().keySet();
 			
 			//this temporary otype label set must contain all the context type label
-			System.out.println(Debugger.getCallerPosition()+"tmpOtypeLabelSet="+tmpOtypeLabelSet+",entry="+tmpOtypeLabelSet);
+			//System.out.println(Debugger.getCallerPosition()+"tmpOtypeLabelSet="+tmpOtypeLabelSet+",entry="+tmpOtypeLabelSet);
 			
 			if(contextOtypeLabel!=null&&contextOtypeLabel.size()>0){
 				List<String> attrList = new ArrayList<String>();
@@ -247,13 +248,14 @@ public class PostgresDB {
 		
 		contextOTypeLabels.add(otypeLabel);
 		String sql = "SELECT context_otypelabel FROM " + m_contextTypeTable + 
-			"WHERE is_identifying='t' AND otypelabel = " + otypeLabel + " AND annot_id="+annotId+";";
+			" WHERE is_identifying='t' AND otypelabel = '" + otypeLabel.trim() + "' AND annot_id="+annotId+";";
 		
+		System.out.println(Debugger.getCallerPosition()+"sql= "+sql);
 		Statement stmt = m_conn.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
 	
 		while(rs.next()){
-			String contextOtypelabel = rs.getString(1);
+			String contextOtypelabel = rs.getString(1).trim();
 			contextOTypeLabels.add(contextOtypelabel);
 		}
 		rs.close();
@@ -274,15 +276,17 @@ public class PostgresDB {
 	private Map<Long,String> retrieveObsTypeLabel(String entityTypeName) throws SQLException
 	{
 		String sql = "SELECT annot_id, otypelabel FROM " + m_obsTypeTable + " AS ot " +
-				"WHERE is_distinct='t' AND ename = " + entityTypeName +";";
-		
+				//"WHERE is_distinct='t' AND ename = " + entityTypeName +";";
+				"WHERE ename ILIKE " + entityTypeName +";";
+	
+		System.out.println(Debugger.getCallerPosition()+"sql= "+sql);
 		Map<Long,String> annotId_otypelabel = new HashMap<Long, String>();
 		Statement stmt = m_conn.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
 	
 		while(rs.next()){
 			Long annotId = rs.getLong(1);
-			String otypelabel = rs.getString(2);
+			String otypelabel = rs.getString(2).trim();
 			
 			annotId_otypelabel.put(annotId,otypelabel);
 		}

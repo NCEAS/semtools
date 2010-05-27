@@ -30,7 +30,12 @@ public class QueryProcessor {
 			System.out.println("<2. Query stragety> 1-query rewriting; 2-query materialized db; 3-others; ");
 			return;
 		}
-		boolean resultWithRecord = (Integer.parseInt(args[2])==1); //=1 means the result need to have record id
+		int resultFormat = Integer.parseInt(args[2]);
+		if(resultFormat!=0&&resultFormat!=1){
+			System.out.println("\t <3. result form> 0: only has dataset id; 1, has dataset id and record id");
+			return;
+		}
+		boolean resultWithRecord = (resultFormat==1); //=1 means the result need to have record id
 		
 		String queryResultFile = "";
 		if(args.length==4){
@@ -55,7 +60,7 @@ public class QueryProcessor {
 			
 			Set<OboeQueryResult> queryResult = queryI.execute(queryStrategy, resultWithRecord);
 						
-			System.out.println(Debugger.getCallerPosition()+"i="+i+",result="+queryResult);
+			System.out.println(Debugger.getCallerPosition()+"i="+i+",result size="+queryResult.size()+":"+queryResult);
 			queryResultContainer.add(queryResult);
 		}
 		
