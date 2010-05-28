@@ -3,6 +3,13 @@ Readme for using package "org.ecoinformatics.oboe".
 Last changed: March 18, 2010, Thursday
 
 ===============
+Package oboe jar file: 
+1. Run OboeBuild.xml
+   copy_lib_file
+   oboejar
+2. Run .sh file in dev/sms/executable/*.sh
+
+===============
 This package contains content for the following parts with separate entrances. 
 1.  Materialize a plain text file to OBOE file
     Entrance: MaterializaDB.java

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="oboejar" basedir="." name="Create a jar file to run oboe modules in batch commands">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                       -->
+	
+	<property name="lib" location="lib"/>
+	<property name="executable" location="executable"/>
+	<property name="semtoolslib" location="lib"/>
+	<property name="morpholib" location="../../../morpho/lib"/>
+	<property name="emllib" location="../../../eml/lib"/>
+	
+	<!--
+    <target name="create_run_jar">
+        <jar destfile="${executable}/QueryProcessor.jar">
+            <manifest>
+                <attribute name="Main-Class" value="org.ecoinformatics.oboe.QueryProcessor"/>
+                <attribute name="Class-Path" value=". runlib/owlapi-2.2.0.jar runlib/abstractparser.jar runlib/antlr-2.7.5.jar runlib/arq-extra.jar runlib/arq.jar runlib/aterm-java-1.6.jar runlib/colt-1.2.0.jar runlib/commons-collections-3.2.jar runlib/commons-collections-testframework-3.2.jar runlib/commons-logging.jar runlib/concurrent-colt-1.2.0.jar runlib/concurrent.jar runlib/examples.jar runlib/icu4j_3_4.jar runlib/inference.jar runlib/io.jar runlib/iri.jar runlib/jakarta-oro-2.0.8.jar runlib/jena.jar runlib/jenatest.jar runlib/jetty.jar runlib/json.jar runlib/jung-1.7.6.jar runlib/junit-4.5.jar runlib/log4j-1.2.12.jar runlib/lucene-core-2.3.1.jar runlib/owl-servlet.jar runlib/owltest.jar runlib/pellet-core.jar runlib/pellet-datatypes.jar runlib/pellet-dig.jar runlib/pellet-el.jar runlib/pellet-explanation.jar runlib/pellet-jena.jar runlib/pellet-modularity.jar runlib/pellet-owlapi.jar runlib/pellet-pellint.jar runlib/pellet-query.jar runlib/pellet-rules.jar runlib/pellet-test.jar runlib/servlet.jar runlib/pellet-cli.jar runlib/rdfapi.jar runlib/rdfparser.jar runlib/relaxngDatatype.jar runlib/slf4j-api-1.5.6.jar runlib/slf4j-log4j12-1.5.6.jar runlib/stax-1.1.1-dev.jar runlib/stax-api-1.0.jar runlib/validation_test.jar runlib/validation.jar runlib/wstx-asl-3.0.0.jar runlib/xercesImpl.jar runlib/xml-apis.jar runlib/xsdlib.jar runlib/activation.jar runlib/dom4j.jar runlib/itislib.jar runlib/jarbundler-1.9.jar runlib/jcalendar-1.3.2.jar runlib/jcert.jar runlib/jhall.jar runlib/jhindexer.jar runlib/jlfgr-1_0.jar runlib/jnet.jar runlib/jsse.jar runlib/kunststoff.jar runlib/liveMap.jar runlib/morphohelp.jar runlib/nbii.jar runlib/PDFRenderer.jar runlib/shippedIcons.jar runlib/standalone-compiler.jar runlib/svnant.jar runlib/svnClientAdapter.jar runlib/svnjavahl.jar runlib/tar.jar runlib/xercesImpl.jar runlib/xml-apis.jar runlib/xalan.jar runlib/axis-ant.jar runlib/axis-schema.jar runlib/axis.jar runlib/commons-discovery.jar runlib/commons-logging.jar runlib/jaxrpc.jar runlib/saaj.jar runlib/soap.jar runlib/wsdl4j.jar runlib/httpclient.jar runlib/morpho-config.jar runlib/utilities.jar runlib/morpho.jar runlib/configxml.jar runlib/cos.jar runlib/eml.jar runlib/jdom.jar runlib/junit.jar runlib/axis.jar runlib/commons-discovery.jar runlib/commons-logging.jar runlib/hsqldb.jar runlib/jaxrpc.jar runlib/log4j-1.2.8.jar runlib/org.ecoinformatics.ecogrid.AuthenticatedQueryService-stub.jar runlib/org.ecoinformatics.ecogrid.AuthenticationService-stub.jar runlib/org.ecoinformatics.ecogrid.PutService-stub.jar runlib/org.ecoinformatics.ecogrid.QueryService-stub.jar runlib/postgresql-8.0-312.jdbc3.jar runlib/saaj.jar runlib/soap.jar runlib/tar.jar runlib/utilities.jar runlib/wsdl4j.jar runlib/servlet.jar runlib/xercesImpl.jar runlib/xml-apis.jar runlib/xalan.jar runlib/xmlParserAPIs.jar runlib/owlapi-bin.jar runlib/datamanager.jar runlib/jgraphx.jar runlib/owlapi-src.jar"/>
+            </manifest>
+            <fileset dir="/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/build"/>
+            <fileset dir="/Users/cao/DATA/SONET/svntrunk/morpho/lib/MemoryMonitor"/>
+            <fileset dir="/Users/cao/DATA/SONET/svntrunk/morpho"/>
+            <fileset dir="/Users/cao/DATA/SONET/svntrunk/morpho/lib"/>
+        </jar>
+    </target>
+	
+	<target name="MaterializeDB_run_jar">
+        <jar destfile="${executable}/MaterializeDB.jar">
+            <manifest>
+                <attribute name="Main-Class" value="org.ecoinformatics.oboe.MaterializeDB"/>
+                <attribute name="Class-Path" value=". runlib/owlapi-2.2.0.jar runlib/abstractparser.jar runlib/antlr-2.7.5.jar runlib/arq-extra.jar runlib/arq.jar runlib/aterm-java-1.6.jar runlib/colt-1.2.0.jar runlib/commons-collections-3.2.jar runlib/commons-collections-testframework-3.2.jar runlib/commons-logging.jar runlib/concurrent-colt-1.2.0.jar runlib/concurrent.jar runlib/examples.jar runlib/icu4j_3_4.jar runlib/inference.jar runlib/io.jar runlib/iri.jar runlib/jakarta-oro-2.0.8.jar runlib/jena.jar runlib/jenatest.jar runlib/jetty.jar runlib/json.jar runlib/jung-1.7.6.jar runlib/junit-4.5.jar runlib/log4j-1.2.12.jar runlib/lucene-core-2.3.1.jar runlib/owl-servlet.jar runlib/owltest.jar runlib/pellet-core.jar runlib/pellet-datatypes.jar runlib/pellet-dig.jar runlib/pellet-el.jar runlib/pellet-explanation.jar runlib/pellet-jena.jar runlib/pellet-modularity.jar runlib/pellet-owlapi.jar runlib/pellet-pellint.jar runlib/pellet-query.jar runlib/pellet-rules.jar runlib/pellet-test.jar runlib/servlet.jar runlib/pellet-cli.jar runlib/rdfapi.jar runlib/rdfparser.jar runlib/relaxngDatatype.jar runlib/slf4j-api-1.5.6.jar runlib/slf4j-log4j12-1.5.6.jar runlib/stax-1.1.1-dev.jar runlib/stax-api-1.0.jar runlib/validation_test.jar runlib/validation.jar runlib/wstx-asl-3.0.0.jar runlib/xercesImpl.jar runlib/xml-apis.jar runlib/xsdlib.jar runlib/activation.jar runlib/dom4j.jar runlib/itislib.jar runlib/jarbundler-1.9.jar runlib/jcalendar-1.3.2.jar runlib/jcert.jar runlib/jhall.jar runlib/jhindexer.jar runlib/jlfgr-1_0.jar runlib/jnet.jar runlib/jsse.jar runlib/kunststoff.jar runlib/liveMap.jar runlib/morphohelp.jar runlib/nbii.jar runlib/PDFRenderer.jar runlib/shippedIcons.jar runlib/standalone-compiler.jar runlib/svnant.jar runlib/svnClientAdapter.jar runlib/svnjavahl.jar runlib/tar.jar runlib/xercesImpl.jar runlib/xml-apis.jar runlib/xalan.jar runlib/axis-ant.jar runlib/axis-schema.jar runlib/axis.jar runlib/commons-discovery.jar runlib/commons-logging.jar runlib/jaxrpc.jar runlib/saaj.jar runlib/soap.jar runlib/wsdl4j.jar runlib/httpclient.jar runlib/morpho-config.jar runlib/utilities.jar runlib/morpho.jar runlib/configxml.jar runlib/cos.jar runlib/eml.jar runlib/jdom.jar runlib/junit.jar runlib/axis.jar runlib/commons-discovery.jar runlib/commons-logging.jar runlib/hsqldb.jar runlib/jaxrpc.jar runlib/log4j-1.2.8.jar runlib/org.ecoinformatics.ecogrid.AuthenticatedQueryService-stub.jar runlib/org.ecoinformatics.ecogrid.AuthenticationService-stub.jar runlib/org.ecoinformatics.ecogrid.PutService-stub.jar runlib/org.ecoinformatics.ecogrid.QueryService-stub.jar runlib/postgresql-8.0-312.jdbc3.jar runlib/saaj.jar runlib/soap.jar runlib/tar.jar runlib/utilities.jar runlib/wsdl4j.jar runlib/servlet.jar runlib/xercesImpl.jar runlib/xml-apis.jar runlib/xalan.jar runlib/xmlParserAPIs.jar runlib/owlapi-bin.jar runlib/datamanager.jar runlib/jgraphx.jar runlib/owlapi-src.jar"/>
+            </manifest>
+            <fileset dir="/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/build"/>
+            <fileset dir="/Users/cao/DATA/SONET/svntrunk/morpho/lib/MemoryMonitor"/>
+            <fileset dir="/Users/cao/DATA/SONET/svntrunk/morpho"/>
+            <fileset dir="/Users/cao/DATA/SONET/svntrunk/morpho/lib"/>
+        </jar>
+    </target>
+	-->
+	<target name="oboejar">
+		<!-- To run the main modules:
+		java -cp oboe.jar org.ecoinformatics.oboe.MaterializeDB
+		java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor
+		java -cp oboe.jar org.ecoinformatics.oboe.RawDataLoader
+		-->
+        <jar destfile="${executable}/oboe.jar">
+            <manifest>
+            	<attribute name="Class-Path" value=". runlib/owlapi-2.2.0.jar runlib/abstractparser.jar runlib/antlr-2.7.5.jar runlib/arq-extra.jar runlib/arq.jar runlib/aterm-java-1.6.jar runlib/colt-1.2.0.jar runlib/commons-collections-3.2.jar runlib/commons-collections-testframework-3.2.jar runlib/commons-logging.jar runlib/concurrent-colt-1.2.0.jar runlib/concurrent.jar runlib/examples.jar runlib/icu4j_3_4.jar runlib/inference.jar runlib/io.jar runlib/iri.jar runlib/jakarta-oro-2.0.8.jar runlib/jena.jar runlib/jenatest.jar runlib/jetty.jar runlib/json.jar runlib/jung-1.7.6.jar runlib/junit-4.5.jar runlib/log4j-1.2.12.jar runlib/lucene-core-2.3.1.jar runlib/owl-servlet.jar runlib/owltest.jar runlib/pellet-core.jar runlib/pellet-datatypes.jar runlib/pellet-dig.jar runlib/pellet-el.jar runlib/pellet-explanation.jar runlib/pellet-jena.jar runlib/pellet-modularity.jar runlib/pellet-owlapi.jar runlib/pellet-pellint.jar runlib/pellet-query.jar runlib/pellet-rules.jar runlib/pellet-test.jar runlib/servlet.jar runlib/pellet-cli.jar runlib/rdfapi.jar runlib/rdfparser.jar runlib/relaxngDatatype.jar runlib/slf4j-api-1.5.6.jar runlib/slf4j-log4j12-1.5.6.jar runlib/stax-1.1.1-dev.jar runlib/stax-api-1.0.jar runlib/validation_test.jar runlib/validation.jar runlib/wstx-asl-3.0.0.jar runlib/xercesImpl.jar runlib/xml-apis.jar runlib/xsdlib.jar runlib/activation.jar runlib/dom4j.jar runlib/itislib.jar runlib/jarbundler-1.9.jar runlib/jcalendar-1.3.2.jar runlib/jcert.jar runlib/jhall.jar runlib/jhindexer.jar runlib/jlfgr-1_0.jar runlib/jnet.jar runlib/jsse.jar runlib/kunststoff.jar runlib/liveMap.jar runlib/morphohelp.jar runlib/nbii.jar runlib/PDFRenderer.jar runlib/shippedIcons.jar runlib/standalone-compiler.jar runlib/svnant.jar runlib/svnClientAdapter.jar runlib/svnjavahl.jar runlib/tar.jar runlib/xercesImpl.jar runlib/xml-apis.jar runlib/xalan.jar runlib/axis-ant.jar runlib/axis-schema.jar runlib/axis.jar runlib/commons-discovery.jar runlib/commons-logging.jar runlib/jaxrpc.jar runlib/saaj.jar runlib/soap.jar runlib/wsdl4j.jar runlib/httpclient.jar runlib/morpho-config.jar runlib/utilities.jar runlib/morpho.jar runlib/configxml.jar runlib/cos.jar runlib/eml.jar runlib/jdom.jar runlib/junit.jar runlib/axis.jar runlib/commons-discovery.jar runlib/commons-logging.jar runlib/hsqldb.jar runlib/jaxrpc.jar runlib/log4j-1.2.8.jar runlib/org.ecoinformatics.ecogrid.AuthenticatedQueryService-stub.jar runlib/org.ecoinformatics.ecogrid.AuthenticationService-stub.jar runlib/org.ecoinformatics.ecogrid.PutService-stub.jar runlib/org.ecoinformatics.ecogrid.QueryService-stub.jar runlib/postgresql-8.0-312.jdbc3.jar runlib/saaj.jar runlib/soap.jar runlib/tar.jar runlib/utilities.jar runlib/wsdl4j.jar runlib/servlet.jar runlib/xercesImpl.jar runlib/xml-apis.jar runlib/xalan.jar runlib/xmlParserAPIs.jar runlib/owlapi-bin.jar runlib/datamanager.jar runlib/jgraphx.jar runlib/owlapi-src.jar"/>
+            </manifest>
+            <fileset dir="/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/build"/>
+            <fileset dir="/Users/cao/DATA/SONET/svntrunk/morpho/lib/MemoryMonitor"/>
+            <fileset dir="/Users/cao/DATA/SONET/svntrunk/morpho"/>
+            <fileset dir="/Users/cao/DATA/SONET/svntrunk/morpho/lib"/>
+        </jar>
+    </target>
+	
+    <target name="copy_lib_file">
+    	<!-- this need to be run first -->
+        <delete dir="${executable}/runlib"/>
+        <mkdir dir="${executable}/runlib"/>
+        <copy file="${semtoolslib}$/../../owlifier/lib/owlapi-2.2.0.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/abstractparser.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/antlr-2.7.5.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/arq-extra.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/arq.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/aterm-java-1.6.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/colt-1.2.0.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/commons-collections-3.2.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/commons-collections-testframework-3.2.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/commons-logging.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/concurrent-colt-1.2.0.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/concurrent.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/examples.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/icu4j_3_4.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/inference.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/io.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/iri.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/jakarta-oro-2.0.8.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/jena.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/jenatest.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/jetty.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/json.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/jung-1.7.6.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/junit-4.5.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/log4j-1.2.12.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/lucene-core-2.3.1.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/owl-servlet.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/owltest.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/pellet-core.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/pellet-datatypes.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/pellet-dig.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/pellet-el.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/pellet-explanation.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/pellet-jena.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/pellet-modularity.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/pellet-owlapi.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/pellet-pellint.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/pellet-query.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/pellet-rules.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/pellet-test.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/servlet.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/pellet-cli.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/rdfapi.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/rdfparser.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/relaxngDatatype.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/slf4j-api-1.5.6.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/slf4j-log4j12-1.5.6.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/stax-1.1.1-dev.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/stax-api-1.0.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/validation_test.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/validation.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/wstx-asl-3.0.0.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/xercesImpl.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/xml-apis.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/xsdlib.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/activation.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/dom4j.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/itislib.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/jarbundler-1.9.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/jcalendar-1.3.2.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/jcert.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/jhall.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/jhindexer.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/jlfgr-1_0.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/jnet.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/jsse.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/kunststoff.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/liveMap.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/morphohelp.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/nbii.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/PDFRenderer.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/shippedIcons.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/standalone-compiler.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/svnant.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/svnClientAdapter.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/svnjavahl.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/tar.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/xercesImpl.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/xml-apis.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/xalan.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/axis/axis-ant.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/axis/axis-schema.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/axis/axis.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/axis/commons-discovery.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/axis/commons-logging.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/axis/jaxrpc.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/axis/saaj.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/axis/soap.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/axis/wsdl4j.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/httpclient.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/morpho-config.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/utilities.jar" todir="${executable}/runlib"/>
+        <copy file="${morpholib}/../build/morpho.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/configxml.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/cos.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/eml.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/jdom.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/junit.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/datamanager/axis.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/datamanager/commons-discovery.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/datamanager/commons-logging.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/datamanager/hsqldb.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/datamanager/jaxrpc.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/datamanager/log4j-1.2.8.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/datamanager/org.ecoinformatics.ecogrid.AuthenticatedQueryService-stub.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/datamanager/org.ecoinformatics.ecogrid.AuthenticationService-stub.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/datamanager/org.ecoinformatics.ecogrid.PutService-stub.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/datamanager/org.ecoinformatics.ecogrid.QueryService-stub.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/datamanager/postgresql-8.0-312.jdbc3.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/datamanager/saaj.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/datamanager/soap.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/datamanager/tar.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/datamanager/utilities.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/datamanager/wsdl4j.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/apache/servlet.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/apache/xercesImpl.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/apache/xml-apis.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/apache/xalan.jar" todir="${executable}/runlib"/>
+        <copy file="${emllib}/apache/xmlParserAPIs.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/owlapi-bin.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/datamanager.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/jgraphx.jar" todir="${executable}/runlib"/>
+        <copy file="${semtoolslib}/owlapi-src.jar" todir="${executable}/runlib"/>
+    </target>
+</project>

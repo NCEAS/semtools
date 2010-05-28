@@ -11,19 +11,13 @@ RawDataLoader test1-data.txt
 RawDataLoader test2-data.txt
 
 ===May 27, 2010
-Preliminary tests of two querying methods (need to get consistent results).
-//Batch commands:
-QueryProcessor test1-query1.txt 1 1
-Result:
-QueryProcessor.java:63: i=0,result size=9:[(1,0), (1,1), (1,6), (2,0), (2,1), (2,3), (2,4), (2,5), (2,9)]
-QueryProcessor test1-query1.txt 2 1
-Result: 
-QueryProcessor.java:63: i=0,result size=9:[(1,0), (1,1), (1,6), (2,0), (2,1), (2,3), (2,4), (2,5), (2,9)]
-Consistent.
+(1) Preliminary tests of two querying methods (need to get consistent results).
+Batch commands: dev/sms/executable/querytest.sh
+Result: dev/sms/executable/resultlog/*.txt
+(2) Build file for batch testing + logging results 
 
 TODO:
 (1) Test of two query methods with different benchmark queries.
-(2) Build file for batch testing + logging results 
  
 (3) Synthetic query generator (control selectivity) to test big amount of data
 (4) Test use Margaret's data 

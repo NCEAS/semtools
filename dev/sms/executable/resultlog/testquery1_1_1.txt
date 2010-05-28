@@ -1,0 +1,39 @@
+QueryProcessor.java:45: 1. queryFile=/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/oboedb/test1-query1.txt
+QueryProcessor.java:46: 2. queryStrategy=1
+QueryProcessor.java:47: 3. resultWithRecord=true
+QueryProcessor.java:48: 4. queryResultFile=
+QueryList.java:73: oneLine=BEGIN QUERY:1
+OMQuery.java:117: dnfNo=1,queryMeas: 'DBH' >35.0
+OMQuery.java:120: oneBasicQuery: 1:  '%Tree%'['DBH' >35.0]
+QueryProcessor.java:53: queryList=i=0:1:  '%Tree%'['DBH' >35.0], Context: {}
+
+QueryProcessor.java:59: 
+*****
+Process query: 1:  '%Tree%'['DBH' >35.0], Context: {}
+********
+OMQuery.java:316: contextChains = [(1) ]
+PostgresDB.java:124: entityTypeName= '%Tree%'
+PostgresDB.java:282: sql= SELECT annot_id, otypelabel FROM observation_type AS ot WHERE ename ILIKE  '%Tree%';
+PostgresDB.java:253: sql= SELECT context_otypelabel FROM context_type WHERE is_identifying='t' AND otypelabel = 'o2' AND annot_id=1;
+PostgresDB.java:253: sql= SELECT context_otypelabel FROM context_type WHERE is_identifying='t' AND otypelabel = 'o2' AND annot_id=2;
+PostgresDB.java:188: sql= SELECT DISTINCT mt.annot_id as annot_id, mt.otypelabel as otypelabel, attrname FROM map, measurement_type AS mt WHERE mt.annot_id = map.annot_id AND mt.mtypelabel=map.mtypelabel AND mt.isKey = 't' AND mt.annot_id IN (1,2);
+RawDB.java:314: sql= SELECT DISTINCT mt.annot_id, attrname FROM measurement_type AS mt, map WHERE map.mtypelabel = mt.mtypelabel AND mt.characteristic='DBH';
+OMQueryBasic.java:274: sql= SELECT DISTINCT 1 AS did, record_id  FROM tb1 WHERE (dbh>35.0);
+OMQueryBasic.java:274: sql= SELECT DISTINCT 2 AS did, record_id  FROM tb2 WHERE (dbh>35.0);
+OMQueryBasic.java:216: oneCNF result=[(1,0), (1,1), (1,6), (2,0), (2,1), (2,3), (2,4), (2,5), (2,9)]
+ContextChain.java:192: Context chain result=[(1,0), (1,1), (1,6), (2,0), (2,1), (2,3), (2,4), (2,5), (2,9)]
+OMQuery.java:325: OMQuery result=[(1,0), (1,1), (1,6), (2,0), (2,1), (2,3), (2,4), (2,5), (2,9)]
+OMQuery.java:390: Total queryResultSet=[(1,0), (1,1), (1,6), (2,0), (2,1), (2,3), (2,4), (2,5), (2,9)]
+QueryProcessor.java:63: i=0,result size=9:[(1,0), (1,1), (1,6), (2,0), (2,1), (2,3), (2,4), (2,5), (2,9)]
+
+-----------
+
+QueryProcessor.java:73:  Query raw database.
+QueryProcessor.java:77: Time used (Query): 218 ms = 0s
+-----------
+
+
+-----------
+QueryProcessor.java:85: Time used (Total=query+write out): 218 ms = 0s
+-----------
+
