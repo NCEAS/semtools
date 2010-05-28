@@ -1,34 +1,4 @@
 
-DELETE FROM context_instance;
-DELETE FROM measurement_instance;
-DELETE FROM observation_instance;
-DELETE FROM entity_instance;
-DELETE FROM data_annotation;
-ALTER SEQUENCE did_seq RESTART WITH 1;
-
-DELETE FROM key_attr;
-DELETE FROM map;
-DELETE FROM context_type;
-DELETE FROM measurement_type;
-DELETE FROM observation_type;
-DELETE FROM annotation;
-ALTER SEQUENCE annot_id_seq RESTART WITH 1;
-
-DROP TABLE context_instance CASCADE;
-DROP TABLE measurement_instance CASCADE;
-DROP TABLE observation_instance CASCADE;
-DROP TABLE entity_instance CASCADE;
-DROP TABLE data_annotation CASCADE;
-DROP SEQUENCE did_seq;
-
-DROP TABLE key_attr;
-DROP TABLE map CASCADE;
-DROP TABLE context_type CASCADE;
-DROP TABLE measurement_type CASCADE;
-DROP TABLE observation_type CASCADE;
-DROP TABLE annotation CASCADE;
-DROP SEQUENCE annot_id_seq;
-
 CREATE SEQUENCE annot_id_seq;
 CREATE TABLE annotation(
 	annot_id bigint DEFAULT NEXTVAL('annot_id_seq') PRIMARY KEY, 

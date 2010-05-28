@@ -27,7 +27,7 @@
             <sms:characteristic id="gce:DBH"/>
             <sms:standard id="oboe-units:Centimeter"/>
         </sms:measurement>
-        <sms:measurement label="m3">
+        <sms:measurement label="m3" key="yes">
             <sms:characteristic id="gce:TaxonomicTypeName"/>
             <sms:standard id="gce:ITIS"/>
         </sms:measurement>
@@ -35,7 +35,7 @@
             <sms:characteristic id="oboe:EntityName"/>
             <sms:standard id="gce:LocalTreeNames"/>
         </sms:measurement>
-        <sms:context observation="o1" identifying="yes">
+        <sms:context observation="o1">
             <sms:relationship id="gce:Within"/>
         </sms:context>
         <sms:context observation="o3" identifying="yes">

@@ -4,10 +4,10 @@
 #1,piru,2008,36.2
 #2,piru,2008,33.2
 #
+################################################
 #natural form of queries
 #Q1: gce:Tree[gce:DBH > 35.00 oboe-units:Centimeter]
 #
-#formated form
 BEGIN QUERY:1
 BEGIN QO:1
 EntityId: '%Tree%'

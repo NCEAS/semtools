@@ -14,8 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.ecoinformatics.oboe.util.Pair;
-
 public class PostgresDB {
 	protected static int RECORD_ID_LEN = 16;
 		
