@@ -286,8 +286,12 @@ public class AnnotationPlugin
 				public void windowClosed(WindowEvent we) {
 					AbstractDataPackage adp = morphoFrame.getAbstractDataPackage();
 					String docid = adp.getAccessionNumber();
-					clearAnnotations(docid);
-					initializeAnnotations(docid, adp.getLocation());
+					// only clear annotations if we can look them up again
+					String location = adp.getLocation();
+					if (!location.equals("")) {
+						clearAnnotations(docid);
+						initializeAnnotations(docid, location);
+					}
 					removeStateChangeListeners(dataViewContainerPanel);
 					morphoFrame.removeWindowListener(this);		
 				}
@@ -590,25 +594,19 @@ public class AnnotationPlugin
 		MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
 		AccessionNumber accNum = new AccessionNumber(Morpho.thisStaticInstance);
 
+		// we can' save to nowhere
+		if (location == null || location.length() == 0) {
+			Log.debug(30, "Ignoring save event because location is empty");
+			return false;
+		}
+		
 		// get the annotations for this datapackage
 		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId, null);		
 		for (Annotation annotation: annotations) {	
 			String id = annotation.getURI();
+			String originalId = id;
 			ByteArrayOutputStream baos = null;
 			File annotationFile = null;
-
-			// remove the old one if present
-			try {
-				if (SMS.getInstance().getAnnotationManager().isAnnotation(id)) {
-					SMS.getInstance().getAnnotationManager().removeAnnotation(id);
-				}
-			} catch (Exception e) {
-				Log.debug(5, "Error while saving annotation: " + id
-						+ "\nMessage: " + e.getMessage()
-						);
-				e.printStackTrace();
-				return false;
-			}
 			
 			// local save
 			if (location.equals(AbstractDataPackage.LOCAL) || location.equals(AbstractDataPackage.BOTH)) {
@@ -657,7 +655,7 @@ public class AnnotationPlugin
 					else if (metacatStatus.equals(DataStoreInterface.NONEXIST)) {
 						annotationFile = mds.newFile(id, new StringReader(baos.toString()));
 					}
-					// TODO: set permissions for the annotation file
+					// set permissions for the annotation file
 					setAccess(packageId, id);
 				} catch (Exception e) {
 					Log.debug(5, "Error saving annotation to network: " + id
@@ -667,13 +665,21 @@ public class AnnotationPlugin
 					return false;
 				}
 			}
-			// TODO: always re-import after save?
+			
+			// manage the annotation
 			try {
-				SMS.getInstance().getAnnotationManager().importAnnotation(annotation, annotationFile.toURI().toString());
+				// remove old one if it exists
+				if (SMS.getInstance().getAnnotationManager().isAnnotation(originalId)) {
+					SMS.getInstance().getAnnotationManager().removeAnnotation(originalId);
+				}
+				// [re]import new one, possibily with source
+				String source = null;
+				if (annotationFile != null) {
+					source = annotationFile.toURI().toString();
+				}
+				SMS.getInstance().getAnnotationManager().importAnnotation(annotation, source);
 			} catch (Exception e) {
-				Log.debug(5, "Error while reimporting saved annotation: " + id
-						+ "\nMessage: " + e.getMessage()
-						);
+				Log.debug(5, "Error while reimporting saved annotation: " + id + "\nMessage: " + e.getMessage());
 				e.printStackTrace();
 				return false;
 			}
@@ -830,7 +836,21 @@ public class AnnotationPlugin
 		String newId = saveEvent.getFinalId();
 		String location = saveEvent.getLocation();
 		boolean duplicate = saveEvent.isDuplicate();
+		boolean syncronize = saveEvent.isSynchronize();
 		boolean success = true;
+		
+		// for synch, look up the annotation from the original source
+		if (syncronize) {
+			// going from METACAT->LOCAL
+			if (location.equals(AbstractDataPackage.LOCAL)) {
+				// load the remote annotations for that package
+				initializeAnnotations(oldId, AbstractDataPackage.METACAT);
+			}
+			if (location.equals(AbstractDataPackage.METACAT)) {
+				// load the local annotations for that package
+				initializeAnnotations(oldId, AbstractDataPackage.LOCAL);
+			}
+		}
 		
 		// get all the annotations for the original docid
 		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(oldId, null);
@@ -979,8 +999,8 @@ public class AnnotationPlugin
 					String dataTable = String.valueOf(entityIndex);
 					String location = adp.getLocation();
 					
-					// TODO: make sure we have the annotation from the correct location
-					if (!location.equals(AbstractDataPackage.LOCAL)) {
+					// load annotations from the correct location
+					if (!location.equals("")) {
 						initializeAnnotations(packageId, location);
 					}
 					
