@@ -4,6 +4,10 @@
    
 	<import file="../../../morpho/build.xml" />
 	
+	<!-- override the morpho property -->
+   	<property name="morpho.args" value=".semtools"/>
+	<property name="release" value="1.8.1semtools5"/>
+	
    <!-- set global properties for this build -->
    <property name="src" location="src"/>
    <property name="build" location="build"/>
@@ -14,10 +18,6 @@
 	<!-- for getting datamanager -->
 	   <property name="emldir"  value="${morpho.basedir}/../eml"/>
 	   <property name="svn.emlUrl"  value="https://code.ecoinformatics.org/code/eml/trunk/"/>
-
-	<!-- override the morpho property -->
-   	<property name="morpho.args" value=".semtools"/>
-	<property name="release" value="1.8.1semtools4"/>
 	
    <target name="init" depends="morpho.init">
       <!-- Create the time stamp -->

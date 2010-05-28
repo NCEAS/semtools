@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <config>
-  <version>1.8.1semtools4</version>
+  <version>1.8.1semtools5</version>
   <dataLocationInlineOnline>online</dataLocationInlineOnline>
   <plugin>edu.ucsb.nceas.morpho.query.QueryPlugin</plugin>
   <plugin>edu.ucsb.nceas.morpho.datapackage.DataPackagePlugin</plugin>
@@ -12,7 +12,7 @@
   <plugin>edu.ucsb.nceas.morpho.plugins.printer.PrinterPlugin</plugin>
   <plugin>edu.tesc.scidb.morpho.plugins.ImportMSAccessPlugin</plugin>
   <plugin>edu.ucsb.nceas.morpho.plugins.vocabulary.VocabularyPlugin</plugin>
-  <metacat_url>http://dev.nceas.ucsb.edu/knb/metacat</metacat_url>
+  <metacat_url>http://fred.msi.ucsb.edu:8080/knb/metacat</metacat_url>
   <profile_directory>profiles</profile_directory>
   <samples_directory>./lib/sampledata</samples_directory>
   <default_profile>default-profile.xml</default_profile>
