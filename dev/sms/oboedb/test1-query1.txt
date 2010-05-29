@@ -1,9 +1,5 @@
-#data
-#tree,spp,yr,dbh
-#1,piru,2007,35.8
-#1,piru,2008,36.2
-#2,piru,2008,33.2
-#
+################################################
+# TEST basic condition
 ################################################
 #natural form of queries
 #Q1: gce:Tree[gce:DBH > 35.00 oboe-units:Centimeter]
@@ -16,7 +12,7 @@ Characteristic:'DBH'
 Standard:
 Cond:>35.0
 Aggregation:
-DNF:1
+CNF:1
 END QM
 END QO
 END QUERY

@@ -106,7 +106,7 @@ public class OMQuery {
 					String standard = queryLines.get(++i).substring(Constant.STANDARD.length());
 					String condition = queryLines.get(++i).substring(Constant.COND.length());
 					String aggregationFunc = queryLines.get(++i).substring(Constant.AGGREGATION.length());
-					String DNFnoStr = queryLines.get(++i).substring(Constant.DNFNO.length());
+					String DNFnoStr = queryLines.get(++i).substring(Constant.CNFNO.length());
 					
 					int dnfNo = Integer.parseInt(DNFnoStr);
 					QueryMeasurement queryMeas = new QueryMeasurement();

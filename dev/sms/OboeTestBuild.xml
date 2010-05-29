@@ -9,7 +9,7 @@
 	
 	<target name="queryprocessor-test1" depends="set-oboe-classpath">
 		<!-- java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor test1-query1.txt 1 1 -->
-		<echo> Materialize test1-data ......... </echo>
+		<echo> Quering raw data ......... </echo>
 		<java classname ="org.ecoinformatics.oboe.QueryProcessor" classpath="${runclasspath}">
 			<jvmarg value="-Xmx2048m"/>
 			<arg value="test1-query1.txt"/>
@@ -19,8 +19,8 @@
 	</target>
 	
 	<target name="queryprocessor-test2" depends="set-oboe-classpath">
-		<!-- java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor test1-query1.txt 1 1 -->
-		<echo> Materialize test1-data ......... </echo>
+		<!-- java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor test1-query1.txt 2 1 -->
+		<echo> Querying materialized database ......... </echo>
 		<java classname ="org.ecoinformatics.oboe.QueryProcessor" classpath="${runclasspath}">
 			<jvmarg value="-Xmx2048m"/>
 			<arg value="test1-query1.txt"/>

@@ -1,15 +1,8 @@
-#data
-#tree,spp,yr,dbh
-#1,piru,2007,35.8
-#1,piru,2008,36.2
-#2,piru,2008,33.2
-#
-#natural form of queries
-#Q1: gce:Tree[(gce:DBH > 36.00 oboe-units:Centimeter) && (oboe:EntityName=1)]
-#
+
+# TEST conjunctive conditions with aggregation
 ################################################
 #natural form of queries
-#Q1: %Tree%['DBH' > 35.00]
+#Q1: %Tree%['DBH' > 35.00 && count('DBH') > 2]
 #
 BEGIN QUERY:1
 BEGIN QO:1
@@ -19,30 +12,15 @@ Characteristic:'DBH'
 Standard:
 Cond:>35.0
 Aggregation:
-DNF:1
+CNF:1
 END QM
-END QO
-END QUERY
-
-#formated form
-BEGIN QUERY:1
-
-BEGIN QO:1
-
-EntityId: '%Tree%'
-BEGIN QM:1
+######## AND measurement type, these two measurements are in on CNF 
+BEGIN QM:2
 Characteristic:'DBH'
 Standard:
-Cond:>35.2
-Aggregation:
-DNF:1
-END QM
-BEGIN QM:2
-Characteristic:tree
-Standard:
-Cond:=1
-Aggregation:
-DNF:1
+Cond:<=1
+Aggregation:count
+CNF:1
 END QM
 END QO
 END QUERY

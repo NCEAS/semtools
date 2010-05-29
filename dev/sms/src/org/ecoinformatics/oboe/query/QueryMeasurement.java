@@ -218,41 +218,66 @@ public class QueryMeasurement {
 		
 		for(Map.Entry<Long, List<Pair<String,String> >> entry: tb2Attribute.entrySet()){
 			Long tbId = entry.getKey();
-			List<Pair<String,String>> chaAttributeNamePairList= entry.getValue();//pair is <characteristic,attribute name>
 			
-			String sql = "SELECT DISTINCT "+tbId +",";
-			if(resultWithRecord){
-				sql +="rid,"; //???
-			}
-			sql += aggregationFunc+"("+this.characteristicCond+") ";
-			sql += " FROM " + rawdb.TB_PREFIX+tbId;
-			
-			//where
-			if(chaAttributeNamePairList!=null&&chaAttributeNamePairList.size()>0){
-				sql +=" WHERE (";
-				for(int i=0;i<chaAttributeNamePairList.size();i++){
-					Pair<String,String> pair = chaAttributeNamePairList.get(i);
-					if(i>0){
-						sql +=" AND ";
-					}
-					sql += pair.getSecond() + "=" + valueCond; 
-				}
-				sql +=")";
-			}
+			//pair is <characteristic,attribute name>
+			//List<Pair<String,String>> chaAttributeNamePairList= entry.getValue();
 			
 			//group by clause
 			List<String> groupByAttName = annotId2KeyAttrList.get(tbId);
+			String sql = "";
+			
+			//TODO: simplify this part of codes
 			if(groupByAttName!=null&&groupByAttName.size()>0){
-				sql +=" GROUP BY " + tbId + ",";
+				sql = "SELECT DISTINCT "+tbId + ",";
+				if(resultWithRecord){
+					sql+= "record_id ";
+				}
+				sql+= " FROM " + rawdb.TB_PREFIX+tbId;
+				sql+= " WHERE (";
 				for(int i=0;i<groupByAttName.size();i++){
 					String att = groupByAttName.get(i);
-					sql += "," + att;
+					if(i<groupByAttName.size()-1){
+						sql += att+",";
+					}else{
+						sql += att;
+					}
 				}
-			}
+				sql+= ") IN (\n";
+				sql+= " SELECT DISTINCT ";
 			
-			//HAVING clause
-			sql += aggregationFunc+"("+this.characteristicCond+")" + this.valueCond;
-			sql += ";";
+				for(int i=0;i<groupByAttName.size();i++){
+					String att = groupByAttName.get(i);
+					if(i<groupByAttName.size()-1){
+						sql += att+","; 
+					}else{
+						sql += att;
+					}
+				}
+			
+			
+				//sql += aggregationFunc+"("+this.characteristicCond+") ";
+				sql += " FROM " + rawdb.TB_PREFIX+tbId;
+				
+				if(groupByAttName!=null&&groupByAttName.size()>0){
+					sql +=" GROUP BY " + tbId ;
+					for(int i=0;i<groupByAttName.size();i++){
+						String att = groupByAttName.get(i);
+						sql += "," + att;
+					}
+				}
+			
+				//HAVING clause
+				sql += " HAVING " + aggregationFunc+"("+this.characteristicCond+")" + this.valueCond;
+				sql += ");";
+			}else{
+				//TODO: need to be tested
+				sql = "SELECT DISTINCT "+tbId + ",";
+				if(resultWithRecord){
+					sql+= "record_id ";
+				}
+				sql+= " FROM " + rawdb.TB_PREFIX+tbId;
+				sql += " WHERE " + aggregationFunc+"("+this.characteristicCond+")" + this.valueCond+";";
+			}
 			
 			//3. execute sql
 			System.out.println(Debugger.getCallerPosition()+"sql= "+sql);
