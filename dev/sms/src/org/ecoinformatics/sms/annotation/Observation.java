@@ -125,7 +125,7 @@ public class Observation implements Comparable {
 
    /**
     * Get the context type given this observation type's relationship name 
-    * (it should be unique, otherwise, there would be error) //FIXME: check this with ben
+    * (it should be unique, otherwise, there would be error) //TODO: check this with ben
     * 
     * @author cao
     * @param contextRelationshipName

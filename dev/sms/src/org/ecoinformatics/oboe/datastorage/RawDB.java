@@ -18,6 +18,7 @@ import java.util.TreeSet;
 import org.ecoinformatics.oboe.CSVDataReader;
 import org.ecoinformatics.oboe.Debugger;
 import org.ecoinformatics.oboe.query.OboeQueryResult;
+import org.ecoinformatics.oboe.query.QueryMeasurement;
 //import org.ecoinformatics.oboe.query.ResultSetMetaData;
 import org.ecoinformatics.oboe.util.Pair;
 
@@ -276,22 +277,23 @@ public class RawDB extends PostgresDB{
 	 * @return pair is <characteristic,attributename>
 	 * @throws SQLException
 	 */
-	public Map<Long, List<Pair<String,String>>> retrieveTbAttribute(Set<String> characteristics) throws SQLException
+	public Map<Long, List<Pair<QueryMeasurement,String>>> retrieveTbAttribute(Map<String, QueryMeasurement> cha2qm) 
+	throws SQLException
 	{
-		Map<Long, List<Pair<String,String>>> tmpTbAttribute = new TreeMap<Long, List<Pair<String,String> >>();
+		Map<Long, List<Pair<QueryMeasurement,String>>> tmpTbAttribute = new TreeMap<Long, List<Pair<QueryMeasurement,String> >>();
 		
 		//for each characteristic, get its related dataset id (i.e., annot_id) and attribute name)
-		for(String cha: characteristics){
+		for(String cha: cha2qm.keySet()){
 			
-			Map<Long, List<Pair<String,String>>> oneTb2Attribute = retrieveOneTbAttribute(cha);
+			Map<Long, List<Pair<QueryMeasurement,String>>> oneTb2Attribute = retrieveOneTbAttribute(cha,cha2qm.get(cha));
 			tmpTbAttribute.putAll(oneTb2Attribute);
 		}
 		
 		//get only the table ids which has all these characteristics since they are in AND logic 
-		Map<Long, List<Pair<String,String> >> tbAttribute = new TreeMap<Long, List<Pair<String,String> >>();
-		for(Map.Entry<Long, List<Pair<String,String> >> entry: tmpTbAttribute.entrySet()){
+		Map<Long, List<Pair<QueryMeasurement,String> >> tbAttribute = new TreeMap<Long, List<Pair<QueryMeasurement,String> >>();
+		for(Map.Entry<Long, List<Pair<QueryMeasurement,String> >> entry: tmpTbAttribute.entrySet()){
 			//each data table need to have all these characteristics since they are in AND logic 
-			if(entry.getValue().size()==characteristics.size()){
+			if(entry.getValue().size()==cha2qm.size()){
 				tbAttribute.put(entry.getKey(), entry.getValue());
 			}
 		}
@@ -304,9 +306,10 @@ public class RawDB extends PostgresDB{
 	 * @return
 	 * @throws SQLException
 	 */
-	public Map<Long, List<Pair<String,String>>> retrieveOneTbAttribute(String cha) throws SQLException
+	public Map<Long, List<Pair<QueryMeasurement,String>>> retrieveOneTbAttribute(String cha,QueryMeasurement qm) 
+		throws SQLException
 	{
-		Map<Long, List<Pair<String,String>>> oneTb2Attribute = new TreeMap<Long, List<Pair<String,String> >>();
+		Map<Long, List<Pair<QueryMeasurement,String>>> oneTb2Attribute = new TreeMap<Long, List<Pair<QueryMeasurement,String> >>();
 		
 		String sql = "SELECT DISTINCT mt.annot_id, attrname FROM measurement_type AS mt, map " +
 		"WHERE map.mtypelabel = mt.mtypelabel AND mt.characteristic="+cha+";";
@@ -319,12 +322,12 @@ public class RawDB extends PostgresDB{
 			Long annotId = rs.getLong(1);
 			String attrname = rs.getString(2).trim();
 			
-			List<Pair<String,String> > oneTbAttribute = oneTb2Attribute.get(annotId);
+			List<Pair<QueryMeasurement,String> > oneTbAttribute = oneTb2Attribute.get(annotId);
 			if(oneTbAttribute==null){
-				oneTbAttribute = new ArrayList<Pair<String,String> >();
+				oneTbAttribute = new ArrayList<Pair<QueryMeasurement,String> >();
 				oneTb2Attribute.put(annotId, oneTbAttribute);
 			}
-			Pair<String,String> newPair = new Pair<String, String>(cha,attrname);
+			Pair<QueryMeasurement,String> newPair = new Pair<QueryMeasurement,String>(qm,attrname);
 			oneTbAttribute.add(newPair);
 		}
 		rs.close();

@@ -98,7 +98,7 @@ public class QueryMeasurement {
 	 */
 	private String formSQL(MDB mdb, String entityNameCond)
 	{
-		String sql = "SELECT DISTINCT did, record_id, mvalue";
+		String sql = "SELECT DISTINCT did, record_id ";
 		
 		sql +=" FROM "+mdb.getMeasInstanceTable()+" AS mi,"+ mdb.getMmeasTypeTable() + " AS mt, ";
 		sql += mdb.getObsTypeTable() +" AS ot ";
@@ -137,7 +137,7 @@ public class QueryMeasurement {
 			
 			//aggregation
 			if(aggregationFunc!=null&&aggregationFunc.length()>0){
-				sql+="GROUP BY did ";
+				sql+="GROUP BY did, mi.record_id ";
 				sql+="HAVING "+aggregationFunc+"(CAST (mvalue AS numeric))"+valueCond;
 			}
 		}
@@ -201,7 +201,8 @@ public class QueryMeasurement {
 	 * @throws Exception
 	 */
 	public Set<OboeQueryResult> executeAggQueryRawDB(RawDB rawdb, boolean resultWithRecord, Map<Long, 
-			List<String>>  annotId2KeyAttrList) throws Exception
+			List<String>>  annotId2KeyAttrList,
+			Map<Long, String> tbid2nonAggWhereclasue) throws Exception
 	{
 		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
 		
@@ -214,17 +215,23 @@ public class QueryMeasurement {
 		
 		String cha = this.characteristicCond; 
 		
-		Map<Long, List<Pair<String,String>>> tb2Attribute = rawdb.retrieveOneTbAttribute(cha);
+		Map<Long, List<Pair<QueryMeasurement,String>>> tb2Attribute = rawdb.retrieveOneTbAttribute(cha,this);
 		
-		for(Map.Entry<Long, List<Pair<String,String> >> entry: tb2Attribute.entrySet()){
+		for(Map.Entry<Long, List<Pair<QueryMeasurement,String> >> entry: tb2Attribute.entrySet()){
 			Long tbId = entry.getKey();
 			
-			//pair is <characteristic,attribute name>
-			//List<Pair<String,String>> chaAttributeNamePairList= entry.getValue();
+			//pair is <QueryMeasurement,attribute name>
+			List<Pair<QueryMeasurement,String>> chaAttributeNamePairList= entry.getValue();
+			
+			//where clause
+			//String whereSql = OMQueryBasic.formNonAggCNFWhereSQL(chaAttributeNamePairList);
+			String whereSql = tbid2nonAggWhereclasue.get(tbId);
 			
 			//group by clause
 			List<String> groupByAttName = annotId2KeyAttrList.get(tbId);
 			String sql = "";
+			
+			
 			
 			//TODO: simplify this part of codes
 			if(groupByAttName!=null&&groupByAttName.size()>0){
@@ -233,7 +240,11 @@ public class QueryMeasurement {
 					sql+= "record_id ";
 				}
 				sql+= " FROM " + rawdb.TB_PREFIX+tbId;
-				sql+= " WHERE (";
+				
+				if(whereSql.trim().length()>0)
+					sql+=whereSql +" AND (";
+				else
+					sql+= " WHERE (";
 				for(int i=0;i<groupByAttName.size();i++){
 					String att = groupByAttName.get(i);
 					if(i<groupByAttName.size()-1){
@@ -257,7 +268,8 @@ public class QueryMeasurement {
 			
 				//sql += aggregationFunc+"("+this.characteristicCond+") ";
 				sql += " FROM " + rawdb.TB_PREFIX+tbId;
-				
+				if(whereSql.trim().length()>0)
+					sql+=whereSql+" ";
 				if(groupByAttName!=null&&groupByAttName.size()>0){
 					sql +=" GROUP BY " + tbId ;
 					for(int i=0;i<groupByAttName.size();i++){
@@ -270,13 +282,16 @@ public class QueryMeasurement {
 				sql += " HAVING " + aggregationFunc+"("+this.characteristicCond+")" + this.valueCond;
 				sql += ");";
 			}else{
-				//TODO: need to be tested
+				//TODO:HP need to be tested
 				sql = "SELECT DISTINCT "+tbId + ",";
 				if(resultWithRecord){
 					sql+= "record_id ";
 				}
 				sql+= " FROM " + rawdb.TB_PREFIX+tbId;
-				sql += " WHERE " + aggregationFunc+"("+this.characteristicCond+")" + this.valueCond+";";
+				if(whereSql.trim().length()>0)
+					sql+=whereSql;
+				//Aggregation function should not be in where clause
+				//sql += " WHERE " + aggregationFunc+"("+this.characteristicCond+")" + this.valueCond+";";
 			}
 			
 			//3. execute sql

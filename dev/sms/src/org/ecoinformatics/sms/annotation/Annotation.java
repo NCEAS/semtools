@@ -184,7 +184,7 @@ public class Annotation {
    /**
     * Get the measurement type with the given label
     * 
-    * FIXME: inefficient, need to discuss with Ben
+    * TODO: inefficient, need to discuss with Ben
     * @author cao
     * @param measurementLabel
     * @return
@@ -205,7 +205,7 @@ public class Annotation {
    /**
     * Get the entity type with the given label
     * 
-    * FIXME: inefficient, need to discuss with Ben
+    * TODO: inefficient, need to discuss with Ben
     * @author cao
     * @param measurementLabel
     * @return
