@@ -1,12 +1,14 @@
 package org.ecoinformatics.oboe.datastorage;
 
 import org.ecoinformatics.oboe.Debugger;
+import org.ecoinformatics.oboe.query.OboeQueryResult;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.TreeSet;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -294,6 +296,46 @@ public class PostgresDB {
 		return annotId_otypelabel;
 	}
 
+	/**
+	 * Perform an SQL query
+	 * @param db
+	 * @param sql
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	public Set<OboeQueryResult> executeSQL (String sql) 
+		throws SQLException,Exception
+	{
+		Set<OboeQueryResult> resultSet = new TreeSet<OboeQueryResult>();
+		
+		Connection conn = getConnection();
+		if(conn==null){
+			open();
+			conn = getConnection();
+		}
+		
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		//ResultSetMetaData rsmd = rs.getMetaData();
+		//int numOfCols = rsmd.getColumnCount();
+		while(rs.next()){
+			OboeQueryResult queryResult = new OboeQueryResult();
+			
+			Long datasetId = rs.getLong(1);
+			queryResult.setDatasetId(datasetId);
+			
+			String recordId = rs.getString(2);
+			queryResult.setRecordId(recordId);
+			
+			resultSet.add(queryResult);
+		}
+		rs.close();
+		stmt.close();
+		
+		return resultSet;
+	}
 		
 	
 }

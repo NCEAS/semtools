@@ -193,51 +193,75 @@ public class OMQueryBasic {
 		List<QueryMeasurement> nonAggMeas = new ArrayList<QueryMeasurement>();
 		classifyMeasAND(measAND,aggMeas,nonAggMeas);
 		
-		//FIXME: HP finish this function
-		//String nonAggCNFsql = formNonAggCNFSQL(mdb,nonAggMeas);
+		//Execute each aggregate query measurements and "AND" their results
 		
-		//Execute each aggregate query measurements and "AND" their results		
-		boolean first= true;
-		for(QueryMeasurement qm: aggMeas){
-			if(!first&&result.size()==0){
-				//this is not the first query, but no result, so, we don't need to execute other queries 
-				break;
-			}
-			Set<OboeQueryResult> oneAggQueryResult = //qm.executeAggQueryRawDB(rawdb,resultWithRecord,annotId2KeyAttrList,nonAggMeas);
-				//qm.executeAggQueryRawDB(rawdb,resultWithRecord,annotId2KeyAttrList,tbid2nonAggWhereclasue);
-				//FIXME: HP
-				qm.execute(mdb, m_entityTypeNameCond); 
-			if(!first){
-				result.retainAll(oneAggQueryResult);
-			}else{
-				result.addAll(oneAggQueryResult);
-				first = false;
-			}
-		}
+		Set<OboeQueryResult> nonAggQueryResult =  
+			executeOneCNFNonAggregateMDB(mdb,m_entityTypeNameCond,nonAggMeas);
+		result.addAll(nonAggQueryResult);
 		
-		if(aggMeas==null||aggMeas.size()==0){
-			//when there is no aggregation function, we perform the non aggregation CNF
-			//FIXME: HP
-			Set<OboeQueryResult> nonAggQueryResult = null;//qm.execute(mdb, m_entityTypeNameCond); 
-				//executeNonAggregateCNF(rawdb,resultWithRecord,tb2Attribute);
-			if(first){
-				result.addAll(nonAggQueryResult);
-			}else{
-				result.retainAll(nonAggQueryResult);
+		System.out.println(Debugger.getCallerPosition()+"result="+result);
+		
+		if(result.size()>0){
+			//boolean first= true;
+			for(QueryMeasurement qm: aggMeas){
+				//if(!first&&result.size()==0){
+					//this is not the first query, but no result, so, we don't need to execute other queries 
+				//	break;
+				//}
+				
+				//FIXME: will it has efficiency problem? 
+				//The embedded CNF and query is performed |aggMeas| times. 
+				//CHECK THIS with big dataset
+				Set<OboeQueryResult> oneAggQueryResult = 
+					qm.executeAggQueryMDB(mdb, m_entityTypeNameCond,nonAggMeas); 
+					//qm.executeAggQueryMDB(mdb, m_entityTypeNameCond,nonAggQueryResult);
+				//if(!first){
+					result.retainAll(oneAggQueryResult);
+				//}else{
+				//	result.addAll(oneAggQueryResult);
+				//	first = false;
+				//}
 			}
 		}
 		
-//		for(QueryMeasurement qm: measAND){
-//			Set<OboeQueryResult> oneQMresult = qm.execute(mdb, m_entityTypeNameCond);
-//			if(!first){
-//				result.retainAll(oneQMresult);				
-//			}else{
-//				result.addAll(oneQMresult);
-//				first=false;
-//			}
-		//}
 		System.out.println(Debugger.getCallerPosition()+"oneCNF result="+result);
 		return result;
+	}
+	
+	/**
+	 * Execute one CNF non-aggregate query condition
+	 *  
+	 * @param mdb
+	 * @param entityNameCond
+	 * @param nonAggMeas
+	 * @return
+	 * @throws Exception 
+	 * @throws SQLException 
+	 */
+	private Set<OboeQueryResult> executeOneCNFNonAggregateMDB(MDB mdb, String entityNameCond,
+			List<QueryMeasurement> nonAggMeas) throws SQLException, Exception 
+	{
+		//For the SQL for all the non aggregate conditions
+		String sqlNonAggCond = "";
+		for(int i=0;i<nonAggMeas.size();i++){
+			QueryMeasurement qm = nonAggMeas.get(i); //get 
+			//(did,record_id,eid,mvalue,characteristic)
+			String oneNonAggCondSql = qm.formSQLNonAggCondOverMDB(mdb,entityNameCond);
+			if(i==0){
+				sqlNonAggCond = "("+oneNonAggCondSql+")";
+			}else{
+				sqlNonAggCond = "INTERSECT \n("+oneNonAggCondSql+")";
+			}
+		}
+		
+		System.out.println(Debugger.getCallerPosition()+"sqlNonAggCond:\n"+sqlNonAggCond);
+		
+		
+		String sql = "SELECT DISTINCT did, record_id FROM ("+sqlNonAggCond+") AS tmp";
+		Set<OboeQueryResult> resultSet = mdb.executeSQL(sql);
+		
+		return resultSet;
+	
 	}
 	
 	
@@ -290,7 +314,7 @@ public class OMQueryBasic {
 		if(aggMeas==null||aggMeas.size()==0){
 			//when there is no aggregation function, we perform the non aggregation CNF
 			Set<OboeQueryResult> nonAggQueryResult = //executeNonAggregateCNF(rawdb,resultWithRecord,nonAggMeas);
-				executeNonAggregateCNF(rawdb,resultWithRecord,tb2Attribute);
+				executeOneCNFNonAggregateRawDB(rawdb,resultWithRecord,tb2Attribute);
 			if(first){
 				result.addAll(nonAggQueryResult);
 			}else{
@@ -312,7 +336,7 @@ public class OMQueryBasic {
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	private Set<OboeQueryResult> executeNonAggregateCNF(
+	private Set<OboeQueryResult> executeOneCNFNonAggregateRawDB(
 			RawDB rawdb, boolean resultWithRecord, 
 			//List<QueryMeasurement> nonAggMeasAND
 			Map<Long, List<Pair<QueryMeasurement,String>> > tb2Attribute
@@ -376,12 +400,10 @@ public class OMQueryBasic {
 	{
 		Map<Long, String> tbid2nonAggWhereclasue = new HashMap<Long, String>();
 		
-		//Set<String> characteristics = new HashSet<String>();
 		Map<String, QueryMeasurement> cha2qm= new HashMap<String, QueryMeasurement>();
 		for(QueryMeasurement qm: nonAggMeasAND){
 			String chaCond = qm.getCharacteristicCond();
 			if(chaCond!=null&&chaCond.length()>0){
-				//characteristics.add(chaCond);
 				cha2qm.put(chaCond, qm);
 			}
 		}

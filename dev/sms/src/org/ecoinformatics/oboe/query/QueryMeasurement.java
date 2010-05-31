@@ -3,6 +3,7 @@ package org.ecoinformatics.oboe.query;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,8 @@ import java.util.TreeSet;
 import org.ecoinformatics.oboe.Debugger;
 import org.ecoinformatics.oboe.datastorage.MDB;
 import org.ecoinformatics.oboe.datastorage.RawDB;
+import org.ecoinformatics.oboe.datastorage.PostgresDB;
+
 import org.ecoinformatics.oboe.util.Pair;
 
 public class QueryMeasurement {
@@ -96,11 +99,11 @@ public class QueryMeasurement {
 	 * @param mdb
 	 * @return
 	 */
-	private String formSQL(MDB mdb, String entityNameCond)
+	private String formSQL(MDB mdb, String entityNameCond,List<QueryMeasurement> nonAggMeas)
 	{
 		String sql = "SELECT DISTINCT did, record_id FROM " + mdb.getObsInstanceTable() +" AS oi ";
 		sql +=" WHERE (did, eid) IN (\n";
-		String subquerySQL = formSubQuerySQL(mdb,entityNameCond);
+		String subquerySQL = formSubQuerySQL(mdb,entityNameCond,nonAggMeas);
 		sql += subquerySQL+");";
 		
 		
@@ -109,23 +112,38 @@ public class QueryMeasurement {
 	}
 	
 	/**
-	 * Form a sub query to get the (did, eid) set that satisfies the condition
+	 * Form the sql for this basic query
+	 * 
+	 * @param mdb
+	 * @return
+	 */
+	private String formSQL(MDB mdb, String entityNameCond,Set<OboeQueryResult> nonAggQueryResult)
+	{
+		String sql = "SELECT DISTINCT did, record_id FROM " + mdb.getObsInstanceTable() +" AS oi ";
+		sql +=" WHERE (did, eid) IN (\n";
+		String subquerySQL = formSubQuerySQL(mdb,entityNameCond,nonAggQueryResult);
+		sql += subquerySQL+");";
+		
+		
+		System.out.println(Debugger.getCallerPosition()+" SQL: \n"+sql);
+		return sql;
+	}
+	
+	/**
+	 * For the SQL for ONE non aggregate conditions over Materialized database
 	 * 
 	 * @param mdb
 	 * @param entityNameCond
+	 * @param qm
 	 * @return
 	 */
-	private String formSubQuerySQL(MDB mdb, String entityNameCond)
-	{	
-		
-		String sqlReturn = "";
-		String sql = "SELECT DISTINCT oi.did, oi.eid, mi.mvalue ";
+	public String formSQLNonAggCondOverMDB(MDB mdb, String entityNameCond)
+	{
+		String sql= "SELECT DISTINCT oi.did, oi.record_id, oi.eid, mi.mvalue, mt.characteristic ";
 		sql +=" FROM "+mdb.getMeasInstanceTable()+" AS mi,"
-			+ mdb.getObsInstanceTable() +" AS oi,"
-			+ mdb.getEntityInstanceTable() +" AS ei,"
-			+ mdb.getMmeasTypeTable() + " AS mt ";
-			//+ mdb.getObsTypeTable() +" AS ot ";
-		
+							+ mdb.getObsInstanceTable() +" AS oi,"
+							+ mdb.getEntityInstanceTable() +" AS ei,"
+							+ mdb.getMmeasTypeTable() + " AS mt ";
 		if(valueCond!=null&&valueCond.trim().length()>0){
 			sql += "\nWHERE ";
 			
@@ -136,90 +154,201 @@ public class QueryMeasurement {
 				sql += "mi.mvalue ~ " + mdb.m_DIGIT_RE +" AND mi.mvalue !~ "+mdb.m_STRING_RE+" AND ";
 				sql +=" (CAST(mi.mvalue AS numeric)"+valueCond+") AND ";
 			}
+		}
+		
+		//entity name
+		if(entityNameCond.contains("%")){
+			//sql +=" (mt.otypelabel = ot.otypelabel AND ot.ename ILIKE "+entityNameCond+") AND ";
+			sql += " ei.etype ILIKE "+ entityNameCond +" AND ";
+		}else{
+			//sql +=" (mt.otypelabel = ot.otypelabel AND ot.ename="+entityNameCond+") AND ";
+			sql += " ei.etype = "+ entityNameCond +" AND ";
+		}
+		
+		sql +="ei.eid=oi.eid AND oi.oid=mi.oid AND ";
 			
-			//entity name
-			if(entityNameCond.contains("%")){
-				//sql +=" (mt.otypelabel = ot.otypelabel AND ot.ename ILIKE "+entityNameCond+") AND ";
-				sql += " ei.etype ILIKE "+ entityNameCond +" AND ";
+		//measurement type: characteristic, standard, etc.
+		sql +=" (mt.mtypelabel = mi.mtypelabel";
+		if(characteristicCond!=null&&characteristicCond.trim().length()>0){
+			if(characteristicCond.contains("%")){
+				sql += " AND mt.characteristic ILIKE " + characteristicCond+"";
 			}else{
-				//sql +=" (mt.otypelabel = ot.otypelabel AND ot.ename="+entityNameCond+") AND ";
-				sql += " ei.etype = "+ entityNameCond +" AND ";
-			}
-			
-			sql +="ei.eid=oi.eid AND oi.oid=mi.oid AND ";
-			
-			//measurement type: characteristic, standard, etc.
-			sql +=" (mt.mtypelabel = mi.mtypelabel";
-			if(characteristicCond!=null&&characteristicCond.trim().length()>0){
-				if(characteristicCond.contains("%")){
-					sql += " AND mt.characteristic ILIKE " + characteristicCond+"";
-				}else{
-					sql += " AND mt.characteristic=" + characteristicCond+"";
-				}
-			}
-			if(standardCond!=null&&standardCond.trim().length()>0){
-				sql +=" AND mt.standard " + standardCond;
-			}
-			sql +=")";
-			
-			
-			sqlReturn = "SELECT did, eid FROM ("+sql+") AS tmp";
-			
-					
-			//aggregation
-			if(aggregationFunc!=null&&aggregationFunc.length()>0){
-				sqlReturn+="\nGROUP BY did, eid ";
-				//sql+="\nHAVING "+aggregationFunc+"(CAST (mvalue AS numeric))"+valueCond;
-				sqlReturn+="\nHAVING "+aggregationFunc+"(mvalue)"+valueCond;
+				sql += " AND mt.characteristic=" + characteristicCond+"";
 			}
 		}
+		if(standardCond!=null&&standardCond.trim().length()>0){
+			sql +=" AND mt.standard " + standardCond;
+		}
+		sql +=")";
+		
+		return sql;
+	}
+	
+	
+	private String formSubQuerySQL(MDB mdb, String entityNameCond,Set<OboeQueryResult> nonAggQueryResult)
+	{	
+		
+		//FIXME: HP: this second function is not finished yet. TO finish this as the second method.
+		//For the SQL for all the non aggregate conditions
+		//String sqlReturn = "SELECT did, eid FROM ("+sqlNonAggCond+") AS tmp";
+		String sqlReturn="";
+		//measurement type: characteristic
+		if(characteristicCond!=null&&characteristicCond.trim().length()>0){
+			if(characteristicCond.contains("%")){
+				sqlReturn += " WHERE characteristic ILIKE " + characteristicCond+" ";
+			}else{
+				sqlReturn += " WHERE characteristic=" + characteristicCond+" ";
+			}
+		}
+		
+		//aggregation
+		if(aggregationFunc!=null&&aggregationFunc.length()>0){
+			sqlReturn+="\nGROUP BY did, eid ";
+			//sql+="\nHAVING "+aggregationFunc+"(CAST (mvalue AS numeric))"+valueCond;
+			sqlReturn+="\nHAVING "+aggregationFunc+"(mvalue)"+valueCond;
+		}
+		return sqlReturn;
+	}
+		
+	/**
+	 * Form a sub query to get the (did, eid) set that satisfies the condition
+	 * 
+	 * @param mdb
+	 * @param entityNameCond
+	 * @return
+	 */
+	private String formSubQuerySQL(MDB mdb, String entityNameCond,List<QueryMeasurement> nonAggMeas)
+	{	
+		
+		//For the SQL for all the non aggregate conditions
+		String sqlNonAggCond = "";
+		for(int i=0;i<nonAggMeas.size();i++){
+			QueryMeasurement qm = nonAggMeas.get(i); //get 
+			//(did,eid,mvalue,characteristic
+			String oneNonAggCondSql = qm.formSQLNonAggCondOverMDB(mdb,entityNameCond);
+			if(i==0){
+				sqlNonAggCond = "("+oneNonAggCondSql+")";
+			}else{
+				sqlNonAggCond = "INTERSECT \n("+oneNonAggCondSql+")";
+			}
+		}
+		
+		System.out.println(Debugger.getCallerPosition()+"sqlNonAggCond:\n"+sqlNonAggCond);
+		String sqlReturn = "SELECT did, eid FROM ("+sqlNonAggCond+") AS tmp";
+		
+		//measurement type: characteristic
+		if(characteristicCond!=null&&characteristicCond.trim().length()>0){
+			if(characteristicCond.contains("%")){
+				sqlReturn += " WHERE characteristic ILIKE " + characteristicCond+" ";
+			}else{
+				sqlReturn += " WHERE characteristic=" + characteristicCond+" ";
+			}
+		}
+		
+		//aggregation
+		if(aggregationFunc!=null&&aggregationFunc.length()>0){
+			sqlReturn+="\nGROUP BY did, eid ";
+			//sql+="\nHAVING "+aggregationFunc+"(CAST (mvalue AS numeric))"+valueCond;
+			sqlReturn+="\nHAVING "+aggregationFunc+"(mvalue)"+valueCond;
+		}
+		
+//		String sqlReturn = "";
+//		String sql = "SELECT DISTINCT oi.did, oi.eid, mi.mvalue ";
+//		sql +=" FROM "+mdb.getMeasInstanceTable()+" AS mi,"
+//			+ mdb.getObsInstanceTable() +" AS oi,"
+//			+ mdb.getEntityInstanceTable() +" AS ei,"
+//			+ mdb.getMmeasTypeTable() + " AS mt ";
+//			//+ mdb.getObsTypeTable() +" AS ot ";
+//		
+//		if(valueCond!=null&&valueCond.trim().length()>0){
+//			sql += "\nWHERE ";
+//			
+//			//value condition process
+//			if(valueCond.contains("'")){ //string conditions has ', e.g., like 'California', = 'California'
+//				sql +=" mi.mvalue "+valueCond+") AND ";
+//			}else{//numeric conditions, e.g., >15.0
+//				sql += "mi.mvalue ~ " + mdb.m_DIGIT_RE +" AND mi.mvalue !~ "+mdb.m_STRING_RE+" AND ";
+//				sql +=" (CAST(mi.mvalue AS numeric)"+valueCond+") AND ";
+//			}
+//			
+//			//entity name
+//			if(entityNameCond.contains("%")){
+//				//sql +=" (mt.otypelabel = ot.otypelabel AND ot.ename ILIKE "+entityNameCond+") AND ";
+//				sql += " ei.etype ILIKE "+ entityNameCond +" AND ";
+//			}else{
+//				//sql +=" (mt.otypelabel = ot.otypelabel AND ot.ename="+entityNameCond+") AND ";
+//				sql += " ei.etype = "+ entityNameCond +" AND ";
+//			}
+//			
+//			sql +="ei.eid=oi.eid AND oi.oid=mi.oid AND ";
+//			
+//			//measurement type: characteristic, standard, etc.
+//			sql +=" (mt.mtypelabel = mi.mtypelabel";
+//			if(characteristicCond!=null&&characteristicCond.trim().length()>0){
+//				if(characteristicCond.contains("%")){
+//					sql += " AND mt.characteristic ILIKE " + characteristicCond+"";
+//				}else{
+//					sql += " AND mt.characteristic=" + characteristicCond+"";
+//				}
+//			}
+//			if(standardCond!=null&&standardCond.trim().length()>0){
+//				sql +=" AND mt.standard " + standardCond;
+//			}
+//			sql +=")";
+//			
+//			
+//			sqlReturn = "SELECT did, eid FROM ("+sql+") AS tmp";
+//			
+//					
+//			//aggregation
+//			if(aggregationFunc!=null&&aggregationFunc.length()>0){
+//				sqlReturn+="\nGROUP BY did, eid ";
+//				//sql+="\nHAVING "+aggregationFunc+"(CAST (mvalue AS numeric))"+valueCond;
+//				sqlReturn+="\nHAVING "+aggregationFunc+"(mvalue)"+valueCond;
+//			}
+//		}
 		//sql +=";";
 		return sqlReturn;
 	}
 	
+	
+	
 	/**
-	 * Execute one query measurement
+	 * Execute one query aggregate query condition 
 	 * 
 	 * @param mdb
 	 * @return
 	 * @throws Exception 
 	 */
-	public Set<OboeQueryResult> execute(MDB mdb, String entityNameCond) 
+	public Set<OboeQueryResult> executeAggQueryMDB(MDB mdb, String entityNameCond,
+			List<QueryMeasurement> nonAggMeas) 
 		throws Exception
 	{
-		Set<OboeQueryResult> resultSet = new TreeSet<OboeQueryResult>();
-		
-		Connection conn = mdb.getConnection();
-		if(conn==null){
-			mdb.open();
-			conn = mdb.getConnection();
-		}
 		
 		//form sql query for this condition
-		String sql = formSQL(mdb, entityNameCond);
+		String sql = formSQL(mdb, entityNameCond, nonAggMeas);
 		
-		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery(sql);
-		
-		//ResultSetMetaData rsmd = rs.getMetaData();
-		//int numOfCols = rsmd.getColumnCount();
-		while(rs.next()){
-			OboeQueryResult queryResult = new OboeQueryResult();
-			
-			Long datasetId = rs.getLong(1);
-			queryResult.setDatasetId(datasetId);
-			
-			String recordId = rs.getString(2);
-			queryResult.setRecordId(recordId);
-			
-			resultSet.add(queryResult);
-		}
-		rs.close();
-		stmt.close();
+		Set<OboeQueryResult> resultSet = mdb.executeSQL(sql);
 		
 		System.out.println(Debugger.getCallerPosition()+"One QM result="+resultSet);
 		return resultSet;
 	}
+	
+	public Set<OboeQueryResult> executeAggQueryMDB(MDB mdb, String entityNameCond,
+			Set<OboeQueryResult> nonAggQueryResult) 
+		throws Exception
+	{
+		
+		//form sql query for this condition
+		//String sql = formSQL(mdb, entityNameCond, nonAggMeas);
+		String sql = formSQL(mdb, entityNameCond, nonAggQueryResult);
+		
+		Set<OboeQueryResult> resultSet = mdb.executeSQL(sql);
+		
+		System.out.println(Debugger.getCallerPosition()+"One QM result="+resultSet);
+		return resultSet;
+	}
+	
 	
 	/**
 	 * Execute aggregation query in the raw db
