@@ -154,6 +154,92 @@ public class OMQueryBasic {
 		
 		return result;
 	}
+
+	/**
+	 * Classify the measurement conditions to those with aggregate functions and those without aggregate functions 
+	 * @param measAND
+	 * @param aggMeas
+	 * @param nonAggMeas
+	 */
+	private void classifyMeasAND(List<QueryMeasurement> measAND,
+			List<QueryMeasurement> aggMeas,
+			List<QueryMeasurement> nonAggMeas)
+	{
+		for(QueryMeasurement qm: measAND){
+			//This query measurement need to be aggregated
+			if(qm.getAggregationFunc()!=null&qm.getAggregationFunc().length()>0){
+				aggMeas.add(qm);
+			}else{
+				nonAggMeas.add(qm);
+			}
+		}
+	}
+	
+	/**
+	 * Execute the query one DNF, i.e., all its conditions should be intersected 
+	 * 
+	 * @param mdb
+	 * @param measAND
+	 * @return
+	 * @throws Exception 
+	 */
+	private Set<OboeQueryResult> executeOneCNF(MDB mdb, boolean resultWithRid, List<QueryMeasurement> measAND)
+		throws Exception
+	{
+		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
+		
+		//1. Get the measurements that need to be aggregated
+		List<QueryMeasurement> aggMeas = new ArrayList<QueryMeasurement>();
+		List<QueryMeasurement> nonAggMeas = new ArrayList<QueryMeasurement>();
+		classifyMeasAND(measAND,aggMeas,nonAggMeas);
+		
+		//FIXME: HP finish this function
+		//String nonAggCNFsql = formNonAggCNFSQL(mdb,nonAggMeas);
+		
+		//Execute each aggregate query measurements and "AND" their results		
+		boolean first= true;
+		for(QueryMeasurement qm: aggMeas){
+			if(!first&&result.size()==0){
+				//this is not the first query, but no result, so, we don't need to execute other queries 
+				break;
+			}
+			Set<OboeQueryResult> oneAggQueryResult = //qm.executeAggQueryRawDB(rawdb,resultWithRecord,annotId2KeyAttrList,nonAggMeas);
+				//qm.executeAggQueryRawDB(rawdb,resultWithRecord,annotId2KeyAttrList,tbid2nonAggWhereclasue);
+				//FIXME: HP
+				qm.execute(mdb, m_entityTypeNameCond); 
+			if(!first){
+				result.retainAll(oneAggQueryResult);
+			}else{
+				result.addAll(oneAggQueryResult);
+				first = false;
+			}
+		}
+		
+		if(aggMeas==null||aggMeas.size()==0){
+			//when there is no aggregation function, we perform the non aggregation CNF
+			//FIXME: HP
+			Set<OboeQueryResult> nonAggQueryResult = null;//qm.execute(mdb, m_entityTypeNameCond); 
+				//executeNonAggregateCNF(rawdb,resultWithRecord,tb2Attribute);
+			if(first){
+				result.addAll(nonAggQueryResult);
+			}else{
+				result.retainAll(nonAggQueryResult);
+			}
+		}
+		
+//		for(QueryMeasurement qm: measAND){
+//			Set<OboeQueryResult> oneQMresult = qm.execute(mdb, m_entityTypeNameCond);
+//			if(!first){
+//				result.retainAll(oneQMresult);				
+//			}else{
+//				result.addAll(oneQMresult);
+//				first=false;
+//			}
+		//}
+		System.out.println(Debugger.getCallerPosition()+"oneCNF result="+result);
+		return result;
+	}
+	
 	
 	/**
 	 * For one DNF, using AND connect the conditions
@@ -170,14 +256,7 @@ public class OMQueryBasic {
 		//1. Get the measurements that need to be aggregated
 		List<QueryMeasurement> aggMeas = new ArrayList<QueryMeasurement>();
 		List<QueryMeasurement> nonAggMeas = new ArrayList<QueryMeasurement>();
-		for(QueryMeasurement qm: measAND){
-			//This query measurement need to be aggregated
-			if(qm.getAggregationFunc()!=null&qm.getAggregationFunc().length()>0){
-				aggMeas.add(qm);
-			}else{
-				nonAggMeas.add(qm);
-			}
-		}
+		classifyMeasAND(measAND,aggMeas,nonAggMeas);
 		
 		//2. Get this entity's key characteristics <dataset id: list of key attributes> 
 		Map<Long, List<String>>  annotId2KeyAttrList = rawdb.calKeyAttr(m_entityTypeNameCond);
@@ -207,10 +286,7 @@ public class OMQueryBasic {
 		}
 		
 		//3.2. Execute the non-aggregate query measurement as a whole and "AND" its results with the previous step.
-		//TODO: check whether this is right or not
-		//FIXME, when there is aggregation condition, this non-aggregate condition should be incorporated to the 
-		//aggregate function
-		//if(first||(!first&&result.size()>0))
+		//when there is aggregation condition, this non-aggregate condition should be incorporated to the aggregate function
 		if(aggMeas==null||aggMeas.size()==0){
 			//when there is no aggregation function, we perform the non aggregation CNF
 			Set<OboeQueryResult> nonAggQueryResult = //executeNonAggregateCNF(rawdb,resultWithRecord,nonAggMeas);
@@ -269,7 +345,7 @@ public class OMQueryBasic {
 				sql +=", record_id ";
 			}
 			sql += " FROM " + rawdb.TB_PREFIX+tbId;
-			String whereSql = formNonAggCNFWhereSQL(chaAttributeNamePairList);
+			String whereSql = formNonAggCNFWhereSQLsub(chaAttributeNamePairList);
 			sql +=whereSql;
 			
 			sql += ";";
@@ -317,19 +393,21 @@ public class OMQueryBasic {
 			Long tbId = entry.getKey();
 			//pair is <queryMeasurement,attribute name>
 			List<Pair<QueryMeasurement,String>> chaAttributeNamePairList= entry.getValue();
-			String whereSql = formNonAggCNFWhereSQL(chaAttributeNamePairList);
+			String whereSql = formNonAggCNFWhereSQLsub(chaAttributeNamePairList);
 			tbid2nonAggWhereclasue.put(tbId, whereSql);
 		}
 		
 		return tbid2nonAggWhereclasue;
 	}
 	
+	
+	
 	/**
 	 *TODO: HP strange to put this as a static function
 	 * @param chaAttributeNamePairList, pair is <characteristic,attribute name>
 	 * @return
 	 */
-	public static String formNonAggCNFWhereSQL(//Map<String, QueryMeasurement> cha2qm,
+	private static String formNonAggCNFWhereSQLsub(//Map<String, QueryMeasurement> cha2qm,
 			List<Pair<QueryMeasurement,String>> chaAttributeNamePairList)
 	{
 		String sql="";
@@ -349,60 +427,34 @@ public class OMQueryBasic {
 		}
 		return sql;
 	}
-	/**
-	 * Execute this query against the materialized database 
-	 * The other way is to form simple query and work on the results from the program
-	 * 
-	 * @deprecated
-	 * @param mdb
-	 * @return
-	 * @throws Exception 
-	 */
-	public Set<OboeQueryResult> execute(MDB mdb, boolean resultWithRid) throws Exception
-	{
-		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
-		
-		//for different DNF, union their results		
-		for(Map.Entry<Integer, List<QueryMeasurement>> entry: m_queryMeasDNF.entrySet()){
-			
-			
-			//for the query measurement conditions ONE DNF, intersect all the results
-			List<QueryMeasurement> measAND = entry.getValue();
-			
-			Set<OboeQueryResult> oneDNFresult = executeOneCNF(mdb, resultWithRid, measAND);
-			result.addAll(oneDNFresult);
-		}
-		
-		System.out.println(Debugger.getCallerPosition()+"Basic query result="+result);
-		return result;
-	}
+//	/**
+//	 * Execute this query against the materialized database 
+//	 * The other way is to form simple query and work on the results from the program
+//	 * 
+//	 * @deprecated
+//	 * @param mdb
+//	 * @return
+//	 * @throws Exception 
+//	 */
+//	public Set<OboeQueryResult> execute(MDB mdb, boolean resultWithRid) throws Exception
+//	{
+//		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
+//		
+//		//for different DNF, union their results		
+//		for(Map.Entry<Integer, List<QueryMeasurement>> entry: m_queryMeasDNF.entrySet()){
+//			
+//			
+//			//for the query measurement conditions ONE DNF, intersect all the results
+//			List<QueryMeasurement> measAND = entry.getValue();
+//			
+//			Set<OboeQueryResult> oneDNFresult = executeOneCNF(mdb, resultWithRid, measAND);
+//			result.addAll(oneDNFresult);
+//		}
+//		
+//		System.out.println(Debugger.getCallerPosition()+"Basic query result="+result);
+//		return result;
+//	}
 	
-	/**
-	 * Execute the query one DNF, i.e., all its conditions should be intersected 
-	 * 
-	 * @param mdb
-	 * @param measAND
-	 * @return
-	 * @throws Exception 
-	 */
-	private Set<OboeQueryResult> executeOneCNF(MDB mdb, boolean resultWithRid, List<QueryMeasurement> measAND)
-		throws Exception
-	{
-		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
-		
-		//for different DNF, union their results		
-		boolean first= true;
-		for(QueryMeasurement qm: measAND){
-			Set<OboeQueryResult> oneQMresult = qm.execute(mdb, m_entityTypeNameCond);
-			if(!first){
-				result.retainAll(oneQMresult);				
-			}else{
-				result.addAll(oneQMresult);
-				first=false;
-			}
-		}
-		System.out.println(Debugger.getCallerPosition()+"oneDNF result="+result);
-		return result;
-	}
+
 	
 }

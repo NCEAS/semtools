@@ -98,13 +98,36 @@ public class QueryMeasurement {
 	 */
 	private String formSQL(MDB mdb, String entityNameCond)
 	{
-		String sql = "SELECT DISTINCT did, record_id ";
+		String sql = "SELECT DISTINCT did, record_id FROM " + mdb.getObsInstanceTable() +" AS oi ";
+		sql +=" WHERE (did, eid) IN (\n";
+		String subquerySQL = formSubQuerySQL(mdb,entityNameCond);
+		sql += subquerySQL+");";
 		
-		sql +=" FROM "+mdb.getMeasInstanceTable()+" AS mi,"+ mdb.getMmeasTypeTable() + " AS mt, ";
-		sql += mdb.getObsTypeTable() +" AS ot ";
+		
+		System.out.println(Debugger.getCallerPosition()+" SQL: \n"+sql);
+		return sql;
+	}
+	
+	/**
+	 * Form a sub query to get the (did, eid) set that satisfies the condition
+	 * 
+	 * @param mdb
+	 * @param entityNameCond
+	 * @return
+	 */
+	private String formSubQuerySQL(MDB mdb, String entityNameCond)
+	{	
+		
+		String sqlReturn = "";
+		String sql = "SELECT DISTINCT oi.did, oi.eid, mi.mvalue ";
+		sql +=" FROM "+mdb.getMeasInstanceTable()+" AS mi,"
+			+ mdb.getObsInstanceTable() +" AS oi,"
+			+ mdb.getEntityInstanceTable() +" AS ei,"
+			+ mdb.getMmeasTypeTable() + " AS mt ";
+			//+ mdb.getObsTypeTable() +" AS ot ";
 		
 		if(valueCond!=null&&valueCond.trim().length()>0){
-			sql += " WHERE ";
+			sql += "\nWHERE ";
 			
 			//value condition process
 			if(valueCond.contains("'")){ //string conditions has ', e.g., like 'California', = 'California'
@@ -116,10 +139,14 @@ public class QueryMeasurement {
 			
 			//entity name
 			if(entityNameCond.contains("%")){
-				sql +=" (mt.otypelabel = ot.otypelabel AND ot.ename ILIKE "+entityNameCond+") AND ";
+				//sql +=" (mt.otypelabel = ot.otypelabel AND ot.ename ILIKE "+entityNameCond+") AND ";
+				sql += " ei.etype ILIKE "+ entityNameCond +" AND ";
 			}else{
-				sql +=" (mt.otypelabel = ot.otypelabel AND ot.ename="+entityNameCond+") AND ";
+				//sql +=" (mt.otypelabel = ot.otypelabel AND ot.ename="+entityNameCond+") AND ";
+				sql += " ei.etype = "+ entityNameCond +" AND ";
 			}
+			
+			sql +="ei.eid=oi.eid AND oi.oid=mi.oid AND ";
 			
 			//measurement type: characteristic, standard, etc.
 			sql +=" (mt.mtypelabel = mi.mtypelabel";
@@ -135,16 +162,19 @@ public class QueryMeasurement {
 			}
 			sql +=")";
 			
+			
+			sqlReturn = "SELECT did, eid FROM ("+sql+") AS tmp";
+			
+					
 			//aggregation
 			if(aggregationFunc!=null&&aggregationFunc.length()>0){
-				sql+="GROUP BY did, mi.record_id ";
-				sql+="HAVING "+aggregationFunc+"(CAST (mvalue AS numeric))"+valueCond;
+				sqlReturn+="\nGROUP BY did, eid ";
+				//sql+="\nHAVING "+aggregationFunc+"(CAST (mvalue AS numeric))"+valueCond;
+				sqlReturn+="\nHAVING "+aggregationFunc+"(mvalue)"+valueCond;
 			}
 		}
-		sql +=";";
-		System.out.println(Debugger.getCallerPosition()+" SQL: \n"+sql);
-		
-		return sql;
+		//sql +=";";
+		return sqlReturn;
 	}
 	
 	/**
@@ -221,19 +251,16 @@ public class QueryMeasurement {
 			Long tbId = entry.getKey();
 			
 			//pair is <QueryMeasurement,attribute name>
-			List<Pair<QueryMeasurement,String>> chaAttributeNamePairList= entry.getValue();
+			//List<Pair<QueryMeasurement,String>> chaAttributeNamePairList= entry.getValue();
 			
 			//where clause
-			//String whereSql = OMQueryBasic.formNonAggCNFWhereSQL(chaAttributeNamePairList);
 			String whereSql = tbid2nonAggWhereclasue.get(tbId);
 			
 			//group by clause
 			List<String> groupByAttName = annotId2KeyAttrList.get(tbId);
 			String sql = "";
 			
-			
-			
-			//TODO: simplify this part of codes
+			//TODO: HP simplify this part of codes
 			if(groupByAttName!=null&&groupByAttName.size()>0){
 				sql = "SELECT DISTINCT "+tbId + ",";
 				if(resultWithRecord){

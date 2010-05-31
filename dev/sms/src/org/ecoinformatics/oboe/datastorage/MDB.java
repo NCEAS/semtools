@@ -82,6 +82,14 @@ public class MDB extends PostgresDB{
 		return m_obsInstanceTable;
 	}
 
+	public String getEntityInstanceTable() {
+		return m_entityInstanceTable;
+	}
+
+	public void setEntityInstanceTable(String mEntityInstanceTable) {
+		m_entityInstanceTable = mEntityInstanceTable;
+	}
+
 	public void setObsInstanceTable(String mObsInstanceTable) {
 		m_obsInstanceTable = mObsInstanceTable;
 	}
