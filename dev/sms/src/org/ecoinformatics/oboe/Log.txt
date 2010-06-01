@@ -16,12 +16,17 @@ Batch commands: dev/sms/executable/querytest.sh
 Result: dev/sms/executable/resultlog/*.txt
 (2) Build file for batch testing + logging results 
 
+===
+May 28-June 1, 2010
 DONE:
 (1) Test of two query methods with different benchmark queries.
-
+(2) Pass the correctness test of several representative test cases. Get consistent results.
 
 TODO
-(3) Synthetic query generator (control selectivity) to test big amount of data
+(1) Synthetic query generator (control selectivity) t
+(2) Query test: big amount of data (collecting experimental results (time+ space)
+(3) Clean codes + write down the algorithm in a more formal way
+
 (4) Test use Margaret's data 
 
 (5) Partial materializatiton

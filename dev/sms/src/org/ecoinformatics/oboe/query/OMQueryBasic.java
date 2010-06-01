@@ -327,7 +327,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		sql+=" ("+contextSql+") as tmp2, ";
 		sql+= mdb.getContextInstanceTable() +" as oi \n";
 		
-		sql+="WHERE tmp1.oid = oi.oid AND oi.context_oid=tmp2.oid";
+		sql+="WHERE tmp1.oid = oi.oid AND oi.context_oid=tmp2.oid AND tmp1.did=tmp2.did AND tmp1.record_id=tmp2.record_id";
 		
 		System.out.println(Debugger.getCallerPosition()+Debugger.getWhoCalledMe()+"sql=\n"+sql);
 		return sql;

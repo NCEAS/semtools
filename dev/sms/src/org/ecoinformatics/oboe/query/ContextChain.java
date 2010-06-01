@@ -41,8 +41,12 @@ public class ContextChain {
 			if(entry.getValue()!=null){
 				//str +="->"+entry.getValue().getQueryLabel();
 				str +="->";
-				for(OMQueryBasic qm: entry.getValue()){
-					str += qm.getQueryLabel()+" ";
+				for(int i=0;i<entry.getValue().size();i++){
+					OMQueryBasic qm = entry.getValue().get(i);
+					if(i>0){
+						str += ",";
+					}
+					str+=qm.getQueryLabel();
 				}
 			}
 			str += ") ";
@@ -204,11 +208,14 @@ public class ContextChain {
 			sql = targetSql;
 		}
 		
-		System.out.println(Debugger.getCallerPosition()+"======sql:"+sql);
-		String sqlReturn = "SELECT DISTINCT eic.did, eic.compressed_record_id as record_id" +
-				" FROM "+MDB.m_entityInstanceCompressTable+" as eic, " +
-				"("+sql+") as cctmp\n"
-			+ " WHERE (eic.did = cctmp.did AND eic.eid = cctmp.eid);";
+		System.out.println(Debugger.getCallerPosition()+"======sql:"+sql+"\n");
+		//String sqlReturn = "SELECT DISTINCT eic.did, eic.compressed_record_id as record_id" +
+		//" FROM "+MDB.m_entityInstanceCompressTable+" as eic, " +
+		//"("+sql+") as cctmp\n"
+		//+ " WHERE (eic.did = cctmp.did AND eic.eid = cctmp.eid);";
+		String sqlReturn = "SELECT DISTINCT did, record_id" +
+					" FROM ("+sql+") as cctmp;";
+			
 		
 		return sqlReturn;
 	}
@@ -235,8 +242,7 @@ public class ContextChain {
 		//The results need to be intersect-ed
 		boolean first = true;
 		//for(Map.Entry<OMQueryBasic, OMQueryBasic> entry: m_queryChain.entrySet())
-		for(Map.Entry<OMQueryBasic, List<OMQueryBasic> > entry: m_queryChain.entrySet())
-		{
+		for(Map.Entry<OMQueryBasic, List<OMQueryBasic> > entry: m_queryChain.entrySet()){
 			OMQueryBasic targetQuery = entry.getKey();
 			//OMQueryBasic context = entry.getValue();
 			List<OMQueryBasic> context = entry.getValue(); 

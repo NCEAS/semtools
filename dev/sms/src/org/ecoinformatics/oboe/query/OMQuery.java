@@ -340,8 +340,12 @@ public class OMQuery {
 		for(int i=0;i<contextQueryDNF.size(); i++){
 			ContextChain oneContextQuery = contextQueryDNF.get(i);
 			
+			System.out.println("---------------\n"+Debugger.getCallerPosition()+"["+(i+1)+"/"+contextQueryDNF.size()+
+					"] contextQuery:"+oneContextQuery);
+					
 			Set<OboeQueryResult> oneDNFqueryResultSet = oneContextQuery.execute(db, resultWithRecord);
 		
+			System.out.println(Debugger.getCallerPosition()+"OMQuery DNF "+i+",oneDNFqueryResultSet="+oneDNFqueryResultSet);
 			resultSet.addAll(oneDNFqueryResultSet);			
 		}
 		
