@@ -1,0 +1,64 @@
+QueryProcessor.java:45: 1. queryFile=/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/oboedb/test1-query3.txt
+QueryProcessor.java:46: 2. queryStrategy=1
+QueryProcessor.java:47: 3. resultWithRecord=true
+QueryProcessor.java:48: 4. queryResultFile=
+QueryList.java:73: oneLine=BEGIN QUERY:1
+OMQuery.java:117: dnfNo=1,queryMeas: 'DBH' >35.0
+OMQuery.java:120: oneBasicQuery: 1:  '%Tree%'['DBH' >35.0]
+OMQuery.java:117: dnfNo=1,queryMeas: 'Plot' ='A'
+OMQuery.java:120: oneBasicQuery: 2:  '%Site%'['Plot' ='A']
+OMQuery.java:117: dnfNo=1,queryMeas: 'Year' =2007
+OMQuery.java:120: oneBasicQuery: 3:  '%Temporal%'['Year' =2007]
+QueryProcessor.java:53: queryList=i=0:1:  '%Tree%'['DBH' >35.0], 2:  '%Site%'['Plot' ='A'], 3:  '%Temporal%'['Year' =2007], Context: {1=2}
+
+QueryProcessor.java:59: 
+*****
+Process query: 1:  '%Tree%'['DBH' >35.0], 2:  '%Site%'['Plot' ='A'], 3:  '%Temporal%'['Year' =2007], Context: {1=2}
+********
+OMQuery.java:322: contextQueryDNF = [(1->2) , (3) ]
+PostgresDB.java:124: entityTypeName= '%Tree%'
+PostgresDB.java:282: sql= SELECT annot_id, otypelabel FROM observation_type AS ot WHERE ename ILIKE  '%Tree%';
+PostgresDB.java:253: sql= SELECT context_otypelabel FROM context_type WHERE is_identifying='t' AND otypelabel = 'o2' AND annot_id=1;
+PostgresDB.java:253: sql= SELECT context_otypelabel FROM context_type WHERE is_identifying='t' AND otypelabel = 'o2' AND annot_id=2;
+PostgresDB.java:188: sql= SELECT DISTINCT mt.annot_id as annot_id, mt.otypelabel as otypelabel, attrname FROM map, measurement_type AS mt WHERE mt.annot_id = map.annot_id AND mt.mtypelabel=map.mtypelabel AND mt.isKey = 't' AND mt.annot_id IN (1,2);
+RawDB.java:317: sql= SELECT DISTINCT mt.annot_id, attrname FROM measurement_type AS mt, map WHERE map.mtypelabel = mt.mtypelabel AND mt.characteristic='DBH';
+OMQueryBasic.java:553: sql= SELECT DISTINCT 1 AS did, record_id  FROM tb1 WHERE (dbh>35.0);
+OMQueryBasic.java:553: sql= SELECT DISTINCT 2 AS did, record_id  FROM tb2 WHERE (dbh>35.0);
+OMQueryBasic.java:500: oneCNF result=[(1,0), (1,1), (1,6), (2,0), (2,1), (2,3), (2,4), (2,5), (2,9)]
+PostgresDB.java:124: entityTypeName= '%Site%'
+PostgresDB.java:282: sql= SELECT annot_id, otypelabel FROM observation_type AS ot WHERE ename ILIKE  '%Site%';
+PostgresDB.java:253: sql= SELECT context_otypelabel FROM context_type WHERE is_identifying='t' AND otypelabel = 'o3' AND annot_id=2;
+PostgresDB.java:188: sql= SELECT DISTINCT mt.annot_id as annot_id, mt.otypelabel as otypelabel, attrname FROM map, measurement_type AS mt WHERE mt.annot_id = map.annot_id AND mt.mtypelabel=map.mtypelabel AND mt.isKey = 't' AND mt.annot_id IN (2);
+RawDB.java:317: sql= SELECT DISTINCT mt.annot_id, attrname FROM measurement_type AS mt, map WHERE map.mtypelabel = mt.mtypelabel AND mt.characteristic='Plot';
+OMQueryBasic.java:553: sql= SELECT DISTINCT 2 AS did, record_id  FROM tb2 WHERE (plot='A');
+OMQueryBasic.java:500: oneCNF result=[(2,0), (2,3), (2,6), (2,8)]
+ContextChain.java:255: Context chain result=[(2,0), (2,3)]
+******
+
+PostgresDB.java:124: entityTypeName= '%Temporal%'
+PostgresDB.java:282: sql= SELECT annot_id, otypelabel FROM observation_type AS ot WHERE ename ILIKE  '%Temporal%';
+PostgresDB.java:253: sql= SELECT context_otypelabel FROM context_type WHERE is_identifying='t' AND otypelabel = 'o1' AND annot_id=1;
+PostgresDB.java:253: sql= SELECT context_otypelabel FROM context_type WHERE is_identifying='t' AND otypelabel = 'o1' AND annot_id=2;
+PostgresDB.java:188: sql= SELECT DISTINCT mt.annot_id as annot_id, mt.otypelabel as otypelabel, attrname FROM map, measurement_type AS mt WHERE mt.annot_id = map.annot_id AND mt.mtypelabel=map.mtypelabel AND mt.isKey = 't' AND mt.annot_id IN (1,2);
+RawDB.java:317: sql= SELECT DISTINCT mt.annot_id, attrname FROM measurement_type AS mt, map WHERE map.mtypelabel = mt.mtypelabel AND mt.characteristic='Year';
+OMQueryBasic.java:553: sql= SELECT DISTINCT 1 AS did, record_id  FROM tb1 WHERE (yr=2007);
+OMQueryBasic.java:553: sql= SELECT DISTINCT 2 AS did, record_id  FROM tb2 WHERE (yr=2007);
+OMQueryBasic.java:500: oneCNF result=[(1,0), (1,3), (1,5), (2,0), (2,1), (2,2), (2,6), (2,7), (2,8), (2,9)]
+ContextChain.java:255: Context chain result=[(1,0), (1,3), (1,5), (2,0), (2,1), (2,2), (2,6), (2,7), (2,8), (2,9)]
+******
+
+OMQuery.java:331: OMQuery result=[(1,0), (1,3), (1,5), (2,0), (2,1), (2,2), (2,3), (2,6), (2,7), (2,8), (2,9)]
+OMQuery.java:396: Total queryResultSet=[(1,0), (1,3), (1,5), (2,0), (2,1), (2,2), (2,3), (2,6), (2,7), (2,8), (2,9)]
+QueryProcessor.java:63: i=0,result size=11:[(1,0), (1,3), (1,5), (2,0), (2,1), (2,2), (2,3), (2,6), (2,7), (2,8), (2,9)]
+
+-----------
+
+QueryProcessor.java:73:  Query raw database.
+QueryProcessor.java:77: Time used (Query): 233 ms = 0s
+-----------
+
+
+-----------
+QueryProcessor.java:85: Time used (Total=query+write out): 233 ms = 0s
+-----------
+

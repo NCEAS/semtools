@@ -351,6 +351,9 @@ public class MaterializeDB {
 			}
 		}
 		
+		//these are the record ids that are compressed by this entity instance
+		entityInstance.addRecordId(recordId); 
+		
 		return entityInstance;
 	}
 	

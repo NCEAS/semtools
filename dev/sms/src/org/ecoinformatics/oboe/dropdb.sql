@@ -1,3 +1,4 @@
+DROP TABLE ei_compress CASCADE;
 DROP TABLE context_instance CASCADE;
 DROP TABLE measurement_instance CASCADE;
 DROP TABLE observation_instance CASCADE;

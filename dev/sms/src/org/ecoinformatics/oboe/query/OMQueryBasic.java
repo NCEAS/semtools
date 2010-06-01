@@ -154,6 +154,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 					sql += " INTERSECT ("+tmpSql+")";
 				}else{
 					sql += "("+tmpSql+")";
+					first= false;
 				}
 			}
 		}
@@ -285,17 +286,19 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		if(aggMeas==null||aggMeas.size()==0){
 			sql += (nonAggQuerySql);
 		}else{
-			//boolean first = true;
+			boolean first = true;
 			for(QueryMeasurement qm: aggMeas){
 				String aggQuerySql = qm.formSQL(mdb, nonAggQuerySql);
-				//if(!first){
+				if(!first){
 					sql+=" INTERSECT ("+aggQuerySql+")";
-				//}else{
-				//	sql+=" ("+aggQuerySql+")";
-				//	first = false;
-				//}
+				}else{
+					sql+=" ("+aggQuerySql+")";
+					first = false;
+				}
 			}
 		}
+		
+		//System.out.println(Debugger.getCallerPosition()+Debugger.getWhoCalledMe()+"=====sql="+sql);
 		
 		return sql;
 	}
@@ -406,7 +409,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 			}
 		}
 		
-		System.out.println(Debugger.getCallerPosition()+"sqlNonAggCond:\n"+sqlNonAggCond);
+		System.out.println(Debugger.getCallerPosition()+"sqlNonAggCond:\n"+sqlNonAggCond+"\n");
 		
 		return sqlNonAggCond;
 	}

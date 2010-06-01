@@ -1,0 +1,50 @@
+
+# TEST conjunctive conditions with aggregation
+################################################
+#natural form of queries
+#Q1: %Tree%['DBH' > 35.00] -->[Site['Plot'=A] && %Temporal%['Year'=2007]]
+#
+#Results: 
+#tb1: no result
+#tb2: 0
+#
+BEGIN QUERY:1
+BEGIN QO:1
+EntityId: '%Tree%'
+BEGIN QM:1
+Characteristic:'DBH'
+Standard:
+Cond:>35.0
+Aggregation:
+CNF:1
+END QM
+END QO
+
+BEGIN QO:2
+EntityId: '%Site%'
+BEGIN QM:1
+Characteristic:'Plot'
+Standard:
+Cond:='A'
+Aggregation:
+CNF:1
+END QM
+END QO
+
+BEGIN QO:3
+EntityId: '%Temporal%'
+BEGIN QM:1
+Characteristic:'Year'
+Standard:
+Cond:=2007
+Aggregation:
+CNF:1
+END QM
+END QO
+
+#context section
+BEGIN CONTEXT
+1->2
+1->3
+END CONTEXT
+END QUERY

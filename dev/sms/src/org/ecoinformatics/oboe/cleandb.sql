@@ -1,3 +1,4 @@
+DELETE FROM ei_compress;
 DELETE FROM context_instance;
 DELETE FROM measurement_instance;
 DELETE FROM observation_instance;

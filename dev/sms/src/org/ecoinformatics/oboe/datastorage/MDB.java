@@ -35,7 +35,7 @@ public class MDB extends PostgresDB{
 	private String m_obsInstanceTable = "observation_instance";
 	protected String m_measInstanceTable = "measurement_instance";
 	private String m_contextInstanceTable = "context_instance";
-	
+	public static String m_entityInstanceCompressTable = "ei_compress";
 
 	private String m_mapTable = "map";	
 	
@@ -44,6 +44,8 @@ public class MDB extends PostgresDB{
 	String m_insertObservationInstance ="INSERT INTO " +m_obsInstanceTable + "(oid,did,record_id,eid,otypelabel) VALUES(?,?,?,?,?);";
 	String m_insertMeasurementInstance ="INSERT INTO " +m_measInstanceTable + "(mid,did,record_id,oid,mtypelabel,mvalue) VALUES(?,?,?,?,?,?);";
 	String m_insertContextInstance ="INSERT INTO " +m_contextInstanceTable + " VALUES(?,?,?,?,?);";
+	
+	String m_insertEICompress ="INSERT INTO " +m_entityInstanceCompressTable + " VALUES(?,?,?);";
 	
 	String m_insertAnnotation = "INSERT INTO annotation(annot_uri) VALUES(?);";
 	String m_insertObservationType = "INSERT INTO " + m_obsTypeTable + " VALUES(?,?,?,?);";
@@ -204,6 +206,25 @@ public class MDB extends PostgresDB{
 		pstmt.setString(4, ei.getEntityType().getName());		
 	}
 	
+	/**
+	 * Set the parameters for inserting measurement instances
+	 * String m_insertMeasurementInstance ="INSERT INTO " +m_measInstanceTable + "(did,record_id,oid,mtypelabel,mvalue) VALUES(?,?,?,?,?);";	 
+	 * 
+	 * @param pstmt
+	 * @param mi
+	 * @throws SQLException
+	 */
+	private void execEICompress(PreparedStatement pstmt, EntityInstance ei,long did) 
+		throws SQLException
+	{	
+		pstmt.setLong(1, did);
+		pstmt.setLong(2, ei.getEntId());
+		
+		for(Long compressedRecordId: ei.getCompressedRecordIds()){
+			pstmt.setLong(3, compressedRecordId);
+			pstmt.execute();
+		}
+	}
 	
 
 	
@@ -354,6 +375,8 @@ public class MDB extends PostgresDB{
 		pstmt.setString(5, ci.getContextType().getRelationship().getName()); //relationship name
 	}
 	
+
+	
 	/**
 	 * String m_insertMap = "INSERT INTO" + m_mapTable + "(annot_id,mtypelabel,attrname,mapcond,mapval) VALUES(?,?,?,?,?);";
 	 * 
@@ -491,30 +514,30 @@ public class MDB extends PostgresDB{
 		PreparedStatement pstmtMeas = m_conn.prepareStatement(this.m_insertMeasurementInstance);
 		PreparedStatement pstmtContext = m_conn.prepareStatement(this.m_insertContextInstance);
 		
+		PreparedStatement pstmtEntityCompressed = m_conn.prepareStatement(this.m_insertEICompress);
 		 //entity instance 
 		 for(EntityInstance ei: oboe.m_entityInstances){
-			 //formEntityInstanceSQL(ei);
 			 setEntityInstanceParam(pstmtEntity, ei, dId);
 			 pstmtEntity.execute();
+			 
+			 //put the EI compressed record ids
+			 execEICompress(pstmtEntityCompressed, ei, dId);
 		 }
 		 
 		 //observation instance
 		 for(ObservationInstance oi: oboe.m_observationInstances){
-			 //formObsInstanceSQL(oi);
 			 setObsInstanceParam(pstmtObs, oi, dId);
 			 pstmtObs.execute();
 		 }
 
 		 //measurement instance
 		 for(MeasurementInstance mi: oboe.m_measurementInstances){
-			 //formMeasInstanceSQL(mi);
 			 this.setMeasInstanceParam(pstmtMeas, mi, dId);
 			 pstmtMeas.execute();
 		 }
 
 		 //context instance
 		 for(ContextInstance ci: oboe.m_contextInstances){
-			 //formContextInstanceSQL(ci);
 			 this.setContextInstanceParam(pstmtContext, ci,dId);
 			 pstmtContext.execute();
 		 }

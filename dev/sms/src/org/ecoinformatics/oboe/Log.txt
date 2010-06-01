@@ -16,9 +16,11 @@ Batch commands: dev/sms/executable/querytest.sh
 Result: dev/sms/executable/resultlog/*.txt
 (2) Build file for batch testing + logging results 
 
-TODO:
+DONE:
 (1) Test of two query methods with different benchmark queries.
- 
+
+
+TODO
 (3) Synthetic query generator (control selectivity) to test big amount of data
 (4) Test use Margaret's data 
 

@@ -1,0 +1,84 @@
+QueryProcessor.java:45: 1. queryFile=/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/oboedb/test1-query3.txt
+QueryProcessor.java:46: 2. queryStrategy=2
+QueryProcessor.java:47: 3. resultWithRecord=true
+QueryProcessor.java:48: 4. queryResultFile=
+QueryList.java:73: oneLine=BEGIN QUERY:1
+OMQuery.java:117: dnfNo=1,queryMeas: 'DBH' >35.0
+OMQuery.java:120: oneBasicQuery: 1:  '%Tree%'['DBH' >35.0]
+OMQuery.java:117: dnfNo=1,queryMeas: 'Plot' ='A'
+OMQuery.java:120: oneBasicQuery: 2:  '%Site%'['Plot' ='A']
+OMQuery.java:117: dnfNo=1,queryMeas: 'Year' =2007
+OMQuery.java:120: oneBasicQuery: 3:  '%Temporal%'['Year' =2007]
+QueryProcessor.java:53: queryList=i=0:1:  '%Tree%'['DBH' >35.0], 2:  '%Site%'['Plot' ='A'], 3:  '%Temporal%'['Year' =2007], Context: {1=2}
+
+QueryProcessor.java:59: 
+*****
+Process query: 1:  '%Tree%'['DBH' >35.0], 2:  '%Site%'['Plot' ='A'], 3:  '%Temporal%'['Year' =2007], Context: {1=2}
+********
+OMQuery.java:322: contextQueryDNF = [(1->2) , (3) ]
+OMQueryBasic.java:276: formSQLOneCNF:measAND=['DBH' >35.0]
+OMQueryBasic.java:412: sqlNonAggCond:
+(SELECT DISTINCT oi.did,eic.compressed_record_id as record_id, oi.eid, oi.oid, mi.mvalue, mt.characteristic  FROM measurement_instance AS mi,observation_instance AS oi,entity_instance AS ei,measurement_type AS mt,ei_compress AS eic 
+WHERE mi.mvalue ~ '^[-]?[0-9]+' AND mi.mvalue !~ '[a-zA-Z]+' AND  (CAST(mi.mvalue AS numeric)>35.0) AND  ei.etype ILIKE  '%Tree%' AND ei.eid=oi.eid AND oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic='DBH' AND ei.eid=eic.eid AND ei.did=eic.did))
+
+OMQueryBasic.java:322: formSQLOneCNFContext:measAND=['Plot' ='A']
+OMQueryBasic.java:276: formSQLOneCNF:measAND=['Plot' ='A']
+OMQueryBasic.java:412: sqlNonAggCond:
+(SELECT DISTINCT oi.did,eic.compressed_record_id as record_id, oi.eid, oi.oid, mi.mvalue, mt.characteristic  FROM measurement_instance AS mi,observation_instance AS oi,entity_instance AS ei,measurement_type AS mt,ei_compress AS eic 
+WHERE  mi.mvalue ='A' AND  ei.etype ILIKE  '%Site%' AND ei.eid=oi.eid AND oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic='Plot' AND ei.eid=eic.eid AND ei.did=eic.did))
+
+OMQueryBasic.java:332: formSQLOneCNFContext:sql=
+SELECT tmp1.did, tmp1.record_id, tmp1.eid, tmp1.oid 
+ FROM (((SELECT DISTINCT oi.did,eic.compressed_record_id as record_id, oi.eid, oi.oid, mi.mvalue, mt.characteristic  FROM measurement_instance AS mi,observation_instance AS oi,entity_instance AS ei,measurement_type AS mt,ei_compress AS eic 
+WHERE mi.mvalue ~ '^[-]?[0-9]+' AND mi.mvalue !~ '[a-zA-Z]+' AND  (CAST(mi.mvalue AS numeric)>35.0) AND  ei.etype ILIKE  '%Tree%' AND ei.eid=oi.eid AND oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic='DBH' AND ei.eid=eic.eid AND ei.did=eic.did)))) as tmp1,  ((SELECT DISTINCT oi.did,eic.compressed_record_id as record_id, oi.eid, oi.oid, mi.mvalue, mt.characteristic  FROM measurement_instance AS mi,observation_instance AS oi,entity_instance AS ei,measurement_type AS mt,ei_compress AS eic 
+WHERE  mi.mvalue ='A' AND  ei.etype ILIKE  '%Site%' AND ei.eid=oi.eid AND oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic='Plot' AND ei.eid=eic.eid AND ei.did=eic.did))) as tmp2, context_instance as oi 
+WHERE tmp1.oid = oi.oid AND oi.context_oid=tmp2.oid
+ContextChain.java:181: ======sql:(SELECT tmp1.did, tmp1.record_id, tmp1.eid, tmp1.oid 
+ FROM (((SELECT DISTINCT oi.did,eic.compressed_record_id as record_id, oi.eid, oi.oid, mi.mvalue, mt.characteristic  FROM measurement_instance AS mi,observation_instance AS oi,entity_instance AS ei,measurement_type AS mt,ei_compress AS eic 
+WHERE mi.mvalue ~ '^[-]?[0-9]+' AND mi.mvalue !~ '[a-zA-Z]+' AND  (CAST(mi.mvalue AS numeric)>35.0) AND  ei.etype ILIKE  '%Tree%' AND ei.eid=oi.eid AND oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic='DBH' AND ei.eid=eic.eid AND ei.did=eic.did)))) as tmp1,  ((SELECT DISTINCT oi.did,eic.compressed_record_id as record_id, oi.eid, oi.oid, mi.mvalue, mt.characteristic  FROM measurement_instance AS mi,observation_instance AS oi,entity_instance AS ei,measurement_type AS mt,ei_compress AS eic 
+WHERE  mi.mvalue ='A' AND  ei.etype ILIKE  '%Site%' AND ei.eid=oi.eid AND oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic='Plot' AND ei.eid=eic.eid AND ei.did=eic.did))) as tmp2, context_instance as oi 
+WHERE tmp1.oid = oi.oid AND oi.context_oid=tmp2.oid)
+
+********ContextChain.java:219: entry=1:  '%Tree%'['DBH' >35.0]=2:  '%Site%'['Plot' ='A']sql=
+SELECT DISTINCT eic.did, eic.compressed_record_id as record_id FROM ei_compress as eic, ((SELECT tmp1.did, tmp1.record_id, tmp1.eid, tmp1.oid 
+ FROM (((SELECT DISTINCT oi.did,eic.compressed_record_id as record_id, oi.eid, oi.oid, mi.mvalue, mt.characteristic  FROM measurement_instance AS mi,observation_instance AS oi,entity_instance AS ei,measurement_type AS mt,ei_compress AS eic 
+WHERE mi.mvalue ~ '^[-]?[0-9]+' AND mi.mvalue !~ '[a-zA-Z]+' AND  (CAST(mi.mvalue AS numeric)>35.0) AND  ei.etype ILIKE  '%Tree%' AND ei.eid=oi.eid AND oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic='DBH' AND ei.eid=eic.eid AND ei.did=eic.did)))) as tmp1,  ((SELECT DISTINCT oi.did,eic.compressed_record_id as record_id, oi.eid, oi.oid, mi.mvalue, mt.characteristic  FROM measurement_instance AS mi,observation_instance AS oi,entity_instance AS ei,measurement_type AS mt,ei_compress AS eic 
+WHERE  mi.mvalue ='A' AND  ei.etype ILIKE  '%Site%' AND ei.eid=oi.eid AND oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic='Plot' AND ei.eid=eic.eid AND ei.did=eic.did))) as tmp2, context_instance as oi 
+WHERE tmp1.oid = oi.oid AND oi.context_oid=tmp2.oid)) as cctmp
+ WHERE (eic.did = cctmp.did AND eic.eid = cctmp.eid);
+ContextChain.java:223: oneBasicQueryResult=[(2,0), (2,3)]
+ContextChain.java:255: Context chain result=[(2,0), (2,3)]
+******
+
+OMQueryBasic.java:348: executeOneCNF:measAND=['Year' =2007]
+OMQueryBasic.java:412: sqlNonAggCond:
+(SELECT DISTINCT oi.did,eic.compressed_record_id as record_id, oi.eid, oi.oid, mi.mvalue, mt.characteristic  FROM measurement_instance AS mi,observation_instance AS oi,entity_instance AS ei,measurement_type AS mt,ei_compress AS eic 
+WHERE mi.mvalue ~ '^[-]?[0-9]+' AND mi.mvalue !~ '[a-zA-Z]+' AND  (CAST(mi.mvalue AS numeric)=2007) AND  ei.etype ILIKE  '%Temporal%' AND ei.eid=oi.eid AND oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic='Year' AND ei.eid=eic.eid AND ei.did=eic.did))
+
+OMQueryBasic.java:436: sql:SELECT DISTINCT did, record_id FROM ((SELECT DISTINCT oi.did,eic.compressed_record_id as record_id, oi.eid, oi.oid, mi.mvalue, mt.characteristic  FROM measurement_instance AS mi,observation_instance AS oi,entity_instance AS ei,measurement_type AS mt,ei_compress AS eic 
+WHERE mi.mvalue ~ '^[-]?[0-9]+' AND mi.mvalue !~ '[a-zA-Z]+' AND  (CAST(mi.mvalue AS numeric)=2007) AND  ei.etype ILIKE  '%Temporal%' AND ei.eid=oi.eid AND oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic='Year' AND ei.eid=eic.eid AND ei.did=eic.did))) AS tmp
+OMQueryBasic.java:437: resultSet:[(1,0), (1,3), (1,5), (2,0), (2,1), (2,2), (2,6), (2,7), (2,8), (2,9)]
+OMQueryBasic.java:412: sqlNonAggCond:
+(SELECT DISTINCT oi.did,eic.compressed_record_id as record_id, oi.eid, oi.oid, mi.mvalue, mt.characteristic  FROM measurement_instance AS mi,observation_instance AS oi,entity_instance AS ei,measurement_type AS mt,ei_compress AS eic 
+WHERE mi.mvalue ~ '^[-]?[0-9]+' AND mi.mvalue !~ '[a-zA-Z]+' AND  (CAST(mi.mvalue AS numeric)=2007) AND  ei.etype ILIKE  '%Temporal%' AND ei.eid=oi.eid AND oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic='Year' AND ei.eid=eic.eid AND ei.did=eic.did))
+
+OMQueryBasic.java:362: result=[(1,0), (1,3), (1,5), (2,0), (2,1), (2,2), (2,6), (2,7), (2,8), (2,9)]
+OMQueryBasic.java:381: oneCNF result=[(1,0), (1,3), (1,5), (2,0), (2,1), (2,2), (2,6), (2,7), (2,8), (2,9)]
+ContextChain.java:255: Context chain result=[(1,0), (1,3), (1,5), (2,0), (2,1), (2,2), (2,6), (2,7), (2,8), (2,9)]
+******
+
+OMQuery.java:331: OMQuery result=[(1,0), (1,3), (1,5), (2,0), (2,1), (2,2), (2,3), (2,6), (2,7), (2,8), (2,9)]
+OMQuery.java:396: Total queryResultSet=[(1,0), (1,3), (1,5), (2,0), (2,1), (2,2), (2,3), (2,6), (2,7), (2,8), (2,9)]
+QueryProcessor.java:63: i=0,result size=11:[(1,0), (1,3), (1,5), (2,0), (2,1), (2,2), (2,3), (2,6), (2,7), (2,8), (2,9)]
+
+-----------
+
+QueryProcessor.java:71:  Query materialized database.
+QueryProcessor.java:77: Time used (Query): 224 ms = 0s
+-----------
+
+
+-----------
+QueryProcessor.java:85: Time used (Total=query+write out): 224 ms = 0s
+-----------
+

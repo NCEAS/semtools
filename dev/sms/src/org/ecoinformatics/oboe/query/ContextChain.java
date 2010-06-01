@@ -11,28 +11,39 @@ import org.ecoinformatics.oboe.Debugger;
 import org.ecoinformatics.oboe.datastorage.*;
 
 public class ContextChain {
-	Map<OMQueryBasic, OMQueryBasic> m_queryChain; //shall I use set or list or map, TODO
+	Map<OMQueryBasic, List<OMQueryBasic> > m_queryChain; //shall I use set or list or map, TODO
+	//<OMQueryBasic, OMQueryBasic> m_queryChain; //shall I use set or list or map, TODO
 	
 	public ContextChain()
 	{
-		m_queryChain = new TreeMap<OMQueryBasic, OMQueryBasic>();
+		m_queryChain = new TreeMap<OMQueryBasic, List<OMQueryBasic>>();
+		//m_queryChain = new TreeMap<OMQueryBasic, OMQueryBasic>();
 	}
 
-	public Map<OMQueryBasic, OMQueryBasic> getQueryChain() {
+	//public Map<OMQueryBasic, OMQueryBasic> getQueryChain()
+	public Map<OMQueryBasic, List<OMQueryBasic>> getQueryChain()
+	{
 		return m_queryChain;
 	}
 
-	public void setQueryChain(Map<OMQueryBasic, OMQueryBasic> mQueryChain) {
+	//public void setQueryChain(Map<OMQueryBasic, OMQueryBasic> mQueryChain)
+	public void setQueryChain(Map<OMQueryBasic, List<OMQueryBasic>> mQueryChain) {	
 		m_queryChain = mQueryChain;
 	}
 	
 	public String toString()
 	{
 		String str="";
-		for(Map.Entry<OMQueryBasic,OMQueryBasic> entry: m_queryChain.entrySet()){
+		//for(Map.Entry<OMQueryBasic,OMQueryBasic> entry: m_queryChain.entrySet())
+		for(Map.Entry<OMQueryBasic,List<OMQueryBasic>> entry: m_queryChain.entrySet())
+		{
 			str += "("+entry.getKey().getQueryLabel();
 			if(entry.getValue()!=null){
-				str +="->"+entry.getValue().getQueryLabel();
+				//str +="->"+entry.getValue().getQueryLabel();
+				str +="->";
+				for(OMQueryBasic qm: entry.getValue()){
+					str += qm.getQueryLabel()+" ";
+				}
 			}
 			str += ") ";
 		}
@@ -44,7 +55,13 @@ public class ContextChain {
 	}
 	
 	public void addGroup(OMQueryBasic keyQuery, OMQueryBasic valueQuery){
-		m_queryChain.put(keyQuery,valueQuery);
+		List<OMQueryBasic> tmplist = m_queryChain.get(keyQuery);
+		if(tmplist==null){
+			tmplist = new ArrayList<OMQueryBasic>();
+			m_queryChain.put(keyQuery,tmplist);
+		}
+		tmplist.add(valueQuery);
+		//m_queryChain.put(keyQuery,valueQuery);
 	}
 	
 //	/**
@@ -164,7 +181,7 @@ public class ContextChain {
 	 * 
 	 * @throws Exception 
 	 */
-	private String formSQL(OMQueryBasic targetQuery, OMQueryBasic targetContext,PostgresDB db, boolean resultWithRecord) throws Exception
+	private String formSQL(OMQueryBasic targetQuery, List<OMQueryBasic> targetContext,PostgresDB db, boolean resultWithRecord) throws Exception
 	{
 		String sql ="";
 	
@@ -173,13 +190,23 @@ public class ContextChain {
 		
 		if(targetContext!=null){
 			//return (did, record_id, eid, oid)
-			sql = targetContext.formContextSQL(db, resultWithRecord,targetSql);
+			for(int i=0; i<targetContext.size();i++){
+				OMQueryBasic basic = targetContext.get(i);
+				String tmpSql =basic.formContextSQL(db, resultWithRecord,targetSql);
+				if(i==0){
+					sql = "("+tmpSql+")";
+				}else{
+					
+					sql +=" INTERSECT ("+tmpSql+")";
+				}
+			}
 		}else{
 			sql = targetSql;
 		}
 		
+		System.out.println(Debugger.getCallerPosition()+"======sql:"+sql);
 		String sqlReturn = "SELECT DISTINCT eic.did, eic.compressed_record_id as record_id" +
-				" FROM ei_compress as eic, " +
+				" FROM "+MDB.m_entityInstanceCompressTable+" as eic, " +
 				"("+sql+") as cctmp\n"
 			+ " WHERE (eic.did = cctmp.did AND eic.eid = cctmp.eid);";
 		
@@ -207,37 +234,52 @@ public class ContextChain {
 		
 		//The results need to be intersect-ed
 		boolean first = true;
-		//for(OMQueryBasic q: chainQuerySet)
-		for(Map.Entry<OMQueryBasic, OMQueryBasic> entry: m_queryChain.entrySet())
+		//for(Map.Entry<OMQueryBasic, OMQueryBasic> entry: m_queryChain.entrySet())
+		for(Map.Entry<OMQueryBasic, List<OMQueryBasic> > entry: m_queryChain.entrySet())
 		{
 			OMQueryBasic targetQuery = entry.getKey();
-			OMQueryBasic context = entry.getValue();
+			//OMQueryBasic context = entry.getValue();
+			List<OMQueryBasic> context = entry.getValue(); 
 			
-			String sql = formSQL(targetQuery,context,db,resultWithRecord);
-		
-			System.out.println("\n********"+Debugger.getCallerPosition()+"entry="+entry+"\nsql="+sql);
+			if(context!=null&&(db instanceof MDB)){
+				String sql = formSQL(targetQuery,context,db,resultWithRecord);
 			
-			Set<OboeQueryResult> oneBasicQueryResult = db.executeSQL(sql);
-			
-			System.out.println(Debugger.getCallerPosition()+"oneBasicQueryResult="+oneBasicQueryResult);
-			
-			//perform the basic target query
-//			Set<OboeQueryResult> oneBasicQueryResult = targetQuery.execute(db,resultWithRecord);
-//			
-//			//perform the target query's context
-//			if(context!=null&&oneBasicQueryResult.size()>0){
-//				Set<OboeQueryResult> contextQueryResult = context.executeContext(db, resultWithRecord);
-//				
-//				//intersect the result from the basic query and its context query
-//				oneBasicQueryResult.retainAll(contextQueryResult);
-//			}
-			
-			if(!first){
-				result.retainAll(oneBasicQueryResult);
+				System.out.println("\n********"+Debugger.getCallerPosition()+"entry="+entry+"sql=\n"+sql);
+				
+				Set<OboeQueryResult> oneBasicQueryResult = db.executeSQL(sql);
+				
+				System.out.println(Debugger.getCallerPosition()+"oneBasicQueryResult="+oneBasicQueryResult);
+				if(!first){
+					result.retainAll(oneBasicQueryResult);
+				}else{
+					result.addAll(oneBasicQueryResult);
+					first = false;
+				}
 			}else{
-				result.addAll(oneBasicQueryResult);
-				first = false;
+				//System.out.println(Debugger.getCallerPosition()+"++++[0]targetQuery="+targetQuery+",contex="+context);
+				//perform the basic target query
+				Set<OboeQueryResult> oneBasicQueryResult = targetQuery.execute(db,resultWithRecord);
+				if(!first){
+					result.retainAll(oneBasicQueryResult);
+				}else{
+					result.addAll(oneBasicQueryResult);
+					first = false;
+				}
+				
+				//System.out.println(Debugger.getCallerPosition()+"++++[1]result="+result);
+				//perform the target query's context
+				if(context!=null&&oneBasicQueryResult.size()>0){
+					for(OMQueryBasic basic: context){
+						Set<OboeQueryResult> contextQueryResult = basic.execute(db, resultWithRecord);
+						
+						//intersect the result from the basic query and its context query
+						result.retainAll(contextQueryResult);
+						//System.out.println(Debugger.getCallerPosition()+"++++[2]result="+result);
+					}
+				}
 			}
+			
+			
 		}
 		
 		System.out.println(Debugger.getCallerPosition()+"Context chain result="+result+"\n******\n");
@@ -253,9 +295,9 @@ public class ContextChain {
 		Set<OMQueryBasic> chainQuerySet = new TreeSet<OMQueryBasic>();
 		chainQuerySet.addAll(this.m_queryChain.keySet());
 		if(m_queryChain.values()!=null){
-			for(OMQueryBasic q: m_queryChain.values()){
+			for(List<OMQueryBasic> q: m_queryChain.values()){
 				if(q!=null){
-					chainQuerySet.add(q);
+					chainQuerySet.addAll(q);
 				}
 			}
 		}

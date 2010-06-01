@@ -58,13 +58,14 @@ public class OMQuery {
 	//this is null or size is zero, then, no context
 	//All the queries in the structure are formed using context
 	//Otherwise, they are just put together using logic OR.
- 	Map<String, String> m_queryContext; 
+ 	Map<String, List<String> > m_queryContext; 
 
  	public OMQuery()
  	{
  		m_query = new ArrayList<OMQueryBasic>();
+ 		//m_queryIndex = new TreeMap<String, List<OMQueryBasic> >();
  		m_queryIndex = new TreeMap<String, OMQueryBasic>();
- 		m_queryContext = new TreeMap<String, String>();
+ 		m_queryContext = new TreeMap<String, List<String>>();
  	}
 	/**
 	 * Parse the query text to a query structure
@@ -129,6 +130,12 @@ public class OMQuery {
 					throw new Exception("Query is in valid, entity does not have end symbol.");
 				}
 				m_query.add(oneBasicQuery);
+				//List<OMQueryBasic> tmplist = m_queryIndex.get(oneBasicQuery.getQueryLabel());
+				//if(tmplist == null){
+				//	tmplist = new ArrayList<OMQueryBasic>();
+				//	m_queryIndex.put(oneBasicQuery.getQueryLabel(),tmplist);
+				//}
+				//tmplist.add(oneBasicQuery);
 				m_queryIndex.put(oneBasicQuery.getQueryLabel(), oneBasicQuery);
 			}else if(oneLine.contains(Constant.CONTEXT_START)){
 				//parse the context
@@ -137,7 +144,13 @@ public class OMQuery {
 					int pos = oneLine.indexOf(Constant.CONTEXT_SEPARATOR);
 					String bq1str = oneLine.substring(0, pos);
 					String bq2str = oneLine.substring(pos+Constant.CONTEXT_SEPARATOR.length());
-					m_queryContext.put(bq1str,bq2str);
+					List<String> tmplist = m_queryContext.get(bq1str);
+					if(tmplist==null){
+						tmplist = new ArrayList<String>();
+						m_queryContext.put(bq1str,tmplist);
+					}
+					tmplist.add(bq2str);
+					//m_queryContext.put(bq1str,bq2str);
 					oneLine = queryLines.get(++i);
 				}
 			}else{
@@ -190,15 +203,15 @@ public class OMQuery {
 	{
 		List<ContextChain> resultContextChain = new ArrayList<ContextChain>();
 		
-		Set<Entry<String, String>> entrySet = m_queryContext.entrySet();
+		Set<Entry<String, List<String> >> entrySet = m_queryContext.entrySet();
 		Set<String> basicQueryInContext = new HashSet<String>();
 		
 		//1.1 grouping the basic queries
 		List<Set<String> > tmpBasicQueryGroup = new ArrayList<Set<String> >();
-		for(Entry<String, String> entry: entrySet){
+		for(Entry<String, List<String> > entry: entrySet){
 			insertBasicQuery(tmpBasicQueryGroup,entry);
 			basicQueryInContext.add(entry.getKey());
-			basicQueryInContext.add(entry.getValue());
+			basicQueryInContext.addAll(entry.getValue());
 		}
 				
 		//1.2 put the group context to chains
@@ -206,11 +219,13 @@ public class OMQuery {
 			ContextChain newChain = new ContextChain();
 			Set<String> curBQset = tmpBasicQueryGroup.get(i);
 			for(String keyQueryLabel: curBQset){
-				String valueQueryLabel = m_queryContext.get(keyQueryLabel);
-				if(valueQueryLabel==null) continue;
-				OMQueryBasic qKey = m_queryIndex.get(keyQueryLabel);				
-				OMQueryBasic qValue = m_queryIndex.get(valueQueryLabel);
-				newChain.addGroup(qKey,qValue);				
+				List<String> valueQueryLabelList = m_queryContext.get(keyQueryLabel);
+				if(valueQueryLabelList==null) continue;
+				for(String valueQueryLabel: valueQueryLabelList){
+					OMQueryBasic qKey = m_queryIndex.get(keyQueryLabel);				
+					OMQueryBasic qValue = m_queryIndex.get(valueQueryLabel);
+					newChain.addGroup(qKey,qValue);				
+				}
 			}
 			resultContextChain.add(newChain);
 		}
@@ -234,23 +249,24 @@ public class OMQuery {
 	 * @param tmpBasicQuery
 	 * @param entry
 	 */
-	private void insertBasicQuery(List<Set<String> > tmpBasicQuery, Entry<String, String> entry)
+	private void insertBasicQuery(List<Set<String> > tmpBasicQuery, Entry<String, List<String> > entry)
 	{
 		boolean inserted = false;		
 		String bq1 = entry.getKey();
-		String bq2 = entry.getValue();
 		
 		//check whether some of entry's string can be inserted to the list or not
 		for(int i=0;i<tmpBasicQuery.size();i++){
 			Set<String> curBQset = tmpBasicQuery.get(i);
 			boolean exist = curBQset.contains(bq1);
-			if(!exist)	exist = curBQset.contains(bq2);
-				
-			if(exist){
-				curBQset.add(bq1);
-				curBQset.add(bq2);
-				inserted = true;
-				break;
+			for(String bq2: entry.getValue()){
+				if(!exist)	exist = curBQset.contains(bq2);
+					
+				if(exist){
+					curBQset.add(bq1);
+					curBQset.add(bq2);
+					inserted = true;
+					break;
+				}
 			}
 		}
 		
@@ -258,7 +274,8 @@ public class OMQuery {
 		if(inserted==false){
 			Set<String> curBQset  = new HashSet<String>();
 			curBQset.add(bq1);
-			curBQset.add(bq2);		
+			for(String bq2: entry.getValue())
+				curBQset.add(bq2);		
 			tmpBasicQuery.add(curBQset);
 		}
 	}

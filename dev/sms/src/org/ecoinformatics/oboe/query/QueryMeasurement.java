@@ -107,10 +107,10 @@ public class QueryMeasurement {
 		String sql = "SELECT DISTINCT did, record_id, eid, oid FROM " + mdb.getObsInstanceTable() +" AS oi ";
 		sql +=" WHERE (did, eid) IN (\n";
 		String subquerySQL = formGroupByQuerySQL(mdb,nonAggMeasSql);
-		sql += subquerySQL+");";
+		sql += subquerySQL+")";
 		
 		
-		System.out.println(Debugger.getCallerPosition()+" SQL: \n"+sql);
+		System.out.println(Debugger.getCallerPosition()+" SQL: \n"+sql+"\n");
 		return sql;
 	}
 	
@@ -143,11 +143,12 @@ public class QueryMeasurement {
 	 */
 	public String formSQLNonAggCondOverMDB(MDB mdb, String entityNameCond)
 	{
-		String sql= "SELECT DISTINCT oi.did, oi.record_id, oi.eid, oi.oid, mi.mvalue, mt.characteristic ";
+		String sql= "SELECT DISTINCT oi.did,eic.compressed_record_id as record_id, oi.eid, oi.oid, mi.mvalue, mt.characteristic ";
 		sql +=" FROM "+mdb.getMeasInstanceTable()+" AS mi,"
 							+ mdb.getObsInstanceTable() +" AS oi,"
 							+ mdb.getEntityInstanceTable() +" AS ei,"
-							+ mdb.getMmeasTypeTable() + " AS mt ";
+							+ mdb.getMmeasTypeTable() + " AS mt," 
+							+ mdb.m_entityInstanceCompressTable +" AS eic ";
 		if(valueCond!=null&&valueCond.trim().length()>0){
 			sql += "\nWHERE ";
 			
@@ -183,6 +184,7 @@ public class QueryMeasurement {
 		if(standardCond!=null&&standardCond.trim().length()>0){
 			sql +=" AND mt.standard " + standardCond;
 		}
+		sql +=" AND ei.eid=eic.eid AND ei.did=eic.did";
 		sql +=")";
 		
 		return sql;
@@ -258,6 +260,7 @@ public class QueryMeasurement {
 			sqlReturn+="\nHAVING "+aggregationFunc+"(mvalue)"+valueCond;
 		}
 		
+		System.out.println(Debugger.getCallerPosition()+"Group by SQL:\n"+sqlReturn+"\n");
 
 		return sqlReturn;
 	}

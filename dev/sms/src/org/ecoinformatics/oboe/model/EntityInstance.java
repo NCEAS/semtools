@@ -1,5 +1,7 @@
 package org.ecoinformatics.oboe.model;
 
+import java.util.Set;
+import java.util.TreeSet;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -12,12 +14,23 @@ public class EntityInstance {
 	
 	private long m_did;
 	private Long m_recordId;
+	private Set<Long> m_compressedRecordIds;
 	
 	private long entId;
 	private Entity entityType;
 	
 	private OboeModel oboe;
 	private Annotation a;
+	
+	
+	public EntityInstance(Entity _entityType)
+	{
+		setEntId((oboe.gOldMaxEntId)++);
+		setEntityType(_entityType);
+		m_compressedRecordIds = new TreeSet<Long>();
+	}
+	
+
 	
 	public long getDid() {
 		return m_did;
@@ -35,18 +48,6 @@ public class EntityInstance {
 		m_recordId = mRecordId;
 	}
 
-	public EntityInstance(Entity _entityType)
-	{
-//		if(gEntId==0){
-//			gEntId = oboe.gOldMaxEntId;
-//		}else{
-//			gEntId++;
-//		}
-//		setEntId(gEntId);
-		setEntId((oboe.gOldMaxEntId)++);
-		setEntityType(_entityType);
-	}
-	
 	public long getEntId() {
 		return entId;
 	}
@@ -81,6 +82,14 @@ public class EntityInstance {
 	}
 	public void setA(Annotation a) {
 		this.a = a;
+	}
+	
+	public void addRecordId(long rid){
+		m_compressedRecordIds.add(rid);
+	}
+	
+	public Set<Long> getCompressedRecordIds(){
+		return m_compressedRecordIds;
 	}
 	
 	public String toString()
