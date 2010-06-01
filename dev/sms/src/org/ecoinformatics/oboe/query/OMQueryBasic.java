@@ -124,6 +124,85 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 //	}
 	
 	/**
+	 * For one whole SQL statement for a query.
+	 * Return (did, record_id,eid,oid)
+	 * 
+	 * return () 
+	 */
+	public String formSQL(PostgresDB db, boolean resultWithRecord) throws Exception
+	{
+		String sql = "";
+		
+		//for different DNF, union their results
+		boolean first = true;
+		for(Map.Entry<Integer, List<QueryMeasurement>> entry: m_queryMeasDNF.entrySet()){
+			
+			//for the query measurement conditions ONE DNF, intersect all the results
+			List<QueryMeasurement> measAND = entry.getValue();
+			
+			String tmpSql ="";
+			if(db instanceof MDB){
+				tmpSql = formSQLOneCNF((MDB)db,resultWithRecord, measAND);
+			}else if(db instanceof RawDB){
+				;//sql = formSQLOneCNF((RawDB)db,resultWithRecord, measAND);
+			}else{
+				System.out.println(Debugger.getCallerPosition()+"Not implemented yet.");
+			}
+			
+			if(tmpSql.length()>0){
+				if(!first){
+					sql += " INTERSECT ("+tmpSql+")";
+				}else{
+					sql += "("+tmpSql+")";
+				}
+			}
+		}
+		
+		return sql;
+	}
+	
+	/**
+	 * For one whole SQL statement for a query.
+	 * Return (did, record_id,oid)
+	 * 
+	 * return () 
+	 */
+	public String formContextSQL(PostgresDB db, boolean resultWithRecord,String targetSql) throws Exception
+	{
+		String sql = "";
+		
+		//for different DNF, union their results
+		boolean first = true;
+		for(Map.Entry<Integer, List<QueryMeasurement>> entry: m_queryMeasDNF.entrySet()){
+			
+			//for the query measurement conditions ONE DNF, intersect all the results
+			List<QueryMeasurement> measAND = entry.getValue();
+			
+			String tmpSql ="";
+			if(db instanceof MDB){
+				tmpSql = formSQLOneCNFContext((MDB)db,resultWithRecord, measAND, targetSql);
+			}else if(db instanceof RawDB){
+				;//sql = formSQLOneCNF((RawDB)db,resultWithRecord, measAND);
+			}else{
+				System.out.println(Debugger.getCallerPosition()+"Not implemented yet.");
+			}
+			
+			if(tmpSql.length()>0){
+				if(!first){
+					sql += " INTERSECT ("+tmpSql+")";
+				}else{
+					sql += "("+tmpSql+")";
+				}
+			}
+		}
+		
+		return sql;
+	}
+	
+	
+	
+	
+	/**
 	 * Perform the basic query oover the original raw data base
 	 * 
 	 * @param rawdb
@@ -155,6 +234,10 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		return result;
 	}
 
+	
+	
+	
+	
 	/**
 	 * Classify the measurement conditions to those with aggregate functions and those without aggregate functions 
 	 * @param measAND
@@ -176,6 +259,79 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 	}
 	
 	/**
+	 * For the sql for one meas AND
+	 * Return (did, record_id,eid, oid)
+	 * 
+	 * @param mdb
+	 * @param resultWithRid
+	 * @param measAND
+	 * @return
+	 * @throws Exception 
+	 * @throws SQLException 
+	 */
+	private String formSQLOneCNF(MDB mdb, boolean resultWithRid, List<QueryMeasurement> measAND) 
+		throws SQLException, Exception
+	{
+		System.out.println(Debugger.getCallerPosition()+Debugger.getWhoCalledMe()+"measAND="+measAND);
+		String sql ="";
+		
+		//1. Get the measurements that need to be aggregated
+		List<QueryMeasurement> aggMeas = new ArrayList<QueryMeasurement>();
+		List<QueryMeasurement> nonAggMeas = new ArrayList<QueryMeasurement>();
+		classifyMeasAND(measAND,aggMeas,nonAggMeas);
+		
+		String nonAggQuerySql = formSqlOneCNFNonAggregateMDB(mdb,m_entityTypeNameCond,nonAggMeas);
+		
+		if(aggMeas==null||aggMeas.size()==0){
+			sql += (nonAggQuerySql);
+		}else{
+			//boolean first = true;
+			for(QueryMeasurement qm: aggMeas){
+				String aggQuerySql = qm.formSQL(mdb, nonAggQuerySql);
+				//if(!first){
+					sql+=" INTERSECT ("+aggQuerySql+")";
+				//}else{
+				//	sql+=" ("+aggQuerySql+")";
+				//	first = false;
+				//}
+			}
+		}
+		
+		return sql;
+	}
+	
+	/**
+	 * form one context sql
+	 * (did, record_id, eid, oid)
+	 * 
+	 * @param mdb
+	 * @param resultWithRid
+	 * @param measAND
+	 * @param targetSql
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	private String formSQLOneCNFContext(MDB mdb, boolean resultWithRid, 
+			List<QueryMeasurement> measAND, String targetSql) 
+		throws SQLException, Exception
+	{
+		System.out.println(Debugger.getCallerPosition()+Debugger.getWhoCalledMe()+"measAND="+measAND);
+		String contextSql = formSQLOneCNF (mdb,resultWithRid,measAND);
+		
+		String sql = "SELECT tmp1.did, tmp1.record_id, tmp1.eid, tmp1.oid \n";
+		sql+=" FROM ("+targetSql+") as tmp1, ";
+		sql+=" ("+contextSql+") as tmp2, ";
+		sql+= mdb.getContextInstanceTable() +" as oi \n";
+		
+		sql+="WHERE tmp1.oid = oi.oid AND oi.context_oid=tmp2.oid";
+		
+		System.out.println(Debugger.getCallerPosition()+Debugger.getWhoCalledMe()+"sql=\n"+sql);
+		return sql;
+	}
+	
+	
+	/**
 	 * Execute the query one DNF, i.e., all its conditions should be intersected 
 	 * 
 	 * @param mdb
@@ -195,10 +351,10 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		classifyMeasAND(measAND,aggMeas,nonAggMeas);
 		
 		//Execute each aggregate query measurements and "AND" their results
-		
 		Set<OboeQueryResult> nonAggQueryResult =  
 			executeOneCNFNonAggregateMDB(mdb,m_entityTypeNameCond,nonAggMeas);
 		result.addAll(nonAggQueryResult);
+		String nonAggQuerySql = formSqlOneCNFNonAggregateMDB(mdb,m_entityTypeNameCond,nonAggMeas);
 		
 		System.out.println(Debugger.getCallerPosition()+"result="+result);
 		
@@ -214,7 +370,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 				//The embedded CNF and query is performed |aggMeas| times. 
 				//CHECK THIS with big dataset
 				Set<OboeQueryResult> oneAggQueryResult = 
-					qm.executeAggQueryMDB(mdb, m_entityTypeNameCond,nonAggMeas); 
+					qm.executeAggQueryMDB(mdb, nonAggQuerySql); 
 				result.retainAll(oneAggQueryResult);
 			}
 		}
@@ -223,6 +379,37 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		return result;
 	}
 	
+	/**
+	 * the SQL for non-aggregate conditions
+	 * (did,record_id,oid,eid,mvalue,characteristic)
+	 * 
+	 * @param mdb
+	 * @param entityNameCond
+	 * @param nonAggMeas
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	public static String formSqlOneCNFNonAggregateMDB(MDB mdb, String entityNameCond,
+			List<QueryMeasurement> nonAggMeas) throws SQLException, Exception
+	{
+		//For the SQL for all the non aggregate conditions
+		String sqlNonAggCond = "";
+		for(int i=0;i<nonAggMeas.size();i++){
+			QueryMeasurement qm = nonAggMeas.get(i); //get 
+			//(did,record_id,oid,eid,mvalue,characteristic)
+			String oneNonAggCondSql = qm.formSQLNonAggCondOverMDB(mdb,entityNameCond);
+			if(i==0){
+				sqlNonAggCond = "("+oneNonAggCondSql+")";
+			}else{
+				sqlNonAggCond = "INTERSECT \n("+oneNonAggCondSql+")";
+			}
+		}
+		
+		System.out.println(Debugger.getCallerPosition()+"sqlNonAggCond:\n"+sqlNonAggCond);
+		
+		return sqlNonAggCond;
+	}
 	/**
 	 * Execute one CNF non-aggregate query condition
 	 *  
@@ -236,25 +423,15 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 	private Set<OboeQueryResult> executeOneCNFNonAggregateMDB(MDB mdb, String entityNameCond,
 			List<QueryMeasurement> nonAggMeas) throws SQLException, Exception 
 	{
-		//For the SQL for all the non aggregate conditions
-		String sqlNonAggCond = "";
-		for(int i=0;i<nonAggMeas.size();i++){
-			QueryMeasurement qm = nonAggMeas.get(i); //get 
-			//(did,record_id,eid,mvalue,characteristic)
-			String oneNonAggCondSql = qm.formSQLNonAggCondOverMDB(mdb,entityNameCond);
-			if(i==0){
-				sqlNonAggCond = "("+oneNonAggCondSql+")";
-			}else{
-				sqlNonAggCond = "INTERSECT \n("+oneNonAggCondSql+")";
-			}
-		}
 		
-		System.out.println(Debugger.getCallerPosition()+"sqlNonAggCond:\n"+sqlNonAggCond);
-		
+		//get the SQL for non-aggregate conditions
+		String sqlNonAggCond = formSqlOneCNFNonAggregateMDB(mdb,entityNameCond,nonAggMeas);
 		
 		String sql = "SELECT DISTINCT did, record_id FROM ("+sqlNonAggCond+") AS tmp";
 		Set<OboeQueryResult> resultSet = mdb.executeSQL(sql);
 		
+		System.out.println(Debugger.getCallerPosition()+"sql:"+sql);
+		System.out.println(Debugger.getCallerPosition()+"resultSet:"+resultSet);
 		return resultSet;
 	
 	}

@@ -4,6 +4,10 @@
 #natural form of queries
 #Q1: %Tree%['DBH' > 35.00] -->Site['Plot'=A], %Temporal%['Year'=2007]
 #
+#Results: 
+#tb1: 0, 3, 5 (only satisfy the second condition)
+#tb2: 0,1,2,6,7,8,9 (satisy the second condition) + 3 (the first condition)
+#
 BEGIN QUERY:1
 BEGIN QO:1
 EntityId: '%Tree%'

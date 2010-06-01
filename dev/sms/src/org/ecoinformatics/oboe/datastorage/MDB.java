@@ -35,6 +35,8 @@ public class MDB extends PostgresDB{
 	private String m_obsInstanceTable = "observation_instance";
 	protected String m_measInstanceTable = "measurement_instance";
 	private String m_contextInstanceTable = "context_instance";
+	
+
 	private String m_mapTable = "map";	
 	
 	protected String m_insertDatasetAnnot = "INSERT INTO " + m_datasetAnnotTable +"(annot_id,dataset_file) VALUES(?,?);";
@@ -92,6 +94,14 @@ public class MDB extends PostgresDB{
 
 	public void setObsInstanceTable(String mObsInstanceTable) {
 		m_obsInstanceTable = mObsInstanceTable;
+	}
+	
+	public String getContextInstanceTable() {
+		return m_contextInstanceTable;
+	}
+
+	public void setContextInstanceTable(String mContextInstanceTable) {
+		m_contextInstanceTable = mContextInstanceTable;
 	}
 
 	

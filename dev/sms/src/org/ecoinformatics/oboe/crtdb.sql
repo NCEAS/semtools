@@ -68,4 +68,8 @@ CREATE TABLE context_instance(
 	oid bigint REFERENCES observation_instance (oid),
 	context_oid bigint REFERENCES observation_instance (oid), 
 	rtype varchar(64));
+CREATE TABLE ei_compress(
+	did bigint,
+	eid bigint, 
+	compressed_record_id bigint);
 	

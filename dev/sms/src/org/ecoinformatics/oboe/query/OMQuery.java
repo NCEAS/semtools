@@ -318,10 +318,10 @@ public class OMQuery {
 		db.open();
 		
 		//The results of each context query should be unioned
-		List<ContextChain> contextChains = getContextChains();
-		System.out.println(Debugger.getCallerPosition()+"contextChains = "+contextChains);
-		for(int i=0;i<contextChains.size(); i++){
-			ContextChain oneContextQuery = contextChains.get(i);
+		List<ContextChain> contextQueryDNF = getContextChains();
+		System.out.println(Debugger.getCallerPosition()+"contextQueryDNF = "+contextQueryDNF);
+		for(int i=0;i<contextQueryDNF.size(); i++){
+			ContextChain oneContextQuery = contextQueryDNF.get(i);
 			
 			Set<OboeQueryResult> oneDNFqueryResultSet = oneContextQuery.execute(db, resultWithRecord);
 		

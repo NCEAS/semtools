@@ -104,58 +104,86 @@ public class ContextChain {
 //		return sql;
 //	}
 	
-	/**
-	 * @deprecated
-	 */
-	public Set<OboeQueryResult> execute1(PostgresDB db, boolean resultWithRecord) 
-		throws Exception
-	{
-		Set<OboeQueryResult> result = null;
-		
-		if(db instanceof MDB){
-			result = execute((MDB)db,resultWithRecord);
-		}else if(db instanceof RawDB){
-			result = executeOverRawDB((RawDB)db,resultWithRecord);
-		}else{
-			System.out.println(Debugger.getCallerPosition()+"Not implemented yet.");
-		}
-		return result;
-	}
+//	/**
+//	 * @deprecated
+//	 */
+//	public Set<OboeQueryResult> execute1(PostgresDB db, boolean resultWithRecord) 
+//		throws Exception
+//	{
+//		Set<OboeQueryResult> result = null;
+//		
+//		if(db instanceof MDB){
+//			result = execute((MDB)db,resultWithRecord);
+//		}else if(db instanceof RawDB){
+//			result = executeOverRawDB((RawDB)db,resultWithRecord);
+//		}else{
+//			System.out.println(Debugger.getCallerPosition()+"Not implemented yet.");
+//		}
+//		return result;
+//	}
+	
+//	/**
+//	 * Execute one context query over original database
+//	 * 
+//	 * 1. Get the key measurement (for group by)
+//	 * 2. Get the characteristics and their related attributes
+//	 *  
+//	 * @deprecated
+//	 * @param db
+//	 * @param resultWithRecord
+//	 * @return
+//	 * @throws Exception
+//	 * 
+//	 */
+//	private Set<OboeQueryResult> executeOverRawDB(RawDB rawdb, boolean resultWithRecord) 
+//		throws Exception
+//	{
+//		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
+//		
+//		//TODO: need to use a set or a map for chain queries??? 
+//		Set<OMQueryBasic> chainQuerySet = getChainQuerySet();
+//		
+//		boolean first = false;
+//		for(OMQueryBasic q: chainQuerySet){
+//			//execute each basic query and inersect the results
+//			Set<OboeQueryResult> oneBasicQueryResult = q.execute(rawdb,resultWithRecord);
+//			if(!first){
+//				result.retainAll(oneBasicQueryResult);
+//			}else{
+//				result.addAll(oneBasicQueryResult);
+//				first = false;
+//			}
+//		}
+//		
+//		return result;
+//	}
 	
 	/**
-	 * Execute one context query over original database
+	 * form the sql to perfom a context query
+	 * return (did, record_id, eid, oid)
 	 * 
-	 * 1. Get the key measurement (for group by)
-	 * 2. Get the characteristics and their related attributes
-	 *  
-	 * @deprecated
-	 * @param db
-	 * @param resultWithRecord
-	 * @return
-	 * @throws Exception
-	 * 
+	 * @throws Exception 
 	 */
-	private Set<OboeQueryResult> executeOverRawDB(RawDB rawdb, boolean resultWithRecord) 
-		throws Exception
+	private String formSQL(OMQueryBasic targetQuery, OMQueryBasic targetContext,PostgresDB db, boolean resultWithRecord) throws Exception
 	{
-		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
+		String sql ="";
+	
+		//return (did, record_id, eid, oid)
+		String targetSql = targetQuery.formSQL(db, resultWithRecord);
 		
-		//TODO: need to use a set or a map for chain queries??? 
-		Set<OMQueryBasic> chainQuerySet = getChainQuerySet();
-		
-		boolean first = false;
-		for(OMQueryBasic q: chainQuerySet){
-			//execute each basic query and inersect the results
-			Set<OboeQueryResult> oneBasicQueryResult = q.execute(rawdb,resultWithRecord);
-			if(!first){
-				result.retainAll(oneBasicQueryResult);
-			}else{
-				result.addAll(oneBasicQueryResult);
-				first = false;
-			}
+		if(targetContext!=null){
+			//return (did, record_id, eid, oid)
+			sql = targetContext.formContextSQL(db, resultWithRecord,targetSql);
+		}else{
+			sql = targetSql;
 		}
 		
-		return result;
+		String sqlReturn = "SELECT DISTINCT eic.did, eic.compressed_record_id as record_id" +
+				" FROM ei_compress as eic, " +
+				"("+sql+") as cctmp\n"
+			+ " WHERE (eic.did = cctmp.did AND eic.eid = cctmp.eid);";
+		
+		return sqlReturn;
 	}
 	
 	/**
@@ -174,13 +202,36 @@ public class ContextChain {
 		
 		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
 		
-		//TODO: need to use a set or a map for chain queries??? 
-		Set<OMQueryBasic> chainQuerySet = getChainQuerySet();
+		//TODO: HP need to use a set or a map for chain queries??? 
+		//Set<OMQueryBasic> chainQuerySet = getChainQuerySet();
 		
 		//The results need to be intersect-ed
 		boolean first = true;
-		for(OMQueryBasic q: chainQuerySet){
-			Set<OboeQueryResult> oneBasicQueryResult = q.execute(db,resultWithRecord);
+		//for(OMQueryBasic q: chainQuerySet)
+		for(Map.Entry<OMQueryBasic, OMQueryBasic> entry: m_queryChain.entrySet())
+		{
+			OMQueryBasic targetQuery = entry.getKey();
+			OMQueryBasic context = entry.getValue();
+			
+			String sql = formSQL(targetQuery,context,db,resultWithRecord);
+		
+			System.out.println("\n********"+Debugger.getCallerPosition()+"entry="+entry+"\nsql="+sql);
+			
+			Set<OboeQueryResult> oneBasicQueryResult = db.executeSQL(sql);
+			
+			System.out.println(Debugger.getCallerPosition()+"oneBasicQueryResult="+oneBasicQueryResult);
+			
+			//perform the basic target query
+//			Set<OboeQueryResult> oneBasicQueryResult = targetQuery.execute(db,resultWithRecord);
+//			
+//			//perform the target query's context
+//			if(context!=null&&oneBasicQueryResult.size()>0){
+//				Set<OboeQueryResult> contextQueryResult = context.executeContext(db, resultWithRecord);
+//				
+//				//intersect the result from the basic query and its context query
+//				oneBasicQueryResult.retainAll(contextQueryResult);
+//			}
+			
 			if(!first){
 				result.retainAll(oneBasicQueryResult);
 			}else{
@@ -189,7 +240,7 @@ public class ContextChain {
 			}
 		}
 		
-		System.out.println(Debugger.getCallerPosition()+"Context chain result="+result);
+		System.out.println(Debugger.getCallerPosition()+"Context chain result="+result+"\n******\n");
 		return result;
 	}
 	
