@@ -149,7 +149,7 @@ public class QueryMeasurement {
 			
 			//value condition process
 			if(valueCond.contains("'")){ //string conditions has ', e.g., like 'California', = 'California'
-				sql +=" mi.mvalue "+valueCond+") AND ";
+				sql +=" mi.mvalue "+valueCond+" AND ";
 			}else{//numeric conditions, e.g., >15.0
 				sql += "mi.mvalue ~ " + mdb.m_DIGIT_RE +" AND mi.mvalue !~ "+mdb.m_STRING_RE+" AND ";
 				sql +=" (CAST(mi.mvalue AS numeric)"+valueCond+") AND ";

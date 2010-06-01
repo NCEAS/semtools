@@ -181,6 +181,11 @@ public class OMQuery {
 		return str;
 	}
 	
+	/**
+	 * Get the context chains from the OM Query
+	 * 
+	 * @return
+	 */
 	public List<ContextChain> getContextChains()
 	{
 		List<ContextChain> resultContextChain = new ArrayList<ContextChain>();
@@ -195,14 +200,15 @@ public class OMQuery {
 			basicQueryInContext.add(entry.getKey());
 			basicQueryInContext.add(entry.getValue());
 		}
-		
+				
 		//1.2 put the group context to chains
 		for(int i=0;i<tmpBasicQueryGroup.size();i++){
 			ContextChain newChain = new ContextChain();
 			Set<String> curBQset = tmpBasicQueryGroup.get(i);
 			for(String keyQueryLabel: curBQset){
 				String valueQueryLabel = m_queryContext.get(keyQueryLabel);
-				OMQueryBasic qKey = m_queryIndex.get(keyQueryLabel);
+				if(valueQueryLabel==null) continue;
+				OMQueryBasic qKey = m_queryIndex.get(keyQueryLabel);				
 				OMQueryBasic qValue = m_queryIndex.get(valueQueryLabel);
 				newChain.addGroup(qKey,qValue);				
 			}

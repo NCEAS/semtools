@@ -45,7 +45,7 @@ import org.ecoinformatics.oboe.util.Pair;
 //Q3: Tree[Height > 5 Meter], Soil[Acidity >= 7 pH]
 //This can be modeled as a list of two OMQuerryBasic elements.
 //
-public class OMQueryBasic {
+public class OMQueryBasic implements Comparable<OMQueryBasic>{
 	private String m_queryLabel;
 	private String m_entityTypeNameCond;
 	
@@ -186,6 +186,7 @@ public class OMQueryBasic {
 	private Set<OboeQueryResult> executeOneCNF(MDB mdb, boolean resultWithRid, List<QueryMeasurement> measAND)
 		throws Exception
 	{
+		System.out.println(Debugger.getCallerPosition()+Debugger.getWhoCalledMe()+"measAND="+measAND);
 		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
 		
 		//1. Get the measurements that need to be aggregated
@@ -214,13 +215,7 @@ public class OMQueryBasic {
 				//CHECK THIS with big dataset
 				Set<OboeQueryResult> oneAggQueryResult = 
 					qm.executeAggQueryMDB(mdb, m_entityTypeNameCond,nonAggMeas); 
-					//qm.executeAggQueryMDB(mdb, m_entityTypeNameCond,nonAggQueryResult);
-				//if(!first){
-					result.retainAll(oneAggQueryResult);
-				//}else{
-				//	result.addAll(oneAggQueryResult);
-				//	first = false;
-				//}
+				result.retainAll(oneAggQueryResult);
 			}
 		}
 		
@@ -476,6 +471,13 @@ public class OMQueryBasic {
 //		System.out.println(Debugger.getCallerPosition()+"Basic query result="+result);
 //		return result;
 //	}
+
+	public int compareTo(OMQueryBasic o) {
+		
+		int cmp = m_queryLabel.compareTo(o.getQueryLabel());
+		//if(cmp!=0) return cmp;
+		return cmp;
+	}
 	
 
 	
