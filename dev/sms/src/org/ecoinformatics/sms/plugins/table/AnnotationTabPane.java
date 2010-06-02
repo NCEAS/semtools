@@ -16,6 +16,7 @@ import org.ecoinformatics.sms.plugins.pages.AnnotationPage;
 import org.ecoinformatics.sms.plugins.pages.ContextPage;
 import org.ecoinformatics.sms.renderer.AnnotationGraph;
 
+import edu.ucsb.nceas.morpho.Language;
 import edu.ucsb.nceas.morpho.util.Log;
 import edu.ucsb.nceas.morpho.util.StateChangeEvent;
 import edu.ucsb.nceas.morpho.util.StateChangeListener;
@@ -24,12 +25,11 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 	
 	public static List<String> TAB_NAMES = new ArrayList<String>();
 	
-	public static String COLUMN_ANNOTATION = "Column Annotation";
-	public static String CONTEXT_ANNOTATION = "Context Annotation";
-	public static String GRAPH_ANNOTATION = "Graph Annotation";
-	public static String FULL_ANNOTATION = "Full Annotation";
+	public static String COLUMN_ANNOTATION = Language.getInstance().getMessage("tab.ColumnAnnotation.name");
+	public static String CONTEXT_ANNOTATION = Language.getInstance().getMessage("tab.ContextAnnotation.name");
+	public static String GRAPH_ANNOTATION = Language.getInstance().getMessage("tab.GraphAnnotation.name");
+	public static String FULL_ANNOTATION = Language.getInstance().getMessage("tab.FullAnnotation.name");
 
-	
 	static {
 		TAB_NAMES.add(COLUMN_ANNOTATION);
 		TAB_NAMES.add(CONTEXT_ANNOTATION);
@@ -188,8 +188,8 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 			 if (pane.hasChanged()) {
 				int response = JOptionPane.showConfirmDialog(
 						pane, 
-						"Apply changes before switching tabs?", 
-						"Unsaved changes", 
+						Language.getInstance().getMessage("ApplyChanges.prompt"),
+						Language.getInstance().getMessage("ApplyChanges.title"),
 						JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE);
 				if (response == JOptionPane.CANCEL_OPTION) {

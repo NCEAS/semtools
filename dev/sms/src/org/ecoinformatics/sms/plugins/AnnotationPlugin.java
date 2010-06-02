@@ -63,6 +63,7 @@ import org.ecoinformatics.sms.plugins.table.ScrollBarAdjustmentListener;
 import org.ecoinformatics.sms.renderer.AnnotationGraph;
 import org.w3c.dom.Node;
 
+import edu.ucsb.nceas.morpho.Language;
 import edu.ucsb.nceas.morpho.Morpho;
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
 import edu.ucsb.nceas.morpho.datapackage.AccessionNumber;
@@ -97,7 +98,7 @@ public class AnnotationPlugin
     public static final int ANNOTATIONMENUPOSITION = 45;
     
     /** Constant String for Annotation menu label */
-    public static final String ANNOTATION_MENU_LABEL = "Annotation";
+    public static String ANNOTATION_MENU_LABEL = "Annotation";
     
     public static final String ANNOTATION_CHANGE_EVENT = "ANNOTATION_SAVED_EVENT";
     
@@ -137,17 +138,23 @@ public class AnnotationPlugin
 			Log.debug(6, "Service registration failed: " + this.getClass().getName());
 			Log.debug(6, see.toString());
 		}
+		
+		// register our language bundle
+		Language.getInstance().addLanguageBundle("language.sms");
+		
+		ANNOTATION_MENU_LABEL = Language.getInstance().getMessage("Annotation");
 
+		// the menus...
 		int menuPosition = 0;
 		
 		// initialize the actions
 		annotateAction =
 			new GUIAction(
-				"Annotate current column...",
+				Language.getInstance().getMessage("AnnotateCurrentColumn.name"),
 				null,
 				new AnnotationCommand());
 		annotateAction.setToolTipText(
-			"Add/edit annotation or this data table attribute");
+				Language.getInstance().getMessage("AnnotateCurrentColumn.tooltip"));
 		annotateAction.setSeparatorPosition(Morpho.SEPARATOR_FOLLOWING);
 		annotateAction.setMenuItemPosition(menuPosition++);
 		annotateAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
@@ -159,11 +166,11 @@ public class AnnotationPlugin
 		
 		removeObservationAction =
 			new GUIAction(
-				"Remove Observation",
+				Language.getInstance().getMessage("RemoveObservation.name"),
 				null,
 				new RemoveCommand(Observation.class));
 		removeObservationAction.setToolTipText(
-			"Remove this Observation");
+				Language.getInstance().getMessage("RemoveObservation.tooltip"));
 		removeObservationAction.setMenuItemPosition(menuPosition++);
 		removeObservationAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 		removeObservationAction.setEnabled(false);
@@ -174,11 +181,11 @@ public class AnnotationPlugin
 		
 		removeMeasurementAction =
 			new GUIAction(
-				"Remove Measurement",
+				Language.getInstance().getMessage("RemoveMeasurement.name"),
 				null,
 				new RemoveCommand(Measurement.class));
 		removeMeasurementAction.setToolTipText(
-			"Remove this Measurement");
+				Language.getInstance().getMessage("RemoveMeasurement.tooltip"));
 		removeMeasurementAction.setMenuItemPosition(menuPosition++);
 		removeMeasurementAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 		removeMeasurementAction.setEnabled(false);
@@ -190,11 +197,11 @@ public class AnnotationPlugin
 		// view Annotation
 	    GUIAction viewAction = 
 	    	new GUIAction(
-	    			"View Annotation",
+	    			Language.getInstance().getMessage("ViewAnnotation.name"),
 	    			null,
 	    			new ViewAnnotationCommand());
 	    viewAction.setMenuItemPosition(menuPosition++);
-	    viewAction.setToolTipText("View Annotation");
+	    viewAction.setToolTipText(Language.getInstance().getMessage("ViewAnnotation.tooltip"));
 	    viewAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 	    viewAction.setSeparatorPosition(Morpho.SEPARATOR_PRECEDING);
 	    viewAction.setEnabled(false);
@@ -211,11 +218,11 @@ public class AnnotationPlugin
 	    // Save Annotations
 	    GUIAction saveAction = 
 	    	new GUIAction(
-	    			"Save Annotations",
+	    			Language.getInstance().getMessage("SaveAnnotations.name"),
 	    			null,
 	    			new SaveAnnotationCommand());
 	    saveAction.setMenuItemPosition(menuPosition++);
-	    saveAction.setToolTipText("Save Annotations");
+	    saveAction.setToolTipText(Language.getInstance().getMessage("SaveAnnotations.tooltip"));
 		saveAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 		saveAction.setSeparatorPosition(Morpho.SEPARATOR_PRECEDING);
 	    saveAction.setEnabled(false);
@@ -229,20 +236,22 @@ public class AnnotationPlugin
                 StateChangeEvent.CREATE_NOENTITY_DATAPACKAGE_FRAME,
                 false, GUIAction.EVENT_LOCAL);
 	    
-	    GUIAction searchAction = new GUIAction("Search Annotations...",
+	    GUIAction searchAction = new GUIAction(
+	    		Language.getInstance().getMessage("SearchAnnotations.name"),
                 null,
                 new CompoundAnnotationSearchCommand());
 	    searchAction.setMenuItemPosition(menuPosition++);
-	    searchAction.setToolTipText("Search Annotations...");
+	    searchAction.setToolTipText(Language.getInstance().getMessage("SearchAnnotations.tooltip"));
 	    searchAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 	    searchAction.setEnabled(true);
 	    
-	    GUIAction manageOntologyAction = new GUIAction("Manage Ontologies...",
+	    GUIAction manageOntologyAction = new GUIAction(
+	    		Language.getInstance().getMessage("ManageOntologies.name"),
                 null,
                 new OntologyManagementCommand());
 	    manageOntologyAction.setMenuItemPosition(menuPosition++);
 	    manageOntologyAction.setSeparatorPosition(Morpho.SEPARATOR_PRECEDING);
-	    manageOntologyAction.setToolTipText("Manage Ontologies...");
+	    manageOntologyAction.setToolTipText(Language.getInstance().getMessage("ManageOntologies.tooltip"));
 	    manageOntologyAction.setMenu(ANNOTATION_MENU_LABEL, ANNOTATIONMENUPOSITION);
 	    manageOntologyAction.setEnabled(true);
 			    
@@ -861,9 +870,10 @@ public class AnnotationPlugin
 				int response = 
 					JOptionPane.showConfirmDialog(
 							null, 
-							"Would you like to copy the existing Annotation information to the new package?\n" +
+							Language.getInstance().getMessage("Duplicate.prompt") + "\n" +
 							"id = " + annotation.getURI(),
-							"Duplicate Annotation?", JOptionPane.YES_NO_OPTION);
+							Language.getInstance().getMessage("Duplicate.title"), 
+							JOptionPane.YES_NO_OPTION);
 				saveDuplicate = (response == JOptionPane.YES_OPTION);
 				if (!saveDuplicate) {
 					continue;
@@ -1031,7 +1041,7 @@ public class AnnotationPlugin
 					annotationTableModel.setColumnNames(dataViewer.getColumnLabels());
 										
 					// add row header space to the viewer
-					JLabel filler = new JLabel("Data");
+					JLabel filler = new JLabel(Language.getInstance().getMessage("Data"));
 					Insets tabInsets = UIManager.getInsets("TabbedPane.tabAreaInsets");
 					Dimension fillerDim = new Dimension(AnnotationTablePanel.rowHeaderDim);
 					fillerDim.width += tabInsets.left;
@@ -1143,9 +1153,9 @@ public class AnnotationPlugin
 		 private boolean canContinue() {
 			 if (pane.hasChanged()) {
 				int response = JOptionPane.showConfirmDialog(
-						pane, 
-						"Apply changes before continuing?", 
-						"Unsaved changes", 
+						pane,
+						Language.getInstance().getMessage("ApplyChanges.prompt"),
+						Language.getInstance().getMessage("ApplyChanges.title"),
 						JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE);
 				if (response == JOptionPane.CANCEL_OPTION) {

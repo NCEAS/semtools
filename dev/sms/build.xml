@@ -64,6 +64,13 @@
 	<target name="prepare-lib" depends="morpho.prepare-lib">
 		<copy todir="${build.lib}" filtering="no" file="./lib/config.xml" overwrite="true" />
 		<copy todir="${build.lib}" filtering="no" file="./src/log4j.properties" overwrite="true" />
+		<copy todir="${build.lib}" filtering="no" overwrite="true" >
+			<fileset dir="./lib">
+			    <include name="**/*"/>
+			    <exclude name="*.jar"/>
+			</fileset>
+		</copy>
+
 	</target>
 	
    <target name="compile" depends="morpho.compile,init,setclasspath"
