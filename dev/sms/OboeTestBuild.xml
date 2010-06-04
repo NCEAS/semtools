@@ -7,6 +7,29 @@
 		<echo> Test OBOE functions </echo>
     </target>
 	
+	<target name="load-test-data" depends="clean-db,set-oboe-classpath">
+			<!-- 
+			MaterializeDB null test1-annot.xml test1-data.txt test1 
+			MaterializeDB null test2-annot.xml test2-data.txt test2
+			-->
+			<echo> Materialize test1-data ......... </echo>
+			<java classname ="org.ecoinformatics.oboe.MaterializeDB" classpath="${runclasspath}">
+				<jvmarg value="-Xmx2048m"/>
+				<arg value="null"/>
+				<arg value="test1-annot.xml"/>
+				<arg value="test1-data.txt"/>
+				<arg value="test1"/>
+			</java>
+			<echo> Materialize test2-data ......... </echo>
+			<java classname ="org.ecoinformatics.oboe.MaterializeDB" classpath="${runclasspath}">
+				<jvmarg value="-Xmx2048m"/>
+				<arg value="null"/>
+				<arg value="test2-annot.xml"/>
+				<arg value="test2-data.txt"/>
+				<arg value="test2"/>
+			</java>
+		</target>
+	
 	<target name="queryprocessor-test1" depends="set-oboe-classpath">
 		<!-- java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor test1-query1.txt 1 1 -->
 		<echo> Quering raw data ......... </echo>

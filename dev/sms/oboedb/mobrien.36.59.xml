@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<sms:annotation xmlns:sms="http://ecoinformatics.org/sms/annotation.0.9" xmlns:oboe-sbc.owl="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl" xmlns:oboe.1.0beta="http://ecoinformatics.org/oboe/oboe.1.0beta" xmlns:oboe-units.1.0beta="http://ecoinformatics.org/oboe/oboe-units.1.0beta" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ecoinformatics.org/sms/annotation.0.9 http://ecoinformatics.org/sms/annotation.0.9/sms-semannot.xsd" id="mobrien.36.59" emlPackage="mobrien.50.1" dataTable="0">
+   <sms:observation label="o1">
+      <sms:entity id="oboe-sbc.owl:Waypoint"/>
+      <sms:measurement label="m1" precision="1.0">
+         <sms:characteristic id="oboe-sbc.owl:SBCSiteName"/>
+         <sms:standard id="oboe-sbc.owl:SBCSiteNameCatalog"/>
+      </sms:measurement>
+   </sms:observation>
+   <sms:observation label="o2">
+      <sms:entity id="oboe-sbc.owl:TemporalPoint"/>
+      <sms:measurement label="m2" precision="1.0">
+         <sms:characteristic id="oboe.1.0beta:EntityName"/>
+      </sms:measurement>
+   </sms:observation>
+   <sms:observation label="o12">
+      <sms:entity id="oboe-sbc.owl:StreamWaterDiscreteSample"/>
+      <sms:measurement label="m12" precision="1.0">
+         <sms:characteristic id="oboe-units.1.0beta:AmountOfSubstanceConcentration"/>
+         <sms:standard id="oboe.1.0beta:ComplexDerivedUnit"/>
+         <sms:protocol id="oboe-sbc.owl:MelackLabProtocols"/>
+      </sms:measurement>
+      <sms:context observation="o1">
+         <sms:relationship id="oboe-sbc.owl:Within"/>
+      </sms:context>
+      <sms:context observation="o2">
+         <sms:relationship id="oboe-sbc.owl:Within"/>
+      </sms:context>
+   </sms:observation>
+   <sms:observation label="o3">
+      <sms:entity id="oboe-sbc.owl:StreamWaterDiscreteSample"/>
+      <sms:measurement label="m3" precision="1.0">
+         <sms:characteristic id="oboe-units.1.0beta:AmountOfSubstanceConcentration"/>
+         <sms:standard id="oboe-sbc.owl:MicromolePerLiter"/>
+         <sms:protocol id="oboe-sbc.owl:AmmoniumConcentrationProtocol_BenchtopSolarzano1969"/>
+      </sms:measurement>
+      <sms:measurement label="m4" precision="1.0">
+         <sms:characteristic id="oboe-units.1.0beta:AmountOfSubstanceConcentration"/>
+         <sms:standard id="oboe-sbc.owl:MicromolePerLiter"/>
+         <sms:protocol id="oboe-sbc.owl:NitrateNitriteConcentrationProtocol_MSIAutomated"/>
+      </sms:measurement>
+      <sms:measurement label="m5" precision="1.0">
+         <sms:characteristic id="oboe-units.1.0beta:AmountOfSubstanceConcentration"/>
+         <sms:standard id="oboe-sbc.owl:MicromolePerLiter"/>
+         <sms:protocol id="oboe-sbc.owl:PhosphateConcentrationProtocol_MSIAutomated"/>
+      </sms:measurement>
+      <sms:context observation="o1">
+         <sms:relationship id="oboe-sbc.owl:Within"/>
+      </sms:context>
+      <sms:context observation="o2">
+         <sms:relationship id="oboe-sbc.owl:Within"/>
+      </sms:context>
+   </sms:observation>
+   <sms:observation label="o6">
+      <sms:entity id="oboe-sbc.owl:StreamWaterDiscreteSample"/>
+      <sms:measurement label="m6" precision="1.0">
+         <sms:characteristic id="oboe-units.1.0beta:AmountOfSubstanceConcentration"/>
+         <sms:standard id="oboe-sbc.owl:MicromolePerLiter"/>
+         <sms:protocol id="oboe-sbc.owl:MelackLabProtocols"/>
+      </sms:measurement>
+      <sms:measurement label="m7" precision="1.0">
+         <sms:characteristic id="oboe-units.1.0beta:AmountOfSubstanceConcentration"/>
+         <sms:standard id="oboe-sbc.owl:MicromolePerLiter"/>
+         <sms:protocol id="oboe-sbc.owl:MelackLabProtocols"/>
+      </sms:measurement>
+      <sms:context observation="o1">
+         <sms:relationship id="oboe-sbc.owl:Within"/>
+      </sms:context>
+      <sms:context observation="o2">
+         <sms:relationship id="oboe-sbc.owl:Within"/>
+      </sms:context>
+   </sms:observation>
+   <sms:observation label="o8">
+      <sms:entity id="oboe-sbc.owl:StreamWaterDiscreteSample"/>
+      <sms:measurement label="m8" precision="1.0">
+         <sms:characteristic id="oboe-units.1.0beta:AmountOfSubstanceConcentration"/>
+         <sms:standard id="oboe-sbc.owl:MicromolePerLiter"/>
+         <sms:protocol id="oboe-sbc.owl:SuspendedParticulateCarbonNitrogen_CHNElementalAnalyzer"/>
+      </sms:measurement>
+      <sms:measurement label="m10" precision="1.0">
+         <sms:characteristic id="oboe-units.1.0beta:AmountOfSubstanceConcentration"/>
+         <sms:standard id="oboe-sbc.owl:MicromolePerLiter"/>
+         <sms:protocol id="oboe-sbc.owl:SuspendedParticulatePhosphorus_AcidDigestion"/>
+      </sms:measurement>
+      <sms:measurement label="m11" precision="1.0">
+         <sms:characteristic id="oboe-units.1.0beta:AmountOfSubstanceConcentration"/>
+         <sms:standard id="oboe-units.1.0beta:MolePerCubicMeter"/>
+         <sms:protocol id="oboe-sbc.owl:ProtocolsByConstituent"/>
+      </sms:measurement>
+      <sms:measurement label="m9" precision="1.0">
+         <sms:characteristic id="oboe-units.1.0beta:AmountOfSubstanceConcentration"/>
+         <sms:standard id="oboe-sbc.owl:MicromolePerLiter"/>
+         <sms:protocol id="oboe-sbc.owl:SuspendedParticulateCarbonNitrogen_CHNElementalAnalyzer"/>
+      </sms:measurement>
+      <sms:context observation="o1">
+         <sms:relationship id="oboe-sbc.owl:Within"/>
+      </sms:context>
+      <sms:context observation="o1">
+         <sms:relationship id="oboe-sbc.owl:Within"/>
+      </sms:context>
+   </sms:observation>
+   <sms:map attribute="site_code" measurement="m1"/>
+   <sms:map attribute="timestamp_local" measurement="m2"/>
+   <sms:map attribute="NH4_uM" measurement="m3"/>
+   <sms:map attribute="NO3_uM" measurement="m4"/>
+   <sms:map attribute="PO4_uM" measurement="m5"/>
+   <sms:map attribute="TDN_uM" measurement="m6"/>
+   <sms:map attribute="TDP_uM" measurement="m7"/>
+   <sms:map attribute="TPC_uM" measurement="m8"/>
+   <sms:map attribute="TPN_uM" measurement="m9"/>
+   <sms:map attribute="TPP_uM" measurement="m10"/>
+   <sms:map attribute="TSS_mg/L" measurement="m11"/>
+   <sms:map attribute="Spec_Cond_uS/cm" measurement="m12"/>
+</sms:annotation>

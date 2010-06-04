@@ -445,9 +445,6 @@ public class MDB extends PostgresDB{
 	{
 		//entity type,observation type, measurement type, context type
 		List<Observation> obsTypeList= A.getObservations();
-		//Set<Entity> entityTypeSet = new TreeSet<Entity>();
-		//Set<Measurement> measurementTypeSet = new TreeSet<Measurement>();
-		Set<Context> contextTypeSet = new TreeSet<Context>();
 		
 		String annotationUri = A.getURI();
 		if(annotationUri==null){
@@ -463,20 +460,25 @@ public class MDB extends PostgresDB{
 		
 		for(Observation obsType: obsTypeList){
 			//Add this observation type
-			setObsTypeParam(pstmtObs,annotationId,obsType);			
-			pstmtObs.execute();
-			
-			//Add the measurement types related to this observation type
-			for(Measurement meas: obsType.getMeasurements()){
-				setMeasTypeParam(pstmtMeas,annotationId,obsType,meas);
-				pstmtMeas.execute();
-			}
-			
-			//Add the context types related to this observation type
-			for(Context context: obsType.getContexts()){
-				setContextTypeParam(pstmtContext,annotationId,obsType,context);
-				//System.out.println(Debugger.getCallerPosition()+pstmtContext.toString());
-				pstmtContext.execute();
+			try{
+				setObsTypeParam(pstmtObs,annotationId,obsType);			
+				pstmtObs.execute();
+				
+				//Add the measurement types related to this observation type
+				for(Measurement meas: obsType.getMeasurements()){
+					setMeasTypeParam(pstmtMeas,annotationId,obsType,meas);
+					pstmtMeas.execute();
+				}
+				
+				//Add the context types related to this observation type
+				for(Context context: obsType.getContexts()){
+					setContextTypeParam(pstmtContext,annotationId,obsType,context);
+					//System.out.println(Debugger.getCallerPosition()+pstmtContext.toString());
+					pstmtContext.execute();
+				}
+			}catch(SQLException e){
+				 System.out.println(Debugger.getCallerPosition()+"Import obsType error: "+obsType);
+				 throw e;
 			}
 		}
 		pstmtContext.close();

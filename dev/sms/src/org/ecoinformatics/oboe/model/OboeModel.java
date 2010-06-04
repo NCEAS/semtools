@@ -378,7 +378,10 @@ public class OboeModel {
 		 MDB db = new MDB();
 		 
 		 db.open();
+		 System.out.println(Debugger.getCallerPosition()+"Import annotation file...");
 		 long annotId = db.importAnnotation(A, annotationFileName); //export type information
+		 
+		 System.out.println(Debugger.getCallerPosition()+"Import data instances...");
 		 db.importInstance(this,annotId); //export data instance information.
 		 db.close();
 		 System.out.println(Debugger.getCallerPosition()+"End...");
@@ -398,7 +401,8 @@ public class OboeModel {
 			toPrintStream(p);
 			p.close();
 			
-		} catch (FileNotFoundException e) {			
+		} catch (FileNotFoundException e) {		
+			System.out.println(Debugger.getCallerPosition()+"csvFileName="+csvFileName);
 			e.printStackTrace();
 			throw e;
 		}

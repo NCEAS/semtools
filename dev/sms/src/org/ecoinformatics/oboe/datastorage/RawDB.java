@@ -227,10 +227,16 @@ public class RawDB extends PostgresDB{
 	
 		PreparedStatement pstmt = m_conn.prepareStatement(insTbSQL);
 		
+		
 		for(int i=0;i<dataset.size();i++){
 			ArrayList<String> row = dataset.get(i);
 			setInsParam(pstmt, row, colTypes);
-			pstmt.execute();
+			try{
+				pstmt.execute();
+			}catch(SQLException e){
+				System.out.println(Debugger.getCallerPosition()+"i="+i+",row="+row);
+				throw e;
+			}
 		}
 	}
 	
@@ -266,6 +272,22 @@ public class RawDB extends PostgresDB{
 		super.close();
 		
 		return tbName;
+	}
+	
+	public void delete(String dataFileName) throws IOException,Exception
+	{
+		super.open();
+		long tbId = calDataTableId(dataFileName);
+		
+		if(tbId>=0){
+			String tbName = TB_PREFIX+tbId;
+			String dropTbsql = "DROP TABLE " + tbName+";";
+			
+			Statement stmt = null;
+			stmt = m_conn.createStatement();
+			System.out.println(Debugger.getCallerPosition()+"EXECUTE: "+dropTbsql);
+			stmt.execute(dropTbsql);
+		}
 	}
 	
 	

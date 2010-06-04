@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<sms:annotation xmlns:sms="http://ecoinformatics.org/sms/annotation.0.9" xmlns:oboe-sbc.owl="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl" xmlns:oboe-gce.owl="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl" xmlns:oboe-units.1.0beta="http://ecoinformatics.org/oboe/oboe-units.1.0beta" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ecoinformatics.org/sms/annotation.0.9 http://ecoinformatics.org/sms/annotation.0.9/sms-semannot.xsd" id="mobrien.38.19" emlPackage="mobrien.47.1" dataTable="0">
+   <sms:observation label="o1">
+      <sms:entity id="oboe-sbc.owl:TemporalPoint"/>
+      <sms:measurement label="m1" precision="1.0">
+         <sms:characteristic id="oboe-gce.owl:Day"/>
+      </sms:measurement>
+      <sms:measurement label="m2" precision="1.0">
+         <sms:characteristic id="oboe-gce.owl:Day"/>
+      </sms:measurement>
+   </sms:observation>
+   <sms:observation label="o3">
+      <sms:entity id="oboe-sbc.owl:StreamWaterSensorSample"/>
+      <sms:measurement label="m3" precision="1.0">
+         <sms:characteristic id="oboe-units.1.0beta:VolumetricRate"/>
+         <sms:standard id="oboe-units.1.0beta:LitersPerSecond"/>
+         <sms:protocol id="oboe-sbc.owl:MelackLabProtocols"/>
+      </sms:measurement>
+      <sms:measurement label="m4" precision="1.0">
+         <sms:characteristic id="oboe-units.1.0beta:Temperature"/>
+         <sms:standard id="oboe-units.1.0beta:Celsius"/>
+         <sms:protocol id="oboe-sbc.owl:ProtocolsByInstrumentation"/>
+      </sms:measurement>
+      <sms:context observation="o1">
+      </sms:context>
+   </sms:observation>
+   <sms:map attribute="timestamp_local" measurement="m1"/>
+   <sms:map attribute="timestamp_UTC" measurement="m2"/>
+   <sms:map attribute="discharge_lps" measurement="m3"/>
+   <sms:map attribute="water_temperature_celsius" measurement="m4"/>
+</sms:annotation>
