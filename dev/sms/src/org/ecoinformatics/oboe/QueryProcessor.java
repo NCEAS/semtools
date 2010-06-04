@@ -9,6 +9,7 @@ import org.ecoinformatics.oboe.query.OMQuery;
 import org.ecoinformatics.oboe.query.QueryList;
 import org.ecoinformatics.oboe.query.OboeQueryResult;
 import org.ecoinformatics.oboe.query.OboeQueryResultContainer;
+import org.ecoinformatics.oboe.util.Debugger;
 
 public class QueryProcessor {
 

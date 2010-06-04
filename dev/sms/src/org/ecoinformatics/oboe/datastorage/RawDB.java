@@ -16,10 +16,10 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.ecoinformatics.oboe.CSVDataReader;
-import org.ecoinformatics.oboe.Debugger;
 import org.ecoinformatics.oboe.query.OboeQueryResult;
 import org.ecoinformatics.oboe.query.QueryMeasurement;
 //import org.ecoinformatics.oboe.query.ResultSetMetaData;
+import org.ecoinformatics.oboe.util.Debugger;
 import org.ecoinformatics.oboe.util.Pair;
 
 public class RawDB extends PostgresDB{
@@ -40,30 +40,33 @@ public class RawDB extends PostgresDB{
 	 */
 	private long calDataTableId(String dataFileName) throws SQLException, Exception
 	{
-		long tbid = -1L;
-		
+//		long tbid = -1L;
+//		
 		int pos = dataFileName.lastIndexOf("/");
 		String pureDataFileName = dataFileName.trim();
 		
 		if(pos>=0){
 			pureDataFileName = dataFileName.trim().substring(pos+1);
 		} 
+//		
+//		String sql = "SELECT did FROM "+super.m_datasetAnnotTable+" WHERE dataset_file='"+pureDataFileName+"';";
+//		
+//		System.out.println(Debugger.getCallerPosition()+"sql="+sql);
+//		
+//		//Check whether this data file exist in the data table or not, if it exists already, directly get the id
+//		Statement stmt = m_conn.createStatement();		
+//		ResultSet rs = stmt.executeQuery(sql);
+//		
+//		while(rs.next()){
+//			tbid = rs.getLong(1);
+//			break;
+//		}
+//		rs.close();
+//		stmt.close();
 		
-		String sql = "SELECT did FROM "+super.m_datasetAnnotTable+" WHERE dataset_file='"+pureDataFileName+"';";
+		Pair<Long,Long> tbId_pair_annotId = getDataTableId(pureDataFileName);
 		
-		System.out.println(Debugger.getCallerPosition()+"sql="+sql);
-		
-		//Check whether this data file exist in the data table or not, if it exists already, directly get the id
-		Statement stmt = m_conn.createStatement();		
-		ResultSet rs = stmt.executeQuery(sql);
-		
-		while(rs.next()){
-			tbid = rs.getLong(1);
-			break;
-		}
-		rs.close();
-		stmt.close();
-		
+		long tbid = tbId_pair_annotId.getFirst();
 		//If the data file does not exist in the data table yet, insert this data file into the data table, and get data table id
 		if(tbid<0L){
 			String insSQL = "INSERT INTO " + m_datasetAnnotTable +"(dataset_file) VALUES(?);";
@@ -274,20 +277,47 @@ public class RawDB extends PostgresDB{
 		return tbName;
 	}
 	
+	/**
+	 * Delete the raw data table gotten from the data file name
+	 * 
+	 * @param dataFileName
+	 * @throws IOException
+	 * @throws Exception
+	 */
 	public void delete(String dataFileName) throws IOException,Exception
 	{
 		super.open();
-		long tbId = calDataTableId(dataFileName);
+		int pos = dataFileName.lastIndexOf("/");
+		String pureDataFileName = dataFileName.trim();		
+		if(pos>=0){
+			pureDataFileName = dataFileName.trim().substring(pos+1);
+		} 
+		Pair<Long,Long> tbId_pair_annotId = getDataTableId(pureDataFileName);
 		
+		long tbId = tbId_pair_annotId.getFirst();
 		if(tbId>=0){
 			String tbName = TB_PREFIX+tbId;
 			String dropTbsql = "DROP TABLE " + tbName+";";
 			
 			Statement stmt = null;
 			stmt = m_conn.createStatement();
-			System.out.println(Debugger.getCallerPosition()+"EXECUTE: "+dropTbsql);
+			System.out.println(Debugger.getCallerPosition()+"1. EXECUTE: "+dropTbsql);
 			stmt.execute(dropTbsql);
+			
+			String updAnnotsql = "UPDATE "+ this.m_datasetAnnotTable +" SET with_rawdata 'f'" +"WHERE did="+tbId;
+			System.out.println(Debugger.getCallerPosition()+"2. EXECUTE: "+updAnnotsql);
+			stmt.execute(updAnnotsql);
+			stmt.close();
 		}
+		
+		//clean this table only
+		Statement stmt = m_conn.createStatement();
+		String updAnnotsql = "DELETE FROM "+ this.m_datasetAnnotTable +"WHERE annotId is NULL AND with_rawdata='f'";
+		System.out.println(Debugger.getCallerPosition()+"4. EXECUTE: "+updAnnotsql);
+		stmt.execute(updAnnotsql);
+		stmt.close();
+		
+		super.close();
 	}
 	
 	

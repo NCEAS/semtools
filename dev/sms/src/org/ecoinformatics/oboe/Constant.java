@@ -26,4 +26,6 @@ public class Constant {
 	public static String ANNOTATION_DEFAULT_RELATIONSHIP_URI = "oboe#";
 	public static String ANNOTATION_DEFAULT_RELATIONSHIP_NAME = "HasA";
 	public static String ANNOTATION_DEFAULT_ONTOLOGY = "testOnto";
+	
+	public static String DEFAULT_RELATIONSHIP = "HasContext";
 }

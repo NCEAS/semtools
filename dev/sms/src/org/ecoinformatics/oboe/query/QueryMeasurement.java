@@ -10,11 +10,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.ecoinformatics.oboe.Debugger;
 import org.ecoinformatics.oboe.datastorage.MDB;
 import org.ecoinformatics.oboe.datastorage.RawDB;
 import org.ecoinformatics.oboe.datastorage.PostgresDB;
 
+import org.ecoinformatics.oboe.util.Debugger;
 import org.ecoinformatics.oboe.util.Pair;
 
 public class QueryMeasurement {

@@ -1,4 +1,4 @@
-package org.ecoinformatics.oboe;
+package org.ecoinformatics.oboe.util;
 
 /**
  * This class provides functions for debug purpose.

@@ -5,7 +5,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Set;
 
-import org.ecoinformatics.oboe.Debugger;
+import org.ecoinformatics.oboe.util.Debugger;
 
 public class OboeQueryResultContainer {
 	ArrayList<Set<OboeQueryResult> > m_queryResult = null;

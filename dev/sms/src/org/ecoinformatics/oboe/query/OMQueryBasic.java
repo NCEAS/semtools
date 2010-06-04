@@ -13,9 +13,9 @@ import java.util.HashSet;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 
-import org.ecoinformatics.oboe.Debugger;
 import org.ecoinformatics.oboe.datastorage.*;
 import org.ecoinformatics.oboe.model.*;
+import org.ecoinformatics.oboe.util.Debugger;
 import org.ecoinformatics.oboe.util.Pair;
 
 

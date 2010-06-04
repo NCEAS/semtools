@@ -17,7 +17,6 @@ import java.util.TreeMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import org.ecoinformatics.oboe.Debugger;
 import org.ecoinformatics.datamanager.DataManager;
 import org.ecoinformatics.datamanager.database.DatabaseConnectionPoolInterface;
 import org.ecoinformatics.datamanager.database.pooling.DatabaseConnectionPoolFactory;
@@ -34,6 +33,7 @@ import org.ecoinformatics.oboe.model.MeasurementInstance;
 import org.ecoinformatics.oboe.model.OboeModel;
 import org.ecoinformatics.oboe.model.ObservationInstance;
 import org.ecoinformatics.oboe.syntheticdata.AnnotationSpecifier;
+import org.ecoinformatics.oboe.util.Debugger;
 import org.ecoinformatics.sms.annotation.*;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.AnnotationManager;
@@ -729,7 +729,7 @@ public class MaterializeDB {
 		t1 = System.currentTimeMillis();
 		OBOE.toCSV(oboeFileName);
 		OBOE.toRDF(rdfFileName);
-		OBOE.toRDB(annotFileName,A);
+		OBOE.toRDB(dataFileName,annotFileName,A);
 		OBOE.saveInstanceId();
 		t2 = System.currentTimeMillis();
 		System.out.println(Debugger.getCallerPosition()+"Time used (File writing): " + (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");

@@ -54,37 +54,12 @@
 			<pathelement location="${executable}/runlib/postgresql-8.0-312.jdbc3.jar"/>
 	 		</classpath>   
 			<!-- <transaction src="${src}/org/ecoinformatics/oboe/cleandb.sql"/> -->
-			<transaction src="${src}/org/ecoinformatics/oboe/dropdb.sql"/>
-			<transaction src="${src}/org/ecoinformatics/oboe/crtdb.sql"/>
+			<transaction src="${src}/org/ecoinformatics/oboe/db/dropdb.sql"/>
+			<transaction src="${src}/org/ecoinformatics/oboe/db/crtdb.sql"/>
 		</sql>
 	</target>
 	
-	
-	
-	<target name="queryprocessor-test1" depends="clean-db,set-oboe-classpath">
-		<!-- java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor test1-query1.txt 1 1 -->
-		<echo> Materialize test1-data ......... </echo>
-		<java classname ="org.ecoinformatics.oboe.QueryProcessor" classpath="${runclasspath}">
-			<jvmarg value="-Xmx2048m"/>
-			<arg value="test1-query1.txt"/>
-			<arg value="1"/>
-			<arg value="1"/>
-		</java>
-	</target>
-	
-	<target name="queryprocessor-test2" depends="clean-db,set-oboe-classpath">
-		<!-- java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor test1-query1.txt 1 1 -->
-		<echo> Materialize test1-data ......... </echo>
-		<java classname ="org.ecoinformatics.oboe.QueryProcessor" classpath="${runclasspath}">
-			<jvmarg value="-Xmx2048m"/>
-			<arg value="test1-query1.txt"/>
-			<arg value="2"/>
-			<arg value="1"/>
-		</java>
-	</target>
-	
-	
-    <target name="copy_lib_file">
+	<target name="copy_lib_file">
     	<!-- this need to be run first -->
         <delete dir="${executable}/runlib"/>
     	<mkdir dir="${executable}/runlib"/>

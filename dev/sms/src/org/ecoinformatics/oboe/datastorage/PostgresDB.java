@@ -1,7 +1,8 @@
 package org.ecoinformatics.oboe.datastorage;
 
-import org.ecoinformatics.oboe.Debugger;
 import org.ecoinformatics.oboe.query.OboeQueryResult;
+import org.ecoinformatics.oboe.util.Debugger;
+import org.ecoinformatics.oboe.util.Pair;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -25,10 +26,12 @@ public class PostgresDB {
 	
 	protected Connection m_conn = null;
 	
+	protected String m_annotTable = "annotation";
 	protected String m_datasetAnnotTable = "data_annotation";
 	protected String m_obsTypeTable = "observation_type";
 	protected String m_contextTypeTable = "context_type";
 	protected String m_measTypeTable = "measurement_type";
+	protected String m_mapTable = "map";	
 
 	protected String m_maxDatasetIdSql = "SELECT last_value FROM did_seq;";
 	
@@ -70,20 +73,22 @@ public class PostgresDB {
 	public void open()
 		throws Exception
 	{
-		try {
-			Class.forName("org.postgresql.Driver");
-		} catch (ClassNotFoundException cnfe) {
-			System.err.println(Debugger.getCallerPosition()+"Couldn't find driver class:");
-			System.out.println(Debugger.getCallerPosition()+"Couldn't find driver class:");
-			throw cnfe;
+		if(m_conn==null){
+			try {
+				Class.forName("org.postgresql.Driver");
+			} catch (ClassNotFoundException cnfe) {
+				System.err.println(Debugger.getCallerPosition()+"Couldn't find driver class:");
+				System.out.println(Debugger.getCallerPosition()+"Couldn't find driver class:");
+				throw cnfe;
+			}
+			
+			try {
+				m_conn = DriverManager.getConnection(m_url, m_user, m_password);
+	        } catch (SQLException se) {
+	            System.out.println(Debugger.getCallerPosition()+"Couldn't connect: print out a stack trace and exit.");
+	            throw se;
+	        }
 		}
-		
-		try {
-			m_conn = DriverManager.getConnection(m_url, m_user, m_password);
-        } catch (SQLException se) {
-            System.out.println(Debugger.getCallerPosition()+"Couldn't connect: print out a stack trace and exit.");
-            throw se;
-        }
 	}
 	
 	public Connection getConnection()
@@ -337,5 +342,73 @@ public class PostgresDB {
 		return resultSet;
 	}
 		
+	/**
+	 * Get the data table id, which is for the given data file
+	 * 
+	 * @param dataFileName
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	protected Pair<Long,Long> getDataTableId(String dataFileName) throws SQLException, Exception
+	{
+		Pair<Long,Long> tbid2annotid = new Pair<Long,Long>(-1L,-1L);
+		
+		//long tbid = -1L;
+		
+		int pos = dataFileName.lastIndexOf("/");
+		String pureDataFileName = dataFileName.trim();		
+		if(pos>=0)pureDataFileName = dataFileName.trim().substring(pos+1);
+		 
+		String sql = "SELECT did,annot_id FROM "+m_datasetAnnotTable+" WHERE dataset_file='"+pureDataFileName+"';";
+		
+		System.out.println(Debugger.getCallerPosition()+"sql="+sql);
+		
+		//Check whether this data file exist in the data table or not, if it exists already, directly get the id
+		Statement stmt = m_conn.createStatement();		
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		while(rs.next()){
+			long tbid = rs.getLong(1);
+			long annotid = rs.getLong(2);
+			tbid2annotid.setFirst(tbid);
+			tbid2annotid.setSecond(annotid);
+			break;
+		}
+		rs.close();
+		stmt.close();
+		
+		//return tbid;
+		return tbid2annotid;
+	}
+	
+	/**
+	 * clean the MDB to remove all the contents with annotId
+	 * 
+	 * @param annotId
+	 * @throws SQLException
+	 */
+	protected void cleanMDBType(long annotId) throws SQLException
+	{
+		Statement stmt = null;
+		stmt = m_conn.createStatement();
+			
+		String cleanMapsql = "DELETE FROM "+ this.m_mapTable +" WHERE annot_id="+annotId;
+		System.out.println(Debugger.getCallerPosition()+"EXECUTE: "+cleanMapsql);
+		stmt.execute(cleanMapsql);
+		
+		String cleaanCTsql = "DELETE FROM "+ this.m_contextTypeTable +" WHERE annot_id="+annotId;
+		System.out.println(Debugger.getCallerPosition()+"EXECUTE: "+cleaanCTsql);
+		stmt.execute(cleaanCTsql);
+		
+		String cleaanMTsql = "DELETE FROM "+ this.m_measTypeTable +" WHERE annot_id="+annotId;
+		System.out.println(Debugger.getCallerPosition()+"EXECUTE: "+cleaanMTsql);
+		stmt.execute(cleaanMTsql);
+		
+		String cleaanOTsql = "DELETE FROM "+ this.m_obsTypeTable +" WHERE annot_id="+annotId;
+		System.out.println(Debugger.getCallerPosition()+"EXECUTE: "+cleaanOTsql);
+		stmt.execute(cleaanOTsql);
+		
+	}
 	
 }

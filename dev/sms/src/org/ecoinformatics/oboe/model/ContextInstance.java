@@ -81,7 +81,9 @@ public class ContextInstance{
 			throw new Exception("m_contextType is NULL.");
 		}
 			
-		p.println(m_observationInstance.getObsId() + "," + m_contextObservationInstance.getObsId() +"," + m_contextType.getRelationship().getName());		
+		p.println(m_observationInstance.getObsId() + "," + m_contextObservationInstance.getObsId() +",");
+		if(m_contextType.getRelationship()!=null)
+			p.println(m_contextType.getRelationship().getName());
 	}
 	
 	public void fromPrintStream(BufferedReader in) throws Exception

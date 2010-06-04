@@ -21,8 +21,8 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 
 import org.ecoinformatics.oboe.Constant;
-import org.ecoinformatics.oboe.Debugger;
 import org.ecoinformatics.oboe.datastorage.MDB;
+import org.ecoinformatics.oboe.util.Debugger;
 import org.ecoinformatics.sms.annotation.*;
 
 public class OboeModel {
@@ -350,7 +350,9 @@ public class OboeModel {
 		// Put the context information to the model
 		 for(ContextInstance ci: this.m_contextInstances){
 			 Long obsId = ci.getObservationInstance().getObsId();
-			 String relationship = ci.getContextType().getRelationship().getName();
+			 String relationship = Constant.DEFAULT_RELATIONSHIP;
+			 if(ci.getContextType()!=null&&ci.getContextType().getRelationship()!=null)
+				 relationship = ci.getContextType().getRelationship().getName();
 			 Long contextObsId = ci.getContextObservationInstance().getObsId();
 			 
 			 Resource subjectResource = model.getResource(uri+RDFConstant.OBSERVATION+obsId);
@@ -372,9 +374,11 @@ public class OboeModel {
 	  * @param A
 	 * @throws Exception 
 	  */
-	 public void toRDB(String annotationFileName, Annotation A) throws Exception
+	 public void toRDB(String dataFileName,String annotationFileName, Annotation A) throws Exception
 	 {
-		 System.out.println(Debugger.getCallerPosition()+"Begin...");
+		 
+		 System.out.println(Debugger.getCallerPosition()+"Begin toRDB");
+		 long t1 = System.currentTimeMillis();
 		 MDB db = new MDB();
 		 
 		 db.open();
@@ -383,8 +387,11 @@ public class OboeModel {
 		 
 		 System.out.println(Debugger.getCallerPosition()+"Import data instances...");
 		 db.importInstance(this,annotId); //export data instance information.
+		 
+		 //db.updateDataAnnotation(dataFileName,annotId);
 		 db.close();
-		 System.out.println(Debugger.getCallerPosition()+"End...");
+		 long t2 = System.currentTimeMillis();
+		 System.out.println(Debugger.getCallerPosition()+"End toRDB, time used to LOAD ro RDB="+ (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n");
 	 }
 	 
 	 /**

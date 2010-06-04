@@ -17,7 +17,7 @@ CREATE TABLE measurement_type(
 	otypelabel char(16),
 	iskey boolean,
 	characteristic char(64), 
-	standard char(16), 
+	standard varchar(64), 
 	protocal varchar(256),
 	PRIMARY KEY (annot_id,mtypelabel));
 	
@@ -25,12 +25,12 @@ CREATE TABLE context_type(
 	annot_id bigint REFERENCES annotation(annot_id),
 	otypelabel char(16),
 	context_otypelabel char(16),
-	relationship_name char(8),
+	relationship_name varchar(16),
 	is_identifying boolean);
 CREATE TABLE map(
 	annot_id bigint REFERENCES annotation(annot_id),
 	mtypelabel char(16),
-	attrname char(16),
+	attrname varchar(32),
 	mapcond varchar(64),
 	mapval varchar(32));
 CREATE TABLE key_attr(
@@ -42,7 +42,8 @@ CREATE SEQUENCE did_seq;
 CREATE TABLE data_annotation(
 	did bigint DEFAULT NEXTVAL('did_seq') PRIMARY KEY, 
 	annot_id bigint REFERENCES annotation (annot_id),
-	dataset_file varchar(256));
+	dataset_file varchar(256),
+	with_rawdata boolean);
 CREATE TABLE entity_instance(
 	eid bigint PRIMARY KEY,
 	did bigint REFERENCES data_annotation(did), 

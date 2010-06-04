@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.ecoinformatics.oboe.Debugger;
+import org.ecoinformatics.oboe.util.Debugger;
 
 public class QueryList {
 	List<OMQuery> m_queryList = null; //this is for averaging the results
