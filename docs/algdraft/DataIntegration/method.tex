@@ -54,14 +54,14 @@ Roughly speaking, the query rewriting consists of two steps:
   annotation information to find the relevant data tables and
   attributes that need to be used to answer the given query.
 \item Translate the given OM query to queries over the relevant data
-  tables. To do this translation, we decompose an OM query to have several basic component operators. 
+  tables. To do this translation, we decompose an OM query to have several basic component operators.
   \begin{itemize}
-  \item Basic OM query with one entity type. While the characteristic condition may be conjunctive or disjunctive, it may also has aggregation. E.g., $A(Cha1>25.0 && Count(Cha)>3, Height>2.0)$
-  \item Context OM chain refer to a set of queries having ``HasContext'' relationship. Obviously, these queries have different entity condition. E.g., $Ent1(...) --> Ent2(), Ent1()-->Ent3()$
+  \item Basic OM query with one entity type. While the characteristic condition may be conjunctive or disjunctive, it may also has aggregation. E.g., $A(Cha1>25.0 \&\& Count(Cha)>3, Height>2.0)$
+  \item Context OM chain refer to a set of queries having ``HasContext'' relationship. Obviously, these queries have different entity condition. E.g., $Ent1(...) \rightarrow Ent2(), Ent1() \rightarrow Ent3()$
   \item Disjunctive OM query with multiple entity types. $Ent1(...), Ent2(), Ent3(...)$.
   \end{itemize}
-  
-  
+
+
 \end{itemize}
 
 \from{HP}{todo:put a figure here to illustrate the steps}.
@@ -90,34 +90,11 @@ are the related attributes for table $d\in D_{cand}$.
 
 
 The second step translates the original OM query to SQL queries over the data tables.
-From now on, we assume that we know the attribute already for all the needed characteristics. 
+From now on, we assume that we know the attribute already for all the needed characteristics.
 
 To translate the given query:
- Group the basic queries (with only one entity type) to list of context chains. 
-
-\begin{algorithm}[htb]
-\begin{algorithmic}[1]
-%\begin{footnotesize}
-\STATE $Result$ := $\emptyset$; 
-\COMMENT{//From the given query, get the DNF of context queries.}
-\STATE $contextChainDNF$ := ${\bf GroupBasicQuery}(OMQ)$;
-\STATE
-\COMMENT{//Execute every DNF int the context chain set and union their results}
-\FOR{each context chain $oneContextQuery$ in $contextChainDNF$}
-	\STATE $result_{CNF}$ := $\emptyset$;
-    \COMMENT{//Execute every basic query in this CNF query and intersect their results}
-    \FOR{each basic query $OMBasic$ in $ContextQuery$}
-    \STATE $result_{basic}$ := $OMBasic.execute()$;
-    \STATE $result_{CNF}$ := $result_{CNF} \cap result_{basic}$;
-    \ENDFOR
-	\STATE $Result$ := $Result\cup result_{CNF}\$
-\ENDFOR
-\RETURN $RESULT$;
-%\end{footnotesize}
-\end{algorithmic}
-\caption{Execute(OMQ)}
-\label{alg:omq}
-\end{algorithm}
+Figure \ref{alg:omq} shows the algorithm framework to deal with one OM query.
+\from{HP}{More description comes later.}
 
 \begin{figure}[htb]
 %\normalsize
@@ -126,51 +103,60 @@ To translate the given query:
 \begin{scriptsize}
 \begin{tabbing}
 1166\= 16 \= 16 \= 16 \= 16 \= 16 \= 16 \= 16 \= 16 \= \kill
+{\bf Algorithm Execute}(OMQ)\\
+1).\> $Result$ := $\emptyset$;\\
+2).\>//From the given query, get the DNF of context queries.\\
+3).\> $contextChainDNF$ := ${\bf GroupBasicQuery}(OMQ)$;\\
+4).\> \\
+5).\> //Execute every DNF int the context chain set and union their results\\
+6).\> {\bf for} each context chain $oneContextQuery$ in $contextChainDNF$\\
+7).\>\> $result_{CNF}$ := $\emptyset$;\\
+8).\>\>//Execute every basic query in this CNF query and intersect their results\\
+9).\>\>{\bf for} each basic query $OM_{b}$ in $ContextQuery$\\
+10).\>\>\>$result_{b}$ := ${\bf ExecuteBasicOM}(M_{b})$;\\
+11).\>\>\>$result_{CNF}$ := $result_{CNF} \cap result_{b}$;\\
+12).\>\>$Result$ := $Result\cup result_{CNF}$\\
+13).\>Return $Result$;\\
+\\
 {\bf Algorithm GroupBasicQuery}($OMQ$);\\
 1).\>$contextChainSet$ := $\emptyset$;\\
-\\
-\>//Put the basic queries in context into context chains
-2).\>{\bf for} (each basic context $OMBasic-->ContextOMBasic$ in $OMQ$)\\
-3).\>\>$added$ := false;
-4).\>\>{\bf for} (each set $oneContextChain \in contextChainDNF)\\
-5).\>\>\>{\bf if} (($OMBasic \in oneContextChain$) or $ContextOMBasic \in oneContextChain$))\\
-6).\>\>\>\> $oneContextChain$ = $oneContextChain \cup OMBasic \cup ContextOMBasic$\\
-7).\>\>\>\> $added$ :=true;\\
-8).\>\>\>\> {\bf break;}\\
-9).\>\>{\bf if}($added$==false)\\
-10).\>\>\>Create a set $newContextChain$ with two elements $OMBasic$ and $ContextOMBasic$;\\
-11).\>\>\>Add $newContextChain$ to $contextChainSet$;\\
-\\
-\>//Put the basic queries in context into context chains
-12).\>{\bf for} (each $OMBasic$ not in context of $OMQ$)\\
-13).\>\>Create a set $newContextChain$ with one element $OMBasic$\\
-14).\>\>Add $newContextChain$ to $contextChainSet$;\\
-15).\>{\bf return} $contextChainSet$;\\
+2).\\
+3).\>//Put the basic queries in context into context chains\\
+4).\>{\bf for} (each basic context $OM_{b}\rightarrow COM_{b}$ in $OMQ$)\\
+5).\>\>$added$ := false;\\
+6).\>\>{\bf for} (each set $oneContextChain \in contextChainDNF$)\\
+7).\>\>\>{\bf if} (($OM_{b} \in oneContextChain$) or $OM_{b} \in oneContextChain$))\\
+8).\>\>\>\> $oneContextChain$ := $oneContextChain \cup OM_{b} \cup COM_{b}$\\
+9).\>\>\>\> $added$ :=true;\\
+10).\>\>\>\> {\bf break;}\\
+11).\>\>{\bf if}($added$==false)\\
+12).\>\>\>Create a set $newContextChain$ with two elements $OM_{b}$ and $COM_{b}$;\\
+13).\>\>\>Add $newContextChain$ to $contextChainSet$;\\
+14).\\
+15).\>//Put the basic queries without context into context chains\\
+16).\>{\bf for} (each $OM_{b}$ not in context of $OMQ$)\\
+17).\>\>Create a set $newContextChain$ with one element $OM_{b}$\\
+18).\>\>Add $newContextChain$ to $contextChainSet$;\\
+19).\>{\bf return} $contextChainSet$;
 \end{tabbing}
 \end{scriptsize}
 %\end{minipage}
-\caption{GroupBasicQuery(OMQ)}
+\caption{Algorithm to execute an OM query}
 \label{alg:omq}
 \end{figure}
 
-
 In particular, for each candidate data table $d$,
 the translation process works in the following rules.
-
-First, for the basic OM query with one entity type. 
-
-
-Second, for the context chain query. 
+For an OMBasic query with one entity type.
+We need to do the
 
 \begin{itemize}
-\item The SELECT clause always get the distinct $d_{id}$ and/or
-  record id $r_{id}$ (when it is needed);
+\item The SELECT clause always get the distinct $d_{id}$ and the key attributes for this entity type;
 \item The FROM clause has table $d \in D_{cand}$;
-\item The WHERE clause contains all the function $f(\cdot)$ in the OM
+\item The WHERE clause contains all the non-aggregational conditions $f(\cdot)$ in the OM
   query;
 \item When there is distinct constraint on entity or observation, the
-  GROUP BY clause contains of all the attributes corresponding to the
-  {\em key measurement types} of the entity or observation. we detail
+  GROUP BY clause contains of all the key attributes corresponding to the of the entity. we detail
   all process of getting the key measurement types of an observation
   later.
 \item The aggregation requirement in $f(\cdot)$ is translated to
@@ -180,14 +166,48 @@ Second, for the context chain query.
 Based on these rules, an OM query can be translated to the following
 SQL scripts.
 
+For non-aggregate conditions,
+
 \vspace{0.1in}
 {\tt
 \begin{tabular}{l}
-SELECT DISTINCT $d_{id}$\\
+SELECT DISTINCT $d_{id}, key~attribute~list$\\
 FROM $d$\\
-WHERE $f(d_{a_1} \cdots d_{a_m}) = true$\\
+WHERE $non-aggregate~conditions$)
+\end{tabular}
+}
+\vspace{0.1in}
+
+For each aggregate condition,
+
+\vspace{0.1in}
+{\tt
+\begin{tabular}{l}
+SELECT DISTINCT $d_{id}, key~attribute~list$\\
+FROM $d$\\
+WHERE $key~attribute_values$ IN(\\
+\hspace{0.6in}$non-aggregate~SQL$)\\
 $[$GROUP BY {\em distinct requirement}$]$\\
 $[$HAVING {\em aggregation condition}$]$;
+\end{tabular}
+}
+\vspace{0.1in}
+
+When there are more than one aggregation condition,
+the above SQL is formed for each aggregation condition
+and their results are intersected.
+
+\from{HP}{Output: record id or key attribute values.}
+If the output is record id, we further need to
+
+\vspace{0.1in}
+{\tt
+\begin{tabular}{l}
+SELECT $record\_id$\\
+FROM $d$\\
+WHERE ($key~measurement~value$ IN(\\
+\hspace{0.5in}SELECT DISTINCT $key~attribute~list$\\
+\hspace{0.5in}FROM ($results~from~aggregation functions$)
 \end{tabular}
 }
 \vspace{0.1in}
@@ -358,9 +378,39 @@ can perform the OM query over them.
 \from{HP}{TODO:Formalize the translation of operators in the OM
   query}.
 
+
+For a non-aggregate condition,
+
+{\tt
+\begin{tabular}{l}
+SELECT DISTINCT did, record\_id, eid \\
+\hspace{0.5in}characteristic, mvalue\\
+FROM $mi, mt, oi, ei$\\
+$[$WHERE    {\em table join condition}, \\
+$\qquad\qquad$ AND {\em selection condition}$]$\\
+INTERSECT $other~measurement~cond$\\
+\end{tabular}
+}
+
+For an aggregate condition,
+
+{\tt
+\begin{tabular}{l}
+SELECT DISTINCT did, record\_id, eid\\
+FROM $oi$\\
+WHERE (did, eid) IN (\\
+\hspace{0.5in}SELECT did, eid\\
+\hspace{0.5in}FROM $non-aggregate~sql$\\
+\hspace{0.5in}WHERE $characteristic~condition$\\
+\hspace{0.5in}GROUP BY did, eid\\
+\hspace{0.5in}HAVING {\em aggregation condition};
+\end{tabular}
+}
 When the given query is a basic OM query, i.e., there is not context
 in the query.
 Then, we can form a template query as the following;
+
+
 
 \begin{figure}[htb]
 {\tt
