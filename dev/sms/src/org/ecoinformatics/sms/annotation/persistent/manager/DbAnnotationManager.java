@@ -192,7 +192,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	 * @param context the data object context (for new objects and transactions)
 	 * @param recursive - should this be done recursively (such that transitive context is captured)
 	 */
-	private static void expandContexts(Observation o, DbObservation dbObservation, ObjectContext context, boolean recursive) {
+	private void expandContexts(Observation o, DbObservation dbObservation, ObjectContext context, boolean recursive) {
 		if (o == null) {
 			return;
 		}
@@ -988,7 +988,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     * @param criteria potentially complex 
     * @return
     */
-   private static String criteriaAsExpression(Criteria criteria) {
+   private String criteriaAsExpression(Criteria criteria) {
 	   
 	   StringBuffer expression = new StringBuffer();
 	   
@@ -1085,11 +1085,15 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   return expression.toString();
    }
 
-   private static String createExpresstionString(List<OntologyClass> entities,
+   private String createExpresstionString(List<OntologyClass> entities,
            List<OntologyClass> characteristics, List<OntologyClass> standards,
            List<OntologyClass> protocols, List<Triple> contexts, String relationalOperator, String conditionalOperator) {
 	   
 	   List<String> terms = new ArrayList<String>();
+	   addSubclasses(entities);
+	   addSubclasses(characteristics);
+	   addSubclasses(standards);
+	   addSubclasses(protocols);
 	   
 	   String entityString = createExpressionString(entities, "observations.entity", relationalOperator, "or");
 	   String characterString = createExpressionString(characteristics, "observations.measurements.characteristics.type", relationalOperator, "or");
@@ -1125,7 +1129,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   
    }
    
-   private static String createExpressionString(List<OntologyClass> classes, String path, String relationalOperator, String conditionalOperator) {
+   private String createExpressionString(List<OntologyClass> classes, String path, String relationalOperator, String conditionalOperator) {
 	   StringBuffer expression = new StringBuffer();
 	   if (classes != null && !classes.isEmpty()) {
 		   expression.append("(");
@@ -1145,7 +1149,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   return null;
    }
    
-   private static String createContextExpressionString(List<Triple> contextTriples, String operator) {
+   private String createContextExpressionString(List<Triple> contextTriples, String operator) {
 	   StringBuffer expression = new StringBuffer();
 	   if (contextTriples != null && !contextTriples.isEmpty()) {
 		   expression.append("(");
