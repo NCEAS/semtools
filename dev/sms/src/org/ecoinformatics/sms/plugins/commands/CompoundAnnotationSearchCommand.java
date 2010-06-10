@@ -41,6 +41,8 @@ import edu.ucsb.nceas.morpho.util.UISettings;
 import java.util.List;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import org.ecoinformatics.sms.plugins.pages.ComplexQueryPage;
 import org.ecoinformatics.sms.plugins.search.ResultSetComparator;
@@ -78,7 +80,7 @@ public class CompoundAnnotationSearchCommand implements Command {
 				cqp = new ComplexQueryPage();
 			}
 			// show the dialog
-			ModalDialog dialog = 
+			final ModalDialog dialog = 
 				new ModalDialog(
 						cqp, 
 						morphoFrame, 
@@ -88,19 +90,26 @@ public class CompoundAnnotationSearchCommand implements Command {
 			dialog.setModal(false);
 			dialog.setVisible(true);
 			
-			// get the response back
-			if (dialog.USER_RESPONSE == ModalDialog.OK_OPTION) {
-				List<String> orderedDocids = cqp.getDocids();
-				Query query = cqp.getQuery();
-				if (query != null) {
-					MorphoFrame box = 
-						UIController.getInstance().addWindow(query.getQueryTitle());
-					// first true is sorted or not, 5 is sorted column index,
-					// second true
-					// is send event of not
-					doQuery(box, query, true, 2, SortableJTable.ASCENDING, true, orderedDocids);
-				}// if
-			}
+			// react to it closing (OK button or Cancel button) since it is non-modal
+			dialog.addWindowListener(new WindowAdapter() {
+				public void windowClosed(WindowEvent e) {
+				//public void windowClosing(WindowEvent e) {
+					// get the response back
+					if (dialog.USER_RESPONSE == ModalDialog.OK_OPTION) {
+						List<String> orderedDocids = cqp.getDocids();
+						Query query = cqp.getQuery();
+						if (query != null) {
+							MorphoFrame box = 
+								UIController.getInstance().addWindow(query.getQueryTitle());
+							// first true is sorted or not, 5 is sorted column index,
+							// second true
+							// is send event of not
+							doQuery(box, query, true, 2, SortableJTable.ASCENDING, true, orderedDocids);
+						}// if
+					}
+				}
+			});
+			
 		}// if
 	}// execute
 
