@@ -1,0 +1,43 @@
+################################################
+# TEST basic condition
+################################################
+#natural form of queries
+#Get the dataset with water AmmoniumConcentration > 15.00
+#Q1: [water_temperature > 15.00 celcius]
+#36.59 should not return any result
+#######
+#
+BEGIN QUERY:1
+BEGIN QO:1
+EntityId: '%water%'
+
+#constructed from m3
+BEGIN QM:1
+Characteristic:'%SubstanceConcentration%'
+Standard:'%AmmoniumConcentration%'
+Cond:>15.0
+Aggregation:
+CNF:1
+END QM
+
+#constructed from m4
+BEGIN QM:2
+Characteristic:'%SubstanceConcentration%'
+Standard:'%NitrateNitriteConcentration%'
+Cond:>15.0
+Aggregation:
+CNF:1
+END QM
+
+#constructed from m10
+BEGIN QM:3
+Characteristic:'%AmountOfSubstanceConcentration%'
+Standard:'%SuspendedParticulatePhosphorus%'
+Cond:>15.0
+Aggregation:
+CNF:1
+END QM
+
+END QO
+END QUERY
+

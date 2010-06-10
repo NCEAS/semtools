@@ -61,7 +61,7 @@ public class QueryProcessor {
 			
 			Set<OboeQueryResult> queryResult = queryI.execute(queryStrategy, resultWithRecord);
 						
-			System.out.println(Debugger.getCallerPosition()+"i="+i+",result size="+queryResult.size()+":"+queryResult);
+			System.out.println(Debugger.getCallerPosition()+"i="+i+",result size="+queryResult.size());//+":"+queryResult);
 			queryResultContainer.add(queryResult);
 		}
 		

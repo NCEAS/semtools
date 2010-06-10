@@ -1,0 +1,46 @@
+
+MaterializeDB.java:787: nemlFileName=/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/oboedb/null
+MaterializeDB.java:788: annotFileName=/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/oboedb/mobrien.36.59.xml
+MaterializeDB.java:789: dataFileName=/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/oboedb/mobrien.36.59.stream_chemistry_allyears.txt
+MaterializeDB.java:790: oboeFileName=/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/oboedb/mobrien.36.59-oboe.csv
+MaterializeDB.java:791: rdfFileName=/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/oboedb/mobrien.36.59-oboe.rdf
+MaterializeDB.java:792: materialize context chain =true
+---------------
+
+MaterializeDB.java:648: 1. Read data ...
+MaterializeDB.java:657: rowStruct = [record_id, site_code, timestamp_local, nh4_uM, no3_uM, po4_uM, tdn_uM, tdp_uM, tpc_uM, tpn_uM, tpp_uM, tss_mgperLiter, spec_cond_uSpercm]
+MaterializeDB.java:661: 2. Read annotation ...
+MaterializeDB.java:677: 3. Materialization ...
+OboeModel.java:95: gOldMaxEntId=231471,gOldMaxObsId=231554,gOldMaxMeasId=283602
+
+-----------
+MaterializeDB.java:725: Time used (Materialization): 343 ms = 0s
+-----------
+
+Number of entities:42746
+Number of observations:42746
+Number of measurements:42746
+Number of contexts:0
+Assistating structure size:42746
+
+-----------
+
+OboeModel.java:380: Begin toRDB
+OboeModel.java:385: Import annotation file...
+MDB.java:518: annotationUri=mobrien.36.59, annotationId=3
+OboeModel.java:388: Import data instances...
+PostgresDB.java:365: sql=SELECT did,annot_id FROM data_annotation WHERE dataset_file='mobrien.36.59.stream_chemistry_allyears.txt';
+MDB.java:601: import 42746 entity instances
+MDB.java:610: import 42746 observation instances
+MDB.java:618: import 42746 measurement instances
+MDB.java:625: import 0 context instances
+OboeModel.java:394: End toRDB, time used to LOAD ro RDB=121130 ms = 121s
+
+OboeModel.java:121: gOldMaxEntId=274217,gOldMaxObsId=274300,gOldMaxMeasId=326348
+MaterializeDB.java:735: Time used (File writing): 126402 ms = 126s
+-----------
+
+MaterializeDB.java:797: ********************
+MaterializeDB.java:798: Output OBOE CSV file is in: /Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/oboedb/mobrien.36.59-oboe.csv
+MaterializeDB.java:799: Output OBOE RDF file is in: /Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/oboedb/mobrien.36.59-oboe.rdf
+MaterializeDB.java:800: ********************

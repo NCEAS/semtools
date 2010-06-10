@@ -345,11 +345,11 @@ public class OMQuery {
 					
 			Set<OboeQueryResult> oneDNFqueryResultSet = oneContextQuery.execute(db, resultWithRecord);
 		
-			System.out.println(Debugger.getCallerPosition()+"OMQuery DNF "+i+",oneDNFqueryResultSet="+oneDNFqueryResultSet);
+			System.out.println(Debugger.getCallerPosition()+"OMQuery DNF "+i+",oneDNFqueryResultSet size="+oneDNFqueryResultSet.size());
 			resultSet.addAll(oneDNFqueryResultSet);			
 		}
 		
-		System.out.println(Debugger.getCallerPosition()+"OMQuery result="+resultSet);
+		System.out.println(Debugger.getCallerPosition()+"OMQuery result size="+resultSet.size());
 		//close database connection
 		db.close();
 		
@@ -414,7 +414,7 @@ public class OMQuery {
 			System.exit(0);
 		}
 		
-		System.out.println(Debugger.getCallerPosition()+"Total queryResultSet="+queryResultSet);
+		System.out.println(Debugger.getCallerPosition()+"Total queryResultSet size="+queryResultSet.size());
 		return queryResultSet;
 	}
 }

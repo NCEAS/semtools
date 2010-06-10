@@ -359,7 +359,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		result.addAll(nonAggQueryResult);
 		String nonAggQuerySql = formSqlOneCNFNonAggregateMDB(mdb,m_entityTypeNameCond,nonAggMeas);
 		
-		System.out.println(Debugger.getCallerPosition()+"result="+result);
+		System.out.println(Debugger.getCallerPosition()+"result size="+result.size());
 		
 		if(result.size()>0){
 			//boolean first= true;
@@ -378,7 +378,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 			}
 		}
 		
-		System.out.println(Debugger.getCallerPosition()+"oneCNF result="+result);
+		System.out.println(Debugger.getCallerPosition()+"oneCNF result size="+result.size());
 		return result;
 	}
 	
@@ -434,7 +434,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		Set<OboeQueryResult> resultSet = mdb.executeSQL(sql);
 		
 		System.out.println(Debugger.getCallerPosition()+"sql:"+sql);
-		System.out.println(Debugger.getCallerPosition()+"resultSet:"+resultSet);
+		System.out.println(Debugger.getCallerPosition()+"resultSet:"+resultSet.size());
 		return resultSet;
 	
 	}
@@ -497,7 +497,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 			}
 		}
 		
-		System.out.println(Debugger.getCallerPosition()+"oneCNF result="+result);
+		System.out.println(Debugger.getCallerPosition()+"oneCNF result size ="+result.size());
 		return result;
 	}
 	

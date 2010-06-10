@@ -288,7 +288,7 @@ public class ContextChain {
 			
 		}
 		
-		System.out.println(Debugger.getCallerPosition()+"Context chain result="+result+"\n******\n");
+		System.out.println(Debugger.getCallerPosition()+"Context chain result size="+result.size()+"\n******\n");
 		return result;
 	}
 	

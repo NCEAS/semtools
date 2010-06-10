@@ -182,7 +182,11 @@ public class QueryMeasurement {
 			}
 		}
 		if(standardCond!=null&&standardCond.trim().length()>0){
-			sql +=" AND mt.standard " + standardCond;
+			if(standardCond.contains("%")){
+				sql +=" AND mt.standard ILIKE" + standardCond;
+			}else{
+				sql +=" AND mt.standard=" + standardCond;
+			}
 		}
 		sql +=" AND ei.eid=eic.eid AND ei.did=eic.did";
 		sql +=")";
