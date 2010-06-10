@@ -310,7 +310,7 @@ public class AnnotationPlugin
 	}
 	
 	// load annotations from a given location
-	private static void initializeAnnotations(String forDocid, String location) {
+	public static void initializeAnnotations(String forDocid, String location) {
 		Log.debug(30, "initializing annotations for docid: " + forDocid);
 		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
 		MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
@@ -495,13 +495,11 @@ public class AnnotationPlugin
 			searchtext.append(returnFieldList.elementAt(i));
 			searchtext.append("</returnfield>\n");
 		}
-		searchtext.append("<owner>" + Morpho.thisStaticInstance.getUserName()
-				+ "</owner>\n");
+		//searchtext.append("<owner>" + Morpho.thisStaticInstance.getUserName() + "</owner>\n");
 		
 		//Annotation matches
+		searchtext.append("<querygroup operator=\"UNION\">\n");
 		if (annotations != null && annotations.size() > 0) {
-			searchtext.append("<querygroup operator=\"UNION\">\n");
-		
 			for (Annotation annotation: annotations) {
 				searchtext.append("<queryterm casesensitive=\"true\" ");
 				searchtext.append("searchmode=\"contains\">\n");
@@ -511,8 +509,16 @@ public class AnnotationPlugin
 				searchtext.append("<pathexpr>@packageId</pathexpr>\n");
 				searchtext.append("</queryterm>");
 			}
-			searchtext.append("</querygroup>");
+		} else {
+			searchtext.append("<queryterm casesensitive=\"true\" ");
+			searchtext.append("searchmode=\"contains\">\n");
+			searchtext.append("<value>");
+			searchtext.append("NO MATCHES");
+			searchtext.append("</value>\n");
+			searchtext.append("<pathexpr>@packageId</pathexpr>\n");
+			searchtext.append("</queryterm>");
 		}
+		searchtext.append("</querygroup>");
 	
 		searchtext.append("</pathquery>");
 

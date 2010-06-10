@@ -28,10 +28,13 @@
 
 package org.ecoinformatics.sms.plugins.pages;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -43,6 +46,7 @@ import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.search.CriteriaPanelList;
 
 import edu.ucsb.nceas.morpho.Morpho;
+import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
@@ -64,12 +68,15 @@ public class ComplexQueryPage extends AbstractUIPage {
 		
 	// query list
 	private CriteriaPanelList queryList;
-	
+		
 	// the final query
 	private Query query;
 	
 	// docids from the annotation query
-	private List<String> docids = new ArrayList<String>();	
+	private List<String> docids = new ArrayList<String>();
+	private String[] localNetwork = {"Local", "Network"};
+	private boolean local = true;
+	private boolean network = false;
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
@@ -109,6 +116,32 @@ public class ComplexQueryPage extends AbstractUIPage {
 						5);
 		this.add(desc);
 		this.add(WidgetFactory.makeDefaultSpacer());
+		
+		// add check boxes for local/remote
+		JPanel checkboxPanel = WidgetFactory.makeCheckBoxPanel(localNetwork , 0, new ItemListener() {
+
+			public void itemStateChanged(ItemEvent e) {
+				JCheckBox checkBox = (JCheckBox) e.getSource();
+				String cmd = checkBox.getActionCommand();
+				int stateChange = e.getStateChange();
+				if (cmd.equals(localNetwork[0])) {
+					if (stateChange == ItemEvent.SELECTED) {
+						local = true;
+					} else {
+						local = false;
+					}
+				}
+				if (cmd.equals(localNetwork[1])) {
+					if (stateChange == ItemEvent.SELECTED) {
+						network = true;
+					} else {
+						network = false;
+					}
+				}
+			}
+			
+		});
+		this.add(checkboxPanel);
 		
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
@@ -152,6 +185,19 @@ public class ComplexQueryPage extends AbstractUIPage {
 		// look up the criteria
 		Criteria criteria = queryList.getCriteria();
 		
+		// TODO: ensure we have local/network annotations loaded before searching
+		String location = "";
+		if (local) {
+			location = AbstractDataPackage.LOCAL;
+		}
+		if (network) {
+			location = AbstractDataPackage.METACAT;
+		}
+		if (local && network) {
+			location = AbstractDataPackage.BOTH;
+		}
+		AnnotationPlugin.initializeAnnotations(null, location);
+		
 		// generate the query
 		List<Annotation> annotations = 
 			SMS.getInstance().getAnnotationManager().getMatchingAnnotations(criteria);
@@ -161,8 +207,8 @@ public class ComplexQueryPage extends AbstractUIPage {
 		
 		// make it
 		query = new Query(querySpec, Morpho.thisStaticInstance);
-		query.setSearchLocal(true);
-		query.setSearchMetacat(false);
+		query.setSearchLocal(local);
+		query.setSearchMetacat(network);
 		
 		// set the docids
 		docids.clear();
