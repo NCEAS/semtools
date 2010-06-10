@@ -1,0 +1,28 @@
+Macroalgae on the reef take up dissolved nutrients which are transported 
+to the reef from two major sources: coastal streams and the open ocean. In 
+nitrogen_transport_schematic.png, these two sources are outlined in yellow.
+
+The data integration task is to calculate the nutrient available from each 
+of these sources, for each day. SBC measures the amount of nutrient in each 
+of the sources and the rate water is delivered to the reef. The integration 
+task should compute the flux of one nutrient (nitrate+nitrite) from each 
+source.
+
+use case queries for data integration:
+1. calculate the flux of nitrate+nitrite from the mouth of Arroyo Burro Creek.
+Flux should be in units of micromolesPerDay
+
+Use case data documents at fred.msi.ucsb.edu/knb
+mobrien.50
+mobrien.47
+
+
+
+
+
+2. calculate the nitrite flux from ocean water crossing Arroyo Burro Reef 
+use case data metadata at fred.msi.ucsb.edu/knb
+coming soon....
+
+
+
