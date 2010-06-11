@@ -1,6 +1,10 @@
 package org.ecoinformatics.oboe.query;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -24,6 +28,7 @@ import org.ecoinformatics.oboe.datastorage.MDB;
 import org.ecoinformatics.oboe.datastorage.RawDB;
 import org.ecoinformatics.oboe.datastorage.PostgresDB;
 import org.ecoinformatics.oboe.model.*;
+import org.ecoinformatics.oboe.syntheticdata.AnnotationSpecifier;
 import org.ecoinformatics.oboe.util.Debugger;
 
 //Example queries: 
@@ -107,7 +112,7 @@ public class OMQuery {
 					String standard = queryLines.get(++i).substring(Constant.STANDARD.length());
 					String condition = queryLines.get(++i).substring(Constant.COND.length());
 					String aggregationFunc = queryLines.get(++i).substring(Constant.AGGREGATION.length());
-					String DNFnoStr = queryLines.get(++i).substring(Constant.CNFNO.length());
+					String DNFnoStr = queryLines.get(++i).substring(Constant.DNFNO.length());
 					
 					int dnfNo = Integer.parseInt(DNFnoStr);
 					QueryMeasurement queryMeas = new QueryMeasurement();
@@ -356,42 +361,6 @@ public class OMQuery {
 		return resultSet;		
 	}
 	
-//	/**
-//	 * Perform a query over the original database
-//	 * 
-//	 * @param query
-//	 * @return
-//	 * @throws Exception
-//	 */
-//	private Set<OboeQueryResult> execute(RawDB rawdb, boolean resultWithRecord) 
-//		throws Exception
-//	{
-//		Set<OboeQueryResult> resultSet = new TreeSet<OboeQueryResult>();
-//		
-//		//open database connection
-//		rawdb.open();
-//		
-//		//The results of each context query should be unioned
-//		List<ContextChain> contextChains = getContextChains();
-//		System.out.println(Debugger.getCallerPosition()+"contextChains = "+contextChains);
-//		
-//		
-//		for(int i=0;i<contextChains.size(); i++){
-//			ContextChain oneContextQuery = contextChains.get(i);
-//			
-//			Set<OboeQueryResult> oneDNFqueryResultSet = oneContextQuery.execute(rawdb, resultWithRecord);
-//		
-//			resultSet.addAll(oneDNFqueryResultSet);			
-//		}
-//		
-//		System.out.println(Debugger.getCallerPosition()+"OMQuery result="+resultSet);
-//		
-//		//close database connection
-//		rawdb.close();
-//		
-//		return resultSet;		
-//	}
-	
 	/**
 	 * Based on different query evaluation strategy, perform query.
 	 * 
@@ -416,5 +385,73 @@ public class OMQuery {
 		
 		System.out.println(Debugger.getCallerPosition()+"Total queryResultSet size="+queryResultSet.size());
 		return queryResultSet;
+	}
+	
+	/**
+	 * Write query conditions to qurey files
+	 * TODO: to make it more general
+	 * 
+	 * @param a
+	 * @param meas2_selectivityQueryConds
+	 * @param queryFilePrefix
+	 * @throws IOException 
+	 */
+	public void writeQueries(AnnotationSpecifier a,
+			Map<String, Map<Double, List<String >>> meas2_selectivityQueryConds,String queryFilePrefix) 
+		throws IOException
+	{
+		for(String measLabel:meas2_selectivityQueryConds.keySet()){
+			Map<Double, List<String >> oneMeasSelectivity2QueryConds = meas2_selectivityQueryConds.get(measLabel);
+			String queryFile = queryFilePrefix+"_"+measLabel;
+			String entityTypeName = a.getEntityTypeName(measLabel);
+			System.out.println(Debugger.getCallerPosition()+"measLabel="+measLabel+"entityTypeName="+entityTypeName);
+			
+			for(double selectivity:oneMeasSelectivity2QueryConds.keySet()){
+				String tmpFile = queryFile+"_s"+selectivity;
+				List<String > oneSelectivityQueryConds = oneMeasSelectivity2QueryConds.get(selectivity);
+				
+				//form query strings for all the query conditions
+				String queryString = "";
+				for(Integer queryLabel=1; queryLabel<=oneSelectivityQueryConds.size();queryLabel++){
+					queryString +=Constant.QUERY_START+queryLabel+"\n";
+					
+					OMQueryBasic ombasic = new OMQueryBasic();					
+					ombasic.setQueryLabel("1");
+					ombasic.setEntityTypeName(entityTypeName);
+					
+					Map<Integer, List<QueryMeasurement> > queryMeasDNF =new TreeMap<Integer, List<QueryMeasurement> >();
+					List<QueryMeasurement> qmlist = new ArrayList<QueryMeasurement>();
+					queryMeasDNF.put(1,qmlist);
+					
+					QueryMeasurement qm = new QueryMeasurement();
+					qmlist.add(qm);
+					
+					qm.setAggregationFunc(null);
+					qm.setCharacteristicCond("'"+measLabel+"%'");
+					qm.setStandardCond(null);
+					qm.setValueCond(oneSelectivityQueryConds.get(queryLabel-1));
+					
+					ombasic.setQueryMeasDNF(queryMeasDNF);
+					//System.out.println(Debugger.getCallerPosition()+"ombasic="+ombasic);
+					
+					queryString += ombasic.formQueryString()+"\n";
+					queryString +=Constant.QUERY_END+"\n";
+					//System.out.println(Debugger.getCallerPosition()+"queryString="+queryString);
+					//break;
+				}
+				
+				
+				//write this query to output file
+				FileOutputStream outputStream = new FileOutputStream(tmpFile);
+				PrintStream s = new PrintStream(outputStream);				
+				s.print(queryString);
+				s.close();
+				outputStream.close();
+				
+				System.out.println(Debugger.getCallerPosition()+"Write to query file: "+tmpFile);
+				//break;
+			}
+		}
+		
 	}
 }

@@ -11,7 +11,8 @@ import org.ecoinformatics.oboe.util.MyRandom;
 public class AnnotSpecGenerator {
 	private static int maximum_attribute_num_per_tb = 16;
 	private static int maximum_attribute_no = 100;
-	private static int meas_num_per_obs = 2;
+	//private static int meas_num_per_obs = 2;
+	private static double ratio = 0.5;
 	
 	private static List<List<Integer> > generateTableAttributes(int numAnnotSpecFiles)
 	{
@@ -58,11 +59,11 @@ public class AnnotSpecGenerator {
 	 */
 	private static void writeOneAnnotSpec(PrintStream dataPrintStream,List<Integer> oneTbAtt)
 	{
-		for(int attrno=0;attrno<oneTbAtt.size()/meas_num_per_obs;attrno++){
+		for(int attrno=0;attrno<oneTbAtt.size();attrno++){
 			int oid = attrno+1;
-			int mid1 = oneTbAtt.get(meas_num_per_obs*attrno);
-			int mid2 = oneTbAtt.get(meas_num_per_obs*attrno+1);
-			dataPrintStream.append("o"+oid+" e"+oid+" distinct:m"+mid1+" key,m"+(mid2)+",0.3\n");
+			int mid1 = oneTbAtt.get(attrno);
+			//int mid2 = oneTbAtt.get(meas_num_per_obs*attrno+1);
+			dataPrintStream.append("o"+oid+" e"+oid+" distinct:m"+mid1+" key,"+ratio+"\n");
 		}
 	}
 	/**

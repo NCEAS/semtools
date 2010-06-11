@@ -418,4 +418,32 @@ public class QueryMeasurement {
 		return result;
 	}
 
+
+	/**
+	 * Form a query string (to put to query file) from this QueryMeasurement
+	 * 
+	 * @return
+	 */
+	public String formQueryString(int qmno, int dnfno)
+	{
+		String queryString = "";
+		queryString +=Constant.MEASUREMENT_START+qmno+"\n";
+		
+		if(this.characteristicCond!=null) queryString +=Constant.CHARACTERISTIC+this.characteristicCond+"\n";
+		else queryString +=Constant.CHARACTERISTIC+"\n";
+		
+		if(this.standardCond!=null) queryString +=Constant.STANDARD+this.standardCond+"\n";
+		else queryString +=Constant.STANDARD+"\n";
+		
+		if(this.valueCond!=null) queryString +=Constant.COND+this.valueCond+"\n";
+		else queryString +=Constant.COND+"\n";
+		
+		if(this.aggregationFunc!=null)queryString +=Constant.AGGREGATION+this.aggregationFunc+"\n";
+		else queryString +=Constant.AGGREGATION+"\n";
+		
+		queryString+=Constant.DNFNO+dnfno+"\n";
+		queryString +=Constant.MEASUREMENT_END+"\n";
+		return queryString; 
+	}
+	
 }

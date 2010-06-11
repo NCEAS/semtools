@@ -624,41 +624,36 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		}
 		return sql;
 	}
-//	/**
-//	 * Execute this query against the materialized database 
-//	 * The other way is to form simple query and work on the results from the program
-//	 * 
-//	 * @deprecated
-//	 * @param mdb
-//	 * @return
-//	 * @throws Exception 
-//	 */
-//	public Set<OboeQueryResult> execute(MDB mdb, boolean resultWithRid) throws Exception
-//	{
-//		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
-//		
-//		//for different DNF, union their results		
-//		for(Map.Entry<Integer, List<QueryMeasurement>> entry: m_queryMeasDNF.entrySet()){
-//			
-//			
-//			//for the query measurement conditions ONE DNF, intersect all the results
-//			List<QueryMeasurement> measAND = entry.getValue();
-//			
-//			Set<OboeQueryResult> oneDNFresult = executeOneCNF(mdb, resultWithRid, measAND);
-//			result.addAll(oneDNFresult);
-//		}
-//		
-//		System.out.println(Debugger.getCallerPosition()+"Basic query result="+result);
-//		return result;
-//	}
+
 
 	public int compareTo(OMQueryBasic o) {
 		
 		int cmp = m_queryLabel.compareTo(o.getQueryLabel());
-		//if(cmp!=0) return cmp;
 		return cmp;
 	}
 	
+	/**
+	 * Form a query string (to put to query file) from this basic OM query
+	 * @return
+	 */
+	public String formQueryString()
+	{
+		String queryString = "";
+		queryString +=Constant.BASIC_QUERY_START+this.m_queryLabel+"\n";		
+		queryString +=Constant.BASIC_QUERY_ENTITY+this.m_entityTypeNameCond+"\n";
+		
+		for(int dnfno: this.m_queryMeasDNF.keySet()){
+			List<QueryMeasurement> qmlist = m_queryMeasDNF.get(dnfno);
+			for(int qmno = 0; qmno< qmlist.size();qmno++){
+				QueryMeasurement qm = qmlist.get(qmno);
+				queryString += qm.formQueryString(qmno+1,dnfno)+"\n";
+			}
+		}
+			
+		queryString +=Constant.BASIC_QUERY_END+"\n";
+		
+		return queryString;
+	}
 
 	
 }

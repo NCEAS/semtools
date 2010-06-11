@@ -51,6 +51,20 @@ public class AnnotationSpecifier{
 	}
 	
 	/**
+	 * Get the entity type name of a given measurement label
+	 * 
+	 * @param measurementLabel
+	 * @return
+	 */
+	public String getEntityTypeName(String measurementLabel)
+	{
+		Measurement meas = m_annotation.getMeasurement(measurementLabel);
+		Observation obs = m_annotation.getObservation(meas);
+		
+		String entityTypeName = obs.getEntity().getName();
+		return entityTypeName;
+	}
+	/**
 	 * Set the default mappings from each column to each measurement
 	 */
 	public void setDefaultMapping()

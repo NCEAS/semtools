@@ -21,7 +21,7 @@ public class Constant {
 	public static String STANDARD = "Standard:";
 	public static String COND = "Cond:";
 	public static String AGGREGATION = "Aggregation:";
-	public static String CNFNO = "CNF:";
+	public static String DNFNO = "DNF:";
 	public static String CONTEXT_SEPARATOR = "->";
 	//
 	

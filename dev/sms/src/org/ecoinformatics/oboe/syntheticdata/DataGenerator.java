@@ -5,6 +5,7 @@ import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.oboe.util.Debugger;
+import org.ecoinformatics.oboe.util.MyRandom;
 import org.ecoinformatics.oboe.util.ObservationUtil;
 import org.ecoinformatics.oboe.Constant;
 
@@ -52,6 +53,8 @@ public class DataGenerator {
 	private List<String> m_rowStruct = null;
 	private Map<String, List> m_obsType2obsData = null;
 	private Map<Observation, Set> m_obsType2contexObsType= null;
+	
+	private int m_structure_row_num = 2; //one for attribute name, one row for attribute type
 	
 	public DataGenerator()
 	{
@@ -301,7 +304,7 @@ public class DataGenerator {
 				//if((lineno)<=10){
 				//	System.out.println(line);
 				//}
-				if(lineno>0){ //skip the first row because it's the row structure
+				if(lineno>(m_structure_row_num-1)){ //skip the first row because it's the row structure
 					extractOneRow(line,colnum);
 				}
 				++lineno;
@@ -335,8 +338,13 @@ public class DataGenerator {
 			throw new Exception("Line ="+line +" does not contain "+colnum+" columns");
 		}
 		List<Integer> row = new ArrayList<Integer>();
-		for(int i=0;i<oneRow.length;i++){
-			row.add(Integer.parseInt(oneRow[i]));
+		try{
+			for(int i=0;i<oneRow.length;i++){
+				row.add(Integer.parseInt(oneRow[i]));
+			}
+		}catch(Exception e){
+			System.out.println(Debugger.getCallerPosition()+"line="+line+"colnum="+colnum);
+			throw e;
 		}
 		m_dataset.add(row);
 	}
@@ -366,17 +374,56 @@ public class DataGenerator {
 		return rc;
 	}
 	
-	public Map<Integer, Integer> Statistic(String inDataFile, String measLabel) 
+	/**
+	 * For the given measurement labels, compute their data value count
+	 * @param inDataFile
+	 * @param measLabelList
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws Exception
+	 */
+	public Map<String, Map<Integer, Integer>> Statistic(String inDataFile, List<String> measLabelList) 
 		throws FileNotFoundException, IOException, Exception
 	{
+		Map<String, Map<Integer, Integer>> meas2_value2count = new TreeMap<String, Map<Integer, Integer>>();
+		
 		// Read data		
 		Map<String, List> measurement2ValueList = readData(inDataFile);
-		
 		if(measurement2ValueList==null||measurement2ValueList.size()==0)
 			return null;
-		
-		Map<Integer, Integer> value2count = new TreeMap<Integer,Integer>();
 		System.out.println(Debugger.getCallerPosition()+"measurement2ValueList size="+measurement2ValueList.size());
+
+		//For each measurement label, get it's value account
+		for(int i=0;i<measLabelList.size();i++){
+			String measLabel = measLabelList.get(i);
+			Map<Integer, Integer> value2count = Statistic(measurement2ValueList,measLabel);
+			meas2_value2count.put(measLabel, value2count);
+		}
+		
+		//Print the statistics
+		for(String measLabel: measLabelList){
+			Map<Integer, Integer> value2count = meas2_value2count.get(measLabel);
+			System.out.println(Debugger.getCallerPosition()+"measLabel="+measLabel+", value2count size="+value2count.size()+",value2count="+value2count);
+		}
+		
+		return meas2_value2count;
+	}
+
+	/**
+	 * For one measurement label, get its data value account
+	 * @param measurement2ValueList
+	 * @param measLabel
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws Exception
+	 */
+	private Map<Integer, Integer> Statistic(Map<String, List> measurement2ValueList, String measLabel) 
+		throws FileNotFoundException, IOException, Exception
+	{
+		Map<Integer, Integer> value2count = new TreeMap<Integer,Integer>();
+		
 		List<Integer> valueList = measurement2ValueList.get(measLabel);
 		
 		for(int i=0;i<valueList.size();i++){
@@ -628,14 +675,20 @@ public class DataGenerator {
 				newRow = retrieveExistRow(keyMeasurementList,index,ioMeasurement2uniqueRowValueSet);
 			}else{//i.e., (newRowList.size()+oldMinRowNum) >= oldMaxRowNum
 				//generate a random number in [0, oldMaxRowNum)
+				//int index = MyRandom.getGaussianInt(0,oldMaxRowNum);
 				int index = this.m_randnumGenerator.nextInt(oldMaxRowNum);
-				
+				//if(oldMaxRowNum==250){
+				//	System.out.println(Debugger.getCallerPosition()+"test...");
+				//}
+				if(index<0||index>=oldMaxRowNum){
+					throw new Exception("oldMaxRowNum="+oldMaxRowNum+",index="+index);
+				}
 				//get a new row for the key measurements from the existing row values col[index] 
 				
 				if(index<oldMinRowNum){
 					//these are rows with existing values
 					newRow = retrieveExistRow(keyMeasurementList,index,ioMeasurement2uniqueRowValueSet);
-				}else{
+				}else if(index>oldMinRowNum){
 					//these are rows which contain some old existing values (need to be consistent) and some newly added ones
 					newRow = newRowList.get(index-oldMinRowNum); 
 				}				
@@ -778,15 +831,21 @@ public class DataGenerator {
 			throws Exception
 	{
 		ArrayList<Integer> resultObsKeyRow = new ArrayList<Integer>();
-		for(int j=0;j<keyMeasurementList.size();j++){					
-			Measurement m = keyMeasurementList.get(j);
-			List keyColList =  ioMeasurement2RowValueList.get(m.getLabel());
-			
-			if(keyColList==null||keyColList.size()<=index){
-				throw new Exception("keyColList==null||keyColList.size()<=index");
+		List keyColList=null;
+		try{
+			for(int j=0;j<keyMeasurementList.size();j++){					
+				Measurement m = keyMeasurementList.get(j);
+				keyColList =  ioMeasurement2RowValueList.get(m.getLabel());
+				
+				if(keyColList==null||keyColList.size()<=index){
+					throw new Exception("keyColList==null||keyColList.size()<=index");
+				}
+				int oldColVal = (Integer)keyColList.get(index);
+				resultObsKeyRow.add(oldColVal);
 			}
-			int oldColVal = (Integer)keyColList.get(index);
-			resultObsKeyRow.add(oldColVal);
+		}catch(Exception e){
+			System.out.println(Debugger.getCallerPosition()+"index="+index+",keyColList.size()="+keyColList.size());
+			throw e;
 		}
 		
 		return resultObsKeyRow;
