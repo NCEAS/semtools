@@ -4,6 +4,7 @@ import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Context;
+import org.ecoinformatics.oboe.util.Debugger;
 import org.ecoinformatics.oboe.util.ObservationUtil;
 import org.ecoinformatics.oboe.Constant;
 
@@ -355,11 +356,40 @@ public class DataGenerator {
 		if(measurement2ValueList==null||measurement2ValueList.size()==0)
 			return true;
 		
+		System.out.println(Debugger.getCallerPosition()+"measurement2ValueList size="+measurement2ValueList.size());
+		int i=0;
+		for(Entry<String,List> entry: measurement2ValueList.entrySet()){
+			System.out.println(Debugger.getCallerPosition()+"i="+(i++)+",key="+entry.getKey()+", value size="+entry.getValue().size());
+		}
 		// Validate data
 		boolean rc = Validate(measurement2ValueList);
 		return rc;
 	}
 	
+	public Map<Integer, Integer> Statistic(String inDataFile, String measLabel) 
+		throws FileNotFoundException, IOException, Exception
+	{
+		// Read data		
+		Map<String, List> measurement2ValueList = readData(inDataFile);
+		
+		if(measurement2ValueList==null||measurement2ValueList.size()==0)
+			return null;
+		
+		Map<Integer, Integer> value2count = new TreeMap<Integer,Integer>();
+		System.out.println(Debugger.getCallerPosition()+"measurement2ValueList size="+measurement2ValueList.size());
+		List<Integer> valueList = measurement2ValueList.get(measLabel);
+		
+		for(int i=0;i<valueList.size();i++){
+			Integer cnt = value2count.get(valueList.get(i));
+			if(cnt==null){
+				value2count.put(valueList.get(i), 1);
+			}else{
+				value2count.put(valueList.get(i), cnt+1);
+			}
+		}
+		
+		return value2count;
+	}
 	
 	/**
 	 * Internally validate all the observation key measurements
@@ -1077,8 +1107,17 @@ public class DataGenerator {
 		}
 		dataPrintStream.append("\n");
 		
+		//2. write data type information
+		for(int i=0;i<m_rowStruct.size();i++){
+			dataPrintStream.append("bigint");
+			if(i<m_rowStruct.size()-1){
+				dataPrintStream.append(Constant.C_DATASET_SEPARATOR);
+			}
+		}
+		dataPrintStream.append("\n");
 		
-		//2. write data information
+		
+		//3. write data information
 		for(int i=0;i<m_dataset.size();i++){
 			ArrayList row = (ArrayList)(m_dataset.get(i));		
 			if(m_rowStruct.size()!=row.size()){

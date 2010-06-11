@@ -273,7 +273,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 	private String formSQLOneCNF(MDB mdb, boolean resultWithRid, List<QueryMeasurement> measAND) 
 		throws SQLException, Exception
 	{
-		System.out.println(Debugger.getCallerPosition()+Debugger.getWhoCalledMe()+"measAND="+measAND);
+		System.out.println(Debugger.getCallerPosition()+"measAND="+measAND);
 		String sql ="";
 		
 		//1. Get the measurements that need to be aggregated
@@ -319,7 +319,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 			List<QueryMeasurement> measAND, String targetSql) 
 		throws SQLException, Exception
 	{
-		System.out.println(Debugger.getCallerPosition()+Debugger.getWhoCalledMe()+"measAND="+measAND);
+		System.out.println(Debugger.getCallerPosition()+"measAND="+measAND);
 		String contextSql = formSQLOneCNF (mdb,resultWithRid,measAND);
 		
 		String sql = "SELECT tmp1.did, tmp1.record_id, tmp1.eid, tmp1.oid \n";
@@ -329,7 +329,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		
 		sql+="WHERE tmp1.oid = oi.oid AND oi.context_oid=tmp2.oid AND tmp1.did=tmp2.did AND tmp1.record_id=tmp2.record_id";
 		
-		System.out.println(Debugger.getCallerPosition()+Debugger.getWhoCalledMe()+"sql=\n"+sql);
+		System.out.println(Debugger.getCallerPosition()+"sql=\n"+sql);
 		return sql;
 	}
 	
@@ -345,7 +345,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 	private Set<OboeQueryResult> executeOneCNF(MDB mdb, boolean resultWithRid, List<QueryMeasurement> measAND)
 		throws Exception
 	{
-		System.out.println(Debugger.getCallerPosition()+Debugger.getWhoCalledMe()+"measAND="+measAND);
+		System.out.println(Debugger.getCallerPosition()+"measAND="+measAND);
 		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
 		
 		//1. Get the measurements that need to be aggregated

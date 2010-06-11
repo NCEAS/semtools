@@ -13,7 +13,7 @@ public class Debugger {
 	 * stack[0].getMethodName() = getWhoCalledMe
 	 * @return
 	 */
-	public static String getWhoCalledMe() {
+	private static String getWhoCalledMe() {
 		try {
 			throw new Throwable();
 		} catch ( Throwable e ) {
@@ -26,7 +26,7 @@ public class Debugger {
 	 * Get the line number the caller	 
 	 * @return
 	 */
-	public static int getCallerLineNum() {
+	private static int getCallerLineNum() {
 		try {
 			throw new Throwable();
 		} catch ( Throwable e ) {
@@ -44,7 +44,7 @@ public class Debugger {
 			throw new Throwable();
 		} catch ( Throwable e ) {
 			StackTraceElement stack[] = e.getStackTrace();
-			return (stack[1].getFileName()+":"+stack[1].getLineNumber()+": ");
+			return (stack[1].getFileName()+":"+stack[1].getLineNumber()+": "+stack[1].getMethodName()+":");
 		}
 	}
 	
@@ -53,7 +53,7 @@ public class Debugger {
 	 * stack[0].getMethodName() = getStackTraceCaller
 	 * @return
 	 */
-	public static String getStackTraceCaller() {
+	private static String getStackTraceCaller() {
 		try {
 			throw new Throwable();
 		} catch ( Throwable e ) {
