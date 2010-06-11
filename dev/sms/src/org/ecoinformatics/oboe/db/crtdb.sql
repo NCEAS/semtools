@@ -63,6 +63,15 @@ CREATE TABLE measurement_instance(
 	oid bigint REFERENCES observation_instance (oid),
 	mtypelabel char(32), 
 	mvalue varchar(64));
+	
+CREATE TABLE measurement_instance_long(
+	mid bigint PRIMARY KEY,
+	did bigint REFERENCES data_annotation(did),
+	record_id bigint, 
+	oid bigint REFERENCES observation_instance (oid),
+	mtypelabel char(32), 
+	mvalue bigint);
+	
 CREATE TABLE context_instance(	
 	did bigint REFERENCES data_annotation(did), 
 	record_id bigint, 

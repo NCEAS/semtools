@@ -1,6 +1,7 @@
 DELETE FROM ei_compress;
 DELETE FROM context_instance;
 DELETE FROM measurement_instance;
+DELETE FROM measurement_instance_long;
 DELETE FROM observation_instance;
 DELETE FROM entity_instance;
 DELETE FROM data_annotation;
