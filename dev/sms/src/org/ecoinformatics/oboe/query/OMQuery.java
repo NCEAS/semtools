@@ -368,15 +368,15 @@ public class OMQuery {
 	 * @return
 	 * @throws Exception 
 	 */
-	public Set<OboeQueryResult> execute(int queryStrategy, boolean resultWithRecord) 
+	public Set<OboeQueryResult> execute(String dbname,int queryStrategy, boolean resultWithRecord) 
 		throws Exception
 	{
 		Set<OboeQueryResult> queryResultSet = null;
 		if(queryStrategy == Constant.QUERY_REWRITE){
-			RawDB rawdb = new RawDB();
+			RawDB rawdb = new RawDB(dbname);
 			queryResultSet = execute(rawdb,resultWithRecord);
 		}else if(queryStrategy == Constant.QUERY_MATERIALIZED_DB){
-			MDB materializedDB = new MDB();
+			MDB materializedDB = new MDB(dbname);
 			queryResultSet = execute(materializedDB,resultWithRecord);			
 		}else if(queryStrategy == Constant.QUERY_PARTIAL_MATERIALIZED_DB){
 			System.out.println(Debugger.getCallerPosition() + "To come...");

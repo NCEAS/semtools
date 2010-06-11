@@ -374,12 +374,12 @@ public class OboeModel {
 	  * @param A
 	 * @throws Exception 
 	  */
-	 public void toRDB(String dataFileName,String annotationFileName, Annotation A) throws Exception
+	 public void toRDB(String dbname,String dataFileName,String annotationFileName, Annotation A) throws Exception
 	 {
 		 
 		 System.out.println(Debugger.getCallerPosition()+"Begin toRDB");
 		 long t1 = System.currentTimeMillis();
-		 MDB db = new MDB();
+		 MDB db = new MDB(dbname);
 		 
 		 db.open();
 		 System.out.println(Debugger.getCallerPosition()+"Import annotation file...");

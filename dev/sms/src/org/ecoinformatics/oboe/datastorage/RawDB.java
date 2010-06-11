@@ -26,6 +26,9 @@ public class RawDB extends PostgresDB{
 	
 	public String TB_PREFIX = "tb";
 	
+	public RawDB(String dbname){
+		super.setDb(dbname);		
+	}
 	
 	/**
 	 * Get the data table id for this data file

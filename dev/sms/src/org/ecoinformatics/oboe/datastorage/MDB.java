@@ -60,6 +60,10 @@ public class MDB extends PostgresDB{
 	String m_maxObsInstanceIdSql = "SELECT last_value FROM oid_seq;";
 	String m_maxMeasInstanceIdSql = "SELECT last_value FROM mid_seq;";
 	
+	public MDB(String dbname){
+		super.setDb(dbname);		
+	}
+	
 	public String getMmeasTypeTable() {
 		return m_measTypeTable;
 	}

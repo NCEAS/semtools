@@ -1,4 +1,4 @@
-package org.ecoinformatics.oboe;
+package org.ecoinformatics.oboe.model;
 
 public class ObsTypeKey implements Comparable<ObsTypeKey>{
 	String obsTypeLabel;

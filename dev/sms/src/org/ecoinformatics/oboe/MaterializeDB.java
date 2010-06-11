@@ -31,6 +31,7 @@ import org.ecoinformatics.oboe.model.ContextInstance;
 import org.ecoinformatics.oboe.model.EntityInstance;
 import org.ecoinformatics.oboe.model.MeasurementInstance;
 import org.ecoinformatics.oboe.model.OboeModel;
+import org.ecoinformatics.oboe.model.ObsTypeKey;
 import org.ecoinformatics.oboe.model.ObservationInstance;
 import org.ecoinformatics.oboe.syntheticdata.AnnotationSpecifier;
 import org.ecoinformatics.oboe.util.Debugger;
@@ -640,7 +641,8 @@ public class MaterializeDB {
 	 */
 	public static OboeModel MateriaDB(
 			final String emlFileName, String dataFileName, String annotFileName, String oboeFileName,
-			String rdfFileName, boolean bMaterializeContextChain) 
+			String rdfFileName, boolean bMaterializeContextChain,
+			String dbname) 
 		throws Exception		
 	{
 		
@@ -729,7 +731,7 @@ public class MaterializeDB {
 		t1 = System.currentTimeMillis();
 		OBOE.toCSV(oboeFileName);
 		OBOE.toRDF(rdfFileName);
-		OBOE.toRDB(dataFileName,annotFileName,A);
+		OBOE.toRDB(dbname,dataFileName,annotFileName,A);
 		OBOE.saveInstanceId();
 		t2 = System.currentTimeMillis();
 		System.out.println(Debugger.getCallerPosition()+"Time used (File writing): " + (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
@@ -767,9 +769,9 @@ public class MaterializeDB {
 		
 		// E.g.
 		// ./MaterializeDB null er-2008-ex2-annot.xml er-2008-ex2-data.txt er-2008-ex2 
-		if(args.length<4||args.length>5){
+		if(args.length<5||args.length>6){
 			System.out.println("Usage: ./MaterializeDB <1. eml file name> <2. annotation file name> " +
-					"<3. data file name> <4. output file prefix> [<5. bool: materialize context chain>]");
+					"<3. data file name> <4. output file prefix> <5. dbname> [<5. bool: materialize context chain>]");
 			System.out.println("[<5. bool: materialize context chain> default false\n");
 			return;
 		}
@@ -779,8 +781,9 @@ public class MaterializeDB {
 		String dataFileName = Constant.localUriPrefix +args[2];
 		String oboeFileName = Constant.localUriPrefix +args[3] +Constant.C_OUT_CSV_FILE_SUFFIX;
 		String rdfFileName =  Constant.localUriPrefix +args[3] +Constant.C_OUT_RDF_FILE_SUFFIX;
-		if(args.length==5){
-			bMaterializeContextChain = Boolean.parseBoolean(args[4]);
+		String dbname = args[4];
+		if(args.length==6){
+			bMaterializeContextChain = Boolean.parseBoolean(args[5]);
 		}
 			
 		// 1. Confirm parameters
@@ -793,7 +796,7 @@ public class MaterializeDB {
 		
 		// 2. Materialize DB
 		try {
-			OboeModel OBOE = MateriaDB(emlFileName,dataFileName, annotFileName, oboeFileName, rdfFileName, bMaterializeContextChain);
+			OboeModel OBOE = MateriaDB(emlFileName,dataFileName, annotFileName, oboeFileName, rdfFileName, bMaterializeContextChain,dbname);
 			System.out.println(Debugger.getCallerPosition()+"********************\n" +
 					Debugger.getCallerPosition()+"Output OBOE CSV file is in: "+oboeFileName+"\n"+
 					Debugger.getCallerPosition()+"Output OBOE RDF file is in: "+rdfFileName+"\n"+
