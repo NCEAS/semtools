@@ -51,32 +51,23 @@ public class RawDB extends PostgresDB{
 		if(pos>=0){
 			pureDataFileName = dataFileName.trim().substring(pos+1);
 		} 
-//		
-//		String sql = "SELECT did FROM "+super.m_datasetAnnotTable+" WHERE dataset_file='"+pureDataFileName+"';";
-//		
-//		System.out.println(Debugger.getCallerPosition()+"sql="+sql);
-//		
-//		//Check whether this data file exist in the data table or not, if it exists already, directly get the id
-//		Statement stmt = m_conn.createStatement();		
-//		ResultSet rs = stmt.executeQuery(sql);
-//		
-//		while(rs.next()){
-//			tbid = rs.getLong(1);
-//			break;
-//		}
-//		rs.close();
-//		stmt.close();
 		
 		Pair<Long,Long> tbId_pair_annotId = getDataTableId(pureDataFileName);
 		
 		long tbid = tbId_pair_annotId.getFirst();
 		//If the data file does not exist in the data table yet, insert this data file into the data table, and get data table id
 		if(tbid<0L){
-			String insSQL = "INSERT INTO " + m_datasetAnnotTable +"(dataset_file) VALUES(?);";
+			String insSQL = "INSERT INTO " + m_datasetAnnotTable +"(dataset_file,with_rawdata) VALUES(?,?);";
 			PreparedStatement pstmt = m_conn.prepareStatement(insSQL);
 			pstmt.setString(1,pureDataFileName);
+			pstmt.setBoolean(2, true);
 			pstmt.execute();
 			tbid = super.getMaxDatasetId();
+		}else{
+			String updSql = "UPDATE " + m_datasetAnnotTable +" SET with_rawdata='t' WHERE did=" +tbid+";";
+			Statement stmt = m_conn.createStatement();
+			stmt.executeUpdate(updSql);
+			stmt.close();
 		}
 		
 		if(tbid<0L){
@@ -307,7 +298,7 @@ public class RawDB extends PostgresDB{
 			System.out.println(Debugger.getCallerPosition()+"1. EXECUTE: "+dropTbsql);
 			stmt.execute(dropTbsql);
 			
-			String updAnnotsql = "UPDATE "+ this.m_datasetAnnotTable +" SET with_rawdata 'f'" +"WHERE did="+tbId;
+			String updAnnotsql = "UPDATE "+ this.m_datasetAnnotTable +" SET with_rawdata ='f'" +" WHERE did="+tbId;
 			System.out.println(Debugger.getCallerPosition()+"2. EXECUTE: "+updAnnotsql);
 			stmt.execute(updAnnotsql);
 			stmt.close();
@@ -315,7 +306,7 @@ public class RawDB extends PostgresDB{
 		
 		//clean this table only
 		Statement stmt = m_conn.createStatement();
-		String updAnnotsql = "DELETE FROM "+ this.m_datasetAnnotTable +"WHERE annotId is NULL AND with_rawdata='f'";
+		String updAnnotsql = "DELETE FROM "+ this.m_datasetAnnotTable +" WHERE annotId is NULL AND with_rawdata='f'";
 		System.out.println(Debugger.getCallerPosition()+"4. EXECUTE: "+updAnnotsql);
 		stmt.execute(updAnnotsql);
 		stmt.close();

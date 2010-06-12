@@ -729,8 +729,8 @@ public class MaterializeDB {
 		System.out.println("\n-----------\n");
 		
 		t1 = System.currentTimeMillis();
-		OBOE.toCSV(oboeFileName);
-		OBOE.toRDF(rdfFileName);
+		//OBOE.toCSV(oboeFileName);
+		//OBOE.toRDF(rdfFileName);
 		OBOE.toRDB(dbname,dataFileName,annotFileName,A);
 		OBOE.saveInstanceId();
 		t2 = System.currentTimeMillis();

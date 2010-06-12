@@ -318,12 +318,17 @@ public class MDB extends PostgresDB{
 	 * @return
 	 * @throws SQLException 
 	 */
-	private void setMeasTypeParam(PreparedStatement stmt, Long annotId,Observation ot, Measurement mt) throws SQLException{
+	private void setMeasTypeParam(PreparedStatement stmt, Long annotId,Observation ot, Measurement mt) 
+		throws SQLException, Exception
+	{
 		String characteristicName = "";
 		String standardName = "";
 		String protocalName= "";
 		
 		if(mt.getCharacteristics()!=null){
+			if(mt.getCharacteristics().size()==0){
+				throw new Exception("mt does not have characteristics!");
+			}
 			characteristicName = mt.getCharacteristics().get(0).getName();
 		}
 		if(mt.getStandard()!=null){
@@ -508,7 +513,7 @@ public class MDB extends PostgresDB{
 	 * @param A
 	 * @throws SQLException 
 	 */
-	public long importAnnotation(Annotation A, String annotationFileName) throws SQLException
+	public long importAnnotation(Annotation A, String annotationFileName) throws SQLException,Exception
 	{
 		//entity type,observation type, measurement type, context type
 		List<Observation> obsTypeList= A.getObservations();
@@ -602,7 +607,7 @@ public class MDB extends PostgresDB{
 		
 		PreparedStatement pstmtEntityCompressed = m_conn.prepareStatement(this.m_insertEICompress);
 		 //entity instance 
-		System.out.println(Debugger.getCallerPosition()+"import " + oboe.m_entityInstances.size() +" entity instances");
+		System.out.println(Debugger.getCallerPosition()+"import " + oboe.m_entityInstances.size() +" entity instances...");
 		for(EntityInstance ei: oboe.m_entityInstances){
 			 setEntityInstanceParam(pstmtEntity, ei, dId);
 			 pstmtEntity.execute();
@@ -611,7 +616,7 @@ public class MDB extends PostgresDB{
 			 execEICompress(pstmtEntityCompressed, ei, dId);
 		 }
 		 
-		 System.out.println(Debugger.getCallerPosition()+"import " + oboe.m_observationInstances.size() +" observation instances");
+		 System.out.println(Debugger.getCallerPosition()+"import " + oboe.m_observationInstances.size() +" observation instances...");
 		 //observation instance
 		 for(ObservationInstance oi: oboe.m_observationInstances){
 			 setObsInstanceParam(pstmtObs, oi, dId);
@@ -619,14 +624,14 @@ public class MDB extends PostgresDB{
 		 }
 
 		 //measurement instance
-		 System.out.println(Debugger.getCallerPosition()+"import " + oboe.m_measurementInstances.size() +" measurement instances");
+		 System.out.println(Debugger.getCallerPosition()+"import " + oboe.m_measurementInstances.size() +" measurement instances...");
 		 for(MeasurementInstance mi: oboe.m_measurementInstances){
 			 this.setMeasInstanceParam(pstmtMeas, mi, dId);
 			 pstmtMeas.execute();
 		 }
 
 		 //context instance
-		 System.out.println(Debugger.getCallerPosition()+"import " + oboe.m_contextInstances.size() +" context instances");
+		 System.out.println(Debugger.getCallerPosition()+"import " + oboe.m_contextInstances.size() +" context instances...");
 		 for(ContextInstance ci: oboe.m_contextInstances){
 			 this.setContextInstanceParam(pstmtContext, ci,dId);
 			 pstmtContext.execute();

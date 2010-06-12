@@ -90,6 +90,17 @@ public class AnnotationSpecifier{
 	{
 		FileOutputStream annotOutputStream = new FileOutputStream(outAnnotFileName);
 		
+		int pos = outAnnotFileName.lastIndexOf("/");
+		if(pos<0)
+			m_annotation.setEMLPackage(outAnnotFileName);
+		else
+			m_annotation.setEMLPackage(outAnnotFileName.substring(pos+1));
+		Ontology o =new Ontology();
+		o.setPrefix(Constant.ANNOTATION_DEFAULT_RELATIONSHIP_URI);
+		o.setURI(null);
+		m_annotation.addOntology(o);
+		m_annotation.setDataTable("0");
+		
 		// Form mapping for each measurement	
 		setDefaultMapping();
 		
@@ -163,6 +174,7 @@ public class AnnotationSpecifier{
 		Observation obsType = null;
 		if(oneAnnotate.length>=2){
 			obsType = extractObs(oneAnnotate[0]);
+			
 			m_annotation.addObservation(obsType);
 			float factor = extractMeasurements(obsType,oneAnnotate[1]);
 			if(factor<0){
@@ -190,8 +202,8 @@ public class AnnotationSpecifier{
 		
 		if(obsAnnotate.length>=2){
 			String obsLabel = obsAnnotate[0]; 
-			obs.setLabel(obsLabel);			
-			
+			obs.setLabel(obsLabel);		
+						
 			String entityLabel = obsAnnotate[1];
 			Entity entity = new Entity();
 			entity.setName(entityLabel);
@@ -252,7 +264,14 @@ public class AnnotationSpecifier{
 		}
 		
 		for(int i=0;i<numberOfMeasurements;i++){
-			Measurement m = extractOneMeasurement(measurements[i]); 
+			Measurement m = extractOneMeasurement(measurements[i]);
+			Ontology o = new Ontology();
+			o.setPrefix(Constant.ANNOTATION_DEFAULT_ONTOLOGY);
+			Characteristic cha = new Characteristic();
+			cha.setOntology(o);
+			//cha.setURI("chauri");
+			cha.setName(m.getLabel()+"cha");			
+			m.addCharacteristic(cha);
 			obs.addMeasurement(m);
 		}
 		

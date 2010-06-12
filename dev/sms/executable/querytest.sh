@@ -23,11 +23,11 @@ java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor mobrien-query1.txt 2 ob
 
 echo "==============================================="
 echo "query synthetic data"
-java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.01 1 oboe_sync 1
-java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.05 1 oboe_sync 1
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.01 1 oboe_syn 1
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.05 1 oboe_syn 1
 
-java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.1 1 oboe_sync 1
-java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.1 2 oboe_sync 1
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.1 1 oboe_syn 1
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.1 2 oboe_syn 1
 
-java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.2 1 oboe_sync 1
-java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.4 1 oboe_sync 1
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.2 1 oboe_syn 1
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.4 1 oboe_syn 1

@@ -26,7 +26,7 @@ public class SyntheticDataGenerator {
 		System.out.println("1. Read annotation specification file ...");
 		AnnotationSpecifier a = new AnnotationSpecifier();
 		a.readAnnotationSpecFile(inAnnotSpecFileName);
-		
+				
 		//2. write to annotation files (for consistency checking purpose, this will not be used in the generation process)
 		System.out.println("2. Write to annotation files ...");
 		a.WriteAnnotation(outAnnotFileName);

@@ -640,7 +640,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 	{
 		String queryString = "";
 		queryString +=Constant.BASIC_QUERY_START+this.m_queryLabel+"\n";		
-		queryString +=Constant.BASIC_QUERY_ENTITY+this.m_entityTypeNameCond+"\n";
+		queryString +=Constant.BASIC_QUERY_ENTITY+"'"+this.m_entityTypeNameCond+"'\n";
 		
 		for(int dnfno: this.m_queryMeasDNF.keySet()){
 			List<QueryMeasurement> qmlist = m_queryMeasDNF.get(dnfno);
