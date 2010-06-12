@@ -306,7 +306,7 @@ public class RawDB extends PostgresDB{
 		
 		//clean this table only
 		Statement stmt = m_conn.createStatement();
-		String updAnnotsql = "DELETE FROM "+ this.m_datasetAnnotTable +" WHERE annotId is NULL AND with_rawdata='f'";
+		String updAnnotsql = "DELETE FROM "+ this.m_datasetAnnotTable +" WHERE annot_id is NULL AND with_rawdata='f'";
 		System.out.println(Debugger.getCallerPosition()+"4. EXECUTE: "+updAnnotsql);
 		stmt.execute(updAnnotsql);
 		stmt.close();
