@@ -1,5 +1,29 @@
+
+echo "1. Generate annotation specifications and test data"
+java -cp oboe.jar org.ecoinformatics.oboe.AnnotSpecGenerator syn 20
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_1 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_2 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_3 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_4 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_5 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_6 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_7 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_8 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_9 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_10 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_11 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_12 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_13 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_14 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_15 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_16 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_17 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_18 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_19 5000
+java -cp oboe.jar org.ecoinformatics.oboe.SyntheticDataGenerator syn_20 5000
 echo
-echo "Clean database first..."
+echo "2. Clean database first..."
+echo " (0. both, 1: mdb, 2: rawdb)"
 echo
 java -cp oboe.jar -Xmx4096m org.ecoinformatics.oboe.TBCleaner syn_1-n5000-data.txt oboe_syn 0
 java -cp oboe.jar -Xmx4096m org.ecoinformatics.oboe.TBCleaner syn_2-n5000-data.txt oboe_syn 0
@@ -22,7 +46,7 @@ java -cp oboe.jar -Xmx4096m org.ecoinformatics.oboe.TBCleaner syn_18-n5000-data.
 java -cp oboe.jar -Xmx4096m org.ecoinformatics.oboe.TBCleaner syn_19-n5000-data.txt oboe_syn 0
 java -cp oboe.jar -Xmx4096m org.ecoinformatics.oboe.TBCleaner syn_20-n5000-data.txt oboe_syn 0
 echo
-echo "Load synthetic data ............."
+echo "3. Load synthetic data ............."
 echo "need to run sync_data_generator.sh first"
 java -cp oboe.jar org.ecoinformatics.oboe.RawDataLoader syn_1-n5000-data.txt oboe_syn
 java -cp oboe.jar org.ecoinformatics.oboe.RawDataLoader syn_2-n5000-data.txt oboe_syn
@@ -45,7 +69,7 @@ java -cp oboe.jar org.ecoinformatics.oboe.RawDataLoader syn_18-n5000-data.txt ob
 java -cp oboe.jar org.ecoinformatics.oboe.RawDataLoader syn_19-n5000-data.txt oboe_syn
 java -cp oboe.jar org.ecoinformatics.oboe.RawDataLoader syn_20-n5000-data.txt oboe_syn
 echo
-echo "Materialize synthatic data........."
+echo "4. Materialize synthatic data........."
 java -cp oboe.jar -Xmx4096m org.ecoinformatics.oboe.MaterializeDB null syn_1-annot.xml syn_1-n5000-data.txt syn_1 oboe_syn >resultlog/syn_1.txt
 java -cp oboe.jar -Xmx4096m org.ecoinformatics.oboe.MaterializeDB null syn_2-annot.xml syn_2-n5000-data.txt syn_2 oboe_syn >resultlog/syn_2.txt
 java -cp oboe.jar -Xmx4096m org.ecoinformatics.oboe.MaterializeDB null syn_3-annot.xml syn_3-n5000-data.txt syn_3 oboe_syn >resultlog/syn_3.txt

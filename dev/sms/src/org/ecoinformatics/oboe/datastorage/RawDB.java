@@ -52,7 +52,8 @@ public class RawDB extends PostgresDB{
 			pureDataFileName = dataFileName.trim().substring(pos+1);
 		} 
 		
-		Pair<Long,Long> tbId_pair_annotId = getDataTableId(pureDataFileName);
+		//Pair<Long,Long> tbId_pair_annotId = getDataTableId(pureDataFileName);
+		Pair<Long,String> tbId_pair_annotId = getDataTableId(pureDataFileName);
 		
 		long tbid = tbId_pair_annotId.getFirst();
 		//If the data file does not exist in the data table yet, insert this data file into the data table, and get data table id
@@ -286,7 +287,8 @@ public class RawDB extends PostgresDB{
 		if(pos>=0){
 			pureDataFileName = dataFileName.trim().substring(pos+1);
 		} 
-		Pair<Long,Long> tbId_pair_annotId = getDataTableId(pureDataFileName);
+		//Pair<Long,Long> tbId_pair_annotId = getDataTableId(pureDataFileName);
+		Pair<Long,String> tbId_pair_annotId = getDataTableId(pureDataFileName);
 		
 		long tbId = tbId_pair_annotId.getFirst();
 		if(tbId>=0){
@@ -306,7 +308,7 @@ public class RawDB extends PostgresDB{
 		
 		//clean this table only
 		Statement stmt = m_conn.createStatement();
-		String updAnnotsql = "DELETE FROM "+ this.m_datasetAnnotTable +" WHERE annot_id is NULL AND with_rawdata='f'";
+		String updAnnotsql = "DELETE FROM "+ this.m_datasetAnnotTable +" WHERE annot_uri is NULL AND with_rawdata='f'";
 		System.out.println(Debugger.getCallerPosition()+"4. EXECUTE: "+updAnnotsql);
 		stmt.execute(updAnnotsql);
 		stmt.close();

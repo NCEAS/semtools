@@ -33,6 +33,7 @@ public class AnnotSpecGenerator {
 	
 		for(int i=0;i<probability.length;i++){
 			int j=0;
+			//put the measurement no. with selectivity control
 			for(;j<(int)(probability[i]*numAnnotSpecFiles);j++){
 				List<Integer> ontTbAtt = tableAttributes.get(j);
 				ontTbAtt.add(i+1);
@@ -40,10 +41,16 @@ public class AnnotSpecGenerator {
 			if(j==0){
 				//TODO: HP for 0.05 and 0.01				
 			}
+			
+			//put the measurements without selectivity control
 			for(;j<numAnnotSpecFiles;j++){
-				List<Integer> ontTbAtt = tableAttributes.get(j);
+				List<Integer> oneTbAtt = tableAttributes.get(j);
+				
 				int mno = MyRandom.getRand(probability.length+1,maximum_attribute_no);
-				ontTbAtt.add(mno);
+				while(oneTbAtt.contains(mno)){
+					mno = MyRandom.getRand(probability.length+1,maximum_attribute_no);
+				}
+				oneTbAtt.add(mno);
 			}
 		}
 		

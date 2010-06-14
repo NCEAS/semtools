@@ -41,7 +41,9 @@ public class MDB extends PostgresDB{
 	private String m_contextInstanceTable = "context_instance";
 	public static String m_entityInstanceCompressTable = "ei_compress";
 	
-	protected String m_insertDatasetAnnot = "INSERT INTO " + m_datasetAnnotTable +"(annot_id,dataset_file) VALUES(?,?);";
+	//protected String m_insertDatasetAnnot = "INSERT INTO " + m_datasetAnnotTable +"(annot_id,dataset_file) VALUES(?,?);";
+	String m_insertAnnotation = "INSERT INTO " + m_datasetAnnotTable +"(dataset_file,annot_uri) VALUES(?,?);";
+	String m_insertDatasetAnnot = "INSERT INTO " + m_datasetAnnotTable +"(dataset_file) VALUES(?);";
 	String m_insertEntityInstance ="INSERT INTO " +m_entityInstanceTable + "(eid,did,record_id,etype) VALUES(?,?,?,?);";
 	String m_insertObservationInstance ="INSERT INTO " +m_obsInstanceTable + "(oid,did,record_id,eid,otypelabel) VALUES(?,?,?,?,?);";
 	String m_insertMeasurementInstance ="INSERT INTO " +m_measInstanceTable + "(mid,did,record_id,oid,mtypelabel,mvalue) VALUES(?,?,?,?,?,?);";
@@ -49,7 +51,7 @@ public class MDB extends PostgresDB{
 	
 	String m_insertEICompress ="INSERT INTO " +m_entityInstanceCompressTable + " VALUES(?,?,?);";
 	
-	String m_insertAnnotation = "INSERT INTO annotation(annot_uri) VALUES(?);";
+	//String m_insertAnnotation = "INSERT INTO annotation(annot_uri) VALUES(?);";
 	String m_insertObservationType = "INSERT INTO " + m_obsTypeTable + " VALUES(?,?,?,?);";
 	String m_insertMeasurementType = "INSERT INTO " + m_measTypeTable + " VALUES(?,?,?,?,?,?,?)";
 	String m_insertContextType = "INSERT INTO " + m_contextTypeTable + " VALUES(?,?,?,?,?)";
@@ -417,103 +419,115 @@ public class MDB extends PostgresDB{
 	
 
 	
-	/**
-	 * Insert into the dataset_annotation table the dataset file (it's did is automatically created) and its related annotation id
-	 * @param datasetFileName
-	 * @param annotation_id
-	 * @return
-	 * @throws SQLException 
-	 */
-	private long insertDatasetFile(String datasetFileName, long annotation_id) throws SQLException,Exception
-	{
-		if(annotation_id<0){
-			throw new Exception("insertDatasetFile, but new annotation id <0!!!!");
-		}
-		Pair<Long,Long> tbid_annotid_pairs = super.getDataTableId(datasetFileName);
-		
-		long tbid=tbid_annotid_pairs.getFirst();
-		long oldAnnotId = tbid_annotid_pairs.getSecond();
-		
-		long maxDatasetId = -1L;
-		if(tbid<0){
-			PreparedStatement pstmt = m_conn.prepareStatement(m_insertDatasetAnnot);
-			pstmt.setLong(1, annotation_id);
-			pstmt.setString(2, datasetFileName);
-			pstmt.execute();
-			pstmt.close();
-			
-			maxDatasetId = getMaxDatasetId();
-		}else{
-			if(oldAnnotId>0){
-				throw new Exception(Debugger.getCallerPosition()+"update data annotation, but there is old annotation alreadyCLEAN THEM!!");
-				//System.out.println(Debugger.getCallerPosition()+"update data annotation, but there is old annotation alreadyCLEAN THEM!!");
-				//delete(datasetFileName);
-			}
-			String sql = "UPDATE " + this.m_datasetAnnotTable + " SET annot_id="+annotation_id +" WHERE did="+tbid;
-			System.out.println(Debugger.getCallerPosition()+"Execute: "+sql);
-			Statement stmt = m_conn.createStatement();
-			stmt.execute(sql);
-			stmt.close();
-			
-			maxDatasetId = tbid;
-		}
-		
-		//PreparedStatement pstmt = m_conn.prepareStatement(m_insertDatasetAnnot);
-		//pstmt.setLong(1, annotation_id);
-		//pstmt.setString(2, datasetFileName);
-		//pstmt.execute();
-		//pstmt.close();
-		//long maxDatasetId = getMaxDatasetId();
-		
-		return maxDatasetId;		
-	}
+//	/**
+//	 * Insert into the dataset_annotation table the dataset file (it's did is automatically created) and its related annotation id
+//	 * @param datasetFileName
+//	 * @param annotation_id
+//	 * @return
+//	 * @throws SQLException 
+//	 */
+//	private long insertDatasetFile(String datasetFileName, long annotation_id) throws SQLException,Exception
+//	{
+//		if(annotation_id<0){
+//			throw new Exception("insertDatasetFile, but new annotation id <0!!!!");
+//		}
+//		//Pair<Long,Long> tbid_annotid_pairs = super.getDataTableId(datasetFileName);
+//		Pair<Long,String> tbid_annotid_pairs = super.getDataTableId(datasetFileName);
+//		
+//		long tbid=tbid_annotid_pairs.getFirst();
+//		//long oldAnnotId = tbid_annotid_pairs.getSecond();
+//		String oldAnnotUrl = tbid_annotid_pairs.getSecond();
+//		
+//		long maxDatasetId = -1L;
+//		if(tbid<0){
+//			PreparedStatement pstmt = m_conn.prepareStatement(m_insertDatasetAnnot);
+//			//pstmt.setLong(1, annotation_id);
+//			pstmt.setString(1, datasetFileName);
+//			pstmt.execute();
+//			pstmt.close();
+//			
+//			maxDatasetId = getMaxDatasetId();
+//		}else{
+//			//if(oldAnnotId>0)
+//			if(oldAnnotUrl!=null&&oldAnnotUrl.length()>0)
+//			{
+//				throw new Exception(Debugger.getCallerPosition()+"update data annotation, but there is old annotation alreadyCLEAN THEM!!");
+//				//System.out.println(Debugger.getCallerPosition()+"update data annotation, but there is old annotation alreadyCLEAN THEM!!");
+//				//delete(datasetFileName);
+//			}
+//			//String sql = "UPDATE " + this.m_datasetAnnotTable + " SET annot_id="+annotation_id +" WHERE did="+tbid;
+//			String sql = "UPDATE " + this.m_datasetAnnotTable + " SET annot_uri="+oldAnnotUrl +" WHERE did="+tbid;
+//			System.out.println(Debugger.getCallerPosition()+"Execute: "+sql);
+//			Statement stmt = m_conn.createStatement();
+//			stmt.execute(sql);
+//			stmt.close();
+//			
+//			maxDatasetId = tbid;
+//		}
+//
+//		
+//		return maxDatasetId;		
+//	}
+	
 	/**
 	 * Insert the annotation URI to the table, and get the last annotation. 
 	 * 
 	 * @param annotationUri
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception 
 	 */
-	private long insAnnotationFile(String annotationUri) throws SQLException
+	private long insAnnotationFile(String dataFileName,String annotationUri) 
+		throws Exception
 	{
-		PreparedStatement pstmt = m_conn.prepareStatement(m_insertAnnotation);
-		pstmt.setString(1, annotationUri);
-		pstmt.execute();
-		pstmt.close();
+		//get pure data file name
+		int pos = dataFileName.lastIndexOf("/");
+		String pureDataFileName = dataFileName.trim();
+		if(pos>=0)pureDataFileName = dataFileName.trim().substring(pos+1);
 		
-		long maxAnnotId = getMaxAnnotId();
-		return maxAnnotId;
+		//get pure annotation uri
+		pos = annotationUri.lastIndexOf("/");
+		String pureAnnotationUri = annotationUri.trim();		
+		if(pos>=0)pureAnnotationUri = pureAnnotationUri.trim().substring(pos+1);
+		
+		//get the table id-annotation url pair for a given data file
+		Pair<Long,String> tbid_annoturl_pairs = super.getDataTableId(pureDataFileName);
+		long tbid=tbid_annoturl_pairs.getFirst();
+		String oldAnnotUrl = tbid_annoturl_pairs.getSecond();
+		
+		if(tbid<0){
+			//there is no record in the table corresponds to this data file
+			PreparedStatement pstmt = m_conn.prepareStatement(m_insertAnnotation);
+		
+			pstmt.setString(1, pureDataFileName);
+			pstmt.setString(2, pureAnnotationUri);
+			pstmt.execute();
+			pstmt.close();
+		}else{
+			//there is record for this data file already
+			if(oldAnnotUrl==null||oldAnnotUrl.length()==0){
+				Statement stmt = m_conn.createStatement();
+				String updAnnotsql = "UPDATE "+ this.m_datasetAnnotTable +" SET annot_uri = '"+ pureAnnotationUri +"' WHERE did="+tbid+";";
+				System.out.println(Debugger.getCallerPosition()+"3. EXECUTE: "+updAnnotsql);
+				stmt.execute(updAnnotsql);
+				stmt.close();
+			}else{
+				throw new Exception("There exists old annotation url = "+ oldAnnotUrl +" for data file="+dataFileName); 
+			}
+		}
+		
+		//long maxAnnotId = getMaxAnnotId();
+		long maxDatasetId = this.getMaxDatasetId();
+		//return maxAnnotId;
+		return maxDatasetId;
 	}
 	
-//	public void updateDataAnnotation(String dataFileName,Long annotId) throws SQLException, Exception
-//	{
-//		if(annotId<0)
-//			return;
-//		Pair<Long,Long> tbid_annotid_pairs = super.getDataTableId(dataFileName);
-//		
-//		long tbid=tbid_annotid_pairs.getFirst();
-//		long oldAnnotId = tbid_annotid_pairs.getSecond();
-//		
-//		if(tbid<0){
-//			...
-//		}else{
-//			if(annotId>0){
-//				throw new Exception("update data annotation, but there is old annotation already!!");
-//			}
-//			String sql = "UPDATE " + this.m_datasetAnnotTable + " SET annot_id="+annotId;
-//			System.out.println(Debugger.getCallerPosition()+"Execute: "+sql);
-//			Statement stmt = m_conn.createStatement();
-//			stmt.execute(sql);
-//			stmt.close();
-//		}
-//	}
 	
 	/**
 	 * import the annotation type information
 	 * @param A
 	 * @throws SQLException 
 	 */
-	public long importAnnotation(Annotation A, String annotationFileName) throws SQLException,Exception
+	public long importAnnotation(Annotation A, String dataFileName, String annotationFileName) throws SQLException,Exception
 	{
 		//entity type,observation type, measurement type, context type
 		List<Observation> obsTypeList= A.getObservations();
@@ -523,7 +537,8 @@ public class MDB extends PostgresDB{
 			annotationUri = annotationFileName;
 		}
 		
-		long annotationId = insAnnotationFile(annotationUri);
+		//insert into the annotation table
+		long annotationId = insAnnotationFile(dataFileName,annotationUri);
 		System.out.println(Debugger.getCallerPosition()+"annotationUri="+annotationUri+", annotationId="+annotationId);
 		
 		PreparedStatement pstmtObs = m_conn.prepareStatement(m_insertObservationType);
@@ -597,7 +612,8 @@ public class MDB extends PostgresDB{
 	 */
 	public void importInstance(OboeModel oboe, long annotId) throws Exception
 	{
-		long dId = insertDatasetFile(oboe.getDatasetFile(),annotId);
+		//long dId = insertDatasetFile(oboe.getDatasetFile(),annotId);
+		long dId = annotId;
 		//System.out.println(Debugger.getCallerPosition()+"dId="+dId+", dataset fname="+oboe.getDatasetFile());
 		
 		PreparedStatement pstmtEntity = m_conn.prepareStatement(this.m_insertEntityInstance);
@@ -678,33 +694,39 @@ public class MDB extends PostgresDB{
 		if(pos>=0){
 			pureDataFileName = dataFileName.trim().substring(pos+1);
 		} 
-		Pair<Long,Long> tbId_annotId = getDataTableId(pureDataFileName);
+		//Pair<Long,Long> tbId_annotId = getDataTableId(pureDataFileName);
+		Pair<Long,String> tbId_annotUrl = getDataTableId(pureDataFileName);
 		
-		long tbId = tbId_annotId.getFirst();
+		long tbId = tbId_annotUrl.getFirst();
 		if(tbId>=0){
 			System.out.println(Debugger.getCallerPosition()+"1. DELETE instances for dataset id = "+tbId);
 			cleanMDBInstance(tbId);
 			
-			long annotId = tbId_annotId.getSecond();
-			if(annotId>=0){
-				System.out.println(Debugger.getCallerPosition()+"2. DELETE instances for dataset annotation id = "+annotId);
-				cleanMDBType(annotId);
+			//long annotId = tbId_annotId.getSecond();
+			String annotUrl = tbId_annotUrl.getSecond();
+			//if(annotId>=0)
+			if(annotUrl!=null&&annotUrl.length()>0)
+			{
+				System.out.println(Debugger.getCallerPosition()+"2. DELETE instances for dataset  = "+dataFileName);
+				//cleanMDBType(annotId);
+				cleanMDBType(tbId);
 			}
 			Statement stmt = m_conn.createStatement();
-			String updAnnotsql = "UPDATE "+ this.m_datasetAnnotTable +" SET annot_id = NULL" +" WHERE did="+tbId;
+			//String updAnnotsql = "UPDATE "+ this.m_datasetAnnotTable +" SET annot_id = NULL" +" WHERE did="+tbId;
+			String updAnnotsql = "UPDATE "+ this.m_datasetAnnotTable +" SET annot_uri = NULL" +" WHERE did="+tbId;
 			System.out.println(Debugger.getCallerPosition()+"3. EXECUTE: "+updAnnotsql);
 			stmt.execute(updAnnotsql);
 			
 			//this order is important, because dataset_annotation table reference this key
-			String cleaanAnnotsql = "DELETE FROM "+ this.m_annotTable +" WHERE annot_id="+annotId;
-			System.out.println(Debugger.getCallerPosition()+"EXECUTE: "+cleaanAnnotsql);
-			stmt.execute(cleaanAnnotsql);
+			//String cleaanAnnotsql = "DELETE FROM "+ this.m_annotTable +" WHERE annot_id="+annotId;
+			//System.out.println(Debugger.getCallerPosition()+"EXECUTE: "+cleaanAnnotsql);
+			//stmt.execute(cleaanAnnotsql);
 			
 			stmt.close();
 		}
 		
 		Statement stmt = m_conn.createStatement();
-		String updDataAnnotsql = "DELETE FROM "+ this.m_datasetAnnotTable + " WHERE annot_id is NULL AND with_rawdata='f'";
+		String updDataAnnotsql = "DELETE FROM "+ this.m_datasetAnnotTable + " WHERE annot_uri is NULL AND with_rawdata='f'";
 		System.out.println(Debugger.getCallerPosition()+"4. EXECUTE: "+updDataAnnotsql);
 		stmt.execute(updDataAnnotsql);
 		stmt.close();

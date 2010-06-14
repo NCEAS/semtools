@@ -27,7 +27,7 @@ public class PostgresDB {
 	
 	protected Connection m_conn = null;
 	
-	protected String m_annotTable = "annotation";
+	//protected String m_annotTable = "annotation";
 	protected String m_datasetAnnotTable = "data_annotation";
 	protected String m_obsTypeTable = "observation_type";
 	protected String m_contextTypeTable = "context_type";
@@ -352,16 +352,16 @@ public class PostgresDB {
 	}
 		
 	/**
-	 * Get the data table id, which is for the given data file
+	 * Get the data table id-annot url pair, which is for the given data file
 	 * 
 	 * @param dataFileName
 	 * @return
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	protected Pair<Long,Long> getDataTableId(String dataFileName) throws SQLException, Exception
+	protected Pair<Long,String> getDataTableId(String dataFileName) throws SQLException, Exception
 	{
-		Pair<Long,Long> tbid2annotid = new Pair<Long,Long>(-1L,-1L);
+		Pair<Long,String> tbid2annoturl = new Pair<Long,String>(-1L,"");
 		
 		//long tbid = -1L;
 		
@@ -369,7 +369,7 @@ public class PostgresDB {
 		String pureDataFileName = dataFileName.trim();		
 		if(pos>=0)pureDataFileName = dataFileName.trim().substring(pos+1);
 		 
-		String sql = "SELECT did,annot_id FROM "+m_datasetAnnotTable+" WHERE dataset_file='"+pureDataFileName+"';";
+		String sql = "SELECT did, annot_uri FROM "+m_datasetAnnotTable+" WHERE dataset_file ILIKE '"+pureDataFileName+"%';";
 		
 		System.out.println(Debugger.getCallerPosition()+"sql="+sql);
 		
@@ -379,16 +379,18 @@ public class PostgresDB {
 		
 		while(rs.next()){
 			long tbid = rs.getLong(1);
-			long annotid = rs.getLong(2);
-			tbid2annotid.setFirst(tbid);
-			tbid2annotid.setSecond(annotid);
+			String annotiurl= rs.getString(2);
+			if(annotiurl!=null) annotiurl = annotiurl.trim();
+			tbid2annoturl.setFirst(tbid);
+			tbid2annoturl.setSecond(annotiurl);
 			break;
 		}
 		rs.close();
 		stmt.close();
 		
 		//return tbid;
-		return tbid2annotid;
+		//return tbid2annotid;
+		return tbid2annoturl;
 	}
 	
 	/**
