@@ -35,7 +35,7 @@ import org.ecoinformatics.sms.annotation.Observation;
  */
 public class MDB extends PostgresDB{
 	
-	private String m_entityInstanceTable = "entity_instance";
+	//private String m_entityInstanceTable = "entity_instance";
 	private String m_obsInstanceTable = "observation_instance";
 	protected String m_measInstanceTable = "measurement_instance";
 	private String m_contextInstanceTable = "context_instance";
@@ -44,8 +44,9 @@ public class MDB extends PostgresDB{
 	//protected String m_insertDatasetAnnot = "INSERT INTO " + m_datasetAnnotTable +"(annot_id,dataset_file) VALUES(?,?);";
 	String m_insertAnnotation = "INSERT INTO " + m_datasetAnnotTable +"(dataset_file,annot_uri) VALUES(?,?);";
 	String m_insertDatasetAnnot = "INSERT INTO " + m_datasetAnnotTable +"(dataset_file) VALUES(?);";
-	String m_insertEntityInstance ="INSERT INTO " +m_entityInstanceTable + "(eid,did,record_id,etype) VALUES(?,?,?,?);";
-	String m_insertObservationInstance ="INSERT INTO " +m_obsInstanceTable + "(oid,did,record_id,eid,otypelabel) VALUES(?,?,?,?,?);";
+	//String m_insertEntityInstance ="INSERT INTO " +m_entityInstanceTable + "(eid,did,record_id,etype) VALUES(?,?,?,?);";
+	//String m_insertObservationInstance ="INSERT INTO " +m_obsInstanceTable + "(oid,did,record_id,eid,otypelabel) VALUES(?,?,?,?,?);";
+	String m_insertObservationInstance ="INSERT INTO " +m_obsInstanceTable + "(oid,did,record_id,etype,otypelabel) VALUES(?,?,?,?,?);";
 	String m_insertMeasurementInstance ="INSERT INTO " +m_measInstanceTable + "(mid,did,record_id,oid,mtypelabel,mvalue) VALUES(?,?,?,?,?,?);";
 	String m_insertContextInstance ="INSERT INTO " +m_contextInstanceTable + " VALUES(?,?,?,?,?);";
 	
@@ -94,13 +95,13 @@ public class MDB extends PostgresDB{
 		return m_obsInstanceTable;
 	}
 
-	public String getEntityInstanceTable() {
-		return m_entityInstanceTable;
-	}
+	//public String getEntityInstanceTable() {
+	//	return m_entityInstanceTable;
+	//}
 
-	public void setEntityInstanceTable(String mEntityInstanceTable) {
-		m_entityInstanceTable = mEntityInstanceTable;
-	}
+	//public void setEntityInstanceTable(String mEntityInstanceTable) {
+	//	m_entityInstanceTable = mEntityInstanceTable;
+	//}
 
 	public void setObsInstanceTable(String mObsInstanceTable) {
 		m_obsInstanceTable = mObsInstanceTable;
@@ -250,7 +251,8 @@ public class MDB extends PostgresDB{
 		pstmt.setLong(1, oi.getObsId());
 		pstmt.setLong(2, did);
 		pstmt.setLong(3, oi.getRecordId());
-		pstmt.setLong(4, oi.getEntity().getEntId());		
+		pstmt.setString(4, oi.getEntity().getEntityType().getName());		
+		//pstmt.setLong(4, oi.getEntity().getEntId());		
 		pstmt.setString(5, oi.getObsType().getLabel());		
 	}
 	
@@ -494,6 +496,7 @@ public class MDB extends PostgresDB{
 		long tbid=tbid_annoturl_pairs.getFirst();
 		String oldAnnotUrl = tbid_annoturl_pairs.getSecond();
 		
+		long tbId = -1L;
 		if(tbid<0){
 			//there is no record in the table corresponds to this data file
 			PreparedStatement pstmt = m_conn.prepareStatement(m_insertAnnotation);
@@ -502,7 +505,9 @@ public class MDB extends PostgresDB{
 			pstmt.setString(2, pureAnnotationUri);
 			pstmt.execute();
 			pstmt.close();
+			tbId = getMaxDatasetId();
 		}else{
+			tbId = tbid;
 			//there is record for this data file already
 			if(oldAnnotUrl==null||oldAnnotUrl.length()==0){
 				Statement stmt = m_conn.createStatement();
@@ -516,9 +521,10 @@ public class MDB extends PostgresDB{
 		}
 		
 		//long maxAnnotId = getMaxAnnotId();
-		long maxDatasetId = this.getMaxDatasetId();
+		//long maxDatasetId = this.getMaxDatasetId();
 		//return maxAnnotId;
-		return maxDatasetId;
+		//return maxDatasetId;
+		return tbId;
 	}
 	
 	
@@ -552,6 +558,10 @@ public class MDB extends PostgresDB{
 				pstmtObs.execute();
 			}catch(SQLException e){
 				 System.out.println(Debugger.getCallerPosition()+"Import obsType error: "+obsType);
+				 System.out.println(Debugger.getCallerPosition()+"1: annotid "+annotationId);
+				 System.out.println(Debugger.getCallerPosition()+"2: obsT label "+obsType.getLabel());
+				 System.out.println(Debugger.getCallerPosition()+"3: ET type "+obsType.getEntity().getName());
+				 System.out.println(Debugger.getCallerPosition()+"4: OT distinct "+obsType.isDistinct());
 				 throw e;
 			}
 				
@@ -616,21 +626,21 @@ public class MDB extends PostgresDB{
 		long dId = annotId;
 		//System.out.println(Debugger.getCallerPosition()+"dId="+dId+", dataset fname="+oboe.getDatasetFile());
 		
-		PreparedStatement pstmtEntity = m_conn.prepareStatement(this.m_insertEntityInstance);
+		//PreparedStatement pstmtEntity = m_conn.prepareStatement(this.m_insertEntityInstance);
 		PreparedStatement pstmtObs = m_conn.prepareStatement(this.m_insertObservationInstance);
 		PreparedStatement pstmtMeas = m_conn.prepareStatement(this.m_insertMeasurementInstance);
 		PreparedStatement pstmtContext = m_conn.prepareStatement(this.m_insertContextInstance);
 		
 		PreparedStatement pstmtEntityCompressed = m_conn.prepareStatement(this.m_insertEICompress);
 		 //entity instance 
-		System.out.println(Debugger.getCallerPosition()+"import " + oboe.m_entityInstances.size() +" entity instances...");
-		for(EntityInstance ei: oboe.m_entityInstances){
-			 setEntityInstanceParam(pstmtEntity, ei, dId);
-			 pstmtEntity.execute();
-			 
-			 //put the EI compressed record ids
-			 execEICompress(pstmtEntityCompressed, ei, dId);
-		 }
+//		System.out.println(Debugger.getCallerPosition()+"import " + oboe.m_entityInstances.size() +" entity instances...");
+//		for(EntityInstance ei: oboe.m_entityInstances){
+//			 setEntityInstanceParam(pstmtEntity, ei, dId);
+//			 pstmtEntity.execute();
+//			 
+//			 //put the EI compressed record ids
+//			 execEICompress(pstmtEntityCompressed, ei, dId);
+//		 }
 		 
 		 System.out.println(Debugger.getCallerPosition()+"import " + oboe.m_observationInstances.size() +" observation instances...");
 		 //observation instance
@@ -675,9 +685,10 @@ public class MDB extends PostgresDB{
 		System.out.println(Debugger.getCallerPosition()+"EXECUTE: "+cleaanOIsql);
 		stmt.execute(cleaanOIsql);
 		
-		String cleaanEIsql = "DELETE FROM "+ this.m_entityInstanceTable +" WHERE did="+tbId;
-		System.out.println(Debugger.getCallerPosition()+"EXECUTE: "+cleaanEIsql);
-		stmt.execute(cleaanEIsql);
+		//String cleaanEIsql = "DELETE FROM "+ this.m_entityInstanceTable +" WHERE did="+tbId;
+		//System.out.println(Debugger.getCallerPosition()+"EXECUTE: "+cleaanEIsql);
+		//stmt.execute(cleaanEIsql);
+		stmt.close();
 	}
 	/**
 	 * Delete the materialized data contents from related table for the given data file

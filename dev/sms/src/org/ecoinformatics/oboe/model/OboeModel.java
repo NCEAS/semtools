@@ -387,7 +387,7 @@ public class OboeModel {
 		 long annotId = db.importAnnotation(A, dataFileName,annotationFileName); //export type information
 		 
 		 //2. import the annotation instances
-		 System.out.println(Debugger.getCallerPosition()+"Import data instances... for annotId="+annotId);
+		 System.out.println("\n"+Debugger.getCallerPosition()+"Import data instances... for annotId="+annotId);
 		 db.importInstance(this,annotId); //export data instance information.
 		 
 		 //db.updateDataAnnotation(dataFileName,annotId);

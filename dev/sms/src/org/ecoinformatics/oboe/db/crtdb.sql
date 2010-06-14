@@ -28,6 +28,7 @@ CREATE TABLE context_type(
 	context_otypelabel char(16),
 	relationship_name varchar(16),
 	is_identifying boolean);
+	
 CREATE TABLE map(
 	annot_id bigint REFERENCES data_annotation(did),
 	mtypelabel char(16),
@@ -35,18 +36,14 @@ CREATE TABLE map(
 	mapcond varchar(64),
 	mapval varchar(32));
 
-CREATE TABLE entity_instance(
-	eid bigint PRIMARY KEY,
-	did bigint REFERENCES data_annotation(did), 
-	record_id bigint, 
-	etype varchar(64));		
 CREATE TABLE observation_instance(
 	oid bigint PRIMARY KEY,
 	did bigint REFERENCES data_annotation(did), 
-	record_id bigint, 
-	eid bigint REFERENCES entity_instance(eid),	 
+	record_id bigint,
+	etype varchar(64),
 	otypelabel char(32)
 	);
+	
 CREATE TABLE measurement_instance(
 	mid bigint PRIMARY KEY,
 	did bigint REFERENCES data_annotation(did),
@@ -61,6 +58,7 @@ CREATE TABLE context_instance(
 	oid bigint REFERENCES observation_instance (oid),
 	context_oid bigint REFERENCES observation_instance (oid), 
 	rtype varchar(64));
+	
 CREATE TABLE ei_compress(
 	did bigint,
 	eid bigint, 
