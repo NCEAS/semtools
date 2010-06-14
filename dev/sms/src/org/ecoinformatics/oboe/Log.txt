@@ -27,7 +27,7 @@ TODO
 (2) Query test: big amount of data (collecting experimental results (time+ space)
 (3) Clean codes + write down the algorithm in a more formal way
 
-(4) Test use Margaret's data 
+(4) Correctness test use Margaret's data 
 
 (5) Partial materializatiton
 (6) Naive query method (IR keyword, Triple store)

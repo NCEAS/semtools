@@ -347,10 +347,14 @@ public class OMQuery {
 			
 			System.out.println("---------------\n"+Debugger.getCallerPosition()+"["+(i+1)+"/"+contextQueryDNF.size()+
 					"] contextQuery:"+oneContextQuery);
-					
+			
+			//This is slow
+			long t1 = System.currentTimeMillis();
 			Set<OboeQueryResult> oneDNFqueryResultSet = oneContextQuery.execute(db, resultWithRecord);
-		
+			long t2 = System.currentTimeMillis();
+			
 			System.out.println(Debugger.getCallerPosition()+"OMQuery DNF "+i+",oneDNFqueryResultSet size="+oneDNFqueryResultSet.size());
+			System.out.println(Debugger.getCallerPosition()+"Time used (Query): "+ (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
 			resultSet.addAll(oneDNFqueryResultSet);			
 		}
 		

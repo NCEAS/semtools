@@ -143,10 +143,11 @@ public class QueryMeasurement {
 	 */
 	public String formSQLNonAggCondOverMDB(MDB mdb, String entityNameCond)
 	{
-		String sql= "SELECT DISTINCT oi.did,eic.compressed_record_id as record_id, oi.eid, oi.oid, mi.mvalue, mt.characteristic ";
+		//String sql= "SELECT DISTINCT oi.did,eic.compressed_record_id as record_id, oi.eid, oi.oid, mi.mvalue, mt.characteristic ";
+		String sql= "SELECT DISTINCT oi.did,eic.compressed_record_id as record_id, oi.oid, mi.mvalue, mt.characteristic ";
 		sql +=" FROM "+mdb.getMeasInstanceTable()+" AS mi,"
 							+ mdb.getObsInstanceTable() +" AS oi,"
-							+ mdb.getEntityInstanceTable() +" AS ei,"
+							//+ mdb.getEntityInstanceTable() +" AS ei,"
 							+ mdb.getMmeasTypeTable() + " AS mt," 
 							+ mdb.m_entityInstanceCompressTable +" AS eic ";
 		if(valueCond!=null&&valueCond.trim().length()>0){
@@ -163,14 +164,12 @@ public class QueryMeasurement {
 		
 		//entity name
 		if(entityNameCond.contains("%")){
-			//sql +=" (mt.otypelabel = ot.otypelabel AND ot.ename ILIKE "+entityNameCond+") AND ";
-			sql += " ei.etype ILIKE "+ entityNameCond +" AND ";
+			sql += " oi.etype ILIKE "+ entityNameCond +" AND ";
 		}else{
-			//sql +=" (mt.otypelabel = ot.otypelabel AND ot.ename="+entityNameCond+") AND ";
-			sql += " ei.etype = "+ entityNameCond +" AND ";
+			sql += " oi.etype = "+ entityNameCond +" AND ";
 		}
 		
-		sql +="ei.eid=oi.eid AND oi.oid=mi.oid AND ";
+		sql +=" oi.oid=mi.oid AND ";
 			
 		//measurement type: characteristic, standard, etc.
 		sql +=" (mt.mtypelabel = mi.mtypelabel";
@@ -188,7 +187,8 @@ public class QueryMeasurement {
 				sql +=" AND mt.standard=" + standardCond;
 			}
 		}
-		sql +=" AND ei.eid=eic.eid AND ei.did=eic.did";
+		//TOTO: HP check
+		//sql +=" AND ei.eid=eic.eid AND ei.did=eic.did";
 		sql +=")";
 		
 		return sql;

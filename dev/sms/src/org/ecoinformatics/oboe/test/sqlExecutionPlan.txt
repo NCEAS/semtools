@@ -1,0 +1,89 @@
+SQL3: 
+
+oboe_syn=> explain SELECT distinct did,record_id FROM ((SELECT DISTINCT oi.did,oi.record_id, oi.oid, mi.mvalue, mt.characteristic  FROM mi_index AS mi,observation_instance AS oi,measurement_type AS mt WHERE mi.mvalue ~ '^[-]?[0-9]+' AND mi.mvalue !~ '[a-zA-Z]+' AND  (CAST(mi.mvalue AS numeric)>=78) AND  oi.etype = 'e5' AND  oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic ILIKE 'm5%'))) AS tmp
+oboe_syn-> ;
+                                                                               QUERY PLAN                                                                                
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Unique  (cost=47502.94..48670.87 rows=3894 width=16)
+   ->  Subquery Scan tmp  (cost=47502.94..48476.22 rows=38931 width=16)
+         ->  Unique  (cost=47502.94..48086.91 rows=38931 width=93)
+               ->  Sort  (cost=47502.94..47600.27 rows=38931 width=93)
+                     Sort Key: oi.did, oi.record_id, oi.oid, mi.mvalue, mt.characteristic
+                     ->  Hash Join  (cost=10048.98..42536.22 rows=38931 width=93)
+                           Hash Cond: (mi.mtypelabel = mt.mtypelabel)
+                           ->  Hash Join  (cost=10040.11..40777.06 rows=49490 width=61)
+                                 Hash Cond: (mi.oid = oi.oid)
+                                 ->  Seq Scan on mi_index mi  (cost=0.00..24392.00 rows=233288 width=45)
+                                       Filter: (((mvalue)::text ~ '^[-]?[0-9]+'::text) AND ((mvalue)::text !~ '[a-zA-Z]+'::text) AND ((mvalue)::numeric >= 78::numeric))
+                                 ->  Hash  (cost=9131.48..9131.48 rows=49490 width=24)
+                                       ->  Bitmap Heap Scan on observation_instance oi  (cost=819.86..9131.48 rows=49490 width=24)
+                                             Recheck Cond: ((etype)::text = 'e5'::text)
+                                             ->  Bitmap Index Scan on oi_etype_idx  (cost=0.00..807.49 rows=49490 width=0)
+                                                   Index Cond: ((etype)::text = 'e5'::text)
+                           ->  Hash  (cost=8.50..8.50 rows=30 width=82)
+                                 ->  Seq Scan on measurement_type mt  (cost=0.00..8.50 rows=30 width=82)
+                                       Filter: (characteristic ~~* 'm5%'::text)
+(19 rows)
+
+*************
+Huiping analysis: 
+expensive computation
+(1) Sort Key: oi.did, oi.record_id, oi.oid, mi.mvalue, mt.characteristic
+(2) Seq Scan on mi_index mi  (cost=0.00..24392.00 rows=233288 width=45)
+    Filter: (((mvalue)::text ~ '^[-]?[0-9]+'::text) AND ((mvalue)::text !~ '[a-zA-Z]+'::text) AND ((mvalue)::numeric >= 78::numeric))
+
+
+
+SQL4:
+oboe_syn=> explain SELECT distinct did,record_id FROM ((SELECT DISTINCT oi.did,oi.record_id, oi.oid, mi.mvalue, mt.characteristic  FROM mi_num AS mi,observation_instance AS oi,measurement_type AS mt WHERE mi.mvalue>=78 AND  oi.etype = 'e5' AND  oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic = 'm5cha'))) AS tmp;
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Unique  (cost=47433.17..47861.66 rows=1429 width=16)
+   ->  Subquery Scan tmp  (cost=47433.17..47790.25 rows=14283 width=16)
+         ->  Unique  (cost=47433.17..47647.42 rows=14283 width=95)
+               ->  Sort  (cost=47433.17..47468.88 rows=14283 width=95)
+                     Sort Key: oi.did, oi.record_id, oi.oid, mi.mvalue
+                     ->  Hash Join  (cost=10048.75..45712.50 rows=14283 width=95)
+                           Hash Cond: (mi.mtypelabel = mt.mtypelabel)
+                           ->  Hash Join  (cost=10040.11..44756.82 rows=49490 width=63)
+                                 Hash Cond: (mi.oid = oi.oid)
+                                 ->  Seq Scan on mi_num mi  (cost=0.00..17392.00 rows=694050 width=47)
+                                       Filter: (mvalue >= 78::numeric)
+                                 ->  Hash  (cost=9131.48..9131.48 rows=49490 width=24)
+                                       ->  Bitmap Heap Scan on observation_instance oi  (cost=819.86..9131.48 rows=49490 width=24)
+                                             Recheck Cond: ((etype)::text = 'e5'::text)
+                                             ->  Bitmap Index Scan on oi_etype_idx  (cost=0.00..807.49 rows=49490 width=0)
+                                                   Index Cond: ((etype)::text = 'e5'::text)
+                           ->  Hash  (cost=8.50..8.50 rows=11 width=82)
+                                 ->  Seq Scan on measurement_type mt  (cost=0.00..8.50 rows=11 width=82)
+                                       Filter: (characteristic = 'm5cha'::bpchar)
+
+    
+    
+=========
+How index is used?
+I have an index on mi_num(mvalue);
+(1) when the condition is mvalue=somthing, the index is used;
+(2) Otherwise, when the condition is mvalue>=something, sequential scan is applied.
+
+oboe_syn=> explain select * from mi_num where mvalue=78;
+                                   QUERY PLAN                                   
+--------------------------------------------------------------------------------
+ Bitmap Heap Scan on mi_num  (cost=4.89..277.68 rows=73 width=71)
+   Recheck Cond: (mvalue = 78::numeric)
+   ->  Bitmap Index Scan on mvalue_num_index  (cost=0.00..4.87 rows=73 width=0)
+         Index Cond: (mvalue = 78::numeric)
+(4 rows)
+
+oboe_syn=> explain select * from mi_num where mvalue>=78;
+                           QUERY PLAN                           
+----------------------------------------------------------------
+ Seq Scan on mi_num  (cost=0.00..17392.00 rows=694050 width=71)
+   Filter: (mvalue >= 78::numeric)
+(2 rows)
+
+   
+   
+    
+    
+    

@@ -264,6 +264,7 @@ public class ContextChain {
 			}else{
 				//System.out.println(Debugger.getCallerPosition()+"++++[0]targetQuery="+targetQuery+",contex="+context);
 				//perform the basic target query
+				//TODO: Huiping this is slow
 				Set<OboeQueryResult> oneBasicQueryResult = targetQuery.execute(db,resultWithRecord);
 				if(!first){
 					result.retainAll(oneBasicQueryResult);
