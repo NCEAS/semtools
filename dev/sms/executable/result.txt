@@ -2,9 +2,9 @@
 June 15, 2010
 
 #with record
-query batch command: executable/query_syn.sh
-query files: oboedb/
-log: executable/resultlog/2010_0615_log
+query batch command: executable/query_syn.sh (r1402)
+query files: oboedb/query_m5_s0.01/0.05/0.1/0.2/0.5(r1402)
+log: executable/resultlog/2010_0615_log(r1402)
 
 selectivity	RawDB	MDB
 0.01	0.328	5.744
