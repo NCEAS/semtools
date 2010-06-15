@@ -1,0 +1,512 @@
+QueryProcessor.java:56: main:1. queryFile=/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/oboedb/query_m5_s0.05
+QueryProcessor.java:57: main:2. queryStrategy=1
+QueryProcessor.java:58: main:3. dbname=oboe_syn
+QueryProcessor.java:59: main:4. resultWithRecord=true
+QueryProcessor.java:60: main:5. queryResultFile=
+QueryList.java:73: read:oneLine=BEGIN QUERY:1
+QueryList.java:73: read:oneLine=BEGIN QUERY:2
+QueryList.java:73: read:oneLine=BEGIN QUERY:3
+QueryList.java:73: read:oneLine=BEGIN QUERY:4
+QueryList.java:73: read:oneLine=BEGIN QUERY:5
+QueryList.java:73: read:oneLine=BEGIN QUERY:6
+QueryList.java:73: read:oneLine=BEGIN QUERY:7
+QueryList.java:73: read:oneLine=BEGIN QUERY:8
+QueryList.java:73: read:oneLine=BEGIN QUERY:9
+QueryList.java:73: read:oneLine=BEGIN QUERY:10
+QueryProcessor.java:65: main:queryList=
+i=0:1: 'e5'['m5cha' >=508], Context: {}
+i=1:1: 'e5'['m5cha' >=509], Context: {}
+i=2:1: 'e5'['m5cha' >=510], Context: {}
+i=3:1: 'e5'['m5cha' >=511], Context: {}
+i=4:1: 'e5'['m5cha' >=512], Context: {}
+i=5:1: 'e5'['m5cha' >=514], Context: {}
+i=6:1: 'e5'['m5cha' >=520], Context: {}
+i=7:1: 'e5'['m5cha' >=522], Context: {}
+i=8:1: 'e5'['m5cha' >=528], Context: {}
+i=9:1: 'e5'['m5cha' >=530], Context: {}
+
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' >=508], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+PostgresDB.java:138: calKeyAttr:entityTypeName='e5'
+PostgresDB.java:296: retrieveObsTypeLabel:sql= SELECT annot_id, otypelabel FROM observation_type AS ot WHERE ename ILIKE 'e5';
+PostgresDB.java:202: retrieveKeyAttrList:sql= SELECT DISTINCT mt.annot_id as annot_id, mt.otypelabel as otypelabel, attrname FROM map, measurement_type AS mt WHERE mt.annot_id = map.annot_id AND mt.mtypelabel=map.mtypelabel AND mt.isKey = 't' ;
+RawDB.java:374: retrieveOneTbAttribute:sql= SELECT DISTINCT mt.annot_id, attrname FROM measurement_type AS mt, map 
+WHERE (map.annot_id=mt.annot_id AND map.mtypelabel = mt.mtypelabel) AND mt.characteristic = 'm5cha';
+RawDB.java:338: retrieveTbAttribute:tmpTbAttribute=
+{1=[('m5cha' >=508,m5)], 2=[('m5cha' >=508,m5)], 3=[('m5cha' >=508,m5)], 4=[('m5cha' >=508,m5)], 5=[('m5cha' >=508,m5)], 6=[('m5cha' >=508,m5)], 7=[('m5cha' >=508,m5)], 8=[('m5cha' >=508,m5)], 9=[('m5cha' >=508,m5)], 10=[('m5cha' >=508,m5)]}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=508}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=508}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=508}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=508}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=508}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=508}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=508}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=508}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=508}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=508}
+RawDB.java:351: retrieveTbAttribute:tbAttribute=
+{1=[('m5cha' >=508,m5)], 2=[('m5cha' >=508,m5)], 3=[('m5cha' >=508,m5)], 4=[('m5cha' >=508,m5)], 5=[('m5cha' >=508,m5)], 6=[('m5cha' >=508,m5)], 7=[('m5cha' >=508,m5)], 8=[('m5cha' >=508,m5)], 9=[('m5cha' >=508,m5)], 10=[('m5cha' >=508,m5)]}
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 1 AS did, record_id  FROM tb1 WHERE (m5>=508);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 2 AS did, record_id  FROM tb2 WHERE (m5>=508);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 3 AS did, record_id  FROM tb3 WHERE (m5>=508);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 4 AS did, record_id  FROM tb4 WHERE (m5>=508);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 5 AS did, record_id  FROM tb5 WHERE (m5>=508);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 6 AS did, record_id  FROM tb6 WHERE (m5>=508);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 7 AS did, record_id  FROM tb7 WHERE (m5>=508);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 8 AS did, record_id  FROM tb8 WHERE (m5>=508);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 9 AS did, record_id  FROM tb9 WHERE (m5>=508);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 10 AS did, record_id  FROM tb10 WHERE (m5>=508);
+OMQueryBasic.java:498: executeOneCNF:oneCNF result size =47510
+ContextChain.java:289: execute:Context chain result size=47510
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=47510
+OMQuery.java:355: execute:Time used (Query): 370 ms = 0s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=47510
+OMQuery.java:388: execute:Total queryResultSet size=47510
+QueryProcessor.java:78: main:Query i=0,result size=47510
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' >=509], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+PostgresDB.java:138: calKeyAttr:entityTypeName='e5'
+PostgresDB.java:296: retrieveObsTypeLabel:sql= SELECT annot_id, otypelabel FROM observation_type AS ot WHERE ename ILIKE 'e5';
+PostgresDB.java:202: retrieveKeyAttrList:sql= SELECT DISTINCT mt.annot_id as annot_id, mt.otypelabel as otypelabel, attrname FROM map, measurement_type AS mt WHERE mt.annot_id = map.annot_id AND mt.mtypelabel=map.mtypelabel AND mt.isKey = 't' ;
+RawDB.java:374: retrieveOneTbAttribute:sql= SELECT DISTINCT mt.annot_id, attrname FROM measurement_type AS mt, map 
+WHERE (map.annot_id=mt.annot_id AND map.mtypelabel = mt.mtypelabel) AND mt.characteristic = 'm5cha';
+RawDB.java:338: retrieveTbAttribute:tmpTbAttribute=
+{1=[('m5cha' >=509,m5)], 2=[('m5cha' >=509,m5)], 3=[('m5cha' >=509,m5)], 4=[('m5cha' >=509,m5)], 5=[('m5cha' >=509,m5)], 6=[('m5cha' >=509,m5)], 7=[('m5cha' >=509,m5)], 8=[('m5cha' >=509,m5)], 9=[('m5cha' >=509,m5)], 10=[('m5cha' >=509,m5)]}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=509}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=509}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=509}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=509}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=509}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=509}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=509}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=509}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=509}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=509}
+RawDB.java:351: retrieveTbAttribute:tbAttribute=
+{1=[('m5cha' >=509,m5)], 2=[('m5cha' >=509,m5)], 3=[('m5cha' >=509,m5)], 4=[('m5cha' >=509,m5)], 5=[('m5cha' >=509,m5)], 6=[('m5cha' >=509,m5)], 7=[('m5cha' >=509,m5)], 8=[('m5cha' >=509,m5)], 9=[('m5cha' >=509,m5)], 10=[('m5cha' >=509,m5)]}
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 1 AS did, record_id  FROM tb1 WHERE (m5>=509);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 2 AS did, record_id  FROM tb2 WHERE (m5>=509);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 3 AS did, record_id  FROM tb3 WHERE (m5>=509);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 4 AS did, record_id  FROM tb4 WHERE (m5>=509);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 5 AS did, record_id  FROM tb5 WHERE (m5>=509);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 6 AS did, record_id  FROM tb6 WHERE (m5>=509);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 7 AS did, record_id  FROM tb7 WHERE (m5>=509);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 8 AS did, record_id  FROM tb8 WHERE (m5>=509);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 9 AS did, record_id  FROM tb9 WHERE (m5>=509);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 10 AS did, record_id  FROM tb10 WHERE (m5>=509);
+OMQueryBasic.java:498: executeOneCNF:oneCNF result size =47490
+ContextChain.java:289: execute:Context chain result size=47490
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=47490
+OMQuery.java:355: execute:Time used (Query): 246 ms = 0s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=47490
+OMQuery.java:388: execute:Total queryResultSet size=47490
+QueryProcessor.java:78: main:Query i=1,result size=47490
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' >=510], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+PostgresDB.java:138: calKeyAttr:entityTypeName='e5'
+PostgresDB.java:296: retrieveObsTypeLabel:sql= SELECT annot_id, otypelabel FROM observation_type AS ot WHERE ename ILIKE 'e5';
+PostgresDB.java:202: retrieveKeyAttrList:sql= SELECT DISTINCT mt.annot_id as annot_id, mt.otypelabel as otypelabel, attrname FROM map, measurement_type AS mt WHERE mt.annot_id = map.annot_id AND mt.mtypelabel=map.mtypelabel AND mt.isKey = 't' ;
+RawDB.java:374: retrieveOneTbAttribute:sql= SELECT DISTINCT mt.annot_id, attrname FROM measurement_type AS mt, map 
+WHERE (map.annot_id=mt.annot_id AND map.mtypelabel = mt.mtypelabel) AND mt.characteristic = 'm5cha';
+RawDB.java:338: retrieveTbAttribute:tmpTbAttribute=
+{1=[('m5cha' >=510,m5)], 2=[('m5cha' >=510,m5)], 3=[('m5cha' >=510,m5)], 4=[('m5cha' >=510,m5)], 5=[('m5cha' >=510,m5)], 6=[('m5cha' >=510,m5)], 7=[('m5cha' >=510,m5)], 8=[('m5cha' >=510,m5)], 9=[('m5cha' >=510,m5)], 10=[('m5cha' >=510,m5)]}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=510}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=510}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=510}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=510}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=510}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=510}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=510}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=510}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=510}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=510}
+RawDB.java:351: retrieveTbAttribute:tbAttribute=
+{1=[('m5cha' >=510,m5)], 2=[('m5cha' >=510,m5)], 3=[('m5cha' >=510,m5)], 4=[('m5cha' >=510,m5)], 5=[('m5cha' >=510,m5)], 6=[('m5cha' >=510,m5)], 7=[('m5cha' >=510,m5)], 8=[('m5cha' >=510,m5)], 9=[('m5cha' >=510,m5)], 10=[('m5cha' >=510,m5)]}
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 1 AS did, record_id  FROM tb1 WHERE (m5>=510);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 2 AS did, record_id  FROM tb2 WHERE (m5>=510);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 3 AS did, record_id  FROM tb3 WHERE (m5>=510);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 4 AS did, record_id  FROM tb4 WHERE (m5>=510);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 5 AS did, record_id  FROM tb5 WHERE (m5>=510);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 6 AS did, record_id  FROM tb6 WHERE (m5>=510);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 7 AS did, record_id  FROM tb7 WHERE (m5>=510);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 8 AS did, record_id  FROM tb8 WHERE (m5>=510);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 9 AS did, record_id  FROM tb9 WHERE (m5>=510);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 10 AS did, record_id  FROM tb10 WHERE (m5>=510);
+OMQueryBasic.java:498: executeOneCNF:oneCNF result size =47470
+ContextChain.java:289: execute:Context chain result size=47470
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=47470
+OMQuery.java:355: execute:Time used (Query): 228 ms = 0s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=47470
+OMQuery.java:388: execute:Total queryResultSet size=47470
+QueryProcessor.java:78: main:Query i=2,result size=47470
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' >=511], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+PostgresDB.java:138: calKeyAttr:entityTypeName='e5'
+PostgresDB.java:296: retrieveObsTypeLabel:sql= SELECT annot_id, otypelabel FROM observation_type AS ot WHERE ename ILIKE 'e5';
+PostgresDB.java:202: retrieveKeyAttrList:sql= SELECT DISTINCT mt.annot_id as annot_id, mt.otypelabel as otypelabel, attrname FROM map, measurement_type AS mt WHERE mt.annot_id = map.annot_id AND mt.mtypelabel=map.mtypelabel AND mt.isKey = 't' ;
+RawDB.java:374: retrieveOneTbAttribute:sql= SELECT DISTINCT mt.annot_id, attrname FROM measurement_type AS mt, map 
+WHERE (map.annot_id=mt.annot_id AND map.mtypelabel = mt.mtypelabel) AND mt.characteristic = 'm5cha';
+RawDB.java:338: retrieveTbAttribute:tmpTbAttribute=
+{1=[('m5cha' >=511,m5)], 2=[('m5cha' >=511,m5)], 3=[('m5cha' >=511,m5)], 4=[('m5cha' >=511,m5)], 5=[('m5cha' >=511,m5)], 6=[('m5cha' >=511,m5)], 7=[('m5cha' >=511,m5)], 8=[('m5cha' >=511,m5)], 9=[('m5cha' >=511,m5)], 10=[('m5cha' >=511,m5)]}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=511}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=511}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=511}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=511}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=511}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=511}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=511}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=511}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=511}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=511}
+RawDB.java:351: retrieveTbAttribute:tbAttribute=
+{1=[('m5cha' >=511,m5)], 2=[('m5cha' >=511,m5)], 3=[('m5cha' >=511,m5)], 4=[('m5cha' >=511,m5)], 5=[('m5cha' >=511,m5)], 6=[('m5cha' >=511,m5)], 7=[('m5cha' >=511,m5)], 8=[('m5cha' >=511,m5)], 9=[('m5cha' >=511,m5)], 10=[('m5cha' >=511,m5)]}
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 1 AS did, record_id  FROM tb1 WHERE (m5>=511);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 2 AS did, record_id  FROM tb2 WHERE (m5>=511);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 3 AS did, record_id  FROM tb3 WHERE (m5>=511);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 4 AS did, record_id  FROM tb4 WHERE (m5>=511);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 5 AS did, record_id  FROM tb5 WHERE (m5>=511);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 6 AS did, record_id  FROM tb6 WHERE (m5>=511);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 7 AS did, record_id  FROM tb7 WHERE (m5>=511);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 8 AS did, record_id  FROM tb8 WHERE (m5>=511);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 9 AS did, record_id  FROM tb9 WHERE (m5>=511);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 10 AS did, record_id  FROM tb10 WHERE (m5>=511);
+OMQueryBasic.java:498: executeOneCNF:oneCNF result size =47460
+ContextChain.java:289: execute:Context chain result size=47460
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=47460
+OMQuery.java:355: execute:Time used (Query): 217 ms = 0s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=47460
+OMQuery.java:388: execute:Total queryResultSet size=47460
+QueryProcessor.java:78: main:Query i=3,result size=47460
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' >=512], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+PostgresDB.java:138: calKeyAttr:entityTypeName='e5'
+PostgresDB.java:296: retrieveObsTypeLabel:sql= SELECT annot_id, otypelabel FROM observation_type AS ot WHERE ename ILIKE 'e5';
+PostgresDB.java:202: retrieveKeyAttrList:sql= SELECT DISTINCT mt.annot_id as annot_id, mt.otypelabel as otypelabel, attrname FROM map, measurement_type AS mt WHERE mt.annot_id = map.annot_id AND mt.mtypelabel=map.mtypelabel AND mt.isKey = 't' ;
+RawDB.java:374: retrieveOneTbAttribute:sql= SELECT DISTINCT mt.annot_id, attrname FROM measurement_type AS mt, map 
+WHERE (map.annot_id=mt.annot_id AND map.mtypelabel = mt.mtypelabel) AND mt.characteristic = 'm5cha';
+RawDB.java:338: retrieveTbAttribute:tmpTbAttribute=
+{1=[('m5cha' >=512,m5)], 2=[('m5cha' >=512,m5)], 3=[('m5cha' >=512,m5)], 4=[('m5cha' >=512,m5)], 5=[('m5cha' >=512,m5)], 6=[('m5cha' >=512,m5)], 7=[('m5cha' >=512,m5)], 8=[('m5cha' >=512,m5)], 9=[('m5cha' >=512,m5)], 10=[('m5cha' >=512,m5)]}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=512}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=512}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=512}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=512}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=512}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=512}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=512}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=512}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=512}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=512}
+RawDB.java:351: retrieveTbAttribute:tbAttribute=
+{1=[('m5cha' >=512,m5)], 2=[('m5cha' >=512,m5)], 3=[('m5cha' >=512,m5)], 4=[('m5cha' >=512,m5)], 5=[('m5cha' >=512,m5)], 6=[('m5cha' >=512,m5)], 7=[('m5cha' >=512,m5)], 8=[('m5cha' >=512,m5)], 9=[('m5cha' >=512,m5)], 10=[('m5cha' >=512,m5)]}
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 1 AS did, record_id  FROM tb1 WHERE (m5>=512);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 2 AS did, record_id  FROM tb2 WHERE (m5>=512);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 3 AS did, record_id  FROM tb3 WHERE (m5>=512);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 4 AS did, record_id  FROM tb4 WHERE (m5>=512);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 5 AS did, record_id  FROM tb5 WHERE (m5>=512);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 6 AS did, record_id  FROM tb6 WHERE (m5>=512);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 7 AS did, record_id  FROM tb7 WHERE (m5>=512);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 8 AS did, record_id  FROM tb8 WHERE (m5>=512);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 9 AS did, record_id  FROM tb9 WHERE (m5>=512);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 10 AS did, record_id  FROM tb10 WHERE (m5>=512);
+OMQueryBasic.java:498: executeOneCNF:oneCNF result size =47440
+ContextChain.java:289: execute:Context chain result size=47440
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=47440
+OMQuery.java:355: execute:Time used (Query): 218 ms = 0s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=47440
+OMQuery.java:388: execute:Total queryResultSet size=47440
+QueryProcessor.java:78: main:Query i=4,result size=47440
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' >=514], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+PostgresDB.java:138: calKeyAttr:entityTypeName='e5'
+PostgresDB.java:296: retrieveObsTypeLabel:sql= SELECT annot_id, otypelabel FROM observation_type AS ot WHERE ename ILIKE 'e5';
+PostgresDB.java:202: retrieveKeyAttrList:sql= SELECT DISTINCT mt.annot_id as annot_id, mt.otypelabel as otypelabel, attrname FROM map, measurement_type AS mt WHERE mt.annot_id = map.annot_id AND mt.mtypelabel=map.mtypelabel AND mt.isKey = 't' ;
+RawDB.java:374: retrieveOneTbAttribute:sql= SELECT DISTINCT mt.annot_id, attrname FROM measurement_type AS mt, map 
+WHERE (map.annot_id=mt.annot_id AND map.mtypelabel = mt.mtypelabel) AND mt.characteristic = 'm5cha';
+RawDB.java:338: retrieveTbAttribute:tmpTbAttribute=
+{1=[('m5cha' >=514,m5)], 2=[('m5cha' >=514,m5)], 3=[('m5cha' >=514,m5)], 4=[('m5cha' >=514,m5)], 5=[('m5cha' >=514,m5)], 6=[('m5cha' >=514,m5)], 7=[('m5cha' >=514,m5)], 8=[('m5cha' >=514,m5)], 9=[('m5cha' >=514,m5)], 10=[('m5cha' >=514,m5)]}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=514}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=514}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=514}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=514}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=514}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=514}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=514}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=514}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=514}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=514}
+RawDB.java:351: retrieveTbAttribute:tbAttribute=
+{1=[('m5cha' >=514,m5)], 2=[('m5cha' >=514,m5)], 3=[('m5cha' >=514,m5)], 4=[('m5cha' >=514,m5)], 5=[('m5cha' >=514,m5)], 6=[('m5cha' >=514,m5)], 7=[('m5cha' >=514,m5)], 8=[('m5cha' >=514,m5)], 9=[('m5cha' >=514,m5)], 10=[('m5cha' >=514,m5)]}
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 1 AS did, record_id  FROM tb1 WHERE (m5>=514);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 2 AS did, record_id  FROM tb2 WHERE (m5>=514);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 3 AS did, record_id  FROM tb3 WHERE (m5>=514);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 4 AS did, record_id  FROM tb4 WHERE (m5>=514);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 5 AS did, record_id  FROM tb5 WHERE (m5>=514);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 6 AS did, record_id  FROM tb6 WHERE (m5>=514);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 7 AS did, record_id  FROM tb7 WHERE (m5>=514);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 8 AS did, record_id  FROM tb8 WHERE (m5>=514);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 9 AS did, record_id  FROM tb9 WHERE (m5>=514);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 10 AS did, record_id  FROM tb10 WHERE (m5>=514);
+OMQueryBasic.java:498: executeOneCNF:oneCNF result size =47430
+ContextChain.java:289: execute:Context chain result size=47430
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=47430
+OMQuery.java:355: execute:Time used (Query): 216 ms = 0s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=47430
+OMQuery.java:388: execute:Total queryResultSet size=47430
+QueryProcessor.java:78: main:Query i=5,result size=47430
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' >=520], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+PostgresDB.java:138: calKeyAttr:entityTypeName='e5'
+PostgresDB.java:296: retrieveObsTypeLabel:sql= SELECT annot_id, otypelabel FROM observation_type AS ot WHERE ename ILIKE 'e5';
+PostgresDB.java:202: retrieveKeyAttrList:sql= SELECT DISTINCT mt.annot_id as annot_id, mt.otypelabel as otypelabel, attrname FROM map, measurement_type AS mt WHERE mt.annot_id = map.annot_id AND mt.mtypelabel=map.mtypelabel AND mt.isKey = 't' ;
+RawDB.java:374: retrieveOneTbAttribute:sql= SELECT DISTINCT mt.annot_id, attrname FROM measurement_type AS mt, map 
+WHERE (map.annot_id=mt.annot_id AND map.mtypelabel = mt.mtypelabel) AND mt.characteristic = 'm5cha';
+RawDB.java:338: retrieveTbAttribute:tmpTbAttribute=
+{1=[('m5cha' >=520,m5)], 2=[('m5cha' >=520,m5)], 3=[('m5cha' >=520,m5)], 4=[('m5cha' >=520,m5)], 5=[('m5cha' >=520,m5)], 6=[('m5cha' >=520,m5)], 7=[('m5cha' >=520,m5)], 8=[('m5cha' >=520,m5)], 9=[('m5cha' >=520,m5)], 10=[('m5cha' >=520,m5)]}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=520}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=520}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=520}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=520}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=520}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=520}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=520}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=520}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=520}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=520}
+RawDB.java:351: retrieveTbAttribute:tbAttribute=
+{1=[('m5cha' >=520,m5)], 2=[('m5cha' >=520,m5)], 3=[('m5cha' >=520,m5)], 4=[('m5cha' >=520,m5)], 5=[('m5cha' >=520,m5)], 6=[('m5cha' >=520,m5)], 7=[('m5cha' >=520,m5)], 8=[('m5cha' >=520,m5)], 9=[('m5cha' >=520,m5)], 10=[('m5cha' >=520,m5)]}
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 1 AS did, record_id  FROM tb1 WHERE (m5>=520);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 2 AS did, record_id  FROM tb2 WHERE (m5>=520);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 3 AS did, record_id  FROM tb3 WHERE (m5>=520);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 4 AS did, record_id  FROM tb4 WHERE (m5>=520);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 5 AS did, record_id  FROM tb5 WHERE (m5>=520);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 6 AS did, record_id  FROM tb6 WHERE (m5>=520);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 7 AS did, record_id  FROM tb7 WHERE (m5>=520);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 8 AS did, record_id  FROM tb8 WHERE (m5>=520);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 9 AS did, record_id  FROM tb9 WHERE (m5>=520);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 10 AS did, record_id  FROM tb10 WHERE (m5>=520);
+OMQueryBasic.java:498: executeOneCNF:oneCNF result size =47420
+ContextChain.java:289: execute:Context chain result size=47420
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=47420
+OMQuery.java:355: execute:Time used (Query): 397 ms = 0s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=47420
+OMQuery.java:388: execute:Total queryResultSet size=47420
+QueryProcessor.java:78: main:Query i=6,result size=47420
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' >=522], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+PostgresDB.java:138: calKeyAttr:entityTypeName='e5'
+PostgresDB.java:296: retrieveObsTypeLabel:sql= SELECT annot_id, otypelabel FROM observation_type AS ot WHERE ename ILIKE 'e5';
+PostgresDB.java:202: retrieveKeyAttrList:sql= SELECT DISTINCT mt.annot_id as annot_id, mt.otypelabel as otypelabel, attrname FROM map, measurement_type AS mt WHERE mt.annot_id = map.annot_id AND mt.mtypelabel=map.mtypelabel AND mt.isKey = 't' ;
+RawDB.java:374: retrieveOneTbAttribute:sql= SELECT DISTINCT mt.annot_id, attrname FROM measurement_type AS mt, map 
+WHERE (map.annot_id=mt.annot_id AND map.mtypelabel = mt.mtypelabel) AND mt.characteristic = 'm5cha';
+RawDB.java:338: retrieveTbAttribute:tmpTbAttribute=
+{1=[('m5cha' >=522,m5)], 2=[('m5cha' >=522,m5)], 3=[('m5cha' >=522,m5)], 4=[('m5cha' >=522,m5)], 5=[('m5cha' >=522,m5)], 6=[('m5cha' >=522,m5)], 7=[('m5cha' >=522,m5)], 8=[('m5cha' >=522,m5)], 9=[('m5cha' >=522,m5)], 10=[('m5cha' >=522,m5)]}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=522}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=522}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=522}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=522}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=522}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=522}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=522}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=522}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=522}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=522}
+RawDB.java:351: retrieveTbAttribute:tbAttribute=
+{1=[('m5cha' >=522,m5)], 2=[('m5cha' >=522,m5)], 3=[('m5cha' >=522,m5)], 4=[('m5cha' >=522,m5)], 5=[('m5cha' >=522,m5)], 6=[('m5cha' >=522,m5)], 7=[('m5cha' >=522,m5)], 8=[('m5cha' >=522,m5)], 9=[('m5cha' >=522,m5)], 10=[('m5cha' >=522,m5)]}
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 1 AS did, record_id  FROM tb1 WHERE (m5>=522);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 2 AS did, record_id  FROM tb2 WHERE (m5>=522);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 3 AS did, record_id  FROM tb3 WHERE (m5>=522);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 4 AS did, record_id  FROM tb4 WHERE (m5>=522);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 5 AS did, record_id  FROM tb5 WHERE (m5>=522);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 6 AS did, record_id  FROM tb6 WHERE (m5>=522);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 7 AS did, record_id  FROM tb7 WHERE (m5>=522);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 8 AS did, record_id  FROM tb8 WHERE (m5>=522);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 9 AS did, record_id  FROM tb9 WHERE (m5>=522);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 10 AS did, record_id  FROM tb10 WHERE (m5>=522);
+OMQueryBasic.java:498: executeOneCNF:oneCNF result size =47400
+ContextChain.java:289: execute:Context chain result size=47400
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=47400
+OMQuery.java:355: execute:Time used (Query): 199 ms = 0s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=47400
+OMQuery.java:388: execute:Total queryResultSet size=47400
+QueryProcessor.java:78: main:Query i=7,result size=47400
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' >=528], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+PostgresDB.java:138: calKeyAttr:entityTypeName='e5'
+PostgresDB.java:296: retrieveObsTypeLabel:sql= SELECT annot_id, otypelabel FROM observation_type AS ot WHERE ename ILIKE 'e5';
+PostgresDB.java:202: retrieveKeyAttrList:sql= SELECT DISTINCT mt.annot_id as annot_id, mt.otypelabel as otypelabel, attrname FROM map, measurement_type AS mt WHERE mt.annot_id = map.annot_id AND mt.mtypelabel=map.mtypelabel AND mt.isKey = 't' ;
+RawDB.java:374: retrieveOneTbAttribute:sql= SELECT DISTINCT mt.annot_id, attrname FROM measurement_type AS mt, map 
+WHERE (map.annot_id=mt.annot_id AND map.mtypelabel = mt.mtypelabel) AND mt.characteristic = 'm5cha';
+RawDB.java:338: retrieveTbAttribute:tmpTbAttribute=
+{1=[('m5cha' >=528,m5)], 2=[('m5cha' >=528,m5)], 3=[('m5cha' >=528,m5)], 4=[('m5cha' >=528,m5)], 5=[('m5cha' >=528,m5)], 6=[('m5cha' >=528,m5)], 7=[('m5cha' >=528,m5)], 8=[('m5cha' >=528,m5)], 9=[('m5cha' >=528,m5)], 10=[('m5cha' >=528,m5)]}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=528}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=528}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=528}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=528}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=528}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=528}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=528}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=528}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=528}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=528}
+RawDB.java:351: retrieveTbAttribute:tbAttribute=
+{1=[('m5cha' >=528,m5)], 2=[('m5cha' >=528,m5)], 3=[('m5cha' >=528,m5)], 4=[('m5cha' >=528,m5)], 5=[('m5cha' >=528,m5)], 6=[('m5cha' >=528,m5)], 7=[('m5cha' >=528,m5)], 8=[('m5cha' >=528,m5)], 9=[('m5cha' >=528,m5)], 10=[('m5cha' >=528,m5)]}
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 1 AS did, record_id  FROM tb1 WHERE (m5>=528);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 2 AS did, record_id  FROM tb2 WHERE (m5>=528);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 3 AS did, record_id  FROM tb3 WHERE (m5>=528);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 4 AS did, record_id  FROM tb4 WHERE (m5>=528);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 5 AS did, record_id  FROM tb5 WHERE (m5>=528);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 6 AS did, record_id  FROM tb6 WHERE (m5>=528);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 7 AS did, record_id  FROM tb7 WHERE (m5>=528);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 8 AS did, record_id  FROM tb8 WHERE (m5>=528);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 9 AS did, record_id  FROM tb9 WHERE (m5>=528);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 10 AS did, record_id  FROM tb10 WHERE (m5>=528);
+OMQueryBasic.java:498: executeOneCNF:oneCNF result size =47380
+ContextChain.java:289: execute:Context chain result size=47380
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=47380
+OMQuery.java:355: execute:Time used (Query): 195 ms = 0s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=47380
+OMQuery.java:388: execute:Total queryResultSet size=47380
+QueryProcessor.java:78: main:Query i=8,result size=47380
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' >=530], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+PostgresDB.java:138: calKeyAttr:entityTypeName='e5'
+PostgresDB.java:296: retrieveObsTypeLabel:sql= SELECT annot_id, otypelabel FROM observation_type AS ot WHERE ename ILIKE 'e5';
+PostgresDB.java:202: retrieveKeyAttrList:sql= SELECT DISTINCT mt.annot_id as annot_id, mt.otypelabel as otypelabel, attrname FROM map, measurement_type AS mt WHERE mt.annot_id = map.annot_id AND mt.mtypelabel=map.mtypelabel AND mt.isKey = 't' ;
+RawDB.java:374: retrieveOneTbAttribute:sql= SELECT DISTINCT mt.annot_id, attrname FROM measurement_type AS mt, map 
+WHERE (map.annot_id=mt.annot_id AND map.mtypelabel = mt.mtypelabel) AND mt.characteristic = 'm5cha';
+RawDB.java:338: retrieveTbAttribute:tmpTbAttribute=
+{1=[('m5cha' >=530,m5)], 2=[('m5cha' >=530,m5)], 3=[('m5cha' >=530,m5)], 4=[('m5cha' >=530,m5)], 5=[('m5cha' >=530,m5)], 6=[('m5cha' >=530,m5)], 7=[('m5cha' >=530,m5)], 8=[('m5cha' >=530,m5)], 9=[('m5cha' >=530,m5)], 10=[('m5cha' >=530,m5)]}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=530}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=530}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=530}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=530}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=530}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=530}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=530}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=530}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=530}
+RawDB.java:344: retrieveTbAttribute:entry.getValue().size()=1,cha2qm.size()=1:{'m5cha'='m5cha' >=530}
+RawDB.java:351: retrieveTbAttribute:tbAttribute=
+{1=[('m5cha' >=530,m5)], 2=[('m5cha' >=530,m5)], 3=[('m5cha' >=530,m5)], 4=[('m5cha' >=530,m5)], 5=[('m5cha' >=530,m5)], 6=[('m5cha' >=530,m5)], 7=[('m5cha' >=530,m5)], 8=[('m5cha' >=530,m5)], 9=[('m5cha' >=530,m5)], 10=[('m5cha' >=530,m5)]}
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 1 AS did, record_id  FROM tb1 WHERE (m5>=530);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 2 AS did, record_id  FROM tb2 WHERE (m5>=530);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 3 AS did, record_id  FROM tb3 WHERE (m5>=530);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 4 AS did, record_id  FROM tb4 WHERE (m5>=530);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 5 AS did, record_id  FROM tb5 WHERE (m5>=530);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 6 AS did, record_id  FROM tb6 WHERE (m5>=530);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 7 AS did, record_id  FROM tb7 WHERE (m5>=530);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 8 AS did, record_id  FROM tb8 WHERE (m5>=530);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 9 AS did, record_id  FROM tb9 WHERE (m5>=530);
+OMQueryBasic.java:551: executeOneCNFNonAggregateRawDB:sql= SELECT DISTINCT 10 AS did, record_id  FROM tb10 WHERE (m5>=530);
+OMQueryBasic.java:498: executeOneCNF:oneCNF result size =47340
+ContextChain.java:289: execute:Context chain result size=47340
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=47340
+OMQuery.java:355: execute:Time used (Query): 191 ms = 0s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=47340
+OMQuery.java:388: execute:Total queryResultSet size=47340
+QueryProcessor.java:78: main:Query i=9,result size=47340
+
+-----------
+
+QueryProcessor.java:91: main: Query raw database.
+QueryProcessor.java:97: main:Time used (Query): 3094 ms = 3s
+-----------
+
+QueryProcessor.java:100: main:qno=1, result size=47510,queryI=1: 'e5'['m5cha' >=508], Context: {}
+QueryProcessor.java:100: main:qno=2, result size=47490,queryI=1: 'e5'['m5cha' >=509], Context: {}
+QueryProcessor.java:100: main:qno=3, result size=47470,queryI=1: 'e5'['m5cha' >=510], Context: {}
+QueryProcessor.java:100: main:qno=4, result size=47460,queryI=1: 'e5'['m5cha' >=511], Context: {}
+QueryProcessor.java:100: main:qno=5, result size=47440,queryI=1: 'e5'['m5cha' >=512], Context: {}
+QueryProcessor.java:100: main:qno=6, result size=47430,queryI=1: 'e5'['m5cha' >=514], Context: {}
+QueryProcessor.java:100: main:qno=7, result size=47420,queryI=1: 'e5'['m5cha' >=520], Context: {}
+QueryProcessor.java:100: main:qno=8, result size=47400,queryI=1: 'e5'['m5cha' >=522], Context: {}
+QueryProcessor.java:100: main:qno=9, result size=47380,queryI=1: 'e5'['m5cha' >=528], Context: {}
+QueryProcessor.java:100: main:qno=10, result size=47340,queryI=1: 'e5'['m5cha' >=530], Context: {}
+QueryProcessor.java:102: main:AVERAGE time used (Query): 309 ms = 0s
+-----------
+
+
+-----------
+QueryProcessor.java:110: main:Time used (Total=query+write out): 3095 ms = 3s
+-----------
+
