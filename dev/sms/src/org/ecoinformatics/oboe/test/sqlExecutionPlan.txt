@@ -82,6 +82,64 @@ oboe_syn=> explain select * from mi_num where mvalue>=78;
    Filter: (mvalue >= 78::numeric)
 (2 rows)
 
+
+============
+
+The query plan of using view is the same to that without view.
+
+
+oboe_syn=> explain select count(*) from (SELECT did, record_id,oid,mvalue,characteristic from non_agg_meas_view
+oboe_syn(> WHERE etype = 'e5' and characteristic ILIKE 'm5%') as tmp;
+                                                             QUERY PLAN                                                              
+-------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=101889.35..101889.36 rows=1 width=0)
+   ->  HashAggregate  (cost=101800.70..101840.10 rows=3940 width=98)
+         ->  Hash Join  (cost=78864.60..101741.60 rows=3940 width=98)
+               Hash Cond: (mi.mtypelabel = mt.mtypelabel)
+               ->  Hash Join  (cost=78855.35..101564.57 rows=5135 width=66)
+                     Hash Cond: (mi.oid = oi.oid)
+                     ->  Seq Scan on mi_numeric mi  (cost=0.00..15643.38 rows=700038 width=47)
+                     ->  Hash  (cost=78773.53..78773.53 rows=6546 width=35)
+                           ->  Hash Join  (cost=11104.75..78773.53 rows=6546 width=35)
+                                 Hash Cond: ((oic.did = oi.did) AND (oic.oid = oi.oid))
+                                 ->  Seq Scan on oi_compress oic  (cost=0.00..22918.44 rows=1400044 width=24)
+                                 ->  Hash  (cost=10058.38..10058.38 rows=51358 width=19)
+                                       ->  Bitmap Heap Scan on observation_instance oi  (cost=1338.40..10058.38 rows=51358 width=19)
+                                             Recheck Cond: ((etype)::text = 'e5'::text)
+                                             ->  Bitmap Index Scan on oi_etype_idx  (cost=0.00..1325.56 rows=51358 width=0)
+                                                   Index Cond: ((etype)::text = 'e5'::text)
+               ->  Hash  (cost=8.91..8.91 rows=27 width=82)
+                     ->  Seq Scan on measurement_type mt  (cost=0.00..8.91 rows=27 width=82)
+                           Filter: (characteristic ~~* 'm5%'::text)
+(19 rows)
+
+oboe_syn=> explain select count(*) from (SELECT DISTINCT oi.did,oic.compressed_record_id as record_id, oi.oid, mi.mvalue, mt.characteristic  FROM mi_numeric AS mi,observation_instance AS oi,measurement_type AS mt,oi_compress AS oic 
+oboe_syn(> WHERE oi.etype = 'e5' AND  oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic ILIKE 'm5%' AND oi.oid=oic.oid AND oi.did=oic.did)) as tmp;
+                                                             QUERY PLAN                                                              
+-------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=101829.50..101829.51 rows=1 width=0)
+   ->  HashAggregate  (cost=101740.85..101780.25 rows=3940 width=95)
+         ->  Hash Join  (cost=78814.60..101691.60 rows=3940 width=95)
+               Hash Cond: (mi.mtypelabel = mt.mtypelabel)
+               ->  Hash Join  (cost=78805.35..101514.57 rows=5135 width=63)
+                     Hash Cond: (mi.oid = oi.oid)
+                     ->  Seq Scan on mi_numeric mi  (cost=0.00..15643.38 rows=700038 width=47)
+                     ->  Hash  (cost=78723.53..78723.53 rows=6546 width=32)
+                           ->  Hash Join  (cost=11079.75..78723.53 rows=6546 width=32)
+                                 Hash Cond: ((oic.did = oi.did) AND (oic.oid = oi.oid))
+                                 ->  Seq Scan on oi_compress oic  (cost=0.00..22918.44 rows=1400044 width=24)
+                                 ->  Hash  (cost=10058.38..10058.38 rows=51358 width=16)
+                                       ->  Bitmap Heap Scan on observation_instance oi  (cost=1338.40..10058.38 rows=51358 width=16)
+                                             Recheck Cond: ((etype)::text = 'e5'::text)
+                                             ->  Bitmap Index Scan on oi_etype_idx  (cost=0.00..1325.56 rows=51358 width=0)
+                                                   Index Cond: ((etype)::text = 'e5'::text)
+               ->  Hash  (cost=8.91..8.91 rows=27 width=82)
+                     ->  Seq Scan on measurement_type mt  (cost=0.00..8.91 rows=27 width=82)
+                           Filter: (characteristic ~~* 'm5%'::text)
+(19 rows)
+
+
+
    
    
     

@@ -304,7 +304,6 @@ public class MaterializeDB {
 	 */
 	private static EntityInstance MaterializeEntity(
 			Observation obsType,
-			//String recordIdPrefix,
 			Long recordId,
 			Map<Observation, Set<MeasurementInstance>> obsType2MeasIdx, 
 			Map<ObsTypeKey, EntityInstance> entIdx, 
@@ -470,6 +469,9 @@ public class MaterializeDB {
 				ioOBOE.AddMeasurementInstance(mi);
 			}
 		}	
+		
+		//these are the record ids that are compressed by this observation instances
+		obsInstance.addRecordId(recordId);
 		
 		//update the context index, which is also output
 		ioContextIdx.put(obsType, obsInstance);

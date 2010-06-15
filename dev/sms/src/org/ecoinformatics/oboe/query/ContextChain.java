@@ -236,15 +236,12 @@ public class ContextChain {
 		
 		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
 		
-		//TODO: HP need to use a set or a map for chain queries??? 
-		//Set<OMQueryBasic> chainQuerySet = getChainQuerySet();
-		
+	
 		//The results need to be intersect-ed
 		boolean first = true;
-		//for(Map.Entry<OMQueryBasic, OMQueryBasic> entry: m_queryChain.entrySet())
+	
 		for(Map.Entry<OMQueryBasic, List<OMQueryBasic> > entry: m_queryChain.entrySet()){
 			OMQueryBasic targetQuery = entry.getKey();
-			//OMQueryBasic context = entry.getValue();
 			List<OMQueryBasic> context = entry.getValue(); 
 			
 			if(context!=null&&(db instanceof MDB)){
@@ -252,7 +249,7 @@ public class ContextChain {
 			
 				System.out.println("\n********"+Debugger.getCallerPosition()+"entry="+entry+"sql=\n"+sql);
 				
-				Set<OboeQueryResult> oneBasicQueryResult = db.executeSQL(sql);
+				Set<OboeQueryResult> oneBasicQueryResult = db.executeSQL(sql,resultWithRecord);
 				
 				System.out.println(Debugger.getCallerPosition()+"oneBasicQueryResult="+oneBasicQueryResult);
 				if(!first){
@@ -264,7 +261,7 @@ public class ContextChain {
 			}else{
 				//System.out.println(Debugger.getCallerPosition()+"++++[0]targetQuery="+targetQuery+",contex="+context);
 				//perform the basic target query
-				//TODO: Huiping this is slow
+				//TODO: Huiping this is slow, June 14, 2010
 				Set<OboeQueryResult> oneBasicQueryResult = targetQuery.execute(db,resultWithRecord);
 				if(!first){
 					result.retainAll(oneBasicQueryResult);

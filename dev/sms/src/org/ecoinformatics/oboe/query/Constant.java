@@ -25,6 +25,8 @@ public class Constant {
 	public static String CONTEXT_SEPARATOR = "->";
 	//
 	
+	public static String QUERY_MEAS_CHA = "cha";
+	
 	//Query strategy, this need to be consistent with the values used to call QueryProcessor.main function
 	public static int QUERY_REWRITE = 1;
 	public static int QUERY_MATERIALIZED_DB = 2;

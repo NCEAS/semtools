@@ -2,7 +2,9 @@ package org.ecoinformatics.oboe;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.ecoinformatics.oboe.Constant;
 import org.ecoinformatics.oboe.query.OMQuery;
@@ -64,20 +66,24 @@ public class QueryProcessor {
 		
 	 	//3. perform queries
 		OboeQueryResultContainer queryResultContainer = new OboeQueryResultContainer();
+		Map<Integer,Integer> queryno2resultsize = new TreeMap<Integer,Integer>();
 		for(int i=0;i<queryList.size();i++){
-			if(i>0) break;
+			//if(i>0) break;
 			
 			OMQuery queryI = queryList.getQuery(i);
-			System.out.println(Debugger.getCallerPosition()+"\n*****\nProcess query: "+queryI+"\n********");
+			System.out.println(Debugger.getCallerPosition()+"\n*****\nProcess query: "+queryI);
 			
 			Set<OboeQueryResult> queryResult = queryI.execute(dbname,queryStrategy, resultWithRecord);
 						
 			System.out.println(Debugger.getCallerPosition()+"Query i="+i+",result size="+queryResult.size());//+":"+queryResult);
+			queryno2resultsize.put((i+1),queryResult.size());
+			
 			queryResultContainer.add(queryResult);
 		}
 		
 		long t2 = System.currentTimeMillis();
 		
+		//print hinting information
 		System.out.println("\n-----------\n");
 		if(queryStrategy==org.ecoinformatics.oboe.query.Constant.QUERY_MATERIALIZED_DB){
 			System.out.println(Debugger.getCallerPosition() +" Query materialized database.");
@@ -86,8 +92,15 @@ public class QueryProcessor {
 		}else{
 			System.out.println(Debugger.getCallerPosition() +" Query: other strategy.");
 		}
+		
+		//print time and result size
 		System.out.println(Debugger.getCallerPosition()+"Time used (Query): " 
 				+ (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
+		for(Integer qno: queryno2resultsize.keySet()){
+			System.out.println(Debugger.getCallerPosition()+"qno="+qno+", result size="+queryno2resultsize.get(qno)+",queryI="+queryList.getQuery(qno-1));
+		}
+		System.out.println(Debugger.getCallerPosition()+"AVERAGE time used (Query): " 
+				+ (t2-t1)/(queryList.size()) +" ms" +" = "+ ((t2-t1)/(1000*queryList.size())) +"s\n-----------\n");
 		
 		//4. write the query result to the result file
 		queryResultContainer.write(queryResultFile);

@@ -318,20 +318,23 @@ public class PostgresDB {
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public Set<OboeQueryResult> executeSQL (String sql) 
+	public Set<OboeQueryResult> executeSQL (String sql, boolean withRecordId) 
 		throws SQLException,Exception
 	{
 		Set<OboeQueryResult> resultSet = new TreeSet<OboeQueryResult>();
 		
+		//1. get connection
 		Connection conn = getConnection();
 		if(conn==null){
 			open();
 			conn = getConnection();
 		}
 		
+		//2. execute sql
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
 		
+		//3. extract results
 		//ResultSetMetaData rsmd = rs.getMetaData();
 		//int numOfCols = rsmd.getColumnCount();
 		while(rs.next()){
@@ -340,11 +343,14 @@ public class PostgresDB {
 			Long datasetId = rs.getLong(1);
 			queryResult.setDatasetId(datasetId);
 			
-			String recordId = rs.getString(2);
-			queryResult.setRecordId(recordId);
+			if(withRecordId){
+				String recordId = rs.getString(2);
+				queryResult.setRecordId(recordId);
+			}
 			
 			resultSet.add(queryResult);
 		}
+		
 		rs.close();
 		stmt.close();
 		

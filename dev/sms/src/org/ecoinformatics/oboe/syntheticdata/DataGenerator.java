@@ -402,10 +402,10 @@ public class DataGenerator {
 		}
 		
 		//Print the statistics
-		for(String measLabel: measLabelList){
-			Map<Integer, Integer> value2count = meas2_value2count.get(measLabel);
-			System.out.println(Debugger.getCallerPosition()+"measLabel="+measLabel+", value2count size="+value2count.size()+",value2count="+value2count);
-		}
+		//for(String measLabel: measLabelList){
+		//	Map<Integer, Integer> value2count = meas2_value2count.get(measLabel);
+			//System.out.println(Debugger.getCallerPosition()+"measLabel="+measLabel+", value2count size="+value2count.size()+",value2count="+value2count);
+		//}
 		
 		return meas2_value2count;
 	}

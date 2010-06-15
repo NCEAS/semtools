@@ -332,21 +332,23 @@ public class RawDB extends PostgresDB{
 		
 		//for each characteristic, get its related dataset id (i.e., annot_id) and attribute name)
 		for(String cha: cha2qm.keySet()){
-			
 			Map<Long, List<Pair<QueryMeasurement,String>>> oneTb2Attribute = retrieveOneTbAttribute(cha,cha2qm.get(cha));
 			tmpTbAttribute.putAll(oneTb2Attribute);
 		}
+		System.out.println(Debugger.getCallerPosition()+"tmpTbAttribute=\n"+tmpTbAttribute);
 		
 		//get only the table ids which has all these characteristics since they are in AND logic 
 		Map<Long, List<Pair<QueryMeasurement,String> >> tbAttribute = new TreeMap<Long, List<Pair<QueryMeasurement,String> >>();
 		for(Map.Entry<Long, List<Pair<QueryMeasurement,String> >> entry: tmpTbAttribute.entrySet()){
 			//each data table need to have all these characteristics since they are in AND logic 
-			System.out.println(Debugger.getCallerPosition()+"entry.getValue().size()="+entry.getValue().size()+",cha2qm.size()="+cha2qm.size());
+			System.out.println(Debugger.getCallerPosition()+"entry.getValue().size()="+entry.getValue().size()+",cha2qm.size()="+cha2qm.size()+":"+cha2qm);
 			
-			if(entry.getValue().size()==cha2qm.size()){
+			if(entry.getValue().size()>=cha2qm.size()){
 				tbAttribute.put(entry.getKey(), entry.getValue());
 			}
 		}
+		
+		System.out.println(Debugger.getCallerPosition()+"tbAttribute=\n"+tbAttribute);
 		return tbAttribute;
 	}
 	

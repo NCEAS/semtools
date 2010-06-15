@@ -1,0 +1,8 @@
+
+June 15, 2010
+
+#with record
+log: resultlog/2010_0615_log
+
+selectivity	RawDB	MDB
+0.01	0.328	5.744

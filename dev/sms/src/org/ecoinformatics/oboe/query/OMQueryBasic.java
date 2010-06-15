@@ -355,25 +355,19 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		
 		//Execute each aggregate query measurements and "AND" their results
 		Set<OboeQueryResult> nonAggQueryResult =  
-			executeOneCNFNonAggregateMDB(mdb,m_entityTypeNameCond,nonAggMeas);
+			executeOneCNFNonAggregateMDB(mdb,m_entityTypeNameCond,nonAggMeas,resultWithRid);
 		result.addAll(nonAggQueryResult);
 		String nonAggQuerySql = formSqlOneCNFNonAggregateMDB(mdb,m_entityTypeNameCond,nonAggMeas);
 		
 		System.out.println(Debugger.getCallerPosition()+"result size="+result.size());
 		
 		if(result.size()>0){
-			//boolean first= true;
 			for(QueryMeasurement qm: aggMeas){
-				//if(!first&&result.size()==0){
-					//this is not the first query, but no result, so, we don't need to execute other queries 
-				//	break;
-				//}
-				
 				//FIXME: will it has efficiency problem? 
 				//The embedded CNF and query is performed |aggMeas| times. 
 				//CHECK THIS with big dataset
 				Set<OboeQueryResult> oneAggQueryResult = 
-					qm.executeAggQueryMDB(mdb, nonAggQuerySql); 
+					qm.executeAggQueryMDB(mdb, nonAggQuerySql,nonAggQueryResult,resultWithRid); 
 				result.retainAll(oneAggQueryResult);
 			}
 		}
@@ -401,7 +395,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		for(int i=0;i<nonAggMeas.size();i++){
 			QueryMeasurement qm = nonAggMeas.get(i); //get 
 			//(did,record_id,oid,eid,mvalue,characteristic)
-			String oneNonAggCondSql = qm.formSQLNonAggCondOverMDB(mdb,entityNameCond);
+			String oneNonAggCondSql = qm.formSQLNonAggCondOverMDBView(mdb,entityNameCond);
 			if(i==0){
 				sqlNonAggCond = "("+oneNonAggCondSql+")";
 			}else{
@@ -424,14 +418,18 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 	 * @throws SQLException 
 	 */
 	private Set<OboeQueryResult> executeOneCNFNonAggregateMDB(MDB mdb, String entityNameCond,
-			List<QueryMeasurement> nonAggMeas) throws SQLException, Exception 
+			List<QueryMeasurement> nonAggMeas,boolean resultwithRecordId) throws SQLException, Exception 
 	{
 		
 		//get the SQL for non-aggregate conditions
 		String sqlNonAggCond = formSqlOneCNFNonAggregateMDB(mdb,entityNameCond,nonAggMeas);
 		
-		String sql = "SELECT DISTINCT did, record_id FROM ("+sqlNonAggCond+") AS tmp";
-		Set<OboeQueryResult> resultSet = mdb.executeSQL(sql);
+		String sql = "SELECT DISTINCT did"; 
+		if(resultwithRecordId){
+				sql +=", record_id ";
+		}
+		sql +=" FROM ("+sqlNonAggCond+") AS tmp";
+		Set<OboeQueryResult> resultSet = mdb.executeSQL(sql,resultwithRecordId);
 		
 		System.out.println(Debugger.getCallerPosition()+"sql:"+sql);
 		System.out.println(Debugger.getCallerPosition()+"resultSet:"+resultSet.size());

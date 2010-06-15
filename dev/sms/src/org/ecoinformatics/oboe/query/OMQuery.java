@@ -64,7 +64,7 @@ public class OMQuery {
 	//All the queries in the structure are formed using context
 	//Otherwise, they are just put together using logic OR.
  	Map<String, List<String> > m_queryContext; 
-
+ 	
  	public OMQuery()
  	{
  		m_query = new ArrayList<OMQueryBasic>();
@@ -120,10 +120,10 @@ public class OMQuery {
 					queryMeas.setStandardCond(standard);
 					queryMeas.setValueCond(condition);
 					queryMeas.setAggregationFunc(aggregationFunc);
-					System.out.println(Debugger.getCallerPosition()+"dnfNo="+dnfNo+",queryMeas: "+queryMeas);
+					//System.out.println(Debugger.getCallerPosition()+"dnfNo="+dnfNo+",queryMeas: "+queryMeas);
 					
 					oneBasicQuery.addMeasDNF(dnfNo, queryMeas);
-					System.out.println(Debugger.getCallerPosition()+"oneBasicQuery: "+oneBasicQuery);
+					//System.out.println(Debugger.getCallerPosition()+"oneBasicQuery: "+oneBasicQuery);
 					
 					oneLine = queryLines.get(++i);
 					if(oneLine.equals(Constant.MEASUREMENT_END)==false){
@@ -135,12 +135,7 @@ public class OMQuery {
 					throw new Exception("Query is in valid, entity does not have end symbol.");
 				}
 				m_query.add(oneBasicQuery);
-				//List<OMQueryBasic> tmplist = m_queryIndex.get(oneBasicQuery.getQueryLabel());
-				//if(tmplist == null){
-				//	tmplist = new ArrayList<OMQueryBasic>();
-				//	m_queryIndex.put(oneBasicQuery.getQueryLabel(),tmplist);
-				//}
-				//tmplist.add(oneBasicQuery);
+				
 				m_queryIndex.put(oneBasicQuery.getQueryLabel(), oneBasicQuery);
 			}else if(oneLine.contains(Constant.CONTEXT_START)){
 				//parse the context
@@ -354,6 +349,9 @@ public class OMQuery {
 			long t2 = System.currentTimeMillis();
 			
 			System.out.println(Debugger.getCallerPosition()+"OMQuery DNF "+i+",oneDNFqueryResultSet size="+oneDNFqueryResultSet.size());
+			if(oneDNFqueryResultSet.size()<20){
+				System.out.println(Debugger.getCallerPosition()+"Result: "+oneDNFqueryResultSet);
+			}
 			System.out.println(Debugger.getCallerPosition()+"Time used (Query): "+ (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
 			resultSet.addAll(oneDNFqueryResultSet);			
 		}
@@ -431,7 +429,8 @@ public class OMQuery {
 					qmlist.add(qm);
 					
 					qm.setAggregationFunc(null);
-					qm.setCharacteristicCond("'"+measLabel+"%'");
+					//qm.setCharacteristicCond("'"+measLabel+"%'");
+					qm.setCharacteristicCond("'"+measLabel+Constant.QUERY_MEAS_CHA+"'");
 					qm.setStandardCond(null);
 					qm.setValueCond(oneSelectivityQueryConds.get(queryLabel-1));
 					

@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.ecoinformatics.sms.annotation.*;
 
@@ -14,6 +15,7 @@ public class ObservationInstance implements Comparable<ObservationInstance>{
 	private Observation obsType;
 	private EntityInstance entityInstance;
 	private Long m_recordId;
+	private Set<Long> m_compressedRecordIds;
 	
 	private OboeModel oboe;
 	private Annotation a;
@@ -23,6 +25,7 @@ public class ObservationInstance implements Comparable<ObservationInstance>{
 		this.setObsId((oboe.gOldMaxObsId)++);
 		this.setObsType(_obsType);
 		this.setEntity(_entityInstance);
+		m_compressedRecordIds = new TreeSet<Long>();
 	}
 	
 	public long getObsId() {
@@ -53,6 +56,18 @@ public class ObservationInstance implements Comparable<ObservationInstance>{
 
 	public void setRecordId(Long mRecordId) {
 		m_recordId = mRecordId;
+	}
+	
+	public Set<Long> getCompressedRecordIds() {
+		return m_compressedRecordIds;
+	}
+
+	public void setCompressedRecordIds(Set<Long> mCompressedRecordIds) {
+		m_compressedRecordIds = mCompressedRecordIds;
+	}
+	
+	public void addRecordId(long rid){
+		m_compressedRecordIds.add(rid);
 	}
 	
 	public OboeModel getOboe() {
