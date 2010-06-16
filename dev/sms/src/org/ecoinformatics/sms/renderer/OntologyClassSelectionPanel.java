@@ -267,8 +267,10 @@ public class OntologyClassSelectionPanel extends JPanel {
 					continue;
 				}
 			}
-			List<OntologyClass> superclasses = SMS.getInstance().getOntologyManager().getNamedSuperclasses(root);
-			if (superclasses == null || superclasses.isEmpty()) {
+			//List<OntologyClass> superclasses = SMS.getInstance().getOntologyManager().getNamedSuperclasses(root);
+			// used to check that this was a top-level class, but it is not really necessary
+			//if (superclasses == null || superclasses.isEmpty()) {
+			if (true) {	
 				
 				buildTree(root, rootNode);
 			}
