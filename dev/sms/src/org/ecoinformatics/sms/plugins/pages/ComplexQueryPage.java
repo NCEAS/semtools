@@ -101,7 +101,7 @@ public class ComplexQueryPage extends AbstractUIPage {
 						"<table>" +
 						"<tr>" +
 						"<td align='center'> + </td>" +
-						"<td>Add <b>Entity</b>, <b>Characteristic</b>, <b>MeasurementStandard</b>, and <b>Protocol</b> classes individually, " +
+						"<td>Add <b>Entity</b>, <b>Characteristic</b>, <b>Standard</b>, and <b>Protocol</b> classes individually, " +
 						"or a single <b>Measurement</b> type can be selected as a template. </td>" +
 						"</tr>" +
 						"<tr>" +

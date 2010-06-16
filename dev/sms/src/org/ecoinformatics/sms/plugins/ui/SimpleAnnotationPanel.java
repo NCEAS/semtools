@@ -234,7 +234,7 @@ public class SimpleAnnotationPanel extends JPanel {
 		// Standard and Protocol	
 		observationStandard = OntologyClassField.makeLabel("", true, null);
 		observationStandard.setFilterClass(Annotation.OBOE_CLASSES.get(Standard.class));
-		characteristicPanel.add(OntologyClassField.wrapField(observationStandard, "using the MeasurementStandard"));
+		characteristicPanel.add(OntologyClassField.wrapField(observationStandard, "using the Standard"));
 		
 		observationProtocol = OntologyClassField.makeLabel("", true, null);
 		observationProtocol.setFilterClass(Annotation.OBOE_CLASSES.get(Protocol.class));
