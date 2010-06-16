@@ -15,8 +15,8 @@ import org.ecoinformatics.oboe.util.Debugger;
 
 public class QueryGenerator extends DataStatistics{
 
-	private static int scale_num = 100;
-	private static double m_selectivity_scale = 0.01;
+	private static int m_value_scale_num = 100;
+	private static double m_value_selectivity_scale = 0.01;
 	
 	/**
 	 * Calculate the scale of the selectivity
@@ -25,8 +25,8 @@ public class QueryGenerator extends DataStatistics{
 	 */
 	private static double calSelectivityScale(double accurateSelectivity)
 	{
-		int scale = (int)(accurateSelectivity*scale_num);
-		double roughScale = (scale*1.0)/scale_num;
+		int scale = (int)(accurateSelectivity*m_value_scale_num);
+		double roughScale = (scale*1.0)/m_value_scale_num;
 		
 		return roughScale;
 	}
@@ -100,7 +100,7 @@ public class QueryGenerator extends DataStatistics{
 					}
 				}
 				if(requiredQueryCondList.size()<=qnumPerSelectivity){
-					requiredSelectivity += m_selectivity_scale;
+					requiredSelectivity += m_value_selectivity_scale;
 					System.out.println(Debugger.getCallerPosition()+"Need to access selectivity="+requiredSelectivity);
 				}
 			}
@@ -128,8 +128,10 @@ public class QueryGenerator extends DataStatistics{
 			
 			Map<Integer, Integer> value2count = meas2_value2count.get(measLabel); //value: count
 			int accumulateCount = 0;
+			
+
 			for(Map.Entry<Integer,Integer> entry: value2count.entrySet()){
-				int value = entry.getKey();
+				int value = entry.getKey(); 
 				int count = entry.getValue();
 				
 				//put (selectivityScale,=value) to the map
@@ -141,7 +143,9 @@ public class QueryGenerator extends DataStatistics{
 				accumulateCount += count;
 				double accumulateSelectivity = (accumulateCount*(1.0))/numberOfRows;
 				double accumulateSelectivityScale = calSelectivityScale(accumulateSelectivity);
-				putSelectivity(recordselectivity2condlist,accumulateSelectivityScale,(">="+value));
+				
+				//values are ordered ascendingly, so,for this selectivity, the condition should be "<= value"
+				putSelectivity(recordselectivity2condlist,accumulateSelectivityScale,("<="+value));
 				
 			}
 			meas2_rselectivity2valuelist.put(measLabel, recordselectivity2condlist);
@@ -153,8 +157,8 @@ public class QueryGenerator extends DataStatistics{
 	public static void main(String[] args) throws Exception {
 		if(args.length<3){
 			//e.g., java -cp oboe.jar org.ecoinformatics.oboe.QueryGenerator syn 20 0.5
-			//System.out.println("Usage: ./QueryGenerator <1. data_file_prefix> <2.file num> <3. attr slectivity double(0,1.0]> <4. list of record selectivity>");
-			System.out.println("Usage: ./QueryGenerator <1. data_file_prefix> <2.file num>");
+			System.out.println("Usage: ./QueryGenerator <1. data_file_prefix> <2.file num> <3. attr slectivity double(0,1.0]> <4. list of record selectivity>");
+			//System.out.println("Usage: ./QueryGenerator <1. data_file_prefix> <2.file num>");
 			return;
 		}
 		
@@ -183,6 +187,14 @@ public class QueryGenerator extends DataStatistics{
 		System.out.println(Debugger.getCallerPosition()+"filenum="+filenum);
 		System.out.println(Debugger.getCallerPosition()+"attrSelectivity="+attrSelectivity+",recordSelectivity="+recordSelectivity+"\n");
 		
+		
+		//Get the measurements that we need to generate query for
+		List<String> measToGenerateQueryFor = new ArrayList<String>();
+		//for(int i=0;i<m_measurements.length;i++){
+		//	measToGenerateQueryFor.add(m_measurements[i]);
+		//}
+		measToGenerateQueryFor.add("m5"); //for testing purpose
+		
 		//for each file, get the data distribution for the attributes with given selectivity
 		int numbOfRows = 5000;
 		for(int i=0;i<1;i++){
@@ -201,10 +213,8 @@ public class QueryGenerator extends DataStatistics{
 			generator.setRownum(numbOfRows);
 			generator.setAnnotation(a.getAnnotation());
 			generator.setKey2distinctfactor(a.getKey2distinctfactor());
-			List<String> measToTest = new ArrayList<String>();
-			measToTest.add("m5");
-			measToTest.add("m6");
-			Map<String, Map<Integer, Integer>> meas2_value2count = generator.Statistic(dataFile, measToTest);
+			
+			Map<String, Map<Integer, Integer>> meas2_value2count = generator.Statistic(dataFile, measToGenerateQueryFor);
 			
 			
 			//3. Compute the query and statistics

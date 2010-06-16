@@ -1,0 +1,352 @@
+QueryProcessor.java:56: main:1. queryFile=/Users/cao/DATA/SONET/svntrunk/semtools/dev/sms/oboedb/query_m5_s0.2
+QueryProcessor.java:57: main:2. queryStrategy=2
+QueryProcessor.java:58: main:3. dbname=oboe_syn
+QueryProcessor.java:59: main:4. resultWithRecord=true
+QueryProcessor.java:60: main:5. queryResultFile=
+QueryList.java:73: read:oneLine=BEGIN QUERY:1
+QueryList.java:73: read:oneLine=BEGIN QUERY:2
+QueryList.java:73: read:oneLine=BEGIN QUERY:3
+QueryList.java:73: read:oneLine=BEGIN QUERY:4
+QueryList.java:73: read:oneLine=BEGIN QUERY:5
+QueryList.java:73: read:oneLine=BEGIN QUERY:6
+QueryList.java:73: read:oneLine=BEGIN QUERY:7
+QueryList.java:73: read:oneLine=BEGIN QUERY:8
+QueryList.java:73: read:oneLine=BEGIN QUERY:9
+QueryList.java:73: read:oneLine=BEGIN QUERY:10
+QueryProcessor.java:65: main:queryList=
+i=0:1: 'e5'['m5cha' <=2056], Context: {}
+i=1:1: 'e5'['m5cha' <=2064], Context: {}
+i=2:1: 'e5'['m5cha' <=2065], Context: {}
+i=3:1: 'e5'['m5cha' <=2072], Context: {}
+i=4:1: 'e5'['m5cha' <=2073], Context: {}
+i=5:1: 'e5'['m5cha' <=2078], Context: {}
+i=6:1: 'e5'['m5cha' <=2081], Context: {}
+i=7:1: 'e5'['m5cha' <=2085], Context: {}
+i=8:1: 'e5'['m5cha' <=2092], Context: {}
+i=9:1: 'e5'['m5cha' <=2095], Context: {}
+
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' <=2056], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+OMQueryBasic.java:348: executeOneCNF:measAND=['m5cha' <=2056]
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2056 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:434: executeOneCNFNonAggregateMDB:sql:SELECT DISTINCT did, record_id  FROM ((SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2056 AND etype = 'e5' AND characteristic='m5cha')) AS tmp
+OMQueryBasic.java:435: executeOneCNFNonAggregateMDB:resultSet:10000
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2056 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:362: executeOneCNF:result size=10000
+OMQueryBasic.java:375: executeOneCNF:oneCNF result size=10000
+ContextChain.java:289: execute:Context chain result size=10000
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=10000
+OMQuery.java:355: execute:Time used (Query): 2847 ms = 2s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=10000
+OMQuery.java:388: execute:Total queryResultSet size=10000
+QueryProcessor.java:78: main:Query i=0,result size=10000
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' <=2064], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+OMQueryBasic.java:348: executeOneCNF:measAND=['m5cha' <=2064]
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2064 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:434: executeOneCNFNonAggregateMDB:sql:SELECT DISTINCT did, record_id  FROM ((SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2064 AND etype = 'e5' AND characteristic='m5cha')) AS tmp
+OMQueryBasic.java:435: executeOneCNFNonAggregateMDB:resultSet:10010
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2064 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:362: executeOneCNF:result size=10010
+OMQueryBasic.java:375: executeOneCNF:oneCNF result size=10010
+ContextChain.java:289: execute:Context chain result size=10010
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=10010
+OMQuery.java:355: execute:Time used (Query): 2808 ms = 2s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=10010
+OMQuery.java:388: execute:Total queryResultSet size=10010
+QueryProcessor.java:78: main:Query i=1,result size=10010
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' <=2065], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+OMQueryBasic.java:348: executeOneCNF:measAND=['m5cha' <=2065]
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2065 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:434: executeOneCNFNonAggregateMDB:sql:SELECT DISTINCT did, record_id  FROM ((SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2065 AND etype = 'e5' AND characteristic='m5cha')) AS tmp
+OMQueryBasic.java:435: executeOneCNFNonAggregateMDB:resultSet:10020
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2065 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:362: executeOneCNF:result size=10020
+OMQueryBasic.java:375: executeOneCNF:oneCNF result size=10020
+ContextChain.java:289: execute:Context chain result size=10020
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=10020
+OMQuery.java:355: execute:Time used (Query): 2732 ms = 2s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=10020
+OMQuery.java:388: execute:Total queryResultSet size=10020
+QueryProcessor.java:78: main:Query i=2,result size=10020
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' <=2072], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+OMQueryBasic.java:348: executeOneCNF:measAND=['m5cha' <=2072]
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2072 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:434: executeOneCNFNonAggregateMDB:sql:SELECT DISTINCT did, record_id  FROM ((SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2072 AND etype = 'e5' AND characteristic='m5cha')) AS tmp
+OMQueryBasic.java:435: executeOneCNFNonAggregateMDB:resultSet:10040
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2072 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:362: executeOneCNF:result size=10040
+OMQueryBasic.java:375: executeOneCNF:oneCNF result size=10040
+ContextChain.java:289: execute:Context chain result size=10040
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=10040
+OMQuery.java:355: execute:Time used (Query): 2750 ms = 2s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=10040
+OMQuery.java:388: execute:Total queryResultSet size=10040
+QueryProcessor.java:78: main:Query i=3,result size=10040
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' <=2073], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+OMQueryBasic.java:348: executeOneCNF:measAND=['m5cha' <=2073]
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2073 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:434: executeOneCNFNonAggregateMDB:sql:SELECT DISTINCT did, record_id  FROM ((SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2073 AND etype = 'e5' AND characteristic='m5cha')) AS tmp
+OMQueryBasic.java:435: executeOneCNFNonAggregateMDB:resultSet:10050
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2073 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:362: executeOneCNF:result size=10050
+OMQueryBasic.java:375: executeOneCNF:oneCNF result size=10050
+ContextChain.java:289: execute:Context chain result size=10050
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=10050
+OMQuery.java:355: execute:Time used (Query): 2761 ms = 2s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=10050
+OMQuery.java:388: execute:Total queryResultSet size=10050
+QueryProcessor.java:78: main:Query i=4,result size=10050
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' <=2078], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+OMQueryBasic.java:348: executeOneCNF:measAND=['m5cha' <=2078]
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2078 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:434: executeOneCNFNonAggregateMDB:sql:SELECT DISTINCT did, record_id  FROM ((SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2078 AND etype = 'e5' AND characteristic='m5cha')) AS tmp
+OMQueryBasic.java:435: executeOneCNFNonAggregateMDB:resultSet:10060
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2078 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:362: executeOneCNF:result size=10060
+OMQueryBasic.java:375: executeOneCNF:oneCNF result size=10060
+ContextChain.java:289: execute:Context chain result size=10060
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=10060
+OMQuery.java:355: execute:Time used (Query): 2737 ms = 2s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=10060
+OMQuery.java:388: execute:Total queryResultSet size=10060
+QueryProcessor.java:78: main:Query i=5,result size=10060
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' <=2081], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+OMQueryBasic.java:348: executeOneCNF:measAND=['m5cha' <=2081]
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2081 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:434: executeOneCNFNonAggregateMDB:sql:SELECT DISTINCT did, record_id  FROM ((SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2081 AND etype = 'e5' AND characteristic='m5cha')) AS tmp
+OMQueryBasic.java:435: executeOneCNFNonAggregateMDB:resultSet:10070
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2081 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:362: executeOneCNF:result size=10070
+OMQueryBasic.java:375: executeOneCNF:oneCNF result size=10070
+ContextChain.java:289: execute:Context chain result size=10070
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=10070
+OMQuery.java:355: execute:Time used (Query): 2770 ms = 2s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=10070
+OMQuery.java:388: execute:Total queryResultSet size=10070
+QueryProcessor.java:78: main:Query i=6,result size=10070
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' <=2085], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+OMQueryBasic.java:348: executeOneCNF:measAND=['m5cha' <=2085]
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2085 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:434: executeOneCNFNonAggregateMDB:sql:SELECT DISTINCT did, record_id  FROM ((SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2085 AND etype = 'e5' AND characteristic='m5cha')) AS tmp
+OMQueryBasic.java:435: executeOneCNFNonAggregateMDB:resultSet:10080
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2085 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:362: executeOneCNF:result size=10080
+OMQueryBasic.java:375: executeOneCNF:oneCNF result size=10080
+ContextChain.java:289: execute:Context chain result size=10080
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=10080
+OMQuery.java:355: execute:Time used (Query): 2736 ms = 2s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=10080
+OMQuery.java:388: execute:Total queryResultSet size=10080
+QueryProcessor.java:78: main:Query i=7,result size=10080
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' <=2092], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+OMQueryBasic.java:348: executeOneCNF:measAND=['m5cha' <=2092]
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2092 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:434: executeOneCNFNonAggregateMDB:sql:SELECT DISTINCT did, record_id  FROM ((SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2092 AND etype = 'e5' AND characteristic='m5cha')) AS tmp
+OMQueryBasic.java:435: executeOneCNFNonAggregateMDB:resultSet:10130
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2092 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:362: executeOneCNF:result size=10130
+OMQueryBasic.java:375: executeOneCNF:oneCNF result size=10130
+ContextChain.java:289: execute:Context chain result size=10130
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=10130
+OMQuery.java:355: execute:Time used (Query): 2736 ms = 2s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=10130
+OMQuery.java:388: execute:Total queryResultSet size=10130
+QueryProcessor.java:78: main:Query i=8,result size=10130
+QueryProcessor.java:74: main:
+*****
+Process query: 1: 'e5'['m5cha' <=2095], Context: {}
+OMQuery.java:339: execute:contextQueryDNF = [(1) ]
+---------------
+OMQuery.java:343: execute:[1/1] contextQuery:(1) 
+OMQueryBasic.java:348: executeOneCNF:measAND=['m5cha' <=2095]
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2095 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:434: executeOneCNFNonAggregateMDB:sql:SELECT DISTINCT did, record_id  FROM ((SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2095 AND etype = 'e5' AND characteristic='m5cha')) AS tmp
+OMQueryBasic.java:435: executeOneCNFNonAggregateMDB:resultSet:10140
+OMQueryBasic.java:406: formSqlOneCNFNonAggregateMDB:sqlNonAggCond:
+(SELECT DISTINCT did,record_id, oid, mvalue, characteristic  FROM non_agg_meas_view 
+WHERE  mvalue <=2095 AND etype = 'e5' AND characteristic='m5cha')
+
+OMQueryBasic.java:362: executeOneCNF:result size=10140
+OMQueryBasic.java:375: executeOneCNF:oneCNF result size=10140
+ContextChain.java:289: execute:Context chain result size=10140
+******
+
+OMQuery.java:351: execute:OMQuery DNF 0,oneDNFqueryResultSet size=10140
+OMQuery.java:355: execute:Time used (Query): 3059 ms = 3s
+-----------
+
+OMQuery.java:359: execute:OMQuery result size=10140
+OMQuery.java:388: execute:Total queryResultSet size=10140
+QueryProcessor.java:78: main:Query i=9,result size=10140
+
+-----------
+
+QueryProcessor.java:89: main: Query materialized database.
+QueryProcessor.java:97: main:Time used (Query): 28173 ms = 28s
+-----------
+
+QueryProcessor.java:100: main:qno=1, result size=10000,queryI=1: 'e5'['m5cha' <=2056], Context: {}
+QueryProcessor.java:100: main:qno=2, result size=10010,queryI=1: 'e5'['m5cha' <=2064], Context: {}
+QueryProcessor.java:100: main:qno=3, result size=10020,queryI=1: 'e5'['m5cha' <=2065], Context: {}
+QueryProcessor.java:100: main:qno=4, result size=10040,queryI=1: 'e5'['m5cha' <=2072], Context: {}
+QueryProcessor.java:100: main:qno=5, result size=10050,queryI=1: 'e5'['m5cha' <=2073], Context: {}
+QueryProcessor.java:100: main:qno=6, result size=10060,queryI=1: 'e5'['m5cha' <=2078], Context: {}
+QueryProcessor.java:100: main:qno=7, result size=10070,queryI=1: 'e5'['m5cha' <=2081], Context: {}
+QueryProcessor.java:100: main:qno=8, result size=10080,queryI=1: 'e5'['m5cha' <=2085], Context: {}
+QueryProcessor.java:100: main:qno=9, result size=10130,queryI=1: 'e5'['m5cha' <=2092], Context: {}
+QueryProcessor.java:100: main:qno=10, result size=10140,queryI=1: 'e5'['m5cha' <=2095], Context: {}
+QueryProcessor.java:102: main:AVERAGE time used (Query): 2817 ms = 2s
+-----------
+
+
+-----------
+QueryProcessor.java:110: main:Time used (Total=query+write out): 28174 ms = 28s
+-----------
+

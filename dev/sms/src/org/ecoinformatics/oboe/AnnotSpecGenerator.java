@@ -12,8 +12,8 @@ import org.ecoinformatics.oboe.syntheticdataquery.DataStatistics;
 public class AnnotSpecGenerator extends DataStatistics{
 	private static int maximum_attribute_num_per_tb = 16;
 	private static int maximum_attribute_no = 100;
-	//private static int meas_num_per_obs = 2;
-	private static double ratio = 0.5;
+	
+	
 	
 	
 	private static List<List<Integer> > generateTableAttributes(int numAnnotSpecFiles)
@@ -26,10 +26,10 @@ public class AnnotSpecGenerator extends DataStatistics{
 			tableAttributes.add(ontTbAtt);
 		}
 	
-		for(int i=0;i<probability.length;i++){
+		for(int i=0;i<m_probability.length;i++){
 			int j=0;
 			//put the measurement no. with selectivity control
-			for(;j<(int)(probability[i]*numAnnotSpecFiles);j++){
+			for(;j<(int)(m_probability[i]*numAnnotSpecFiles);j++){
 				List<Integer> ontTbAtt = tableAttributes.get(j);
 				ontTbAtt.add(i+1);
 			}
@@ -41,9 +41,9 @@ public class AnnotSpecGenerator extends DataStatistics{
 			for(;j<numAnnotSpecFiles;j++){
 				List<Integer> oneTbAtt = tableAttributes.get(j);
 				
-				int mno = MyRandom.getRand(probability.length+1,maximum_attribute_no);
+				int mno = MyRandom.getRand(m_probability.length+1,maximum_attribute_no);
 				while(oneTbAtt.contains(mno)){
-					mno = MyRandom.getRand(probability.length+1,maximum_attribute_no);
+					mno = MyRandom.getRand(m_probability.length+1,maximum_attribute_no);
 				}
 				oneTbAtt.add(mno);
 			}
@@ -65,7 +65,7 @@ public class AnnotSpecGenerator extends DataStatistics{
 			int oid = attrno+1;
 			int mid1 = oneTbAtt.get(attrno);
 			//int mid2 = oneTbAtt.get(meas_num_per_obs*attrno+1);
-			dataPrintStream.append("o"+oid+" e"+oid+" distinct:m"+mid1+" key,"+ratio+"\n");
+			dataPrintStream.append("o"+oid+" e"+oid+" distinct:m"+mid1+" key,"+m_key_uniquevalue_ratio+"\n");
 		}
 	}
 	/**
