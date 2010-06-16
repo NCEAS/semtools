@@ -1,6 +1,7 @@
 
 June 16, 2010
 
+#============================================
 #with record
 #query batch command: executable/query_syn.sh (r1410)
 #query files:  executable/resultlog/2010_0616/query (r1410)
@@ -8,8 +9,8 @@ June 16, 2010
 
 selectivity	RawDB	MDB
 0.01	0.101	0.838
-0.05	0.84	1.553
-0.1		0.92	2.239
+0.05	0.084	1.553
+0.1		0.092	2.239
 0.2		0.114	2.817
 0.5		0.167	4.150
 
@@ -18,7 +19,7 @@ selectivity	RawDB	MDB
 #Now, 
 #good results: (1) the time trend with the selectivity works well.
 #bad results: (1) MDB still takes too much time
-#confusing parts: for RawDB, the trend of 0.05 and 0.1 is not pretty good. 
+#confusing parts: (1) for RawDB, the trend of 0.05 and 0.1 is not pretty good. 
 #I guess this is because my selectivity calculation is just based on one data file, 
 #I need to calculate this selectivity based on all the files contain m5 measurements  
 
@@ -28,3 +29,20 @@ selectivity	RawDB	MDB
 #(4) Fix value selectivity, change measurement selectivity, simple condition
 #(6) Fix value/measurement selectivity, add aggregation
 #(7) Fix value/measurement selectivity, change length of context chain
+
+#============================================
+#Code change: generate query:Change the value selectivitty over all the tables containing some measurement   
+#query batch command: executable/query_syn.sh 
+#query files:  executable/resultlog/2010_0616_query_v2/query 
+#log: executable/resultlog/2010_0616_query_v2
+
+selectivity	RawDB	MDB
+0.01	0.084	0.844
+0.05	0.082	1.657
+0.1		0.092	2.207
+0.2		0.116	2.704
+0.5		0.168	4.289
+
+#Explanation
+#(1) trend with the selectivity is good
+#TODO: change the output format to see whether MDB still uses this much time

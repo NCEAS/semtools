@@ -29,6 +29,7 @@ import org.ecoinformatics.oboe.datastorage.RawDB;
 import org.ecoinformatics.oboe.datastorage.PostgresDB;
 import org.ecoinformatics.oboe.model.*;
 import org.ecoinformatics.oboe.syntheticdataquery.AnnotationSpecifier;
+import org.ecoinformatics.oboe.syntheticdataquery.DataStatistics;
 import org.ecoinformatics.oboe.util.Debugger;
 
 //Example queries: 
@@ -398,14 +399,14 @@ public class OMQuery {
 	 * @param queryFilePrefix
 	 * @throws IOException 
 	 */
-	public void writeQueries(AnnotationSpecifier a,
-			Map<String, Map<Double, List<String >>> meas2_selectivityQueryConds,String queryFilePrefix) 
+	public void writeQueries(Map<String, Map<Double, List<String >>> meas2_selectivityQueryConds,String queryFilePrefix) 
 		throws IOException
 	{
 		for(String measLabel:meas2_selectivityQueryConds.keySet()){
 			Map<Double, List<String >> oneMeasSelectivity2QueryConds = meas2_selectivityQueryConds.get(measLabel);
 			String queryFile = queryFilePrefix+"_"+measLabel;
-			String entityTypeName = a.getEntityTypeName(measLabel);
+			//String entityTypeName = a.getEntityTypeName(measLabel);
+			String entityTypeName = DataStatistics.getEntityTypeForMeas(measLabel);
 			System.out.println(Debugger.getCallerPosition()+"measLabel="+measLabel+"entityTypeName="+entityTypeName);
 			
 			for(double selectivity:oneMeasSelectivity2QueryConds.keySet()){

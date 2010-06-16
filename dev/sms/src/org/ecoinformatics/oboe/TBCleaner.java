@@ -15,7 +15,7 @@ import org.ecoinformatics.oboe.util.Debugger;
 public class TBCleaner {
 
 	private static void usage(){
-		System.out.println("Usage: ./TbCleaner <0. data file> <1. dbname> <2. which content to clean (0. both, 1: mdb, 2: rawdb)>");
+		System.out.println("Usage: ./TbCleaner <0. data file> <1. dbname> <2. which content to clean (0. both, 1: rawdb, 2: mdb)>");
 	}
 	
 	public static void main(String[] args) throws IOException, Exception {
@@ -35,11 +35,11 @@ public class TBCleaner {
 			RawDB rawDB = new RawDB(dbname);
 			rawDB.delete(dataFile);
 		}else if(cleanContent==1){
-			MDB mdb = new MDB(dbname);
-			mdb.delete(dataFile);
-		}else if(cleanContent==2){
 			RawDB rawDB = new RawDB(dbname);
 			rawDB.delete(dataFile);
+		}else if(cleanContent==2){
+			MDB mdb = new MDB(dbname);
+			mdb.delete(dataFile);
 		}else{
 			System.out.println(Debugger.getCallerPosition()+"Wrong 2nd parameter.");
 			usage();

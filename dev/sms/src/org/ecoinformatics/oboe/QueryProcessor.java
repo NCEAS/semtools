@@ -18,7 +18,7 @@ public class QueryProcessor {
 	private static void usage(){
 		System.out.println("Usage: ./QueryProcessor <1. query file> <2. query strategy> <3. dbname> <4.result form>" +
 			"[5. query result file name]");
-		System.out.println("\t <2. Query stragety> 1-query rewriting; 2-query materialized db; 3-others; ");
+		System.out.println("\t <2. Query stragety> 1-query rewriting over RawDB; 2-query materialized db; 3-others; ");
 		//System.out.println("\t <3. dbname> ");
 		System.out.println("\t <4. result form> 0: only has dataset id; 1, has dataset id and record id");
 	}

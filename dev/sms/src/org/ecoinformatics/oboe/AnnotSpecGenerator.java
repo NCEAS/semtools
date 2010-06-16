@@ -62,10 +62,19 @@ public class AnnotSpecGenerator extends DataStatistics{
 	private static void writeOneAnnotSpec(PrintStream dataPrintStream,List<Integer> oneTbAtt)
 	{
 		for(int attrno=0;attrno<oneTbAtt.size();attrno++){
-			int oid = attrno+1;
+			//int oid = attrno+1;
 			int mid1 = oneTbAtt.get(attrno);
+			String measLabel = DataStatistics.m_meas_prefix+mid1;
+			//String entityTypeName = DataStatistics.m_meas2entity.get(measLabel);
+			String entityTypeName = DataStatistics.getEntityTypeForMeas(measLabel);
+			String obsType = DataStatistics.getObsType(entityTypeName);
+			
+			//if(entityTypeName==null){
+			//	entityTypeName = "ent_key_"+measLabel;
+			//}
+			//String obsType = "obs_"+entityTypeName;
 			//int mid2 = oneTbAtt.get(meas_num_per_obs*attrno+1);
-			dataPrintStream.append("o"+oid+" e"+oid+" distinct:m"+mid1+" key,"+m_key_uniquevalue_ratio+"\n");
+			dataPrintStream.append(obsType+" "+entityTypeName+" distinct:"+measLabel+" key,"+m_key_uniquevalue_ratio+"\n");
 		}
 	}
 	/**

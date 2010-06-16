@@ -267,17 +267,19 @@ public class DataGenerator {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public Map<String, List> readData(String inDataFileName) throws FileNotFoundException,IOException, Exception
+	public int readData(String inDataFileName, Map<String, List> measurement2ValueList) 
+		throws FileNotFoundException,IOException, Exception
 	{
 		
 		BufferedReader bufferedReader = null; 
 		bufferedReader = new BufferedReader(new FileReader(inDataFileName));
 		
-		Map<String, List> measurement2valueList = readData(bufferedReader);
+		int rowNum = readData(bufferedReader, measurement2ValueList);
+		this.m_rownum = rowNum;
 		
 		if (bufferedReader != null) bufferedReader.close();		
 		
-		return measurement2valueList;
+		return rowNum;
 	}
 	
 	/**
@@ -286,7 +288,7 @@ public class DataGenerator {
 	 * @param r
 	 * @throws Exception
 	 */
-	private Map<String, List> readData(BufferedReader r)
+	private int readData(BufferedReader r, Map<String, List> measurement2valueList)
 		throws Exception
 	{
 		String line = null;
@@ -298,8 +300,8 @@ public class DataGenerator {
 		int colnum = measurementSet.size();
 		
 		// Read data file, and make sure each row contains exactly colnum values
+		int lineno = 0;
 		try {
-			int lineno = 0;
 			while((line = r.readLine())!=null){
 				//if((lineno)<=10){
 				//	System.out.println(line);
@@ -315,9 +317,11 @@ public class DataGenerator {
 		}
 		
 		// Structure data 
-		Map<String, List> measurement2valueList = structureData(measurementSet);
+		Map<String, List> thismeasurement2valueList = structureData(measurementSet);
+		measurement2valueList.putAll(thismeasurement2valueList);
 		
-		return measurement2valueList;
+		int recordNum = lineno - m_structure_row_num;
+		return recordNum;
 	}
 	
 	/**
@@ -359,7 +363,8 @@ public class DataGenerator {
 	public boolean Validate(String inDataFile) throws FileNotFoundException, IOException, Exception
 	{
 		// Read data		
-		Map<String, List> measurement2ValueList = readData(inDataFile);
+		Map<String, List> measurement2ValueList = new TreeMap<String, List>();
+		int rowNum = readData(inDataFile, measurement2ValueList);
 		
 		if(measurement2ValueList==null||measurement2ValueList.size()==0)
 			return true;
@@ -378,27 +383,61 @@ public class DataGenerator {
 	 * For the given measurement labels, compute their data value count
 	 * @param inDataFile
 	 * @param measLabelList
-	 * @return
+	 * @return map measurement label --> (map: value --> value count)
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public Map<String, Map<Integer, Integer>> Statistic(String inDataFile, List<String> measLabelList) 
+	public void Statistic(String inDataFile, //input data file
+			List<String> neededMeasLabelList,  //the list of measurement labels for which we need to calculate the statistics
+			Map<String, Map<Integer, Integer>> meas2_value2count,
+			Map<String,Integer> meas2_totalRecordNumInTb) //output
 		throws FileNotFoundException, IOException, Exception
 	{
-		Map<String, Map<Integer, Integer>> meas2_value2count = new TreeMap<String, Map<Integer, Integer>>();
-		
 		// Read data		
-		Map<String, List> measurement2ValueList = readData(inDataFile);
+		Map<String, List> measurement2ValueList = new TreeMap<String, List>();
+		int thisFileRecordNum = readData(inDataFile, measurement2ValueList);
 		if(measurement2ValueList==null||measurement2ValueList.size()==0)
-			return null;
+			return;
+		
 		System.out.println(Debugger.getCallerPosition()+"measurement2ValueList size="+measurement2ValueList.size());
 
 		//For each measurement label, get it's value account
-		for(int i=0;i<measLabelList.size();i++){
-			String measLabel = measLabelList.get(i);
+		for(int i=0;i<neededMeasLabelList.size();i++){
+			String measLabel = neededMeasLabelList.get(i);
+			
+			//this file has the measurement label "measLabel"
+			if(!measurement2ValueList.keySet().contains(measLabel))
+				continue;
+			
+			//update the total number of record of measurement
+			if(meas2_totalRecordNumInTb.keySet().contains(measLabel)){
+				int baseRecordNum = meas2_totalRecordNumInTb.get(measLabel);
+				meas2_totalRecordNumInTb.put(measLabel, baseRecordNum+thisFileRecordNum);
+			}else{
+				meas2_totalRecordNumInTb.put(measLabel, thisFileRecordNum);
+			}
+			
+			//get the value-count map for this measurement label
 			Map<Integer, Integer> value2count = Statistic(measurement2ValueList,measLabel);
-			meas2_value2count.put(measLabel, value2count);
+			
+			
+			Map<Integer, Integer> oldValue2count = meas2_value2count.get(measLabel);
+			if(oldValue2count==null){
+				//this measurement label does not have any old value-count map already
+				meas2_value2count.put(measLabel, value2count);
+			}else{
+				//this measurement has some old value-count map already,need to merge the new and the old
+				for(int newvalue: value2count.keySet()){
+					int newcnt = value2count.get(newvalue);
+					Integer oldcnt = oldValue2count.get(newvalue);
+					if(oldcnt==null){
+						oldValue2count.put(newvalue, newcnt);
+					}else{
+						oldValue2count.put(newvalue, newcnt+oldcnt);
+					}
+				}//end of for loop
+			}//end of else
 		}
 		
 		//Print the statistics
@@ -407,7 +446,6 @@ public class DataGenerator {
 			//System.out.println(Debugger.getCallerPosition()+"measLabel="+measLabel+", value2count size="+value2count.size()+",value2count="+value2count);
 		//}
 		
-		return meas2_value2count;
 	}
 
 	/**
