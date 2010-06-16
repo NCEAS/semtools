@@ -33,7 +33,7 @@ import org.ecoinformatics.oboe.model.MeasurementInstance;
 import org.ecoinformatics.oboe.model.OboeModel;
 import org.ecoinformatics.oboe.model.ObsTypeKey;
 import org.ecoinformatics.oboe.model.ObservationInstance;
-import org.ecoinformatics.oboe.syntheticdata.AnnotationSpecifier;
+import org.ecoinformatics.oboe.syntheticdataquery.AnnotationSpecifier;
 import org.ecoinformatics.oboe.util.Debugger;
 import org.ecoinformatics.sms.annotation.*;
 import org.ecoinformatics.sms.ontology.OntologyClass;

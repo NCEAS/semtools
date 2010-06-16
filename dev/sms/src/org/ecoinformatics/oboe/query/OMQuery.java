@@ -28,7 +28,7 @@ import org.ecoinformatics.oboe.datastorage.MDB;
 import org.ecoinformatics.oboe.datastorage.RawDB;
 import org.ecoinformatics.oboe.datastorage.PostgresDB;
 import org.ecoinformatics.oboe.model.*;
-import org.ecoinformatics.oboe.syntheticdata.AnnotationSpecifier;
+import org.ecoinformatics.oboe.syntheticdataquery.AnnotationSpecifier;
 import org.ecoinformatics.oboe.util.Debugger;
 
 //Example queries: 

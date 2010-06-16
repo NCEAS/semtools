@@ -1,7 +1,8 @@
 package org.ecoinformatics.oboe;
 
 import java.io.*;
-import org.ecoinformatics.oboe.syntheticdata.*;
+
+import org.ecoinformatics.oboe.syntheticdataquery.*;
 import org.ecoinformatics.oboe.Constant;
 
 public class SyntheticDataGenerator {

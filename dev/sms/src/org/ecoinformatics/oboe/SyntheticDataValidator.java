@@ -2,8 +2,8 @@ package org.ecoinformatics.oboe;
 
 import java.io.FileNotFoundException;
 
-import org.ecoinformatics.oboe.syntheticdata.AnnotationSpecifier;
-import org.ecoinformatics.oboe.syntheticdata.DataGenerator;
+import org.ecoinformatics.oboe.syntheticdataquery.AnnotationSpecifier;
+import org.ecoinformatics.oboe.syntheticdataquery.DataGenerator;
 import org.ecoinformatics.oboe.util.Debugger;
 
 public class SyntheticDataValidator {

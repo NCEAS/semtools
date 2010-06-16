@@ -7,23 +7,18 @@ import java.util.ArrayList;
 
 import org.ecoinformatics.oboe.util.Debugger;
 import org.ecoinformatics.oboe.util.MyRandom;
+import org.ecoinformatics.oboe.syntheticdataquery.DataStatistics;
 
-public class AnnotSpecGenerator {
+public class AnnotSpecGenerator extends DataStatistics{
 	private static int maximum_attribute_num_per_tb = 16;
 	private static int maximum_attribute_no = 100;
 	//private static int meas_num_per_obs = 2;
 	private static double ratio = 0.5;
 	
+	
 	private static List<List<Integer> > generateTableAttributes(int numAnnotSpecFiles)
 	{
-		//m1,m2 100%
-		//m3,m4 80%
-		//m5,m6 50%
-		//m7,m8 20%
-		//m9,m10 10%
-		//m11,m12 5%
-		//m13,m14 1%
-		double[] probability = new double[]{1.0,1.0,0.8,0.8,0.5,0.5,0.2,0.2,0.1,0.1,0.05,0.05,0.01,0.01};
+		
 		List<List<Integer> > tableAttributes = new ArrayList<List<Integer> >();
 		
 		for(int i=0;i<numAnnotSpecFiles;i++){

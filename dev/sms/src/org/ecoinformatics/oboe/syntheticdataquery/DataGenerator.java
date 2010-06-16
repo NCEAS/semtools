@@ -1,4 +1,4 @@
-package org.ecoinformatics.oboe.syntheticdata;
+package org.ecoinformatics.oboe.syntheticdataquery;
 
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Observation;

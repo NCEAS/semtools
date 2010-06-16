@@ -1,4 +1,4 @@
-package org.ecoinformatics.oboe.syntheticdata;
+package org.ecoinformatics.oboe.syntheticdataquery;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

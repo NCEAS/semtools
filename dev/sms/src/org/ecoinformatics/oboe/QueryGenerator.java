@@ -6,13 +6,14 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.ecoinformatics.oboe.query.OMQuery;
-import org.ecoinformatics.oboe.syntheticdata.AnnotationSpecifier;
-import org.ecoinformatics.oboe.syntheticdata.DataGenerator;
+import org.ecoinformatics.oboe.syntheticdataquery.AnnotationSpecifier;
+import org.ecoinformatics.oboe.syntheticdataquery.DataGenerator;
+import org.ecoinformatics.oboe.syntheticdataquery.DataStatistics;
 import org.ecoinformatics.oboe.util.Debugger;
 
 
 
-public class QueryGenerator {
+public class QueryGenerator extends DataStatistics{
 
 	private static int scale_num = 100;
 	private static double m_selectivity_scale = 0.01;
@@ -151,7 +152,9 @@ public class QueryGenerator {
 	
 	public static void main(String[] args) throws Exception {
 		if(args.length<3){
-			System.out.println("Usage: ./QueryGenerator <1. data_prefix> <2.file num> <3. attr slectivity double(0,1.0]> <4. list of record selectivity>");
+			//e.g., java -cp oboe.jar org.ecoinformatics.oboe.QueryGenerator syn 20 0.5
+			//System.out.println("Usage: ./QueryGenerator <1. data_file_prefix> <2.file num> <3. attr slectivity double(0,1.0]> <4. list of record selectivity>");
+			System.out.println("Usage: ./QueryGenerator <1. data_file_prefix> <2.file num>");
 			return;
 		}
 		
