@@ -226,7 +226,10 @@ public class QueryMeasurement {
 		if(returnStru.m_include_standard&&(standardCond!=null&&standardCond.trim().length()>0)) 
 			sql+=",standard";
 		
-		sql +=" FROM " + mdb.m_nonAggMeasView+" ";
+		if(returnStru.m_include_record_id) 
+			sql +=" FROM " + mdb.m_nonAggMeasView+" ";
+		else
+			sql +=" FROM " + mdb.m_nonAggMeasViewBasic+" ";
 		
 		//1. value condition
 		if(valueCond!=null&&valueCond.trim().length()>0)

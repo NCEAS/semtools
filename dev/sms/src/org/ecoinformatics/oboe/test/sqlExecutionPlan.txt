@@ -141,7 +141,15 @@ oboe_syn(> WHERE oi.etype = 'e5' AND  oi.oid=mi.oid AND  (mt.mtypelabel = mi.mty
 
 
    
-   
-    
+1.
+(1) non_agg_meas_view_onlydid has distinct in the select clause 
+   //1314 ms = 1s
+   Remove distinct in the select clause
+    //904 ms
+(2) non_agg_meas_view_basic
+	Has distinct
+    //1369 ms
+    Remove distinct in the definition
+    //939 ms
     
     

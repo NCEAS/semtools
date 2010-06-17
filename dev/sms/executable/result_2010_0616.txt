@@ -49,18 +49,28 @@ selectivity	RawDB	MDB
 #TODO: change the output format to see whether MDB still uses this much time
 
 #Only output did
-selectivity	RawDB	MDB
-0.01	0.067	0.842
-0.05	0.067	1.677
-0.1		0.067	2.131
-0.2		0.068	2.643
-0.5		0.072	4.204
+selectivity	RawDB	MDB		MDB1(MDB+without all oid)	MDB2(MDB1+view no distinct def)
+0.01	0.067	0.842	0.21	0.202
+0.05	0.067	1.677	0.502	0.444
+0.1		0.067	2.131	0.607	0.5
+0.2		0.068	2.643	0.807	0.582
+0.5		0.072	4.204	1.381	0.949
 #Explanation
 #Good results: 
 #(1) trend with the selectivity is good
 #(2) RawDB only output did BETTER than RawDB outout(did-recordid) 
 #Bad results: 
-#only output did does not improve the MDB performance, SOMETHING is wrong here, I need to check this
+#(1) only output did does not improve the MDB performance, SOMETHING is wrong here, I need to check this
+##
+#MDB results
+#MDB: use view def "non_agg_meas_view" (postprocess.sql)
+#MDB1: use view def 1 "non_agg_meas_view_basic" (postprocess.sql)
+#MDB2: use view def 2 "non_agg_meas_view_basic" (no distinct in the select clause of the view def.)(postprocess.sql)
+#(1) MDB1 is better than MDB, 
+#Reason: get rid of the oi_compress table in the view definition, this dramatically reduce the cost for join operation
+#(2) MDB2 is better than MDB1
+#Reason: the distinct keyword in the view def. brings more cost   
+
 
 #TOCHECK
 #(4) Fix value selectivity, change measurement selectivity, simple condition

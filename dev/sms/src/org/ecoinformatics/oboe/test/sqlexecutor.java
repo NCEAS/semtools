@@ -64,26 +64,41 @@ public class sqlexecutor {
 //		execute(mdb,sql3);//5321 ms = 5s
 		
 		//NOTE: Remove the projection on record_id helps a lot (compare with sql3) 
-		String sql32="SELECT distinct did FROM ((SELECT DISTINCT oi.did FROM mi_index AS mi,observation_instance AS oi,measurement_type AS mt WHERE mi.mvalue ~ '^[-]?[0-9]+' AND mi.mvalue !~ '[a-zA-Z]+' AND  (CAST(mi.mvalue AS numeric)>=78) AND  oi.etype = 'e5' AND  oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic ILIKE 'm5%'))) AS tmp;";
-		System.out.println("sql32:\n"+sql32);
-		execute(mdb,sql32); //3374 ms = 3s
+//		String sql32="SELECT distinct did FROM ((SELECT DISTINCT oi.did FROM mi_index AS mi,observation_instance AS oi,measurement_type AS mt WHERE mi.mvalue ~ '^[-]?[0-9]+' AND mi.mvalue !~ '[a-zA-Z]+' AND  (CAST(mi.mvalue AS numeric)>=78) AND  oi.etype = 'e5' AND  oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic ILIKE 'm5%'))) AS tmp;";
+//		System.out.println("sql32:\n"+sql32);
+//		execute(mdb,sql32); //3374 ms = 3s
+//		
+//		//NOTE: IMPROVES with Value type change on mvalue (compare with sql3)
+//		String sql4 = "SELECT distinct did,record_id FROM ((SELECT DISTINCT oi.did,oi.record_id, oi.oid, mi.mvalue, mt.characteristic  FROM mi_num AS mi,observation_instance AS oi,measurement_type AS mt"+ 
+//		" WHERE mi.mvalue>=78 AND  oi.etype = 'e5' AND  oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic = 'm5cha'))) AS tmp";
+//		System.out.println("sql4:\n"+sql4);
+//		execute(mdb,sql4); //3433 ms = 3s
+//		
+//		//NOTE: IMPROVES with when removing the projection on record_id (compare with sql4)
+//		String sql5 = "SELECT distinct did FROM ((SELECT DISTINCT oi.did FROM mi_num AS mi,observation_instance AS oi,measurement_type AS mt WHERE mi.mvalue>=78 AND  oi.etype = 'e5' AND  oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic = 'm5cha'))) AS tmp";
+//		System.out.println("sql5:\n"+sql5);
+//		execute(mdb,sql5);
+//		//1.167s
+//		
+//		//NOTE: IMPROVES with when removing the projection on record_id (compare with sql4)
+//		String sql52 = "SELECT distinct did FROM ((SELECT DISTINCT oi.did FROM mi_num AS mi,observation_instance AS oi,measurement_type AS mt WHERE mi.mvalue=78 AND  oi.etype = 'e5' AND  oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic = 'm5cha'))) AS tmp";
+//		System.out.println("sql5:\n"+sql52);//5ms
+//		execute(mdb,sql52); 
 		
-		//NOTE: IMPROVES with Value type change on mvalue (compare with sql3)
-		String sql4 = "SELECT distinct did,record_id FROM ((SELECT DISTINCT oi.did,oi.record_id, oi.oid, mi.mvalue, mt.characteristic  FROM mi_num AS mi,observation_instance AS oi,measurement_type AS mt"+ 
-		" WHERE mi.mvalue>=78 AND  oi.etype = 'e5' AND  oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic = 'm5cha'))) AS tmp";
-		System.out.println("sql4:\n"+sql4);
-		execute(mdb,sql4); //3433 ms = 3s
+		String sql61 = "SELECT DISTINCT did FROM non_agg_meas_view_basic WHERE mvalue <=5094 AND etype = 'ent-key-m5' AND characteristic='m5cha');";
+		System.out.println("sql61:\n"+sql61);//1369 ms = 1s
+		execute(mdb,sql61); 
 		
-		//NOTE: IMPROVES with when removing the projection on record_id (compare with sql4)
-		String sql5 = "SELECT distinct did FROM ((SELECT DISTINCT oi.did FROM mi_num AS mi,observation_instance AS oi,measurement_type AS mt WHERE mi.mvalue>=78 AND  oi.etype = 'e5' AND  oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic = 'm5cha'))) AS tmp";
-		System.out.println("sql5:\n"+sql5);
-		execute(mdb,sql5);
-		//1.167s
+		String sql63 = "SELECT DISTINCT did FROM non_agg_meas_view_onlydid WHERE mvalue <=5094 AND etype = 'ent-key-m5' AND characteristic='m5cha');";
+		System.out.println("sql63:\n"+sql63);//1314 ms = 1s
+		execute(mdb,sql63); 
 		
-		//NOTE: IMPROVES with when removing the projection on record_id (compare with sql4)
-		String sql52 = "SELECT distinct did FROM ((SELECT DISTINCT oi.did FROM mi_num AS mi,observation_instance AS oi,measurement_type AS mt WHERE mi.mvalue=78 AND  oi.etype = 'e5' AND  oi.oid=mi.oid AND  (mt.mtypelabel = mi.mtypelabel AND mt.characteristic = 'm5cha'))) AS tmp";
-		System.out.println("sql5:\n"+sql52);//5ms
-		execute(mdb,sql52); 
+		String sql62 = " SELECT DISTINCT oi.did FROM mi_numeric mi, observation_instance oi, measurement_type mt" +
+				" WHERE oi.oid = mi.oid AND mt.mtypelabel = mi.mtypelabel " +
+				" AND mvalue <=5094 AND etype = 'ent-key-m5' AND characteristic='m5cha';";
+		
+		System.out.println("sql62:\n"+sql62);//889 ms = 0s
+		execute(mdb,sql62); 
 		
 		mdb.close();
 	
