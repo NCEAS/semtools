@@ -3,13 +3,7 @@ package org.ecoinformatics.sms.owlapi.example;
 import org.ecoinformatics.sms.owlapi.RestrictionVisitor;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 
-import java.net.URI;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -45,8 +39,8 @@ import java.util.Set;
  */
 public class Restrictions {
 
-    public static final String DOCUMENT_IRI = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl";
-    public static final String OBOE_IRI = "http://ecoinformatics.org/oboe/oboe.1.0beta"; 
+    public static final String DOCUMENT_IRI = "https://code.ecoinformatics.org/code/sonet/trunk/ontologies/oboe-trait.owl";
+    public static final String OBOE_IRI = "http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl"; 
     
     public static void main(String[] args) {
         try {
@@ -57,12 +51,17 @@ public class Restrictions {
             OWLOntology ontology = manager.loadOntologyFromOntologyDocument(IRI.create(DOCUMENT_IRI));
             System.out.println("Loaded: " + ontology.getOntologyID());
 
-            String className = "AmmoniumConcentrationFreshwaterAutomated";
+//            String className = "Measurement";
+            String className = "Belowground_Trait";
+            //String className = "AmmoniumConcentrationFreshwaterAutomated";
             IRI restrictedClassIRI = IRI.create(ontology.getOntologyID().getOntologyIRI() + "#" + className);
+//            IRI restrictedClassIRI = IRI.create(OBOE_IRI + "#" + "Measurement");
+
             OWLClass restrictedClass = manager.getOWLDataFactory().getOWLClass(restrictedClassIRI);
 
             // look up the OBOE properties for the restrictions
-            OWLObjectProperty ofEntity = manager.getOWLDataFactory().getOWLObjectProperty(IRI.create(OBOE_IRI + "#measurementFor"));
+            OWLObjectProperty measurementFor = manager.getOWLDataFactory().getOWLObjectProperty(IRI.create(OBOE_IRI + "#measurementFor"));
+            OWLObjectProperty ofEntity = manager.getOWLDataFactory().getOWLObjectProperty(IRI.create(OBOE_IRI + "#ofEntity"));
         	OWLObjectProperty ofCharacteristic = manager.getOWLDataFactory().getOWLObjectProperty(IRI.create(OBOE_IRI + "#ofCharacteristic"));
         	OWLObjectProperty usesStandard = manager.getOWLDataFactory().getOWLObjectProperty(IRI.create(OBOE_IRI + "#usesStandard"));
         	OWLObjectProperty usesProtocol = manager.getOWLDataFactory().getOWLObjectProperty(IRI.create(OBOE_IRI + "#usesProtocol"));
@@ -71,8 +70,18 @@ public class Restrictions {
             RestrictionVisitor restrictionVisitor = new RestrictionVisitor(restrictedClass, ontology);
             
             // look up what we want from them
+        	Set<OWLClass> entities = restrictionVisitor.getRestrictedProperties().get(ofEntity);
+        	System.out.println("entities: " + entities);
+        	
+        	Set<OWLClass> characteristics = restrictionVisitor.getRestrictedProperties().get(ofCharacteristic);
+        	System.out.println("characteristics: " + characteristics);
+        	
         	Set<OWLClass> standards = restrictionVisitor.getRestrictedProperties().get(usesStandard);
         	System.out.println("standards: " + standards);
+        	
+        	Set<OWLClass> protocols = restrictionVisitor.getRestrictedProperties().get(usesProtocol);
+        	System.out.println("protocols: " + protocols);
+        	
             
         }
         catch (OWLOntologyCreationException e) {
