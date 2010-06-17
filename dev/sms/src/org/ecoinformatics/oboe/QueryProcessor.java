@@ -85,7 +85,7 @@ public class QueryProcessor {
 		OboeQueryResultContainer queryResultContainer = new OboeQueryResultContainer();
 		Map<Integer,Integer> queryno2resultsize = new TreeMap<Integer,Integer>();
 		for(int i=0;i<queryList.size();i++){
-			if(i>0) break;
+			//if(i>0) break;
 			
 			OMQuery queryI = queryList.getQuery(i);
 			System.out.println(Debugger.getCallerPosition()+"\n*****\nProcess query: "+queryI);

@@ -31,18 +31,39 @@ selectivity	RawDB	MDB
 #(7) Fix value/measurement selectivity, change length of context chain
 
 #============================================
-#Code change: generate query:Change the value selectivitty over all the tables containing some measurement   
+#Code change: generate query:Change the value selectivity over all the tables containing some measurement   
 #query batch command: executable/query_syn.sh 
 #query files:  executable/resultlog/2010_0616_query_v2/query 
 #log: executable/resultlog/2010_0616_query_v2
 
+#Only output (did-recordid)
 selectivity	RawDB	MDB
-0.01	0.084	0.844
-0.05	0.082	1.657
-0.1		0.092	2.207
-0.2		0.116	2.704
-0.5		0.168	4.289
+0.01	0.073	0.847
+0.05	0.085	1.699
+0.1		0.092	2.264
+0.2		0.114	2.683
+0.5		0.169	4.296
 
 #Explanation
 #(1) trend with the selectivity is good
 #TODO: change the output format to see whether MDB still uses this much time
+
+#Only output did
+selectivity	RawDB	MDB
+0.01	0.067	0.842
+0.05	0.067	1.677
+0.1		0.067	2.131
+0.2		0.068	2.643
+0.5		0.072	4.204
+#Explanation
+#Good results: 
+#(1) trend with the selectivity is good
+#(2) RawDB only output did BETTER than RawDB outout(did-recordid) 
+#Bad results: 
+#only output did does not improve the MDB performance, SOMETHING is wrong here, I need to check this
+
+#TOCHECK
+#(4) Fix value selectivity, change measurement selectivity, simple condition
+#(6) Fix value/measurement selectivity, add aggregation
+#(7) Fix value/measurement selectivity, change length of context chain
+
