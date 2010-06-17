@@ -95,18 +95,23 @@ public class QueryMeasurement {
 	
 	/**
 	 * Form the sql for this basic query
-	 * (did, record_id, eid, oid)
+	 * (did, record_id, oid)
 	 * 
 	 * @param mdb
 	 * @return
 	 * @throws Exception 
 	 * @throws SQLException 
 	 */
-	public String formSQL(MDB mdb, String nonAggMeasSql) throws SQLException, Exception
+	public String formSQL(MDB mdb, String nonAggMeasSql,//boolean resultWithRid,
+			NonAggSubQueryReturn requiredReturnStru) 
+	throws SQLException, Exception
 	{
-		String sql = "SELECT DISTINCT did, record_id, eid, oid FROM " + mdb.getObsInstanceTable() +" AS oi ";
-		sql +=" WHERE (did, eid) IN (\n";
-		String subquerySQL = formGroupByQuerySQL(mdb,nonAggMeasSql);
+		String sql = "SELECT DISTINCT did";
+		if(requiredReturnStru.m_include_record_id)	sql+=", record_id";
+		if(requiredReturnStru.m_include_oid) sql+=", oid ";
+		sql +=" FROM " + mdb.getObsInstanceTable() +" AS oi ";
+		sql +=" WHERE (did, oid) IN (\n";
+		String subquerySQL = formGroupByQuerySQL(mdb,nonAggMeasSql);//this need did, oid, characteristic
 		sql += subquerySQL+")";
 		
 		
@@ -115,7 +120,7 @@ public class QueryMeasurement {
 	}
 	
 	/**
-	 * Form the sql for this basic query
+	 * Form the sql for this basic query (with aggregate condition)
 	 * 
 	 * @param mdb
 	 * @return
@@ -209,23 +214,29 @@ public class QueryMeasurement {
 	 * @param entityNameCond
 	 * @return
 	 */
-	public String formSQLNonAggCondOverMDBView(MDB mdb, String entityNameCond)
+	public String formSQLNonAggCondOverMDBView(MDB mdb, String entityNameCond, NonAggSubQueryReturn returnStru)
 	{
-		String sql= "SELECT DISTINCT did,record_id, oid, mvalue, characteristic ";
+		String sql= "SELECT DISTINCT did";
+		if(returnStru.m_include_record_id) sql +=",record_id";
+		if(returnStru.m_include_oid) sql +=	",oid";
+		if(returnStru.m_include_mvalue&&(valueCond!=null&&valueCond.trim().length()>0)) 
+			sql +=",mvalue";
+		if(returnStru.m_include_characteristic &&(characteristicCond!=null&&characteristicCond.trim().length()>0)) 
+			sql+=",characteristic";
+		if(returnStru.m_include_standard&&(standardCond!=null&&standardCond.trim().length()>0)) 
+			sql+=",standard";
+		
 		sql +=" FROM " + mdb.m_nonAggMeasView+" ";
 		
-		if(valueCond!=null&&valueCond.trim().length()>0){
-			sql += "\nWHERE ";
-			sql +=" mvalue "+valueCond;
-		}
+		//1. value condition
+		if(valueCond!=null&&valueCond.trim().length()>0)
+			sql += "\nWHERE mvalue "+valueCond;
+				
+		//2.entity name condition
+		if(entityNameCond.contains("%")) sql += " AND etype ILIKE "+ entityNameCond ;
+		else sql += " AND etype = "+ entityNameCond;
 		
-		if(entityNameCond.contains("%")){
-			sql += " AND etype ILIKE "+ entityNameCond ;
-		}else{
-			sql += " AND etype = "+ entityNameCond;
-		}
-		
-		//measurement type: characteristic, standard, etc.
+		//3. measurement type condition: characteristic, standard, etc.
 		if(characteristicCond!=null&&characteristicCond.trim().length()>0){
 			if(characteristicCond.contains("%")){
 				sql += " AND characteristic ILIKE " + characteristicCond+"";
@@ -297,7 +308,7 @@ public class QueryMeasurement {
 //		}
 //		
 //		System.out.println(Debugger.getCallerPosition()+"sqlNonAggCond:\n"+sqlNonAggCond);
-		String sqlReturn = "SELECT did, eid FROM ("+nonAggMeasSql+") AS tmp";
+		String sqlReturn = "SELECT did, oid FROM ("+nonAggMeasSql+") AS tmp";
 		
 		//measurement type: characteristic
 		if(characteristicCond!=null&&characteristicCond.trim().length()>0){
@@ -310,7 +321,7 @@ public class QueryMeasurement {
 		
 		//aggregation
 		if(aggregationFunc!=null&&aggregationFunc.length()>0){
-			sqlReturn+="\nGROUP BY did, eid ";
+			sqlReturn+="\nGROUP BY did, oid ";
 			sqlReturn+="\nHAVING "+aggregationFunc+"(mvalue)"+valueCond;
 		}
 		
@@ -328,19 +339,30 @@ public class QueryMeasurement {
 	 * @return
 	 * @throws Exception 
 	 */
-	public Set<OboeQueryResult> executeAggQueryMDB(MDB mdb, String nonAggMeasSql, boolean withRecordId) 
+	public Set<OboeQueryResult> executeAggQueryMDB(MDB mdb, String nonAggMeasSql, //boolean withRecordId,
+			NonAggSubQueryReturn requiredReturnStru) 
 		throws Exception
 	{
 		
 		//form sql query for this condition
-		String sql = formSQL(mdb, nonAggMeasSql);
+		String sql = formSQL(mdb, nonAggMeasSql,requiredReturnStru);
 		
-		Set<OboeQueryResult> resultSet = mdb.executeSQL(sql,withRecordId);
+		Set<OboeQueryResult> resultSet = mdb.executeSQL(sql,requiredReturnStru.m_include_record_id);
 		
 		System.out.println(Debugger.getCallerPosition()+"One QM result="+resultSet);
 		return resultSet;
 	}
 	
+	/**
+	 * Perform a non aggregate query over MDB
+	 * 
+	 * @param mdb
+	 * @param entityNameCond
+	 * @param nonAggQueryResult
+	 * @param resultWithRid
+	 * @return
+	 * @throws Exception
+	 */
 	public Set<OboeQueryResult> executeAggQueryMDB(MDB mdb, String entityNameCond,
 			Set<OboeQueryResult> nonAggQueryResult, boolean resultWithRid) 
 		throws Exception
@@ -349,6 +371,7 @@ public class QueryMeasurement {
 		//form sql query for this condition
 		String sql = formSQL(mdb, entityNameCond, nonAggQueryResult,resultWithRid);
 		
+		//execute the SQL Query
 		Set<OboeQueryResult> resultSet = mdb.executeSQL(sql,resultWithRid);
 		
 		System.out.println(Debugger.getCallerPosition()+"One QM result="+resultSet);

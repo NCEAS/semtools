@@ -142,7 +142,11 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 			
 			String tmpSql ="";
 			if(db instanceof MDB){
-				tmpSql = formSQLOneCNF((MDB)db,resultWithRecord, measAND);
+				NonAggSubQueryReturn returnStru = new NonAggSubQueryReturn();
+				returnStru.m_include_did = true;
+				returnStru.m_include_record_id = resultWithRecord;
+				
+				tmpSql = formSQLOneCNF((MDB)db, measAND, returnStru);
 			}else if(db instanceof RawDB){
 				;//sql = formSQLOneCNF((RawDB)db,resultWithRecord, measAND);
 			}else{
@@ -270,7 +274,9 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 	 * @throws Exception 
 	 * @throws SQLException 
 	 */
-	private String formSQLOneCNF(MDB mdb, boolean resultWithRid, List<QueryMeasurement> measAND) 
+	private String formSQLOneCNF(MDB mdb, //boolean resultWithRid, 
+			List<QueryMeasurement> measAND,
+			NonAggSubQueryReturn requiredReturnStru) 
 		throws SQLException, Exception
 	{
 		System.out.println(Debugger.getCallerPosition()+"measAND="+measAND);
@@ -281,14 +287,27 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		List<QueryMeasurement> nonAggMeas = new ArrayList<QueryMeasurement>();
 		classifyMeasAND(measAND,aggMeas,nonAggMeas);
 		
-		String nonAggQuerySql = formSqlOneCNFNonAggregateMDB(mdb,m_entityTypeNameCond,nonAggMeas);
+		NonAggSubQueryReturn returnStru = new NonAggSubQueryReturn();
+		returnStru.m_include_did = true;
+		returnStru.m_include_record_id = requiredReturnStru.m_include_record_id;
+		if(requiredReturnStru.m_include_oid||(aggMeas!=null&&aggMeas.size()>0))
+			returnStru.m_include_oid = true;
+		returnStru.m_include_characteristic = true;
+		
+		String nonAggQuerySql = formSqlOneCNFNonAggregateMDB(mdb,m_entityTypeNameCond,nonAggMeas,returnStru);
 		
 		if(aggMeas==null||aggMeas.size()==0){
 			sql += (nonAggQuerySql);
 		}else{
 			boolean first = true;
 			for(QueryMeasurement qm: aggMeas){
-				String aggQuerySql = qm.formSQL(mdb, nonAggQuerySql);
+				//this needs (did, record_id (depends on), oid) from the non-agg query sql
+				NonAggSubQueryReturn aggReturnStru = new NonAggSubQueryReturn();
+				aggReturnStru.m_include_did = true;
+				aggReturnStru.m_include_record_id = requiredReturnStru.m_include_record_id;
+				aggReturnStru.m_include_oid = requiredReturnStru.m_include_oid;
+				
+				String aggQuerySql = qm.formSQL(mdb, nonAggQuerySql,aggReturnStru);
 				if(!first){
 					sql+=" INTERSECT ("+aggQuerySql+")";
 				}else{
@@ -320,9 +339,14 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		throws SQLException, Exception
 	{
 		System.out.println(Debugger.getCallerPosition()+"measAND="+measAND);
-		String contextSql = formSQLOneCNF (mdb,resultWithRid,measAND);
 		
-		String sql = "SELECT tmp1.did, tmp1.record_id, tmp1.eid, tmp1.oid \n";
+		NonAggSubQueryReturn returnStru = new NonAggSubQueryReturn();
+		returnStru.m_include_record_id = resultWithRid;
+		returnStru.m_include_oid = true;
+		
+		String contextSql = formSQLOneCNF (mdb,measAND,returnStru);
+		
+		String sql = "SELECT tmp1.did, tmp1.record_id, tmp1.oid \n";
 		sql+=" FROM ("+targetSql+") as tmp1, ";
 		sql+=" ("+contextSql+") as tmp2, ";
 		sql+= mdb.getContextInstanceTable() +" as oi \n";
@@ -345,7 +369,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 	private Set<OboeQueryResult> executeOneCNF(MDB mdb, boolean resultWithRid, List<QueryMeasurement> measAND)
 		throws Exception
 	{
-		System.out.println(Debugger.getCallerPosition()+"measAND="+measAND);
+		//System.out.println(Debugger.getCallerPosition()+"measAND="+measAND);
 		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
 		
 		//1. Get the measurements that need to be aggregated
@@ -353,19 +377,27 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		List<QueryMeasurement> nonAggMeas = new ArrayList<QueryMeasurement>();
 		classifyMeasAND(measAND,aggMeas,nonAggMeas);
 		
-		//Execute each aggregate query measurements and "AND" their results
+		//2. perform the non-aggregate query
 		Set<OboeQueryResult> nonAggQueryResult =  
 			executeOneCNFNonAggregateMDB(mdb,m_entityTypeNameCond,nonAggMeas,resultWithRid);
 		result.addAll(nonAggQueryResult);
-		String nonAggQuerySql = formSqlOneCNFNonAggregateMDB(mdb,m_entityTypeNameCond,nonAggMeas);
+		
+		NonAggSubQueryReturn returnStru = new NonAggSubQueryReturn();
+		returnStru.m_include_record_id = resultWithRid;
+		returnStru.m_include_oid = true;
+		String nonAggQuerySql = formSqlOneCNFNonAggregateMDB(mdb,m_entityTypeNameCond,nonAggMeas,returnStru);
 		
 		System.out.println(Debugger.getCallerPosition()+"result size="+result.size());
 		
+		//2. Execute each aggregate query measurements and "AND" their results
 		if(result.size()>0){
 			for(QueryMeasurement qm: aggMeas){
 				//FIXME: will it has efficiency problem? 
 				//The embedded CNF and query is performed |aggMeas| times. 
 				//CHECK THIS with big dataset
+				//GROUP by is done on (did,oid), 
+				//no matter the resultWithRid is true or false, the group by need to be performed on (did,oid)
+				//So, when there is aggregate condition, the non-aggregate results should return oid 
 				Set<OboeQueryResult> oneAggQueryResult = 
 					qm.executeAggQueryMDB(mdb, nonAggQuerySql,nonAggQueryResult,resultWithRid); 
 				result.retainAll(oneAggQueryResult);
@@ -388,14 +420,14 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 	 * @throws Exception
 	 */
 	public static String formSqlOneCNFNonAggregateMDB(MDB mdb, String entityNameCond,
-			List<QueryMeasurement> nonAggMeas) throws SQLException, Exception
+			List<QueryMeasurement> nonAggMeas, NonAggSubQueryReturn returnStru) throws SQLException, Exception
 	{
 		//For the SQL for all the non aggregate conditions
 		String sqlNonAggCond = "";
 		for(int i=0;i<nonAggMeas.size();i++){
 			QueryMeasurement qm = nonAggMeas.get(i); //get 
-			//(did,record_id,oid,eid,mvalue,characteristic)
-			String oneNonAggCondSql = qm.formSQLNonAggCondOverMDBView(mdb,entityNameCond);
+			//(did,record_id,oid,eid,mvalue,characteristic,standard)
+			String oneNonAggCondSql = qm.formSQLNonAggCondOverMDBView(mdb,entityNameCond, returnStru);
 			if(i==0){
 				sqlNonAggCond = "("+oneNonAggCondSql+")";
 			}else{
@@ -421,12 +453,22 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 			List<QueryMeasurement> nonAggMeas,boolean resultwithRecordId) throws SQLException, Exception 
 	{
 		
+		NonAggSubQueryReturn returnStru = new NonAggSubQueryReturn();
+		returnStru.m_include_did = true;
+		returnStru.m_include_record_id = resultwithRecordId;
+		returnStru.m_include_oid = false;
+		returnStru.m_include_mvalue = false;
+		returnStru.m_include_characteristic = false;
+		returnStru.m_include_standard = false;
+		
 		//get the SQL for non-aggregate conditions
-		String sqlNonAggCond = formSqlOneCNFNonAggregateMDB(mdb,entityNameCond,nonAggMeas);
+		String sqlNonAggCond = formSqlOneCNFNonAggregateMDB(mdb,entityNameCond,nonAggMeas,returnStru);
+		
+		
 		
 		String sql = "SELECT DISTINCT did"; 
 		if(resultwithRecordId){
-				sql +=", record_id ";
+			sql +=", record_id ";
 		}
 		sql +=" FROM ("+sqlNonAggCond+") AS tmp";
 		Set<OboeQueryResult> resultSet = mdb.executeSQL(sql,resultwithRecordId);

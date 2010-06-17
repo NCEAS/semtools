@@ -258,6 +258,10 @@ public class ContextChain {
 					result.addAll(oneBasicQueryResult);
 					first = false;
 				}
+				
+				System.out.println(Debugger.getCallerPosition()+"Check this branch....");
+				System.exit(0);
+				
 			}else{
 				//System.out.println(Debugger.getCallerPosition()+"++++[0]targetQuery="+targetQuery+",contex="+context);
 				//perform the basic target query

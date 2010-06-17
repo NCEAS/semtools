@@ -1,16 +1,35 @@
 
 echo "query synthetic data"
-java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.01 1 oboe_syn 1 >resultlog/query_m5_s0.01_m1.txt
-java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.01 2 oboe_syn 1 >resultlog/query_m5_s0.01_m2.txt
+echo "=========="
+echo "Get both dataset id and record id"
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.01 1 oboe_syn 1 >resultlog/query_m5_s0.01_rdb_drid.txt
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.01 2 oboe_syn 1 >resultlog/query_m5_s0.01_mdb_drid.txt
 
-java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.05 1 oboe_syn 1 >resultlog/query_m5_s0.05_m1.txt
-java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.05 2 oboe_syn 1 >resultlog/query_m5_s0.05_m2.txt
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.05 1 oboe_syn 1 >resultlog/query_m5_s0.05_rdb_drid.txt
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.05 2 oboe_syn 1 >resultlog/query_m5_s0.05_mdb_drid.txt
 
-java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.1 1 oboe_syn 1 >resultlog/query_m5_s0.1_m1.txt
-java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.1 2 oboe_syn 1 >resultlog/query_m5_s0.1_m2.txt
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.1 1 oboe_syn 1 >resultlog/query_m5_s0.1_rdb_drid.txt
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.1 2 oboe_syn 1 >resultlog/query_m5_s0.1_mdb_drid.txt
 
-java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.2 1 oboe_syn 1 >resultlog/query_m5_s0.2_m1.txt
-java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.2 2 oboe_syn 1 >resultlog/query_m5_s0.2_m2.txt
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.2 1 oboe_syn 1 >resultlog/query_m5_s0.2_rdb_drid.txt
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.2 2 oboe_syn 1 >resultlog/query_m5_s0.2_mdb_drid.txt
 
-java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.5 1 oboe_syn 1 >resultlog/query_m5_s0.5_m1.txt
-java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.5 2 oboe_syn 1 >resultlog/query_m5_s0.5_m2.txt
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.5 1 oboe_syn 1 >resultlog/query_m5_s0.5_rdb_drid.txt
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.5 2 oboe_syn 1 >resultlog/query_m5_s0.5_mdb_drid.txt
+
+echo "=========="
+echo "Get only dataset id"
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.01 1 oboe_syn 0 >resultlog/query_m5_s0.01_rdb_did.txt
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.01 2 oboe_syn 0 >resultlog/query_m5_s0.01_mdb_did.txt
+
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.05 1 oboe_syn 0 >resultlog/query_m5_s0.05_rdb_did.txt
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.05 2 oboe_syn 0 >resultlog/query_m5_s0.05_mdb_did.txt
+
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.1 1 oboe_syn 0 >resultlog/query_m5_s0.1_rdb_did.txt
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.1 2 oboe_syn 0 >resultlog/query_m5_s0.1_mdb_did.txt
+
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.2 1 oboe_syn 0 >resultlog/query_m5_s0.2_rdb_did.txt
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.2 2 oboe_syn 0 >resultlog/query_m5_s0.2_mdb_did.txt
+
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.5 1 oboe_syn 0 >resultlog/query_m5_s0.5_rdb_did.txt
+java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.5 2 oboe_syn 0 >resultlog/query_m5_s0.5_mdb_did.txt

@@ -15,6 +15,11 @@ import org.ecoinformatics.oboe.util.Debugger;
 
 public class QueryProcessor {
 
+	private static String m_param_query_file;
+	private static int m_param_query_strategy;
+	private static String m_param_dbname;
+	private static boolean m_param_result_with_record = false;
+	private static String m_param_query_result_file = "";
 	private static void usage(){
 		System.out.println("Usage: ./QueryProcessor <1. query file> <2. query strategy> <3. dbname> <4.result form>" +
 			"[5. query result file name]");
@@ -22,62 +27,77 @@ public class QueryProcessor {
 		//System.out.println("\t <3. dbname> ");
 		System.out.println("\t <4. result form> 0: only has dataset id; 1, has dataset id and record id");
 	}
-	public static void main(String[] args) throws Exception {
+		
+	private static int processParameter(String[] args){
 		if(args.length<4||args.length>5){
 			usage();
-			return;
+			return (-1);
 		}
-		
-		long t1 = System.currentTimeMillis();
 		
 		//1. process parameters
-		String queryFile = Constant.localUriPrefix+args[0];
-		int queryStrategy = Integer.parseInt(args[1]);
-		if(queryStrategy<=0||queryStrategy>3){
+		m_param_query_file = Constant.localUriPrefix+args[0];
+		m_param_query_strategy = Integer.parseInt(args[1]);
+		if(m_param_query_strategy<=0||m_param_query_strategy>3){
 			System.out.println("Wrong query strategy!");
 			usage();
-			return;
+			return (-1);
 		}
-		String dbname = args[2];
 		
+		//(3)
+		m_param_dbname = args[2];
+		
+		//(4)
 		int resultFormat = Integer.parseInt(args[3]);
 		if(resultFormat!=0&&resultFormat!=1){
 			System.out.println("Wrong result format!");
 			usage();
-			return;
+			return (-1);
 		}
-		boolean resultWithRecord = (resultFormat==1); //=1 means the result need to have record id
+		m_param_result_with_record = (resultFormat==1); //=1 means the result need to have record id
 		
-		String queryResultFile = "";
+		//(5)
 		if(args.length==5){
-			queryResultFile = args[4];
+			m_param_query_result_file = args[4];
 		}
 		
-		System.out.println(Debugger.getCallerPosition()+"1. queryFile="+queryFile);
-		System.out.println(Debugger.getCallerPosition()+"2. queryStrategy="+queryStrategy);
-		System.out.println(Debugger.getCallerPosition()+"3. dbname="+dbname);
-		System.out.println(Debugger.getCallerPosition()+"4. resultWithRecord="+resultWithRecord);
-		System.out.println(Debugger.getCallerPosition()+"5. queryResultFile="+queryResultFile);
+		System.out.println(Debugger.getCallerPosition()+"1. queryFile="+m_param_query_file);
+		System.out.println(Debugger.getCallerPosition()+"2. queryStrategy="+m_param_query_strategy);
+		System.out.println(Debugger.getCallerPosition()+"3. dbname="+m_param_dbname);
+		System.out.println(Debugger.getCallerPosition()+"4. resultWithRecord="+m_param_result_with_record);
+		System.out.println(Debugger.getCallerPosition()+"5. queryResultFile="+m_param_query_result_file);
 		
+		return 0;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		
+		//1. process params
+		int rc = processParameter(args);
+		if(rc<0) return;
+		
+		long t1 = System.currentTimeMillis();
 		//2. read queries
 		QueryList queryList= new QueryList();
-		queryList.read(queryFile);
+		queryList.read(m_param_query_file);
 		System.out.println(Debugger.getCallerPosition()+"queryList=\n"+queryList);
 		
 	 	//3. perform queries
 		OboeQueryResultContainer queryResultContainer = new OboeQueryResultContainer();
 		Map<Integer,Integer> queryno2resultsize = new TreeMap<Integer,Integer>();
 		for(int i=0;i<queryList.size();i++){
-			//if(i>0) break;
+			if(i>0) break;
 			
 			OMQuery queryI = queryList.getQuery(i);
 			System.out.println(Debugger.getCallerPosition()+"\n*****\nProcess query: "+queryI);
 			
-			Set<OboeQueryResult> queryResult = queryI.execute(dbname,queryStrategy, resultWithRecord);
-						
+			//perform query i
+			Set<OboeQueryResult> queryResult = queryI.execute(m_param_dbname,m_param_query_strategy, m_param_result_with_record);
+			
+			//put the query result size to a map to print out batch process results 
 			System.out.println(Debugger.getCallerPosition()+"Query i="+i+",result size="+queryResult.size());//+":"+queryResult);
 			queryno2resultsize.put((i+1),queryResult.size());
 			
+			//put the query results to a container to print the detailed query results
 			queryResultContainer.add(queryResult);
 		}
 		
@@ -85,9 +105,9 @@ public class QueryProcessor {
 		
 		//print hinting information
 		System.out.println("\n-----------\n");
-		if(queryStrategy==org.ecoinformatics.oboe.query.Constant.QUERY_MATERIALIZED_DB){
+		if(m_param_query_strategy==org.ecoinformatics.oboe.query.Constant.QUERY_MATERIALIZED_DB){
 			System.out.println(Debugger.getCallerPosition() +" Query materialized database.");
-		}else if(queryStrategy==org.ecoinformatics.oboe.query.Constant.QUERY_REWRITE){
+		}else if(m_param_query_strategy==org.ecoinformatics.oboe.query.Constant.QUERY_REWRITE){
 			System.out.println(Debugger.getCallerPosition() +" Query raw database.");
 		}else{
 			System.out.println(Debugger.getCallerPosition() +" Query: other strategy.");
@@ -103,7 +123,7 @@ public class QueryProcessor {
 				+ (t2-t1)/(queryList.size()) +" ms" +" = "+ ((t2-t1)/(1000*queryList.size())) +"s\n-----------\n");
 		
 		//4. write the query result to the result file
-		queryResultContainer.write(queryResultFile);
+		queryResultContainer.write(m_param_query_result_file);
 		
 		long t3 = System.currentTimeMillis();
 		

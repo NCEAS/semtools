@@ -332,7 +332,7 @@ public class OMQuery {
 	{
 		Set<OboeQueryResult> resultSet = new TreeSet<OboeQueryResult>();
 		
-		//open database connection
+		//1. open database connection
 		db.open();
 		
 		//The results of each context query should be unioned
@@ -341,8 +341,7 @@ public class OMQuery {
 		for(int i=0;i<contextQueryDNF.size(); i++){
 			ContextChain oneContextQuery = contextQueryDNF.get(i);
 			
-			System.out.println("---------------\n"+Debugger.getCallerPosition()+"["+(i+1)+"/"+contextQueryDNF.size()+
-					"] contextQuery:"+oneContextQuery);
+			System.out.println(Debugger.getCallerPosition()+"["+(i+1)+"/"+contextQueryDNF.size()+"] contextQuery:"+oneContextQuery);
 			
 			//This is slow
 			long t1 = System.currentTimeMillis();
@@ -350,7 +349,7 @@ public class OMQuery {
 			long t2 = System.currentTimeMillis();
 			
 			System.out.println(Debugger.getCallerPosition()+"OMQuery DNF "+i+",oneDNFqueryResultSet size="+oneDNFqueryResultSet.size());
-			if(oneDNFqueryResultSet.size()<20){
+			if(oneDNFqueryResultSet.size()<20){//test purpose
 				System.out.println(Debugger.getCallerPosition()+"Result: "+oneDNFqueryResultSet);
 			}
 			System.out.println(Debugger.getCallerPosition()+"Time used (Query): "+ (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");

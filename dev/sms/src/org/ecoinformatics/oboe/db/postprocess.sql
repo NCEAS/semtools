@@ -1,3 +1,7 @@
+drop view non_agg_meas_view;
+drop table mi_string;
+drop table mi_numeric;
+
 
 create table mi_numeric AS 
 (SELECT mid,did,record_id,oid,mtypelabel,CAST (mvalue AS numeric) 
@@ -14,3 +18,9 @@ CREATE VIEW non_agg_meas_view AS
 (SELECT DISTINCT oi.did,oic.compressed_record_id as record_id, oi.oid, oi.etype, mi.mvalue, mt.characteristic,mt.standard
 FROM mi_numeric AS mi,observation_instance AS oi,measurement_type AS mt,oi_compress AS oic 
 WHERE oi.oid=mi.oid AND mt.mtypelabel = mi.mtypelabel AND oi.oid=oic.oid AND oi.did=oic.did);
+
+
+select count(*) from measurement_instance;
+select count(*) from mi_numeric;
+select count(*) from mi_string;
+# query 1 result = (query 2 result) + (query 3 result)
