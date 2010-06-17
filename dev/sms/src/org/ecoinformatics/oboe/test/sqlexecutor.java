@@ -86,22 +86,45 @@ public class sqlexecutor {
 //		execute(mdb,sql52); 
 		
 		String sql61 = "SELECT DISTINCT did FROM non_agg_meas_view_basic WHERE mvalue <=5094 AND etype = 'ent-key-m5' AND characteristic='m5cha');";
-		System.out.println("sql61:\n"+sql61);//1369 ms = 1s
+		System.out.println("sql61:\n"+sql61);
 		execute(mdb,sql61); 
+		//Has distinct, 1369 ms
+	    //Remove distinct in the definition, //939 ms
 		
+		//////////////////////////////
 		String sql63 = "SELECT DISTINCT did FROM non_agg_meas_view_onlydid WHERE mvalue <=5094 AND etype = 'ent-key-m5' AND characteristic='m5cha');";
 		System.out.println("sql63:\n"+sql63);//1314 ms = 1s
 		execute(mdb,sql63); 
+		//Has distinct, 1314 ms = 1s
+		//Remove distinct in the select clause //904 ms
 		
 		String sql62 = " SELECT DISTINCT oi.did FROM mi_numeric mi, observation_instance oi, measurement_type mt" +
 				" WHERE oi.oid = mi.oid AND mt.mtypelabel = mi.mtypelabel " +
 				" AND mvalue <=5094 AND etype = 'ent-key-m5' AND characteristic='m5cha';";
-		
 		System.out.println("sql62:\n"+sql62);//889 ms = 0s
-		execute(mdb,sql62); 
+		execute(mdb,sql62);
+		//////////////////////////////
+		//The result of sql62 and sql63 is similar, shows that view definition does not matter
+		//////////////////////////////
+		
+		//This one test the table merging oi and mi
+		String sql71 = " SELECT DISTINCT omi.did FROM omi_numeric as omi, measurement_type mt" +
+		" WHERE mt.mtypelabel = omi.mtypelabel AND mt.annot_id = omi.did " +
+		" AND mvalue <=5094 AND etype = 'ent-key-m5' AND characteristic='m5cha';";
+		System.out.println("sql71:\n"+sql71); 
+		execute(mdb,sql71); 
+		//607ms with out "mt.annot_id = omi.did", This is wrong
+		//528 ms with index on mvalue
+		//106 ms with index on etype
+
+		//This one test the table merging oi, mi, and mt
+		String sql72 = "SELECT DISTINCT omi.did FROM omi_numeric_full as omi WHERE mvalue <=5094 AND etype = 'ent-key-m5' AND characteristic='m5cha';";
+		System.out.println("sql72:\n"+sql72); 
+		execute(mdb,sql72); 
+		//559 ms without index
+		//105 ms with index on etype and mvalue
 		
 		mdb.close();
-	
 	}
 
 	private static void execute(MDB mdb, String sql) throws SQLException
