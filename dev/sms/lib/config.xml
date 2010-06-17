@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <config>
-  <version>1.8.1semtools5</version>
+  <version>1.8.1semtools7</version>
   <dataLocationInlineOnline>online</dataLocationInlineOnline>
   <plugin>edu.ucsb.nceas.morpho.query.QueryPlugin</plugin>
   <plugin>edu.ucsb.nceas.morpho.datapackage.DataPackagePlugin</plugin>
@@ -34,24 +34,26 @@
   <taxonRankSearchPath>taxonomicClassification/taxonRankName</taxonRankSearchPath>
   <taxonValueSearchPath>taxonomicClassification/taxonRankValue</taxonValueSearchPath>
   <ontologies>
+  	<!--
   	<logicalURI>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl</logicalURI>
   	<physicalURI>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl</physicalURI>
-  	<logicalURI>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl</logicalURI>
-  	<physicalURI>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl</physicalURI>
+  	-->
+  	<logicalURI>https://code.ecoinformatics.org/code/sonet/trunk/ontologies/oboe-trait.owl</logicalURI>
+  	<physicalURI>https://code.ecoinformatics.org/code/sonet/trunk/ontologies/oboe-trait.owl</physicalURI>
   </ontologies>
   <oboeClasses>
   	<className>org.ecoinformatics.sms.annotation.Entity</className>
-  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0beta#Entity</classURI>
+  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Entity</classURI>
   	<className>org.ecoinformatics.sms.annotation.Characteristic</className>
-  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0beta#Characteristic</classURI>
+  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Characteristic</classURI>
   	<className>org.ecoinformatics.sms.annotation.Standard</className>
-  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0beta#MeasurementStandard</classURI>
+  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Standard</classURI>
   	<className>org.ecoinformatics.sms.annotation.Protocol</className>
-  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0beta#Protocol</classURI>
+  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Protocol</classURI>
   	<className>org.ecoinformatics.sms.annotation.Relationship</className>
   	<classURI>http://ecoinformatics.org/oboe/oboe.1.0beta#Relationship</classURI>
   	<className>org.ecoinformatics.sms.annotation.Measurement</className>
-  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0beta#Measurement</classURI>
+  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement</classURI>
   </oboeClasses>
   <vocabularies>
   	<vocabulary>KNBRegistry</vocabulary>
