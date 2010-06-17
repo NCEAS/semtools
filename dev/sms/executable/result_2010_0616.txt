@@ -72,32 +72,5 @@ selectivity	RawDB	MDB		MDB1(MDB+without all oid)	MDB2(MDB1+view no distinct def)
 #Reason: the distinct keyword in the view def. brings more cost   
 
 
-#TOCHECK
-#(4) Fix value selectivity, change measurement selectivity, simple condition
-#(6) Fix value/measurement selectivity, add aggregation
-#(7) Fix value/measurement selectivity, change length of context chain
 
-**************************
-June 17, 2010
-**************************
-sel.	MDB2	Merge_OM_TB_view	Rawdb
-	                                (same to 0616)
-0.01	0.188	0.045
-0.05	0.175	0.063
-0.1		0.227	0.082
-0.2		0.315	0.118
-0.5		0.663	0.136
-
-Explanation: 
-1. Merge_OM_TB_view is much better than MDB2 because the join is performed beforehand
-2. But it's still worse than RAWDB search.
-
-Note: 
-1. Log: executable/resultlog/2010_0617_query/MDB2 and .../Merge_OM_TB
-2. Code differences
-   OMQueryBasic.java:formSqlOneCNFNonAggregateMDB
-   MDB2: 				sql +=" FROM " + mdb.m_nonAggMeasViewBasic+" ";
-   Merge_OM_TB_view: 	sql +=" FROM "+mdb.m_mergedTableView +" ";
-3. Query batch command: executable/query_syn.sh
-4. Data and query file: oboedb/2010_0616
 

@@ -22,7 +22,7 @@ echo "selectivity=0.5"
 java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.5 1 oboe_syn 1 >resultlog/query_m5_s0.5_rdb_drid.txt
 java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.5 2 oboe_syn 1 >resultlog/query_m5_s0.5_mdb_drid.txt
 
-echo "=========="
+echo "==========" 
 echo "Get only dataset id"
 echo "selectivity=0.01"
 java -cp oboe.jar org.ecoinformatics.oboe.QueryProcessor query_m5_s0.01 1 oboe_syn 0 >resultlog/query_m5_s0.01_rdb_did.txt
