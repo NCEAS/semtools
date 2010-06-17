@@ -45,6 +45,7 @@ public class MDB extends PostgresDB{
 	public static String m_obsInstanceCompressTable = "oi_compress";
 	public String m_nonAggMeasView = "non_agg_meas_view";
 	public String m_nonAggMeasViewBasic = "non_agg_meas_view_basic";
+	public String m_mergedTableView = "mtb_view";
 	
 	//protected String m_insertDatasetAnnot = "INSERT INTO " + m_datasetAnnotTable +"(annot_id,dataset_file) VALUES(?,?);";
 	String m_insertAnnotation = "INSERT INTO " + m_datasetAnnotTable +"(dataset_file,annot_uri) VALUES(?,?);";

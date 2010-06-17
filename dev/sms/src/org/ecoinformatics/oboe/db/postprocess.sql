@@ -19,29 +19,31 @@ select count(*) from mi_numeric;
 select count(*) from mi_string;
 # query 1 result = (query 2 result) + (query 3 result)
 
-
+==============================================================================
 CREATE VIEW non_agg_meas_view AS 
-(SELECT DISTINCT oi.did,oic.compressed_record_id as record_id, oi.oid, oi.etype, mi.mvalue, mt.characteristic,mt.standard
+(SELECT oi.did,oic.compressed_record_id as record_id, oi.oid, oi.etype, mi.mvalue, mt.characteristic,mt.standard
 FROM mi_numeric AS mi,observation_instance AS oi,measurement_type AS mt,oi_compress AS oic 
-WHERE oi.oid=mi.oid AND mt.mtypelabel = mi.mtypelabel AND oi.oid=oic.oid AND oi.did=oic.did);
+WHERE oi.oid=mi.oid AND mt.mtypelabel = mi.mtypelabel AND mt.annot_id = mi.did AND oi.oid=oic.oid AND oi.did=oic.did);
 
-#View def1: the execution takes much more time compared with View def2 as follows
+#View def1: NO USE
 CREATE VIEW non_agg_meas_view_basic AS 
 (SELECT DISTINCT oi.did,oi.record_id, oi.oid, oi.etype, mi.mvalue, mt.characteristic,mt.standard
 FROM mi_numeric AS mi,observation_instance AS oi,measurement_type AS mt
-WHERE oi.oid=mi.oid AND mt.mtypelabel = mi.mtypelabel);
+WHERE oi.oid=mi.oid AND mt.mtypelabel = mi.mtypelabel AND mt.annot_id = mi.did);
 
-#View def2
+#View def2: 
 CREATE VIEW non_agg_meas_view_basic AS 
 (SELECT oi.did,oi.record_id, oi.oid, oi.etype, mi.mvalue, mt.characteristic,mt.standard
 FROM mi_numeric AS mi,observation_instance AS oi,measurement_type AS mt
-WHERE oi.oid=mi.oid AND mt.mtypelabel = mi.mtypelabel);
+WHERE oi.oid=mi.oid AND mt.mtypelabel = mi.mtypelabel AND mt.annot_id = mi.did);
 
-#View def3
+CREATE INDEX observation_instance_etype_idx on observation_instance(etype);
+
+#View def3: same to def2
 CREATE VIEW non_agg_meas_view_onlydid AS 
 (SELECT oi.did,oi.etype, mi.mvalue, mt.characteristic
 FROM mi_numeric AS mi,observation_instance AS oi,measurement_type AS mt
-WHERE oi.oid=mi.oid AND mt.mtypelabel = mi.mtypelabel);
+WHERE oi.oid=mi.oid AND mt.mtypelabel = mi.mtypelabel AND mt.annot_id = mi.did);
 
 
 CREATE TABLE omi_numeric as (
@@ -61,3 +63,11 @@ WHERE oi.oid = mi.oid AND mt.mtypelabel = mi.mtypelabel and mt.annot_id = mi.did
 CREATE INDEX omi_numeric_full_mvalue_idx on omi_numeric_full(mvalue);
 CREATE INDEX omi_numeric_full_etype_idx on omi_numeric_full(etype);
 CREATE INDEX omi_numeric_full_characteristic_idx on omi_numeric_full(characteristic);
+
+
+CREATE VIEW mtb_view AS 
+(SELECT omi.did,omi.record_id, omi.oid, omi.etype, omi.mvalue, mt.characteristic,mt.standard
+FROM omi_numeric AS omi,measurement_type AS mt
+WHERE mt.mtypelabel = omi.mtypelabel AND mt.annot_id = omi.did);
+
+		

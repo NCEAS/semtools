@@ -1,0 +1,63 @@
+Sql61 and sql62, sql63 have the same query plan although they are based on different view definitions. 
+One is (1) non_agg_meas_view_onlydid 
+another is (2) non_agg_meas_view_basic
+The third one is on table directly without view definition 
+
+oboe_syn=> explain SELECT DISTINCT did FROM non_agg_meas_view_onlydid WHERE mvalue <=5094 AND etype = 'ent-key-m5' AND characteristic='m5cha';
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=31626.98..31626.99 rows=1 width=8)
+   ->  Hash Join  (cost=9648.90..31626.14 rows=336 width=8)
+         Hash Cond: ((mi.mtypelabel = mt.mtypelabel) AND (mi.did = mt.annot_id))
+         ->  Hash Join  (cost=9640.60..30861.27 rows=25107 width=49)
+               Hash Cond: (mi.oid = oi.oid)
+               ->  Seq Scan on mi_numeric mi  (cost=0.00..17393.47 rows=357613 width=49)
+                     Filter: (mvalue <= 5094::numeric)
+               ->  Hash  (cost=9326.76..9326.76 rows=25107 width=16)
+                     ->  Bitmap Heap Scan on observation_instance oi  (cost=526.92..9326.76 rows=25107 width=16)
+                           Recheck Cond: ((etype)::text = 'ent-key-m5'::text)
+                           ->  Bitmap Index Scan on observation_instance_etype_idx  (cost=0.00..520.64 rows=25107 width=0)
+                                 Index Cond: ((etype)::text = 'ent-key-m5'::text)
+         ->  Hash  (cost=8.15..8.15 rows=10 width=25)
+               ->  Seq Scan on measurement_type mt  (cost=0.00..8.15 rows=10 width=25)
+                     Filter: (characteristic = 'm5cha'::bpchar)
+(15 rows)
+
+oboe_syn=> explain SELECT DISTINCT did FROM non_agg_meas_view_basic WHERE mvalue <=5094 AND etype = 'ent-key-m5' AND characteristic='m5cha';
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=31626.98..31626.99 rows=1 width=8)
+   ->  Hash Join  (cost=9648.90..31626.14 rows=336 width=8)
+         Hash Cond: ((mi.mtypelabel = mt.mtypelabel) AND (mi.did = mt.annot_id))
+         ->  Hash Join  (cost=9640.60..30861.27 rows=25107 width=49)
+               Hash Cond: (mi.oid = oi.oid)
+               ->  Seq Scan on mi_numeric mi  (cost=0.00..17393.47 rows=357613 width=49)
+                     Filter: (mvalue <= 5094::numeric)
+               ->  Hash  (cost=9326.76..9326.76 rows=25107 width=16)
+                     ->  Bitmap Heap Scan on observation_instance oi  (cost=526.92..9326.76 rows=25107 width=16)
+                           Recheck Cond: ((etype)::text = 'ent-key-m5'::text)
+                           ->  Bitmap Index Scan on observation_instance_etype_idx  (cost=0.00..520.64 rows=25107 width=0)
+                                 Index Cond: ((etype)::text = 'ent-key-m5'::text)
+         ->  Hash  (cost=8.15..8.15 rows=10 width=25)
+               ->  Seq Scan on measurement_type mt  (cost=0.00..8.15 rows=10 width=25)
+                     Filter: (characteristic = 'm5cha'::bpchar)
+
+                     
+oboe_syn=> explain SELECT DISTINCT oi.did FROM mi_numeric mi, observation_instance oi, measurement_type mt WHERE oi.oid = mi.oid AND mt.mtypelabel = mi.mtypelabel AND mt.annot_id = mi.did  AND mvalue <=5094 AND etype = 'ent-key-m5' AND characteristic='m5cha';
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=31626.98..31626.99 rows=1 width=8)
+   ->  Hash Join  (cost=9648.90..31626.14 rows=336 width=8)
+         Hash Cond: ((mi.mtypelabel = mt.mtypelabel) AND (mi.did = mt.annot_id))
+         ->  Hash Join  (cost=9640.60..30861.27 rows=25107 width=49)
+               Hash Cond: (mi.oid = oi.oid)
+               ->  Seq Scan on mi_numeric mi  (cost=0.00..17393.47 rows=357613 width=49)
+                     Filter: (mvalue <= 5094::numeric)
+               ->  Hash  (cost=9326.76..9326.76 rows=25107 width=16)
+                     ->  Bitmap Heap Scan on observation_instance oi  (cost=526.92..9326.76 rows=25107 width=16)
+                           Recheck Cond: ((etype)::text = 'ent-key-m5'::text)
+                           ->  Bitmap Index Scan on observation_instance_etype_idx  (cost=0.00..520.64 rows=25107 width=0)
+                                 Index Cond: ((etype)::text = 'ent-key-m5'::text)
+         ->  Hash  (cost=8.15..8.15 rows=10 width=25)
+               ->  Seq Scan on measurement_type mt  (cost=0.00..8.15 rows=10 width=25)
+                     Filter: (characteristic = 'm5cha'::bpchar)

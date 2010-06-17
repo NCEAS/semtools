@@ -153,3 +153,28 @@ oboe_syn(> WHERE oi.etype = 'e5' AND  oi.oid=mi.oid AND  (mt.mtypelabel = mi.mty
     //939 ms
     
     
+
+    
+Sql:
+SELECT DISTINCT did FROM non_agg_meas_view_basic WHERE mvalue <=5094 AND etype = 'ent-key-m5' AND characteristic='m5cha');";
+
+View definition 1:  
+CREATE VIEW non_agg_meas_view_basic AS 
+(SELECT DISTINCT oi.did,oi.record_id, oi.oid, oi.etype, mi.mvalue, mt.characteristic,mt.standard
+FROM mi_numeric AS mi,observation_instance AS oi,measurement_type AS mt
+WHERE oi.oid=mi.oid AND mt.mtypelabel = mi.mtypelabel AND mt.annot_id = mi.did);
+Execution time: ~1369 ms
+
+View definition 2: 
+CREATE VIEW non_agg_meas_view_basic AS 
+(SELECT oi.did,oi.record_id, oi.oid, oi.etype, mi.mvalue, mt.characteristic,mt.standard
+FROM mi_numeric AS mi,observation_instance AS oi,measurement_type AS mt
+WHERE oi.oid=mi.oid AND mt.mtypelabel = mi.mtypelabel);
+Execution time: ~939 ms
+
+View definition 3:
+CREATE VIEW non_agg_meas_view_basic AS 
+(SELECT oi.did,oi.record_id, oi.oid, oi.etype, mi.mvalue, mt.characteristic,mt.standard
+FROM mi_numeric AS mi,observation_instance AS oi,measurement_type AS mt
+WHERE oi.oid=mi.oid AND mt.mtypelabel = mi.mtypelabel AND mt.annot_id = mi.did);
+

@@ -85,25 +85,29 @@ public class sqlexecutor {
 //		System.out.println("sql5:\n"+sql52);//5ms
 //		execute(mdb,sql52); 
 		
+		//////////////////////////////
+		//////////////////////////////
 		String sql61 = "SELECT DISTINCT did FROM non_agg_meas_view_basic WHERE mvalue <=5094 AND etype = 'ent-key-m5' AND characteristic='m5cha');";
 		System.out.println("sql61:\n"+sql61);
 		execute(mdb,sql61); 
 		//Has distinct, 1369 ms
 	    //Remove distinct in the definition, //939 ms
+		//add "AND mt.annot_id = mi.did" in view definition //757 ms
 		
-		//////////////////////////////
-		String sql63 = "SELECT DISTINCT did FROM non_agg_meas_view_onlydid WHERE mvalue <=5094 AND etype = 'ent-key-m5' AND characteristic='m5cha');";
-		System.out.println("sql63:\n"+sql63);//1314 ms = 1s
-		execute(mdb,sql63); 
+		String sql62 = "SELECT DISTINCT did FROM non_agg_meas_view_onlydid WHERE mvalue <=5094 AND etype = 'ent-key-m5' AND characteristic='m5cha');";
+		System.out.println("sql62:\n"+sql62);//1314 ms = 1s
+		execute(mdb,sql62); 
 		//Has distinct, 1314 ms = 1s
 		//Remove distinct in the select clause //904 ms
+		//add "AND mt.annot_id = mi.did" in view definition //658 ms
 		
-		String sql62 = " SELECT DISTINCT oi.did FROM mi_numeric mi, observation_instance oi, measurement_type mt" +
-				" WHERE oi.oid = mi.oid AND mt.mtypelabel = mi.mtypelabel " +
-				" AND mvalue <=5094 AND etype = 'ent-key-m5' AND characteristic='m5cha';";
-		System.out.println("sql62:\n"+sql62);//889 ms = 0s
-		execute(mdb,sql62);
+		//String sql63 = " SELECT DISTINCT oi.did FROM mi_numeric mi, observation_instance oi, measurement_type mt" +
+		//		" WHERE oi.oid = mi.oid AND mt.mtypelabel = mi.mtypelabel AND mt.annot_id = mi.did " +
+		//		" AND mvalue <=5094 AND etype = 'ent-key-m5' AND characteristic='m5cha';";
+		//System.out.println("sql63:\n"+sql63);//889 ms = 0s
+		//execute(mdb,sql63);
 		//////////////////////////////
+		//Comparison of sql61, sql62 and sql63 are the same see sqlQueryPlanView.txt
 		//The result of sql62 and sql63 is similar, shows that view definition does not matter
 		//////////////////////////////
 		
@@ -113,7 +117,7 @@ public class sqlexecutor {
 		" AND mvalue <=5094 AND etype = 'ent-key-m5' AND characteristic='m5cha';";
 		System.out.println("sql71:\n"+sql71); 
 		execute(mdb,sql71); 
-		//607ms with out "mt.annot_id = omi.did", This is wrong
+		//607ms without "mt.annot_id = omi.did", This is wrong
 		//528 ms with index on mvalue
 		//106 ms with index on etype
 
