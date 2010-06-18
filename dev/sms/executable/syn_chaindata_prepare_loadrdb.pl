@@ -51,6 +51,18 @@ for ($d = 1; $d <= $num1; $d++) {
 	system $curcmd;
 }
 
+$num2 = 400;
+print "0.2 ==> filenum: " . $num2 ."\n";
+for ($d = 1; $d <= $num2; $d++) {
+	$datafile = "synchain_0.2-n5000-d" . $d ."-data.txt";
+	
+	$curcmd = $cmd . $datafile . $dbname;
+	if($d % 200==0){	
+		print "$curcmd\n";
+	}
+	system $curcmd;
+}
+
 $num5 = 1000;
 print "0.5 ==> filenum: " . $num5 ."\n";
 for ($d = 1; $d <= $num5; $d++) {

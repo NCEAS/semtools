@@ -17,7 +17,7 @@ for ($d = 1; $d <= $num2; $d++) {
 	if($d % 200==0){	
 		print "$curcmd\n";
 	}
-	//system $curcmd;
+	system $curcmd;
 }
 
 print "\n";
