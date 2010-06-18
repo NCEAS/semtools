@@ -66,7 +66,7 @@ public class SyntheticDataGeneratorChain {
 		System.out.println(Debugger.getCallerPosition()+"annotSpecFile2fnum="+annotSpecFile2fnum);
 		
 		System.out.println("numOfRows="+numOfRows+"\n");
-		
+		System.exit(0);
 		// Generate data to satisfy the annotation specifications
 		try {
 			for(String annotSpecFname : annotSpecFile2fnum.keySet()){
