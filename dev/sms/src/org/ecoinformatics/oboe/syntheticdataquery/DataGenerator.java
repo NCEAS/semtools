@@ -400,7 +400,7 @@ public class DataGenerator {
 		if(measurement2ValueList==null||measurement2ValueList.size()==0)
 			return;
 		
-		System.out.println(Debugger.getCallerPosition()+"measurement2ValueList size="+measurement2ValueList.size());
+		//System.out.println(Debugger.getCallerPosition()+"measurement2ValueList size="+measurement2ValueList.size());
 
 		//For each measurement label, get it's value account
 		for(int i=0;i<neededMeasLabelList.size();i++){
