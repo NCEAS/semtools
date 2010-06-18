@@ -1,4 +1,0 @@
-o1 e1 distinct:m1 key,0.2
-o2 e2 distinct:m2 key,m3,0.3
-o3 e3:m4 key,m5 key,0.5:o1 identifying
-o4 e4 distinct:m6 key,m7,0.6:o1 identifying,o2 identifying 

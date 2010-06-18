@@ -23,9 +23,9 @@ public class Constant {
 	public static String C_DATASET_SEPARATOR = ",";	
 	
 	//Used in annotation specifier to write to annotation file after reading annotations from the specifications files
-	public static String ANNOTATION_DEFAULT_RELATIONSHIP_URI = "oboe-hp";
+	public static String ANNOTATION_DEFAULT_RELATIONSHIP_URI = "#oboe-hp";
 	public static String ANNOTATION_DEFAULT_RELATIONSHIP_NAME = "HasA";
-	public static String ANNOTATION_DEFAULT_ONTOLOGY = "oboe-hp";
+	public static String ANNOTATION_DEFAULT_ONTOLOGY = "#oboe-hp";
 	
 	public static String DEFAULT_RELATIONSHIP = "HasContext";
 }
