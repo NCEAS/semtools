@@ -346,7 +346,7 @@ public class OntologyClassField extends JTextField {
 			popup.setVisible(false);
 			selectionPanel = null;
 			// make sure we are not highlighted
-			unhighlight();
+			currentField.unhighlight();
 		}
 	}
 	
