@@ -137,8 +137,9 @@
    </target>
 
    <target name="jar" depends="morpho.jar,compile">
-      <jar jarfile="sms.jar">
-         <fileset dir="build/"/>
+      <jar jarfile="sms.jar" >
+         <fileset dir="${build}"/>
+        <fileset dir="${src}"/>
       </jar>
    </target>
 
