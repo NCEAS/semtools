@@ -457,4 +457,78 @@ public class OMQuery {
 		}
 		
 	}
+	
+	
+	public void writeQueriesForMultipleMeas(
+			Map<List<String >, Map<Double, List<List<String > >>> measlist2_selectivityQueryConds,String queryFilePrefix) 
+	throws IOException
+	{
+	for(List<String> measLabelList:measlist2_selectivityQueryConds.keySet()){
+		Map<Double, List<List<String> >> oneMeasSelectivity2QueryConds = measlist2_selectivityQueryConds.get(measLabelList);
+		
+		String queryFile = queryFilePrefix;
+		List<String> entityTypeNameList = new ArrayList<String>();
+		for(String measLabel: measLabelList){
+			queryFile +="_"+measLabel;
+			entityTypeNameList.add(DataStatistics.getEntityTypeForMeas(measLabel));
+		}
+		
+		System.out.println(Debugger.getCallerPosition()+"measLabelList="+measLabelList+"entityTypeName="+entityTypeNameList);
+		//String entityTypeName = DataStatistics.getEntityTypeForMeas(measLabel);
+		
+		
+		for(double selectivity:oneMeasSelectivity2QueryConds.keySet()){
+			String tmpFile = queryFile+"_s"+selectivity;
+			List<List<String > > oneSelectivityQueryConds = oneMeasSelectivity2QueryConds.get(selectivity);
+			
+			//form query strings for all the query conditions
+			String queryString = "";
+			for(Integer queryLabel=1; queryLabel<=oneSelectivityQueryConds.size();queryLabel++){
+				queryString +=Constant.QUERY_START+queryLabel+"\n";
+				
+				for(Integer j=1;j<=oneSelectivityQueryConds.get(queryLabel-1).size();j++){
+					OMQueryBasic ombasic = new OMQueryBasic();					
+					//ombasic.setQueryLabel("1");
+					ombasic.setQueryLabel(j.toString());
+					String entityTypeName = entityTypeNameList.get(queryLabel-1);
+					ombasic.setEntityTypeName(entityTypeName);
+					
+					Map<Integer, List<QueryMeasurement> > queryMeasDNF =new TreeMap<Integer, List<QueryMeasurement> >();
+					List<QueryMeasurement> qmlist = new ArrayList<QueryMeasurement>();
+					queryMeasDNF.put(queryLabel,qmlist);
+					
+					QueryMeasurement qm = new QueryMeasurement();
+					qmlist.add(qm);
+					
+					String measLabel = measLabelList.get(queryLabel-1);
+					qm.setAggregationFunc(null);
+					//qm.setCharacteristicCond("'"+measLabel+"%'");
+					qm.setCharacteristicCond("'"+measLabel+Constant.QUERY_MEAS_CHA+"'");
+					qm.setStandardCond(null);
+					String valueCond = oneSelectivityQueryConds.get(queryLabel-1).get(j-1);
+					qm.setValueCond(valueCond);
+					
+					ombasic.setQueryMeasDNF(queryMeasDNF);
+					//System.out.println(Debugger.getCallerPosition()+"ombasic="+ombasic);
+					
+					queryString += ombasic.formQueryString()+"\n";
+				}
+				
+				queryString +=Constant.QUERY_END+"\n";
+			}
+			
+			
+			//write this query to output file
+			FileOutputStream outputStream = new FileOutputStream(tmpFile);
+			PrintStream s = new PrintStream(outputStream);				
+			s.print(queryString);
+			s.close();
+			outputStream.close();
+			
+			System.out.println(Debugger.getCallerPosition()+"Write to query file: "+tmpFile);
+			//break;
+		}
+	}
+	
+}
 }

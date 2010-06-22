@@ -51,6 +51,25 @@ public class QueryGenerator extends DataStatistics{
 	}
 	
 	/**
+	 * put te selectibity conditions for meultiple measurements
+	 * @param recordselectivity2condlist
+	 * @param selectivityScale
+	 * @param cond
+	 */
+	private static void putSelectivityForMultiMeas(
+			Map<Double, List<List<String> > > recordselectivity2condlist,
+			double selectivityScale,
+			List<String> cond)
+	{
+		List<List<String> > curSelectivityValueList = recordselectivity2condlist.get(selectivityScale);
+		if(curSelectivityValueList==null){				
+			curSelectivityValueList = new ArrayList<List<String> >();
+			recordselectivity2condlist.put(selectivityScale,curSelectivityValueList);
+		}
+		curSelectivityValueList.add(cond);
+	}
+	
+	/**
 	 * Extract query lists for the given measurements and selectivity
 	 * 
 	 * @param meas2_rselectivity2condlist
@@ -75,6 +94,37 @@ public class QueryGenerator extends DataStatistics{
 		}
 		
 		return meas2_rselectivity2querycondlist;
+	}
+	
+	/**
+	 * Extract the queries for multiple meas (with logic AND)
+	 * 
+	 * @param measlist2_rselectivity2condlist
+	 * @param recordSelectivity
+	 * @param qnumPerSelectivity
+	 * @return
+	 * @throws Exception
+	 */
+	private static Map<List<String>, Map<Double, List<List<String> >>> extractQueryForMultipleMeas(
+			Map<List<String>, Map<Double, List<List<String> >>> measlist2_rselectivity2condlist,
+			List<Double> recordSelectivity,int qnumPerSelectivity) throws Exception
+	{
+		Map<List<String>, Map<Double, List<List<String> >>> measlist2_rselectivity2querycondlist =
+			new TreeMap<List<String>, Map<Double, List<List<String> >>>();
+		
+		for(List<String> measLabelList:measlist2_rselectivity2condlist.keySet()){
+			//get one measurement's query condition list
+			Map<Double, List<List<String> > > recordselectivity2querycondlist = 
+				//extractOneMeasQuery
+				extractOneMeasQueryForMultipleMeas
+				(measlist2_rselectivity2querycondlist.get(measLabelList),
+						recordSelectivity,qnumPerSelectivity);
+			
+			//System.out.println(Debugger.getCallerPosition()+"recordselectivity2querycondlist="+recordselectivity2querycondlist);
+			measlist2_rselectivity2querycondlist.put(measLabelList, recordselectivity2querycondlist);
+		}
+		
+		return measlist2_rselectivity2querycondlist;
 	}
 	
 	/**
@@ -104,6 +154,66 @@ public class QueryGenerator extends DataStatistics{
 			int accumulateLevel = 1;
 			while(requiredQueryCondList.size()<qnumPerSelectivity && requiredSelectivity<1.0){				
 				List<String> condList = oneMeasureRecordSelectivity2condList.get(requiredSelectivity);
+				if(condList!=null){
+					for(int j=0;j<condList.size();j++){
+						if(requiredQueryCondList.size()<qnumPerSelectivity){
+							requiredQueryCondList.add(condList.get(j));
+							if(origRequiredSelectivity==0.001){
+								System.out.println(Debugger.getCallerPosition()+"real sel.="+requiredSelectivity+":"+condList.get(j));
+							}
+						}else{
+							break;
+						}
+					}
+				}
+				if(requiredQueryCondList.size()<=qnumPerSelectivity){
+					requiredSelectivity = origRequiredSelectivity+(accumulateLevel*m_value_selectivity_scale);
+					if(origRequiredSelectivity==0.001){
+						System.out.println(Debugger.getCallerPosition()+"accumulateLevel="+accumulateLevel+",Access sel.="+requiredSelectivity+",orig sel.="+origRequiredSelectivity
+								+",requiredQueryCondList.size()="+requiredQueryCondList.size());
+					}
+					
+					if(accumulateLevel>0) accumulateLevel = (-1)*accumulateLevel;
+					else accumulateLevel = ((-1)*accumulateLevel)+1;
+				}
+			}
+			
+			if(requiredQueryCondList.size()<qnumPerSelectivity){
+				throw new Exception("orig sel.="+origRequiredSelectivity+",query size="+requiredQueryCondList.size());
+			}
+			
+		}
+		return recordselectivity2querycondlist;
+	}
+	
+	/**
+	 * Get one measurement list (AND logic)'s query list
+	 * @param oneMeasureRecordSelectivity2condList
+	 * @param recordSelectivity
+	 * @param qnumPerSelectivity
+	 * @return
+	 * @throws Exception
+	 */
+	private static Map<Double, List<List<String> > > extractOneMeasQueryForMultipleMeas(
+			Map<Double, List<List<String> >> oneMeasureRecordSelectivity2condList,
+			List<Double> recordSelectivity,int qnumPerSelectivity) throws Exception
+	{
+		Map<Double, List<List<String>> > recordselectivity2querycondlist = new TreeMap<Double, List<List<String>>>();
+		
+
+		for(int i=0;i<recordSelectivity.size();i++){
+			//from each needed record selectivity, generate the "qnumPerSelectivity" query conditions 
+			double origRequiredSelectivity = recordSelectivity.get(i);
+			
+			System.out.println(Debugger.getCallerPosition()+"Required selectivity="+origRequiredSelectivity);
+			List<List<String> > requiredQueryCondList = new ArrayList<List<String> >();
+			recordselectivity2querycondlist.put(origRequiredSelectivity, requiredQueryCondList);
+			
+			//when there is not enough query conditions, loop
+			double requiredSelectivity = origRequiredSelectivity;
+			int accumulateLevel = 1;
+			while(requiredQueryCondList.size()<qnumPerSelectivity && requiredSelectivity<1.0){				
+				List<List<String> > condList = oneMeasureRecordSelectivity2condList.get(requiredSelectivity);
 				if(condList!=null){
 					for(int j=0;j<condList.size();j++){
 						if(requiredQueryCondList.size()<qnumPerSelectivity){
@@ -189,66 +299,120 @@ public class QueryGenerator extends DataStatistics{
 		return meas2_rselectivity2valuelist;
 	}
 	
-	public static void main(String[] args) throws Exception {
-		if(args.length<2){
-			//e.g., java -cp oboe.jar org.ecoinformatics.oboe.QueryGenerator syn 20 0.5
-			System.out.println("Usage: ./QueryGenerator <1. data_file_prefix> <2.file num> [<3. attr slectivity double(0,1.0]>] [<4. list of record selectivity>]");
-			//System.out.println("Usage: ./QueryGenerator <1. data_file_prefix> <2.file num>");
-			return;
-		}
+	private static Map<List<String>, Map<Double, List<List<String> >>> generateQueryForMultipleMeas(
+			Map<List<String>, Map<List<Integer>, Integer>> meas2_value2count, 
+			Map<List<String>,Integer> meas2_totalRecordNumInTb) 
+		throws Exception
+	{
+		//meas list ==> (selectivity ==> value list)
+		Map<List<String>, Map<Double, List<List<String> >>> meas2_rselectivity2valuelist =
+			new TreeMap<List<String>, Map<Double, List<List<String> >>>(); 
 		
-		m_annotSpecFilePrefix = Constant.localUriPrefix + args[0];// + Constant.C_ANNOT_SPEC_FILE_SUFFIX;
-		m_dataFilePrefix = Constant.localUriPrefix +args[0];//+ Constant.C_DATA_FILE_SUFFIX;
-		
-		int filenum = Integer.parseInt(args[1]);
-		double attrSelectivity = 0.5;
-		if(args.length>2){
-			attrSelectivity = Double.parseDouble(args[2]);
-		}
-		
-		List<Double> recordSelectivity = new ArrayList<Double>();
-		if(args.length>3){
-			for(int i=1;i<args.length;i++){
-				double selectivity = Double.parseDouble(args[i]);
-				recordSelectivity.add(selectivity);
+		for(List<String> measLabelList: meas2_value2count.keySet()){
+			Map<Double, List<List<String>> > recordselectivity2condlist = new TreeMap<Double, List<List<String> >>();
+			
+			Map<List<Integer>, Integer> value2count = meas2_value2count.get(measLabelList); //value: count
+			int accumulateCount = 0;
+			
+			//get the total number of rows for tables having this measurement label
+			int numberOfRowsThisMeas = meas2_totalRecordNumInTb.get(measLabelList);
+			if(numberOfRowsThisMeas==0) throw new Exception("numberOfRowsThisMeas is 0");
+			
+			for(Map.Entry<List<Integer>,Integer> entry: value2count.entrySet()){
+				List<Integer> valueList = entry.getKey(); 
+				int count = entry.getValue();
+				
+				//put (selectivityScale,=value) to the map
+				double selectivity = (count*(1.0))/numberOfRowsThisMeas;
+				if(selectivity>1.0) throw new Exception("selectivity>1.0");
+				
+				//double selectivityScale = calSelectivityScale(selectivity);
+				//putSelectivity(recordselectivity2condlist,selectivityScale,("="+value));
+				
+				//put (accumulateSelectivityScale,>=value) to the map
+				accumulateCount += count;
+				double accumulateSelectivity = (accumulateCount*(1.0))/numberOfRowsThisMeas;
+				if(accumulateSelectivity>1.0) throw new Exception("accumulateSelectivity>1.0");
+				double accumulateSelectivityScale = calSelectivityScale(accumulateSelectivity);
+				
+				//values are ordered ascendingly, so,for this selectivity, the condition should be "<= value"
+				List<String> condition = new ArrayList<String>();
+				for(int j=0;j<valueList.size();j++){
+					condition.add("<="+valueList.get(j));
+				}
+				putSelectivityForMultiMeas(recordselectivity2condlist,accumulateSelectivityScale,condition);
+				
 			}
-		}else{
-			recordSelectivity.add(0.5);
-			recordSelectivity.add(0.2);
-			recordSelectivity.add(0.1);
-			//recordSelectivity.add(0.05);
-			recordSelectivity.add(0.01);
-			//recordSelectivity.add(0.005);
-			recordSelectivity.add(0.001);
+			meas2_rselectivity2valuelist.put(measLabelList, recordselectivity2condlist);
 		}
 		
-		System.out.println("\n"+Debugger.getCallerPosition()+"annotSpecFilePrefix="+m_annotSpecFilePrefix);
-		System.out.println(Debugger.getCallerPosition()+"dataFilePrefix="+m_dataFilePrefix);
-		System.out.println(Debugger.getCallerPosition()+"filenum="+filenum);
-		System.out.println(Debugger.getCallerPosition()+"attrSelectivity="+attrSelectivity+",recordSelectivity="+recordSelectivity+"\n");
-		
-		
-		//Get the measurements that we need to generate query for
-		List<String> measToGenerateQueryFor = new ArrayList<String>();
-//		for(int i=0;i<m_measurements.length;i++){
-//			measToGenerateQueryFor.add(m_measurements[i]);
-//		}
-		measToGenerateQueryFor.add("m1"); 
-		measToGenerateQueryFor.add("m3"); 
-		measToGenerateQueryFor.add("m5"); //for testing purpose
-		measToGenerateQueryFor.add("m7"); 
-		measToGenerateQueryFor.add("m9");
-		measToGenerateQueryFor.add("m11"); 
-		
-		//for the 1st file, get the data distribution for the attributes with given selectivity
-		//onefileSelectivityQuery(measToGenerateQueryFor,recordSelectivity);
-		allfileSelectivityQuery(measToGenerateQueryFor,recordSelectivity,filenum);
-		
-		
-		System.out.println(Debugger.getCallerPosition()+"Finish generating queries for atrselectivity="+attrSelectivity);
+		return meas2_rselectivity2valuelist;
 	}
 	
-	private static void allfileSelectivityQuery(List<String> measToGenerateQueryFor, 
+	
+	
+	private static void selectivityQueryForMultipleMeas(List<List<String> > measToGenerateQueryFor, 
+			List<Double> recordSelectivity,int filenum) 
+			throws FileNotFoundException, IOException, Exception
+	{
+		Map<List<String>, Map<List<Integer>, Integer>> meas2_value2count =  new TreeMap<List<String>, Map<List<Integer>,Integer>>();
+		Map<List<String>,Integer> meas2_totalRecordNumInTb = new  TreeMap<List<String>,Integer>();
+		
+		for(int i=0;i<filenum;i++){
+			String annotSpecFile = m_annotSpecFilePrefix+"_"+(i+1)+Constant.C_ANNOT_SPEC_FILE_SUFFIX;
+			String dataFile = m_dataFilePrefix+"_"+(i+1)+"-n5000"+ Constant.C_DATA_FILE_SUFFIX;
+			
+			//get data statistics
+			//1. Read annotation specification files to annotation structure
+			//System.out.println(Debugger.getCallerPosition()+"1. Read annotation specification files ...");
+			AnnotationSpecifier a = new AnnotationSpecifier();
+			a.readAnnotationSpecFile(annotSpecFile);
+			
+			//2. Get statistics of the dataset
+			//System.out.println(Debugger.getCallerPosition()+"2. Get statistics of the dataset ...");
+			DataGenerator generator = new DataGenerator(); 
+			//generator.setRownum(numbOfRows);
+			generator.setAnnotation(a.getAnnotation());
+			generator.setKey2distinctfactor(a.getKey2distinctfactor());
+			
+			generator.StatisticForMultipleCondition(dataFile, measToGenerateQueryFor, meas2_value2count,meas2_totalRecordNumInTb);
+		}
+		
+		//3. Compute the query and statistics
+		Map<List<String>, Map<Double, List<List<String> >>> measlist2_rselectivity2condlist = 
+			generateQueryForMultipleMeas(meas2_value2count, meas2_totalRecordNumInTb);
+		//Map<String, Map<Double, List<String >>> meas2_rselectivity2condlist = 
+		//	generateQuery(meas2_value2count, meas2_totalRecordNumInTb);
+		
+//		for(String measLabel: meas2_rselectivity2condlist.keySet()){
+//			Map<Double, List<String >> selectivity2valuelist = meas2_rselectivity2condlist.get(measLabel);
+//			System.out.println(Debugger.getCallerPosition()+"measLabel="+measLabel+",selectivities="+selectivity2valuelist.keySet());
+//			for(double selectivity: selectivity2valuelist.keySet()){
+//				if(selectivity == 0.01||selectivity==0.1||(selectivity >= 0.5&&selectivity<0.6)){
+//					System.out.println(Debugger.getCallerPosition()+"selectivity="+selectivity+":"+selectivity2valuelist.get(selectivity));
+//				}
+//			}
+//		}
+		
+		//4. extract needed query
+		Map<List<String>, Map<Double, List<List<String> >>> measlist2_query = 
+			extractQueryForMultipleMeas(measlist2_rselectivity2condlist,recordSelectivity,m_qnum_per_value_selectivity);
+		
+		for(List<String> measLabelList: measlist2_query.keySet()){
+			Map<Double, List<List<String> >> selectivity2valuelist = measlist2_query.get(measLabelList);
+			System.out.println(Debugger.getCallerPosition()+"measLabel="+measLabelList+",selectivities="+selectivity2valuelist.keySet());
+			for(double selectivity: selectivity2valuelist.keySet()){
+				System.out.println(Debugger.getCallerPosition()+"selectivity="+selectivity+":"+selectivity2valuelist.get(selectivity));
+			}
+		}
+		
+		OMQuery query = new OMQuery();
+		//query.writeQueries(measlist2_query,Constant.localUriPrefix+"query");
+		query.writeQueriesForMultipleMeas(measlist2_query,Constant.localUriPrefix+"query");		
+		
+	}
+	
+	private static void allfileSelectivityQuery(List<String > measToGenerateQueryFor, 
 			List<Double> recordSelectivity,int filenum) 
 			throws FileNotFoundException, IOException, Exception
 	{
@@ -305,62 +469,97 @@ public class QueryGenerator extends DataStatistics{
 		query.writeQueries(meas2_query,Constant.localUriPrefix+"query");
 		
 	}
-	private static void onefileSelectivityQuery(List<String> measToGenerateQueryFor, List<Double> recordSelectivity) 
-		throws FileNotFoundException, IOException, Exception
-	{
-		//int numbOfRows = 5000;
-		Map<String, Map<Integer, Integer>> meas2_value2count =  new TreeMap<String, Map<Integer,Integer>>();
-		Map<String,Integer> meas2_totalRecordNumInTb = new  TreeMap<String,Integer>();
-		
-		for(int i=0;i<1;i++){
-			String annotSpecFile = m_annotSpecFilePrefix+"_"+(i+1)+Constant.C_ANNOT_SPEC_FILE_SUFFIX;
-			String dataFile = m_dataFilePrefix+"_"+(i+1)+"-n5000"+ Constant.C_DATA_FILE_SUFFIX;
-			
-			//get data statistics
-			//1. Read annotation specification files to annotation structure
-			System.out.println(Debugger.getCallerPosition()+"1. Read annotation specification files ...");
-			AnnotationSpecifier a = new AnnotationSpecifier();
-			a.readAnnotationSpecFile(annotSpecFile);
-			
-			//2. Get statistics of the dataset
-			System.out.println(Debugger.getCallerPosition()+"2. Get statistics of the dataset ...");
-			DataGenerator generator = new DataGenerator(); 
-			//generator.setRownum(numbOfRows);
-			generator.setAnnotation(a.getAnnotation());
-			generator.setKey2distinctfactor(a.getKey2distinctfactor());
-			
-			
-			generator.Statistic(dataFile, measToGenerateQueryFor,meas2_value2count, meas2_totalRecordNumInTb);
-			
-			
-			//3. Compute the query and statistics
-			Map<String, Map<Double, List<String >>> meas2_rselectivity2condlist = 
-				generateQuery(meas2_value2count, meas2_totalRecordNumInTb);
-			
-//			for(String measLabel: meas2_rselectivity2condlist.keySet()){
-//				Map<Double, List<String >> selectivity2valuelist = meas2_rselectivity2condlist.get(measLabel);
-//				System.out.println(Debugger.getCallerPosition()+"measLabel="+measLabel+",selectivities="+selectivity2valuelist.keySet());
-//				for(double selectivity: selectivity2valuelist.keySet()){
-//					if(selectivity == 0.01||selectivity==0.1||(selectivity >= 0.5&&selectivity<0.6)){
-//						System.out.println(Debugger.getCallerPosition()+"selectivity="+selectivity+":"+selectivity2valuelist.get(selectivity));
-//					}
-//				}
-//			}
-			
-			//4. extract needed query
-			Map<String, Map<Double, List<String >>> meas2_query = 
-				extractQuery(meas2_rselectivity2condlist,recordSelectivity,m_qnum_per_value_selectivity);
-			
-			for(String measLabel: meas2_query.keySet()){
-				Map<Double, List<String >> selectivity2valuelist = meas2_query.get(measLabel);
-				System.out.println(Debugger.getCallerPosition()+"measLabel="+measLabel+",selectivities="+selectivity2valuelist.keySet());
-				for(double selectivity: selectivity2valuelist.keySet()){
-					System.out.println(Debugger.getCallerPosition()+"selectivity="+selectivity+":"+selectivity2valuelist.get(selectivity));
-				}
-			}
-			
-			OMQuery query = new OMQuery();
-			query.writeQueries(meas2_query,Constant.localUriPrefix+"query");
+	
+	public static void main(String[] args) throws Exception {
+		if(args.length<2){
+			//e.g., java -cp oboe.jar org.ecoinformatics.oboe.QueryGenerator syn 20 0.5
+			System.out.println("Usage: ./QueryGenerator <1. data_file_prefix> <2.file num> [<3. attr slectivity double(0,1.0]>] [<4. list of record selectivity>]");
+			//System.out.println("Usage: ./QueryGenerator <1. data_file_prefix> <2.file num>");
+			return;
 		}
+		
+		m_annotSpecFilePrefix = Constant.localUriPrefix + args[0];// + Constant.C_ANNOT_SPEC_FILE_SUFFIX;
+		m_dataFilePrefix = Constant.localUriPrefix +args[0];//+ Constant.C_DATA_FILE_SUFFIX;
+		
+		int filenum = Integer.parseInt(args[1]);
+		double attrSelectivity = 0.5;
+		if(args.length>2){
+			attrSelectivity = Double.parseDouble(args[2]);
+		}
+		
+		List<Double> recordSelectivity = new ArrayList<Double>();
+		if(args.length>3){
+			for(int i=1;i<args.length;i++){
+				double selectivity = Double.parseDouble(args[i]);
+				recordSelectivity.add(selectivity);
+			}
+		}else{
+			recordSelectivity.add(0.5);
+			recordSelectivity.add(0.2);
+			recordSelectivity.add(0.1);
+			//recordSelectivity.add(0.05);
+			recordSelectivity.add(0.01);
+			//recordSelectivity.add(0.005);
+			recordSelectivity.add(0.001);
+		}
+		
+		System.out.println("\n"+Debugger.getCallerPosition()+"annotSpecFilePrefix="+m_annotSpecFilePrefix);
+		System.out.println(Debugger.getCallerPosition()+"dataFilePrefix="+m_dataFilePrefix);
+		System.out.println(Debugger.getCallerPosition()+"filenum="+filenum);
+		System.out.println(Debugger.getCallerPosition()+"attrSelectivity="+attrSelectivity+",recordSelectivity="+recordSelectivity+"\n");
+		
+		
+		//Get the measurements that we need to generate query for
+		//List<String> measToGenerateQueryFor = new ArrayList<String>();
+		List<List<String> > measToGenerateQueryFor = new ArrayList<List<String> >();
+//		for(int i=0;i<m_measurements.length;i++){
+//			measToGenerateQueryFor.add(m_measurements[i]);
+//		}
+		
+		/*measToGenerateQueryFor.add("m1"); 
+		measToGenerateQueryFor.add("m3"); 
+		measToGenerateQueryFor.add("m5"); //for testing purpose
+		measToGenerateQueryFor.add("m7"); 
+		measToGenerateQueryFor.add("m9");
+		measToGenerateQueryFor.add("m11"); 
+		*/
+		
+		List<String> oneLogicAndList001 = new ArrayList<String>();
+		oneLogicAndList001.add("m701");
+		oneLogicAndList001.add("m702");
+		measToGenerateQueryFor.add(oneLogicAndList001); //0.001
+		
+		List<String> oneLogicAndList01 = new ArrayList<String>();
+		oneLogicAndList01.add("m101");
+		oneLogicAndList01.add("m102");
+		measToGenerateQueryFor.add(oneLogicAndList01); //0.01
+		
+		List<String> oneLogicAndList05 = new ArrayList<String>();
+		oneLogicAndList05.add("m201");
+		oneLogicAndList05.add("m202");
+		measToGenerateQueryFor.add(oneLogicAndList05); //0.05
+		
+		List<String> oneLogicAndList1 = new ArrayList<String>();
+		oneLogicAndList1.add("m301");
+		oneLogicAndList1.add("m302");
+		measToGenerateQueryFor.add(oneLogicAndList1); //0.1
+		
+		List<String> oneLogicAndList2 = new ArrayList<String>();
+		oneLogicAndList2.add("m401");
+		oneLogicAndList2.add("m402");
+		measToGenerateQueryFor.add(oneLogicAndList2); //0.2
+		
+		List<String> oneLogicAndList5 = new ArrayList<String>();
+		oneLogicAndList5.add("m501");
+		oneLogicAndList5.add("m502");
+		
+		//for the 1st file, get the data distribution for the attributes with given selectivity
+		//allfileSelectivityQuery(measToGenerateQueryFor,recordSelectivity,filenum);
+		selectivityQueryForMultipleMeas(measToGenerateQueryFor,recordSelectivity,filenum);
+		
+		System.out.println(Debugger.getCallerPosition()+"Finish generating queries for atrselectivity="+attrSelectivity);
 	}
+	
+
+	
 }

@@ -7,7 +7,7 @@
 	<property name="build" location="build"/>
 	<property name="morphobuild" location="../../../morpho/build"/>
 	
-	<property name="executable" location="executable"/>
+	<property name="executable" location="../../../sonet-private/dataintegretionlog/executable"/>
 	<property name="semtoolslib" location="lib"/>
 	<property name="morpholib" location="../../../morpho/lib"/>
 	<property name="emllib" location="../../../eml/lib"/>
