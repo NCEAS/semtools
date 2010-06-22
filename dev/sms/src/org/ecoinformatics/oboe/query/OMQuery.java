@@ -485,12 +485,12 @@ public class OMQuery {
 			String queryString = "";
 			for(Integer queryLabel=1; queryLabel<=oneSelectivityQueryConds.size();queryLabel++){
 				queryString +=Constant.QUERY_START+queryLabel+"\n";
-				
-				for(Integer j=1;j<=oneSelectivityQueryConds.get(queryLabel-1).size();j++){
+				List<String> oneSelectivityOneQueryCondAnd =oneSelectivityQueryConds.get(queryLabel-1); 
+				for(Integer j=1;j<=oneSelectivityOneQueryCondAnd.size();j++){
 					OMQueryBasic ombasic = new OMQueryBasic();					
 					//ombasic.setQueryLabel("1");
 					ombasic.setQueryLabel(j.toString());
-					String entityTypeName = entityTypeNameList.get(queryLabel-1);
+					String entityTypeName = entityTypeNameList.get(j-1);
 					ombasic.setEntityTypeName(entityTypeName);
 					
 					Map<Integer, List<QueryMeasurement> > queryMeasDNF =new TreeMap<Integer, List<QueryMeasurement> >();
@@ -500,12 +500,12 @@ public class OMQuery {
 					QueryMeasurement qm = new QueryMeasurement();
 					qmlist.add(qm);
 					
-					String measLabel = measLabelList.get(queryLabel-1);
+					String measLabel = measLabelList.get(j-1);
 					qm.setAggregationFunc(null);
 					//qm.setCharacteristicCond("'"+measLabel+"%'");
 					qm.setCharacteristicCond("'"+measLabel+Constant.QUERY_MEAS_CHA+"'");
 					qm.setStandardCond(null);
-					String valueCond = oneSelectivityQueryConds.get(queryLabel-1).get(j-1);
+					String valueCond = oneSelectivityOneQueryCondAnd.get(j-1);
 					qm.setValueCond(valueCond);
 					
 					ombasic.setQueryMeasDNF(queryMeasDNF);
@@ -514,7 +514,7 @@ public class OMQuery {
 					queryString += ombasic.formQueryString()+"\n";
 				}
 				
-				queryString +=Constant.QUERY_END+"\n";
+				queryString +=Constant.QUERY_END+"\n####################\n";
 			}
 			
 			

@@ -459,7 +459,8 @@ public class DataGenerator {
 	 */
 	public void StatisticForMultipleCondition(String inDataFile, //input data file
 			List<List<String> > neededMeasLabelList,  //the list of measurement labels for which we need to calculate the statistics
-			Map<List<String>, Map<List<Integer>, Integer>> meas2_value2count,
+			//Map<List<String>, Map<List<Integer>, Integer>> meas2_value2count,
+			Map<List<String>, Object> meas2_value2count,
 			Map<List<String>, Integer> meas2_totalRecordNumInTb) //output
 		throws FileNotFoundException, IOException, Exception
 	{
@@ -469,16 +470,16 @@ public class DataGenerator {
 		if(measurement2ValueList==null||measurement2ValueList.size()==0)
 			return;
 		
-		for(String meas: measurement2ValueList.keySet()){
-			System.out.println(Debugger.getCallerPosition()+"meas=" + meas+", value list size="+measurement2ValueList.get(meas).size());
-		}
+		//for(String meas: measurement2ValueList.keySet()){
+		//	System.out.println(Debugger.getCallerPosition()+"meas=" + meas+", value list size="+measurement2ValueList.get(meas).size());
+		//}
 		
-		System.exit(0);
+		//System.exit(0);
 
 		//For each measurement label, get it's value account
 		for(int i=0;i<neededMeasLabelList.size();i++){
 			List<String> measLabelList = neededMeasLabelList.get(i);
-			
+			//System.out.println(Debugger.getCallerPosition()+"measLabelList=" + measLabelList);
 			boolean measAllExistInFile = true;
 			//this file has the measurement label "measLabel"
 			for(String measLabel: measLabelList){
@@ -490,6 +491,8 @@ public class DataGenerator {
 			if(!measAllExistInFile) //not all the measurement labels appear in this file, no need to count it
 				continue;
 			
+			//System.out.println(Debugger.getCallerPosition()+"measLabelList=" + measLabelList+",measAllExistInFile="+measAllExistInFile);
+			
 			//update the total number of record of measurement
 			if(meas2_totalRecordNumInTb.keySet().contains(measLabelList)){
 				int baseRecordNum = meas2_totalRecordNumInTb.get(measLabelList);
@@ -497,19 +500,24 @@ public class DataGenerator {
 			}else{
 				meas2_totalRecordNumInTb.put(measLabelList, thisFileRecordNum);
 			}
+			//System.out.println(Debugger.getCallerPosition()+"meas2_totalRecordNumInTb=" + meas2_totalRecordNumInTb);
 			
 			//get the value-count map for this measurement label
 			Map<List<Integer>, Integer> valuelist2count = StatisticForMultiMeas(measurement2ValueList,measLabelList);
+			//System.out.println(Debugger.getCallerPosition()+"valuelist2count size="+valuelist2count.size()+":" + valuelist2count);
 			
-			
-			Map<List<Integer>, Integer> oldValueList2count = meas2_value2count.get(measLabelList);
-			if(oldValueList2count==null){
+			//Map<List<Integer>, Integer> oldValueList2count = meas2_value2count.get(measLabelList);
+			Object oldValueList2countobj = meas2_value2count.get(measLabelList);
+			if(oldValueList2countobj==null){
+				//System.out.println(Debugger.getCallerPosition()+"[1]");
 				//this measurement label does not have any old value-count map already
-				meas2_value2count.put(measLabelList, valuelist2count);
+				meas2_value2count.put(measLabelList, (Object)valuelist2count);
 			}else{
+				//System.out.println(Debugger.getCallerPosition()+"[2]");
 				//this measurement has some old value-count map already,need to merge the new and the old
 				for(List<Integer> newvalueList: valuelist2count.keySet()){
 					int newcnt = valuelist2count.get(newvalueList);
+					Map<List<Integer>, Integer> oldValueList2count = (Map<List<Integer>, Integer>)oldValueList2countobj;
 					Integer oldcnt = oldValueList2count.get(newvalueList);
 					if(oldcnt==null){
 						oldValueList2count.put(newvalueList, newcnt);
@@ -518,6 +526,7 @@ public class DataGenerator {
 					}
 				}//end of for loop
 			}//end of else
+			
 		}
 		
 		//Print the statistics
@@ -569,13 +578,13 @@ public class DataGenerator {
 			List<String> measLabelList) 
 		throws FileNotFoundException, IOException, Exception
 	{
-		Map<List<Integer>, Integer> valuelist2count = new TreeMap<List<Integer>,Integer>();
+		Map<List<Integer>, Integer> valuelist2count = new TreeMap<List<Integer>,Integer>(new ListComparator() );
 		
 		List<List<Integer> > measListValues = new ArrayList<List<Integer> >();
 		
 		int valueListLength = -1;
 		for(String meas: measLabelList){
-			List<Integer> valueList = measurement2ValueList.get(measLabelList);
+			List<Integer> valueList = measurement2ValueList.get(meas);
 			measListValues.add(valueList);
 			if(valueListLength<0){
 				valueListLength = valueList.size();
