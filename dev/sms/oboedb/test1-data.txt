@@ -1,9 +1,0 @@
-tree,spp,yr,dbh
-int,char(16),int,numeric
-1,piru,2007,35.8
-1,piru,2008,36.2
-2,piru,2008,33.2
-1,abba,2007,20.5
-1,abba,2008,25.0
-2,abba,2007,30.5
-2,abba,2008,36.5
