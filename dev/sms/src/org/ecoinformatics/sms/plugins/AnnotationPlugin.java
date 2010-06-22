@@ -430,14 +430,10 @@ public class AnnotationPlugin
 	public static String getAnnotationQuery(String forDocid)
 	  {
 	  	ConfigXML config = Morpho.getConfiguration();
-	  	ConfigXML profile = Morpho.thisStaticInstance.getProfile();
 	    StringBuffer searchtext = new StringBuffer();
 	    searchtext.append("<?xml version=\"1.0\"?>\n");
 	    searchtext.append("<pathquery version=\"1.0\">\n");
-	    String lastname = profile.get("lastname", 0);
-	    String firstname = profile.get("firstname", 0);
-	    searchtext.append("<querytitle>My Annotations (" + firstname + " " + lastname);
-	    searchtext.append(")</querytitle>\n");
+	    searchtext.append("<querytitle>Annotations</querytitle>\n");
 	    //Vector returnDoctypeList = config.get("returndoc");
 	    Vector<String> returnDoctypeList = new Vector<String>();
 	    returnDoctypeList.add("http://ecoinformatics.org/sms/annotation.0.9");
@@ -471,16 +467,11 @@ public class AnnotationPlugin
 	
 	public static String getDocQuery(List<Annotation> annotations) {
 		ConfigXML config = Morpho.getConfiguration();
-		ConfigXML profile = Morpho.thisStaticInstance.getProfile();
 		
 		StringBuffer searchtext = new StringBuffer();
 		searchtext.append("<?xml version=\"1.0\"?>\n");
 		searchtext.append("<pathquery version=\"1.0\">\n");
-		String lastname = profile.get("lastname", 0);
-		String firstname = profile.get("firstname", 0);
-		searchtext.append("<querytitle>Matching Docs for Annotations (" + firstname + " "
-				+ lastname);
-		searchtext.append(")</querytitle>\n");
+		searchtext.append("<querytitle>Matching Docs for Annotations</querytitle>\n");
 		Vector<String> returnDoctypeList = config.get("returndoc");
 		//Vector<String> returnDoctypeList = new Vector<String>();
 		//returnDoctypeList.add("http://ecoinformatics.org/sms/annotation.0.9");
