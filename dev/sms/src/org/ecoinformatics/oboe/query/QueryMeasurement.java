@@ -229,8 +229,9 @@ public class QueryMeasurement {
 		//if(returnStru.m_include_record_id) 
 		//	sql +=" FROM " + mdb.m_nonAggMeasView+" ";
 		//else
-		sql +=" FROM " + mdb.m_nonAggMeasViewBasic+" ";
+		//sql +=" FROM " + mdb.m_nonAggMeasViewBasic+" ";
 		//sql +=" FROM "+mdb.m_mergedTableView +" ";
+		sql +=" FROM "+mdb.m_mergedFullTable +" ";
 		
 		//1. value condition
 		if(valueCond!=null&&valueCond.trim().length()>0)

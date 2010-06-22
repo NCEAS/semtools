@@ -18,7 +18,7 @@ public class sqlexecutor {
 		throws Exception 
 	{
 		
-		String dbName ="oboe_syn";
+		String dbName ="oboe_syn_2010_0617";
 		
 		MDB mdb = new MDB(dbName);
 		mdb.open();
@@ -126,7 +126,8 @@ public class sqlexecutor {
 		System.out.println("sql72:\n"+sql72); 
 		execute(mdb,sql72); 
 		//559 ms without index
-		//105 ms with index on etype and mvalue
+		//105 ms with index on etype, mvalue separately, or (etype,mvalue) together
+		//77ms = with index on (etype,characteristic,mvalue)	
 		
 		mdb.close();
 	}
