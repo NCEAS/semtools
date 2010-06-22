@@ -380,7 +380,8 @@ public class QueryGenerator extends DataStatistics{
 	
 	
 	private static void selectivityQueryForMultipleMeas(List<List<String> > measToGenerateQueryFor, 
-			List<Double> recordSelectivity,int filenum) 
+			List<Double> recordSelectivity,int filenum,
+			String queryFilePrefix) 
 			throws FileNotFoundException, IOException, Exception
 	{
 		//Map<List<String>, Map<List<Integer>, Integer>> measlist2_value2count =  
@@ -447,7 +448,8 @@ public class QueryGenerator extends DataStatistics{
 		
 		OMQuery query = new OMQuery();
 		//query.writeQueries(measlist2_query,Constant.localUriPrefix+"query");
-		query.writeQueriesForMultipleMeas(measlist2_query,Constant.localUriPrefix+"query");		
+		//query.writeQueriesForMultipleMeas(measlist2_query,Constant.localUriPrefix+"query");		
+		query.writeQueriesForMultipleMeas(measlist2_query,Constant.localUriPrefix+queryFilePrefix);
 		
 	}
 	
@@ -510,36 +512,31 @@ public class QueryGenerator extends DataStatistics{
 	}
 	
 	public static void main(String[] args) throws Exception {
-		if(args.length<2){
+		if(args.length<3){
 			//e.g., java -cp oboe.jar org.ecoinformatics.oboe.QueryGenerator syn 20 0.5
-			System.out.println("Usage: ./QueryGenerator <1. data_file_prefix> <2.file num> [<3. attribute slectivity double(0,1.0]>] ");
+			System.out.println("Usage: ./QueryGenerator <1. data_file_prefix> <2.file num> <3. query file prefix> [<4. attribute slectivity double(0,1.0]>] ");
 			return;
 		}
 		
-		m_annotSpecFilePrefix = Constant.localUriPrefix + args[0];// + Constant.C_ANNOT_SPEC_FILE_SUFFIX;
-		m_dataFilePrefix = Constant.localUriPrefix +args[0];//+ Constant.C_DATA_FILE_SUFFIX;
+		m_annotSpecFilePrefix = Constant.localUriPrefix + args[0];
+		m_dataFilePrefix = Constant.localUriPrefix +args[0];
 		
 		int filenum = Integer.parseInt(args[1]);
+		String queryFilePrefix = args[2];
+		
 		double attrSelectivity = 0.5;
-		if(args.length>2){
-			attrSelectivity = Double.parseDouble(args[2]);
+		if(args.length>3){
+			attrSelectivity = Double.parseDouble(args[3]);
 		}
 		
 		List<Double> recordSelectivity = new ArrayList<Double>();
-		if(args.length>3){
-			for(int i=1;i<args.length;i++){
-				double selectivity = Double.parseDouble(args[i]);
-				recordSelectivity.add(selectivity);
-			}
-		}else{
-			recordSelectivity.add(0.5);
-			recordSelectivity.add(0.2);
-			recordSelectivity.add(0.1);
-			//recordSelectivity.add(0.05);
-			recordSelectivity.add(0.01);
-			//recordSelectivity.add(0.005);
-			recordSelectivity.add(0.001);
-		}
+		recordSelectivity.add(0.5);
+		recordSelectivity.add(0.2);
+		recordSelectivity.add(0.1);
+		//recordSelectivity.add(0.05);
+		recordSelectivity.add(0.01);
+		//recordSelectivity.add(0.005);
+		recordSelectivity.add(0.001);
 		
 		System.out.println("\n"+Debugger.getCallerPosition()+"annotSpecFilePrefix="+m_annotSpecFilePrefix);
 		System.out.println(Debugger.getCallerPosition()+"dataFilePrefix="+m_dataFilePrefix);
@@ -554,7 +551,7 @@ public class QueryGenerator extends DataStatistics{
 		
 		//for the 1st file, get the data distribution for the attributes with given selectivity
 		//allfileSelectivityQuery(measToGenerateQueryFor,recordSelectivity,filenum);
-		selectivityQueryForMultipleMeas(measToGenerateQueryFor,recordSelectivity,filenum);
+		selectivityQueryForMultipleMeas(measToGenerateQueryFor,recordSelectivity,filenum,queryFilePrefix);
 		
 		System.out.println(Debugger.getCallerPosition()+"Finish generating queries for atrselectivity="+attrSelectivity);
 	}
