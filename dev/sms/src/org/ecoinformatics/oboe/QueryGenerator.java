@@ -369,7 +369,7 @@ public class QueryGenerator extends DataStatistics{
 				putSelectivityForMultiMeas(recordselectivity2condlist,accumulateSelectivityScale,condition);
 				
 			}
-			System.out.println(Debugger.getCallerPosition()+"[d],recordselectivity2condlist="+recordselectivity2condlist);
+			//System.out.println(Debugger.getCallerPosition()+"[d],recordselectivity2condlist="+recordselectivity2condlist);
 			
 			meas2_rselectivity2valuelist.put(measLabelList, recordselectivity2condlist);
 		}
@@ -397,16 +397,16 @@ public class QueryGenerator extends DataStatistics{
 			String annotSpecFile = m_annotSpecFilePrefix+Constant.C_ANNOT_SPEC_FILE_SUFFIX;
 			String dataFile = m_dataFilePrefix+"-n5000"+ "-d"+(i+1)+Constant.C_DATA_FILE_SUFFIX;
 			
-			//System.out.println(Debugger.getCallerPosition()+"i="+i);
+			System.out.println(Debugger.getCallerPosition()+"i="+i+",dataFile="+dataFile);
 			
 			//get data statistics
 			//1. Read annotation specification files to annotation structure
-			System.out.println(Debugger.getCallerPosition()+"1. Read annotation specification files ...");
+			//System.out.println(Debugger.getCallerPosition()+"1. Read annotation specification files ...");
 			AnnotationSpecifier a = new AnnotationSpecifier();
 			a.readAnnotationSpecFile(annotSpecFile);
 			
 			//2. Get statistics of the dataset
-			System.out.println(Debugger.getCallerPosition()+"2. Get statistics of the dataset ...");
+			//System.out.println(Debugger.getCallerPosition()+"2. Get statistics of the dataset ...");
 			DataGenerator generator = new DataGenerator(); 
 			generator.setAnnotation(a.getAnnotation());
 			generator.setKey2distinctfactor(a.getKey2distinctfactor());
