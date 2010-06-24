@@ -54,12 +54,6 @@ WHERE oi.oid=mi.oid AND mt.mtypelabel = mi.mtypelabel AND mt.annot_id = mi.did);
 
 CREATE INDEX observation_instance_etype_idx on observation_instance(etype);
 
-#View def3: same to def2
-CREATE VIEW non_agg_meas_view_onlydid AS 
-(SELECT oi.did,oi.etype, mi.mvalue, mt.characteristic
-FROM mi_numeric AS mi,observation_instance AS oi,measurement_type AS mt
-WHERE oi.oid=mi.oid AND mt.mtypelabel = mi.mtypelabel AND mt.annot_id = mi.did);
-
 #######################
 ### step 6: Create table to denormalized oi and mi
 #######################
@@ -67,6 +61,11 @@ CREATE TABLE omi_numeric as (
 SELECT mi.mid, mi.did, mi.record_id,mi.oid,mi.mtypelabel,mi.mvalue,oi.etype,oi.otypelabel 
 from mi_numeric as mi, observation_instance as oi 
 WHERE oi.oid = mi.oid);
+
+CREATE VIEW mtb_view AS 
+(SELECT omi.did,omi.record_id, omi.oid, omi.etype, omi.mvalue, mt.characteristic,mt.standard
+FROM omi_numeric AS omi,measurement_type AS mt
+WHERE mt.mtypelabel = omi.mtypelabel AND mt.annot_id = omi.did);
 
 CREATE INDEX omi_numeric_mvalue_idx on omi_numeric(mvalue);
 CREATE INDEX omi_numeric_etype_idx on omi_numeric(etype);
@@ -87,11 +86,4 @@ CREATE INDEX omi_numeric_full_etype_idx on omi_numeric_full(etype);
 CREATE INDEX omi_numeric_full_characteristic_idx on omi_numeric_full(characteristic);
 CREATE INDEX omi_numeric_full_2col_index on omi_numeric_full(etype,characteristic);
 CREATE INDEX omi_numeric_full_3col_index on omi_numeric_full(etype,characteristic,mvalue); //this one performs the best
-
-
-CREATE VIEW mtb_view AS 
-(SELECT omi.did,omi.record_id, omi.oid, omi.etype, omi.mvalue, mt.characteristic,mt.standard
-FROM omi_numeric AS omi,measurement_type AS mt
-WHERE mt.mtypelabel = omi.mtypelabel AND mt.annot_id = omi.did);
-
-		
+	

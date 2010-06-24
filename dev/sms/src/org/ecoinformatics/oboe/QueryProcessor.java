@@ -109,7 +109,7 @@ public class QueryProcessor {
 			//if(i>0) break;
 			
 			OMQuery queryI = queryList.getQuery(i);
-			System.out.println(Debugger.getCallerPosition()+"\n*****\nProcess query: "+queryI);
+			System.out.println("\n"+Debugger.getCallerPosition()+"Process query: "+queryI);
 			
 			//perform query i
 			Set<OboeQueryResult> queryResult = queryI.execute(m_param_dbname,m_param_query_strategy, m_param_result_with_record);
