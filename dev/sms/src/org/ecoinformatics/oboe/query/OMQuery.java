@@ -335,7 +335,7 @@ public class OMQuery {
 		//1. open database connection
 		db.open();
 		
-		//The results of each context query should be unioned
+		//The results of each context query should be union-ed
 		List<ContextChain> contextQueryDNF = getContextChains();
 		System.out.println(Debugger.getCallerPosition()+"contextQueryDNF = "+contextQueryDNF);
 		for(int i=0;i<contextQueryDNF.size(); i++){
@@ -343,7 +343,7 @@ public class OMQuery {
 			
 			System.out.println(Debugger.getCallerPosition()+"["+(i+1)+"/"+contextQueryDNF.size()+"] contextQuery:"+oneContextQuery);
 			
-			//This is slow
+			//Perform one context query
 			long t1 = System.currentTimeMillis();
 			Set<OboeQueryResult> oneDNFqueryResultSet = oneContextQuery.execute(db, resultWithRecord);
 			long t2 = System.currentTimeMillis();
@@ -353,7 +353,9 @@ public class OMQuery {
 				System.out.println(Debugger.getCallerPosition()+"Result: "+oneDNFqueryResultSet);
 			}
 			System.out.println(Debugger.getCallerPosition()+"Time used (Query): "+ (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
-			resultSet.addAll(oneDNFqueryResultSet);			
+			if(oneDNFqueryResultSet!=null){
+				resultSet.addAll(oneDNFqueryResultSet);
+			}
 		}
 		
 		System.out.println(Debugger.getCallerPosition()+"OMQuery result size="+resultSet.size());
@@ -377,11 +379,13 @@ public class OMQuery {
 		if(queryStrategy == Constant.QUERY_REWRITE){
 			RawDB rawdb = new RawDB(dbname);
 			queryResultSet = execute(rawdb,resultWithRecord);
-		}else if(queryStrategy == Constant.QUERY_MATERIALIZED_DB){
+		}else if(queryStrategy >= Constant.QUERY_MATERIALIZED_DB_MIN_STRATEGY 
+				&& queryStrategy<=Constant.QUERY_MATERIALIZED_DB_MAX_STRATEGY){
 			MDB materializedDB = new MDB(dbname);
+			materializedDB.setMaterializationStrategy(queryStrategy);
 			queryResultSet = execute(materializedDB,resultWithRecord);			
-		}else if(queryStrategy == Constant.QUERY_PARTIAL_MATERIALIZED_DB){
-			System.out.println(Debugger.getCallerPosition() + "To come...");
+		}else{
+			System.out.println(Debugger.getCallerPosition() + " Wrong query strategy...");
 			System.exit(0);
 		}
 		

@@ -463,9 +463,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		
 		//get the SQL for non-aggregate conditions
 		String sqlNonAggCond = formSqlOneCNFNonAggregateMDB(mdb,entityNameCond,nonAggMeas,returnStru);
-		
-		
-		
+				
 		String sql = "SELECT DISTINCT did"; 
 		if(resultwithRecordId){
 			sql +=", record_id ";

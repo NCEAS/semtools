@@ -19,22 +19,20 @@ import java.sql.Statement;
 
 public class PostgresDB {
 	protected static int RECORD_ID_LEN = 16;
-		
-	private String m_url = "jdbc:postgresql://localhost:5432/";
-	private String m_db = "oboe";
-	private String m_user = "oboe";
-	private String m_password = "nceas";
-	
 	protected Connection m_conn = null;
 	
-	//protected String m_annotTable = "annotation";
-	protected String m_datasetAnnotTable = "data_annotation";
-	protected String m_obsTypeTable = "observation_type";
-	protected String m_contextTypeTable = "context_type";
-	protected String m_measTypeTable = "measurement_type";
-	protected String m_mapTable = "map";	
+	final private String m_url = "jdbc:postgresql://localhost:5432/";
+	private String m_db = "oboe";
+	final private String m_user = "oboe";
+	final private String m_password = "nceas";
+	
+	final protected String m_datasetAnnotTable = "data_annotation";
+	final protected String m_obsTypeTable = "observation_type";
+	final protected String m_contextTypeTable = "context_type";
+	final protected String m_measTypeTable = "measurement_type";
+	final protected String m_mapTable = "map";	
 
-	protected String m_maxDatasetIdSql = "SELECT last_value FROM did_seq;";
+	final protected String m_maxDatasetIdSql = "SELECT last_value FROM did_seq;";
 	
 	//Table: test (col1 char(16), col2 char(16); 
 	//the selection can work here. 
@@ -43,8 +41,8 @@ public class PostgresDB {
 	//and CAST (col2 AS numeric)>=5 
 	//group by col1 having (avg(cast (col2 as numeric))>10.0);
 	
-	public String m_DIGIT_RE = "'^[-]?[0-9]+'"; //this need to be more complete, how to make it allow leading and trailing spaces
-	public String m_STRING_RE = "'[a-zA-Z]+'"; //this need to be more complete
+	final public String m_DIGIT_RE = "'^[-]?[0-9]+'"; //this need to be more complete, how to make it allow leading and trailing spaces
+	final public String m_STRING_RE = "'[a-zA-Z]+'"; //this need to be more complete
 	
 	public String getDb() {
 		return m_db;
@@ -52,6 +50,14 @@ public class PostgresDB {
 
 	public void setDb(String mDb) {
 		m_db = mDb;
+	}
+	
+	public String getMeasTypeTable() {
+		return m_measTypeTable;
+	}
+	
+	public String getObsTypeTable() {
+		return m_obsTypeTable;
 	}
 	
 	/**

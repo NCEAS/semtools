@@ -35,92 +35,64 @@ import org.ecoinformatics.sms.annotation.Observation;
  */
 public class MDB extends PostgresDB{
 	
+	private int m_materialization_strategy = -1; 
+	
 	//private String m_entityInstanceTable = "entity_instance";
-	private String m_obsInstanceTable = "observation_instance";
-	protected String m_measInstanceTable = "measurement_instance";
-	//protected String m_measInstanceTableNum = "mi_numeric";
-	//protected String m_measInstanceTableStr = "mi_string";
-	private String m_contextInstanceTable = "context_instance";
+	final private String  m_obsInstanceTable = "observation_instance";
+	final protected String m_measInstanceTable = "measurement_instance";
+	final private String m_contextInstanceTable = "context_instance";
 	//public static String m_entityInstanceCompressTable = "ei_compress";
-	public static String m_obsInstanceCompressTable = "oi_compress";
-	public String m_nonAggMeasView = "non_agg_meas_view";
-	public String m_nonAggMeasViewBasic = "non_agg_meas_view_basic";
-	public String m_mergedTableView = "mtb_view";
-	public String m_mergedFullTable = "omi_numeric_full";
+	final public static String m_obsInstanceCompressTable = "oi_compress";
+	final public String m_nonAggMeasView = "non_agg_meas_view";
+	final public String m_nonAggMeasViewBasicInitData = "non_agg_meas_view_basic_init_data";
+	final public String m_nonAggMeasViewBasic = "non_agg_meas_view_basic";
+	final public String m_mergedTableView = "mtb_view"; //merge oi and mi, denormalization
+	final public String m_mergedFullTable = "omi_numeric_full"; //merge oi, mi and mt, denormalization
 	
 	//protected String m_insertDatasetAnnot = "INSERT INTO " + m_datasetAnnotTable +"(annot_id,dataset_file) VALUES(?,?);";
-	String m_insertAnnotation = "INSERT INTO " + m_datasetAnnotTable +"(dataset_file,annot_uri) VALUES(?,?);";
-	String m_insertDatasetAnnot = "INSERT INTO " + m_datasetAnnotTable +"(dataset_file) VALUES(?);";
+	final String m_insertAnnotation = "INSERT INTO " + m_datasetAnnotTable +"(dataset_file,annot_uri) VALUES(?,?);";
+	final String m_insertDatasetAnnot = "INSERT INTO " + m_datasetAnnotTable +"(dataset_file) VALUES(?);";
 	//String m_insertEntityInstance ="INSERT INTO " +m_entityInstanceTable + "(eid,did,record_id,etype) VALUES(?,?,?,?);";
 	//String m_insertObservationInstance ="INSERT INTO " +m_obsInstanceTable + "(oid,did,record_id,eid,otypelabel) VALUES(?,?,?,?,?);";
-	String m_insertObservationInstance ="INSERT INTO " +m_obsInstanceTable + "(oid,did,record_id,etype,otypelabel) VALUES(?,?,?,?,?);";
-	String m_insertMeasurementInstance ="INSERT INTO " +m_measInstanceTable + "(mid,did,record_id,oid,mtypelabel,mvalue) VALUES(?,?,?,?,?,?);";
-	String m_insertContextInstance ="INSERT INTO " +m_contextInstanceTable + " VALUES(?,?,?,?,?);";
+	final String m_insertObservationInstance ="INSERT INTO " +m_obsInstanceTable + "(oid,did,record_id,etype,otypelabel) VALUES(?,?,?,?,?);";
+	final String m_insertMeasurementInstance ="INSERT INTO " +m_measInstanceTable + "(mid,did,record_id,oid,mtypelabel,mvalue) VALUES(?,?,?,?,?,?);";
+	final String m_insertContextInstance ="INSERT INTO " +m_contextInstanceTable + " VALUES(?,?,?,?,?);";
 	
 	//String m_insertEICompress ="INSERT INTO " +m_entityInstanceCompressTable + " VALUES(?,?,?);";
-	String m_insertOICompress ="INSERT INTO " +m_obsInstanceCompressTable + " VALUES(?,?,?);";
+	final String m_insertOICompress ="INSERT INTO " +m_obsInstanceCompressTable + " VALUES(?,?,?);";
 	
-	//String m_insertAnnotation = "INSERT INTO annotation(annot_uri) VALUES(?);";
-	String m_insertObservationType = "INSERT INTO " + m_obsTypeTable + " VALUES(?,?,?,?);";
-	String m_insertMeasurementType = "INSERT INTO " + m_measTypeTable + " VALUES(?,?,?,?,?,?,?)";
-	String m_insertContextType = "INSERT INTO " + m_contextTypeTable + " VALUES(?,?,?,?,?)";
-	String m_insertMap = "INSERT INTO " + m_mapTable + "(annot_id,mtypelabel,attrname,mapcond,mapval) VALUES(?,?,?,?,?);";
+	final String m_insertObservationType = "INSERT INTO " + m_obsTypeTable + " VALUES(?,?,?,?);";
+	final String m_insertMeasurementType = "INSERT INTO " + m_measTypeTable + " VALUES(?,?,?,?,?,?,?)";
+	final String m_insertContextType = "INSERT INTO " + m_contextTypeTable + " VALUES(?,?,?,?,?)";
+	final String m_insertMap = "INSERT INTO " + m_mapTable + "(annot_id,mtypelabel,attrname,mapcond,mapval) VALUES(?,?,?,?,?);";
 	
-	String m_maxAnnotationIdSql = "SELECT last_value FROM annot_id_seq;";
-	String m_maxEntityInstanceIdSql = "SELECT last_value FROM eid_seq;";
-	String m_maxObsInstanceIdSql = "SELECT last_value FROM oid_seq;";
-	String m_maxMeasInstanceIdSql = "SELECT last_value FROM mid_seq;";
+	final String m_maxAnnotationIdSql = "SELECT last_value FROM annot_id_seq;";
+	final String m_maxEntityInstanceIdSql = "SELECT last_value FROM eid_seq;";
+	final String m_maxObsInstanceIdSql = "SELECT last_value FROM oid_seq;";
+	final String m_maxMeasInstanceIdSql = "SELECT last_value FROM mid_seq;";
 	
 	public MDB(String dbname){
-		super.setDb(dbname);		
-	}
-	
-	public String getMmeasTypeTable() {
-		return m_measTypeTable;
-	}
-
-	public void setMeasTypeTable(String mMeasTypeTable) {
-		m_measTypeTable = mMeasTypeTable;
+		setDb(dbname);		
 	}
 	
 	public String getMeasInstanceTable() {
 		return m_measInstanceTable;
 	}
 
-	public void setMeasInstanceTable(String mMeasInstanceTable) {
-		m_measInstanceTable = mMeasInstanceTable;
+	public int getMaterializationStrategy() {
+		return m_materialization_strategy;
+	}
+
+	public void setMaterializationStrategy(int mMaterializationStrategy) {
+		m_materialization_strategy = mMaterializationStrategy;
 	}
 	
-	public String getObsTypeTable() {
-		return m_obsTypeTable;
-	}
-
-	public void setObsTypeTable(String mObsTypeTable) {
-		m_obsTypeTable = mObsTypeTable;
-	}
-
 	public String getObsInstanceTable() {
 		return m_obsInstanceTable;
 	}
 
-	//public String getEntityInstanceTable() {
-	//	return m_entityInstanceTable;
-	//}
-
-	//public void setEntityInstanceTable(String mEntityInstanceTable) {
-	//	m_entityInstanceTable = mEntityInstanceTable;
-	//}
-
-	public void setObsInstanceTable(String mObsInstanceTable) {
-		m_obsInstanceTable = mObsInstanceTable;
-	}
-	
 	public String getContextInstanceTable() {
 		return m_contextInstanceTable;
-	}
-
-	public void setContextInstanceTable(String mContextInstanceTable) {
-		m_contextInstanceTable = mContextInstanceTable;
 	}
 
 	

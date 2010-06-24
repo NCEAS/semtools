@@ -236,10 +236,10 @@ public class ContextChain {
 		
 		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
 		
-	
 		//The results need to be intersect-ed
 		boolean first = true;
 	
+		//For each basic query in the context chain
 		for(Map.Entry<OMQueryBasic, List<OMQueryBasic> > entry: m_queryChain.entrySet()){
 			OMQueryBasic targetQuery = entry.getKey();
 			List<OMQueryBasic> context = entry.getValue(); 

@@ -32,7 +32,9 @@ public class OboeQueryResult implements Comparable<OboeQueryResult>{
 	
 	public int compareTo(OboeQueryResult o) {	
 		int cmp1= m_datasetId.compareTo(o.getDatasetId());
-		if(cmp1==0){			
+		if(cmp1==0){
+			if(m_recordId==null||o.getRecordId()==null)
+				return 0;
 			cmp1 = m_recordId.compareTo(o.getRecordId());			
 		}
 		return cmp1;

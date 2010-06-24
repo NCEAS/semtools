@@ -158,7 +158,7 @@ public class QueryMeasurement {
 		String sql= "SELECT DISTINCT oi.did,oic.compressed_record_id as record_id, oi.oid, mi.mvalue, mt.characteristic ";
 		sql +=" FROM "+mdb.getMeasInstanceTable()+" AS mi,"
 							+ mdb.getObsInstanceTable() +" AS oi,"
-							+ mdb.getMmeasTypeTable() + " AS mt," 
+							+ mdb.getMeasTypeTable() + " AS mt," 
 							//+ mdb.m_entityInstanceCompressTable +" AS eic ";
 							+ mdb.m_obsInstanceCompressTable +" AS oic ";
 		if(valueCond!=null&&valueCond.trim().length()>0){
@@ -213,8 +213,9 @@ public class QueryMeasurement {
 	 * @param mdb
 	 * @param entityNameCond
 	 * @return
+	 * @throws Exception 
 	 */
-	public String formSQLNonAggCondOverMDBView(MDB mdb, String entityNameCond, NonAggSubQueryReturn returnStru)
+	public String formSQLNonAggCondOverMDBView(MDB mdb, String entityNameCond, NonAggSubQueryReturn returnStru) throws Exception
 	{
 		String sql= "SELECT DISTINCT did";
 		if(returnStru.m_include_record_id) sql +=",record_id";
@@ -226,16 +227,30 @@ public class QueryMeasurement {
 		if(returnStru.m_include_standard&&(standardCond!=null&&standardCond.trim().length()>0)) 
 			sql+=",standard";
 		
-		//if(returnStru.m_include_record_id) 
-		//	sql +=" FROM " + mdb.m_nonAggMeasView+" ";
-		//else
-		//sql +=" FROM " + mdb.m_nonAggMeasViewBasic+" ";
-		//sql +=" FROM "+mdb.m_mergedTableView +" ";
-		sql +=" FROM "+mdb.m_mergedFullTable +" ";
+		if(returnStru.m_include_record_id){ 
+			sql +=" FROM " + mdb.m_nonAggMeasView+" ";
+		}else{
+			if(mdb.getMaterializationStrategy()==2){
+				sql +=" FROM " + mdb.m_nonAggMeasViewBasicInitData+" ";
+			}else if(mdb.getMaterializationStrategy()==3){
+				sql +=" FROM " + mdb.m_nonAggMeasViewBasic+" ";
+			}else if(mdb.getMaterializationStrategy()==4){
+				sql +=" FROM "+mdb.m_mergedTableView +" ";
+			}else if(mdb.getMaterializationStrategy()==5){
+				sql +=" FROM "+mdb.m_mergedFullTable +" ";
+			}else{
+				throw new Exception ("Wrong materialization strategy...");
+			}
+		}
 		
 		//1. value condition
-		if(valueCond!=null&&valueCond.trim().length()>0)
-			sql += "\nWHERE mvalue "+valueCond;
+		if(valueCond!=null&&valueCond.trim().length()>0){
+			if(mdb.getMaterializationStrategy()==2){
+				sql += "\nWHERE CAST (mvalue AS numeric) "+valueCond; 
+			}else{
+				sql += "\nWHERE mvalue "+valueCond;
+			}
+		}
 				
 		//2.entity name condition
 		if(entityNameCond.contains("%")) sql += " AND etype ILIKE "+ entityNameCond ;
