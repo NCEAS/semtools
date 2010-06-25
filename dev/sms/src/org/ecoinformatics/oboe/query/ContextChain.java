@@ -185,15 +185,23 @@ public class ContextChain {
 	 * 
 	 * @throws Exception 
 	 */
-	private String formSQL(OMQueryBasic targetQuery, List<OMQueryBasic> targetContext,PostgresDB db, boolean resultWithRecord) throws Exception
+	private String formSQL(OMQueryBasic targetQuery, List<OMQueryBasic> targetContext,PostgresDB db, 
+			boolean resultWithRecord) throws Exception
 	{
 		String sql ="";
 	
-		//return (did, record_id, eid, oid)
-		String targetSql = targetQuery.formSQL(db, resultWithRecord);
+		//form target query sql
+		//return (did, record_id, oid)
+		NonAggSubQueryReturn targetQueryReturnStru = new NonAggSubQueryReturn();
+		targetQueryReturnStru.m_include_did = true;
+		targetQueryReturnStru.m_include_record_id = resultWithRecord;
+		targetQueryReturnStru.m_include_oid = true;
+		
+		String targetSql = targetQuery.formSQL(db, targetQueryReturnStru);
+		
 		
 		if(targetContext!=null){
-			//return (did, record_id, eid, oid)
+			//return (did, record_id, oid)
 			for(int i=0; i<targetContext.size();i++){
 				OMQueryBasic basic = targetContext.get(i);
 				String tmpSql =basic.formContextSQL(db, resultWithRecord,targetSql);
@@ -208,15 +216,16 @@ public class ContextChain {
 			sql = targetSql;
 		}
 		
-		System.out.println(Debugger.getCallerPosition()+"======sql:"+sql+"\n");
-		//String sqlReturn = "SELECT DISTINCT eic.did, eic.compressed_record_id as record_id" +
-		//" FROM "+MDB.m_entityInstanceCompressTable+" as eic, " +
-		//"("+sql+") as cctmp\n"
-		//+ " WHERE (eic.did = cctmp.did AND eic.eid = cctmp.eid);";
-		String sqlReturn = "SELECT DISTINCT did, record_id" +
-					" FROM ("+sql+") as cctmp;";
-			
+		//System.out.println(Debugger.getCallerPosition()+"======sql==="+sql+"\n");
 		
+		String sqlReturn = "SELECT DISTINCT did" ;
+		if(resultWithRecord){
+			sqlReturn +=", record_id";
+		}
+				
+		sqlReturn +=" FROM ("+sql+") as cctmp;";
+			
+		System.out.println(Debugger.getCallerPosition()+"======sqlReturn====\n"+sqlReturn+"\n");
 		return sqlReturn;
 	}
 	
@@ -238,34 +247,41 @@ public class ContextChain {
 		
 		//The results need to be intersect-ed
 		boolean first = true;
-	
+		
+		//mdb2-mdb12, mdb3-mdb13, mdb4-mdb14, mdb5-mdb15
+		boolean useOneSQL = false;
+		if(db instanceof MDB){
+			int queryStrategy = ((MDB)db).getQueryStrategy();
+			if(queryStrategy>10){
+				useOneSQL = true;
+			}
+		}
+			
 		//For each basic query in the context chain
 		for(Map.Entry<OMQueryBasic, List<OMQueryBasic> > entry: m_queryChain.entrySet()){
 			OMQueryBasic targetQuery = entry.getKey();
 			List<OMQueryBasic> context = entry.getValue(); 
+			System.out.println(Debugger.getCallerPosition()+"targetQuery="+targetQuery+"context="+context);
 			
-			if(context!=null&&(db instanceof MDB)){
+			//deal with mdb 12,13,14,15
+			if(context!=null&&useOneSQL){
+				//form one sql and run the query
+				//form the sql for the query, and execute the query
 				String sql = formSQL(targetQuery,context,db,resultWithRecord);
-			
-				System.out.println("\n********"+Debugger.getCallerPosition()+"entry="+entry+"sql=\n"+sql);
-				
 				Set<OboeQueryResult> oneBasicQueryResult = db.executeSQL(sql,resultWithRecord);
-				
 				System.out.println(Debugger.getCallerPosition()+"oneBasicQueryResult="+oneBasicQueryResult);
+				
+				//add results
 				if(!first){
 					result.retainAll(oneBasicQueryResult);
 				}else{
 					result.addAll(oneBasicQueryResult);
 					first = false;
 				}
-				
-				System.out.println(Debugger.getCallerPosition()+"Check this branch....");
-				System.exit(0);
-				
 			}else{
-				//System.out.println(Debugger.getCallerPosition()+"++++[0]targetQuery="+targetQuery+",contex="+context);
+				//run each query and intersect their results
+				
 				//perform the basic target query
-				//TODO: Huiping this is slow, June 14, 2010
 				Set<OboeQueryResult> oneBasicQueryResult = targetQuery.execute(db,resultWithRecord);
 				if(!first){
 					result.retainAll(oneBasicQueryResult);

@@ -381,10 +381,12 @@ public class OMQuery {
 		if(queryStrategy == Constant.QUERY_REWRITE){
 			RawDB rawdb = new RawDB(dbname);
 			queryResultSet = execute(rawdb,resultWithRecord);
-		}else if(queryStrategy >= Constant.QUERY_MATERIALIZED_DB_MIN_STRATEGY 
-				&& queryStrategy<=Constant.QUERY_MATERIALIZED_DB_MAX_STRATEGY){
+		}else if((queryStrategy >= Constant.QUERY_MATERIALIZED_DB_MIN_STRATEGY 
+				&& queryStrategy<=Constant.QUERY_MATERIALIZED_DB_MAX_STRATEGY)||
+				(queryStrategy >= Constant.QUERY_MATERIALIZED_DB_MIN_STRATEGY2
+					&& queryStrategy<=Constant.QUERY_MATERIALIZED_DB_MAX_STRATEGY2)){
 			MDB materializedDB = new MDB(dbname);
-			materializedDB.setMaterializationStrategy(queryStrategy);
+			materializedDB.setQueryStrategy(queryStrategy);
 			queryResultSet = execute(materializedDB,resultWithRecord);			
 		}else{
 			System.out.println(Debugger.getCallerPosition() + " Wrong query strategy...");

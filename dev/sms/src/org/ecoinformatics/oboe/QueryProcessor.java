@@ -52,7 +52,7 @@ public class QueryProcessor {
 		
 		//2. query strategy
 		m_param_query_strategy = Integer.parseInt(args[1]);
-		if(m_param_query_strategy<=0||m_param_query_strategy>5){
+		if((m_param_query_strategy<=0||m_param_query_strategy>15)){
 			System.out.println("Wrong query strategy!");
 			usage();
 			return (-1);
@@ -132,7 +132,7 @@ public class QueryProcessor {
 		}else if(m_param_query_strategy==org.ecoinformatics.oboe.query.Constant.QUERY_REWRITE){
 			System.out.println(Debugger.getCallerPosition() +" Query raw database.");
 		}else{
-			System.out.println(Debugger.getCallerPosition() +" Query: other strategy.");
+			System.out.println(Debugger.getCallerPosition() +" Query other strategy.");
 		}
 		
 		//5. print time and result size

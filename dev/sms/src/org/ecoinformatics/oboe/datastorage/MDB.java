@@ -35,7 +35,7 @@ import org.ecoinformatics.sms.annotation.Observation;
  */
 public class MDB extends PostgresDB{
 	
-	private int m_materialization_strategy = -1; 
+	private int m_query_strategy = -1;
 	
 	//private String m_entityInstanceTable = "entity_instance";
 	final private String  m_obsInstanceTable = "observation_instance";
@@ -79,14 +79,6 @@ public class MDB extends PostgresDB{
 		return m_measInstanceTable;
 	}
 
-	public int getMaterializationStrategy() {
-		return m_materialization_strategy;
-	}
-
-	public void setMaterializationStrategy(int mMaterializationStrategy) {
-		m_materialization_strategy = mMaterializationStrategy;
-	}
-	
 	public String getObsInstanceTable() {
 		return m_obsInstanceTable;
 	}
@@ -95,6 +87,13 @@ public class MDB extends PostgresDB{
 		return m_contextInstanceTable;
 	}
 
+	public int getQueryStrategy() {
+		return m_query_strategy;
+	}
+
+	public void setQueryStrategy(int mQueryStrategy) {
+		m_query_strategy = mQueryStrategy;
+	}
 	
 	/**
 	 * Return the maximum annotation id 

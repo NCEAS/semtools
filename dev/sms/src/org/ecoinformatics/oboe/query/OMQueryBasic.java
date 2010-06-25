@@ -129,7 +129,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 	 * 
 	 * return () 
 	 */
-	public String formSQL(PostgresDB db, boolean resultWithRecord) throws Exception
+	public String formSQL(PostgresDB db, NonAggSubQueryReturn returnStru) throws Exception
 	{
 		String sql = "";
 		
@@ -141,11 +141,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 			List<QueryMeasurement> measAND = entry.getValue();
 			
 			String tmpSql ="";
-			if(db instanceof MDB){
-				NonAggSubQueryReturn returnStru = new NonAggSubQueryReturn();
-				returnStru.m_include_did = true;
-				returnStru.m_include_record_id = resultWithRecord;
-				
+			if(db instanceof MDB){		
 				tmpSql = formSQLOneCNF((MDB)db, measAND, returnStru);
 			}else if(db instanceof RawDB){
 				;//sql = formSQLOneCNF((RawDB)db,resultWithRecord, measAND);
@@ -186,7 +182,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 			String tmpSql ="";
 			if(db instanceof MDB){
 				tmpSql = formSQLOneCNFContext((MDB)db,resultWithRecord, measAND, targetSql);
-			}else if(db instanceof RawDB){
+			//}else if(db instanceof RawDB){
 				;//sql = formSQLOneCNF((RawDB)db,resultWithRecord, measAND);
 			}else{
 				System.out.println(Debugger.getCallerPosition()+"Not implemented yet.");
@@ -346,14 +342,23 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		
 		String contextSql = formSQLOneCNF (mdb,measAND,returnStru);
 		
-		String sql = "SELECT tmp1.did, tmp1.record_id, tmp1.oid \n";
-		sql+=" FROM ("+targetSql+") as tmp1, ";
-		sql+=" ("+contextSql+") as tmp2, ";
-		sql+= mdb.getContextInstanceTable() +" as oi \n";
+		String sql = "SELECT targetTb.did";
+		if(resultWithRid){
+				sql+=", targetTb.record_id";
+		}
+		sql+=", targetTb.oid \n";
+		sql+=" FROM ("+targetSql+") as targetTb, \n";
+		sql+=" ("+contextSql+") as contextTb, \n";
+		sql+= mdb.getContextInstanceTable() +" as ci \n";
 		
-		sql+="WHERE tmp1.oid = oi.oid AND oi.context_oid=tmp2.oid AND tmp1.did=tmp2.did AND tmp1.record_id=tmp2.record_id";
+		sql+="WHERE targetTb.oid = ci.oid AND ci.context_oid=contextTb.oid "; 
+		//		 + "ci.context_oid=contextTb.oid AND " +
+		//		"targetTb.did=contextTb.did "; 
+		//if(resultWithRid){
+		//	sql += "AND targetTb.record_id=contextTb.record_id";
+		//}
 		
-		System.out.println(Debugger.getCallerPosition()+"sql=\n"+sql);
+		//System.out.println(Debugger.getCallerPosition()+"sql=\n"+sql+"\n");
 		return sql;
 	}
 	
