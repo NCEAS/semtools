@@ -21,8 +21,10 @@ public class Constant {
 	public static String STANDARD = "Standard:";
 	public static String COND = "Cond:";
 	public static String AGGREGATION = "Aggregation:";
+	public static String AGGREGATION_COND = "AggCond:";
 	public static String DNFNO = "DNF:";
 	public static String CONTEXT_SEPARATOR = "->";
+	final public static String DEFAULT_AGGREGATION_FUNC = "count";
 	//
 	
 	public static String QUERY_MEAS_CHA = "cha";

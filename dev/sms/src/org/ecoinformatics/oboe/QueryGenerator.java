@@ -25,6 +25,7 @@ public class QueryGenerator extends DataStatistics{
 	private static String m_dataFilePrefix;
 	
 	private static int m_qnum_per_value_selectivity = 10;
+	private static int m_attribute_num =1;//by defaut this is 1
 	/**
 	 * Calculate the scale of the selectivity
 	 * @param accurateSelectivity
@@ -381,7 +382,8 @@ public class QueryGenerator extends DataStatistics{
 	
 	private static void selectivityQueryForMultipleMeas(List<List<String> > measToGenerateQueryFor, 
 			List<Double> recordSelectivity,int filenum,
-			String queryFilePrefix) 
+			String queryFilePrefix,
+			boolean withAggregation) 
 			throws FileNotFoundException, IOException, Exception
 	{
 		//Map<List<String>, Map<List<Integer>, Integer>> measlist2_value2count =  
@@ -448,13 +450,18 @@ public class QueryGenerator extends DataStatistics{
 		
 		OMQuery query = new OMQuery();
 		//query.writeQueries(measlist2_query,Constant.localUriPrefix+"query");
-		//query.writeQueriesForMultipleMeas(measlist2_query,Constant.localUriPrefix+"query");		
-		query.writeQueriesForMultipleMeas(measlist2_query,Constant.localUriPrefix+queryFilePrefix);
+		//query.writeQueriesForMultipleMeas(measlist2_query,Constant.localUriPrefix+"query");
+		if(withAggregation){
+			query.writeQueriesForMultipleMeas(measlist2_query,Constant.localUriPrefix+queryFilePrefix,org.ecoinformatics.oboe.query.Constant.DEFAULT_AGGREGATION_FUNC,"=2");
+		}else{
+			query.writeQueriesForMultipleMeas(measlist2_query,Constant.localUriPrefix+queryFilePrefix,null,null);
+		}
 		
 	}
 	
 	private static void allfileSelectivityQuery(List<String > measToGenerateQueryFor, 
-			List<Double> recordSelectivity,int filenum) 
+			List<Double> recordSelectivity,int filenum,
+			boolean withAggregation) 
 			throws FileNotFoundException, IOException, Exception
 	{
 		Map<String, Map<Integer, Integer>> meas2_value2count =  new TreeMap<String, Map<Integer,Integer>>();
@@ -507,56 +514,19 @@ public class QueryGenerator extends DataStatistics{
 		}
 		
 		OMQuery query = new OMQuery();
-		query.writeQueries(meas2_query,Constant.localUriPrefix+"query");
-		
-	}
-	
-	public static void main(String[] args) throws Exception {
-		if(args.length<3){
-			//e.g., java -cp oboe.jar org.ecoinformatics.oboe.QueryGenerator syn 20 0.5
-			System.out.println("Usage: ./QueryGenerator <1. data_file_prefix> <2.file num> <3. query file prefix> [<4. attribute slectivity double(0,1.0]>] ");
-			return;
+		//query.writeQueries(meas2_query,Constant.localUriPrefix+"query");
+		if(withAggregation){
+			query.writeQueries(meas2_query,Constant.localUriPrefix+"query",org.ecoinformatics.oboe.query.Constant.DEFAULT_AGGREGATION_FUNC,"=2");
+		}else{
+			//query.writeQueriesForMultipleMeas(measlist2_query,Constant.localUriPrefix+queryFilePrefix,null,null);
+			query.writeQueries(meas2_query,Constant.localUriPrefix+"query",null,null);
 		}
 		
-		m_annotSpecFilePrefix = Constant.localUriPrefix + args[0];
-		m_dataFilePrefix = Constant.localUriPrefix +args[0];
-		
-		int filenum = Integer.parseInt(args[1]);
-		String queryFilePrefix = args[2];
-		
-		double attrSelectivity = 0.5;
-		if(args.length>3){
-			attrSelectivity = Double.parseDouble(args[3]);
-		}
-		
-		List<Double> recordSelectivity = new ArrayList<Double>();
-		recordSelectivity.add(0.5);
-		recordSelectivity.add(0.2);
-		recordSelectivity.add(0.1);
-		//recordSelectivity.add(0.05);
-		recordSelectivity.add(0.01);
-		//recordSelectivity.add(0.005);
-		recordSelectivity.add(0.001);
-		
-		System.out.println("\n"+Debugger.getCallerPosition()+"annotSpecFilePrefix="+m_annotSpecFilePrefix);
-		System.out.println(Debugger.getCallerPosition()+"dataFilePrefix="+m_dataFilePrefix);
-		System.out.println(Debugger.getCallerPosition()+"filenum="+filenum);
-		System.out.println(Debugger.getCallerPosition()+"attrSelectivity="+attrSelectivity+",recordSelectivity="+recordSelectivity+"\n");
-		
-		//Get the measurements that we need to generate query for
-		//List<String> measToGenerateQueryFor = new ArrayList<String>();
-		List<List<String> > measToGenerateQueryFor = new ArrayList<List<String> >();
-		setParam(measToGenerateQueryFor,attrSelectivity);
-		System.out.println(Debugger.getCallerPosition()+"measToGenerateQueryFor="+measToGenerateQueryFor);
-		
-		//for the 1st file, get the data distribution for the attributes with given selectivity
-		//allfileSelectivityQuery(measToGenerateQueryFor,recordSelectivity,filenum);
-		selectivityQueryForMultipleMeas(measToGenerateQueryFor,recordSelectivity,filenum,queryFilePrefix);
-		
-		System.out.println(Debugger.getCallerPosition()+"Finish generating queries for atrselectivity="+attrSelectivity);
 	}
-	
-	private static void setParam(List<List<String> > measToGenerateQueryFor, double selectivity)
+
+	private static void setParam(List<List<String> > measToGenerateQueryFor, 
+			double charSelectivity,int attributeNum,boolean withAggregation) 
+		throws Exception
 	{
 //		for(int i=0;i<m_measurements.length;i++){
 	//		measToGenerateQueryFor.add(m_measurements[i]);
@@ -570,38 +540,182 @@ public class QueryGenerator extends DataStatistics{
 		measToGenerateQueryFor.add("m11"); 
 		*/
 		
-		if(selectivity==0.001){
-		
+		if(charSelectivity==0.001){
 			List<String> oneLogicAndList001 = new ArrayList<String>();
-			oneLogicAndList001.add("m701");
-			oneLogicAndList001.add("m702");
+			if(!withAggregation){
+				oneLogicAndList001.add("m701");
+				if(attributeNum>=2) oneLogicAndList001.add("m702");
+				if(attributeNum>=3)	oneLogicAndList001.add("m703");
+				if(attributeNum>=4)	oneLogicAndList001.add("m704");
+				if(attributeNum>=5)	oneLogicAndList001.add("m705");
+				if(attributeNum>=6)	oneLogicAndList001.add("m706");
+			}else{
+				if(attributeNum==1){
+					oneLogicAndList001.add("m701");
+				}else if(attributeNum==2){
+					oneLogicAndList001.add("m702");
+				}else if(attributeNum==3){
+					oneLogicAndList001.add("m703");
+				}else if(attributeNum==4){
+					oneLogicAndList001.add("m704");
+				}else if(attributeNum==5){
+					oneLogicAndList001.add("m705");
+				}else if(attributeNum==6){
+					oneLogicAndList001.add("m706");
+				}
+			}
 			measToGenerateQueryFor.add(oneLogicAndList001); //0.001			
-		}else if(selectivity==0.01){
+		}else if(charSelectivity==0.01){
 			List<String> oneLogicAndList01 = new ArrayList<String>();
-			oneLogicAndList01.add("m101");
-			oneLogicAndList01.add("m102");
-			measToGenerateQueryFor.add(oneLogicAndList01); //0.01
-		}else if(selectivity==0.05){
+			if(!withAggregation){
+				oneLogicAndList01.add("m101");
+				if(attributeNum>=2) oneLogicAndList01.add("m102");
+				if(attributeNum>=3)	oneLogicAndList01.add("m103");
+				if(attributeNum>=4)	oneLogicAndList01.add("m104");
+				if(attributeNum>=5)	oneLogicAndList01.add("m105");
+				if(attributeNum>=6)	oneLogicAndList01.add("m106");			
+				measToGenerateQueryFor.add(oneLogicAndList01); //0.01
+			}else{
+				if(attributeNum==1){
+					oneLogicAndList01.add("m101");
+				}else if(attributeNum==2){
+					oneLogicAndList01.add("m102");
+				}else if(attributeNum==3){
+					oneLogicAndList01.add("m103");
+				}else if(attributeNum==4){
+					oneLogicAndList01.add("m104");
+				}else if(attributeNum==5){
+					oneLogicAndList01.add("m105");
+				}else if(attributeNum==6){
+					oneLogicAndList01.add("m106");
+				}
+			}
+		}else if(charSelectivity==0.05){
 			List<String> oneLogicAndList05 = new ArrayList<String>();
-			oneLogicAndList05.add("m201");
-			oneLogicAndList05.add("m202");
+			if(!withAggregation){
+				oneLogicAndList05.add("m201");
+				if(attributeNum>=2) oneLogicAndList05.add("m202");
+				if(attributeNum>=3)	oneLogicAndList05.add("m203");
+				if(attributeNum>=4)	oneLogicAndList05.add("m204");
+				if(attributeNum>=5)	oneLogicAndList05.add("m205");
+				if(attributeNum>=6)	oneLogicAndList05.add("m206");
+			}else{
+				throw new Exception("No this part yet.");
+			}
+			
 			measToGenerateQueryFor.add(oneLogicAndList05); //0.05
-		}else if(selectivity==0.1){
+		}else if(charSelectivity==0.1){
 			List<String> oneLogicAndList1 = new ArrayList<String>();
-			oneLogicAndList1.add("m301");
-			oneLogicAndList1.add("m302");
+			if(!withAggregation){
+				oneLogicAndList1.add("m301");
+				if(attributeNum>=2) oneLogicAndList1.add("m302");
+				if(attributeNum>=3)	oneLogicAndList1.add("m303");
+				if(attributeNum>=4)	oneLogicAndList1.add("m304");
+				if(attributeNum>=5)	oneLogicAndList1.add("m305");
+				if(attributeNum>=6)	oneLogicAndList1.add("m306");
+			}else{
+				if(attributeNum==1){
+					oneLogicAndList1.add("m301");
+				}else if(attributeNum==2){
+					oneLogicAndList1.add("m302");
+				}else if(attributeNum==3){
+					oneLogicAndList1.add("m303");
+				}else if(attributeNum==4){
+					oneLogicAndList1.add("m304");
+				}else if(attributeNum==5){
+					oneLogicAndList1.add("m305");
+				}else if(attributeNum==6){
+					oneLogicAndList1.add("m306");
+				}
+			}
+			
 			measToGenerateQueryFor.add(oneLogicAndList1); //0.1
-		}else if(selectivity==0.2){
+		}else if(charSelectivity==0.2){
 			List<String> oneLogicAndList2 = new ArrayList<String>();
-			oneLogicAndList2.add("m401");
-			oneLogicAndList2.add("m402");
+			if(!withAggregation){
+				oneLogicAndList2.add("m401");
+				if(attributeNum>=2) oneLogicAndList2.add("m402");
+				if(attributeNum>=3)	oneLogicAndList2.add("m403");
+				if(attributeNum>=4)	oneLogicAndList2.add("m404");
+				if(attributeNum>=5)	oneLogicAndList2.add("m405");
+				if(attributeNum>=6)	oneLogicAndList2.add("m406");
+			}else{
+				if(attributeNum==1){
+					oneLogicAndList2.add("m401");
+				}else if(attributeNum==2){
+					oneLogicAndList2.add("m402");
+				}else if(attributeNum==3){
+					oneLogicAndList2.add("m403");
+				}else if(attributeNum==4){
+					oneLogicAndList2.add("m404");
+				}else if(attributeNum==5){
+					oneLogicAndList2.add("m405");
+				}else if(attributeNum==6){
+					oneLogicAndList2.add("m406");
+				}
+			}
 			measToGenerateQueryFor.add(oneLogicAndList2); //0.2
-		}else if(selectivity==0.5){
+		}else if(charSelectivity==0.5){
 			List<String> oneLogicAndList5 = new ArrayList<String>();
-			oneLogicAndList5.add("m501");
-			oneLogicAndList5.add("m502");
+			if(!withAggregation){
+				oneLogicAndList5.add("m501");
+				if(attributeNum>=2) oneLogicAndList5.add("m502");
+				if(attributeNum>=3)	oneLogicAndList5.add("m503");
+				if(attributeNum>=4)	oneLogicAndList5.add("m504");
+				if(attributeNum>=5)	oneLogicAndList5.add("m505");
+				if(attributeNum>=6)	oneLogicAndList5.add("m506");
+			}else{
+				throw new Exception("No this part yet.");
+			}
 			measToGenerateQueryFor.add(oneLogicAndList5); //0.5
 		}
 	}
+	
+	public static void main(String[] args) throws Exception {
+		if(args.length!=6){
+			//e.g., java -cp oboe.jar org.ecoinformatics.oboe.QueryGenerator syn 20 0.5
+			System.out.println("Usage: ./QueryGenerator <1. data_file_prefix> <2.file num> <3. query file prefix> <4. attribute slectivity double(0,1.0]>" +
+					"<5. attr. num (can be 1-6)> <6.with aggregation(true,false)> ");
+			return;
+		}
+		
+		m_annotSpecFilePrefix = Constant.localUriPrefix + args[0];
+		m_dataFilePrefix = Constant.localUriPrefix +args[0];
+		
+		int filenum = Integer.parseInt(args[1]);
+		String queryFilePrefix = args[2];
+		
+		double attrSelectivity = 0.5;
+		attrSelectivity = Double.parseDouble(args[3]);
+		m_attribute_num= Integer.parseInt(args[4]);
+		
+		boolean withAggregation = Boolean.parseBoolean(args[5]);
+		
+		List<Double> recordSelectivity = new ArrayList<Double>();
+		//recordSelectivity.add(0.5);
+		//recordSelectivity.add(0.2);
+		recordSelectivity.add(0.1);
+		recordSelectivity.add(0.01);
+		//recordSelectivity.add(0.001);
+		
+		System.out.println("\n"+Debugger.getCallerPosition()+"annotSpecFilePrefix="+m_annotSpecFilePrefix);
+		System.out.println(Debugger.getCallerPosition()+"dataFilePrefix="+m_dataFilePrefix);
+		System.out.println(Debugger.getCallerPosition()+"filenum="+filenum);
+		System.out.println(Debugger.getCallerPosition()+"attrSelectivity="+attrSelectivity+",recordSelectivity="+recordSelectivity+"\n");
+		
+		//Get the measurements that we need to generate query for
+		//List<String> measToGenerateQueryFor = new ArrayList<String>();
+		List<List<String> > measToGenerateQueryFor = new ArrayList<List<String> >();
+		setParam(measToGenerateQueryFor,attrSelectivity,m_attribute_num,withAggregation);
+		System.out.println(Debugger.getCallerPosition()+"measToGenerateQueryFor="+measToGenerateQueryFor);
+		
+		//for the 1st file, get the data distribution for the attributes with given selectivity
+		//allfileSelectivityQuery(measToGenerateQueryFor,recordSelectivity,filenum);
+		selectivityQueryForMultipleMeas(measToGenerateQueryFor,recordSelectivity,filenum,queryFilePrefix,withAggregation);
+		
+		System.out.println(Debugger.getCallerPosition()+"Finish generating queries for atrselectivity="+attrSelectivity);
+	}
+	
+
 	
 }

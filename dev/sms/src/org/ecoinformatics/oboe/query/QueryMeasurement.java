@@ -23,6 +23,7 @@ public class QueryMeasurement {
 	private String standardCond ="";
 	private String valueCond ="";
 	private String aggregationFunc = "";
+	private String aggregationCond = "";
 	
 	public String getCharacteristicCond() {
 		return characteristicCond;
@@ -48,7 +49,12 @@ public class QueryMeasurement {
 	public void setAggregationFunc(String aggregationFunc) {
 		this.aggregationFunc = aggregationFunc;
 	}
-	
+	public String getAggregationCond() {
+		return aggregationCond;
+	}
+	public void setAggregationCond(String aggregationCond) {
+		this.aggregationCond = aggregationCond;
+	}
 //	public String toString(){
 //		String str="";
 //		if(characteristicCond!=null&&characteristicCond.trim().length()>0){
@@ -142,69 +148,7 @@ public class QueryMeasurement {
 		return sql;
 	}
 	
-	/**
-	 * For the SQL for ONE non aggregate conditions over Materialized database
-	 * (did,record_id,oid,eid,mvalue,characteristic)
-	 * 
-	 * @param mdb
-	 * @param entityNameCond
-	 * @param qm
-	 * @deprecated
-	 * @return
-	 */
-	public String formSQLNonAggCondOverMDB(MDB mdb, String entityNameCond)
-	{
-		//String sql= "SELECT DISTINCT oi.did,eic.compressed_record_id as record_id, oi.eid, oi.oid, mi.mvalue, mt.characteristic ";
-		String sql= "SELECT DISTINCT oi.did,oic.compressed_record_id as record_id, oi.oid, mi.mvalue, mt.characteristic ";
-		sql +=" FROM "+mdb.getMeasInstanceTable()+" AS mi,"
-							+ mdb.getObsInstanceTable() +" AS oi,"
-							+ mdb.getMeasTypeTable() + " AS mt," 
-							//+ mdb.m_entityInstanceCompressTable +" AS eic ";
-							+ mdb.m_obsInstanceCompressTable +" AS oic ";
-		if(valueCond!=null&&valueCond.trim().length()>0){
-			sql += "\nWHERE ";
-			
-			//value condition process
-			if(valueCond.contains("'")){ //string conditions has ', e.g., like 'California', = 'California'
-				sql +=" mi.mvalue "+valueCond+" AND ";
-			}else{//numeric conditions, e.g., >15.0
-				sql += "mi.mvalue ~ " + mdb.m_DIGIT_RE +" AND mi.mvalue !~ "+mdb.m_STRING_RE+" AND ";
-				sql +=" (CAST(mi.mvalue AS numeric)"+valueCond+") AND ";
-			}
-		}
-		
-		//entity name
-		if(entityNameCond.contains("%")){
-			sql += " oi.etype ILIKE "+ entityNameCond +" AND ";
-		}else{
-			sql += " oi.etype = "+ entityNameCond +" AND ";
-		}
-		
-		sql +=" oi.oid=mi.oid AND ";
-			
-		//measurement type: characteristic, standard, etc.
-		sql +=" (mt.mtypelabel = mi.mtypelabel";
-		if(characteristicCond!=null&&characteristicCond.trim().length()>0){
-			if(characteristicCond.contains("%")){
-				sql += " AND mt.characteristic ILIKE " + characteristicCond+"";
-			}else{
-				sql += " AND mt.characteristic=" + characteristicCond+"";
-			}
-		}
-		if(standardCond!=null&&standardCond.trim().length()>0){
-			if(standardCond.contains("%")){
-				sql +=" AND mt.standard ILIKE" + standardCond;
-			}else{
-				sql +=" AND mt.standard=" + standardCond;
-			}
-		}
-		//TOTO: HP check
-		//sql +=" AND ei.eid=eic.eid AND ei.did=eic.did";
-		sql +=" AND oi.oid=oic.oid AND oi.did=oic.did";
-		sql +=")";
-		
-		return sql;
-	}
+
 	
 	/**
 	 * For the SQL for ONE non aggregate conditions over Materialized database
@@ -296,7 +240,8 @@ public class QueryMeasurement {
 		if(aggregationFunc!=null&&aggregationFunc.length()>0){
 			//sqlReturn+="\nGROUP BY did, eid ";
 			sqlReturn+="\nGROUP BY did, oid ";			
-			sqlReturn+="\nHAVING "+aggregationFunc+"(mvalue)"+valueCond;
+			//sqlReturn+="\nHAVING "+aggregationFunc+"(mvalue)"+valueCond;
+			sqlReturn+="\nHAVING "+aggregationFunc+"(mvalue)"+aggregationCond;
 		}
 		return sqlReturn;
 	}
@@ -342,7 +287,8 @@ public class QueryMeasurement {
 		//aggregation
 		if(aggregationFunc!=null&&aggregationFunc.length()>0){
 			sqlReturn+="\nGROUP BY did, oid ";
-			sqlReturn+="\nHAVING "+aggregationFunc+"(mvalue)"+valueCond;
+			//sqlReturn+="\nHAVING "+aggregationFunc+"(mvalue)"+valueCond;
+			sqlReturn+="\nHAVING "+aggregationFunc+"(mvalue)"+aggregationCond;
 		}
 		
 		System.out.println(Debugger.getCallerPosition()+"Group by SQL:\n"+sqlReturn+"\n");
@@ -484,7 +430,7 @@ public class QueryMeasurement {
 				}
 			
 				//HAVING clause
-				sql += " HAVING " + aggregationFunc+"("+this.characteristicCond+")" + this.valueCond;
+				sql += " HAVING " + aggregationFunc+"("+this.characteristicCond+")" + this.aggregationCond;
 				sql += ");";
 			}else{
 				//TODO:HP need to be tested
@@ -530,8 +476,13 @@ public class QueryMeasurement {
 		if(this.valueCond!=null) queryString +=Constant.COND+this.valueCond+"\n";
 		else queryString +=Constant.COND+"\n";
 		
-		if(this.aggregationFunc!=null)queryString +=Constant.AGGREGATION+this.aggregationFunc+"\n";
-		else queryString +=Constant.AGGREGATION+"\n";
+		if(this.aggregationFunc!=null){
+			queryString +=Constant.AGGREGATION+this.aggregationFunc+"\n";
+			queryString +=Constant.AGGREGATION_COND+this.aggregationCond+"\n";
+		}else{
+			queryString +=Constant.AGGREGATION+"\n";
+			queryString +=Constant.AGGREGATION_COND+"\n";
+		}
 		
 		queryString+=Constant.DNFNO+dnfno+"\n";
 		queryString +=Constant.MEASUREMENT_END+"\n";

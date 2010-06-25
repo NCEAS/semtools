@@ -113,6 +113,7 @@ public class OMQuery {
 					String standard = queryLines.get(++i).substring(Constant.STANDARD.length());
 					String condition = queryLines.get(++i).substring(Constant.COND.length());
 					String aggregationFunc = queryLines.get(++i).substring(Constant.AGGREGATION.length());
+					String aggregationCond = queryLines.get(++i).substring(Constant.AGGREGATION_COND.length());
 					String DNFnoStr = queryLines.get(++i).substring(Constant.DNFNO.length());
 					
 					int dnfNo = Integer.parseInt(DNFnoStr);
@@ -121,6 +122,7 @@ public class OMQuery {
 					queryMeas.setStandardCond(standard);
 					queryMeas.setValueCond(condition);
 					queryMeas.setAggregationFunc(aggregationFunc);
+					queryMeas.setAggregationCond(aggregationCond);
 					//System.out.println(Debugger.getCallerPosition()+"dnfNo="+dnfNo+",queryMeas: "+queryMeas);
 					
 					oneBasicQuery.addMeasDNF(dnfNo, queryMeas);
@@ -402,7 +404,11 @@ public class OMQuery {
 	 * @param queryFilePrefix
 	 * @throws IOException 
 	 */
-	public void writeQueries(Map<String, Map<Double, List<String >>> meas2_selectivityQueryConds,String queryFilePrefix) 
+	public void writeQueries(Map<String, 
+			Map<Double, List<String >>> meas2_selectivityQueryConds,
+			String queryFilePrefix,
+			String aggregationFunc,
+			String aggregationCond) 
 		throws IOException
 	{
 		for(String measLabel:meas2_selectivityQueryConds.keySet()){
@@ -432,7 +438,15 @@ public class OMQuery {
 					QueryMeasurement qm = new QueryMeasurement();
 					qmlist.add(qm);
 					
-					qm.setAggregationFunc(null);
+					if(aggregationFunc==null){
+						qm.setAggregationFunc(null);
+						qm.setAggregationCond(null);
+					}else{
+						qm.setAggregationFunc(aggregationFunc);
+						qm.setAggregationCond(aggregationCond);
+					}
+					//qm.setAggregationFunc(null);
+					//qm.setAggregationCond(aggregationCond);
 					//qm.setCharacteristicCond("'"+measLabel+"%'");
 					qm.setCharacteristicCond("'"+measLabel+Constant.QUERY_MEAS_CHA+"'");
 					qm.setStandardCond(null);
@@ -464,7 +478,11 @@ public class OMQuery {
 	
 	
 	public void writeQueriesForMultipleMeas(
-			Map<List<String >, Map<Double, List<List<String > >>> measlist2_selectivityQueryConds,String queryFilePrefix) 
+			Map<List<String >, 
+			Map<Double, List<List<String > >>> measlist2_selectivityQueryConds,
+			String queryFilePrefix,
+			String aggregationFunc,
+			String aggregationCond) 
 	throws IOException
 	{
 	for(List<String> measLabelList:measlist2_selectivityQueryConds.keySet()){
@@ -487,8 +505,13 @@ public class OMQuery {
 			
 			//form query strings for all the query conditions
 			String queryString = "";
+			String queryStringWithContext = "";
+			
+			boolean hasContext = false;
 			for(Integer queryLabel=1; queryLabel<=oneSelectivityQueryConds.size();queryLabel++){
 				queryString +=Constant.QUERY_START+queryLabel+"\n";
+				queryStringWithContext +=Constant.QUERY_START+queryLabel+"\n";
+				String contextString = "#context section\n"+ Constant.CONTEXT_START +"\n";
 				List<String> oneSelectivityOneQueryCondAnd =oneSelectivityQueryConds.get(queryLabel-1); 
 				for(Integer j=1;j<=oneSelectivityOneQueryCondAnd.size();j++){
 					OMQueryBasic ombasic = new OMQueryBasic();					
@@ -505,7 +528,13 @@ public class OMQuery {
 					qmlist.add(qm);
 					
 					String measLabel = measLabelList.get(j-1);
-					qm.setAggregationFunc(null);
+					if(aggregationFunc==null){
+						qm.setAggregationFunc(null);
+						qm.setAggregationCond(null);
+					}else{
+						qm.setAggregationFunc(aggregationFunc);
+						qm.setAggregationCond(aggregationCond);
+					}
 					//qm.setCharacteristicCond("'"+measLabel+"%'");
 					qm.setCharacteristicCond("'"+measLabel+Constant.QUERY_MEAS_CHA+"'");
 					qm.setStandardCond(null);
@@ -516,9 +545,17 @@ public class OMQuery {
 					//System.out.println(Debugger.getCallerPosition()+"ombasic="+ombasic);
 					
 					queryString += ombasic.formQueryString()+"\n";
+					queryStringWithContext += ombasic.formQueryString()+"\n";
+					if(j>1){
+						contextString += j +Constant.CONTEXT_SEPARATOR +(j-1)+"\n";
+						hasContext = true;
+					}
 				}
 				
 				queryString +=Constant.QUERY_END+"\n####################\n";
+				
+				queryStringWithContext += (contextString + Constant.CONTEXT_END +"\n");
+				queryStringWithContext +=Constant.QUERY_END+"\n####################\n";
 			}
 			
 			
@@ -528,8 +565,19 @@ public class OMQuery {
 			s.print(queryString);
 			s.close();
 			outputStream.close();
-			
 			System.out.println(Debugger.getCallerPosition()+"Write to query file: "+tmpFile);
+			
+			//write this query with context to output file
+			if(hasContext){
+				String contextTmpFname = tmpFile +"_context";
+				FileOutputStream outputStreamContext = new FileOutputStream(contextTmpFname);
+				PrintStream sContext = new PrintStream(outputStreamContext);				
+				sContext.print(queryStringWithContext);
+				sContext.close();
+				outputStreamContext.close();
+				System.out.println(Debugger.getCallerPosition()+"Write to query file: "+contextTmpFname);
+			}
+			
 			//break;
 		}
 	}

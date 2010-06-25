@@ -23,10 +23,6 @@ WHERE mvalue ~ '^[-]?[0-9]+' AND mvalue !~ '[a-zA-Z]+');
 CREATE TABLE mi_string AS 
 (SELECT mid,did,record_id,oid,mtypelabel,mvalue FROM measurement_instance WHERE  mvalue ~ '[a-zA-Z]+');
 
-#creating index is optional
-CREATE INDEX mi_numeric_mvalue_idx on mi_numeric(mvalue);
-CREATE INDEX mi_numeric_mtypelabel_idx on mi_numeric(mtypelabel);
-
 #######################
 ### step 3: verify the correctness of the partition
 ### query 1 result = (query 2 result) + (query 3 result)
@@ -52,8 +48,6 @@ CREATE VIEW non_agg_meas_view_basic AS
 FROM mi_numeric AS mi,observation_instance AS oi,measurement_type AS mt
 WHERE oi.oid=mi.oid AND mt.mtypelabel = mi.mtypelabel AND mt.annot_id = mi.did);
 
-CREATE INDEX observation_instance_etype_idx on observation_instance(etype);
-
 #######################
 ### step 6: Create table to denormalized oi and mi
 #######################
@@ -67,10 +61,6 @@ CREATE VIEW mtb_view AS
 FROM omi_numeric AS omi,measurement_type AS mt
 WHERE mt.mtypelabel = omi.mtypelabel AND mt.annot_id = omi.did);
 
-CREATE INDEX omi_numeric_mvalue_idx on omi_numeric(mvalue);
-CREATE INDEX omi_numeric_etype_idx on omi_numeric(etype);
-create index omi_numeric_2col_index on omi_numeric(etype,mvalue);
-
 #######################
 ### step 7: Create table to denormalized oi, mi, and mt
 #######################
@@ -80,6 +70,20 @@ SELECT mi.mid, mi.did, mi.record_id,mi.oid,mi.mtypelabel,mi.mvalue,oi.etype,oi.o
 FROM mi_numeric as mi, observation_instance as oi, measurement_type AS mt
 WHERE oi.oid = mi.oid AND mt.mtypelabel = mi.mtypelabel and mt.annot_id = mi.did
 );
+
+
+#######################
+### step 8: optional to create index
+#######################
+#creating index is optional
+CREATE INDEX observation_instance_etype_idx on observation_instance(etype);
+
+CREATE INDEX mi_numeric_mvalue_idx on mi_numeric(mvalue);
+CREATE INDEX mi_numeric_mtypelabel_idx on mi_numeric(mtypelabel);
+
+CREATE INDEX omi_numeric_mvalue_idx on omi_numeric(mvalue);
+CREATE INDEX omi_numeric_etype_idx on omi_numeric(etype);
+create index omi_numeric_2col_index on omi_numeric(etype,mvalue);
 
 CREATE INDEX omi_numeric_full_mvalue_idx on omi_numeric_full(mvalue);
 CREATE INDEX omi_numeric_full_etype_idx on omi_numeric_full(etype);

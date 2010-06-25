@@ -20,6 +20,7 @@ public class Constant {
 	public static String C_DATA_FILE_SUFFIX = "-data.txt";
 	public static String C_OUT_CSV_FILE_SUFFIX ="-oboe.csv";
 	public static String C_OUT_RDF_FILE_SUFFIX ="-oboe.rdf";
+	 
 	
 	public static String C_DATASET_SEPARATOR = ",";	
 	
