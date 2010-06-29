@@ -29,7 +29,7 @@ public class SyntheticDataValidator {
 		
 		//2. Validate dataset
 		System.out.println(Debugger.getCallerPosition()+"2. Validate dataset ...");
-		DataGenerator generator = new DataGenerator(); 
+		DataGenerator generator = new DataGenerator(0); 
 		generator.setRownum(numOfRows);
 		generator.setAnnotation(a.getAnnotation());
 		generator.setKey2distinctfactor(a.getKey2distinctfactor());

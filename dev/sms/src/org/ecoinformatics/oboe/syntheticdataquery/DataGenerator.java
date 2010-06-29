@@ -56,9 +56,16 @@ public class DataGenerator {
 	
 	private int m_structure_row_num = 2; //one for attribute name, one row for attribute type
 	
-	public DataGenerator()
+//	public DataGenerator()
+//	{
+//		m_randnumGenerator = new Random(0);
+//		m_obsType2obsData = new TreeMap<String, List>();
+//		m_obsType2contexObsType= new TreeMap<Observation,Set>();
+//	}
+	
+	public DataGenerator(int randomSeed)
 	{
-		m_randnumGenerator = new Random(0);
+		m_randnumGenerator = new Random(randomSeed);
 		m_obsType2obsData = new TreeMap<String, List>();
 		m_obsType2contexObsType= new TreeMap<Observation,Set>();
 	}
@@ -1501,7 +1508,8 @@ public class DataGenerator {
 			String outAnnotFileName,
 			String outDataFileName, 
 			int numOfRows,
-			boolean needWriteAnnotFile)
+			boolean needWriteAnnotFile,
+			int randomSeed)
 		throws Exception
 	{
 		
@@ -1518,7 +1526,7 @@ public class DataGenerator {
 		
 		//3. generate dataset
 		System.out.println("3. Generate datasets ...");
-		DataGenerator generator = new DataGenerator(); 
+		DataGenerator generator = new DataGenerator(randomSeed); 
 		generator.setRownum(numOfRows);
 		generator.setAnnotation(a.getAnnotation());
 		generator.setKey2distinctfactor(a.getKey2distinctfactor());

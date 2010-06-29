@@ -40,19 +40,21 @@ public class SyntheticDataGenerator {
           Test: context chain
 	 */
 	public static void main(String[] args) {
-		if(args.length!=2){
-			System.out.println("Usage: ./SyntheticDataGenerator <0. file name prefix> <1. number of rows> ");
+		if(args.length!=3){
+			System.out.println("Usage: ./SyntheticDataGenerator <0.random seed> <1. file name prefix> <2. number of rows> ");
 			return;
 		}
+		int randomSeed = Integer.parseInt(args[0]);
 		
 		// Get input parameters
-		String inAnnotSpecFileName = Constant.localUriPrefix + args[0] + Constant.C_ANNOT_SPEC_FILE_SUFFIX; 
-		String outAnnotSpecFileName = Constant.localUriPrefix + args[0] + Constant.C_ANNOT_FILE_SUFFIX;
-		String outDataSpecFileName = Constant.localUriPrefix +args[0] + "-n"+args[1]+ Constant.C_DATA_FILE_SUFFIX;
+		String inAnnotSpecFileName = Constant.localUriPrefix + args[1] + Constant.C_ANNOT_SPEC_FILE_SUFFIX; 
+		String outAnnotSpecFileName = Constant.localUriPrefix + args[1] + Constant.C_ANNOT_FILE_SUFFIX;
+		String outDataSpecFileName = Constant.localUriPrefix +args[1] + "-rs"+args[0]+"-n"+args[2]+ Constant.C_DATA_FILE_SUFFIX;
 		
-		int numOfRows = Integer.parseInt(args[1]);
+		int numOfRows = Integer.parseInt(args[2]);
 		
 		// Confirm parameters
+		System.out.println("randomSeed="+randomSeed);
 		System.out.println("inAnnotSpecFileName="+inAnnotSpecFileName);
 		System.out.println("outAnnotSpecFileName="+outAnnotSpecFileName);
 		System.out.println("outDataSpecFileName="+outDataSpecFileName);
@@ -60,7 +62,7 @@ public class SyntheticDataGenerator {
 		
 		// Generate data to satisfy the annotation specifications
 		try {
-			DataGenerator.Generate(inAnnotSpecFileName,outAnnotSpecFileName, outDataSpecFileName, numOfRows,true);			
+			DataGenerator.Generate(inAnnotSpecFileName,outAnnotSpecFileName, outDataSpecFileName, numOfRows,true,randomSeed);			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (Exception e) {			

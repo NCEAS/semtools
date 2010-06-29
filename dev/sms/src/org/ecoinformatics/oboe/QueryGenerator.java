@@ -383,7 +383,8 @@ public class QueryGenerator extends DataStatistics{
 	private static void selectivityQueryForMultipleMeas(List<List<String> > measToGenerateQueryFor, 
 			List<Double> recordSelectivity,int filenum,
 			String queryFilePrefix,
-			boolean withAggregation) 
+			boolean withAggregation,
+			int randomSeed) 
 			throws FileNotFoundException, IOException, Exception
 	{
 		//Map<List<String>, Map<List<Integer>, Integer>> measlist2_value2count =  
@@ -409,7 +410,7 @@ public class QueryGenerator extends DataStatistics{
 			
 			//2. Get statistics of the dataset
 			//System.out.println(Debugger.getCallerPosition()+"2. Get statistics of the dataset ...");
-			DataGenerator generator = new DataGenerator(); 
+			DataGenerator generator = new DataGenerator(randomSeed); 
 			generator.setAnnotation(a.getAnnotation());
 			generator.setKey2distinctfactor(a.getKey2distinctfactor());
 			
@@ -461,7 +462,8 @@ public class QueryGenerator extends DataStatistics{
 	
 	private static void allfileSelectivityQuery(List<String > measToGenerateQueryFor, 
 			List<Double> recordSelectivity,int filenum,
-			boolean withAggregation) 
+			boolean withAggregation,
+			int randomSeed) 
 			throws FileNotFoundException, IOException, Exception
 	{
 		Map<String, Map<Integer, Integer>> meas2_value2count =  new TreeMap<String, Map<Integer,Integer>>();
@@ -479,7 +481,7 @@ public class QueryGenerator extends DataStatistics{
 			
 			//2. Get statistics of the dataset
 			//System.out.println(Debugger.getCallerPosition()+"2. Get statistics of the dataset ...");
-			DataGenerator generator = new DataGenerator(); 
+			DataGenerator generator = new DataGenerator(randomSeed); 
 			//generator.setRownum(numbOfRows);
 			generator.setAnnotation(a.getAnnotation());
 			generator.setKey2distinctfactor(a.getKey2distinctfactor());
@@ -679,6 +681,7 @@ public class QueryGenerator extends DataStatistics{
 			return;
 		}
 		
+		int randomSeed = 0;
 		m_annotSpecFilePrefix = Constant.localUriPrefix + args[0];
 		m_dataFilePrefix = Constant.localUriPrefix +args[0];
 		
@@ -711,7 +714,7 @@ public class QueryGenerator extends DataStatistics{
 		
 		//for the 1st file, get the data distribution for the attributes with given selectivity
 		//allfileSelectivityQuery(measToGenerateQueryFor,recordSelectivity,filenum);
-		selectivityQueryForMultipleMeas(measToGenerateQueryFor,recordSelectivity,filenum,queryFilePrefix,withAggregation);
+		selectivityQueryForMultipleMeas(measToGenerateQueryFor,recordSelectivity,filenum,queryFilePrefix,withAggregation,randomSeed);
 		
 		System.out.println(Debugger.getCallerPosition()+"Finish generating queries for atrselectivity="+attrSelectivity);
 	}

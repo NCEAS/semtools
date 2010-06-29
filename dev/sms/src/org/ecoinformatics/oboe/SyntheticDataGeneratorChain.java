@@ -60,13 +60,14 @@ public class SyntheticDataGeneratorChain {
 		
 		int totalFnum = Integer.parseInt(args[0]);
 		int numOfRows = Integer.parseInt(args[1]);
+		int randomSeed = 0;
 		
 		Map<String, Double> annotSpecFile2Ratio = setAnnotSpecFile();
 		Map<String, Integer> annotSpecFile2fnum = calFileNum(annotSpecFile2Ratio,totalFnum);
 		System.out.println(Debugger.getCallerPosition()+"annotSpecFile2fnum="+annotSpecFile2fnum);
 		
 		System.out.println("numOfRows="+numOfRows+"\n");
-		System.exit(0);
+		//System.exit(0);
 		// Generate data to satisfy the annotation specifications
 		try {
 			for(String annotSpecFname : annotSpecFile2fnum.keySet()){
@@ -85,7 +86,7 @@ public class SyntheticDataGeneratorChain {
 					boolean needWriteAnnotFile = false;
 					if(i==0) needWriteAnnotFile = true;
 					
-					DataGenerator.Generate(inAnnotSpecFileName,outAnnotSpecFileName, outDataSpecFileName, numOfRows,needWriteAnnotFile);
+					DataGenerator.Generate(inAnnotSpecFileName,outAnnotSpecFileName, outDataSpecFileName, numOfRows,needWriteAnnotFile,randomSeed);
 				}
 			}
 		} catch (FileNotFoundException e) {

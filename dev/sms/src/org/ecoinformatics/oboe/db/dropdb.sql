@@ -1,5 +1,5 @@
 DROP VIEW non_agg_meas_view;
-DROP TABLE ei_compress CASCADE;
+DROP TABLE oi_compress CASCADE;
 DROP TABLE context_instance CASCADE;
 DROP TABLE measurement_instance CASCADE;
 DROP TABLE observation_instance CASCADE;
