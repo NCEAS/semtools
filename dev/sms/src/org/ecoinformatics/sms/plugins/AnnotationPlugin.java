@@ -450,17 +450,15 @@ public class AnnotationPlugin
 	    }
 	    //searchtext.append("<owner>" + Morpho.thisStaticInstance.getUserName() + "</owner>\n");
 	    searchtext.append("<querygroup operator=\"INTERSECT\">\n");
-	    searchtext.append("<queryterm casesensitive=\"true\" ");
-	    searchtext.append("searchmode=\"contains\">\n");
-	    searchtext.append("<value>%</value>\n");
-	    searchtext.append("</queryterm>");
-	    if (forDocid != null) {
 		    searchtext.append("<queryterm casesensitive=\"true\" ");
 		    searchtext.append("searchmode=\"contains\">\n");
-		    searchtext.append("<value>" + forDocid + "</value>\n");
 			searchtext.append("<pathexpr>@emlPackage</pathexpr>\n");
+		    if (forDocid != null) {
+			    searchtext.append("<value>" + forDocid + "</value>\n");
+		    } else {
+			    searchtext.append("<value>%</value>\n");
+		    }
 		    searchtext.append("</queryterm>");
-	    }
 	    searchtext.append("</querygroup></pathquery>");
 	    return searchtext.toString();
 	  }
