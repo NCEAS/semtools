@@ -18,8 +18,8 @@ import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.ObservationComparator;
 import org.ecoinformatics.sms.annotation.Protocol;
-import org.ecoinformatics.sms.annotation.Relationship;
 import org.ecoinformatics.sms.annotation.Standard;
+import org.ecoinformatics.sms.ontology.OntologyClass;
 
 import com.mxgraph.layout.mxCircleLayout;
 import com.mxgraph.layout.mxCompactTreeLayout;
@@ -200,7 +200,7 @@ public class AnnotationGraph {
 			if (observation.getContexts() != null) {
 				for (Context context: observation.getContexts()) {
 					Observation targetObservation = context.getObservation();
-					Relationship relationship = context.getRelationship();
+					OntologyClass relationship = context.getRelationship();
 					Object targetObservationCell = observationMap.get(targetObservation);
 					// add the context from one observation node to the other observation node
 					Object edge = graph.insertEdge(parent, null, relationship, observationCell, targetObservationCell, observationEdgeStyle);

@@ -51,7 +51,6 @@ import org.ecoinformatics.sms.annotation.Entity;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
 import org.ecoinformatics.sms.annotation.Protocol;
-import org.ecoinformatics.sms.annotation.Relationship;
 import org.ecoinformatics.sms.annotation.Standard;
 import org.ecoinformatics.sms.annotation.Triple;
 import org.ecoinformatics.sms.annotation.persistent.DbAnnotation;
@@ -204,7 +203,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 			DbContext dbContext = context.newObject(DbContext.class);
 			
 			// the relationship
-			Relationship relationship = c.getRelationship();
+			OntologyClass relationship = c.getRelationship();
 			dbContext.setRelationship((relationship == null) ? null : relationship.getURI());
 
 			// the target observation

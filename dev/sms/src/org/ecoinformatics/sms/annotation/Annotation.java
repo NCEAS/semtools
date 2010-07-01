@@ -306,7 +306,7 @@ public class Annotation {
                   result.add(v);
          }
          for(Context x : o.getContexts()) {
-            Relationship r = x.getRelationship();
+            OntologyClass r = x.getRelationship();
             if(r != null && !result.contains(r))
                result.add(r);
          }

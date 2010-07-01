@@ -31,6 +31,8 @@
  */
 package org.ecoinformatics.sms.annotation;
 
+import org.ecoinformatics.sms.ontology.OntologyClass;
+
 /**
  * Objects of this class represent observation contexts
  */
@@ -47,7 +49,7 @@ public class Context implements Comparable<Context>{
      * @param rel the relationship
      * @param isIdentifying the identifying status
      */
-    public Context(Observation obs, Relationship rel, boolean isIdentifying) {
+    public Context(Observation obs, OntologyClass rel, boolean isIdentifying) {
         _observation = obs;
         _relationship = rel;
         _isIdentifying = isIdentifying;
@@ -73,7 +75,7 @@ public class Context implements Comparable<Context>{
      * Set the context relationship
      * @param relationship the relationship
      */
-    public void setRelationship(Relationship relationship) {
+    public void setRelationship(OntologyClass relationship) {
         _relationship = relationship;
     }
 
@@ -81,7 +83,7 @@ public class Context implements Comparable<Context>{
      * Get the context relationship
      * @return the relationship
      */
-    public Relationship getRelationship() {
+    public OntologyClass getRelationship() {
         return _relationship;
     }
 
@@ -130,7 +132,7 @@ public class Context implements Comparable<Context>{
     }
     
     private Observation _observation;
-    private Relationship _relationship;
+    private OntologyClass _relationship;
     private boolean _isIdentifying;
     
     /**

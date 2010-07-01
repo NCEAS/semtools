@@ -336,7 +336,7 @@ public class AnnotationReader {
     */
    private static void _parseRelationship(Context c, Element e)
            throws Exception {
-      Relationship relationship = new Relationship();
+	   OntologyClass relationship = new OntologyClass();
       // get the id attribute
       Attr att = _getAttribute(e, "id");
       if(att == null)

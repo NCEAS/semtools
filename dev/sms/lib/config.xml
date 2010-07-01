@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <config>
-  <version>1.8.1semtools7</version>
+  <version>1.8.1semtools8</version>
   <dataLocationInlineOnline>online</dataLocationInlineOnline>
   <plugin>edu.ucsb.nceas.morpho.query.QueryPlugin</plugin>
   <plugin>edu.ucsb.nceas.morpho.datapackage.DataPackagePlugin</plugin>
@@ -50,10 +50,13 @@
   	<classURI>http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Standard</classURI>
   	<className>org.ecoinformatics.sms.annotation.Protocol</className>
   	<classURI>http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Protocol</classURI>
-  	<className>org.ecoinformatics.sms.annotation.Relationship</className>
-  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0beta#Relationship</classURI>
   	<className>org.ecoinformatics.sms.annotation.Measurement</className>
   	<classURI>http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement</classURI>
+  	<className>org.ecoinformatics.sms.annotation.Context</className>
+  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0/oboe-context.owl#Context</classURI>
+  	<!-- Relationship can probably be removed -->
+  	<className>org.ecoinformatics.sms.annotation.Relationship</className>
+  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0beta#Relationship</classURI>
   </oboeClasses>
   <vocabularies>
   	<vocabulary>KNBRegistry</vocabulary>

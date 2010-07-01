@@ -36,6 +36,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Iterator;
 import org.ecoinformatics.sms.ontology.Ontology;
+import org.ecoinformatics.sms.ontology.OntologyClass;
 
 public class AnnotationWriter {
 
@@ -199,7 +200,7 @@ public class AnnotationWriter {
 		if (c.isIdentifying())
 			s.print(" identifying=\"yes\"");
 		s.print(">\n");
-		Relationship r = c.getRelationship();
+		OntologyClass r = c.getRelationship();
 		if (r != null && r.getOntology() != null)
 			s.print(_indent3 + "<sms:relationship id=\""
 					+ r.getOntology().getPrefix() + ":" + r.getName()

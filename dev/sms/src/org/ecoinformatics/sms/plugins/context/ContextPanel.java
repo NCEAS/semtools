@@ -41,13 +41,12 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.sms.annotation.Observation;
-import org.ecoinformatics.sms.annotation.Relationship;
+import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.ui.OntologyClassField;
 
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
@@ -72,7 +71,7 @@ public class ContextPanel extends JPanel {
 
 	private Context currentContext;
 	private Observation currentObservation;
-	private Relationship relationship;
+	private OntologyClass relationship;
 	private List<Observation> existingObservations;
 	
 	private JButton removeButton;
@@ -103,9 +102,9 @@ public class ContextPanel extends JPanel {
 
 		// relationship
 		contextRelationship = OntologyClassField.makeLabel("<relationship>", false, null);
-		contextRelationship.setFilterClass(Annotation.OBOE_CLASSES.get(Relationship.class));
+		contextRelationship.setFilterClass(Annotation.OBOE_CLASSES.get(Context.class)); // odd because this is not actually an OntologyClass subclass, but the mapping holds
 		WidgetFactory.setPrefMaxSizes(contextRelationship, WizardSettings.WIZARD_CONTENT_LABEL_DIMS);
-		contextPanel.add(OntologyClassField.wrapField(contextRelationship));
+		contextPanel.add(OntologyClassField.wrapField(contextRelationship, "Context Characteristic"));
 		
 		contextPanel.add(WidgetFactory.makeLabel(" the ", false, null));
 		
@@ -152,10 +151,10 @@ public class ContextPanel extends JPanel {
 		return (Observation) observationList.getSelectedItem();
 	}
 
-	public Relationship getRelationship() {
+	public OntologyClass getRelationship() {
 		try {
 			String uri = contextRelationship.getOntologyClass().getURI();
-			relationship = new Relationship(uri);
+			relationship = new OntologyClass(uri);
 		} catch (Exception e) {
 			relationship = null;
 		}

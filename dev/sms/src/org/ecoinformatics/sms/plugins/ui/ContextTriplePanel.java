@@ -29,12 +29,11 @@
 package org.ecoinformatics.sms.plugins.ui;
 
 import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.ecoinformatics.sms.annotation.Annotation;
+import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.sms.annotation.Entity;
-import org.ecoinformatics.sms.annotation.Relationship;
 import org.ecoinformatics.sms.annotation.Triple;
 
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
@@ -82,7 +81,7 @@ public class ContextTriplePanel extends JPanel {
 
 		// context
 		contextRelationship = OntologyClassField.makeLabel("", false, null);
-		contextRelationship.setFilterClass(Annotation.OBOE_CLASSES.get(Relationship.class));
+		contextRelationship.setFilterClass(Annotation.OBOE_CLASSES.get(Context.class));
 		contextPanel.add(OntologyClassField.wrapField(contextRelationship));
 		
 		contextPanel.add(WidgetFactory.makeLabel(" the ", false, null));

@@ -39,7 +39,7 @@ import javax.swing.JPanel;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.sms.annotation.Observation;
-import org.ecoinformatics.sms.annotation.Relationship;
+import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.ui.OntologyClassField;
 
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
@@ -72,7 +72,7 @@ public class AddContextPage extends AbstractUIPage {
 
 	private Context currentContext;
 	private Observation currentObservation;
-	private Relationship relationship;
+	private OntologyClass relationship;
 	private List<Observation> existingObservations;
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -175,7 +175,7 @@ public class AddContextPage extends AbstractUIPage {
 
 		// context
 		contextRelationship = OntologyClassField.makeLabel("<relationship>", false, null);
-		contextRelationship.setFilterClass(Annotation.OBOE_CLASSES.get(Relationship.class));
+		contextRelationship.setFilterClass(Annotation.OBOE_CLASSES.get(Context.class));
 		contextPanel.add(contextRelationship);
 		
 		contextPanel.add(WidgetFactory.makeLabel(" the ", false, null));
@@ -318,10 +318,10 @@ public class AddContextPage extends AbstractUIPage {
 		return (Observation) observationList.getSelectedItem();
 	}
 
-	public Relationship getRelationship() {
+	public OntologyClass getRelationship() {
 		try {
 			String uri = contextRelationship.getOntologyClass().getURI();
-			relationship = new Relationship(uri);
+			relationship = new OntologyClass(uri);
 		} catch (Exception e) {
 			relationship = null;
 		}
