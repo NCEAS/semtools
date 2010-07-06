@@ -39,7 +39,7 @@ public class OwlApiOntologyManager implements OntologyManager {
 	
 	public static Log log = LogFactory.getLog(OwlApiOntologyManager.class);
 	
-	private static OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+	protected static OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 
 	/* (non-Javadoc)
 	 * @see org.ecoinformatics.sms.OntologyManager#getDomain(org.ecoinformatics.sms.ontology.OntologyProperty)
@@ -70,7 +70,7 @@ public class OwlApiOntologyManager implements OntologyManager {
 	 * @param name
 	 * @return
 	 */
-	private OWLClass getOWLClass(OntologyClass ontologyClass) {
+	protected OWLClass getOWLClass(OntologyClass ontologyClass) {
 		String classURI = ontologyClass.getURI();
 		try {
 			OWLOntology ontology = manager.getOntology(IRI.create(ontologyClass.getOntology().getURI()));
@@ -284,11 +284,13 @@ public class OwlApiOntologyManager implements OntologyManager {
 		return classes;
 	}
 	
-	public List<OntologyClass> getNamedClassesForPropertyRestriction(OntologyProperty p, OntologyClass c) {
+	public List<OntologyClass> getNamedClassesForPropertyRestriction(List<OntologyProperty> properties, OntologyClass c) {
 		List<OntologyClass> classes = new ArrayList<OntologyClass>();
 
 		OWLClass restrictedClass = getOWLClass(c);
 		OWLOntology ontology = manager.getOntology(IRI.create(c.getOntology().getURI()));
+		// get the first one
+		OntologyProperty p = properties.get(0);
         OWLObjectProperty property = manager.getOWLDataFactory().getOWLObjectProperty(IRI.create(p.getURI()));
         
 		RestrictionVisitor visitor = new RestrictionVisitor(restrictedClass, ontology);

@@ -49,7 +49,8 @@ public class SMS {
     */ 
    
 	public static final String DEFAULT_ONTOLOGY_MANAGER_CLASS = "org.ecoinformatics.sms.ontology.DefaultOntologyManager";
-	public static final String OWL_ONTOLOGY_MANAGER_CLASS = "org.ecoinformatics.sms.owlapi.OwlApiOntologyManager";
+	//public static final String OWL_ONTOLOGY_MANAGER_CLASS = "org.ecoinformatics.sms.owlapi.OwlApiOntologyManager";
+	public static final String OWL_ONTOLOGY_MANAGER_CLASS = "org.ecoinformatics.sms.owlapi.ReasoningOntologyManager";
 
     private AnnotationManager _annotationManager;
     private OntologyManager _ontologyManager;

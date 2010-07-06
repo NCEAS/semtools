@@ -74,27 +74,34 @@ public class Measurement implements Comparable<Measurement>{
 	   Ontology oboeOntology = measurementSuperclass.getOntology();
 	   
 		OntologyProperty property = null;
+		List<OntologyProperty> properties = new ArrayList<OntologyProperty>();
 		List<OntologyClass> classes = null;
 		
 		if (clazz.equals(Entity.class)) {
 			// get the entity
 			property = new OntologyObjectProperty(oboeOntology, "measurementFor");
-			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+			properties.add(property);
+			property = new OntologyObjectProperty(oboeOntology, "ofEntity");
+			properties.add(property);
+			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(properties, measurement);
 		}
 		if (clazz.equals(Characteristic.class)) {
 			// get the characteristic
 			property = new OntologyObjectProperty(oboeOntology, "ofCharacteristic");
-			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+			properties.add(property);
+			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(properties, measurement);
 		}
 		if (clazz.equals(Standard.class)) {
 			// get the standard
 			property = new OntologyObjectProperty(oboeOntology, "usesStandard");
-			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+			properties.add(property);
+			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(properties, measurement);
 		}
 		if (clazz.equals(Protocol.class)) {
 			// get the protocol
 			property = new OntologyObjectProperty(oboeOntology, "usesProtocol");
-			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(property, measurement);
+			properties.add(property);
+			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(properties, measurement);
 		}
 		
 		return classes;

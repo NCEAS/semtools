@@ -478,7 +478,7 @@ public class DefaultOntologyManager implements OntologyManager {
     }
 
 	public List<OntologyClass> getNamedClassesForPropertyRestriction(
-			OntologyProperty p, OntologyClass c) {
+			List<OntologyProperty> p, OntologyClass c) {
 		// TODO Auto-generated method stub
 		return null;
 	}
