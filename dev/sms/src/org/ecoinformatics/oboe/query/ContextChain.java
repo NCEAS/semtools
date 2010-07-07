@@ -242,7 +242,7 @@ public class ContextChain {
 			sqlReturn +=", record_id";
 		}
 				
-		sqlReturn +=" FROM ("+sql+") as cctmp;";
+		sqlReturn +=" FROM "+sql+" as cctmp";
 			
 		System.out.println(Debugger.getCallerPosition()+"======sqlReturn====\n"+sqlReturn+"\n");
 		return sqlReturn;

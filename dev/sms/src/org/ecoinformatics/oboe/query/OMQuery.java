@@ -557,6 +557,7 @@ public class OMQuery {
 			MDB mdb,boolean resultWithRecord) throws Exception
 	{
 		String sql = formHolisticSqlMDB(contextQueryDNF,DNFNonAggregate,mdb,resultWithRecord);
+		System.out.println(Debugger.getCallerPosition()+"sql="+sql);
 		Set<OboeQueryResult> result = mdb.executeSQL(sql,resultWithRecord);
 		
 		return result;
@@ -575,19 +576,22 @@ public class OMQuery {
 		throws Exception
 	{
 		Set<OboeQueryResult> queryResultSet = null;
-		if(queryStrategy == Constant.QUERY_REWRITE){
+		if(queryStrategy == Constant.QUERY_REWRITE){//1
 			RawDB rawdb = new RawDB(dbname);
 			queryResultSet = executeD(rawdb,resultWithRecord);
-		}else if(queryStrategy == Constant.QUERY_REWRITE_HOLISTIC){
+		}else if(queryStrategy == Constant.QUERY_REWRITE_HOLISTIC){//11
 			RawDB rawdb = new RawDB(dbname);
 			queryResultSet = executeH(rawdb,resultWithRecord);
 		}else if((queryStrategy >= Constant.QUERY_MATERIALIZED_DB_MIN_STRATEGY 
-				&& queryStrategy<=Constant.QUERY_MATERIALIZED_DB_MAX_STRATEGY)||
-				(queryStrategy >= Constant.QUERY_MATERIALIZED_DB_MIN_STRATEGY2
-					&& queryStrategy<=Constant.QUERY_MATERIALIZED_DB_MAX_STRATEGY2)){
+				&& queryStrategy<=Constant.QUERY_MATERIALIZED_DB_MAX_STRATEGY)){//2,3,4,5
 			MDB materializedDB = new MDB(dbname);
 			materializedDB.setQueryStrategy(queryStrategy);
-			queryResultSet = executeD(materializedDB,resultWithRecord);			
+			queryResultSet = executeD(materializedDB,resultWithRecord);
+		}else if((queryStrategy >= Constant.QUERY_MATERIALIZED_DB_MIN_STRATEGY2
+					&& queryStrategy<=Constant.QUERY_MATERIALIZED_DB_MAX_STRATEGY2)){//12,13,14,15
+			MDB materializedDB = new MDB(dbname);
+			materializedDB.setQueryStrategy(queryStrategy);
+			queryResultSet = executeH(materializedDB,resultWithRecord);
 		}else{
 			System.out.println(Debugger.getCallerPosition() + " Wrong query strategy...");
 			System.exit(0);

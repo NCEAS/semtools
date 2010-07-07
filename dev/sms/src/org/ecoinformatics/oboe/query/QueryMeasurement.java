@@ -161,7 +161,8 @@ public class QueryMeasurement {
 	 */
 	public String formSQLNonAggCondOverMDBView(MDB mdb, String entityNameCond, NonAggSubQueryReturn returnStru) throws Exception
 	{
-		String sql= "SELECT DISTINCT did";
+		//String sql= "SELECT DISTINCT did";
+		String sql= "SELECT did";
 		if(returnStru.m_include_record_id) sql +=",record_id";
 		if(returnStru.m_include_oid) sql +=	",oid";
 		if(returnStru.m_include_mvalue&&(valueCond!=null&&valueCond.trim().length()>0)) 

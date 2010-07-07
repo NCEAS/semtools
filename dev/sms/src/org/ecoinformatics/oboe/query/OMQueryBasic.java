@@ -185,8 +185,6 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 			String tmpSql ="";
 			if(db instanceof MDB){
 				tmpSql = formSQLOneCNFContext((MDB)db,resultWithRecord, measAND, targetSql);
-			//}else if(db instanceof RawDB){
-				;//sql = formSQLOneCNF((RawDB)db,resultWithRecord, measAND);
 			}else{
 				System.out.println(Debugger.getCallerPosition()+"Not implemented yet.");
 			}
