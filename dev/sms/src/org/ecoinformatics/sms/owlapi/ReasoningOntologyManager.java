@@ -6,6 +6,7 @@ package org.ecoinformatics.sms.owlapi;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Executors;
 
 import org.ecoinformatics.sms.OntologyManager;
 import org.ecoinformatics.sms.ontology.OntologyClass;
@@ -92,7 +93,12 @@ public class ReasoningOntologyManager extends OwlApiOntologyManager {
 			ConsoleProgressMonitor progressMonitor = new ConsoleProgressMonitor();
             OWLReasonerConfiguration config = new SimpleConfiguration(progressMonitor);
 	        reasoner = PelletReasonerFactory.getInstance().createReasoner(ontology, config);
-	        reasoner.prepareReasoner();
+	        // run the reasoning in a new thread - can take a while
+	        Executors.newSingleThreadExecutor().execute(new Runnable() {
+				public void run() {
+					reasoner.prepareReasoner();
+				}
+	        });
         }
 	}
 	
