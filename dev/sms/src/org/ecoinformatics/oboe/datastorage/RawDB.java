@@ -24,7 +24,7 @@ import org.ecoinformatics.oboe.util.Pair;
 
 public class RawDB extends PostgresDB{
 	
-	public String TB_PREFIX = "tb";
+	public static String TB_PREFIX = "tb";
 	
 	public RawDB(String dbname){
 		super.setDb(dbname);		
@@ -335,20 +335,20 @@ public class RawDB extends PostgresDB{
 			Map<Long, List<Pair<QueryMeasurement,String>>> oneTb2Attribute = retrieveOneTbAttribute(cha,cha2qm.get(cha));
 			tmpTbAttribute.putAll(oneTb2Attribute);
 		}
-		System.out.println(Debugger.getCallerPosition()+"tmpTbAttribute=\n"+tmpTbAttribute);
+		//System.out.println(Debugger.getCallerPosition()+"tmpTbAttribute=\n"+tmpTbAttribute);
 		
 		//get only the table ids which has all these characteristics since they are in AND logic 
 		Map<Long, List<Pair<QueryMeasurement,String> >> tbAttribute = new TreeMap<Long, List<Pair<QueryMeasurement,String> >>();
 		for(Map.Entry<Long, List<Pair<QueryMeasurement,String> >> entry: tmpTbAttribute.entrySet()){
 			//each data table need to have all these characteristics since they are in AND logic 
-			System.out.println(Debugger.getCallerPosition()+"entry.getValue().size()="+entry.getValue().size()+",cha2qm.size()="+cha2qm.size()+":"+cha2qm);
+			//System.out.println(Debugger.getCallerPosition()+"entry.getValue().size()="+entry.getValue().size()+",cha2qm.size()="+cha2qm.size()+":"+cha2qm);
 			
 			if(entry.getValue().size()>=cha2qm.size()){
 				tbAttribute.put(entry.getKey(), entry.getValue());
 			}
 		}
 		
-		System.out.println(Debugger.getCallerPosition()+"tbAttribute=\n"+tbAttribute);
+		//System.out.println(Debugger.getCallerPosition()+"tbAttribute=\n"+tbAttribute);
 		return tbAttribute;
 	}
 	

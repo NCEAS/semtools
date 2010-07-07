@@ -347,15 +347,15 @@ public class QueryMeasurement {
 	
 	/**
 	 * Execute aggregation query in the raw db
-	 * 
+	 * TODO: check the consistency with the description in the paper
 	 * @param rawdb
 	 * @param resultWithRecord
 	 * @param annotId2KeyAttrList
 	 * @return
 	 * @throws Exception
 	 */
-	public Set<OboeQueryResult> executeAggQueryRawDB(RawDB rawdb, boolean resultWithRecord, Map<Long, 
-			List<String>>  annotId2KeyAttrList,
+	public Set<OboeQueryResult> executeAggQueryRawDB(RawDB rawdb, boolean resultWithRecord, 
+			Map<Long, List<String>>  annotId2KeyAttrList,
 			Map<Long, String> tbid2nonAggWhereclasue) throws Exception
 	{
 		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();

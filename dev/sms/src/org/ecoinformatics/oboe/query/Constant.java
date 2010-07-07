@@ -34,6 +34,7 @@ public class Constant {
 	public static int QUERY_MATERIALIZED_DB_MIN_STRATEGY = 2;
 	public static int QUERY_MATERIALIZED_DB_MAX_STRATEGY = 5;
 	
+	public static int QUERY_REWRITE_HOLISTIC = 11;
 	public static int QUERY_MATERIALIZED_DB_MIN_STRATEGY2 = 12;
 	public static int QUERY_MATERIALIZED_DB_MAX_STRATEGY2 = 15;
 	//public static int QUERY_PARTIAL_MATERIALIZED_DB = 3;

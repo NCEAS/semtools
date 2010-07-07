@@ -1,5 +1,6 @@
 package org.ecoinformatics.oboe.query;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -11,8 +12,7 @@ import org.ecoinformatics.oboe.datastorage.*;
 import org.ecoinformatics.oboe.util.Debugger;
 
 public class ContextChain {
-	Map<OMQueryBasic, List<OMQueryBasic> > m_queryChain; //shall I use set or list or map, TODO
-	//<OMQueryBasic, OMQueryBasic> m_queryChain; //shall I use set or list or map, TODO
+	Map<OMQueryBasic, List<OMQueryBasic> > m_queryChain; 
 	
 	public ContextChain()
 	{
@@ -179,6 +179,25 @@ public class ContextChain {
 //		return result;
 //	}
 	
+	
+	public String formHolisticNonAggSQL(MDB db,boolean resultWithRecord) throws Exception
+	{
+		String sql = "";
+		for(Map.Entry<OMQueryBasic, List<OMQueryBasic> > entry: m_queryChain.entrySet()){
+			OMQueryBasic targetQuery = entry.getKey();
+			List<OMQueryBasic> context = entry.getValue(); 
+			System.out.println(Debugger.getCallerPosition()+"targetQuery="+targetQuery+"context="+context);
+			
+			//deal with mdb 12,13,14,15
+			String sql1 = formSQL(targetQuery,context,db,resultWithRecord);
+			if(sql.length()==0)
+				sql += "("+ sql1 + ")";
+			else
+				sql += " INTERSECT ("+sql1+")";
+		}
+		return sql;
+				
+	}
 	/**
 	 * form the sql to perfom a context query
 	 * return (did, record_id, eid, oid)
@@ -239,7 +258,7 @@ public class ContextChain {
 	 * @return
 	 * @throws Exception 
 	 */
-	public Set<OboeQueryResult> execute(PostgresDB db, boolean resultWithRecord) 
+	public Set<OboeQueryResult> execute1(PostgresDB db, boolean resultWithRecord) 
 		throws Exception
 	{
 		
@@ -302,8 +321,75 @@ public class ContextChain {
 					}
 				}
 			}
+		}
+		
+		System.out.println(Debugger.getCallerPosition()+"Context chain result size="+result.size()+"\n******\n");
+		return result;
+	}
+	
+	public Set<OboeQueryResult> execute(PostgresDB db, boolean resultWithRecord) 
+		throws Exception
+	{
+		
+		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
+		
+		//The results need to be intersect-ed
+		boolean first = true;
+		
+		//mdb2-mdb12, mdb3-mdb13, mdb4-mdb14, mdb5-mdb15
+		//boolean useOneSQL = false;
+		//if(db instanceof MDB){
+		//	int queryStrategy = ((MDB)db).getQueryStrategy();
+		//	if(queryStrategy>10){
+		//		useOneSQL = true;
+		//	}
+		//}
 			
+		//For each basic query in the context chain
+		for(Map.Entry<OMQueryBasic, List<OMQueryBasic> > entry: m_queryChain.entrySet()){
+			OMQueryBasic targetQuery = entry.getKey();
+			List<OMQueryBasic> context = entry.getValue(); 
+			System.out.println(Debugger.getCallerPosition()+"targetQuery="+targetQuery+"context="+context);
 			
+			//deal with mdb 12,13,14,15
+			//if(context!=null&&useOneSQL){
+				//form one sql and run the query
+				//form the sql for the query, and execute the query
+			//	String sql = formSQL(targetQuery,context,db,resultWithRecord);
+			//	Set<OboeQueryResult> oneBasicQueryResult = db.executeSQL(sql,resultWithRecord);
+			//	System.out.println(Debugger.getCallerPosition()+"oneBasicQueryResult="+oneBasicQueryResult);
+				
+				//add results
+			//	if(!first){
+			//		result.retainAll(oneBasicQueryResult);
+			//	}else{
+			//		result.addAll(oneBasicQueryResult);
+			//		first = false;
+			//	}
+			//}else{
+				//run each query and intersect their results
+				
+				//perform the basic target query
+				Set<OboeQueryResult> oneBasicQueryResult = targetQuery.execute(db,resultWithRecord);
+				if(!first){
+					result.retainAll(oneBasicQueryResult);
+				}else{
+					result.addAll(oneBasicQueryResult);
+					first = false;
+				}
+				
+				//System.out.println(Debugger.getCallerPosition()+"++++[1]result="+result);
+				//perform the target query's context
+				if(context!=null&&oneBasicQueryResult.size()>0){
+					for(OMQueryBasic basic: context){
+						Set<OboeQueryResult> contextQueryResult = basic.execute(db, resultWithRecord);
+						
+						//intersect the result from the basic query and its context query
+						result.retainAll(contextQueryResult);
+						//System.out.println(Debugger.getCallerPosition()+"++++[2]result="+result);
+					}
+				}
+			//}
 		}
 		
 		System.out.println(Debugger.getCallerPosition()+"Context chain result size="+result.size()+"\n******\n");
@@ -328,4 +414,78 @@ public class ContextChain {
 		return chainQuerySet;
 	}
 	
+	
+	/**
+	 * if any basic query structure contains an aggregation condition, return true
+	 * else, return false
+	 * 
+	 * @return
+	 */
+	public boolean containsAggregate()
+	{
+		for(Map.Entry<OMQueryBasic, List<OMQueryBasic>> entry: m_queryChain.entrySet()){
+			OMQueryBasic key = entry.getKey();
+			List<OMQueryBasic> context = entry.getValue();
+			
+			if(key.containsAggregate()){
+				return true;
+			}
+			
+			if(context!=null){
+				for(int i=0;i<context.size();i++){
+					if(context.get(i).containsAggregate()){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * @throws SQLException 
+	 * 
+	 */
+	public Map<Long, String> formNonAggCNFWhereSQL(RawDB rawdb) 
+		throws SQLException
+	{
+		List oneChainWhereClause = new ArrayList();
+		Set<Long> commonTid = new TreeSet<Long>();
+		Set<OMQueryBasic> checkedOMQueryBasic = new TreeSet<OMQueryBasic>();
+		boolean first = true;
+		
+		//for each condition, get the where clause
+		for(Map.Entry<OMQueryBasic, List<OMQueryBasic>> entry: m_queryChain.entrySet()){
+			OMQueryBasic keyquery = entry.getKey();
+			List<OMQueryBasic> context = entry.getValue();
+			
+			if(!checkedOMQueryBasic.contains(keyquery)){
+				Map<Long, String> keyqueryWhereClause = keyquery.getWhereClause(rawdb);
+				
+				oneChainWhereClause.add(keyqueryWhereClause);
+				if(first){
+					commonTid.addAll(keyqueryWhereClause.keySet());
+					first = false;
+				}else{
+					commonTid.retainAll(keyqueryWhereClause.keySet());
+				}
+			}
+			
+			if(context!=null){
+				for(int i=0;i<context.size();i++){
+					OMQueryBasic contextQuery = context.get(i);
+					if(!checkedOMQueryBasic.contains(contextQuery)){
+						Map<Long, String> contextqueryWhereClause = contextQuery.getWhereClause(rawdb);
+						oneChainWhereClause.add(contextqueryWhereClause);
+						commonTid.retainAll(contextqueryWhereClause.keySet());
+					}
+				}
+			}
+		}
+		
+		//merge the where clause for different tables
+		Map<Long, String> tbid2nonAggWhereClause = OMQuery.MergeRDBWhere(oneChainWhereClause, commonTid, "AND");
+		
+		return tbid2nonAggWhereClause;
+	}
 }

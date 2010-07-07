@@ -123,6 +123,9 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 //		
 //	}
 	
+	
+	
+	
 	/**
 	 * For one whole SQL statement for a query.
 	 * Return (did, record_id,eid,oid)
@@ -484,6 +487,41 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 	
 	
 	/**
+	 * get the where clause conditions (no where keyword) for this OM query basic
+	 * @param rawdb
+	 * @return
+	 * @throws SQLException
+	 */
+	public Map<Long, String> getWhereClause(RawDB rawdb) throws SQLException
+	{
+		
+		List oneBasicQueryDNFWhereClause = new ArrayList();
+		Set<Long> commonTid = new TreeSet<Long>();
+		boolean first = true; 
+		
+		for(int dnfno: this.m_queryMeasDNF.keySet()){
+			List<QueryMeasurement> nonAggMeasAnd = m_queryMeasDNF.get(dnfno);
+			Map<Long, List<Pair<QueryMeasurement,String>> > tb2Attribute = new TreeMap<Long, List<Pair<QueryMeasurement,String> >>(); 
+			Map<Long, String> tbid2nonAggWhereclasue = formNonAggCNFWhereSQL(rawdb,nonAggMeasAnd,tb2Attribute);
+			
+			oneBasicQueryDNFWhereClause.add(tbid2nonAggWhereclasue);
+			
+			if(first){
+				commonTid.addAll(tbid2nonAggWhereclasue.keySet());
+				first = false;
+			}else{
+				commonTid.retainAll(tbid2nonAggWhereclasue.keySet());
+			}
+		}
+		
+		
+		//merge the where clause for different tables
+		Map<Long, String> tbid2nonAggWhereClause = OMQuery.MergeRDBWhere(oneBasicQueryDNFWhereClause, commonTid, "OR");
+		
+		return tbid2nonAggWhereClause;
+	}
+	
+	/**
 	 * For one DNF, using AND connect the conditions
 	 * 
 	 * @param rawdb
@@ -587,7 +625,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 				sql +=", record_id ";
 			}
 			sql += " FROM " + rawdb.TB_PREFIX+tbId;
-			String whereSql = formNonAggCNFWhereSQLsub(chaAttributeNamePairList);
+			String whereSql = " WHERE "+formNonAggCNFWhereSQLsub(chaAttributeNamePairList);
 			sql +=whereSql;
 			
 			sql += ";";
@@ -613,7 +651,7 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 	 * @throws SQLException
 	 */
 	private Map<Long, String> formNonAggCNFWhereSQL(RawDB rawdb, List<QueryMeasurement> nonAggMeasAND,
-			Map<Long, List<Pair<QueryMeasurement,String>> > tb2Attribute) 
+			Map<Long, List<Pair<QueryMeasurement,String>> > outtb2Attribute) 
 		throws SQLException
 	{
 		Map<Long, String> tbid2nonAggWhereclasue = new HashMap<Long, String>();
@@ -626,10 +664,10 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 			}
 		}
 		Map<Long, List<Pair<QueryMeasurement,String>> > tmptb2Attribute = rawdb.retrieveTbAttribute(cha2qm);
-		tb2Attribute.putAll(tmptb2Attribute);
+		outtb2Attribute.putAll(tmptb2Attribute);
 		
 		//2. form SQL and execute query, the results should be unioned since they come from data table		
-		for(Map.Entry<Long, List<Pair<QueryMeasurement,String> >> entry: tb2Attribute.entrySet()){
+		for(Map.Entry<Long, List<Pair<QueryMeasurement,String> >> entry: outtb2Attribute.entrySet()){
 			Long tbId = entry.getKey();
 			//pair is <queryMeasurement,attribute name>
 			List<Pair<QueryMeasurement,String>> chaAttributeNamePairList= entry.getValue();
@@ -647,16 +685,17 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 	 * @param chaAttributeNamePairList, pair is <characteristic,attribute name>
 	 * @return
 	 */
-	private static String formNonAggCNFWhereSQLsub(//Map<String, QueryMeasurement> cha2qm,
+	private static String formNonAggCNFWhereSQLsub(
 			List<Pair<QueryMeasurement,String>> chaAttributeNamePairList)
 	{
 		String sql="";
 		if(chaAttributeNamePairList!=null&&chaAttributeNamePairList.size()>0){
 	
-			sql +=" WHERE (";
+			//sql +=" WHERE (";
+			sql +=" (";
 			for(int i=0;i<chaAttributeNamePairList.size();i++){
 				Pair<QueryMeasurement,String> pair = chaAttributeNamePairList.get(i);
-				QueryMeasurement qm = pair.getFirst();//cha2qm.get(pair.getFirst());
+				QueryMeasurement qm = pair.getFirst();
 				String valueCond = qm.getValueCond();
 				if(i>0){
 					sql +=" AND ";
@@ -696,6 +735,27 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		queryString +=Constant.BASIC_QUERY_END+"\n";
 		
 		return queryString;
+	}
+	
+
+	
+	/**
+	 * if any query measurement contains an aggregation condition, return true
+	 * else, return false
+	 * @return
+	 */
+	public boolean containsAggregate()
+	{
+		for(int dnfno: this.m_queryMeasDNF.keySet()){
+			List<QueryMeasurement> qmlist = m_queryMeasDNF.get(dnfno);
+			for(int qmno = 0; qmno< qmlist.size();qmno++){
+				QueryMeasurement qm = qmlist.get(qmno);
+				if(qm.getAggregationCond()!=null&&(qm.getAggregationCond().trim().length()>0)){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	

@@ -8,6 +8,7 @@ import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import org.ecoinformatics.oboe.model.*;
 import org.ecoinformatics.oboe.syntheticdataquery.AnnotationSpecifier;
 import org.ecoinformatics.oboe.syntheticdataquery.DataStatistics;
 import org.ecoinformatics.oboe.util.Debugger;
+import org.ecoinformatics.oboe.util.Pair;
 
 //Example queries: 
 
@@ -202,14 +204,14 @@ public class OMQuery {
 	 * 
 	 * @return
 	 */
-	public List<ContextChain> getContextChains()
+	public List<ContextChain> getDNF()
 	{
 		List<ContextChain> resultContextChain = new ArrayList<ContextChain>();
 		
 		Set<Entry<String, List<String> >> entrySet = m_queryContext.entrySet();
 		Set<String> basicQueryInContext = new HashSet<String>();
 		
-		//1.1 grouping the basic queries
+		//1.1 grouping the basic queries in contexts
 		List<Set<String> > tmpBasicQueryGroup = new ArrayList<Set<String> >();
 		for(Entry<String, List<String> > entry: entrySet){
 			insertBasicQuery(tmpBasicQueryGroup,entry);
@@ -233,12 +235,12 @@ public class OMQuery {
 			resultContextChain.add(newChain);
 		}
 		
-		//2. insert the basic queries that are not in the context to a separate set
+		//2. insert the basic queries that are not in the context to a separate set, LOGIC AND
+		ContextChain newChain = new ContextChain();
+		resultContextChain.add(newChain);
 		for(OMQueryBasic query: m_query){
 			if(!basicQueryInContext.contains(query.getQueryLabel())){
-				ContextChain newChain = new ContextChain();
 				newChain.addGroup(query);//add this query as a single group
-				resultContextChain.add(newChain);
 			}
 		}
 		
@@ -329,7 +331,7 @@ public class OMQuery {
 	 * @return
 	 * @throws Exception
 	 */
-	private Set<OboeQueryResult> execute(PostgresDB db, boolean resultWithRecord) 
+	private Set<OboeQueryResult> executeD(PostgresDB db, boolean resultWithRecord) 
 		throws Exception
 	{
 		Set<OboeQueryResult> resultSet = new TreeSet<OboeQueryResult>();
@@ -338,10 +340,77 @@ public class OMQuery {
 		db.open();
 		
 		//The results of each context query should be union-ed
-		List<ContextChain> contextQueryDNF = getContextChains();
+		List<ContextChain> contextQueryDNF = getDNF();
 		System.out.println(Debugger.getCallerPosition()+"contextQueryDNF = "+contextQueryDNF);
 		for(int i=0;i<contextQueryDNF.size(); i++){
 			ContextChain oneContextQuery = contextQueryDNF.get(i);
+			
+			System.out.println(Debugger.getCallerPosition()+"["+(i+1)+"/"+contextQueryDNF.size()+"] contextQuery:"+oneContextQuery);
+			
+			//Perform one context query
+			long t1 = System.currentTimeMillis();
+			Set<OboeQueryResult> oneDNFqueryResultSet = oneContextQuery.execute(db, resultWithRecord);
+			if(oneDNFqueryResultSet!=null){ //the results are unioned
+				resultSet.addAll(oneDNFqueryResultSet);
+			}
+			long t2 = System.currentTimeMillis();
+			
+			System.out.println(Debugger.getCallerPosition()+"OMQuery DNF "+i+",oneDNFqueryResultSet size="+oneDNFqueryResultSet.size());
+			if(oneDNFqueryResultSet.size()<20){//test purpose
+				System.out.println(Debugger.getCallerPosition()+"Result: "+oneDNFqueryResultSet);
+			}
+			System.out.println(Debugger.getCallerPosition()+"Time used (Query): "+ (t2-t1) +" ms" +" = "+ ((t2-t1)/1000) +"s\n-----------\n");
+		}
+		
+		System.out.println(Debugger.getCallerPosition()+"OMQuery result size="+resultSet.size());
+		//close database connection
+		db.close();
+		
+		return resultSet;		
+	}
+	
+	
+	/**
+	 * Execute query in a holistic manner (i.e., non-aggregate queries are combined together to form one sql) 
+	 * @param db
+	 * @param resultWithRecord
+	 * @return
+	 * @throws Exception
+	 */
+	private Set<OboeQueryResult> executeH(PostgresDB db, boolean resultWithRecord) 
+		throws Exception
+	{
+		Set<OboeQueryResult> resultSet = new TreeSet<OboeQueryResult>();
+		
+		//1. open database connection
+		db.open();
+		
+		//The results of each context query should be union-ed
+		List<ContextChain> contextQueryDNF = getDNF();
+		System.out.println(Debugger.getCallerPosition()+"contextQueryDNF = "+contextQueryDNF);
+		
+		List<Integer> DNFWithAggregate = new ArrayList<Integer>();
+		List<Integer> DNFNonAggregate = new ArrayList<Integer>();
+		partitionDNFAggregation(contextQueryDNF, DNFWithAggregate,DNFNonAggregate);
+		System.out.println(Debugger.getCallerPosition()+"DNFWithAggregate = "+DNFWithAggregate);
+		System.out.println(Debugger.getCallerPosition()+"DNFNonAggregate = "+DNFNonAggregate);
+		
+		//2. Execute non-aggregate query
+		
+		Set<OboeQueryResult> nonaggDNFqueryResultSet = new TreeSet<OboeQueryResult>();
+		if(db instanceof RawDB){
+			nonaggDNFqueryResultSet = exeHolisticSqlRawDb(contextQueryDNF,DNFNonAggregate,(RawDB)db,resultWithRecord);
+		}else{
+			nonaggDNFqueryResultSet = exeHolisticSqlMDB(contextQueryDNF,DNFNonAggregate,(MDB)db,resultWithRecord);
+			//nonaggDNFqueryResultSet = db.executeSQL(sql,resultWithRecord);
+		}
+		System.out.println(Debugger.getCallerPosition()+"nonaggDNFqueryResultSet="+nonaggDNFqueryResultSet);
+		resultSet.addAll(nonaggDNFqueryResultSet);
+		
+		//3. Execute aggregate query
+		for(int i=0;i<DNFWithAggregate.size(); i++){
+			int dnfno = DNFWithAggregate.get(i);
+			ContextChain oneContextQuery = contextQueryDNF.get(dnfno);
 			
 			System.out.println(Debugger.getCallerPosition()+"["+(i+1)+"/"+contextQueryDNF.size()+"] contextQuery:"+oneContextQuery);
 			
@@ -368,6 +437,134 @@ public class OMQuery {
 	}
 	
 	/**
+	 * Partition the DNFs to two groups
+	 * one group has some aggregation condition in the basic query
+	 * the second group does not contain any aggregation condition in the basic query.
+	 * @param contextQueryDNF
+	 * @param DNFWithAggregate
+	 * @param DNFNonAggregate
+	 * @return
+	 */
+	private void partitionDNFAggregation(List<ContextChain> contextQueryDNF,
+			final List<Integer> DNFWithAggregate,
+			final List<Integer> DNFNonAggregate)
+	{
+		for(int i=0;i<contextQueryDNF.size(); i++){
+			ContextChain oneContextQuery = contextQueryDNF.get(i);
+			if(oneContextQuery.containsAggregate()){
+				DNFWithAggregate.add(i);
+			}else{
+				DNFNonAggregate.add(i);
+			}
+		}
+	}
+	
+	
+	public static Map<Long, String> MergeRDBWhere(List whereClauseList, Set<Long> commonTid, String logic)
+	{
+		Map<Long, String> tbid2nonAggWhereClause = new TreeMap<Long, String>();
+		
+		for(Long tbid: commonTid){
+			String sql = "(";
+			for(int i=0;i<whereClauseList.size();i++){
+				Map<Long, String> onequeryWhereClause = (Map<Long, String>)whereClauseList.get(i);
+				if(i==0)
+					sql += onequeryWhereClause.get(tbid);
+				else
+					sql += " "+logic+" " + onequeryWhereClause.get(tbid);
+			}
+			sql += ")";
+			
+			tbid2nonAggWhereClause.put(tbid,sql);
+		}
+		
+		return tbid2nonAggWhereClause;
+	}
+	
+	private Set<OboeQueryResult> exeHolisticSqlRawDb(List<ContextChain> contextQueryDNF,
+			List<Integer> DNFNonAggregate,
+			RawDB rawdb,boolean resultWithRecord) throws Exception
+	{
+		
+		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
+		
+		//List<Integer> candidteDids = new ArrayList<Integer>();
+		List DNFWhereClause = new ArrayList();
+		Set<Long> commonTid = new TreeSet<Long>();
+		
+		//1. Form where clause
+		for(int i=0;i<DNFNonAggregate.size();i++){
+			int dnfno = DNFNonAggregate.get(i);
+			ContextChain oneContextQuery = contextQueryDNF.get(dnfno);
+			
+			Map<Long, String> OnetbidnonAggWhereClause = oneContextQuery.formNonAggCNFWhereSQL(rawdb);
+			DNFWhereClause.add(OnetbidnonAggWhereClause);
+			
+			if(i==0){
+				commonTid.addAll(OnetbidnonAggWhereClause.keySet());
+			}else{
+				commonTid.retainAll(OnetbidnonAggWhereClause.keySet());
+			}
+		}
+		Map<Long, String> tbidnonAggWhereClause = MergeRDBWhere(DNFWhereClause,commonTid, "OR");
+		
+		//2. execute the Holistic sql on each data table
+		for(Long tbid: tbidnonAggWhereClause.keySet()){
+			String whereSql = tbidnonAggWhereClause.get(tbid);
+			String sql = "SELECT DISTINCT " +tbid;
+			if(resultWithRecord){
+				sql+= "record_id ";
+			}
+			sql+= " FROM " + RawDB.TB_PREFIX+tbid;
+			
+			if(whereSql.trim().length()>0)
+				sql+=" WHERE "+whereSql ;
+			
+			System.out.println(Debugger.getCallerPosition()+"tbid="+tbid+", sql="+sql);
+			Set<OboeQueryResult> oneTbResult = rawdb.dataQuery(sql);
+			if(oneTbResult!=null&&oneTbResult.size()>0){
+				result.addAll(oneTbResult);
+			}
+		}
+		
+		return result;
+	}
+	
+	
+	
+	private String formHolisticSqlMDB(
+			List<ContextChain> contextQueryDNF,
+			List<Integer> DNFNonAggregate,
+			MDB mdb,boolean resultWithRecord) throws Exception
+	{
+		String sql = "";
+		for(int i=0;i<DNFNonAggregate.size(); i++){
+			int dnfno = DNFNonAggregate.get(i);
+			ContextChain oneContextQuery = contextQueryDNF.get(dnfno);
+			
+			String sql1 = oneContextQuery.formHolisticNonAggSQL(mdb,resultWithRecord);
+			if(sql.length()==0)
+				sql += "("+ sql1 + ")";
+			else
+				sql += " UNION ("+sql1+")";
+		}
+		return sql;
+	}
+	
+	private Set<OboeQueryResult> exeHolisticSqlMDB(
+			List<ContextChain> contextQueryDNF,
+			List<Integer> DNFNonAggregate,
+			MDB mdb,boolean resultWithRecord) throws Exception
+	{
+		String sql = formHolisticSqlMDB(contextQueryDNF,DNFNonAggregate,mdb,resultWithRecord);
+		Set<OboeQueryResult> result = mdb.executeSQL(sql,resultWithRecord);
+		
+		return result;
+	}
+	
+
+	
+	/**
 	 * Based on different query evaluation strategy, perform query.
 	 * 
 	 * @param queryStrategy
@@ -380,14 +577,17 @@ public class OMQuery {
 		Set<OboeQueryResult> queryResultSet = null;
 		if(queryStrategy == Constant.QUERY_REWRITE){
 			RawDB rawdb = new RawDB(dbname);
-			queryResultSet = execute(rawdb,resultWithRecord);
+			queryResultSet = executeD(rawdb,resultWithRecord);
+		}else if(queryStrategy == Constant.QUERY_REWRITE_HOLISTIC){
+			RawDB rawdb = new RawDB(dbname);
+			queryResultSet = executeH(rawdb,resultWithRecord);
 		}else if((queryStrategy >= Constant.QUERY_MATERIALIZED_DB_MIN_STRATEGY 
 				&& queryStrategy<=Constant.QUERY_MATERIALIZED_DB_MAX_STRATEGY)||
 				(queryStrategy >= Constant.QUERY_MATERIALIZED_DB_MIN_STRATEGY2
 					&& queryStrategy<=Constant.QUERY_MATERIALIZED_DB_MAX_STRATEGY2)){
 			MDB materializedDB = new MDB(dbname);
 			materializedDB.setQueryStrategy(queryStrategy);
-			queryResultSet = execute(materializedDB,resultWithRecord);			
+			queryResultSet = executeD(materializedDB,resultWithRecord);			
 		}else{
 			System.out.println(Debugger.getCallerPosition() + " Wrong query strategy...");
 			System.exit(0);
