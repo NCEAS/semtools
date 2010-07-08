@@ -80,10 +80,10 @@ public class OntologyTreeCellRenderer extends
 		
 		if (isClassNode(value)) {
 			setIcon(_classIcon);
-			setToolTipText("This is a class ... ");
+			//setToolTipText("This is a class ... ");
 		} else if (isOntoNode(value)) {
 			setIcon(_ontoIcon);
-			setToolTipText("This is an ontology ... ");
+			//setToolTipText("This is an ontology ... ");
 		}
 		return this;
 	}
