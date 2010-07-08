@@ -79,27 +79,27 @@ public class Measurement implements Comparable<Measurement>{
 		
 		if (clazz.equals(Entity.class)) {
 			// get the entity
-			property = new OntologyObjectProperty(oboeOntology, "measurementFor");
+			property = new OntologyObjectProperty(oboeOntology, "hasMeasurement"); //measurementFor
 			properties.add(property);
-			property = new OntologyObjectProperty(oboeOntology, "ofEntity");
+			property = new OntologyObjectProperty(oboeOntology, "observedBy"); //ofEntity
 			properties.add(property);
 			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(properties, measurement);
 		}
 		if (clazz.equals(Characteristic.class)) {
 			// get the characteristic
-			property = new OntologyObjectProperty(oboeOntology, "ofCharacteristic");
+			property = new OntologyObjectProperty(oboeOntology, "measuredBy"); //ofCharacteristic
 			properties.add(property);
 			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(properties, measurement);
 		}
 		if (clazz.equals(Standard.class)) {
 			// get the standard
-			property = new OntologyObjectProperty(oboeOntology, "usesStandard");
+			property = new OntologyObjectProperty(oboeOntology, "standardFor"); //usesStandard
 			properties.add(property);
 			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(properties, measurement);
 		}
 		if (clazz.equals(Protocol.class)) {
 			// get the protocol
-			property = new OntologyObjectProperty(oboeOntology, "usesProtocol");
+			property = new OntologyObjectProperty(oboeOntology, "protocolFor"); //usesProtocol
 			properties.add(property);
 			classes = SMS.getInstance().getOntologyManager().getNamedClassesForPropertyRestriction(properties, measurement);
 		}

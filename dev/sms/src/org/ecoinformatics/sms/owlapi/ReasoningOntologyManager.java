@@ -40,14 +40,16 @@ public class ReasoningOntologyManager extends OwlApiOntologyManager {
 		
 		OntologyProperty baseProperty = properties.remove(0);
 		OWLObjectProperty property = manager.getOWLDataFactory().getOWLObjectProperty(IRI.create(baseProperty.getURI()));
-        OWLObjectInverseOf inverseOfProperty = manager.getOWLDataFactory().getOWLObjectInverseOf(property);
-        OWLObjectSomeValuesFrom someCombined = manager.getOWLDataFactory().getOWLObjectSomeValuesFrom(inverseOfProperty, restrictedClass);
+        //OWLObjectInverseOf inverseOfProperty = manager.getOWLDataFactory().getOWLObjectInverseOf(property);
+        //OWLObjectSomeValuesFrom someCombined = manager.getOWLDataFactory().getOWLObjectSomeValuesFrom(inverseOfProperty, restrictedClass);
+        OWLObjectSomeValuesFrom someCombined = manager.getOWLDataFactory().getOWLObjectSomeValuesFrom(property, restrictedClass);
 
         // add the nested property chain parts
 		for (OntologyProperty p: properties) {
 			OWLObjectProperty remainingProperty = manager.getOWLDataFactory().getOWLObjectProperty(IRI.create(p.getURI()));
-	        OWLObjectInverseOf inverseOfRemainingProperty = manager.getOWLDataFactory().getOWLObjectInverseOf(remainingProperty);
-	        someCombined = manager.getOWLDataFactory().getOWLObjectSomeValuesFrom(inverseOfRemainingProperty, someCombined);
+	        //OWLObjectInverseOf inverseOfRemainingProperty = manager.getOWLDataFactory().getOWLObjectInverseOf(remainingProperty);
+	        //someCombined = manager.getOWLDataFactory().getOWLObjectSomeValuesFrom(inverseOfRemainingProperty, someCombined);
+	        someCombined = manager.getOWLDataFactory().getOWLObjectSomeValuesFrom(remainingProperty, someCombined);
 		}
 
         NodeSet<OWLClass> esc = reasoner.getSuperClasses(someCombined, true);
