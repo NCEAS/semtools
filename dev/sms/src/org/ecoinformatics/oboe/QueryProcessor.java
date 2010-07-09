@@ -52,8 +52,10 @@ public class QueryProcessor {
 		
 		//2. query strategy
 		m_param_query_strategy = Integer.parseInt(args[1]);
-		if((m_param_query_strategy<=0||m_param_query_strategy>15)){
-			System.out.println("Wrong query strategy!");
+		if((m_param_query_strategy!=1&&m_param_query_strategy!=2&&m_param_query_strategy!=3
+				&&m_param_query_strategy!=4&&m_param_query_strategy!=5&&m_param_query_strategy!=11
+				&&m_param_query_strategy!=13&&m_param_query_strategy!=14&&m_param_query_strategy!=101)){
+			System.out.println(Debugger.getCallerPosition()+"Wrong query strategy!");
 			usage();
 			return (-1);
 		}

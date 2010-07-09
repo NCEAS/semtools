@@ -377,7 +377,7 @@ public class OMQuery {
 	 * @return
 	 * @throws Exception
 	 */
-	private Set<OboeQueryResult> executeH(PostgresDB db, boolean resultWithRecord) 
+	private Set<OboeQueryResult> executeH(PostgresDB db, boolean resultWithRecord,int queryStrategy) 
 		throws Exception
 	{
 		Set<OboeQueryResult> resultSet = new TreeSet<OboeQueryResult>();
@@ -399,7 +399,11 @@ public class OMQuery {
 		
 		Set<OboeQueryResult> nonaggDNFqueryResultSet = new TreeSet<OboeQueryResult>();
 		if(db instanceof RawDB){
-			nonaggDNFqueryResultSet = exeHolisticSqlRawDb(contextQueryDNF,DNFNonAggregate,(RawDB)db,resultWithRecord);
+			if(queryStrategy==Constant.QUERY_REWRITE_HOLISTIC){
+				nonaggDNFqueryResultSet = exeHolisticSqlRawDb(contextQueryDNF,DNFNonAggregate,(RawDB)db,resultWithRecord);
+			}else if(queryStrategy==Constant.QUERY_REWRITE_HOLISTIC_TB_ONE_BY_ONE){
+				nonaggDNFqueryResultSet = exeHolisticSqlRawDbOneByOne(contextQueryDNF,DNFNonAggregate,(RawDB)db,resultWithRecord);
+			}
 		}else{
 			nonaggDNFqueryResultSet = exeHolisticSqlMDB(contextQueryDNF,DNFNonAggregate,(MDB)db,resultWithRecord);
 			//nonaggDNFqueryResultSet = db.executeSQL(sql,resultWithRecord);
@@ -459,7 +463,13 @@ public class OMQuery {
 		}
 	}
 	
-	
+	/**
+	 * Connect the where clause using the given logic 
+	 * @param whereClauseList:  a list of Map tbid-->where clause
+	 * @param commonTid
+	 * @param logic
+	 * @return
+	 */
 	public static Map<Long, String> MergeRDBWhere(List whereClauseList, Set<Long> commonTid, String logic)
 	{
 		Map<Long, String> tbid2nonAggWhereClause = new TreeMap<Long, String>();
@@ -481,6 +491,16 @@ public class OMQuery {
 		return tbid2nonAggWhereClause;
 	}
 	
+	
+	/**
+	 * Execute Holistic SQL over raw db
+	 * @param contextQueryDNF
+	 * @param DNFNonAggregate
+	 * @param rawdb
+	 * @param resultWithRecord
+	 * @return
+	 * @throws Exception
+	 */
 	private Set<OboeQueryResult> exeHolisticSqlRawDb(List<ContextChain> contextQueryDNF,
 			List<Integer> DNFNonAggregate,
 			RawDB rawdb,boolean resultWithRecord) throws Exception
@@ -526,6 +546,122 @@ public class OMQuery {
 				result.addAll(oneTbResult);
 			}
 		}
+		
+		return result;
+	}
+	
+	/**
+	 * Get the where clause of one table
+	 * if this table does not have the needed entity type or characteristic types return an empty string
+	 * 
+	 * @param rawdb
+	 * @param tbid
+	 * @param contextQueryDNF
+	 * @param DNFNonAggregate
+	 * @return
+	 * @throws SQLException 
+	 */
+	private String getTbWhereClause(RawDB rawdb, long tbid, 
+			List<ContextChain> contextQueryDNF,
+			List<Integer> DNFNonAggregate) throws SQLException
+	{
+		String wheresql = "";
+		for(int i=0;i<DNFNonAggregate.size();i++){
+			int dnfno = DNFNonAggregate.get(i);
+			ContextChain oneContextQuery = contextQueryDNF.get(dnfno);
+		
+			String onetbNonAggWhereClause = oneContextQuery.formNonAggCNFWhereSQL(rawdb,tbid);
+			
+			if(onetbNonAggWhereClause!=null &&onetbNonAggWhereClause.trim().length()>0){
+				if(i==0){
+					wheresql += onetbNonAggWhereClause;
+				}else{
+					wheresql += " OR " + onetbNonAggWhereClause;
+				}
+			}
+		}
+		
+		return wheresql;
+	}
+	/**
+	 * For each table (one by one, check the metadata, run the query) 
+	 * @param contextQueryDNF
+	 * @param DNFNonAggregate
+	 * @param rawdb
+	 * @param resultWithRecord
+	 * @return
+	 * @throws Exception
+	 */
+	private Set<OboeQueryResult> exeHolisticSqlRawDbOneByOne(List<ContextChain> contextQueryDNF,
+			List<Integer> DNFNonAggregate,
+			RawDB rawdb,boolean resultWithRecord) throws Exception
+	{
+		
+		Set<OboeQueryResult> result = new TreeSet<OboeQueryResult>();
+		
+		//1. Get alll the table ids for raw tables
+		List<Long> allTbIds = rawdb.getAllTbIds();
+		
+		//2. For each raw table, get the sql and run it
+		for(long tbid: allTbIds){
+			if(tbid==3){
+				;
+			}
+			String whereSql = getTbWhereClause(rawdb,tbid,contextQueryDNF,DNFNonAggregate);
+			
+			if(whereSql!=null &&whereSql.trim().length()>0){
+				String sql = "SELECT DISTINCT " +tbid;
+				if(resultWithRecord){
+					sql+= "record_id ";
+				}
+				sql+= " FROM " + RawDB.TB_PREFIX+tbid;
+				
+				if(whereSql.trim().length()>0)
+					sql+=" WHERE "+whereSql ;
+				
+				System.out.println(Debugger.getCallerPosition()+"tbid="+tbid+", sql="+sql);
+				Set<OboeQueryResult> oneTbResult = rawdb.dataQuery(sql);
+				if(oneTbResult!=null&&oneTbResult.size()>0){
+					result.addAll(oneTbResult);
+				}
+			}
+		}
+		
+		
+		//1. Form where clause
+//		for(int i=0;i<DNFNonAggregate.size();i++){
+//			int dnfno = DNFNonAggregate.get(i);
+//			ContextChain oneContextQuery = contextQueryDNF.get(dnfno);
+//			
+//			Map<Long, String> OnetbidnonAggWhereClause = oneContextQuery.formNonAggCNFWhereSQL(rawdb);
+//			DNFWhereClause.add(OnetbidnonAggWhereClause);
+//			
+//			if(i==0){
+//				commonTid.addAll(OnetbidnonAggWhereClause.keySet());
+//			}else{
+//				commonTid.retainAll(OnetbidnonAggWhereClause.keySet());
+//			}
+//		}
+//		Map<Long, String> tbidnonAggWhereClause = MergeRDBWhere(DNFWhereClause,commonTid, "OR");
+//		
+//		//2. execute the Holistic sql on each data table
+//		for(Long tbid: tbidnonAggWhereClause.keySet()){
+//			String whereSql = tbidnonAggWhereClause.get(tbid);
+//			String sql = "SELECT DISTINCT " +tbid;
+//			if(resultWithRecord){
+//				sql+= "record_id ";
+//			}
+//			sql+= " FROM " + RawDB.TB_PREFIX+tbid;
+//			
+//			if(whereSql.trim().length()>0)
+//				sql+=" WHERE "+whereSql ;
+//			
+//			System.out.println(Debugger.getCallerPosition()+"tbid="+tbid+", sql="+sql);
+//			Set<OboeQueryResult> oneTbResult = rawdb.dataQuery(sql);
+//			if(oneTbResult!=null&&oneTbResult.size()>0){
+//				result.addAll(oneTbResult);
+//			}
+//		}
 		
 		return result;
 	}
@@ -579,9 +715,10 @@ public class OMQuery {
 		if(queryStrategy == Constant.QUERY_REWRITE){//1
 			RawDB rawdb = new RawDB(dbname);
 			queryResultSet = executeD(rawdb,resultWithRecord);
-		}else if(queryStrategy == Constant.QUERY_REWRITE_HOLISTIC){//11
+		}else if(queryStrategy == Constant.QUERY_REWRITE_HOLISTIC
+				||queryStrategy==Constant.QUERY_REWRITE_HOLISTIC_TB_ONE_BY_ONE){//11,101
 			RawDB rawdb = new RawDB(dbname);
-			queryResultSet = executeH(rawdb,resultWithRecord);
+			queryResultSet = executeH(rawdb,resultWithRecord,queryStrategy);
 		}else if((queryStrategy >= Constant.QUERY_MATERIALIZED_DB_MIN_STRATEGY 
 				&& queryStrategy<=Constant.QUERY_MATERIALIZED_DB_MAX_STRATEGY)){//2,3,4,5
 			MDB materializedDB = new MDB(dbname);
@@ -591,7 +728,7 @@ public class OMQuery {
 					&& queryStrategy<=Constant.QUERY_MATERIALIZED_DB_MAX_STRATEGY2)){//12,13,14,15
 			MDB materializedDB = new MDB(dbname);
 			materializedDB.setQueryStrategy(queryStrategy);
-			queryResultSet = executeH(materializedDB,resultWithRecord);
+			queryResultSet = executeH(materializedDB,resultWithRecord,queryStrategy);
 		}else{
 			System.out.println(Debugger.getCallerPosition() + " Wrong query strategy...");
 			System.exit(0);

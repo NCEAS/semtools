@@ -352,6 +352,45 @@ public class RawDB extends PostgresDB{
 		return tbAttribute;
 	}
 	
+	
+	/**
+	 * Get one table (with given tbid)'s measurement -->attribute pairs
+	 * @param cha2qm
+	 * @param tbid
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<Pair<QueryMeasurement,String>> retrieveTbAttribute(Map<String, QueryMeasurement> cha2qm,long tbid) 
+		throws SQLException
+	{
+		List<Pair<QueryMeasurement,String>> tbAttribute = new ArrayList<Pair<QueryMeasurement,String> >();
+		
+		//for each characteristic, get its related dataset id (i.e., annot_id) and attribute name)
+		for(String cha: cha2qm.keySet()){
+			List<Pair<QueryMeasurement,String>> oneTb2Attribute = retrieveOneTbAttribute(cha,cha2qm.get(cha),tbid);
+			
+			//this characteristic cannot find a related attribute
+			if(oneTb2Attribute==null||oneTb2Attribute.size()==0)
+				break;
+			tbAttribute.addAll(oneTb2Attribute);
+		}
+		//System.out.println(Debugger.getCallerPosition()+"tmpTbAttribute=\n"+tmpTbAttribute);
+		
+		//get only the table ids which has all these characteristics since they are in AND logic 
+		//Map<Long, List<Pair<QueryMeasurement,String> >> tbAttribute = new TreeMap<Long, List<Pair<QueryMeasurement,String> >>();
+		//for(Map.Entry<Long, List<Pair<QueryMeasurement,String> >> entry: tmpTbAttribute.entrySet()){
+			//each data table need to have all these characteristics since they are in AND logic 
+			//System.out.println(Debugger.getCallerPosition()+"entry.getValue().size()="+entry.getValue().size()+",cha2qm.size()="+cha2qm.size()+":"+cha2qm);
+			
+		//	if(entry.getValue().size()>=cha2qm.size()){
+		//		tbAttribute.put(entry.getKey(), entry.getValue());
+		//	}
+		//}
+		
+		//System.out.println(Debugger.getCallerPosition()+"tbAttribute=\n"+tbAttribute);
+		return tbAttribute;
+	}
+	
 	/**
 	 * Get the table and its related attributes for one chalracteristic
 	 * @param cha
@@ -392,6 +431,53 @@ public class RawDB extends PostgresDB{
 		
 		return oneTb2Attribute;
 	}
+	
+	/**
+	 * Return one table (with id tbid)'s measurement, attribute name pairs
+	 * 
+	 * @param cha
+	 * @param qm
+	 * @param tbid
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<Pair<QueryMeasurement,String>> retrieveOneTbAttribute(String cha,QueryMeasurement qm,long tbid) 
+		throws SQLException
+	{
+		//Map<Long, List<Pair<QueryMeasurement,String>>> oneTb2Attribute = new TreeMap<Long, List<Pair<QueryMeasurement,String> >>();
+		
+		String sql = "SELECT DISTINCT mt.annot_id, attrname FROM measurement_type AS mt, map \n" +
+					"WHERE (map.annot_id=mt.annot_id AND map.mtypelabel = mt.mtypelabel AND mt.annot_id="+tbid+") "; 
+		if(cha.contains("%")){
+			sql += "AND mt.characteristic ILIKE "+cha+";";
+		}else{
+			sql += "AND mt.characteristic = "+cha+";";
+		}
+	
+		System.out.println(Debugger.getCallerPosition()+"sql= " + sql);
+		Statement stmt = m_conn.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		List<Pair<QueryMeasurement,String> > oneTbAttribute = new ArrayList<Pair<QueryMeasurement,String> >();
+		while(rs.next()){
+			Long annotId = rs.getLong(1);
+			String attrname = rs.getString(2).trim();
+			
+			//List<Pair<QueryMeasurement,String> > oneTbAttribute = oneTb2Attribute.get(annotId);
+			//if(oneTbAttribute==null){
+			//	oneTbAttribute = new ArrayList<Pair<QueryMeasurement,String> >();
+			//	oneTb2Attribute.put(annotId, oneTbAttribute);
+			//}
+			Pair<QueryMeasurement,String> newPair = new Pair<QueryMeasurement,String>(qm,attrname);
+			oneTbAttribute.add(newPair);
+		}
+		rs.close();
+		stmt.close();
+		
+		//return oneTb2Attribute;
+		return oneTbAttribute;
+	}
+	
 	/**
 	 * Perform one data query and return the results 
 	 * 
@@ -429,5 +515,33 @@ public class RawDB extends PostgresDB{
 		stmt.close();
 		
 		return resultSet;
+	}
+	
+	/**
+	 * Get all the raw data table ids
+	 * @return
+	 * @throws Exception 
+	 */
+	public List<Long> getAllTbIds() throws Exception
+	{
+		List<Long> tbidList = new ArrayList<Long>();
+		
+		String sql = "SELECT did FROM data_annotation;";
+		
+		if(m_conn==null){
+			open();
+		}
+		
+		Statement stmt = m_conn.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		while(rs.next()){
+			Long tbid = rs.getLong(1);
+			tbidList.add(tbid);
+		}
+		rs.close();
+		stmt.close();
+		
+		return tbidList;
 	}
 }

@@ -483,6 +483,42 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 	
 	}
 	
+	/**
+	 * Form the where clause for one table with given id tbid
+	 * The DNFs in this basic query is connected with logic OR
+	 * 
+	 * Return empty string if there is no required characteristics
+	 * 
+	 * @param rawdb
+	 * @param tbid
+	 * @return
+	 * @throws SQLException
+	 */
+	public String getWhereClause(RawDB rawdb, long tbid)
+		throws SQLException
+	{
+		String sql = "";
+		boolean first = true; 
+		for(int dnfno: this.m_queryMeasDNF.keySet()){
+			List<QueryMeasurement> nonAggMeasAnd = m_queryMeasDNF.get(dnfno);
+			List<Pair<QueryMeasurement,String>> Attributes = new ArrayList<Pair<QueryMeasurement,String> >();
+			String nonAggWhereclasue = formNonAggCNFWhereSQL(rawdb,tbid,nonAggMeasAnd,Attributes);
+			
+			if(Attributes!=null&&Attributes.size()>0){	
+				if(first){
+					sql+=nonAggWhereclasue;
+					first = false;
+				}else{
+					sql+= " OR " +nonAggWhereclasue;
+				}
+			}
+		}
+		
+		if(sql.length()>0){
+			sql = "("+sql+")";
+		}
+		return sql;
+	}
 	
 	/**
 	 * get the where clause conditions (no where keyword) for this OM query basic
@@ -592,44 +628,29 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 	 */
 	private Set<OboeQueryResult> executeOneCNFNonAggregateRawDB(
 			RawDB rawdb, boolean resultWithRecord, 
-			//List<QueryMeasurement> nonAggMeasAND
-			Map<Long, List<Pair<QueryMeasurement,String>> > tb2Attribute
-			) 
+			Map<Long, List<Pair<QueryMeasurement,String>> > tb2Attribute) 
 		throws SQLException, Exception
 	{
 		Set<OboeQueryResult> nonAggQueryResult = new TreeSet<OboeQueryResult>();
-		
-//		//1. find table id and related attribute names
-//		//Set<String> characteristics = new HashSet<String>();
-//		Map<String, QueryMeasurement> cha2qm= new HashMap<String, QueryMeasurement>();
-//		for(QueryMeasurement qm: nonAggMeasAND){
-//			String chaCond = qm.getCharacteristicCond();
-//			if(chaCond!=null&&chaCond.length()>0){
-//				//characteristics.add(chaCond);
-//				cha2qm.put(chaCond, qm);
-//			}
-//		}
-//		Map<Long, List<Pair<QueryMeasurement,String>> > tb2Attribute = rawdb.retrieveTbAttribute(cha2qm);
-		
+	
 		//2. form SQL and execute query, the results should be unioned since they come from data table		
 		for(Map.Entry<Long, List<Pair<QueryMeasurement,String> >> entry: tb2Attribute.entrySet()){
 			Long tbId = entry.getKey();
 			//pair is <queryMeasurement,attribute name>
 			List<Pair<QueryMeasurement,String>> chaAttributeNamePairList= entry.getValue();
 			
-			
 			String sql = "SELECT DISTINCT "+tbId +" AS did";
 			if(resultWithRecord){
 				sql +=", record_id ";
 			}
-			sql += " FROM " + rawdb.TB_PREFIX+tbId;
+			sql += " FROM " + RawDB.TB_PREFIX+tbId;
 			String whereSql = " WHERE "+formNonAggCNFWhereSQLsub(chaAttributeNamePairList);
 			sql +=whereSql;
 			
 			sql += ";";
 			
 			//3. execute sql
-			System.out.println(Debugger.getCallerPosition()+"sql= "+sql);
+			//System.out.println(Debugger.getCallerPosition()+"sql= "+sql);
 			Set<OboeQueryResult> oneTbResult = rawdb.dataQuery(sql);
 			if(oneTbResult!=null&&oneTbResult.size()>0){
 				nonAggQueryResult.addAll(oneTbResult);
@@ -676,20 +697,52 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		return tbid2nonAggWhereclasue;
 	}
 	
-	
+	/**
+	 * Form the where clause for a basic query for table with given id "tbid"
+	 * @param rawdb
+	 * @param tbid
+	 * @param nonAggMeasAND
+	 * @param outAttributes
+	 * @return
+	 * @throws SQLException
+	 */
+	private String formNonAggCNFWhereSQL(RawDB rawdb, long tbid, List<QueryMeasurement> nonAggMeasAND,
+			List<Pair<QueryMeasurement,String> > outTbAttributes) 
+		throws SQLException
+	{
+		Map<String, QueryMeasurement> cha2qm= new HashMap<String, QueryMeasurement>();
+		for(QueryMeasurement qm: nonAggMeasAND){
+			String chaCond = qm.getCharacteristicCond();
+			if(chaCond!=null&&chaCond.length()>0){
+				cha2qm.put(chaCond, qm);
+			}
+		}
+		List<Pair<QueryMeasurement,String>> chaAttributeNamePairList = rawdb.retrieveTbAttribute(cha2qm,tbid);
+		
+				
+		//2. form SQL and execute query, the results should be unioned since they come from data table		
+		String whereSql = "";
+		if(chaAttributeNamePairList!=null&&chaAttributeNamePairList.size()>0){
+			outTbAttributes.addAll(chaAttributeNamePairList);
+			whereSql = formNonAggCNFWhereSQLsub(chaAttributeNamePairList);
+		}
+		
+		//return tbid2nonAggWhereclasue;
+		return whereSql;
+	}
 	
 	/**
-	 *TODO: HP strange to put this as a static function
+	 * Form the basic non-aggregation where SQL for CNF (so connected with AND)
+	 * 
 	 * @param chaAttributeNamePairList, pair is <characteristic,attribute name>
 	 * @return
 	 */
-	private static String formNonAggCNFWhereSQLsub(
+	private String formNonAggCNFWhereSQLsub(
 			List<Pair<QueryMeasurement,String>> chaAttributeNamePairList)
 	{
 		String sql="";
 		if(chaAttributeNamePairList!=null&&chaAttributeNamePairList.size()>0){
 	
-			//sql +=" WHERE (";
 			sql +=" (";
 			for(int i=0;i<chaAttributeNamePairList.size();i++){
 				Pair<QueryMeasurement,String> pair = chaAttributeNamePairList.get(i);
@@ -707,7 +760,6 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 
 
 	public int compareTo(OMQueryBasic o) {
-		
 		int cmp = m_queryLabel.compareTo(o.getQueryLabel());
 		return cmp;
 	}
