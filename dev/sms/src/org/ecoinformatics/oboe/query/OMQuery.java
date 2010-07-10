@@ -71,7 +71,6 @@ public class OMQuery {
  	public OMQuery()
  	{
  		m_query = new ArrayList<OMQueryBasic>();
- 		//m_queryIndex = new TreeMap<String, List<OMQueryBasic> >();
  		m_queryIndex = new TreeMap<String, OMQueryBasic>();
  		m_queryContext = new TreeMap<String, List<String>>();
  	}
@@ -155,7 +154,6 @@ public class OMQuery {
 						m_queryContext.put(bq1str,tmplist);
 					}
 					tmplist.add(bq2str);
-					//m_queryContext.put(bq1str,bq2str);
 					oneLine = queryLines.get(++i);
 				}
 			}else{
@@ -237,11 +235,15 @@ public class OMQuery {
 		
 		//2. insert the basic queries that are not in the context to a separate set, LOGIC AND
 		ContextChain newChain = new ContextChain();
-		resultContextChain.add(newChain);
+		boolean addAQuery = false;
 		for(OMQueryBasic query: m_query){
 			if(!basicQueryInContext.contains(query.getQueryLabel())){
+				addAQuery = true;
 				newChain.addGroup(query);//add this query as a single group
 			}
+		}
+		if(addAQuery){
+			resultContextChain.add(newChain);
 		}
 		
 		return resultContextChain;
@@ -285,44 +287,6 @@ public class OMQuery {
 		}
 	}
 	
-//	/**
-//	 * Get the list of query measurement instances
-//	 * 	
-//	 * @return
-//	 */
-//	public List<QueryMeasurement> getQueryMeasements(){
-//		List<QueryMeasurement> queryMeasList = new ArrayList<QueryMeasurement>();
-//		queryMeasList.add(m_queryMi);
-//		
-//		return queryMeasList;
-//	}
-	
-//	/**
-//	 * Get the measurement conditions
-//	 * @return
-//	 */
-//	public String getQueryMeasurementString()
-//	{
-//		String str = "";
-//		
-//		//TODO: a lot more to do
-//		List<QueryMeasurement> queryMeasList = getQueryMeasements();
-//		
-//		for(int i=0;i<queryMeasList.size();i++){
-//			QueryMeasurement qm = queryMeasList.get(i);
-//			Measurement mt = qm.getMeasurementType();
-//			Characteristic cha = null;
-//			if(mt.getCharacteristics()!=null){
-//				cha = mt.getCharacteristics().get(0);
-//				str += ("mi.mlabel= mt.mtype AND mt.characteristic='"+ cha+"'");
-//			}
-//			String cond = qm.getCondition();
-//			if(cha!=null&&cond!=null){
-//				str += (" AND mi.mvalue '"+ cond+"'");
-//			}
-//		}
-//		return str;
-//	}
 	
 	/**
 	 * Perform a query over the materialized database
@@ -406,7 +370,6 @@ public class OMQuery {
 			}
 		}else{
 			nonaggDNFqueryResultSet = exeHolisticSqlMDB(contextQueryDNF,DNFNonAggregate,(MDB)db,resultWithRecord);
-			//nonaggDNFqueryResultSet = db.executeSQL(sql,resultWithRecord);
 		}
 		System.out.println(Debugger.getCallerPosition()+"nonaggDNFqueryResultSet="+nonaggDNFqueryResultSet);
 		resultSet.addAll(nonaggDNFqueryResultSet);
@@ -627,46 +590,19 @@ public class OMQuery {
 			}
 		}
 		
-		
-		//1. Form where clause
-//		for(int i=0;i<DNFNonAggregate.size();i++){
-//			int dnfno = DNFNonAggregate.get(i);
-//			ContextChain oneContextQuery = contextQueryDNF.get(dnfno);
-//			
-//			Map<Long, String> OnetbidnonAggWhereClause = oneContextQuery.formNonAggCNFWhereSQL(rawdb);
-//			DNFWhereClause.add(OnetbidnonAggWhereClause);
-//			
-//			if(i==0){
-//				commonTid.addAll(OnetbidnonAggWhereClause.keySet());
-//			}else{
-//				commonTid.retainAll(OnetbidnonAggWhereClause.keySet());
-//			}
-//		}
-//		Map<Long, String> tbidnonAggWhereClause = MergeRDBWhere(DNFWhereClause,commonTid, "OR");
-//		
-//		//2. execute the Holistic sql on each data table
-//		for(Long tbid: tbidnonAggWhereClause.keySet()){
-//			String whereSql = tbidnonAggWhereClause.get(tbid);
-//			String sql = "SELECT DISTINCT " +tbid;
-//			if(resultWithRecord){
-//				sql+= "record_id ";
-//			}
-//			sql+= " FROM " + RawDB.TB_PREFIX+tbid;
-//			
-//			if(whereSql.trim().length()>0)
-//				sql+=" WHERE "+whereSql ;
-//			
-//			System.out.println(Debugger.getCallerPosition()+"tbid="+tbid+", sql="+sql);
-//			Set<OboeQueryResult> oneTbResult = rawdb.dataQuery(sql);
-//			if(oneTbResult!=null&&oneTbResult.size()>0){
-//				result.addAll(oneTbResult);
-//			}
-//		}
-		
 		return result;
 	}
 	
 	
+	/**
+	 * Form a holistic non aggregation query over MDB
+	 * @param contextQueryDNF
+	 * @param DNFNonAggregate
+	 * @param mdb
+	 * @param resultWithRecord
+	 * @return
+	 * @throws Exception
+	 */
 	
 	private String formHolisticSqlMDB(
 			List<ContextChain> contextQueryDNF,
@@ -679,14 +615,25 @@ public class OMQuery {
 			ContextChain oneContextQuery = contextQueryDNF.get(dnfno);
 			
 			String sql1 = oneContextQuery.formHolisticNonAggSQL(mdb,resultWithRecord);
-			if(sql.length()==0)
-				sql += "("+ sql1 + ")";
-			else
-				sql += " UNION ("+sql1+")";
+			if(sql1.trim().length()>0){
+				if(sql.length()==0)
+					sql += "("+ sql1 + ")";
+				else
+					sql += " UNION ("+sql1+")";
+			}
 		}
 		return sql;
 	}
 	
+	/**
+	 * Execute a holistic non aggregation query over MDB
+	 * @param contextQueryDNF
+	 * @param DNFNonAggregate
+	 * @param mdb
+	 * @param resultWithRecord
+	 * @return
+	 * @throws Exception
+	 */
 	private Set<OboeQueryResult> exeHolisticSqlMDB(
 			List<ContextChain> contextQueryDNF,
 			List<Integer> DNFNonAggregate,

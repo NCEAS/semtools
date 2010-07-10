@@ -384,19 +384,24 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		classifyMeasAND(measAND,aggMeas,nonAggMeas);
 		
 		//2. perform the non-aggregate query
-		Set<OboeQueryResult> nonAggQueryResult =  
-			executeOneCNFNonAggregateMDB(mdb,m_entityTypeNameCond,nonAggMeas,resultWithRid);
-		result.addAll(nonAggQueryResult);
+		Set<OboeQueryResult> nonAggQueryResult = null;
+		if(nonAggMeas.size()>0){
+			nonAggQueryResult = executeOneCNFNonAggregateMDB(mdb,m_entityTypeNameCond,nonAggMeas,resultWithRid);
+			result.addAll(nonAggQueryResult);
+		}
 		
 		NonAggSubQueryReturn returnStru = new NonAggSubQueryReturn();
 		returnStru.m_include_record_id = resultWithRid;
 		returnStru.m_include_oid = true;
-		String nonAggQuerySql = formSqlOneCNFNonAggregateMDB(mdb,m_entityTypeNameCond,nonAggMeas,returnStru);
+		String nonAggQuerySql = "";
+		if(nonAggMeas.size()>0){
+			nonAggQuerySql = formSqlOneCNFNonAggregateMDB(mdb,m_entityTypeNameCond,nonAggMeas,returnStru);
+		}
 		
 		System.out.println(Debugger.getCallerPosition()+"result size="+result.size());
 		
 		//2. Execute each aggregate query measurements and "AND" their results
-		if(result.size()>0){
+		if((nonAggMeas.size()==0)||(nonAggMeas.size()>0&&result.size()>0)){
 			for(QueryMeasurement qm: aggMeas){
 				//FIXME: will it has efficiency problem? 
 				//The embedded CNF and query is performed |aggMeas| times. 
@@ -474,10 +479,18 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		if(resultwithRecordId){
 			sql +=", record_id ";
 		}
-		sql +=" FROM ("+sqlNonAggCond+") AS tmp";
-		Set<OboeQueryResult> resultSet = mdb.executeSQL(sql,resultwithRecordId);
+		
+		if(sqlNonAggCond!=null&&sqlNonAggCond.trim().length()>0)
+			sql +=" FROM ("+sqlNonAggCond+") AS tmp";
+		else{
+			sql += " FROM " + mdb.m_nonAggMeasView;
+		}
 		
 		System.out.println(Debugger.getCallerPosition()+"sql:"+sql);
+		
+		Set<OboeQueryResult> resultSet = mdb.executeSQL(sql,resultwithRecordId);
+		
+		
 		System.out.println(Debugger.getCallerPosition()+"resultSet:"+resultSet.size());
 		return resultSet;
 	

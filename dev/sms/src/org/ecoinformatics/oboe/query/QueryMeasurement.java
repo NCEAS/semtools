@@ -55,28 +55,7 @@ public class QueryMeasurement {
 	public void setAggregationCond(String aggregationCond) {
 		this.aggregationCond = aggregationCond;
 	}
-//	public String toString(){
-//		String str="";
-//		if(characteristicCond!=null&&characteristicCond.trim().length()>0){
-//			str+="characteristicCond= ["+characteristicCond+"];";			
-//		}
-//		
-//		if(standardCond!=null&&standardCond.trim().length()>0){
-//			str+="standardCond= ["+standardCond+"];";			
-//		}
-//		
-//		if(valueCond!=null&&valueCond.trim().length()>0){
-//			str+="valueCond= ["+valueCond+"];";			
-//		}
-//		
-//		if(aggregationFunc!=null&&aggregationFunc.trim().length()>0){
-//			str+="aggregationFunc= ["+aggregationFunc+"];";			
-//		}
-//		
-//		return str;
-//	}
-	
-	//tested, ok
+
 	public String toString(){
 		String str="";
 		
@@ -90,7 +69,8 @@ public class QueryMeasurement {
 			str += ")";			
 		}
 		if(valueCond!=null&&valueCond.trim().length()>0){
-			str += " "+valueCond;			
+			str += " "+aggregationCond;
+			//str += " "+valueCond;			
 		}
 		if(standardCond!=null&&standardCond.trim().length()>0){
 			str += " "+standardCond;			
@@ -108,7 +88,7 @@ public class QueryMeasurement {
 	 * @throws Exception 
 	 * @throws SQLException 
 	 */
-	public String formSQL(MDB mdb, String nonAggMeasSql,//boolean resultWithRid,
+	public String formSQL(MDB mdb, String nonAggMeasSql,
 			NonAggSubQueryReturn requiredReturnStru) 
 	throws SQLException, Exception
 	{
@@ -130,17 +110,17 @@ public class QueryMeasurement {
 	 * 
 	 * @param mdb
 	 * @return
+	 * @throws Exception 
 	 */
-	private String formSQL(MDB mdb, String entityNameCond,Set<OboeQueryResult> nonAggQueryResult,boolean resultWithRid)
+	private String formSQL(MDB mdb, String nonAggQuerySql,Set<OboeQueryResult> nonAggQueryResult,boolean resultWithRid) throws Exception
 	{
 		String sql = "SELECT DISTINCT did";
 		if(resultWithRid){
 			sql +=", record_id ";
 		}
-		sql +=" FROM " + mdb.getObsInstanceTable() +" AS oi ";
-		//sql +=" WHERE (did, eid) IN (\n";
+		sql +=" FROM " + mdb.getObsInstanceTable() +" AS oi ";		
 		sql +=" WHERE (did, oid) IN (\n";
-		String subquerySQL = formSubQuerySQL(mdb,entityNameCond,nonAggQueryResult);
+		String subquerySQL = formAggSubQuerySQL(mdb,nonAggQuerySql,nonAggQueryResult);
 		sql += subquerySQL+");";
 		
 		
@@ -221,27 +201,41 @@ public class QueryMeasurement {
 		
 	}
 	
-	private String formSubQuerySQL(MDB mdb, String entityNameCond,Set<OboeQueryResult> nonAggQueryResult)
+	private String formAggSubQuerySQL(MDB mdb, String nonAggQuerySql,Set<OboeQueryResult> nonAggQueryResult) throws Exception
 	{	
-		
-		//FIXME: HP: this second function is not finished yet. TO finish this as the second method.
 		//For the SQL for all the non aggregate conditions
-		//String sqlReturn = "SELECT did, eid FROM ("+sqlNonAggCond+") AS tmp";
-		String sqlReturn="";
+		String fromTb = "";
+		String sqlReturn = "";
+		if(nonAggQuerySql!=null&&nonAggQuerySql.trim().length()>0)
+			sqlReturn +="SELECT did, oid FROM ("+nonAggQuerySql+") AS tmp WHERE ";
+		else{
+			if(mdb.getQueryStrategy()==2||mdb.getQueryStrategy()==12){
+				fromTb = mdb.m_nonAggMeasViewBasicInitData;
+			}else if(mdb.getQueryStrategy()==3||mdb.getQueryStrategy()==13){
+				fromTb = mdb.m_nonAggMeasViewBasic;
+			}else if(mdb.getQueryStrategy()==4||mdb.getQueryStrategy()==14){
+				fromTb = mdb.m_mergedTableView;
+			}else if(mdb.getQueryStrategy()==5||mdb.getQueryStrategy()==15){
+				fromTb = mdb.m_mergedFullTable;
+			}else{
+				throw new Exception ("Wrong materialization strategy...");
+			}
+			sqlReturn +="SELECT "+fromTb+".did, "+fromTb+".oid " + " FROM " + fromTb+", oi_compress";
+			sqlReturn +=" WHERE "+fromTb+".oid=oi_compress.oid AND ";
+		}
+		
 		//measurement type: characteristic
 		if(characteristicCond!=null&&characteristicCond.trim().length()>0){
 			if(characteristicCond.contains("%")){
-				sqlReturn += " WHERE characteristic ILIKE " + characteristicCond+" ";
+				sqlReturn += " characteristic ILIKE " + characteristicCond+" ";
 			}else{
-				sqlReturn += " WHERE characteristic=" + characteristicCond+" ";
+				sqlReturn += " characteristic=" + characteristicCond+" ";
 			}
 		}
 		
 		//aggregation
 		if(aggregationFunc!=null&&aggregationFunc.length()>0){
-			//sqlReturn+="\nGROUP BY did, eid ";
-			sqlReturn+="\nGROUP BY did, oid ";			
-			//sqlReturn+="\nHAVING "+aggregationFunc+"(mvalue)"+valueCond;
+			sqlReturn+="\nGROUP BY "+fromTb+".did, "+fromTb+".oid ";
 			sqlReturn+="\nHAVING "+aggregationFunc+"(mvalue)"+aggregationCond;
 		}
 		return sqlReturn;
@@ -330,13 +324,13 @@ public class QueryMeasurement {
 	 * @return
 	 * @throws Exception
 	 */
-	public Set<OboeQueryResult> executeAggQueryMDB(MDB mdb, String entityNameCond,
+	public Set<OboeQueryResult> executeAggQueryMDB(MDB mdb, String nonAggQuerySql,
 			Set<OboeQueryResult> nonAggQueryResult, boolean resultWithRid) 
 		throws Exception
 	{
 		
 		//form sql query for this condition
-		String sql = formSQL(mdb, entityNameCond, nonAggQueryResult,resultWithRid);
+		String sql = formSQL(mdb, nonAggQuerySql, nonAggQueryResult,resultWithRid);
 		
 		//execute the SQL Query
 		Set<OboeQueryResult> resultSet = mdb.executeSQL(sql,resultWithRid);
@@ -345,7 +339,20 @@ public class QueryMeasurement {
 		return resultSet;
 	}
 	
-	
+	private String getGroupByAttList(List<String> groupByAttName)
+	{
+		String str="";
+		for(int i=0;i<groupByAttName.size();i++){
+			String att = groupByAttName.get(i);
+			if(i<groupByAttName.size()-1){
+				str += att+",";
+			}else{
+				str += att;
+			}
+		}
+		
+		return str;
+	}
 	/**
 	 * Execute aggregation query in the raw db
 	 * TODO: check the consistency with the description in the paper
@@ -374,65 +381,46 @@ public class QueryMeasurement {
 		
 		for(Map.Entry<Long, List<Pair<QueryMeasurement,String> >> entry: tb2Attribute.entrySet()){
 			Long tbId = entry.getKey();
+			List<Pair<QueryMeasurement,String> >qm2att = entry.getValue();
+			
 			
 			//pair is <QueryMeasurement,attribute name>
-			//List<Pair<QueryMeasurement,String>> chaAttributeNamePairList= entry.getValue();
-			
 			//where clause
 			String whereSql = tbid2nonAggWhereclasue.get(tbId);
 			
+			String aggAtt = "";
+			for(int i=0;i<qm2att.size();i++){
+				Pair<QueryMeasurement,String> pair = qm2att.get(i);
+				if(pair.getFirst().equals(this)){
+					aggAtt= "'"+pair.getSecond()+"'";
+					break;
+				}
+			}
+			
 			//group by clause
 			List<String> groupByAttName = annotId2KeyAttrList.get(tbId);
+			String groupByAttList = getGroupByAttList(groupByAttName);
+			
 			String sql = "";
-			
-			//TODO: HP simplify this part of codes
 			if(groupByAttName!=null&&groupByAttName.size()>0){
-				sql = "SELECT DISTINCT "+tbId + ",";
+				sql = "SELECT DISTINCT "+tbId;
 				if(resultWithRecord){
-					sql+= "record_id ";
+					sql+= ",record_id ";
 				}
-				sql+= " FROM " + rawdb.TB_PREFIX+tbId;
+				sql+= " FROM " + RawDB.TB_PREFIX+tbId;
 				
-				if(whereSql.trim().length()>0)
-					sql+=whereSql +" AND (";
-				else
-					sql+= " WHERE (";
-				for(int i=0;i<groupByAttName.size();i++){
-					String att = groupByAttName.get(i);
-					if(i<groupByAttName.size()-1){
-						sql += att+",";
-					}else{
-						sql += att;
-					}
-				}
-				sql+= ") IN (\n";
-				sql+= " SELECT DISTINCT ";
-			
-				for(int i=0;i<groupByAttName.size();i++){
-					String att = groupByAttName.get(i);
-					if(i<groupByAttName.size()-1){
-						sql += att+","; 
-					}else{
-						sql += att;
-					}
-				}
-			
-			
-				//sql += aggregationFunc+"("+this.characteristicCond+") ";
-				sql += " FROM " + rawdb.TB_PREFIX+tbId;
-				if(whereSql.trim().length()>0)
-					sql+=whereSql+" ";
+				//WHERE clause
+				if((whereSql!=null)&&(whereSql.trim().length()>0))
+					sql+= whereSql;
+				
+				//GROUP BY clause
 				if(groupByAttName!=null&&groupByAttName.size()>0){
-					sql +=" GROUP BY " + tbId ;
-					for(int i=0;i<groupByAttName.size();i++){
-						String att = groupByAttName.get(i);
-						sql += "," + att;
-					}
+					sql +=" GROUP BY " +groupByAttList;
 				}
 			
 				//HAVING clause
-				sql += " HAVING " + aggregationFunc+"("+this.characteristicCond+")" + this.aggregationCond;
-				sql += ");";
+				sql += " HAVING " + aggregationFunc+"("+aggAtt+")" + this.aggregationCond;
+				sql += ";";
 			}else{
 				//TODO:HP need to be tested
 				sql = "SELECT DISTINCT "+tbId + ",";

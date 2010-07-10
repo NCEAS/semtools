@@ -142,15 +142,10 @@ public class PostgresDB {
 		Map<Long, List<String>> annotId2AttrList= new HashMap<Long, List<String>>();
 		
 		System.out.println(Debugger.getCallerPosition()+"entityTypeName="+entityTypeName);
-		//1. clean the entity type name
-		//entityTypeName.replaceAll("%", "");
-		//entityTypeName.replaceAll("_", "");
-		//System.out.println(Debugger.getCallerPosition()+"entityTypeName="+entityTypeName);
 		
 		//1. get this entity name's observation type label
 		Map<Long,String> annotId_otypelabel = retrieveObsTypeLabel(entityTypeName);
 	
-		//TODO: If the candidate set is big, this is a place that I should save a lot of time 
 		//2. get the context observation types
 		Map<Long, List<String> > annotId_contextotypelabel = new HashMap<Long, List<String>>();
 		for(Map.Entry<Long, String> entry: annotId_otypelabel.entrySet()){
@@ -172,7 +167,7 @@ public class PostgresDB {
 	 * From the annotationId-context observation type labels, 
 	 * Get all the list of <annotId-list of key attributes>
 	 * 
-	 * TODO: this function may use a lot of space, how much? need to test 
+	 * This function does not use a lot of space 
 	 * @param annotId
 	 * @param otypelabel
 	 * @return
@@ -295,9 +290,11 @@ public class PostgresDB {
 	 */
 	private Map<Long,String> retrieveObsTypeLabel(String entityTypeName) throws SQLException
 	{
-		String sql = "SELECT annot_id, otypelabel FROM " + m_obsTypeTable + " AS ot " +
-				//"WHERE is_distinct='t' AND ename = " + entityTypeName +";";
-				"WHERE ename ILIKE " + entityTypeName +";";
+		String sql = "SELECT annot_id, otypelabel FROM " + m_obsTypeTable + " AS ot";
+		if(entityTypeName.contains("%")||entityTypeName.contains("_"))
+			sql+=" WHERE ename ILIKE " + entityTypeName +";";
+		else
+			sql+=" WHERE ename =" + entityTypeName +";";
 	
 		System.out.println(Debugger.getCallerPosition()+"sql= "+sql);
 		Map<Long,String> annotId_otypelabel = new HashMap<Long, String>();
@@ -341,8 +338,6 @@ public class PostgresDB {
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		//3. extract results
-		//ResultSetMetaData rsmd = rs.getMetaData();
-		//int numOfCols = rsmd.getColumnCount();
 		while(rs.next()){
 			OboeQueryResult queryResult = new OboeQueryResult();
 			

@@ -83,10 +83,12 @@ CREATE INDEX mi_did_idx on measurement_instance(did);
 CREATE INDEX mi_mtype_label on measurement_instance(mtypelabel);
 CREATE INDEX mi_mvalue_idx on measurement_instance(mvalue);
 CREATE INDEX mt_did_mtype_label on measurement_type(annot_id,mtypelabel);
+CREATE INDEX oi_compress_oid ON oi_compress(oid);
 
 CREATE INDEX omi_numeric_2col_index on omi_numeric(etype,mvalue);
 #CREATE INDEX omi_numeric_mvalue_idx on omi_numeric(mvalue);
 #CREATE INDEX omi_numeric_etype_idx on omi_numeric(etype);
+
 
 CREATE INDEX omi_numeric_full_mvalue_idx on omi_numeric_full(mvalue);
 CREATE INDEX omi_numeric_full_etype_idx on omi_numeric_full(etype);
