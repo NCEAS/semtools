@@ -68,9 +68,9 @@ public class QueryMeasurement {
 		if(aggregationFunc!=null&&aggregationFunc.trim().length()>0){
 			str += ")";			
 		}
-		if(valueCond!=null&&valueCond.trim().length()>0){
-			str += " "+aggregationCond;
-			//str += " "+valueCond;			
+		if(valueCond!=null&&valueCond.trim().length()>0){			
+			str += " "+valueCond;			
+			str += " agg "+aggregationCond;
 		}
 		if(standardCond!=null&&standardCond.trim().length()>0){
 			str += " "+standardCond;			
@@ -141,8 +141,9 @@ public class QueryMeasurement {
 	 */
 	public String formSQLNonAggCondOverMDBView(MDB mdb, String entityNameCond, NonAggSubQueryReturn returnStru) throws Exception
 	{
-		//String sql= "SELECT DISTINCT did";
-		String sql= "SELECT did";
+		//Here, we must have DISTINCT, otherwith mdb context search cannot be finished!!!
+		String sql= "SELECT DISTINCT did";
+		//String sql= "SELECT did";
 		if(returnStru.m_include_record_id) sql +=",record_id";
 		if(returnStru.m_include_oid) sql +=	",oid";
 		if(returnStru.m_include_mvalue&&(valueCond!=null&&valueCond.trim().length()>0)) 
