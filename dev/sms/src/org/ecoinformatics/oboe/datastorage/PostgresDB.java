@@ -9,10 +9,12 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -279,6 +281,68 @@ public class PostgresDB {
 		return contextOTypeLabels;
 	}
 	
+	
+	/**
+	 * Get the direct context obs type labels for dataset with id annotId
+	 * 
+	 * @param annotId
+	 * @param contextTbName
+	 * @return
+	 * @throws SQLException
+	 */
+	public Map<String,List<String>> retrieveDirectContextTypeLabels(Long annotId, String contextTbName, String identifying) 
+		throws SQLException
+	{
+		//List<String> contextOTypeLabels = new ArrayList<String>();
+		
+		Map<String,List<String>> directOtypelabel2cotypelabel = new TreeMap<String, List<String> >();
+		
+		String sql = "SELECT otypeLabel,context_otypelabel FROM " + contextTbName + 
+			" WHERE is_identifying="+identifying+" AND annot_id="+annotId+";";
+		
+		System.out.println(Debugger.getCallerPosition()+"sql= "+sql);
+		Statement stmt = m_conn.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+	
+		while(rs.next()){
+			String otypelabel = rs.getString(1).trim();
+			String contextOtypelabel = rs.getString(2).trim();
+			
+			List<String> contextOTypeLabels = directOtypelabel2cotypelabel.get(otypelabel);
+			if(contextOTypeLabels==null){
+				contextOTypeLabels = new ArrayList<String>();
+				directOtypelabel2cotypelabel.put(otypelabel, contextOTypeLabels);
+			}
+			contextOTypeLabels.add(contextOtypelabel);
+		}
+		rs.close();
+		stmt.close();
+		
+		return directOtypelabel2cotypelabel;
+	}
+	
+	public void insertAllCT(long tbId, Map<String,List<String>> newOneTbOtypelabel2cotypelabel, 
+			String newContxtTbName,boolean identifying) 
+		throws SQLException
+	{
+		
+		final String insertAllContextType ="INSERT INTO " +newContxtTbName + " VALUES(?,?,?,?,?);";
+		PreparedStatement pstmtContext = m_conn.prepareStatement(insertAllContextType);
+		
+		for(String obsTypeLabel: newOneTbOtypelabel2cotypelabel.keySet()){
+			List<String> contextObsTypeList = newOneTbOtypelabel2cotypelabel.get(obsTypeLabel);
+			for(String contextOTypeLabel: contextObsTypeList){
+				pstmtContext.setLong(1, tbId);
+				pstmtContext.setString(2, obsTypeLabel);
+				pstmtContext.setString(3, contextOTypeLabel);
+				pstmtContext.setString(4, org.ecoinformatics.oboe.Constant.DEFAULT_RELATIONSHIP);
+				pstmtContext.setBoolean(5, identifying);	
+			}
+			
+			pstmtContext.execute();
+		}
+	}
+	
 	/**
 	 * Given the entity type, retrie
 	 * ve <annot_id, otypelabel> such that the obs.entity name is the given one
@@ -427,6 +491,34 @@ public class PostgresDB {
 		System.out.println(Debugger.getCallerPosition()+"EXECUTE: "+cleaanOTsql);
 		stmt.execute(cleaanOTsql);
 		
+	}
+	
+	/**
+	 * Get all the raw data table ids
+	 * @return
+	 * @throws Exception 
+	 */
+	public List<Long> getAllTbIds() throws Exception
+	{
+		List<Long> tbidList = new ArrayList<Long>();
+		
+		String sql = "SELECT did FROM data_annotation;";
+		
+		if(m_conn==null){
+			open();
+		}
+		
+		Statement stmt = m_conn.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		while(rs.next()){
+			Long tbid = rs.getLong(1);
+			tbidList.add(tbid);
+		}
+		rs.close();
+		stmt.close();
+		
+		return tbidList;
 	}
 	
 }

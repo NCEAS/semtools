@@ -517,31 +517,4 @@ public class RawDB extends PostgresDB{
 		return resultSet;
 	}
 	
-	/**
-	 * Get all the raw data table ids
-	 * @return
-	 * @throws Exception 
-	 */
-	public List<Long> getAllTbIds() throws Exception
-	{
-		List<Long> tbidList = new ArrayList<Long>();
-		
-		String sql = "SELECT did FROM data_annotation;";
-		
-		if(m_conn==null){
-			open();
-		}
-		
-		Statement stmt = m_conn.createStatement();
-		ResultSet rs = stmt.executeQuery(sql);
-		
-		while(rs.next()){
-			Long tbid = rs.getLong(1);
-			tbidList.add(tbid);
-		}
-		rs.close();
-		stmt.close();
-		
-		return tbidList;
-	}
 }

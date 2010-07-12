@@ -394,15 +394,18 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 		returnStru.m_include_record_id = resultWithRid;
 		returnStru.m_include_oid = true;
 		String nonAggQuerySql = "";
+		boolean hasNonAggMeas = false;
 		if(nonAggMeas.size()>0){
 			nonAggQuerySql = formSqlOneCNFNonAggregateMDB(mdb,m_entityTypeNameCond,nonAggMeas,returnStru);
+			hasNonAggMeas = true;
 		}
 		
 		System.out.println(Debugger.getCallerPosition()+"result size="+result.size());
 		
 		//2. Execute each aggregate query measurements and "AND" their results
 		if((nonAggMeas.size()==0)||(nonAggMeas.size()>0&&result.size()>0)){
-			for(QueryMeasurement qm: aggMeas){
+			for(int i=0; i< aggMeas.size();i++){
+				QueryMeasurement qm = aggMeas.get(i);
 				//FIXME: will it has efficiency problem? 
 				//The embedded CNF and query is performed |aggMeas| times. 
 				//CHECK THIS with big dataset
@@ -410,8 +413,14 @@ public class OMQueryBasic implements Comparable<OMQueryBasic>{
 				//no matter the resultWithRid is true or false, the group by need to be performed on (did,oid)
 				//So, when there is aggregate condition, the non-aggregate results should return oid 
 				Set<OboeQueryResult> oneAggQueryResult = 
-					qm.executeAggQueryMDB(mdb, nonAggQuerySql,nonAggQueryResult,resultWithRid); 
-				result.retainAll(oneAggQueryResult);
+					qm.executeAggQueryMDB(mdb, nonAggQuerySql,nonAggQueryResult,resultWithRid);
+				
+				if(hasNonAggMeas){
+					result.retainAll(oneAggQueryResult);
+				}else{
+					if(i==0) result.addAll(oneAggQueryResult);
+					else result.retainAll(oneAggQueryResult);
+				}
 			}
 		}
 		

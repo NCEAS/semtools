@@ -401,6 +401,7 @@ public class QueryMeasurement {
 			//group by clause
 			List<String> groupByAttName = annotId2KeyAttrList.get(tbId);
 			String groupByAttList = getGroupByAttList(groupByAttName);
+			System.out.println(Debugger.getCallerPosition()+"groupByAttName="+groupByAttName);
 			
 			String sql = "";
 			if(groupByAttName!=null&&groupByAttName.size()>0){
