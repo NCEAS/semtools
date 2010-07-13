@@ -336,10 +336,10 @@ public class PostgresDB {
 				pstmtContext.setString(2, obsTypeLabel);
 				pstmtContext.setString(3, contextOTypeLabel);
 				pstmtContext.setString(4, org.ecoinformatics.oboe.Constant.DEFAULT_RELATIONSHIP);
-				pstmtContext.setBoolean(5, identifying);	
+				pstmtContext.setBoolean(5, identifying);
+				
+				pstmtContext.execute();
 			}
-			
-			pstmtContext.execute();
 		}
 	}
 	

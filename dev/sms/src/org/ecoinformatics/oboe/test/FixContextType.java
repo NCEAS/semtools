@@ -7,11 +7,17 @@ import java.util.TreeMap;
 import java.util.Set;
 import java.util.TreeSet;
 import org.ecoinformatics.oboe.datastorage.RawDB;
+import org.ecoinformatics.oboe.util.Debugger;
 
 public class FixContextType {
 
 	public static void main(String[] args) throws Exception 
 	{
+		if(args.length!=1){
+			System.out.println(Debugger.getCallerPosition()+"Usage:./FixContextType <dbname>");
+			return;
+		}
+		
 		String dbName = args[0];
 		
 		RawDB rawdb = new RawDB(dbName);
@@ -29,20 +35,24 @@ public class FixContextType {
 				List<String> directCotypelabellist = directOneTbOtypelabel2cotypelabel.get(otypeLabel);
 				Set<String> allCoTypeLabelSet = new TreeSet<String>();
 				
-				while(directCotypelabellist!=null&&directCotypelabellist.size()>0){
-					allCoTypeLabelSet.addAll(directCotypelabellist);
+				List<String> nextCotypelabellist = new ArrayList<String>();
+				nextCotypelabellist.addAll(directCotypelabellist);
 				
-					List<String> nextCotypelabellist = new ArrayList<String>();
-					for(int j=0;j<directCotypelabellist.size();j++){
-						String directCotypeLabel = directCotypelabellist.get(j);
+				while(nextCotypelabellist!=null&&nextCotypelabellist.size()>0){
+					allCoTypeLabelSet.addAll(nextCotypelabellist);
+					
+					List<String> newNextCotypelabellist = new ArrayList<String>();
+					
+					for(int j=0;j<nextCotypelabellist.size();j++){
+						String directCotypeLabel = nextCotypelabellist.get(j);
 						List<String> OneNextCotypelabellist = directOneTbOtypelabel2cotypelabel.get(directCotypeLabel);
 						if(OneNextCotypelabellist!=null){
-							nextCotypelabellist.addAll(OneNextCotypelabellist);
+							newNextCotypelabellist.addAll(OneNextCotypelabellist);
 						}
 					}
 					
-					directCotypelabellist.clear();
-					directCotypelabellist.addAll(nextCotypelabellist);
+					nextCotypelabellist.clear();
+					nextCotypelabellist.addAll(newNextCotypelabellist);
 				}
 				List<String> allCoTypeLabelList = new ArrayList<String>();
 				allCoTypeLabelList.addAll(allCoTypeLabelSet);
@@ -54,5 +64,7 @@ public class FixContextType {
 			Map<String,List<String>> directOneTbOtypelabel2cotypelabelFalse = rawdb.retrieveDirectContextTypeLabels(tbId,oldtb,"'f'");
 			rawdb.insertAllCT(tbId,directOneTbOtypelabel2cotypelabelFalse,newtb,false);
 		}
+		
+		System.out.println(Debugger.getCallerPosition()+"Finish....");
 	}
 }
