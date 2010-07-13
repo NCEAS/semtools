@@ -34,10 +34,8 @@
   <taxonRankSearchPath>taxonomicClassification/taxonRankName</taxonRankSearchPath>
   <taxonValueSearchPath>taxonomicClassification/taxonRankValue</taxonValueSearchPath>
   <ontologies>
-  	<!--
   	<logicalURI>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl</logicalURI>
   	<physicalURI>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl</physicalURI>
-  	-->
   	<logicalURI>https://code.ecoinformatics.org/code/sonet/trunk/ontologies/oboe-trait.owl</logicalURI>
   	<physicalURI>https://code.ecoinformatics.org/code/sonet/trunk/ontologies/oboe-trait.owl</physicalURI>
   </ontologies>
@@ -52,11 +50,12 @@
   	<classURI>http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Protocol</classURI>
   	<className>org.ecoinformatics.sms.annotation.Measurement</className>
   	<classURI>http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement</classURI>
+  	<className>org.ecoinformatics.sms.annotation.Relationship</className>
+  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Relationship</classURI>
+<!--
   	<className>org.ecoinformatics.sms.annotation.Context</className>
   	<classURI>http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Characteristic</classURI>
-  	<!-- Relationship can probably be removed -->
-  	<className>org.ecoinformatics.sms.annotation.Relationship</className>
-  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0beta#Relationship</classURI>
+-->
   </oboeClasses>
   <vocabularies>
   	<vocabulary>KNBRegistry</vocabulary>

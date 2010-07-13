@@ -46,6 +46,7 @@ import javax.swing.JPanel;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.sms.annotation.Observation;
+import org.ecoinformatics.sms.annotation.Relationship;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.ui.OntologyClassField;
 
@@ -102,9 +103,9 @@ public class ContextPanel extends JPanel {
 
 		// relationship
 		contextRelationship = OntologyClassField.makeLabel("<relationship>", false, null);
-		contextRelationship.setFilterClass(Annotation.OBOE_CLASSES.get(Context.class)); // odd because this is not actually an OntologyClass subclass, but the mapping holds
+		contextRelationship.setFilterClass(Annotation.OBOE_CLASSES.get(Relationship.class));
 		WidgetFactory.setPrefMaxSizes(contextRelationship, WizardSettings.WIZARD_CONTENT_LABEL_DIMS);
-		contextPanel.add(OntologyClassField.wrapField(contextRelationship, "Context Characteristic"));
+		contextPanel.add(OntologyClassField.wrapField(contextRelationship));
 		
 		contextPanel.add(WidgetFactory.makeLabel(" the ", false, null));
 		
