@@ -1,0 +1,41 @@
+Story board for annotation process:
+
+Open data package
+Select a column
+Edit
+annotate Characteristic
+	-move ontology browser to the side
+	-enter search term for ontology class
+	-search
+	-select
+annotate Entity (click field)
+	-navigate the tree w/o search
+	-select
+annotate Standard (click field)
+	-search
+	-select
+Apply
+---
+Select graph view
+---
+Save
+---
+Search (by annotation)
+Entity is <superclass>
+Characteristic is <exact class>
+Data package is found!
+
+
+Story board for annotation query 1:
+Annotation->Search Annotations…
+Click 'Match all' (and)
+Entity is <superclass> 
+Add group (or)
+	Unclick 'Match all'
+	Add criteria
+	Characteristic is <A>
+	Add another criteria
+	Characteristic is <B>
+OK
+
+
