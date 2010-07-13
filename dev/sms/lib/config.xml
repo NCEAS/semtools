@@ -53,7 +53,7 @@
   	<className>org.ecoinformatics.sms.annotation.Measurement</className>
   	<classURI>http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement</classURI>
   	<className>org.ecoinformatics.sms.annotation.Context</className>
-  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0/oboe-context.owl#Context</classURI>
+  	<classURI>http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Characteristic</classURI>
   	<!-- Relationship can probably be removed -->
   	<className>org.ecoinformatics.sms.annotation.Relationship</className>
   	<classURI>http://ecoinformatics.org/oboe/oboe.1.0beta#Relationship</classURI>
