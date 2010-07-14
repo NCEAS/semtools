@@ -25,7 +25,6 @@ Entity is <superclass>
 Characteristic is <exact class>
 Data package is found!
 
-
 Story board for annotation query 1:
 Annotation->Search Annotations…
 Click 'Match all' (and)
@@ -37,5 +36,26 @@ Add group (or)
 	Add another criteria
 	Characteristic is <B>
 OK
+
+
+
+Illustrate
+-----------
+1) Metadata versus annotation search -- contrast precision
+	Keywords:
+		-search for 'nitrogen' (7 matches)
+		-search for 'leaf nitrogen' (2 matches)
+	Annotation (increased precision):
+		-search Measurement='Leaf_Nitrogen_Content' (5 matches)
+		-search Measurement='Leaf_Nitrogen_Content' and Entity='Grass' (1 match)
+	
+2) Term expansion (increased recall):
+	-search Measurement='Leaf_Trait' (TBD matches - potentially large)
+
+3) Search context
+	-search Observation Entity='FertilizationTreatment' provides context for Observation Entity='Leaf' (2 matches)
+	
+4) Search showing specific combinations of measures
+	-search Measurement='Leaf_Nitrogen_Content' and Measurement='Leaf_Area' and Entity='Leaf' (TBD matches)
 
 
