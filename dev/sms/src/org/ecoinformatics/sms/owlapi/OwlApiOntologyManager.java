@@ -74,12 +74,14 @@ public class OwlApiOntologyManager implements OntologyManager {
 		String classURI = ontologyClass.getURI();
 		try {
 			OWLOntology ontology = manager.getOntology(IRI.create(ontologyClass.getOntology().getURI()));
-			Iterator<OWLClass> classIter = ontology.getClassesInSignature().iterator();
-			while (classIter.hasNext()) {
-				OWLClass owlClass = classIter.next();
-				String owlClassURI = owlClass.getIRI().toURI().toString();
-				if (owlClassURI.equals(classURI)) {
-					return owlClass;
+			if (ontology != null) {
+				Iterator<OWLClass> classIter = ontology.getClassesInSignature().iterator();
+				while (classIter.hasNext()) {
+					OWLClass owlClass = classIter.next();
+					String owlClassURI = owlClass.getIRI().toURI().toString();
+					if (owlClassURI.equals(classURI)) {
+						return owlClass;
+					}
 				}
 			}
 			
@@ -97,7 +99,7 @@ public class OwlApiOntologyManager implements OntologyManager {
 	 * @see org.ecoinformatics.sms.OntologyManager#getNamedClassLabel(org.ecoinformatics.sms.ontology.OntologyClass)
 	 */
 	public String getNamedClassLabel(OntologyClass c) {
-		List<String> labels =getNamedClassLabels(c);
+		List<String> labels = getNamedClassLabels(c);
 		StringBuffer sb = new StringBuffer();
 		for (String label : labels) {
 			sb.append(label);
@@ -124,11 +126,13 @@ public class OwlApiOntologyManager implements OntologyManager {
 		}
 
 		List<String> labels = new ArrayList<String>();
-		for (OWLAnnotation annotation : owlClass.getAnnotations(ontology)) {
-			OWLAnnotationValue value = annotation.getValue();
-			if (value instanceof OWLLiteral) {
-				OWLLiteral literal = (OWLLiteral) value;
-				labels.add(literal.getLiteral());
+		if (owlClass != null) {
+			for (OWLAnnotation annotation : owlClass.getAnnotations(ontology)) {
+				OWLAnnotationValue value = annotation.getValue();
+				if (value instanceof OWLLiteral) {
+					OWLLiteral literal = (OWLLiteral) value;
+					labels.add(literal.getLiteral());
+				}
 			}
 		}
 
@@ -457,15 +461,17 @@ public class OwlApiOntologyManager implements OntologyManager {
 			e.printStackTrace();
 		}
 		StringBuffer labels = new StringBuffer();
-		for (OWLAnnotation annotation : owlOnt.getAnnotations()) {
-			OWLAnnotationProperty property = annotation.getProperty();
-			if (!property.getIRI().equals(OWLRDFVocabulary.RDFS_LABEL.getIRI())) {
-				continue;
-			}
-			OWLAnnotationValue value = annotation.getValue();
-			if (value instanceof OWLLiteral) {
-				OWLLiteral literal = (OWLLiteral) value;
-				labels.append(literal.getLiteral());
+		if (owlOnt != null) {
+			for (OWLAnnotation annotation : owlOnt.getAnnotations()) {
+				OWLAnnotationProperty property = annotation.getProperty();
+				if (!property.getIRI().equals(OWLRDFVocabulary.RDFS_LABEL.getIRI())) {
+					continue;
+				}
+				OWLAnnotationValue value = annotation.getValue();
+				if (value instanceof OWLLiteral) {
+					OWLLiteral literal = (OWLLiteral) value;
+					labels.append(literal.getLiteral());
+				}
 			}
 		}
 
