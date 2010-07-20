@@ -40,7 +40,6 @@ import org.apache.cayenne.conf.DefaultConfiguration;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.commons.lang.StringUtils;
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.AnnotationManager;
 import org.ecoinformatics.sms.annotation.Annotation;
@@ -421,8 +420,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
    }
 
    public List<Annotation> getMatchingAnnotations(Criteria criteria) {
-	   //let the fun begin!
-	   List<Annotation> results = new ArrayList<Annotation>();
 	   
 	   // for path splits
 	   Map<String, List<String>> aliases = new HashMap<String, List<String>>();
@@ -430,26 +427,9 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   // get the expression string
 	   Expression expression = criteriaAsExpression(criteria, criteria.isSame(), aliases);
 	   
-	   ObjectContext context = getDataContext();
-	   SelectQuery query = new SelectQuery(DbAnnotation.class, expression);
+	   List<Annotation> results = performAnnotationQuery(expression, aliases);
 	   
-	   // register the path alias for splitting
-	   for (Entry<String, List<String>> alias: aliases.entrySet()) {
-		   query.aliasPathSplits(alias.getKey(), alias.getValue().toArray(new String[0]));
-	   }
-	   
-	   List<DbAnnotation> values = context.performQuery(query);
-	   for (DbAnnotation dbAnnotation: values) {
-		   try {
-			   results.add(getAnnotation(dbAnnotation));
-			} catch (AnnotationException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-      }
-     
-      return results;
+	   return results;
    }
 
 
@@ -465,13 +445,26 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
            List<OntologyClass> characteristics, List<OntologyClass> standards,
            List<OntologyClass> protocols, List<Triple> contexts) {
 	   
-	   List<Annotation> results = new ArrayList<Annotation>();
+	   // for path splits
+	   Map<String, List<String>> aliases = new HashMap<String, List<String>>();
 	   
 	   // using "or" instead of "and" for more results, even though these are not ranked yet.
-	   Expression combined = createExpression(entities, characteristics, standards, protocols, contexts, Criteria.IS, false, null);
+	   Expression expression = createExpression(entities, characteristics, standards, protocols, contexts, Criteria.IS, false, aliases);
 	   
+	   // do the query
+	   List<Annotation> results = performAnnotationQuery(expression, aliases);
+	   
+	   return results;
+   }
+   
+   private List<Annotation> performAnnotationQuery(Expression expression, Map<String, List<String>> aliases) {
+	   List<Annotation> results = new ArrayList<Annotation>();
 	   ObjectContext context = getDataContext();
-	   SelectQuery query = new SelectQuery(DbAnnotation.class, combined);
+	   SelectQuery query = new SelectQuery(DbAnnotation.class, expression);
+	   // register the path alias for splitting
+	   for (Entry<String, List<String>> alias: aliases.entrySet()) {
+		   query.aliasPathSplits(alias.getKey(), alias.getValue().toArray(new String[0]));
+	   }
 	   List<DbAnnotation> values = context.performQuery(query);
 	   for (DbAnnotation dbAnnotation: values) {
 		   try {
@@ -482,8 +475,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 				e.printStackTrace();
 			}
       }
-     
-      return results;
+	   return results;
    }
 
    /**
@@ -517,25 +509,11 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
    }
 
    /**
-    * Get entities used in managed annotations
-    * @param addSuperclasses if true, include all superclasses of active 
-    * entities
-    * @return list of entities
-    */
-   public List<OntologyClass> getActiveEntities(boolean addSuperclasses) {
-      List<OntologyClass> results = getActiveEntities();
-      if(!addSuperclasses)
-         return results;
-      addSuperclasses(results);
-      return results;
-   }
-
-   /**
     * Get characteristics used in managed annotations
     * @return list of characteristics
     */
    public List<OntologyClass> getActiveCharacteristics() {
-      List<OntologyClass> results = new ArrayList();
+      List<OntologyClass> results = new ArrayList<OntologyClass>();
 		
       ObjectContext context = getDataContext();
       
@@ -560,26 +538,11 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
    }
 
    /**
-    * Get characteristics used in managed annotations
-    * @param addSuperclasses if true, include all superclasses of active 
-    * characteristics
-    * @return list of characteristics
-    */
-   public List<OntologyClass> getActiveCharacteristics(
-           boolean addSuperclasses) {
-      List<OntologyClass> results = getActiveCharacteristics();
-      if(!addSuperclasses)
-         return results;
-      addSuperclasses(results);
-      return results;
-   }
-
-   /**
     * Get measurement standards used in managed annotations
     * @return list of measurement standards
     */
    public List<OntologyClass> getActiveStandards() {
-      List<OntologyClass> results = new ArrayList();
+      List<OntologyClass> results = new ArrayList<OntologyClass>();
 		
       ObjectContext context = getDataContext();
 		// look up the observation entities
@@ -603,20 +566,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
    }
 
    /**
-    * Get standards used in managed annotations
-    * @param addSuperclasses if true, include all superclasses of active 
-    * standards
-    * @return list of standards
-    */
-   public List<OntologyClass> getActiveStandards(boolean addSuperclasses) {
-      List<OntologyClass> results = getActiveStandards();
-      if(!addSuperclasses)
-         return results;
-      addSuperclasses(results);
-      return results;
-   }
-
-   /**
     * Get entities used in managed annotations having a measurement with a 
     * characteristic and standard in the given characteristics and standards
     * @param characteristics characteristics to look for
@@ -630,13 +579,11 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
               (standards == null || standards.isEmpty()))
          return getActiveEntities();
       
-      List<OntologyClass> results = new ArrayList();
+      List<OntologyClass> results = new ArrayList<OntologyClass>();
       
-      String charExpression = createExpressionString(characteristics, "measurements.characteristics.type", "=", "or");
-      String stdExpression = createExpressionString(characteristics, "measurements.standard", "=", "or");
-      String combined = StringUtils.join(new String[] {charExpression, stdExpression}, " or ");
-     
-      Expression expression = Expression.fromString(combined);
+      Expression charExpression = ExpressionFactory.inExp("measurements.characteristics.type", characteristics);
+      Expression stdExpression = ExpressionFactory.inExp("measurements.standard", standards);
+      Expression expression = charExpression.andExp(stdExpression);
      
       ObjectContext context = getDataContext();
 	  SelectQuery query = new SelectQuery(DbObservation.class, expression);
@@ -660,88 +607,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
    }
 
    /**
-    * Get entities used in managed annotations having a measurement with the 
-    * give characteristic and standard 
-    * @param characteristic the characteristic to look for
-    * @param standard the standard to look for
-    * @return list of matching entities
-    */
-   public List<OntologyClass> getActiveEntities(OntologyClass characteristic,
-           OntologyClass standard) {
-      List<OntologyClass> characteristics = new ArrayList();
-      if(characteristic != null)
-         characteristics.add(characteristic);
-      List<OntologyClass> standards = new ArrayList();
-      if(standard != null)
-         standards.add(standard);
-      return getActiveEntities(characteristics, standards);
-   }
-
-   /**
-    * Get entities used in managed annotations having a measurement with a 
-    * characteristic and standard in the given characteristics and standards
-    * @param characteristics characteristics to look for
-    * @param standards standards to look for
-    * @param searchSubclasses search using subclasses of the given classes
-    * @param addSuperclasses add superclasses to found entities
-    * @return list of matching entities
-    */
-   public List<OntologyClass> getActiveEntities(List<OntologyClass> characteristics,
-           List<OntologyClass> standards, boolean searchSubclasses,
-           boolean addSuperclasses) {
-      if(characteristics == null)
-         characteristics = new ArrayList();
-      if(standards == null)
-         standards = new ArrayList();
-      List<OntologyClass> result = new ArrayList();
-      if(!searchSubclasses)
-         result = getActiveEntities(characteristics, standards);
-      else {
-         List<OntologyClass> charSubs = new ArrayList(characteristics);
-         addSubclasses(charSubs);
-         List<OntologyClass> stdSubs = new ArrayList(standards);
-         addSubclasses(stdSubs);
-         result = getActiveEntities(charSubs, stdSubs);
-      }
-      if(!addSuperclasses)
-         return result;
-      addSuperclasses(result);
-      return result;
-   }
-
-   /**
-    * Get entities used in managed annotations having a measurement with the 
-    * give characteristic and standard 
-    * @param characteristic the characteristic to look for
-    * @param standard the standard to look for
-    * @param searchSubclasses search using subclasses of the given classes
-    * @param addSuperclasses add superclasses to found entities
-    * @return list of matching entities
-    */
-   public List<OntologyClass> getActiveEntities(OntologyClass characteristic,
-           OntologyClass standard, boolean searchSubclasses,
-           boolean addSuperclasses) {
-      List<OntologyClass> result = new ArrayList();
-      if(!searchSubclasses)
-         result = getActiveEntities(characteristic, standard);
-      else {
-         List<OntologyClass> charSubs = new ArrayList();
-         if(characteristic != null)
-            charSubs.add(characteristic);
-         addSubclasses(charSubs);
-         List<OntologyClass> stdSubs = new ArrayList();
-         if(standard != null)
-            stdSubs.add(standard);
-         addSubclasses(stdSubs);
-         result = getActiveEntities(charSubs, stdSubs);
-      }
-      if(!addSuperclasses)
-         return result;
-      addSuperclasses(result);
-      return result;
-   }
-
-   /**
     * Get characteristics used in managed annotations having a measurement 
     * with an entity and standard in the given entities and standards
     * @param entities entities to look for
@@ -754,16 +619,14 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
       if((entities == null || entities.isEmpty()) &&
               (standards == null || standards.isEmpty()))
          return getActiveCharacteristics();
-      List<OntologyClass> results = new ArrayList();
+      List<OntologyClass> results = new ArrayList<OntologyClass>();
       
-      String entityExpression = createExpressionString(entities, "measurement.observation.entity", "=", "or");
-      String charExpression = createExpressionString(standards, "measurement.standard", "=", "or");
-      String combined = StringUtils.join(new String[] {entityExpression, charExpression}, " or ");
+      Expression entityExpression = ExpressionFactory.inExp("measurement.observation.entity", entities);
+      Expression charExpression = ExpressionFactory.inExp("measurement.standard", standards);
      
-      Expression expression = Expression.fromString(combined);
+      Expression expression = entityExpression.andExp(charExpression);
       
       ObjectContext context = getDataContext();
-      
 	  SelectQuery query = new SelectQuery(DbCharacteristic.class, expression);
       List<DbCharacteristic> values = context.performQuery(query);
       if (values != null) {
@@ -785,88 +648,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
    }
 
    /**
-    * Get characteristics used in managed annotations having a measurement 
-    * with an entity and standard in the given entities and standards
-    * @param entities entities to look for
-    * @param standards standards to look for
-    * @param searchSubclasses search using subclasses of the given classes
-    * @param addSuperclasses add superclasses to found entities
-    * @return list of matching characteristics
-    */
-   public List<OntologyClass> getActiveCharacteristics(
-           List<OntologyClass> entities, List<OntologyClass> standards,
-           boolean searchSubclasses, boolean addSuperclasses) {
-      List<OntologyClass> result = new ArrayList();
-      if(entities == null)
-         entities = new ArrayList();
-      if(standards == null)
-         standards = new ArrayList();
-      if(!searchSubclasses)
-         result = getActiveCharacteristics(entities, standards);
-      else {
-         List<OntologyClass> entSubs = new ArrayList(entities);
-         addSubclasses(entSubs);
-         List<OntologyClass> stdSubs = new ArrayList(standards);
-         addSubclasses(stdSubs);
-         result = getActiveCharacteristics(entSubs, stdSubs);
-      }
-      if(!addSuperclasses)
-         return result;
-      addSuperclasses(result);
-      return result;
-   }
-
-   /**
-    * Get characteristics used in managed annotations with a measurement having 
-    * the given entity and standard 
-    * @param entity the entity to look for
-    * @param standard the standard to look for
-    * @return list of matching characteristics
-    */
-   public List<OntologyClass> getActiveCharacteristics(OntologyClass entity,
-           OntologyClass standard) {
-      List<OntologyClass> entities = new ArrayList();
-      if(entity != null)
-         entities.add(entity);
-      List<OntologyClass> standards = new ArrayList();
-      if(standard != null)
-         standards.add(standard);
-      return getActiveCharacteristics(entities, standards);
-   }
-
-   /**
-    * Get characteristics used in managed annotations with a measurement having 
-    * the given entity and standard 
-    * @param entity the entity to look for
-    * @param standard the standard to look for
-    * @param searchSubclasses search using subclasses of the given classes
-    * @param addSuperclasses add superclasses to found entities
-    * @return list of matching characteristics
-    */
-   public List<OntologyClass> getActiveCharacteristics(OntologyClass entity,
-           OntologyClass standard, boolean searchSubclasses,
-           boolean addSuperclasses) {
-      List<OntologyClass> result = new ArrayList();
-      if(!searchSubclasses)
-         result = getActiveCharacteristics(entity, standard);
-      else {
-         List<OntologyClass> entSubs = new ArrayList();
-         if(entity != null)
-            entSubs.add(entity);
-         addSubclasses(entSubs);
-         List<OntologyClass> stdSubs = new ArrayList();
-         if(standard != null)
-            stdSubs.add(standard);
-         addSubclasses(stdSubs);
-         result = getActiveCharacteristics(entSubs, stdSubs);
-      }
-      if(!addSuperclasses)
-         return result;
-      addSuperclasses(result);
-      return result;
-   }
-
-   /**
     * Get standards used in managed annotations having a measurement 
     * with an entity and characteristic in the given entities and 
     * characteristics
@@ -880,13 +661,12 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
       if((entities == null || entities.isEmpty()) &&
               (characteristics == null || characteristics.isEmpty()))
          return getActiveStandards();
-      List<OntologyClass> results = new ArrayList();
+      List<OntologyClass> results = new ArrayList<OntologyClass>();
       
-      String entityExpression = createExpressionString(entities, "observation.entity", "=", "or");
-      String charExpression = createExpressionString(characteristics, "characteristics.type", "=", "or");
-      String combined = StringUtils.join(new String[] {entityExpression, charExpression}, " or ");
-     
-      Expression expression = Expression.fromString(combined);
+      Expression entityExpression = ExpressionFactory.inExp("observation.entity", entities);
+      Expression charExpression = ExpressionFactory.inExp("characteristics.type", characteristics);
+      Expression expression = entityExpression.andExp(charExpression);
+      
       ObjectContext context = getDataContext();
 	  SelectQuery query = new SelectQuery(DbMeasurement.class, expression);
       List<DbMeasurement> values = context.performQuery(query);
@@ -907,88 +687,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
       return results;
    }
 
-   /**
-    * Get standards used in managed annotations having a measurement 
-    * with an entity and characteristic in the given entities and 
-    * characteristics
-    * @param entities entities to look for
-    * @param characteristics characteristics to look for
-    * @param searchSubclasses search using subclasses of the given classes
-    * @param addSuperclasses add superclasses to found entities
-    * @return list of matching standards
-    */
-   public List<OntologyClass> getActiveStandards(
-           List<OntologyClass> entities, List<OntologyClass> characteristics,
-           boolean searchSubclasses, boolean addSuperclasses) {
-      List<OntologyClass> result = new ArrayList();
-      if(entities == null)
-         entities = new ArrayList();
-      if(characteristics == null)
-         characteristics = new ArrayList();
-      if(!searchSubclasses)
-         result = getActiveStandards(entities, characteristics);
-      else {
-         List<OntologyClass> entSubs = new ArrayList(entities);
-         addSubclasses(entSubs);
-         List<OntologyClass> charSubs = new ArrayList(characteristics);
-         addSubclasses(charSubs);
-         result = getActiveStandards(entSubs, charSubs);
-      }
-      if(!addSuperclasses)
-         return result;
-      addSuperclasses(result);
-      return result;
-   }
-
-   /**
-    * Get standards used in managed annotations with an observation having
-    * the given entity and measurement characteristic
-    * @param entity the entity to look for
-    * @param characteristic the characteristic to look for
-    * @return list of matching standards
-    */
-   public List<OntologyClass> getActiveStandards(OntologyClass entity,
-           OntologyClass characteristic) {
-      List<OntologyClass> entities = new ArrayList();
-      if(entity != null)
-         entities.add(entity);
-      List<OntologyClass> characteristics = new ArrayList();
-      if(characteristic != null)
-         characteristics.add(characteristic);
-      return getActiveStandards(entities, characteristics);
-   }
-
-   /**
-    * Get standards used in managed annotations with an observation having
-    * the given entity and measurement characteristic
-    * @param entity the entity to look for
-    * @param characteristic the characteristic to look for
-    * @param searchSubclasses search using subclasses of the given classes
-    * @param addSuperclasses add superclasses to found entities
-    * @return list of matching standards
-    */
-   public List<OntologyClass> getActiveStandards(OntologyClass entity,
-           OntologyClass characteristic, boolean searchSubclasses,
-           boolean addSuperclasses) {
-      List<OntologyClass> result = new ArrayList();
-      if(!searchSubclasses)
-         result = getActiveStandards(entity, characteristic);
-      else {
-         List<OntologyClass> entSubs = new ArrayList();
-         if(entity != null)
-            entSubs.add(entity);
-         addSubclasses(entSubs);
-         List<OntologyClass> charSubs = new ArrayList();
-         if(characteristic != null)
-            charSubs.add(characteristic);
-         addSubclasses(charSubs);
-         result = getActiveStandards(entSubs, charSubs);
-      }
-      if(!addSuperclasses)
-         return result;
-      addSuperclasses(result);
-      return result;
-   }
    
    /** 
     * This method is called recursively on the subcriteria, building up a weighted return
@@ -1062,7 +760,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 			// now construct the expression from the given class lists
 			String operator = criteria.getCondition();
 
-			// TODO: handle same/different switch
+			// generate the expression for this single criteria (that may include multiple aspects)
 			expression = 
 				createExpression(
 					entities, 
@@ -1142,7 +840,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   Expression characterExpression = createExpressionForClasses(characteristics, alias + ".characteristics.type", equalityOperator);
 	   Expression standardExpression = createExpressionForClasses(standards, alias + ".standard", equalityOperator);
 	   Expression protocolExpression = createExpressionForClasses(protocols, alias + ".protocol", equalityOperator);
-	   Expression contextExpression = null; //createContextExpressionString(contexts, "or");
+	   Expression contextExpression = createContextExpression(contexts, false);
 	   
 	   //TODO handle "and"
 	   if (entityExpression != null) {
@@ -1185,26 +883,6 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   
    }
    
-   private String createExpressionString(List<OntologyClass> classes, String path, String relationalOperator, String conditionalOperator) {
-	   StringBuffer expression = new StringBuffer();
-	   if (classes != null && !classes.isEmpty()) {
-		   expression.append("(");
-		   Iterator<OntologyClass> iter = classes.iterator();
-		   while (iter.hasNext()) {
-			   OntologyClass oc = iter.next();
-			   expression.append(path + " " + relationalOperator + " '");
-			   expression.append(oc.getURI());
-			   expression.append("'");
-			   if (iter.hasNext()) {
-				   expression.append(" " + conditionalOperator + " ");
-			   }
-		   }
-		   expression.append(")");
-		   return expression.toString();
-	   }
-	   return null;
-   }
-   
    private Expression createExpressionForClasses(
 		   List<OntologyClass> classes, 
 		   String path, 
@@ -1229,52 +907,38 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   return null;
    }
    
-   private String createContextExpressionString(List<Triple> contextTriples, String operator) {
-	   StringBuffer expression = new StringBuffer();
+   private Expression createContextExpression(List<Triple> contextTriples, boolean matchAll) {
+	   Expression expression = null;
+	   
 	   if (contextTriples != null && !contextTriples.isEmpty()) {
-		   expression.append("(");
 		   Iterator<Triple> iter = contextTriples.iterator();
 		   while (iter.hasNext()) {
+			   Expression contextExpression = ExpressionFactory.expTrue();
 			   Triple contextTriple = iter.next();
-			   
-			   List<String> terms = new ArrayList<String>();
-			   StringBuffer aTerm = new StringBuffer();
-			   StringBuffer bTerm = new StringBuffer();
-			   StringBuffer cTerm = new StringBuffer();
-
 			   if (contextTriple.a != null) {
-				   aTerm.append("observations.contexts.observation.entity = '");
-				   aTerm.append(contextTriple.a.getURI());
-				   aTerm.append("'");
-				   terms.add(aTerm.toString());
+				   contextExpression.andExp(ExpressionFactory.matchExp("observations.contexts.observation.entity", contextTriple.a.getURI()));
 			   }
 			   if (contextTriple.b != null) {
-				   bTerm.append("observations.contexts.relationship = '");
-				   bTerm.append(contextTriple.b.getURI());
-				   bTerm.append("'");
-				   terms.add(bTerm.toString());
+				   contextExpression.andExp(ExpressionFactory.matchExp("observations.contexts.relationship", contextTriple.b.getURI()));
 			   }
 			   if (contextTriple.c != null) {
-				   cTerm.append("observations.contexts.observationB.entity = '");
-				   cTerm.append(contextTriple.c.getURI());
-				   cTerm.append("'");
-				   terms.add(cTerm.toString());
+				   contextExpression.andExp(ExpressionFactory.matchExp("observations.contexts.observationB.entity", contextTriple.c.getURI()));
 			   }
-			   
-			   String combined = StringUtils.join(terms, " and ");
-			   
-			   expression.append("(");
-			   expression.append(combined);
-			   expression.append(")");
-
-			   if (iter.hasNext()) {
-				   expression.append(" " + operator + " ");
+			   // match every triple, or just any?
+			   if (matchAll) {
+				   if (expression == null) {
+					   expression = ExpressionFactory.expTrue();
+				   }
+				   expression.andExp(contextExpression);
+			   } else {
+				   if (expression == null) {
+					   expression = ExpressionFactory.expFalse();
+				   }
+				   expression.orExp(contextExpression);
 			   }
 		   }
-		   expression.append(")");
-		   return expression.toString();
 	   }
-	   return null;
+	   return expression;
    }
 
    public static void main(String[] args) {
