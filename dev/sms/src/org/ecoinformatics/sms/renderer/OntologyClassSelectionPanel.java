@@ -256,23 +256,21 @@ public class OntologyClassSelectionPanel extends JPanel {
 		// create the default root node
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("");
 
-		// don't add ontologies to root - just the top level classes
-		// get each root class of the model
-		Iterator<OntologyClass> rootClasses = SMS.getInstance().getOntologyManager().getNamedClasses().iterator();
-		while (rootClasses.hasNext()) {
-			// build tree from the roots
-			OntologyClass root = rootClasses.next();
-			if (filterSuperClass != null) {
-				if (!filterSuperClass.equals(root)) {
-					continue;
+		if (filterSuperClass != null) {
+			buildTree(filterSuperClass, rootNode);
+		} else {
+			// don't add ontologies to root - just the top level classes
+			// get each root class of the model
+			Iterator<OntologyClass> rootClasses = SMS.getInstance().getOntologyManager().getNamedClasses().iterator();
+			while (rootClasses.hasNext()) {
+				// build tree from the roots
+				OntologyClass root = rootClasses.next();
+				List<OntologyClass> superclasses = SMS.getInstance().getOntologyManager().getNamedSuperclasses(root);
+				// if we don't have a filter class, then make sure we only have top level roots
+				if (superclasses == null || superclasses.isEmpty()) {
+				//if (true) {	
+					buildTree(root, rootNode);
 				}
-			}
-			//List<OntologyClass> superclasses = SMS.getInstance().getOntologyManager().getNamedSuperclasses(root);
-			// used to check that this was a top-level class, but it is not really necessary
-			//if (superclasses == null || superclasses.isEmpty()) {
-			if (true) {	
-				
-				buildTree(root, rootNode);
 			}
 		}
 
