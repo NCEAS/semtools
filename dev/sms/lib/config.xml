@@ -62,6 +62,8 @@
   	<className>edu.ucsb.nceas.morpho.plugins.vocabulary.GenericTreeVocabularyPage</className>
   	<vocabulary>nbii</vocabulary>
   	<className>edu.ucsb.nceas.morpho.plugins.vocabulary.ThesaurusLookupPage</className>
+  	<vocabulary>ontology</vocabulary>
+  	<className>org.ecoinformatics.sms.plugins.pages.OntologyClassSelectionPage</className>
   </vocabularies>
   <nbiiURL>http://nbii-thesaurus.ornl.gov/ws/services/SKOSThesaurusService</nbiiURL>
   <doctype>any</doctype>
