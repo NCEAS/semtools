@@ -23,6 +23,7 @@ public class CriteriaPanelList extends JPanel {
 	
 	private JPanel subcriteriaPanel;
 	private JCheckBox anyAll;
+	private JCheckBox same;
 	
 	private JPanel buttonPanel;
 	private JButton addButton;
@@ -37,6 +38,8 @@ public class CriteriaPanelList extends JPanel {
 		
 		// any all checkbox
 		anyAll = WidgetFactory.makeCheckBox("Match All", false);
+		// same observation
+		same = WidgetFactory.makeCheckBox("Same Obsevation", false);
 
 		// add the subcriteria widgets to the panel
 		subcriteriaPanel = WidgetFactory.makePanel();
@@ -74,6 +77,7 @@ public class CriteriaPanelList extends JPanel {
 		optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.Y_AXIS));
 		optionPanel.setAlignmentY(TOP_ALIGNMENT);
 		optionPanel.add(anyAll);
+		optionPanel.add(same);
 		optionPanel.add(buttonPanel);
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -92,6 +96,7 @@ public class CriteriaPanelList extends JPanel {
 	public Criteria getCriteria() {
 		
 		criteria.setAll(anyAll.isSelected());
+		criteria.setSame(same.isSelected());
 		
 		// if there are subcriteria, add them to the list
 		if (subcriteriaPanel != null && subcriteriaPanel.getComponentCount() > 0) {
@@ -113,6 +118,7 @@ public class CriteriaPanelList extends JPanel {
 		this.criteria = criteria;
 		
 		anyAll.setSelected(criteria.isAll());
+		same.setSelected(criteria.isSame());
 		
 		subcriteriaPanel.removeAll();
 		if (criteria.getSubCriteria() != null) {

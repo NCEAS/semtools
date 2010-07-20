@@ -20,6 +20,8 @@ public class Criteria  {
 
 	private boolean group = false;
 	private boolean all = true;
+	private boolean same = true;
+
 	private List<Criteria> subCriteria;
 	
 	public Class getSubject() {
@@ -55,6 +57,12 @@ public class Criteria  {
 	}
 	public boolean isAll() {
 		return all;
+	}
+	public boolean isSame() {
+		return same;
+	}
+	public void setSame(boolean same) {
+		this.same = same;
 	}
 	public void setAll(boolean all) {
 		this.all = all;
