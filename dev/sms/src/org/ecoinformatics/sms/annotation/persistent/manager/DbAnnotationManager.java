@@ -38,6 +38,7 @@ import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.conf.Configuration;
 import org.apache.cayenne.conf.DefaultConfiguration;
 import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
 import org.ecoinformatics.sms.SMS;
@@ -66,6 +67,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -421,13 +423,21 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
    public List<Annotation> getMatchingAnnotations(Criteria criteria) {
 	   //let the fun begin!
 	   List<Annotation> results = new ArrayList<Annotation>();
-
-	   // get the expression string
-	   String expressionString = criteriaAsExpression(criteria);
 	   
-	   Expression expression = Expression.fromString(expressionString.toString());
+	   // for path splits
+	   Map<String, List<String>> aliases = new HashMap<String, List<String>>();
+	   
+	   // get the expression string
+	   Expression expression = criteriaAsExpression(criteria, criteria.isSame(), aliases);
+	   
 	   ObjectContext context = getDataContext();
 	   SelectQuery query = new SelectQuery(DbAnnotation.class, expression);
+	   
+	   // register the path alias for splitting
+	   for (Entry<String, List<String>> alias: aliases.entrySet()) {
+		   query.aliasPathSplits(alias.getKey(), alias.getValue().toArray(new String[0]));
+	   }
+	   
 	   List<DbAnnotation> values = context.performQuery(query);
 	   for (DbAnnotation dbAnnotation: values) {
 		   try {
@@ -458,11 +468,10 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	   List<Annotation> results = new ArrayList<Annotation>();
 	   
 	   // using "or" instead of "and" for more results, even though these are not ranked yet.
-	   String combined = createExpresstionString(entities, characteristics, standards, protocols, contexts, "=", "or");
+	   Expression combined = createExpression(entities, characteristics, standards, protocols, contexts, Criteria.IS, false, null);
 	   
-	   Expression expression = Expression.fromString(combined.toString());
 	   ObjectContext context = getDataContext();
-	   SelectQuery query = new SelectQuery(DbAnnotation.class, expression);
+	   SelectQuery query = new SelectQuery(DbAnnotation.class, combined);
 	   List<DbAnnotation> values = context.performQuery(query);
 	   for (DbAnnotation dbAnnotation: values) {
 		   try {
@@ -987,9 +996,9 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     * @param criteria potentially complex 
     * @return
     */
-   private String criteriaAsExpression(Criteria criteria) {
+   private Expression criteriaAsExpression(Criteria criteria, boolean sameObservation, Map<String, List<String>> aliases) {
 	   
-	   StringBuffer expression = new StringBuffer();
+	   Expression expression = null;
 	   
 	   //simple first case
 	   if (!criteria.isGroup()) {
@@ -1051,80 +1060,128 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 				}
 			}
 			// now construct the expression from the given class lists
-			String operator = "=";
-			if (criteria.getCondition().equals(Criteria.ISNOT)) {
-				operator = "!=";
-			}
-			String conditionalOperator = "or";
+			String operator = criteria.getCondition();
 
-			expression.append(
-					createExpresstionString(entities, characteristics, standards, protocols, contexts, operator, conditionalOperator));
+			// TODO: handle same/different switch
+			expression = 
+				createExpression(
+					entities, 
+					characteristics, 
+					standards, 
+					protocols, 
+					contexts, 
+					operator, 
+					sameObservation, // same observation
+					aliases); 
 			
 	   }
 	   else {
 		   // iterate through the subcriteria
 		   if (criteria.getSubCriteria() != null) {
-			   String operator = "or";
-			   if (criteria.isAll()) {
-				   operator = "and";
-			   }
 			   Iterator<Criteria> iter = criteria.getSubCriteria().iterator();
 			   while (iter.hasNext()) {
 				   Criteria subcriteria = iter.next();
 				   // recurse here
-				   String subExpression = criteriaAsExpression(subcriteria);
-				   expression.append(subExpression);
-				   if (iter.hasNext()) {
-					   expression.append(" " + operator + " ");
-				   }   
+				   Expression subExpression = criteriaAsExpression(subcriteria, criteria.isSame(), aliases);
+				   if (expression == null) {
+					   expression = subExpression;
+				   } else {
+					   if (criteria.isAll()) {
+						   expression = expression.andExp(subExpression);
+					   } else {
+						   expression = expression.orExp(subExpression);
+					   }
+				   }
 			   }
 		   }
 	   }
 	   
-	   return expression.toString();
+	   return expression;
    }
 
-   private String createExpresstionString(List<OntologyClass> entities,
-           List<OntologyClass> characteristics, List<OntologyClass> standards,
-           List<OntologyClass> protocols, List<Triple> contexts, String relationalOperator, String conditionalOperator) {
+   private Expression createExpression(
+		   List<OntologyClass> entities,
+           List<OntologyClass> characteristics, 
+           List<OntologyClass> standards,
+           List<OntologyClass> protocols, 
+           List<Triple> contexts, 
+           String equalityOperator, 
+           boolean sameObservation,
+           Map<String, List<String>> aliases) {
 	   
-	   List<String> terms = new ArrayList<String>();
+	   Expression terms = null;
 	   addSubclasses(entities);
 	   addSubclasses(characteristics);
 	   addSubclasses(standards);
 	   addSubclasses(protocols);
 	   
-	   String entityString = createExpressionString(entities, "observations.entity", relationalOperator, "or");
-	   String characterString = createExpressionString(characteristics, "observations.measurements.characteristics.type", relationalOperator, "or");
-	   String standardString = createExpressionString(standards, "observations.measurements.standard", relationalOperator, "or");
-	   String protocolString = createExpressionString(protocols, "observations.measurements.protocol", relationalOperator, "or");
-	   String contextString = createContextExpressionString(contexts, "or");
+	   //what are we splitting on?
+	   String splitPath = "observations";
+	   if (sameObservation) {
+		   // observations.1...
+		   splitPath = "measurements";
+	   }
+	   // split on measurements
+	   List<String> existingAliases = aliases.get(splitPath);
+	   int nextAlias = 0;
+	   if (existingAliases != null) {
+		   nextAlias = Integer.valueOf(existingAliases.get(existingAliases.size()-1));
+	   } else {
+		   existingAliases = new ArrayList<String>();
+	   }
+	   nextAlias++;
+	   existingAliases.add(String.valueOf(nextAlias));
+	   aliases.put(splitPath, existingAliases);
 	   
-	   if (entityString != null) {
-		   terms.add(entityString);
-	   }
-	   if (characterString != null) {
-		   terms.add(characterString);
-	   }
-	   if (standardString != null) {
-		   terms.add(standardString);
-	   }
-	   if (protocolString != null) {
-		   terms.add(protocolString);
-	   }
-	   if (contextString != null) {
-		   terms.add(contextString);
-	   }
-	   
-	   String combined = StringUtils.join(
-			   terms, 
-			   " " + conditionalOperator + " ");
-	   
-	   if (combined != null && combined.length() == 0) {
-		   combined = null;
+	   String alias = nextAlias + ".measurements";
+	   if (sameObservation) {
+		   alias = "observations." + nextAlias;
 	   }
 	   
-	   return combined;
+	   Expression entityExpression = createExpressionForClasses(entities, "observations.entity", equalityOperator);
+	   Expression characterExpression = createExpressionForClasses(characteristics, alias + ".characteristics.type", equalityOperator);
+	   Expression standardExpression = createExpressionForClasses(standards, alias + ".standard", equalityOperator);
+	   Expression protocolExpression = createExpressionForClasses(protocols, alias + ".protocol", equalityOperator);
+	   Expression contextExpression = null; //createContextExpressionString(contexts, "or");
+	   
+	   //TODO handle "and"
+	   if (entityExpression != null) {
+		   if (terms == null) {
+			   terms = entityExpression;
+		   } else {
+			   terms = terms.orExp(entityExpression);
+		   }
+	   }
+	   if (characterExpression != null) {
+		   if (terms == null) {
+			   terms = characterExpression;
+		   } else {
+			   terms = terms.orExp(characterExpression);
+		   }
+	   }
+	   if (standardExpression != null) {
+		   if (terms == null) {
+			   terms = standardExpression;
+		   } else {
+			   terms = terms.orExp(standardExpression);
+		   }
+	   }
+	   if (protocolExpression != null) {
+		   if (terms == null) {
+			   terms = protocolExpression;
+		   } else {
+			   terms = terms.orExp(protocolExpression);
+		   }
+	   }
+	   if (contextExpression != null) {
+		   if (terms == null) {
+			   terms = contextExpression;
+		   } else {
+			   terms = terms.orExp(contextExpression);
+		   }
+	   }
+	   
+	   return terms;
 	   
    }
    
@@ -1144,6 +1201,30 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 		   }
 		   expression.append(")");
 		   return expression.toString();
+	   }
+	   return null;
+   }
+   
+   private Expression createExpressionForClasses(
+		   List<OntologyClass> classes, 
+		   String path, 
+		   String operator) {
+	   
+	   Expression expression = null;
+	   List<String> values = new ArrayList<String>();
+	   if (classes != null && !classes.isEmpty()) {
+		   Iterator<OntologyClass> iter = classes.iterator();
+		   while (iter.hasNext()) {
+			   OntologyClass oc = iter.next();
+			   values.add(oc.getURI());
+		   }
+		   expression = ExpressionFactory.inExp(path, values);
+		   // negate the expression if not ==
+		   if (operator.equals(Criteria.ISNOT)) {
+			   expression = expression.notExp();
+		   }
+		   
+		   return expression;
 	   }
 	   return null;
    }
@@ -1200,7 +1281,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 		try {
 	
 			//String annot1 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-ex1-annot.xml";
-			String annot1 = "file:///Users/leinfelder/.semtools/profiles/benriver/data/benriver/20.52";
+			String annot1 = "file:///Users/leinfelder/.semtools/profiles/benriver/data/benriver/216.6";
 
 	        URL url = new URL(annot1);
 	
@@ -1213,7 +1294,8 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 			//DbAnnotation dbAnnotation = ((DbAnnotationManager)annotationManager).getDbAnnotation(annotation);
 	 	   //ObjectContext context = DataContext.createDataContext();
 	 	   ObjectContext context = ((DbAnnotationManager)annotationManager).getDataContext();
-	        DbAnnotation dbAnnotation = query("%", context);
+	 	   
+	        DbAnnotation dbAnnotation = query(null, context);
 	        
 			// print it out
 			System.out.println("Annotation: " + dbAnnotation);
@@ -1222,18 +1304,21 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 			for (DbObservation dbo: dbObservations) {
 				System.out.println("Observation: " + dbo);
 				System.out.println();
-//				for (DbMeasurement dbm: dbo.getMeasurements()) {
-//					System.out.println(dbm);
-//				}
-				List<DbContext> contexts = dbo.getContexts();
-				System.out.println("Context count: " + contexts.size());
-				for (DbContext dbc: contexts) {
-					//System.out.println(dbc);
-					System.out.println("--------");
-					System.out.println(dbc.getObservation());
-					System.out.println(dbc.getRelationship());
-					System.out.println(dbc.getObservationB());
+				for (DbMeasurement dbm: dbo.getMeasurements()) {
+					System.out.println("Measurement: " + dbm);
+					for (DbCharacteristic dbc: dbm.getCharacteristics()) {
+						System.out.println(dbc);
+					}
 				}
+//				List<DbContext> contexts = dbo.getContexts();
+//				System.out.println("Context count: " + contexts.size());
+//				for (DbContext dbc: contexts) {
+//					//System.out.println(dbc);
+//					System.out.println("--------");
+//					System.out.println(dbc.getObservation());
+//					System.out.println(dbc.getRelationship());
+//					System.out.println(dbc.getObservationB());
+//				}
 				System.out.println();
 			}
 			
@@ -1248,13 +1333,32 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 		
 		DbAnnotation dbAnnotation = null;
 
+		String queryString = 
+	 		   "(observations.entity = 'https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#Macrocystis')"
+	 		   + " and " +
+	 		   "(observations.measurements|characteristics.type = 'https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#DryMass')"
+//	 		   + " and " +
+//	 		   "(observations.measurements.characteristics.type = 'https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#WetMass')"
+	 		   ;
+		List characteristics = new ArrayList();
+		characteristics.add("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#DryMass");
+		characteristics.add("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#WetMass");
+		
 		// look up the annotation
-		final Expression expression = 
-			Expression.fromString(
-					"observations.measurements.standard like $param ");
+		Expression exp = ExpressionFactory.expTrue(); //ExpressionFactory.inExp("observations.entity", "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#Macrocystis");
+		int splitCounter = 0;
+//		exp = exp.andExp(
+//				ExpressionFactory.matchAllExp("observations|measurements.characteristics.type", characteristics)
+//				);
+		exp = exp.andExp(ExpressionFactory.inExp("" + splitCounter++ + ".measurements.characteristics.type", characteristics.get(0)));
+		exp = exp.andExp(ExpressionFactory.inExp("" + splitCounter++ + ".measurements.characteristics.type", characteristics.get(1)));
+
+		
+		final Expression expression = exp; //Expression.fromString(queryString);
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("param", param);
-		SelectQuery query = new SelectQuery(DbAnnotation.class, expression.expWithParameters(params));
+		SelectQuery query = new SelectQuery(DbAnnotation.class, expression);
+		query.aliasPathSplits("observations", "0", "1");
 		List values = context.performQuery(query);
 		if (values != null && !values.isEmpty()) {
 			dbAnnotation = (DbAnnotation) values.get(0);
