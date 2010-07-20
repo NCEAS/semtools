@@ -94,6 +94,7 @@ public class CompoundAnnotationSearchCommand implements Command {
 			dialog.addWindowListener(new WindowAdapter() {
 				public void windowClosed(WindowEvent e) {
 				//public void windowClosing(WindowEvent e) {
+					dialog.removeWindowListener(this);
 					// get the response back
 					if (dialog.USER_RESPONSE == ModalDialog.OK_OPTION) {
 						List<String> orderedDocids = cqp.getDocids();
