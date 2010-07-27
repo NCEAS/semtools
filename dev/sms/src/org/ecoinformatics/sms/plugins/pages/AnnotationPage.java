@@ -339,6 +339,10 @@ public class AnnotationPage extends AbstractUIPage {
 				this.simpleAnnotationPanel.setObservationProtocol(currentProtocol);
 			} catch (Exception e) {
 			}
+			try {
+				this.simpleAnnotationPanel.setObservationMeasurement(currentMeasurement);
+			} catch (Exception e) {
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			// we don't care about this right now
@@ -366,6 +370,11 @@ public class AnnotationPage extends AbstractUIPage {
 			currentMeasurement.setLabel(
 					Annotation.getNextMeasurementLabel(annotation, "m"));
 			Log.debug(40, "Adding Measurement: " + currentMeasurement);
+		}
+		try {
+			currentMeasurement.setURI(simpleAnnotationPanel.getObservationMeasurement().getURI());
+		} catch (Exception e) {
+			Log.debug(40, "Ignoring Measurement: " + e.getMessage());
 		}
 		
 		// edit the existing values

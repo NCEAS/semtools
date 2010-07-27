@@ -44,7 +44,7 @@ import org.ecoinformatics.sms.ontology.OntologyProperty;
 /**
  * Objects of this class represent observation ameasurements
  */
-public class Measurement implements Comparable<Measurement>{
+public class Measurement extends OntologyClass implements Comparable<Measurement>{
 
    private String _label;
    private List<Characteristic> _characteristics = new ArrayList();
@@ -269,6 +269,9 @@ public class Measurement implements Comparable<Measurement>{
     * @author cao
     */
    public String toString(){
+	   if (getName() != null) {
+		   return getName();
+	   }
 	   String str = "Label="+_label+",characteristics="+_characteristics+",standard="+_standard
 	   	+",protocol="+_protocol+",precision="+_precision+",value="+_value+",iskey="+_isKey;
 	   return str;

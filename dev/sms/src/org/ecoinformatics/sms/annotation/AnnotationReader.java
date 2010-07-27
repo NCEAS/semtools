@@ -268,6 +268,10 @@ public class AnnotationReader {
            throws Exception {
       Measurement m = new Measurement();
       o.addMeasurement(m);
+      // get the id (optional)
+      Attr att0 = _getAttribute(e, "id");
+      if(att0 != null)
+         m.setURI(att0.getValue().trim());
       // get the label (optional)
       Attr att1 = _getAttribute(e, "label");
       if(att1 != null)

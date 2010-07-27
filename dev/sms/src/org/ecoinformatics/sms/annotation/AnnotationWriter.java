@@ -150,6 +150,8 @@ public class AnnotationWriter {
     */
    private static void _writeMeasurement(Measurement m, PrintStream s) {
       s.print(_indent2 + "<sms:measurement");
+      if(m.getURI() != null)
+          s.print(" id=\"" + m.getURI() + "\"");
       if(m.getLabel() != null)
          s.print(" label=\"" + m.getLabel() + "\"");
       s.print(" precision=\"" + m.getPrecision() + "\"");
