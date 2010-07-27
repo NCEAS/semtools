@@ -4,7 +4,9 @@
 package org.ecoinformatics.sms.owlapi;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executors;
 
@@ -31,7 +33,7 @@ import com.clarkparsia.pellet.owlapiv3.PelletReasonerFactory;
  */
 public class ReasoningOntologyManager extends OwlApiOntologyManager {
 	
-	private PelletReasoner reasoner;
+	private Map<IRI, PelletReasoner> reasoners = new HashMap<IRI, PelletReasoner>();
 
 	public List<OntologyClass> getNamedClassesForPropertyRestriction(List<OntologyProperty> properties, OntologyClass c) {
 		List<OntologyClass> classes = new ArrayList<OntologyClass>();
@@ -52,8 +54,12 @@ public class ReasoningOntologyManager extends OwlApiOntologyManager {
 	        someCombined = manager.getOWLDataFactory().getOWLObjectSomeValuesFrom(remainingProperty, someCombined);
 		}
 
+		PelletReasoner reasoner = reasoners.get(IRI.create(c.getOntology().getURI()));
         NodeSet<OWLClass> esc = reasoner.getSuperClasses(someCombined, true);
-        Set<OWLClass> owlClasses = esc.getFlattened();		
+        Set<OWLClass> owlClasses = esc.getFlattened();			
+//        Node<OWLClass> esc = reasoner.getEquivalentClasses(someCombined);
+//        Set<OWLClass> owlClasses = esc.getEntities();
+
 		if (owlClasses != null) {
 			for (OWLClass owlClass: owlClasses) {
 				OntologyClass ontologyClass = null;
@@ -90,17 +96,20 @@ public class ReasoningOntologyManager extends OwlApiOntologyManager {
 	
 	private void initReasoner(IRI ontologyIRI) {
 		
+		PelletReasoner reasoner = reasoners.get(ontologyIRI);
 		if (reasoner == null || !reasoner.getManager().contains(ontologyIRI)) {
 			OWLOntology ontology = manager.getOntology(ontologyIRI);
 			ConsoleProgressMonitor progressMonitor = new ConsoleProgressMonitor();
             OWLReasonerConfiguration config = new SimpleConfiguration(progressMonitor);
-	        reasoner = PelletReasonerFactory.getInstance().createReasoner(ontology, config);
+            //create a new reasoner, and initialize it in a thread
+	        final PelletReasoner newReasoner = PelletReasonerFactory.getInstance().createReasoner(ontology, config);
 	        // run the reasoning in a new thread - can take a while
 	        Executors.newSingleThreadExecutor().execute(new Runnable() {
 				public void run() {
-					reasoner.prepareReasoner();
+					newReasoner.prepareReasoner();
 				}
 	        });
+	        reasoners.put(ontologyIRI, newReasoner);
         }
 	}
 	
