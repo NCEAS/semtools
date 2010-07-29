@@ -46,6 +46,7 @@ import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.AnnotationException;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
+import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.plugins.commands.AnnotationCommand;
 import org.ecoinformatics.sms.plugins.commands.CompoundAnnotationSearchCommand;
@@ -469,7 +470,7 @@ public class AnnotationPlugin
 		StringBuffer searchtext = new StringBuffer();
 		searchtext.append("<?xml version=\"1.0\"?>\n");
 		searchtext.append("<pathquery version=\"1.0\">\n");
-		searchtext.append("<querytitle>Matching Docs for Annotations</querytitle>\n");
+		searchtext.append("<querytitle>Matching documents for Annotation query</querytitle>\n");
 		Vector<String> returnDoctypeList = config.get("returndoc");
 		//Vector<String> returnDoctypeList = new Vector<String>();
 		//returnDoctypeList.add("http://ecoinformatics.org/sms/annotation.0.9");
@@ -512,6 +513,75 @@ public class AnnotationPlugin
 		searchtext.append("</pathquery>");
 
 
+		return searchtext.toString();
+	}
+	
+	public static String getPathQuery(Criteria criteria, String path) {
+		ConfigXML config = Morpho.getConfiguration();
+		
+		StringBuffer searchtext = new StringBuffer();
+		searchtext.append("<?xml version=\"1.0\"?>\n");
+		searchtext.append("<pathquery version=\"1.0\">\n");
+		searchtext.append("<querytitle>Matching documents for path query</querytitle>\n");
+		Vector<String> returnDoctypeList = config.get("returndoc");
+		for (int i = 0; i < returnDoctypeList.size(); i++) {
+			searchtext.append("<returndoctype>");
+			searchtext.append(returnDoctypeList.elementAt(i));
+			searchtext.append("</returndoctype>\n");
+		}
+		Vector<String> returnFieldList = config.get("returnfield");
+		for (int i = 0; i < returnFieldList.size(); i++) {
+			searchtext.append("<returnfield>");
+			searchtext.append(returnFieldList.elementAt(i));
+			searchtext.append("</returnfield>\n");
+		}
+		
+		// recursively build the query groups
+		searchtext.append(getCriteriaAsPathQuery(criteria, path));
+	
+		searchtext.append("</pathquery>");
+
+		return searchtext.toString();
+	}
+	
+	private static String getCriteriaAsPathQuery(Criteria criteria, String path) {
+		StringBuffer searchtext = new StringBuffer();
+		// process the group
+		if (criteria.isGroup()) {
+			String operator = "UNION";
+			if (criteria.isAll()) {
+				operator = "INTERSECT";
+			}
+			List<Criteria> subCriteria = criteria.getSubCriteria();
+			if (subCriteria != null && subCriteria.size() > 0) {
+				searchtext.append("<querygroup operator=\"" + operator + "\">\n");
+				for (Criteria c: subCriteria) {
+					searchtext.append(getCriteriaAsPathQuery(c, path));
+				}
+				searchtext.append("</querygroup>");
+			}
+		} else {
+			// expand terms with subclasses
+			List<OntologyClass> subclasses = 
+				SMS.getInstance().getOntologyManager().getNamedSubclasses(
+						criteria.getValue(), true);
+			subclasses.add(criteria.getValue());
+			// place in a group so that they are always a union for the single criteria class given
+			searchtext.append("<querygroup operator=\"UNION\">\n");
+			for (OntologyClass oc: subclasses) {
+				searchtext.append("<queryterm casesensitive=\"true\" ");
+				searchtext.append("searchmode=\"contains\">\n");
+				searchtext.append("<value>");
+				searchtext.append(oc.getURI());
+				searchtext.append("</value>\n");
+				searchtext.append("<pathexpr>" + path + "</pathexpr>\n");
+				searchtext.append("</queryterm>");
+			}
+			searchtext.append("</querygroup>");
+
+			// TODO: handle context criteria
+		}
+		
 		return searchtext.toString();
 	}
 	

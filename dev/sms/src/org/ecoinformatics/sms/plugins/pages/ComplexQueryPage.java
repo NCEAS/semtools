@@ -28,6 +28,8 @@
 
 package org.ecoinformatics.sms.plugins.pages;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
 import org.ecoinformatics.sms.SMS;
@@ -77,6 +80,9 @@ public class ComplexQueryPage extends AbstractUIPage {
 	private String[] localNetwork = {"Local", "Network"};
 	private boolean local = true;
 	private boolean network = false;
+	private String[] queryType = {"Annotation", "Keyword"};
+	private boolean annotationSearch = true;
+	private boolean keywordSearch = false;
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	// *
@@ -141,8 +147,31 @@ public class ComplexQueryPage extends AbstractUIPage {
 			}
 			
 		});
-		this.add(checkboxPanel);
 		
+		// add radio boxes for annotation/path
+		JPanel radioPanel = WidgetFactory.makeRadioPanel(queryType , 0, new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				JRadioButton button = (JRadioButton) e.getSource();
+				String cmd = button.getActionCommand();
+				if (cmd.equals(queryType[0])) {
+					annotationSearch = true;
+					keywordSearch = false;
+				}
+				if (cmd.equals(queryType[1])) {
+					annotationSearch = false;
+					keywordSearch = true;
+				}
+			}
+			
+		});
+
+		// group the options into a horizontal panel
+		JPanel optionsPanel = WidgetFactory.makePanel(2);
+		optionsPanel.add(checkboxPanel);
+		optionsPanel.add(radioPanel);
+
+		this.add(optionsPanel);
 		this.add(WidgetFactory.makeDefaultSpacer());
 		
 		// Query list		
@@ -174,13 +203,17 @@ public class ComplexQueryPage extends AbstractUIPage {
 	
 	public Query getQuery() {
 		
-		// generate query
-		generateQuery();
+		// generate annotation query
+		if (annotationSearch) {
+			generateAnnotationQuery();
+		} else {
+			generateKeywordQuery();
+		}
 		
 		return query;
 	}
 
-	private void generateQuery() {
+	private void generateAnnotationQuery() {
 
 		// look up the criteria
 		Criteria criteria = queryList.getCriteria();
@@ -215,6 +248,24 @@ public class ComplexQueryPage extends AbstractUIPage {
 		for (Annotation a: annotations) {
 			docids.add(a.getEMLPackage());
 		}
+		
+	}
+	
+	private void generateKeywordQuery() {
+
+		// look up the criteria
+		Criteria criteria = queryList.getCriteria();
+		
+		// get the query text
+		String querySpec = AnnotationPlugin.getPathQuery(criteria, "keyword");
+		
+		// make it
+		query = new Query(querySpec, Morpho.thisStaticInstance);
+		query.setSearchLocal(local);
+		query.setSearchMetacat(network);
+		
+		// reset the docids
+		docids.clear();
 		
 	}
 
