@@ -44,6 +44,10 @@ public class OntologyClass {
     private Ontology _ontology;
     /* the name of the class */
     private String _className;
+    
+    private String delimiter = "#";
+    
+    private static String[] delimiters = new String[] {"#", "/"};
 
     /**
      * 
@@ -61,9 +65,10 @@ public class OntologyClass {
     }
     
     public OntologyClass(String uri) throws Exception {
-    	if (uri.indexOf("#") > -1) {
-	        _ontology = new Ontology(uri.substring(0, uri.indexOf("#")));
-	        _className = uri.substring(uri.indexOf("#") + 1);
+    	delimiter = guessDelimiter(uri);
+    	if (uri.lastIndexOf(delimiter) > -1) {
+	        _ontology = new Ontology(uri.substring(0, uri.lastIndexOf(delimiter)));
+	        _className = uri.substring(uri.lastIndexOf(delimiter) + 1);
     	} else {
     		throw new Exception("URI does not refer to a valid class");
     	}
@@ -90,7 +95,7 @@ public class OntologyClass {
      * @return the class name
      */
     public String getURI() {
-        return getOntology().getURI() + "#" + getName();
+       return getOntology().getURI() + delimiter + getName();
     }
     
     /**
@@ -99,9 +104,10 @@ public class OntologyClass {
      * @throws Exception 
      */
     public void setURI(String uri) throws Exception {
-    	if (uri.indexOf("#") > -1) {
-    		_ontology = new Ontology(uri.substring(0, uri.indexOf("#")));
-    		_className = uri.substring(uri.indexOf("#") + 1);
+    	delimiter = guessDelimiter(uri);
+    	if (uri.lastIndexOf(delimiter) > -1) {
+    		_ontology = new Ontology(uri.substring(0, uri.lastIndexOf(delimiter)));
+    		_className = uri.substring(uri.lastIndexOf(delimiter) + 1);
     	} else {
     		throw new Exception("URI does not refer to a valid class");
     	}
@@ -121,6 +127,15 @@ public class OntologyClass {
      */
     public Ontology getOntology() {
         return _ontology;
+    }
+    
+    public String guessDelimiter(String uri) {
+    	for (String d: delimiters) {
+    		if (uri.lastIndexOf(d) > -1) {
+    			return d;
+    		}
+    	}
+    	return delimiter;
     }
     
     /**
