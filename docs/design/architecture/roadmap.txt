@@ -1,0 +1,93 @@
+Notes form today's call:
+
+Tasks for Ben
+--------------
+A. Metacat search system and search serialization, address scalability
+	SEARCH:
+	-create semantic query schema (semQuery.xsd) based on pathQuery and ecogrid query
+	-create schema for semantic query results (semQueryResults.xsd)
+		-include original query issued
+		-include annotation matches (aEML)
+		-include data package matches (EML)	
+	-create parser for semQuery - compatible with SMS API query mechanism currently used in Morpho
+	-include Metacat action for semQuery
+	
+	PERFORMANCE:
+	-Metacat stores Annotation for EML (aEML?)
+	-aEML documents are loaded when Metacat initialized and when subsequent CRUD actions occur. This is similar to how the spatial search feature operates.
+	-By pre-processing the aEML documents into a persistent DB rather than the current transitory Derby DB, we won't have to perform the processing each time metacat is restarted.
+	-queries that use large term expansion sets may need to be optimized for DB query performance.
+
+
+
+F. Ability to store ontologies in Metacat or other repository
+-Add ontology registration/search features
+	-Upload Ontology file
+		-metadata file to describe the ontology (EML pointing to OWL resource)?
+	-Search concepts/labels/descriptions of ontologies - basic keyword/xpath searching (no reasoning)
+	-Search across ontologies for equivalence/mapping (?)
+	-Retrieve ontologies 
+		-ontology retrieval by logical uri (action=getOntology, URI=?)
+		-provide listing of all versions of a given ontology (action=getOntologyVersions, URI=?)
+		-provide listing of all ontologies w/ logical-physical map (action=getOntologies)
+	-view ontologies
+		-semtools skin to include ontology rendering (XSLT for showing the contents of the owl)
+		-visualization?
+	-edit ontologies (webProtege, collaborative protege)?
+
+-survey for others technologies, see:
+	http://mmisw.org/orr/ - odd use of URIs for classnames (no # delimiter)
+	http://bioportal.bioontology.org/
+	http://www.bioontology.org/wiki/index.php/NCBO_REST_services
+	http://protegewiki.stanford.edu/wiki/WebProtege - still no support for Protege 4 or OWL 2 - but on their road map
+
+    
+
+C. Web interface for searching (semtools skin)
+	-search form mimics Morpho plugin search form:
+		-Entity/Characteristic/Protocol/Standard -or- Measurement =/!= <ontologyClass>
+		-Grouping (any/all)
+		-Nested groups
+		-Same Observation option
+	-search form allows ontology browsing with simple searching within ontologies to find the correct concept
+		-Morpho has this with the plugin using a tree/table hybrid to visualize the ontology.
+		-Google's GWT has a good tree widget that I was able to make display our ontology - probably pursue that approach with GWT support added to Metacat as a bonus.
+	-create stylesheets for displaying:
+		-aEML - should pull in information from the data package that it annotates
+		-semQueryResults - shows information from the annotation match as well as the EML that is annotated.
+	
+
+Milestone 1: Release metacat and morpho
+
+B. Materialized view of data and ontology and annotation for data queries
+
+Milestone 2: Release with new data query feature
+
+
+Other tasks to be considered for later
+--------------------------------------
+
+K. Address how to version and maintain ontologies and their terms
+
+D. Sensible summarization
+
+E. Refining/improving annotation UI in Morpho
+
+H. Develop approach to automate some aspects of annotation
+  -- e.g., lots of data sets that have same schema, need minor tweaks to apply to similar data sets
+  -- Link measurement types to existing data sets (e.g., rough annotation based on attribute units, names, descriptions?)
+
+I. Semantic metadata (choose keywords and other metadata fields, e.g., taxonomic names, from ontologies)
+
+J. Add ability to annotate based on geographic/temporal coverage and other structured info from EML
+
+
+Other tasks
+-----------
+M. Need at least medium sized corpus of annotated data sets crossing disciplines for testing
+  -- see list of data sets to be annotated (https://semtools.ecoinformatics.org/notes/corpus/target-data-sets/)
+     -- goal to generate the list of data sets to be annotated
+  -- Margaret for SBC data
+  -- Mark for plant traits
+
+N. Develop additional ontologies (cover rest of SBC cases, expand to other sites?)
