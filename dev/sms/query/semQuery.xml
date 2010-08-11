@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sq:query queryId="query.1" system="semtools"
+	xmlns:sq="http://ecoinformatics.org/semQuery-1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ecoinformatics.org/semQuery-1.0.0 semQuery.xsd ">
+	<namespace prefix="sms">http://ecoinformatics.org/sms/annotation.0.9</namespace>
+	<returnField>/@id</returnField>
+	<returnField>/@emlPackage</returnField>
+	<returnField>/@dataTable</returnField>
+	<title>Semantic Search Example</title>
+	
+	<!-- Match all criteria, must be on same observation -->
+	<AND strict="true">
+		
+		<!-- Characteristic in (Wet_Mass, Dry_Mass)-->
+		<OR>
+			<condition 
+				concept="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Characteristic" 
+				operator="EQUALS">https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#Wet_Mass</condition>
+			<condition 
+				concept="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Characteristic" 
+				operator="EQUALS">https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#Dry_Mass</condition>
+		</OR>
+		
+		<!-- Entity = Kelp -->
+		<condition 
+			concept="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Entity" 
+			operator="EQUALS">https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#Kelp</condition>
+		
+		<!-- Context: Kelp Within Transect-->
+		<context> 
+			<condition 
+				concept="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Entity"
+				operator="EQUALS">https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#Kelp</condition>
+			<condition 
+				concept="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Relationship"
+				operator="EQUALS">https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#Within</condition>
+			<condition 
+				concept="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Entity"
+				operator="EQUALS">https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#Transect</condition>		
+		</context>
+			
+	</AND>
+	
+</sq:query>
