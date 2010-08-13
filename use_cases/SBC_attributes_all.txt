@@ -1,0 +1,383 @@
+Active
+ADCP_depth
+Air temp C
+ammonium
+ANALYTICAL_WT
+area
+available
+Barometric press mBar
+beam_attenuation_coefficient
+beam_c
+beamC m-1
+bed_name
+bed_number
+bin_depth [m]
+biogenic_silica
+BLADE
+C
+cast_file_name
+chlorophyll_a
+chlorophyll_a_phaeopigments
+chlorophyll_total
+class
+CN_RATIO
+COG degrees_true
+comments
+common_name
+conductivity
+Conductivity Sm-1
+consecutive_sample_number
+count
+county
+Cruise
+ctd_cond00
+ctd_depth
+ctd_descent_rate
+ctd_fluor_volts
+ctd_potential_temp00
+ctd_press
+ctd_pressure_bin
+ctd_sal00
+ctd_scans_per_bin
+ctd_sigmatheta00
+ctd_specific_volume_anomaly00
+ctd_temp00
+ctd_upoly_unused
+ctd_v0
+ctd_v1
+ctd_v2
+ctd_v3
+ctd_xmiss_beamc
+ctd_xmiss_volts
+D13C
+D15N
+Daily_Precipitation_Total_inch
+Daily_Precipitation_Total_mm
+DATA_CAT
+data_url
+date
+Date_col
+date_of_previous_survey
+Datetime yyyymmddHHMMSS
+day
+Decimal time
+decimal_year
+del_c_13_mean
+del_c_13_stdev
+del_n_15_mean
+del_n15_stdev
+depth
+depth_actual_m
+depth_ctd
+depth_target_m
+DGPS flag
+discharge_lps
+disk_of_sun
+dissolved_oxygen
+DRY
+DRY_WET
+eastward
+elevation
+Elevation_m
+End_Year
+E_Vel_01.5m_bin
+E_Vel_02.0m_bin
+E_Vel_02.5m_bin
+E_Vel_03.0m_bin
+E_Vel_03.5m_bin
+E_Vel_04.0m_bin
+E_Vel_04.5m_bin
+E_Vel_05.0m_bin
+E_Vel_05.5m_bin
+E_Vel_06.0m_bin
+E_Vel_06.5m_bin
+E_Vel_07.0m_bin
+E_Vel_07.5m_bin
+E_Vel_08.0m_bin
+E_Vel_08.5m_bin
+E_Vel_09.0m_bin
+E_Vel_09.5m_bin
+E_Vel_10.5m_bin
+E_Vel_11.5m_bin
+E_Vel_12.5m_bin
+E_Vel_13.5m_bin
+E_Vel_14.5m_bin
+E_Vel_15.5m_bin
+E_Vel_16.5m_bin
+E_Vel_17.5m_bin
+E_Vel_S4
+family
+Flag_Daily_Precipitation_Total_inch
+Flag_Daily_Precipitation_Total_mm
+flag_measured_daily_precipitation_mm
+fluorescence
+Fluorescence raw
+Fluoroescence
+former_genus
+former_species
+Frond_loss_rate
+fronds
+FSC_carbon
+FSC_dry
+FSC_nitrogen
+FSC_wet
+genus
+GENUS1
+group
+growth_morph
+Growth_rate_carbon
+Growth_rate_dry
+Growth_rate_nitrogen
+Growth_rate_wet
+Gyro heading degrees_true
+H
+harvested
+hh
+hld_diam
+Intensity_01.5m_bin
+Intensity_02.0m_bin
+Intensity_02.5m_bin
+Intensity_03.0m_bin
+Intensity_03.5m_bin
+Intensity_04.0m_bin
+Intensity_04.5m_bin
+Intensity_05.0m_bin
+Intensity_05.5m_bin
+Intensity_06.0m_bin
+Intensity_06.5m_bin
+Intensity_07.0m_bin
+Intensity_07.5m_bin
+Intensity_08.0m_bin
+Intensity_08.5m_bin
+Intensity_09.0m_bin
+Intensity_09.5m_bin
+Intensity_10.5m_bin
+Intensity_11.5m_bin
+Intensity_12.5m_bin
+Intensity_13.5m_bin
+Intensity_14.5m_bin
+Intensity_15.5m_bin
+Intensity_16.5m_bin
+Intensity_17.5m_bin
+ISUS nitrate uM 
+ISUS volts
+kingdom
+lat
+latitude
+latitude_logged
+line
+lithogenic_silica
+lon
+longitude
+longitude_logged
+matlab_datenum
+Matlab serial time
+matlab_time
+measured_precipitation_mm
+mobility
+mon/day/yr
+month
+N
+_N
+new_fronds
+NH4_uM
+Nitrate
+nitrite_nitrate
+NO3_uM
+north_latitude
+North Latitude ashtech
+North Latitude furuno
+northward
+notes
+NPP_carbon
+NPP_dry
+NPP_nitrogen
+NPP_wet
+N_Vel_01.5m_bin
+N_Vel_02.0m_bin
+N_Vel_02.5m_bin
+N_Vel_03.0m_bin
+N_Vel_03.5m_bin
+N_Vel_04.0m_bin
+N_Vel_04.5m_bin
+N_Vel_05.0m_bin
+N_Vel_05.5m_bin
+N_Vel_06.0m_bin
+N_Vel_06.5m_bin
+N_Vel_07.0m_bin
+N_Vel_07.5m_bin
+N_Vel_08.0m_bin
+N_Vel_08.5m_bin
+N_Vel_09.0m_bin
+N_Vel_09.5m_bin
+N_Vel_10.5m_bin
+N_Vel_11.5m_bin
+N_Vel_12.5m_bin
+N_Vel_13.5m_bin
+N_Vel_14.5m_bin
+N_Vel_15.5m_bin
+N_Vel_16.5m_bin
+N_Vel_17.5m_bin
+N_Vel_S4
+obs_code
+odv_bot_depth
+odv_cruise
+odv_hh_mm
+odv_lat
+odv_lon
+odv_mm_dd_yy
+odv_station
+odv_type
+order
+particulate_organic_carbon
+particulate_organic_nitrogen
+percent_cover
+percentGood_01.5m_bin
+percentGood_02.0m_bin
+percentGood_02.5m_bin
+percentGood_03.0m_bin
+percentGood_03.5m_bin
+percentGood_04.0m_bin
+percentGood_04.5m_bin
+percentGood_05.0m_bin
+percentGood_05.5m_bin
+percentGood_06.0m_bin
+percentGood_06.5m_bin
+percentGood_07.0m_bin
+percentGood_07.5m_bin
+percentGood_08.0m_bin
+percentGood_08.5m_bin
+percentGood_09.0m_bin
+percentGood_09.5m_bin
+percentGood_10.5m_bin
+percentGood_11.5m_bin
+percentGood_12.5m_bin
+percentGood_13.5m_bin
+percentGood_14.5m_bin
+percentGood_15.5m_bin
+percentGood_16.5m_bin
+percentGood_17.5m_bin
+phaeopigments
+phosphate
+phylum
+PIR Pile longwave flux
+PIR Pile raw
+PIR Pile volts
+Plant_density
+plant_ID
+Plant_loss_rate
+PO4_uM
+potential_density_anomaly00
+potential_temperature
+precipitation_mm
+pressure
+pressure_ctd
+pressure_S4
+quad
+region
+ Rel humidity percent
+REP
+rosette_bottle_number
+salinity
+salinity00
+Salinity_psu
+SAMPLEID
+Sample Site
+season
+sea_state
+SE_Frond_loss_rate
+SE_FSC_carbon
+SE_FSC_dry
+SE_FSC_nitrogen
+SE_FSC_wet
+SE_growth_rate_carbon
+SE_growth_rate_dry
+SE_growth_rate_nitrogen
+SE_growth_rate_wet
+SE_NPP_carbon
+SE_NPP_dry
+SE_NPP_nitrogen
+SE_NPP_wet
+SE_Plant_density
+SE_Plant_loss_rate
+serial_number
+side
+sigma-theta
+silicate
+simgatheta
+site
+site_code
+size
+sky_state
+SOG knots
+Solar radiation Watts m-2
+ SPAR uEm-2sec-1
+sp_code
+Spec_Cond_uS/cm
+species
+SPECIES1
+specific_volume_anomaly
+SST C
+Start_Year
+state
+station
+station_name
+STATUS
+substrate_type
+survey
+SURVEY_TIMING
+TDN_uM
+TDP_uM
+Temp_adcp
+Temp_bot
+temperature
+temperature_tidbit
+Temp_mid
+Temp_top
+time
+timestamp_local
+timestamp_UTC
+TISSUE
+total
+Total Biomass
+Total Biomass (kg)
+Total Cover
+total_dissolved_nitrogen
+total_dissolved_phosphorus
+total_fronds
+TPC_uM
+TPN_uM
+TPP_uM
+transect
+Transmission
+Transmissometer volt
+TSS_mg/L
+Type
+Uncertain
+variables
+VIS
+Volume
+VSF_100
+VSF_125
+VSF_150
+water_color
+water_conductivity00
+watershed
+water_temperature00
+water_temperature_celsius
+west_longitude
+West Longitude ashtech
+West Longitude furuno
+WET
+WET_WT
+wind_dir_est
+Wind dir port degrees_relative
+Wind dir port degrees_true
+Wind dir starboard degrees_relative
+Wind dir starboard degrees_true
+wind_speed_est
+Wind speed port knots_relative
+Wind speed port knots_true
+Wind speed starboard knots_relative
+Wind speed starboard knots_true
+year
