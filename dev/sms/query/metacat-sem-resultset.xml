@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<resultset>
+	<query>
+		<pathquery/>
+	</query>
+	<document>
+		<docid>annotation.1.1</docid>
+		<docname>annotation</docname>
+		<doctype>http://ecoinformatics.org/sms/annotation.0.9</doctype>
+		<createdate>2010-08-10</createdate>
+		<updatedate>2010-08-10</updatedate>
+		<param name="@id">annotation.1.1</param>
+		<param name="@emlPackage">eml.1.1</param>
+		<param name="@datatable">1</param>
+	</document>
+	<document>
+		<docid>eml.1.1</docid>
+		<docname>eml</docname>
+		<doctype>eml://ecoinformatics.org/eml-2.1.0</doctype>
+		<createdate>2010-08-11</createdate>
+		<updatedate>2010-08-11</updatedate>
+		<param name="dataset/title">Annotated data package</param>
+		<param name="keyword">annotation</param>
+	</document>
+</resultset>

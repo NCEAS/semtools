@@ -4,6 +4,7 @@
 	<meta_file_id>Example-03</meta_file_id>
 	<querytitle>Semantic query</querytitle>
 	<returndoctype>http://ecoinformatics.org/sms/annotation.0.9</returndoctype>
+	<returndoctype>eml://ecoinformatics.org/eml-2.1.0</returndoctype>
 	<returnField>/@id</returnField>
 	<returnField>/@emlPackage</returnField>
 	<returnField>/@dataTable</returnField>
