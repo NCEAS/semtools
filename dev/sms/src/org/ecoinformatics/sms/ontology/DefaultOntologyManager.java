@@ -482,4 +482,10 @@ public class DefaultOntologyManager implements OntologyManager {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public void mapOntologies(Map<String, String> ontologyURIs)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }

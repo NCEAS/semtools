@@ -3,11 +3,12 @@
  */
 package org.ecoinformatics.sms.owlapi;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -73,7 +74,11 @@ public class OwlApiOntologyManager implements OntologyManager {
 	protected OWLClass getOWLClass(OntologyClass ontologyClass) {
 		String classURI = ontologyClass.getURI();
 		try {
-			OWLOntology ontology = manager.getOntology(IRI.create(ontologyClass.getOntology().getURI()));
+			IRI ontologyIRI = IRI.create(ontologyClass.getOntology().getURI());
+			Set<OWLOntology> ontologies = manager.getOntologies();
+			
+			boolean contains = manager.contains(ontologyIRI);
+			OWLOntology ontology = manager.getOntology(ontologyIRI);
 			if (ontology != null) {
 				Iterator<OWLClass> classIter = ontology.getClassesInSignature().iterator();
 				while (classIter.hasNext()) {
@@ -506,24 +511,36 @@ public class OwlApiOntologyManager implements OntologyManager {
 	/* (non-Javadoc)
 	 * @see org.ecoinformatics.sms.OntologyManager#importOntology(java.lang.String)
 	 */
-	public void importOntology(String uri) throws Exception {
+	public void importOntology(String physicalURI) throws Exception {
 		// load from physical URI - this is an assumption for OntologyManager
-        manager.loadOntologyFromOntologyDocument(IRI.create(uri));
-		//manager.loadOntology(new URI(uri));
+        manager.loadOntologyFromOntologyDocument(IRI.create(physicalURI));
+		//manager.loadOntology(new URI(physicalURI));
 
 	}
 
 	/* (non-Javadoc)
 	 * @see org.ecoinformatics.sms.OntologyManager#importOntology(java.lang.String, java.lang.String)
 	 */
-	public void importOntology(String url, String uri) throws Exception {
-		if (uri != null) {
-            OWLOntologyIRIMapper mapper = new SimpleIRIMapper(new URI(uri), IRI.create(url));
-            manager.addIRIMapper(mapper);
-            manager.loadOntology(IRI.create(uri));
+	public void importOntology(String physicalURI, String logicalURI) throws Exception {
+		if (logicalURI != null) {
+            //mapOntology(logicalURI, physicalURI);
+            manager.loadOntology(IRI.create(logicalURI));
 		} else {
-            manager.loadOntologyFromOntologyDocument(IRI.create(url));
+            manager.loadOntologyFromOntologyDocument(IRI.create(physicalURI));
 		}
+	}
+	
+	public void mapOntologies(Map<String, String> ontologyURIs) throws Exception {
+		for (Entry<String, String> entry: ontologyURIs.entrySet()) {
+			String logicalURI = entry.getKey();
+			String physicalURI = entry.getValue();
+			mapOntology(logicalURI, physicalURI);
+		}
+	}
+	
+	public void mapOntology(String logicalURI, String physicalURI) throws Exception {
+        OWLOntologyIRIMapper mapper = new SimpleIRIMapper(IRI.create(logicalURI), IRI.create(physicalURI));
+        manager.addIRIMapper(mapper);
 	}
 	
 	/* (non-Javadoc)

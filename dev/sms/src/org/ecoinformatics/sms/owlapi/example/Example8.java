@@ -146,6 +146,9 @@ public class Example8 {
 //            OWLClass plant = fac.getOWLClass(IRI.create(DOCUMENT_IRI + "#Plant"));
 //            OWLClass trait = fac.getOWLClass(IRI.create(DOCUMENT_IRI + "#Vegetative_Trait"));
             OWLClass trait = fac.getOWLClass(IRI.create(DOCUMENT_IRI + "#Concentration"));
+            
+            System.out.println("scheme: " + measurement.getIRI().getScheme());
+            System.out.println("frag: " + measurement.getIRI().getFragment());
 
             // Get hold of the has_pet property which has a full IRI of <http://owl.man.ac.uk/2005/07/sssw/people#has_pet>
             OWLObjectProperty measurementFor = fac.getOWLObjectProperty(IRI.create("http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#measurementFor"));

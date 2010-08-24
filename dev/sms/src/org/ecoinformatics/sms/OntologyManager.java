@@ -32,6 +32,8 @@
 package org.ecoinformatics.sms;
 
 import java.util.List;
+import java.util.Map;
+
 import org.ecoinformatics.sms.ontology.Ontology;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.ontology.OntologyProperty;
@@ -61,6 +63,8 @@ public interface OntologyManager {
      * @param uri the uri (optional) of the ontology
      */
     public void importOntology(String url, String uri) throws Exception;
+    
+    public void mapOntologies(Map<String, String> ontologyURIs) throws Exception;
 
     /**
      * Removes the ontology from the manager

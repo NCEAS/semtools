@@ -391,6 +391,14 @@ public class AnnotationPlugin
 		}
 		// load the configured ontologies
 		Hashtable<String, String> ontologyURIs = Morpho.getConfiguration().getHashtable(ONTOLOGY_TAG_NAME, LOGICAL_URI_TAG_NAME, PHYSICAL_URI_TAG_NAME);
+		// map them first
+		try {
+			SMS.getInstance().getOntologyManager().mapOntologies(ontologyURIs);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		// load them
 		for (Entry<String, String> entry: ontologyURIs.entrySet()) {
 			String uri = entry.getKey();
 			String url = entry.getValue();
