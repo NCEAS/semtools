@@ -28,6 +28,7 @@ import org.ecoinformatics.sms.annotation.Standard;
 import org.ecoinformatics.sms.annotation.Triple;
 import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.ontology.OntologyClass;
+import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.ui.ContextTriplePanel;
 import org.ecoinformatics.sms.plugins.ui.OntologyClassField;
 
@@ -159,14 +160,8 @@ public class CriteriaPanel extends JPanel {
 		
 		// find the Java class we want for the selected OntologyClass - it is the key in the map
 		OntologyClass selectedSubject = (OntologyClass) subject.getSelectedItem();
-		Iterator<Entry<Class, OntologyClass>> subjectIter = Annotation.OBOE_CLASSES.entrySet().iterator();
-		while (subjectIter.hasNext()) {
-			Entry<Class, OntologyClass> entry = subjectIter.next();
-			if (entry.getValue().equals(selectedSubject)) {
-				criteria.setSubject(entry.getKey());
-				break;
-			}
-		}
+		Class selectedClass = AnnotationPlugin.getClassFromOntologyClass(selectedSubject);
+		criteria.setSubject(selectedClass);
 		
 		criteria.setCondition((String) condition.getSelectedItem());
 		criteria.setValue(value.getOntologyClass());

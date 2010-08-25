@@ -28,6 +28,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import java.util.Map.Entry;
@@ -434,6 +435,18 @@ public class AnnotationPlugin
 		//SMS.getInstance().getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe-units.1.0beta");
 		//SMS.getInstance().getOntologyManager().importOntology("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl");
 		//SMS.getInstance().getOntologyManager().importOntology("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl");
+	}
+	
+	public static Class getClassFromOntologyClass(OntologyClass selectedSubject) {
+		// find the Java class we want for the selected OntologyClass - it is the key in the map
+		Iterator<Entry<Class, OntologyClass>> subjectIter = Annotation.OBOE_CLASSES.entrySet().iterator();
+		while (subjectIter.hasNext()) {
+			Entry<Class, OntologyClass> entry = subjectIter.next();
+			if (entry.getValue().equals(selectedSubject)) {
+				return entry.getKey();
+			}
+		}
+		return null;
 	}
 	
 	public static String getAnnotationQuery(String forDocid)
