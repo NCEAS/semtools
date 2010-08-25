@@ -95,8 +95,14 @@ public class Criteria  {
 				}
 			}
 			sb.append("]");
+		} else if (isContext()) {
+			sb.append("(");
+			sb.append(getContextTriple());
+			sb.append(")");
 		} else {
+			sb.append("(");
 			sb.append(subject + " " + condition + " " + value);
+			sb.append(")");
 		}
 		return sb.toString(); 
 	}
