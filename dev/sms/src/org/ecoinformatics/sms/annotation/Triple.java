@@ -41,4 +41,7 @@ public class Triple {
 		return false;
 	}
 
+	public String toString() {
+		return a + " " + b + " " + c;
+	}
 }
