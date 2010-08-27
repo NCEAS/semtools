@@ -95,7 +95,10 @@ public class OntologyClass {
      * @return the class name
      */
     public String getURI() {
-       return getOntology().getURI() + delimiter + getName();
+    	if (getOntology() != null) {
+    		return getOntology().getURI() + delimiter + getName();
+    	}
+    	return null;
     }
     
     /**
@@ -146,7 +149,7 @@ public class OntologyClass {
         if(!(obj instanceof OntologyClass))
             return false;
         OntologyClass c = (OntologyClass) obj;
-        if(c != null && c.getURI().equals(getURI()))
+        if(c != null && c.getURI() != null && getURI() != null && c.getURI().equals(getURI()))
             return true;
         return false;
     }
