@@ -19,6 +19,9 @@
 	   <property name="emldir"  value="${morpho.basedir}/../eml"/>
 	   <property name="svn.emlUrl"  value="https://code.ecoinformatics.org/code/eml/trunk/"/>
 	
+	<!-- for building metacat -->
+	<property name="metacat.dir"  value="${morpho.basedir}/../metacat"/>
+	
    <target name="init" depends="morpho.init">
       <!-- Create the time stamp -->
       <tstamp/>
@@ -56,7 +59,12 @@
          <fileset dir="lib">
             <include name="**/*.jar"/>
          </fileset>
+      	<!-- morpho jars -->
       	<path path="${cpath}" />
+      	<!-- metacat jars -->
+      	<fileset dir="${metacat.dir}/build">
+            <include name="*.jar"/>
+      	</fileset>
       </path>
       <property name="classpath" refid="project.class.path"/>
    </target>
@@ -75,6 +83,7 @@
 	
    <target name="compile" depends="morpho.compile,init,setclasspath"
         description="compile the source " >
+   		<echo message="Compiling semtools with classpath: ${classpath}"></echo>
       <!-- Compile the java code from ${src} into ${build} -->
       <javac srcdir="${src}" 
            destdir="${build}"
@@ -166,6 +175,29 @@
 	       <jvmarg value="-Djava.protocol.handler.pkgs=HTTPClient"/>
 	     </java>
 	   </target>
+	
+	<target name="install-metacat">
+		<echo message="Calling Metacat warPrepare"></echo>
+		<ant dir="${metacat.dir}" target="warPrepare" inheritall="false"/>
+		
+		<echo message="Compiling and Building semtools jar"></echo>
+		<antcall>
+			<target name="jar"></target>
+		</antcall>
+		
+		<echo message="Copying sms.jar to Metacat"></echo>
+		<copy file="sms.jar" todir="${metacat.dir}/build/war/lib" overwrite="true"></copy>
+		<echo message="Copying supporting semtools jars to Metacat"></echo>
+		<copy todir="${metacat.dir}/build/war/lib">
+			<fileset dir="./lib" includes="*.jar"/>	      	
+		</copy>
+		<!-- TODO: metacat.properties to include the plugin -->
+		
+		
+		<echo message="Continuing Metacat build"></echo>
+		<ant dir="${metacat.dir}" target="install" inheritall="false"/>
+		
+	</target>
 	
    <target name="javadoc" depends="run">
       <javadoc sourcepath="src"
