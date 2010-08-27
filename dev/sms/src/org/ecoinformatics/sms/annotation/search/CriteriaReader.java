@@ -34,6 +34,7 @@ package org.ecoinformatics.sms.annotation.search;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.util.List;
 import java.util.ArrayList;
 import org.w3c.dom.Attr;
@@ -50,20 +51,38 @@ import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.AnnotationException;
 import org.ecoinformatics.sms.annotation.Triple;
 import org.ecoinformatics.sms.ontology.OntologyClass;
-import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 
 public class CriteriaReader {
 
    /**
     * Read in a new annotation from an input stream
     * @param in the input stream
-    * @return the parsed annotation
+    * @return the parsed query
     */
-   public static Criteria read(InputStream in) throws AnnotationException {
+   public static Criteria read(InputStream inputStream) throws AnnotationException {
       Criteria criteria = null;
       try {
-         Document doc = _getDocument(in);
-         criteria = _parseQuery(doc);
+    	  InputSource in = new InputSource(inputStream);
+    	  Document doc = _getDocument(in);
+    	  criteria = _parseQuery(doc);
+      }catch(Exception e) {
+         e.printStackTrace();
+         throw new AnnotationException(e.getMessage());
+      }
+      return criteria;
+   }
+   
+   /**
+    * Read in a new annotation from an input stream
+    * @param in the string
+    * @return the parsed query
+    */
+   public static Criteria read(String s) throws AnnotationException {
+      Criteria criteria = null;
+      try {
+    	  InputSource in = new InputSource(new StringReader(s));
+    	  Document doc = _getDocument(in);
+    	  criteria = _parseQuery(doc);
       }catch(Exception e) {
          e.printStackTrace();
          throw new AnnotationException(e.getMessage());
@@ -76,7 +95,7 @@ public class CriteriaReader {
     * @param in the input stream
     * @return the XML document object
     */
-   private static Document _getDocument(InputStream in) throws Exception {
+   private static Document _getDocument(InputSource in) throws Exception {
       // create the document builder factory
       DocumentBuilderFactory factory =
               DocumentBuilderFactory.newInstance();
@@ -87,7 +106,7 @@ public class CriteriaReader {
       factory.setIgnoringElementContentWhitespace(true);
       // create the document from the input
       DocumentBuilder builder = factory.newDocumentBuilder();
-      Document doc = builder.parse(new InputSource(in));
+      Document doc = builder.parse(in);
       
       return doc;
    }
@@ -200,7 +219,8 @@ public class CriteriaReader {
       // subject
       Attr concept = _getAttribute(e, "concept");
       OntologyClass conceptClass = new OntologyClass(concept.getValue());
-      Class subject = AnnotationPlugin.getClassFromOntologyClass(conceptClass);
+      // TODO: look up this mapping elsewhere.
+      Class subject = null; //AnnotationPlugin.getClassFromOntologyClass(conceptClass);
       criteria.setSubject(subject);
 
       // condition
