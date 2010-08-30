@@ -160,7 +160,7 @@ public class CriteriaPanel extends JPanel {
 		
 		// find the Java class we want for the selected OntologyClass - it is the key in the map
 		OntologyClass selectedSubject = (OntologyClass) subject.getSelectedItem();
-		Class selectedClass = AnnotationPlugin.getClassFromOntologyClass(selectedSubject);
+		Class selectedClass = Annotation.getClassFromOntologyClass(selectedSubject);
 		criteria.setSubject(selectedClass);
 		
 		criteria.setCondition((String) condition.getSelectedItem());

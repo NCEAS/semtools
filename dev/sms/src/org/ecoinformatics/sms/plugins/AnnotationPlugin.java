@@ -28,7 +28,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import java.util.Map.Entry;
@@ -410,43 +409,11 @@ public class AnnotationPlugin
 				e.printStackTrace();
 			}
 		}
-		// initialize the static classes
-		Hashtable<String, String> oboeClasses = Morpho.getConfiguration().getHashtable("oboeClasses", "className", "classURI");
-		Annotation.OBOE_CLASSES.clear();
-		for (Entry<String, String> entry: oboeClasses.entrySet()) {
-			String name = entry.getKey();
-			String uri = entry.getValue();
-			try {
-				Object objectClass = Class.forName(name).newInstance();
-				OntologyClass oboeClass = null;
-				if (objectClass instanceof OntologyClass) {
-					oboeClass = (OntologyClass) objectClass;
-				} else {
-					oboeClass = new OntologyClass();
-				}
-				oboeClass.setURI(uri);
-				Annotation.OBOE_CLASSES.put(objectClass.getClass(), oboeClass);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		
 		//SMS.getInstance().getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe.1.0beta");
 		//SMS.getInstance().getOntologyManager().importOntology("http://ecoinformatics.org/oboe/oboe-units.1.0beta");
 		//SMS.getInstance().getOntologyManager().importOntology("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl");
 		//SMS.getInstance().getOntologyManager().importOntology("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl");
-	}
-	
-	public static Class getClassFromOntologyClass(OntologyClass selectedSubject) {
-		// find the Java class we want for the selected OntologyClass - it is the key in the map
-		Iterator<Entry<Class, OntologyClass>> subjectIter = Annotation.OBOE_CLASSES.entrySet().iterator();
-		while (subjectIter.hasNext()) {
-			Entry<Class, OntologyClass> entry = subjectIter.next();
-			if (entry.getValue().equals(selectedSubject)) {
-				return entry.getKey();
-			}
-		}
-		return null;
 	}
 	
 	public static String getAnnotationQuery(String forDocid)

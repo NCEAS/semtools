@@ -219,8 +219,8 @@ public class CriteriaReader {
       // subject
       Attr concept = _getAttribute(e, "concept");
       OntologyClass conceptClass = new OntologyClass(concept.getValue());
-      // TODO: look up this mapping elsewhere.
-      Class subject = null; //AnnotationPlugin.getClassFromOntologyClass(conceptClass);
+      // look up this mapping
+      Class subject = Annotation.getClassFromOntologyClass(conceptClass);
       criteria.setSubject(subject);
 
       // condition

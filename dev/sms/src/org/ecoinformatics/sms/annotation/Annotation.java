@@ -37,6 +37,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Map.Entry;
 import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -50,6 +52,53 @@ import org.ecoinformatics.sms.ontology.OntologyClass;
  */
 public class Annotation {
 
+	
+	static {
+		initialize();
+	}
+	
+	private static void initialize() {
+		OBOE_CLASSES = new HashMap<Class, OntologyClass>();
+		// initialize the static classes
+		ResourceBundle smsProperties = ResourceBundle.getBundle("sms");
+		Class[] classes = new Class[6];
+		classes[0] = Entity.class;
+		classes[1] = Characteristic.class;
+		classes[2] = Standard.class;
+		classes[3] = Protocol.class;
+		classes[4] = Relationship.class;
+		classes[5] = Measurement.class;
+		for (Class objectClass: classes) {
+			String uri = smsProperties.getString(objectClass.getName());
+			try {
+				Object obj = objectClass.newInstance();
+				OntologyClass oboeClass = null;
+				if (obj instanceof OntologyClass) {
+					oboeClass = (OntologyClass) obj;
+				} else {
+					oboeClass = new OntologyClass();
+				}
+				oboeClass.setURI(uri);
+				Annotation.OBOE_CLASSES.put(objectClass, oboeClass);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static Class getClassFromOntologyClass(OntologyClass selectedSubject) {
+		// find the Java class we want for the selected OntologyClass - it is the key in the map
+		Iterator<Entry<Class, OntologyClass>> subjectIter = Annotation.OBOE_CLASSES.entrySet().iterator();
+		while (subjectIter.hasNext()) {
+			Entry<Class, OntologyClass> entry = subjectIter.next();
+			if (entry.getValue().equals(selectedSubject)) {
+				return entry.getKey();
+			}
+		}
+		return null;
+	}
+	
    /** 
     * Set the uri (identifier) of this annotation
     * @param uri the uri 
@@ -382,7 +431,7 @@ public class Annotation {
    /**
     * Maps an Annotation Java Class to a specific OBOE OntologyClass
     */
-   public static Map<Class,OntologyClass> OBOE_CLASSES = new HashMap<Class, OntologyClass>();
+   public static Map<Class,OntologyClass> OBOE_CLASSES;
 
    public static String ANNOTATION_NS =
       "http://ecoinformatics.org/sms/annotation.0.9";
