@@ -1,0 +1,50 @@
+August 30th, 2010 - MJ, MOB, SB, MS, BL
+----------------------------------------
+
+1) Agenda for TDWG
+   -- need to develop an agenda
+   -- review with Hilmar Tuesday
+   -- TDWG abstracts due Wednesday
+
+
+   -- document core model and location
+      -- document extension ontologies (sbc, plant-trait)
+   -- document meta-collaborations on SONet site (JWG*)
+   -- core model group:
+	-- OWL-based framework for observational data modeling
+	-- 
+
+Towards that end, we might plan a session focused on an exchange standard where we: 1) outline the results/agreements from the Ithaca meeting, and 2)
+work on an exchange format that can handle data originally marked up in OBOE, O+M, and EQ, among others.  Maybe we could have a quick conference call
+early next week to try to plan an agenda -- I can try to work one out on Monday as a straw man, then maybe we could chat on Tuesday, allowing us to
+submit abstracts by Wednesday?  That might give just enough time to see if TDWG can give us a 1/2 day slot during their working group sessions.
+
+
+2) Status from Ben
+
+   -- ontology repository
+      -- bioportal as basis
+      -- strategy for versioning: new versions import and extend old version
+
+   -- review search UI work
+      -- ben has search under the hood in Metacat, no UI
+      -- next step is: ?
+
+3) Need annotations to test search
+   -- Margaret will coordinate SBC annotations
+   -- Mark will coordinate plant trait annotations
+   -- will store on fred as common place for us to test searching
+
+v1 -> v2
+A -> A' (A deprecated)
+     A' is subclassOf A
+B -> B' (B deprecated)
+C ->
+A has B
+
+X annotated to A using v1
+Y annotated to C using v2
+
+G <- (H I)
+
+G <- (H I J)
