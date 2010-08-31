@@ -17,6 +17,8 @@ import org.ecoinformatics.sms.plugins.pages.ContextPage;
 import org.ecoinformatics.sms.renderer.AnnotationGraph;
 
 import edu.ucsb.nceas.morpho.Language;
+import edu.ucsb.nceas.morpho.framework.MorphoFrame;
+import edu.ucsb.nceas.morpho.util.GUIAction;
 import edu.ucsb.nceas.morpho.util.Log;
 import edu.ucsb.nceas.morpho.util.StateChangeEvent;
 import edu.ucsb.nceas.morpho.util.StateChangeListener;
@@ -98,6 +100,12 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 	}
 	
 	public void handleStateChange(StateChangeEvent event) {
+		//check if this is for our frame
+		MorphoFrame thisAncestor = GUIAction.getMorphoFrameAncestor(this);
+		if (!GUIAction.isLocalEvent(event, thisAncestor)) {
+			return;
+		}
+		
 		initHandling();
 		
 		if (event.getChangedState().equals(StateChangeEvent.SELECT_DATATABLE_COLUMN)) {

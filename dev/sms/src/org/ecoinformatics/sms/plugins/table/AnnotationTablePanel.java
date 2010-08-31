@@ -53,6 +53,7 @@ import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 import org.ecoinformatics.sms.plugins.commands.DirectAnnotationCommand;
 import org.ecoinformatics.sms.plugins.pages.Help;
 
+import edu.ucsb.nceas.morpho.framework.MorphoFrame;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.util.Command;
 import edu.ucsb.nceas.morpho.util.GUIAction;
@@ -148,6 +149,12 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 	}
 
 	public void handleStateChange(StateChangeEvent event) {
+		//check that this is an even or our frame
+		MorphoFrame thisAncestor = GUIAction.getMorphoFrameAncestor(this);
+		if (!GUIAction.isLocalEvent(event, thisAncestor)) {
+			return;
+		}
+		
 		if (event.getChangedState().equals(AnnotationPlugin.ANNOTATION_CHANGE_EVENT)) {
 			AnnotationTableModel model = (AnnotationTableModel) annotationTable.getModel();
 			
