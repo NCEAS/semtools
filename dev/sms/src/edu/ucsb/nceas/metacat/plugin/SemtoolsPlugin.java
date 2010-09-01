@@ -31,6 +31,10 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		//note: order matters - it drives the switch/case handling
 		supportedActions.add("semquery");
 		supportedActions.add("initialize");
+		supportedActions.add("registerontology");
+		supportedActions.add("unregisterontology");
+
+
 	}
 	
 	/**
@@ -46,7 +50,9 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 				try {
 					InputStream in = mc.read(annotationDocid);
 					Annotation annotation = Annotation.read(in);
-					SMS.getInstance().getAnnotationManager().importAnnotation(annotation, metacatURL + "/" + annotationDocid);
+					if (!SMS.getInstance().getAnnotationManager().isAnnotation(annotation.getURI())) {
+						SMS.getInstance().getAnnotationManager().importAnnotation(annotation, metacatURL + "/" + annotationDocid);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -107,7 +113,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			HttpServletResponse response, String username, String[] groups,
 			String sessionId) throws HandlerException {
 
-		switch (supportedActions.indexOf(action)) {
+		switch (supportedActions.indexOf(action.toLowerCase())) {
 		case 0:
 			semquery(params, request, response, username, groups, sessionId);
 			break;
@@ -115,6 +121,12 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			initializeOntologies();
 			initializeAnnotations();
 			break;
+		case 2:
+			registerOntology(params, request, response, username, groups, sessionId);
+			break;
+		case 3:
+			unregisterOntology(params, request, response, username, groups, sessionId);
+			break;	
 		default:
 			break;
 		}
@@ -122,6 +134,80 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		return true;
 	}
 
+	private void registerOntology(Hashtable<String, String[]> params, HttpServletRequest request,
+			HttpServletResponse response, String username, String[] groups,
+			String sessionId) throws HandlerException {
+		
+		StringBuffer sb = new StringBuffer();
+		String uri = null;
+		String url = null;
+		try {
+			uri = params.get("uri")[0];
+			url = params.get("url")[0];
+			Hashtable<String, String> ontologyURIs = new Hashtable<String, String>();
+			ontologyURIs.put(uri, url);
+			SMS.getInstance().getOntologyManager().mapOntologies(ontologyURIs);
+			SMS.getInstance().getOntologyManager().importOntology(url, uri);
+			
+			sb.append("<success>");
+	        sb.append("<action>registerOntology</action>");
+	        sb.append("<param name='uri'>" + uri + "</param>");
+	        sb.append("<param name='url'>" + url + "</param>");
+	        sb.append("</success>");
+		} catch (Exception e) {
+			e.printStackTrace();
+			sb.append("<error>");
+	        sb.append("<message>" + e.getMessage() + "</message>");
+	        sb.append("<action>registerOntology</action>");
+	        sb.append("<param name='uri'>" + uri + "</param>");
+	        sb.append("<param name='url'>" + url + "</param>");
+	        sb.append("</error>");
+		}
+        
+        try {
+        	response.setContentType("text/xml");
+            PrintWriter out = response.getWriter();
+            out.println(sb.toString());
+            out.close();
+        } catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void unregisterOntology(Hashtable<String, String[]> params, HttpServletRequest request,
+			HttpServletResponse response, String username, String[] groups,
+			String sessionId) throws HandlerException {
+		
+		StringBuffer sb = new StringBuffer();
+		String uri = null;
+		try {
+			uri = params.get("uri")[0];
+			SMS.getInstance().getOntologyManager().removeOntology(uri);
+			
+			sb.append("<success>");
+	        sb.append("<action>unregisterOntology</action>");
+	        sb.append("<param name='uri'>" + uri + "</param>");
+	        sb.append("</success>");
+		} catch (Exception e) {
+			e.printStackTrace();
+			sb.append("<error>");
+	        sb.append("<message>" + e.getMessage() + "</message>");
+	        sb.append("<action>unregisterOntology</action>");
+	        sb.append("<param name='uri'>" + uri + "</param>");
+	        sb.append("</error>");
+		}
+        
+        try {
+        	response.setContentType("text/xml");
+            PrintWriter out = response.getWriter();
+            out.println(sb.toString());
+            out.close();
+        } catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	private void semquery(Hashtable<String, String[]> params, HttpServletRequest request,
 			HttpServletResponse response, String username, String[] groups,
 			String sessionId) throws HandlerException {
