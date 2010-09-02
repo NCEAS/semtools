@@ -86,7 +86,7 @@ public class OntologyClassField extends JTextField {
 		this.ontologyClass = ontologyClass;
 		if (ontologyClass != null) {
 			this.setText(ontologyClass.getName());
-			this.setToolTipText(ontologyClass.getName());
+			this.setToolTipText(ontologyClass.getURI());
 		}
 		else {
 			this.setText("");
