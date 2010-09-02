@@ -227,7 +227,6 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 				docid = docid.substring(0, docid.lastIndexOf("."));
 				docids.add(docid);
 			}
-			docids.add("knb-lter-sbc.6");
 			
 			//just need a valid pathquery - this is not actually used
 			String squery = DocumentIdQuery.createDocidQuery(docids.toArray(new String[0]));
