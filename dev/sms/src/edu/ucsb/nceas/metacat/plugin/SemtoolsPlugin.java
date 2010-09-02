@@ -2,9 +2,12 @@ package edu.ucsb.nceas.metacat.plugin;
 
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import java.util.Map.Entry;
 
@@ -15,14 +18,22 @@ import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.annotation.search.CriteriaReader;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 import edu.ucsb.nceas.metacat.DBQuery;
+import edu.ucsb.nceas.metacat.DBTransform;
 import edu.ucsb.nceas.metacat.DBUtil;
 import edu.ucsb.nceas.metacat.DocumentIdQuery;
+import edu.ucsb.nceas.metacat.QuerySpecification;
 import edu.ucsb.nceas.metacat.client.Metacat;
 import edu.ucsb.nceas.metacat.client.MetacatFactory;
+import edu.ucsb.nceas.metacat.properties.PropertyService;
 import edu.ucsb.nceas.metacat.shared.HandlerException;
 import edu.ucsb.nceas.metacat.util.SystemUtil;
+import edu.ucsb.nceas.utilities.XMLUtilities;
 
 public class SemtoolsPlugin implements MetacatHandlerPlugin {
 
@@ -238,18 +249,86 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 	        String[] actionArray = new String[1];
 	        actionArray[0] = "squery";
 	        params.put("action", actionArray);
-			
-	        response.setContentType("text/xml");
-	        PrintWriter out = response.getWriter();
 	        
 	        DBQuery dbQuery = new DBQuery(docids);
-			dbQuery.findDocuments(response, out, params, username, groups, sessionId);
-			
+	        QuerySpecification qspec = 
+	        	new QuerySpecification(
+	        			squery, 
+	        			PropertyService.getProperty("xml.saxparser"), 
+	        			PropertyService.getProperty("document.accNumSeparator"));
+	        // use null out var so it does not print yet
+			//dbQuery.findDocuments(response, out, params, username, groups, sessionId);
+	        StringBuffer results = dbQuery.createResultDocument(
+	        		qspec.getNormalizedXMLQuery(), //squery, 
+	        		qspec, 
+	        		null, //out, 
+	        		username, groups, true); //, 0, 0, sessionid, qformat);
+	        
+	        // augment the results with annotation information
+	        String modifiedResults = augmentQuery(matches, results);
+	        
+	        // style the results
+	        //response.setContentType("text/html");
+	        PrintWriter out = response.getWriter();
+	        String qformat = params.get("qformat")[0];
+	        DBTransform transform = new DBTransform();
+	        transform.transformXMLDocument(
+	        		modifiedResults, 
+	        		"-//NCEAS//resultset//EN",
+                    "-//W3C//HTML//EN", 
+                    qformat, 
+                    out, 
+                    params,
+                    sessionId);
+	        //send to output
+			//out.print(results.toString());
 	        out.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new HandlerException(e.getMessage());
 		}
+	}
+	
+
+	private String augmentQuery(List<Annotation> matches, StringBuffer results) throws Exception {
+		
+		//make a map for the annotation matches - easy to reference when augmenting the search results with annotation info
+		// TODO: handle multiple annotations per package
+		Map<String, Annotation> matchMap = new HashMap<String, Annotation>();
+		for (Annotation annotation: matches) {
+			matchMap.put(annotation.getEMLPackage(), annotation);
+		}
+		// read existing results into DOM
+		StringReader xmlReader = new StringReader(results.toString());
+		Document document = XMLUtilities.getXMLReaderAsDOMDocument(xmlReader);
+		NodeList documentNodes = XMLUtilities.getNodeListWithXPath(document.getDocumentElement(), "//document");
+		for (int i = 0; i < documentNodes.getLength(); i++) {
+			// get the document element
+			Node documentNode = documentNodes.item(i);
+			Node testNode = document.createElement("test");
+			Text textNode = document.createTextNode("hello world");
+			testNode.appendChild(textNode);
+			documentNode.appendChild(testNode);
+			// get the document/docid element
+			Node docidNode = XMLUtilities.getTextNodeWithXPath(documentNode, "docid");
+			String docid = docidNode.getTextContent();
+			// get the annotation for this document
+			Annotation annotation = matchMap.get(docid);
+			if (annotation == null) {
+				continue;
+			}
+			// add the annotation to the search results
+			StringReader annotatationStringReader = new StringReader(annotation.toString());
+			// TODO: subset of the annotation?
+			Node annotationNode = XMLUtilities.getXMLReaderAsDOMTreeRootNode(annotatationStringReader);
+			documentNode.appendChild(annotationNode);
+		}
+		
+		// return a string
+		String modifiedResults = XMLUtilities.getDOMTreeAsString(document.getDocumentElement());
+		
+		return modifiedResults;
+		
 	}
 
 	public boolean handlesAction(String action) {
