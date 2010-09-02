@@ -44,12 +44,13 @@ import org.ecoinformatics.sms.ontology.OntologyProperty;
 /**
  * Objects of this class represent observation ameasurements
  */
-public class Measurement extends OntologyClass implements Comparable<Measurement>{
+public class Measurement implements Comparable<Measurement>{
 
    private String _label;
    private List<Characteristic> _characteristics = new ArrayList();
    private Standard _standard;
    private Protocol _protocol;
+   private OntologyClass _template;
    private Mapping mapping;
    private List<Entity> _domainValues = new ArrayList();
    private double _precision = 1.0;
@@ -154,6 +155,22 @@ public class Measurement extends OntologyClass implements Comparable<Measurement
     */
    public Protocol getProtocol() {
       return _protocol;
+   }
+   
+   /**
+    * Set the measurement template
+    * @param t the template
+    */
+   public void setTemplate(OntologyClass t) {
+      _template = t;
+   }
+
+   /**
+    * Get the measurement template
+    * @return the template
+    */
+   public OntologyClass getTemplate() {
+      return _template;
    }
 
    public Mapping getMapping() {
@@ -269,9 +286,6 @@ public class Measurement extends OntologyClass implements Comparable<Measurement
     * @author cao
     */
    public String toString(){
-	   if (getName() != null) {
-		   return getName();
-	   }
 	   String str = "Label="+_label+",characteristics="+_characteristics+",standard="+_standard
 	   	+",protocol="+_protocol+",precision="+_precision+",value="+_value+",iskey="+_isKey;
 	   return str;

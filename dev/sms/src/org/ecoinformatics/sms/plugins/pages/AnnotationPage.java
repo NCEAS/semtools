@@ -340,7 +340,7 @@ public class AnnotationPage extends AbstractUIPage {
 			} catch (Exception e) {
 			}
 			try {
-				this.simpleAnnotationPanel.setObservationMeasurement(currentMeasurement);
+				this.simpleAnnotationPanel.setObservationMeasurement(currentMeasurement.getTemplate());
 			} catch (Exception e) {
 			}
 		} catch (Exception e) {
@@ -372,7 +372,7 @@ public class AnnotationPage extends AbstractUIPage {
 			Log.debug(40, "Adding Measurement: " + currentMeasurement);
 		}
 		try {
-			currentMeasurement.setURI(simpleAnnotationPanel.getObservationMeasurement().getURI());
+			currentMeasurement.setTemplate(simpleAnnotationPanel.getObservationMeasurement());
 		} catch (Exception e) {
 			Log.debug(40, "Ignoring Measurement: " + e.getMessage());
 		}

@@ -270,8 +270,11 @@ public class AnnotationReader {
       o.addMeasurement(m);
       // get the id (optional)
       Attr att0 = _getAttribute(e, "id");
-      if(att0 != null)
-         m.setURI(att0.getValue().trim());
+      if(att0 != null) {
+    	  OntologyClass template = new OntologyClass();
+    	  _getQName(e, template, att0.getValue().trim());
+         m.setTemplate(template);
+      }
       // get the label (optional)
       Attr att1 = _getAttribute(e, "label");
       if(att1 != null)
