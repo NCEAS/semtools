@@ -32,6 +32,7 @@ import edu.ucsb.nceas.metacat.client.Metacat;
 import edu.ucsb.nceas.metacat.client.MetacatFactory;
 import edu.ucsb.nceas.metacat.properties.PropertyService;
 import edu.ucsb.nceas.metacat.shared.HandlerException;
+import edu.ucsb.nceas.metacat.util.MetacatUtil;
 import edu.ucsb.nceas.metacat.util.SystemUtil;
 import edu.ucsb.nceas.utilities.XMLUtilities;
 
@@ -240,7 +241,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 				docids.add(docid);
 			}
 			
-			//just need a valid pathquery - this is not actually used
+			// just need a valid pathquery - this is not actually used
 			String squery = DocumentIdQuery.createDocidQuery(docids.toArray(new String[0]));
 			String[] queryArray = new String[1];
 	        queryArray[0] = squery;
@@ -257,13 +258,15 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 	        			squery, 
 	        			PropertyService.getProperty("xml.saxparser"), 
 	        			PropertyService.getProperty("document.accNumSeparator"));
-	        // use null out var so it does not print yet
+	        // use null out so it does not print response yet
 			//dbQuery.findDocuments(response, out, params, username, groups, sessionId);
 	        StringBuffer results = dbQuery.createResultDocument(
-	        		qspec.getNormalizedXMLQuery(), //squery, 
+	        		qspec.getNormalizedXMLQuery(), 
 	        		qspec, 
-	        		null, //out, 
-	        		username, groups, true); //, 0, 0, sessionid, qformat);
+	        		null, 
+	        		username, 
+	        		groups, 
+	        		true);
 	        
 	        // augment the results with annotation information
 	        String modifiedResults = augmentQuery(matches, results);
@@ -272,17 +275,20 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 	        //response.setContentType("text/html");
 	        PrintWriter out = response.getWriter();
 	        String qformat = params.get("qformat")[0];
-	        DBTransform transform = new DBTransform();
-	        transform.transformXMLDocument(
-	        		modifiedResults, 
-	        		"-//NCEAS//resultset//EN",
-                    "-//W3C//HTML//EN", 
-                    qformat, 
-                    out, 
-                    params,
-                    sessionId);
-	        //send to output
-			//out.print(results.toString());
+	        if (!qformat.equals(MetacatUtil.XMLFORMAT)) {
+		        DBTransform transform = new DBTransform();
+		        transform.transformXMLDocument(
+		        		modifiedResults, 
+		        		"-//NCEAS//resultset//EN",
+	                    "-//W3C//HTML//EN", 
+	                    qformat, 
+	                    out, 
+	                    params,
+	                    sessionId);
+	        } else {
+		        // send to output as plain xml
+	        	out.print(modifiedResults);
+	        }
 	        out.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -306,10 +312,6 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		for (int i = 0; i < documentNodes.getLength(); i++) {
 			// get the document element
 			Node documentNode = documentNodes.item(i);
-			Node testNode = document.createElement("test");
-			Text textNode = document.createTextNode("hello world");
-			testNode.appendChild(textNode);
-			documentNode.appendChild(testNode);
 			// get the document/docid element
 			Node docidNode = XMLUtilities.getTextNodeWithXPath(documentNode, "docid");
 			String docid = docidNode.getTextContent();
