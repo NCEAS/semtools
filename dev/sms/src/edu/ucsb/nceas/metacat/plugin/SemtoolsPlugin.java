@@ -45,7 +45,8 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		supportedActions.add("registerontology");
 		supportedActions.add("unregisterontology");
 
-
+		initializeOntologies();
+		initializeAnnotations();
 	}
 	
 	/**
