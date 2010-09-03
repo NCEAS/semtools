@@ -321,7 +321,8 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			StringReader annotatationStringReader = new StringReader(annotation.toString());
 			// TODO: subset of the annotation?
 			Node annotationNode = XMLUtilities.getXMLReaderAsDOMTreeRootNode(annotatationStringReader);
-			documentNode.appendChild(annotationNode);
+			Node importedAnnnotationNode = document.importNode(annotationNode, true);
+			documentNode.appendChild(importedAnnnotationNode);
 		}
 		
 		// return a string
