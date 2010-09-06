@@ -18,6 +18,8 @@ import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.annotation.search.CriteriaReader;
+import org.ecoinformatics.sms.ontology.bioportal.OntologyBean;
+import org.ecoinformatics.sms.ontology.bioportal.OntologyService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -152,11 +154,19 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			String sessionId) throws HandlerException {
 		
 		StringBuffer sb = new StringBuffer();
+		String id = null;
 		String uri = null;
 		String url = null;
 		try {
-			uri = params.get("uri")[0];
-			url = params.get("url")[0];
+			if (params.containsKey("id")) {
+				id = params.get("id")[0];
+				OntologyBean ontologyBean = OntologyService.getInstance().getOntologyBean(id);
+				uri = ontologyBean.getUrn();
+				url = OntologyService.getInstance().getOntology(id);
+			} else {
+				uri = params.get("uri")[0];
+				url = params.get("url")[0];
+			}
 			Hashtable<String, String> ontologyURIs = new Hashtable<String, String>();
 			ontologyURIs.put(uri, url);
 			SMS.getInstance().getOntologyManager().mapOntologies(ontologyURIs);
@@ -192,9 +202,16 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			String sessionId) throws HandlerException {
 		
 		StringBuffer sb = new StringBuffer();
+		String id = null;
 		String uri = null;
 		try {
-			uri = params.get("uri")[0];
+			if (params.containsKey("id")) {
+				id = params.get("id")[0];
+				OntologyBean ontologyBean = OntologyService.getInstance().getOntologyBean(id);
+				uri = ontologyBean.getUrn();
+			} else {
+				uri = params.get("uri")[0];
+			}
 			SMS.getInstance().getOntologyManager().removeOntology(uri);
 			
 			sb.append("<success>");
