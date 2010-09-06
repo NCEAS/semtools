@@ -4,6 +4,7 @@ public class OntologyBean {
 
 	private String id;
 	private String ontologyId;
+	private String urn;
 	private String displayLabel;
 	private String description;
 	private String versionNumber;
@@ -20,6 +21,12 @@ public class OntologyBean {
 	}
 	public void setOntologyId(String ontologyId) {
 		this.ontologyId = ontologyId;
+	}
+	public String getUrn() {
+		return urn;
+	}
+	public void setUrn(String urn) {
+		this.urn = urn;
 	}
 	public String getDisplayLabel() {
 		return displayLabel;

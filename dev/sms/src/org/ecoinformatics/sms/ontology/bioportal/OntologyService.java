@@ -24,7 +24,11 @@ public class OntologyService {
 	
 	public List<OntologyBean> getOntologyBeans() throws Exception {
 		String uri = BIOPORTAL_URL_PREFIX + "/ontologies";
+		return processOntologyBeanResponse(uri);
 		
+	}
+	
+	private List<OntologyBean> processOntologyBeanResponse(String uri) throws Exception {
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
@@ -49,6 +53,10 @@ public class OntologyService {
 			try {
 				String ontologyId = beanNode.getElementsByTagName("ontologyId").item(0).getTextContent();
 				ontologyBean.setOntologyId(ontologyId);
+			} catch (Exception e) {}
+			try {
+				String urn = beanNode.getElementsByTagName("urn").item(0).getTextContent();
+				ontologyBean.setUrn(urn);
 			} catch (Exception e) {}
 			try {
 				String displayLabel = beanNode.getElementsByTagName("displayLabel").item(0).getTextContent();
@@ -77,6 +85,13 @@ public class OntologyService {
 		return uri;
 	}
 	
+	public OntologyBean getOntologyBean(String forId) throws Exception {
+		String uri = BIOPORTAL_URL_PREFIX + "/ontologies/" + forId;
+		
+		// just one
+		return processOntologyBeanResponse(uri).get(0);
+	}
+
 	public static void main(String args[]) {
 		try {
 			List<OntologyBean> beans = OntologyService.getInstance().getOntologyBeans();
