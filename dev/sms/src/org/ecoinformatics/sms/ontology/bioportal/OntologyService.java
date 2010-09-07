@@ -22,12 +22,6 @@ public class OntologyService {
 		return instance;
 	}
 	
-	public List<OntologyBean> getOntologyBeans() throws Exception {
-		String uri = BIOPORTAL_URL_PREFIX + "/ontologies";
-		return processOntologyBeanResponse(uri);
-		
-	}
-	
 	private List<OntologyBean> processOntologyBeanResponse(String uri) throws Exception {
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -80,6 +74,53 @@ public class OntologyService {
 		return results;
 	}
 	
+	private List<OntologyBean> processOntologyHitListResponse(String uri) throws Exception {
+		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+
+		Document doc = docBuilder.parse(uri);
+
+		//Normalize text representation
+		doc.getDocumentElement().normalize();
+
+		NodeList listOfSearchResults = doc.getElementsByTagName("ontologyHitBean");
+		int totalSearchResults = listOfSearchResults.getLength();
+		//System.out.println("Total Results: "+ totalSearchResults);
+
+		List<OntologyBean> results = new ArrayList<OntologyBean>();
+		for (int i = 0; i < totalSearchResults; i++) {
+			OntologyBean ontologyBean = new OntologyBean();
+			Element beanNode = (Element) listOfSearchResults.item(i);
+			
+			try {
+				String id = beanNode.getElementsByTagName("ontologyVersionId").item(0).getTextContent();
+				ontologyBean.setId(id);
+			} catch (Exception e) {}
+			try {
+				String ontologyId = beanNode.getElementsByTagName("ontologyId").item(0).getTextContent();
+				ontologyBean.setOntologyId(ontologyId);
+			} catch (Exception e) {}
+			try {
+				String displayLabel = beanNode.getElementsByTagName("ontologyDisplayLabel").item(0).getTextContent();
+				ontologyBean.setDisplayLabel(displayLabel);
+			} catch (Exception e) {}
+			
+			results.add(ontologyBean);
+		}
+		return results;
+	}
+	
+	public List<OntologyBean> getOntologyBeans() throws Exception {
+		String uri = BIOPORTAL_URL_PREFIX + "/ontologies";
+		return processOntologyBeanResponse(uri);
+	}
+	
+	public List<OntologyBean> getOntologyBeans(String searchTerm) throws Exception {
+		String uri = BIOPORTAL_URL_PREFIX + "/search/" + searchTerm;
+		//uri += "&isexactmatch=1" + "&includeproperties=0";
+		return processOntologyHitListResponse(uri);
+	}
+	
 	public String getOntology(String id) {
 		String uri = BIOPORTAL_URL_PREFIX + "/ontologies/download/" + id;
 		return uri;
@@ -94,7 +135,7 @@ public class OntologyService {
 
 	public static void main(String args[]) {
 		try {
-			List<OntologyBean> beans = OntologyService.getInstance().getOntologyBeans();
+			List<OntologyBean> beans = OntologyService.getInstance().getOntologyBeans("OBOE");
 			for (OntologyBean bean: beans) {
 				System.out.println(bean.getDisplayLabel());
 			}
