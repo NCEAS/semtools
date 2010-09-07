@@ -39,7 +39,7 @@ public class OntologyService {
 
 		NodeList listOfSearchResults = doc.getElementsByTagName("ontologyBean");
 		int totalSearchResults = listOfSearchResults.getLength();
-		System.out.println("Total Results: "+ totalSearchResults);
+		//System.out.println("Total Results: "+ totalSearchResults);
 		
 		List<OntologyBean> results = new ArrayList<OntologyBean>();
 		for (int i = 0; i < totalSearchResults; i++) {
