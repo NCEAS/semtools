@@ -339,10 +339,13 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 	        String modifiedResults = augmentQuery(matches, results);
 	        
 	        // style the results
-	        //response.setContentType("text/html");
-	        PrintWriter out = response.getWriter();
+	        PrintWriter out = null;
 	        String qformat = params.get("qformat")[0];
 	        if (!qformat.equals(MetacatUtil.XMLFORMAT)) {
+	        	// html
+	        	response.setContentType("text/html");
+		        out = response.getWriter();
+		        // transform via stylesheet
 		        DBTransform transform = new DBTransform();
 		        transform.transformXMLDocument(
 		        		modifiedResults, 
@@ -353,9 +356,13 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 	                    params,
 	                    sessionId);
 	        } else {
+	        	// xml
+	        	response.setContentType("text/xml");
+		        out = response.getWriter();
 		        // send to output as plain xml
 	        	out.print(modifiedResults);
 	        }
+	        // done
 	        out.close();
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
