@@ -14,22 +14,25 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.annotation.search.CriteriaReader;
+import org.ecoinformatics.sms.ontology.Ontology;
 import org.ecoinformatics.sms.ontology.bioportal.OntologyBean;
 import org.ecoinformatics.sms.ontology.bioportal.OntologyService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
 
 import edu.ucsb.nceas.metacat.DBQuery;
 import edu.ucsb.nceas.metacat.DBTransform;
 import edu.ucsb.nceas.metacat.DBUtil;
 import edu.ucsb.nceas.metacat.DocumentIdQuery;
 import edu.ucsb.nceas.metacat.QuerySpecification;
+import edu.ucsb.nceas.metacat.client.InsufficientKarmaException;
 import edu.ucsb.nceas.metacat.client.Metacat;
 import edu.ucsb.nceas.metacat.client.MetacatFactory;
 import edu.ucsb.nceas.metacat.properties.PropertyService;
@@ -41,12 +44,16 @@ import edu.ucsb.nceas.utilities.XMLUtilities;
 public class SemtoolsPlugin implements MetacatHandlerPlugin {
 
 	private static List<String> supportedActions = new ArrayList<String>();
+	
+	public static Log log = LogFactory.getLog(SemtoolsPlugin.class);
+	
 	static {
 		//note: order matters - it drives the switch/case handling
 		supportedActions.add("semquery");
 		supportedActions.add("initialize");
 		supportedActions.add("registerontology");
 		supportedActions.add("unregisterontology");
+		supportedActions.add("ontologies");
 
 		initializeOntologies();
 		initializeAnnotations();
@@ -68,13 +75,16 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 					if (!SMS.getInstance().getAnnotationManager().isAnnotation(annotation.getURI())) {
 						SMS.getInstance().getAnnotationManager().importAnnotation(annotation, metacatURL + "/" + annotationDocid);
 					}
+				} catch (InsufficientKarmaException ike) {
+					// public read permission is not granted
+					log.warn(ike.getMessage());
 				} catch (Exception e) {
-					e.printStackTrace();
+					log.error(e.getMessage(), e);
+					//e.printStackTrace();
 				}
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
 		}
 	}
 	
@@ -102,9 +112,9 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		// map them first
 		try {
 			SMS.getInstance().getOntologyManager().mapOntologies(ontologyURIs);
-		} catch (Exception e1) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			log.error(e.getMessage(), e);
 		}
 		// load them in the manager
 		for (Entry<String, String> entry: ontologyURIs.entrySet()) {
@@ -113,8 +123,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			try {
 				SMS.getInstance().getOntologyManager().importOntology(url, uri);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error(e.getMessage(), e);
 			}
 		}
 		
@@ -141,7 +150,10 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			break;
 		case 3:
 			unregisterOntology(params, request, response, username, groups, sessionId);
-			break;	
+			break;
+		case 4:
+			ontologies(params, request, response, username, groups, sessionId);
+			break;
 		default:
 			break;
 		}
@@ -193,7 +205,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
             out.println(sb.toString());
             out.close();
         } catch (Exception e) {
-			e.printStackTrace();
+        	log.error(e.getMessage(), e);
 		}
 	}
 	
@@ -233,9 +245,47 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
             out.println(sb.toString());
             out.close();
         } catch (Exception e) {
-			e.printStackTrace();
+        	log.error(e.getMessage(), e);
 		}
 		
+	}
+	
+	private void ontologies(Hashtable<String, String[]> params, HttpServletRequest request,
+			HttpServletResponse response, String username, String[] groups,
+			String sessionId) throws HandlerException {
+		
+		StringBuffer sb = new StringBuffer();
+
+		try {
+			List<String> ontologies = SMS.getInstance().getOntologyManager().getOntologyIds();
+			
+			sb.append("<success>");
+	        sb.append("<action>ontologies</action>");
+			for (String uri: ontologies) {
+				Ontology ontology = SMS.getInstance().getOntologyManager().getOntology(uri);
+				String label = SMS.getInstance().getOntologyManager().getOntologyLabel(ontology);
+		        sb.append("<ontology>");
+		        sb.append("<uri>" + uri + "</uri>");
+		        sb.append("<label>" + label + "</label>");
+		        sb.append("</ontology>");
+			}
+	        sb.append("</success>");
+		} catch (Exception e) {
+			e.printStackTrace();
+			sb.append("<error>");
+	        sb.append("<message>" + e.getMessage() + "</message>");
+	        sb.append("<action>ontologies</action>");
+	        sb.append("</error>");
+		}
+        
+        try {
+        	response.setContentType("text/xml");
+            PrintWriter out = response.getWriter();
+            out.println(sb.toString());
+            out.close();
+        } catch (Exception e) {
+        	log.error(e.getMessage(), e);
+		}
 	}
 	
 	private void semquery(Hashtable<String, String[]> params, HttpServletRequest request,
@@ -308,7 +358,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 	        }
 	        out.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
 			throw new HandlerException(e.getMessage());
 		}
 	}
