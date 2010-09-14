@@ -1,5 +1,7 @@
 package edu.ucsb.nceas.metacat.plugin;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
@@ -31,6 +33,7 @@ import edu.ucsb.nceas.metacat.DBQuery;
 import edu.ucsb.nceas.metacat.DBTransform;
 import edu.ucsb.nceas.metacat.DBUtil;
 import edu.ucsb.nceas.metacat.DocumentIdQuery;
+import edu.ucsb.nceas.metacat.DocumentImpl;
 import edu.ucsb.nceas.metacat.QuerySpecification;
 import edu.ucsb.nceas.metacat.client.InsufficientKarmaException;
 import edu.ucsb.nceas.metacat.client.Metacat;
@@ -39,11 +42,14 @@ import edu.ucsb.nceas.metacat.properties.PropertyService;
 import edu.ucsb.nceas.metacat.shared.HandlerException;
 import edu.ucsb.nceas.metacat.util.MetacatUtil;
 import edu.ucsb.nceas.metacat.util.SystemUtil;
+import edu.ucsb.nceas.utilities.FileUtil;
 import edu.ucsb.nceas.utilities.XMLUtilities;
 
 public class SemtoolsPlugin implements MetacatHandlerPlugin {
 
 	private static List<String> supportedActions = new ArrayList<String>();
+	
+	private static boolean readAll = true;
 	
 	public static Log log = LogFactory.getLog(SemtoolsPlugin.class);
 	
@@ -70,14 +76,32 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			Vector<String> annotationDocids = dbutil.getAllDocidsByType(Annotation.ANNOTATION_NS, false);
 			for (String annotationDocid: annotationDocids) {
 				try {
-					InputStream in = mc.read(annotationDocid);
+					InputStream in = null;
+					String documentPath = null;
+					if (readAll) {
+						// circumvents permission checking by reading directly from Metacat
+						DocumentImpl docImpl = new DocumentImpl(annotationDocid);
+						String docString = docImpl.toString();
+						in = new ByteArrayInputStream(docString.getBytes());
+						String documentDir = PropertyService.getProperty("application.documentfilepath");
+						documentPath = documentDir + FileUtil.getFS() + annotationDocid;
+						documentPath = new File(documentPath).toURI().toURL().toString();
+					} else {						
+						try {
+							// uses the client and only allows public read
+							in = mc.read(annotationDocid);
+							documentPath = metacatURL + "/" + annotationDocid;
+						} catch (InsufficientKarmaException ike) {
+							// public read permission is not granted
+							log.warn(ike.getMessage());
+							continue;
+						} 
+					}
+					// get the annotation and import it
 					Annotation annotation = Annotation.read(in);
 					if (!SMS.getInstance().getAnnotationManager().isAnnotation(annotation.getURI())) {
-						SMS.getInstance().getAnnotationManager().importAnnotation(annotation, metacatURL + "/" + annotationDocid);
+						SMS.getInstance().getAnnotationManager().importAnnotation(annotation, documentPath);
 					}
-				} catch (InsufficientKarmaException ike) {
-					// public read permission is not granted
-					log.warn(ike.getMessage());
 				} catch (Exception e) {
 					log.error(e.getMessage(), e);
 					//e.printStackTrace();
@@ -305,7 +329,13 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			for (Annotation annotation: matches) {
 				String docid = annotation.getEMLPackage();
 				docid = docid.substring(0, docid.lastIndexOf("."));
-				docids.add(docid);
+				// check permissions here
+				boolean readAccess = DocumentImpl.hasReadPermission(username, groups, docid);
+				if (readAccess) {
+					docids.add(docid);
+				} else {
+					log.warn("user: " + username + " does not have read permission for docid: " + docid);
+				}
 			}
 			
 			// just need a valid pathquery - this is not actually used
