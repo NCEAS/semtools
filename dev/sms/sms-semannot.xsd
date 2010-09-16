@@ -48,6 +48,7 @@
 		<xs:element name="domain" type="DomainType" 
 			minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
+    <xs:attribute name="id" type="xs:QName" use="optional"/>
     <xs:attribute name="label" type="xs:ID" use="optional"/>
     <xs:attribute name="precision" type="xs:float" use="optional"/>
     <xs:attribute name="value" type="xs:string" use="optional"/>
