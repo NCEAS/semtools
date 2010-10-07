@@ -162,6 +162,8 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 				dbMeasurement.setStandard((m.getStandard() == null) ? null : m.getStandard().getURI());
 				// protocol
 				dbMeasurement.setProtocol((m.getProtocol() == null) ? null : m.getProtocol().getURI());
+				// template
+				dbMeasurement.setTemplate((m.getTemplate() == null) ? null : m.getTemplate().getURI());
 				dbObservation.addToMeasurements(dbMeasurement);
 				// characteristics
 				for (Characteristic c: m.getCharacteristics()) {
@@ -553,6 +555,62 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 				OntologyClass c = null;
 				try {
 					c = new Standard(dbm.getStandard());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(c !=null && !results.contains(c)) {
+					results.add(c);
+				}
+			}
+		}
+      return results;
+   }
+   
+   /**
+    * Get measurement protocols used in managed annotations
+    * @return list of measurement protocols
+    */
+   public List<OntologyClass> getActiveProtocols() {
+      List<OntologyClass> results = new ArrayList<OntologyClass>();
+		
+      ObjectContext context = getDataContext();
+		// look up the observation entities
+		SelectQuery query = new SelectQuery(DbMeasurement.class);
+		List<DbMeasurement> values = context.performQuery(query);
+		if (values != null) {
+			for (DbMeasurement dbm: values) {
+				OntologyClass c = null;
+				try {
+					c = new Protocol(dbm.getProtocol());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(c !=null && !results.contains(c)) {
+					results.add(c);
+				}
+			}
+		}
+      return results;
+   }
+   
+   /**
+    * Get measurement protocols used in managed annotations
+    * @return list of measurement protocols
+    */
+   public List<OntologyClass> getActiveMeasurements() {
+      List<OntologyClass> results = new ArrayList<OntologyClass>();
+		
+      ObjectContext context = getDataContext();
+		// look up the observation entities
+		SelectQuery query = new SelectQuery(DbMeasurement.class);
+		List<DbMeasurement> values = context.performQuery(query);
+		if (values != null) {
+			for (DbMeasurement dbm: values) {
+				OntologyClass c = null;
+				try {
+					c = new OntologyClass(dbm.getTemplate());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

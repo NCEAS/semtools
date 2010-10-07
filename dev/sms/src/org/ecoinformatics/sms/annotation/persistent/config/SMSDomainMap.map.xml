@@ -27,6 +27,7 @@
 		<db-attribute name="observation_id" type="INTEGER"/>
 		<db-attribute name="protocol" type="VARCHAR" length="255"/>
 		<db-attribute name="standard" type="VARCHAR" length="255"/>
+		<db-attribute name="template" type="VARCHAR" length="255"/>
 	</db-entity>
 	<db-entity name="OBSERVATION">
 		<db-attribute name="annotation_id" type="INTEGER"/>
@@ -48,6 +49,7 @@
 	<obj-entity name="DbMeasurement" className="org.ecoinformatics.sms.annotation.persistent.DbMeasurement" dbEntityName="MEASUREMENT">
 		<obj-attribute name="protocol" type="java.lang.String" db-attribute-path="protocol"/>
 		<obj-attribute name="standard" type="java.lang.String" db-attribute-path="standard"/>
+		<obj-attribute name="template" type="java.lang.String" db-attribute-path="template"/>
 	</obj-entity>
 	<obj-entity name="DbObservation" className="org.ecoinformatics.sms.annotation.persistent.DbObservation" dbEntityName="OBSERVATION">
 		<obj-attribute name="entity" type="java.lang.String" db-attribute-path="entity"/>

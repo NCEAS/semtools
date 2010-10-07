@@ -347,6 +347,12 @@ public class Annotation {
             Standard s = m.getStandard();
             if(s != null && !result.contains(s))
                result.add(s);
+            Protocol p = m.getProtocol();
+            if(p != null && !result.contains(p))
+               result.add(p);
+            OntologyClass template = m.getTemplate();
+            if(template != null && !result.contains(template))
+               result.add(template);
             for(Characteristic c : m.getCharacteristics())
                if(!result.contains(c))
                   result.add(c);

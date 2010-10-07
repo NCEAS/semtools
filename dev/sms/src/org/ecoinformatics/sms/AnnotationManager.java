@@ -366,5 +366,17 @@ public interface AnnotationManager {
    public List<OntologyClass> getActiveStandards(OntologyClass entity,
            OntologyClass characteristic, boolean searchSubclasses, 
            boolean addSuperclasses);
+   
+   /**
+    * Get Protocols used in managed annotations
+    * @return list of protocols
+    */
+   public List<OntologyClass> getActiveProtocols();
+   
+   /**
+    * Get measurements used in managed annotations
+    * @return list of measurements
+    */
+   public List<OntologyClass> getActiveMeasurements();
 
 }

@@ -16,6 +16,7 @@ public abstract class _DbMeasurement extends CayenneDataObject {
 
     public static final String PROTOCOL_PROPERTY = "protocol";
     public static final String STANDARD_PROPERTY = "standard";
+    public static final String TEMPLATE_PROPERTY = "template";
     public static final String CHARACTERISTICS_PROPERTY = "characteristics";
     public static final String OBSERVATION_PROPERTY = "observation";
 
@@ -33,6 +34,13 @@ public abstract class _DbMeasurement extends CayenneDataObject {
     }
     public String getStandard() {
         return (String)readProperty("standard");
+    }
+
+    public void setTemplate(String template) {
+        writeProperty("template", template);
+    }
+    public String getTemplate() {
+        return (String)readProperty("template");
     }
 
     public void addToCharacteristics(DbCharacteristic obj) {

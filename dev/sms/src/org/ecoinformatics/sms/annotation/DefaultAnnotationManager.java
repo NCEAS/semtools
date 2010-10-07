@@ -855,6 +855,46 @@ public class DefaultAnnotationManager implements AnnotationManager {
       return result;
    }
    
+   /**
+    * Get protocols used in managed annotations
+    * @return list of protocols
+    */
+   public List<OntologyClass> getActiveProtocols() {
+      List<OntologyClass> results = new ArrayList();
+      for(Annotation a : getAnnotations())
+         for(OntologyClass c : a.getOntologyClasses())
+            if(c instanceof Protocol && !results.contains(c))
+               results.add(c);
+      return results;
+   }
+   
+   /**
+    * Get measurements used in managed annotations
+    * @return list of measurements
+    */
+   public List<OntologyClass> getActiveMeasurements() {
+      List<OntologyClass> results = new ArrayList();
+      for(Annotation a : getAnnotations())
+         for(OntologyClass c : a.getOntologyClasses()) {
+        	 if(c instanceof Entity) {
+        		continue; 
+        	 }
+        	 if(c instanceof Characteristic) {
+         		continue; 
+         	 }
+        	 if(c instanceof Standard) {
+         		continue; 
+         	 }
+        	 if(c instanceof Protocol) {
+         		continue; 
+         	 }
+        	 if(!results.contains(c)) {
+        		 results.add(c);
+        	}
+         }
+      return results;
+   }
+   
    /** 
     * This method is called recursively on the subcriteria, building up a weighted return
     * @param a the Annotation to be evaluated for matching
