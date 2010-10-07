@@ -338,6 +338,11 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 				}
 			}
 			
+			// HACKALERT: we don't have any matches, so we fake it out
+			if (docids.isEmpty()) {
+				docids.add("INVALID");
+			}
+			
 			// just need a valid pathquery - this is not actually used
 			String squery = DocumentIdQuery.createDocidQuery(docids.toArray(new String[0]));
 			String[] queryArray = new String[1];
@@ -413,23 +418,25 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		StringReader xmlReader = new StringReader(results.toString());
 		Document document = XMLUtilities.getXMLReaderAsDOMDocument(xmlReader);
 		NodeList documentNodes = XMLUtilities.getNodeListWithXPath(document.getDocumentElement(), "//document");
-		for (int i = 0; i < documentNodes.getLength(); i++) {
-			// get the document element
-			Node documentNode = documentNodes.item(i);
-			// get the document/docid element
-			Node docidNode = XMLUtilities.getTextNodeWithXPath(documentNode, "docid");
-			String docid = docidNode.getTextContent();
-			// get the annotation for this document
-			Annotation annotation = matchMap.get(docid);
-			if (annotation == null) {
-				continue;
+		if (documentNodes != null) {
+			for (int i = 0; i < documentNodes.getLength(); i++) {
+				// get the document element
+				Node documentNode = documentNodes.item(i);
+				// get the document/docid element
+				Node docidNode = XMLUtilities.getTextNodeWithXPath(documentNode, "docid");
+				String docid = docidNode.getTextContent();
+				// get the annotation for this document
+				Annotation annotation = matchMap.get(docid);
+				if (annotation == null) {
+					continue;
+				}
+				// add the annotation to the search results
+				StringReader annotatationStringReader = new StringReader(annotation.toString());
+				// TODO: subset of the annotation?
+				Node annotationNode = XMLUtilities.getXMLReaderAsDOMTreeRootNode(annotatationStringReader);
+				Node importedAnnnotationNode = document.importNode(annotationNode, true);
+				documentNode.appendChild(importedAnnnotationNode);
 			}
-			// add the annotation to the search results
-			StringReader annotatationStringReader = new StringReader(annotation.toString());
-			// TODO: subset of the annotation?
-			Node annotationNode = XMLUtilities.getXMLReaderAsDOMTreeRootNode(annotatationStringReader);
-			Node importedAnnnotationNode = document.importNode(annotationNode, true);
-			documentNode.appendChild(importedAnnnotationNode);
 		}
 		
 		// return a string
