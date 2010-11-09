@@ -653,9 +653,11 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
       
       if(characteristics != null && !characteristics.isEmpty()) {
     	  charExpression = ExpressionFactory.inExp("measurements.characteristics.type", getURIs(characteristics));
+    	  expression = charExpression;
       }
       if (standards != null && !standards.isEmpty()) {
     	  stdExpression = ExpressionFactory.inExp("measurements.standard", getURIs(standards));
+    	  expression = stdExpression;
       }
       if (charExpression != null && stdExpression != null) {
     	  expression = charExpression.andExp(stdExpression);
