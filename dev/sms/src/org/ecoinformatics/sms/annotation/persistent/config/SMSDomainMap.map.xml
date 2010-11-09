@@ -85,6 +85,7 @@
 	<obj-relationship name="observation" source="DbContext" target="DbObservation" deleteRule="Nullify" db-relationship-path="observation"/>
 	<obj-relationship name="observationB" source="DbContext" target="DbObservation" deleteRule="Nullify" db-relationship-path="observation_b"/>
 	<obj-relationship name="characteristics" source="DbMeasurement" target="DbCharacteristic" deleteRule="Cascade" db-relationship-path="characteristics"/>
+	<obj-relationship name="measurement" source="DbCharacteristic" target="DbMeasurement" deleteRule="Nullify" db-relationship-path="measurement"/>
 	<obj-relationship name="observation" source="DbMeasurement" target="DbObservation" deleteRule="Nullify" db-relationship-path="observation"/>
 	<obj-relationship name="annotation" source="DbObservation" target="DbAnnotation" deleteRule="Nullify" db-relationship-path="annotation"/>
 	<obj-relationship name="contexts" source="DbObservation" target="DbContext" deleteRule="Cascade" db-relationship-path="contexts"/>

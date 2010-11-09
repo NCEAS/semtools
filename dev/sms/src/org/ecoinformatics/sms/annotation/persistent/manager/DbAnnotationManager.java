@@ -105,6 +105,14 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 		return a;
 	}
 	
+	public static List<String> getURIs(List<OntologyClass> classes) {
+		List<String> uris = new ArrayList<String>();
+		for (OntologyClass c: classes) {
+			uris.add(c.getURI());
+		}
+		return uris;
+	}
+	
 	/**
 	 * Look up the DB annotation using id
 	 * @param annotation
@@ -677,12 +685,23 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
       if((entities == null || entities.isEmpty()) &&
               (standards == null || standards.isEmpty()))
          return getActiveCharacteristics();
-      List<OntologyClass> results = new ArrayList<OntologyClass>();
       
-      Expression entityExpression = ExpressionFactory.inExp("measurement.observation.entity", entities);
-      Expression charExpression = ExpressionFactory.inExp("measurement.standard", standards);
-     
-      Expression expression = entityExpression.andExp(charExpression);
+      List<OntologyClass> results = new ArrayList<OntologyClass>();
+      Expression expression = null;
+	  Expression entityExpression = null;
+      Expression charExpression = null;
+      
+      if (entities != null && !entities.isEmpty()) {
+    	  entityExpression = ExpressionFactory.inExp("measurement.observation.entity", getURIs(entities));
+    	  expression = entityExpression;
+      }
+      if ((standards == null || !standards.isEmpty())) {
+    	  charExpression = ExpressionFactory.inExp("measurement.standard", getURIs(standards));
+    	  expression = charExpression;
+      }
+      if (entityExpression != null && charExpression != null) {
+    	  expression = entityExpression.andExp(charExpression);
+      }
       
       ObjectContext context = getDataContext();
 	  SelectQuery query = new SelectQuery(DbCharacteristic.class, expression);
@@ -1003,7 +1022,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 		try {
 	
 			//String annot1 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-ex1-annot.xml";
-			String annot1 = "file:///Users/leinfelder/.semtools/profiles/benriver/data/benriver/216.6";
+			String annot1 = "http://fred.msi.ucsb.edu:8080/knb/metacat/benriver.216.6";
 
 	        URL url = new URL(annot1);
 	
@@ -1016,6 +1035,9 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 			//DbAnnotation dbAnnotation = ((DbAnnotationManager)annotationManager).getDbAnnotation(annotation);
 	 	   //ObjectContext context = DataContext.createDataContext();
 	 	   ObjectContext context = ((DbAnnotationManager)annotationManager).getDataContext();
+	 	   
+	 	   //test
+	 	   DbCharacteristic dbChar = queryChar("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#Macrocystis", context);
 	 	   
 	        DbAnnotation dbAnnotation = query(null, context);
 	        
@@ -1087,5 +1109,21 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 		}
 		return dbAnnotation;
    }
+   
+   private static DbCharacteristic queryChar(String param, ObjectContext context) throws Exception {
+	   
+		DbCharacteristic dbCharacteristic = null;
+		List<OntologyClass> entities = new ArrayList<OntologyClass>();
+		entities.add(new Entity(param));
+		final Expression expression = ExpressionFactory.inExp("measurement.observation.entity", getURIs(entities));
+		
+		SelectQuery query = new SelectQuery(DbCharacteristic.class, expression);
+		
+		List values = context.performQuery(query);
+		if (values != null && !values.isEmpty()) {
+			dbCharacteristic = (DbCharacteristic) values.get(0);
+		}
+		return dbCharacteristic;
+  }
    
 } 
