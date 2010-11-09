@@ -548,7 +548,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		if (domainClass.equals(Protocol.class.getName())) {
 			// Protocol TODO: filtering
 			StringBuffer protocolOptions = new StringBuffer();
-			List<OntologyClass> protocols = SMS.getInstance().getAnnotationManager().getActiveProtocols();
+			List<OntologyClass> protocols = SMS.getInstance().getAnnotationManager().getActiveProtocols(activeEntities, activeCharacteristics);
 			for (OntologyClass oc: protocols) {
 				protocolOptions.append("<option ");
 				protocolOptions.append("title='");

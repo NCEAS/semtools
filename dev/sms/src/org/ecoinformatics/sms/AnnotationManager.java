@@ -374,6 +374,18 @@ public interface AnnotationManager {
    public List<OntologyClass> getActiveProtocols();
    
    /**
+    * Get protocols used in managed annotations having a measurement 
+    * with an entity and characteristic in the given entities and 
+    * characteristics
+    * @param entities entities to look for
+    * @param characteristics characteristics to look for
+    * @return list of matching protocols
+    */
+   public List<OntologyClass> getActiveProtocols(
+           List<OntologyClass> entities, List<OntologyClass> characteristics);
+
+   
+   /**
     * Get measurements used in managed annotations
     * @return list of measurements
     */

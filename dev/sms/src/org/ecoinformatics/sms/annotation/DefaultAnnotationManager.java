@@ -869,6 +869,44 @@ public class DefaultAnnotationManager implements AnnotationManager {
    }
    
    /**
+    * Get Protocols used in managed annotations having a measurement 
+    * with an entity and characteristic in the given entities and 
+    * characteristics
+    * @param entities entities to look for
+    * @param characteristics characteristics to look for
+    * @return list of matching protocols
+    */
+   public List<OntologyClass> getActiveProtocols(
+           List<OntologyClass> entities, List<OntologyClass> characteristics) {
+      // check if both args are missing
+      if((entities == null || entities.isEmpty()) &&
+              (characteristics == null || characteristics.isEmpty()))
+         return getActiveStandards();
+      List<OntologyClass> results = new ArrayList();
+      for(Annotation a : getAnnotations())
+         for(Observation o : a.getObservations()) {
+            if(entities != null && !entities.isEmpty() && 
+                    !overlaps(entities, getAllEntities(o))) 
+               continue;
+            for(Measurement m : o.getMeasurements()) {
+               boolean found = false;
+               if(characteristics != null && !characteristics.isEmpty()) {
+                  for(Characteristic c : m.getCharacteristics())
+                     if(characteristics.contains(c)) {
+                        found = true;
+                        break;
+                     }
+               }else
+                  found = true;
+               Protocol p = m.getProtocol();
+               if(found && !results.contains(p))
+                  results.add(p);
+            }
+         }
+      return results;
+   }
+   
+   /**
     * Get measurements used in managed annotations
     * @return list of measurements
     */

@@ -604,6 +604,58 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
    }
    
    /**
+    * Get protocols used in managed annotations having a measurement 
+    * with an entity and characteristic in the given entities and 
+    * characteristics
+    * @param entities entities to look for
+    * @param characteristics characteristics to look for
+    * @return list of matching protocols
+    */
+   public List<OntologyClass> getActiveProtocols(
+           List<OntologyClass> entities, List<OntologyClass> characteristics) {
+      // check if both args are missing
+      if((entities == null || entities.isEmpty()) &&
+              (characteristics == null || characteristics.isEmpty()))
+         return getActiveStandards();
+      List<OntologyClass> results = new ArrayList<OntologyClass>();
+      
+      Expression entityExpression = null;
+      Expression charExpression = null;
+      Expression expression = null;
+      
+      if (entities != null && !entities.isEmpty()) {
+    	  entityExpression = ExpressionFactory.inExp("observation.entity", getURIs(entities));
+    	  expression = entityExpression;
+      }
+      if (characteristics != null && !characteristics.isEmpty()) {
+    	  charExpression = ExpressionFactory.inExp("characteristics.type", getURIs(characteristics));
+    	  expression = charExpression;
+      }
+      if (entityExpression != null && charExpression != null) {
+    	  expression = entityExpression.andExp(charExpression);
+      }
+      
+      ObjectContext context = getDataContext();
+	  SelectQuery query = new SelectQuery(DbMeasurement.class, expression);
+      List<DbMeasurement> values = context.performQuery(query);
+      if (values != null) {
+    	  for (DbMeasurement dbm: values) {
+    		  OntologyClass c = null;
+    		  try {
+    			  c = new Protocol(dbm.getProtocol());
+    		  } catch (Exception e) {
+    			  // TODO Auto-generated catch block
+    			  e.printStackTrace();
+    		  }
+    		  if(c !=null && !results.contains(c)) {
+    			  results.add(c);
+    		  }
+    	  }
+      }
+      return results;
+   }
+   
+   /**
     * Get measurement protocols used in managed annotations
     * @return list of measurement protocols
     */
