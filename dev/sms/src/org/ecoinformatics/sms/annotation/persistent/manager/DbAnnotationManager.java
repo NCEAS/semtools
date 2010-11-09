@@ -647,10 +647,20 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
       
       List<OntologyClass> results = new ArrayList<OntologyClass>();
       
-      Expression charExpression = ExpressionFactory.inExp("measurements.characteristics.type", characteristics);
-      Expression stdExpression = ExpressionFactory.inExp("measurements.standard", standards);
-      Expression expression = charExpression.andExp(stdExpression);
-     
+      Expression charExpression = null;
+      Expression stdExpression = null;
+      Expression expression = null;
+      
+      if(characteristics != null && !characteristics.isEmpty()) {
+    	  charExpression = ExpressionFactory.inExp("measurements.characteristics.type", getURIs(characteristics));
+      }
+      if (standards != null && !standards.isEmpty()) {
+    	  stdExpression = ExpressionFactory.inExp("measurements.standard", getURIs(standards));
+      }
+      if (charExpression != null && stdExpression != null) {
+    	  expression = charExpression.andExp(stdExpression);
+      }
+
       ObjectContext context = getDataContext();
 	  SelectQuery query = new SelectQuery(DbObservation.class, expression);
       List<DbObservation> values = context.performQuery(query);
@@ -740,9 +750,22 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
          return getActiveStandards();
       List<OntologyClass> results = new ArrayList<OntologyClass>();
       
-      Expression entityExpression = ExpressionFactory.inExp("observation.entity", entities);
-      Expression charExpression = ExpressionFactory.inExp("characteristics.type", characteristics);
-      Expression expression = entityExpression.andExp(charExpression);
+      Expression entityExpression = null;
+      Expression charExpression = null;
+      Expression expression = null;
+      
+      if (entities != null && !entities.isEmpty()) {
+    	  entityExpression = ExpressionFactory.inExp("observation.entity", getURIs(entities));
+    	  expression = entityExpression;
+      }
+      if (characteristics != null && !characteristics.isEmpty()) {
+    	  charExpression = ExpressionFactory.inExp("characteristics.type", getURIs(characteristics));
+    	  expression = charExpression;
+      }
+      if (entityExpression != null && charExpression != null) {
+    	  expression = entityExpression.andExp(charExpression);
+      }
+      
       
       ObjectContext context = getDataContext();
 	  SelectQuery query = new SelectQuery(DbMeasurement.class, expression);
