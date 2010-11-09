@@ -2,6 +2,7 @@ package edu.ucsb.nceas.metacat.plugin;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
@@ -20,9 +21,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
+import org.ecoinformatics.sms.annotation.Characteristic;
+import org.ecoinformatics.sms.annotation.Entity;
+import org.ecoinformatics.sms.annotation.Measurement;
+import org.ecoinformatics.sms.annotation.Protocol;
+import org.ecoinformatics.sms.annotation.Standard;
 import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.annotation.search.CriteriaReader;
 import org.ecoinformatics.sms.ontology.Ontology;
+import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.ontology.bioportal.OntologyBean;
 import org.ecoinformatics.sms.ontology.bioportal.OntologyService;
 import org.w3c.dom.Document;
@@ -60,6 +67,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		supportedActions.add("registerontology");
 		supportedActions.add("unregisterontology");
 		supportedActions.add("ontologies");
+		supportedActions.add("getactivedomain");
 
 		initializeOntologies();
 		initializeAnnotations();
@@ -178,6 +186,9 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		case 4:
 			ontologies(params, request, response, username, groups, sessionId);
 			break;
+		case 5:
+			getActiveDomain(params, request, response, username, groups, sessionId);
+			break;	
 		default:
 			break;
 		}
@@ -405,6 +416,184 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		}
 	}
 	
+	private void getActiveDomain(Hashtable<String, String[]> params, HttpServletRequest request,
+			HttpServletResponse response, String username, String[] groups,
+			String sessionId) throws HandlerException {
+		
+		// which domain are we looking up
+		String domainClass = params.get("class")[0];
+		
+		// harvest parameters
+		String[] entityParam = params.get("entity");
+		String[] characteristicParam = params.get("characteristic");
+		String[] standardParam = params.get("standard");
+		String[] protocolParam = params.get("protocol");
+		String[] measurementParam = params.get("measurement");
+		
+		List<OntologyClass> activeEntities = new ArrayList<OntologyClass>();
+		List<OntologyClass> activeCharacteristics = new ArrayList<OntologyClass>();
+		List<OntologyClass> activeStandards = new ArrayList<OntologyClass>();
+		List<OntologyClass> activeProtocols = new ArrayList<OntologyClass>();
+		List<OntologyClass> activeMeasurements = new ArrayList<OntologyClass>();
+		
+		
+		// Entity
+		if (entityParam != null) {
+			for (String classString: entityParam) {
+				OntologyClass c = null;
+				try {
+					c = new OntologyClass(classString);
+					activeEntities.add(c);
+				} catch (Exception e) {
+					log.error("Problem parsing parameter", e);
+				}
+			}
+		}
+		// Characteristic
+		if (characteristicParam != null) {
+			for (String classString: characteristicParam) {
+				OntologyClass c = null;
+				try {
+					c = new OntologyClass(classString);
+					activeCharacteristics.add(c);
+				} catch (Exception e) {
+					log.error("Problem parsing parameter", e);
+				}
+			}
+		}
+		// Standard
+		if (standardParam != null) {
+			for (String classString: standardParam) {
+				OntologyClass c = null;
+				try {
+					c = new OntologyClass(classString);
+					activeStandards.add(c);
+				} catch (Exception e) {
+					log.error("Problem parsing parameter", e);
+				}
+			}
+		}
+		// Protocol
+		if (protocolParam != null) {
+			for (String classString: protocolParam) {
+				OntologyClass c = null;
+				try {
+					c = new OntologyClass(classString);
+					activeProtocols.add(c);
+				} catch (Exception e) {
+					log.error("Problem parsing parameter", e);
+				}
+			}
+		}
+		// Measurement
+		// TODO: implement measurement expansion
+		
+		String returnString = "";
+		
+		if (domainClass.equals(Entity.class.getName())) {
+			// construct the selection fields for existing annotations
+			// Entity
+			StringBuffer entityOptions = new StringBuffer();
+			List<OntologyClass> entities = SMS.getInstance().getAnnotationManager().getActiveEntities(activeCharacteristics, activeStandards);
+			for (OntologyClass oc: entities) {
+				entityOptions.append("<option ");
+				entityOptions.append("title='");
+				entityOptions.append(oc.getURI());
+				entityOptions.append("' ");
+				entityOptions.append("value='");
+				entityOptions.append(oc.getURI());
+				entityOptions.append("'");
+				entityOptions.append(">");
+				entityOptions.append(oc.getName());
+				entityOptions.append("</option>");
+			}
+			returnString = entityOptions.toString();
+		}
+		if (domainClass.equals(Characteristic.class.getName())) {
+			// Characteristic
+			StringBuffer characteristicOptions = new StringBuffer();
+			List<OntologyClass> characteristics = SMS.getInstance().getAnnotationManager().getActiveCharacteristics(activeEntities, activeStandards);
+			for (OntologyClass oc: characteristics) {
+				characteristicOptions.append("<option ");
+				characteristicOptions.append("title='");
+				characteristicOptions.append(oc.getURI());
+				characteristicOptions.append("' ");
+				characteristicOptions.append("value='");
+				characteristicOptions.append(oc.getURI());
+				characteristicOptions.append("'");
+				characteristicOptions.append(">");
+				characteristicOptions.append(oc.getName());
+				characteristicOptions.append("</option>");
+			}
+			returnString = characteristicOptions.toString();
+		}
+		if (domainClass.equals(Standard.class.getName())) {
+			// Standard
+			StringBuffer standardOptions = new StringBuffer();
+			List<OntologyClass> standards = SMS.getInstance().getAnnotationManager().getActiveStandards(activeEntities, activeCharacteristics);
+			for (OntologyClass oc: standards) {
+				standardOptions.append("<option ");
+				standardOptions.append("title='");
+				standardOptions.append(oc.getURI());
+				standardOptions.append("' ");
+				standardOptions.append("value='");
+				standardOptions.append(oc.getURI());
+				standardOptions.append("'");
+				standardOptions.append(">");
+				standardOptions.append(oc.getName());
+				standardOptions.append("</option>");
+			}
+			returnString = standardOptions.toString();
+		}
+		if (domainClass.equals(Protocol.class.getName())) {
+			// Protocol TODO: filtering
+			StringBuffer protocolOptions = new StringBuffer();
+			List<OntologyClass> protocols = SMS.getInstance().getAnnotationManager().getActiveProtocols();
+			for (OntologyClass oc: protocols) {
+				protocolOptions.append("<option ");
+				protocolOptions.append("title='");
+				protocolOptions.append(oc.getURI());
+				protocolOptions.append("' ");
+				protocolOptions.append("value='");
+				protocolOptions.append(oc.getURI());
+				protocolOptions.append("'");
+				protocolOptions.append(">");
+				protocolOptions.append(oc.getName());
+				protocolOptions.append("</option>");
+			}
+			returnString = protocolOptions.toString();
+		}
+		if (domainClass.equals(Measurement.class.getName())) {
+			// Measurement TODO: filtering
+			StringBuffer measurementOptions = new StringBuffer();
+			List<OntologyClass> measurements = SMS.getInstance().getAnnotationManager().getActiveMeasurements();
+			for (OntologyClass oc: measurements) {
+				measurementOptions.append("<option ");
+				measurementOptions.append("title='");
+				measurementOptions.append(oc.getURI());
+				measurementOptions.append("' ");
+				measurementOptions.append("value='");
+				measurementOptions.append(oc.getURI());
+				measurementOptions.append("'");
+				measurementOptions.append(">");
+				measurementOptions.append(oc.getName());
+				measurementOptions.append("</option>");
+			}
+			returnString = measurementOptions.toString();
+		}
+		
+		response.setContentType("text/html");
+        PrintWriter out = null;
+		try {
+			out = response.getWriter();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        out.print(returnString);
+        out.close();
+		
+	}
 
 	private String augmentQuery(List<Annotation> matches, StringBuffer results) throws Exception {
 		
