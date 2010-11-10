@@ -40,6 +40,8 @@ import org.apache.cayenne.conf.DefaultConfiguration;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.AnnotationManager;
 import org.ecoinformatics.sms.annotation.Annotation;
@@ -76,6 +78,8 @@ import java.net.URL;
  */
 public class DbAnnotationManager extends DefaultAnnotationManager {
 
+	public static Log log = LogFactory.getLog(DbAnnotationManager.class);
+	
    /**
     * Default constuctor
     */
@@ -612,15 +616,19 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     * @return list of matching protocols
     */
    public List<OntologyClass> getActiveProtocols(
-           List<OntologyClass> entities, List<OntologyClass> characteristics) {
+           List<OntologyClass> entities, 
+           List<OntologyClass> characteristics,
+           List<OntologyClass> standards) {
       // check if both args are missing
       if((entities == null || entities.isEmpty()) &&
-              (characteristics == null || characteristics.isEmpty()))
-         return getActiveStandards();
+              (characteristics == null || characteristics.isEmpty()) &&
+              (standards == null || standards.isEmpty()))
+         return getActiveProtocols();
       List<OntologyClass> results = new ArrayList<OntologyClass>();
       
       Expression entityExpression = null;
       Expression charExpression = null;
+      Expression stdExpression = null;
       Expression expression = null;
       
       if (entities != null && !entities.isEmpty()) {
@@ -633,6 +641,15 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
       }
       if (entityExpression != null && charExpression != null) {
     	  expression = entityExpression.andExp(charExpression);
+      }
+      // add standards
+      if (standards != null && !standards.isEmpty()) {
+    	  stdExpression = ExpressionFactory.inExp("standard", getURIs(standards));
+    	  if (expression != null) {
+        	  expression = expression.andExp(stdExpression);
+    	  } else {
+    		  expression = stdExpression;
+    	  }
       }
       
       ObjectContext context = getDataContext();
@@ -673,7 +690,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 					c = new OntologyClass(dbm.getTemplate());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					log.warn("Problem parsing measurement template: " + e.getMessage());
 				}
 				if(c !=null && !results.contains(c)) {
 					results.add(c);
@@ -691,16 +708,20 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     * @return list of matching entities
     */
    public List<OntologyClass> getActiveEntities(
-           List<OntologyClass> characteristics, List<OntologyClass> standards) {
+           List<OntologyClass> characteristics, 
+           List<OntologyClass> standards,
+           List<OntologyClass> protocols) {
       // check if both args are missing
       if((characteristics == null || characteristics.isEmpty()) &&
-              (standards == null || standards.isEmpty()))
+              (standards == null || standards.isEmpty()) &&
+              (protocols == null || protocols.isEmpty()))
          return getActiveEntities();
       
       List<OntologyClass> results = new ArrayList<OntologyClass>();
       
       Expression charExpression = null;
       Expression stdExpression = null;
+      Expression protocolExpression = null;
       Expression expression = null;
       
       if(characteristics != null && !characteristics.isEmpty()) {
@@ -713,6 +734,15 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
       }
       if (charExpression != null && stdExpression != null) {
     	  expression = charExpression.andExp(stdExpression);
+      }
+      // add protocol
+      if (protocols != null && !protocols.isEmpty()) {
+    	  protocolExpression = ExpressionFactory.inExp("measurements.protocol", getURIs(protocols));
+    	  if (expression != null) {
+        	  expression = expression.andExp(protocolExpression);
+    	  } else {
+    		  expression = protocolExpression;
+    	  }
       }
 
       ObjectContext context = getDataContext();
@@ -744,17 +774,21 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     * @return list of matching characteristics
     */
    public List<OntologyClass> getActiveCharacteristics(
-           List<OntologyClass> entities, List<OntologyClass> standards) {
+           List<OntologyClass> entities, 
+           List<OntologyClass> standards,
+           List<OntologyClass> protocols) {
       // check if both args are missing
       if((entities == null || entities.isEmpty()) &&
-              (standards == null || standards.isEmpty()))
+              (standards == null || standards.isEmpty()) && 
+              (protocols == null || protocols.isEmpty()))
          return getActiveCharacteristics();
       
       List<OntologyClass> results = new ArrayList<OntologyClass>();
       Expression expression = null;
 	  Expression entityExpression = null;
       Expression charExpression = null;
-      
+	  Expression protocolExpression = null;
+
       if (entities != null && !entities.isEmpty()) {
     	  entityExpression = ExpressionFactory.inExp("measurement.observation.entity", getURIs(entities));
     	  expression = entityExpression;
@@ -765,6 +799,15 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
       }
       if (entityExpression != null && charExpression != null) {
     	  expression = entityExpression.andExp(charExpression);
+      }
+      // add protocol
+      if ((protocols == null || !protocols.isEmpty())) {
+    	  protocolExpression = ExpressionFactory.inExp("measurement.protocol", getURIs(protocols));
+    	  if (expression != null) {
+    		  expression = expression.andExp(protocolExpression);
+    	  } else {
+    		  expression = protocolExpression;
+    	  }
       }
       
       ObjectContext context = getDataContext();
@@ -797,15 +840,19 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     * @return list of matching standards
     */
    public List<OntologyClass> getActiveStandards(
-           List<OntologyClass> entities, List<OntologyClass> characteristics) {
+           List<OntologyClass> entities, 
+           List<OntologyClass> characteristics,
+           List<OntologyClass> protocols) {
       // check if both args are missing
       if((entities == null || entities.isEmpty()) &&
-              (characteristics == null || characteristics.isEmpty()))
+              (characteristics == null || characteristics.isEmpty()) &&
+              (protocols == null || protocols.isEmpty()))
          return getActiveStandards();
       List<OntologyClass> results = new ArrayList<OntologyClass>();
       
       Expression entityExpression = null;
       Expression charExpression = null;
+      Expression protocolExpression = null;
       Expression expression = null;
       
       if (entities != null && !entities.isEmpty()) {
@@ -819,7 +866,16 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
       if (entityExpression != null && charExpression != null) {
     	  expression = entityExpression.andExp(charExpression);
       }
-      
+      //add protocol
+      if (protocols != null && !protocols.isEmpty()) {
+    	  protocolExpression = ExpressionFactory.inExp("protocol", getURIs(protocols));
+    	  if (expression != null) {
+    		  expression = expression.andExp(protocolExpression);
+    	  }
+    	  else {
+    		  expression = protocolExpression;
+    	  }
+      }
       
       ObjectContext context = getDataContext();
 	  SelectQuery query = new SelectQuery(DbMeasurement.class, expression);

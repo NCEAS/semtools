@@ -506,7 +506,9 @@ public class DefaultAnnotationManager implements AnnotationManager {
     * @return list of matching entities
     */
    public List<OntologyClass> getActiveEntities(
-           List<OntologyClass> characteristics, List<OntologyClass> standards) {
+           List<OntologyClass> characteristics, 
+           List<OntologyClass> standards,
+           List<OntologyClass> protocols) {
       // check if both args are missing
       if((characteristics == null || characteristics.isEmpty()) &&
               (standards == null || standards.isEmpty()))
@@ -545,7 +547,8 @@ public class DefaultAnnotationManager implements AnnotationManager {
     * @param standard the standard to look for
     * @return list of matching entities
     */
-   public List<OntologyClass> getActiveEntities(OntologyClass characteristic,
+   public List<OntologyClass> getActiveEntities(
+		   OntologyClass characteristic,
            OntologyClass standard) {
       List<OntologyClass> characteristics = new ArrayList();
       if(characteristic != null)
@@ -553,7 +556,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
       List<OntologyClass> standards = new ArrayList();
       if(standard != null)
          standards.add(standard);
-      return getActiveEntities(characteristics, standards);
+      return getActiveEntities(characteristics, standards, null);
    }
 
    /**
@@ -574,13 +577,13 @@ public class DefaultAnnotationManager implements AnnotationManager {
          standards = new ArrayList();
       List<OntologyClass> result = new ArrayList();
       if(!searchSubclasses)
-         result = getActiveEntities(characteristics, standards);
+         result = getActiveEntities(characteristics, standards, null);
       else {
          List<OntologyClass> charSubs = new ArrayList(characteristics);
          addSubclasses(charSubs);
          List<OntologyClass> stdSubs = new ArrayList(standards);
          addSubclasses(stdSubs);
-         result = getActiveEntities(charSubs, stdSubs);
+         result = getActiveEntities(charSubs, stdSubs, null);
       }
       if(!addSuperclasses)
          return result;
@@ -612,7 +615,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
          if(standard != null)
             stdSubs.add(standard);
          addSubclasses(stdSubs);
-         result = getActiveEntities(charSubs, stdSubs);
+         result = getActiveEntities(charSubs, stdSubs, null);
       }
       if(!addSuperclasses)
          return result;
@@ -628,7 +631,9 @@ public class DefaultAnnotationManager implements AnnotationManager {
     * @return list of matching characteristics
     */
    public List<OntologyClass> getActiveCharacteristics(
-           List<OntologyClass> entities, List<OntologyClass> standards) {
+           List<OntologyClass> entities, 
+           List<OntologyClass> standards, 
+           List<OntologyClass> protocols) {
       // check if both args are missing
       if((entities == null || entities.isEmpty()) &&
               (standards == null || standards.isEmpty()))
@@ -670,13 +675,13 @@ public class DefaultAnnotationManager implements AnnotationManager {
       if(standards == null)
          standards = new ArrayList();
       if(!searchSubclasses)
-         result = getActiveCharacteristics(entities, standards);
+         result = getActiveCharacteristics(entities, standards, null);
       else {
          List<OntologyClass> entSubs = new ArrayList(entities);
          addSubclasses(entSubs);
          List<OntologyClass> stdSubs = new ArrayList(standards);
          addSubclasses(stdSubs);
-         result = getActiveCharacteristics(entSubs, stdSubs);
+         result = getActiveCharacteristics(entSubs, stdSubs, null);
       }
       if(!addSuperclasses)
          return result;
@@ -699,7 +704,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
       List<OntologyClass> standards = new ArrayList();
       if(standard != null)
          standards.add(standard);
-      return getActiveCharacteristics(entities, standards);
+      return getActiveCharacteristics(entities, standards, null);
    }
 
    /**
@@ -726,7 +731,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
          if(standard != null)
             stdSubs.add(standard);
          addSubclasses(stdSubs);
-         result = getActiveCharacteristics(entSubs, stdSubs);
+         result = getActiveCharacteristics(entSubs, stdSubs, null);
       }
       if(!addSuperclasses)
          return result;
@@ -743,10 +748,13 @@ public class DefaultAnnotationManager implements AnnotationManager {
     * @return list of matching standards
     */
    public List<OntologyClass> getActiveStandards(
-           List<OntologyClass> entities, List<OntologyClass> characteristics) {
+           List<OntologyClass> entities, 
+           List<OntologyClass> characteristics,
+           List<OntologyClass> protocols) {
       // check if both args are missing
       if((entities == null || entities.isEmpty()) &&
-              (characteristics == null || characteristics.isEmpty()))
+              (characteristics == null || characteristics.isEmpty()) &&
+              	(protocols == null || protocols.isEmpty()))
          return getActiveStandards();
       List<OntologyClass> results = new ArrayList();
       for(Annotation a : getAnnotations())
@@ -791,13 +799,13 @@ public class DefaultAnnotationManager implements AnnotationManager {
       if(characteristics == null)
          characteristics = new ArrayList();
       if(!searchSubclasses)
-         result = getActiveStandards(entities, characteristics);
+         result = getActiveStandards(entities, characteristics, null);
       else {
          List<OntologyClass> entSubs = new ArrayList(entities);
          addSubclasses(entSubs);
          List<OntologyClass> charSubs = new ArrayList(characteristics);
          addSubclasses(charSubs);
-         result = getActiveStandards(entSubs, charSubs);
+         result = getActiveStandards(entSubs, charSubs, null);
       }
       if(!addSuperclasses)
          return result;
@@ -820,7 +828,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
       List<OntologyClass> characteristics = new ArrayList();
       if(characteristic != null)
          characteristics.add(characteristic);
-      return getActiveStandards(entities, characteristics);
+      return getActiveStandards(entities, characteristics, null);
    }
 
    /**
@@ -847,7 +855,7 @@ public class DefaultAnnotationManager implements AnnotationManager {
          if(characteristic != null)
             charSubs.add(characteristic);
          addSubclasses(charSubs);
-         result = getActiveStandards(entSubs, charSubs);
+         result = getActiveStandards(entSubs, charSubs, null);
       }
       if(!addSuperclasses)
          return result;
@@ -877,7 +885,9 @@ public class DefaultAnnotationManager implements AnnotationManager {
     * @return list of matching protocols
     */
    public List<OntologyClass> getActiveProtocols(
-           List<OntologyClass> entities, List<OntologyClass> characteristics) {
+           List<OntologyClass> entities, 
+           List<OntologyClass> characteristics,
+           List<OntologyClass> standards) {
       // check if both args are missing
       if((entities == null || entities.isEmpty()) &&
               (characteristics == null || characteristics.isEmpty()))

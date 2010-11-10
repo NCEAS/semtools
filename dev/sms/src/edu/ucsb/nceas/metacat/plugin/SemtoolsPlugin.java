@@ -494,7 +494,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			// construct the selection fields for existing annotations
 			// Entity
 			StringBuffer entityOptions = new StringBuffer();
-			List<OntologyClass> entities = SMS.getInstance().getAnnotationManager().getActiveEntities(activeCharacteristics, activeStandards);
+			List<OntologyClass> entities = SMS.getInstance().getAnnotationManager().getActiveEntities(activeCharacteristics, activeStandards, activeProtocols);
 			for (OntologyClass oc: entities) {
 				entityOptions.append("<option ");
 				entityOptions.append("title='");
@@ -512,7 +512,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		if (domainClass.equals(Characteristic.class.getName())) {
 			// Characteristic
 			StringBuffer characteristicOptions = new StringBuffer();
-			List<OntologyClass> characteristics = SMS.getInstance().getAnnotationManager().getActiveCharacteristics(activeEntities, activeStandards);
+			List<OntologyClass> characteristics = SMS.getInstance().getAnnotationManager().getActiveCharacteristics(activeEntities, activeStandards, activeProtocols);
 			for (OntologyClass oc: characteristics) {
 				characteristicOptions.append("<option ");
 				characteristicOptions.append("title='");
@@ -530,7 +530,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		if (domainClass.equals(Standard.class.getName())) {
 			// Standard
 			StringBuffer standardOptions = new StringBuffer();
-			List<OntologyClass> standards = SMS.getInstance().getAnnotationManager().getActiveStandards(activeEntities, activeCharacteristics);
+			List<OntologyClass> standards = SMS.getInstance().getAnnotationManager().getActiveStandards(activeEntities, activeCharacteristics, activeProtocols);
 			for (OntologyClass oc: standards) {
 				standardOptions.append("<option ");
 				standardOptions.append("title='");
@@ -548,7 +548,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		if (domainClass.equals(Protocol.class.getName())) {
 			// Protocol TODO: filtering
 			StringBuffer protocolOptions = new StringBuffer();
-			List<OntologyClass> protocols = SMS.getInstance().getAnnotationManager().getActiveProtocols(activeEntities, activeCharacteristics);
+			List<OntologyClass> protocols = SMS.getInstance().getAnnotationManager().getActiveProtocols(activeEntities, activeCharacteristics, activeStandards);
 			for (OntologyClass oc: protocols) {
 				protocolOptions.append("<option ");
 				protocolOptions.append("title='");

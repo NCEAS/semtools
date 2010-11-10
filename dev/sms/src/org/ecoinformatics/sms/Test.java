@@ -140,7 +140,7 @@ public class Test {
             // get the results
             System.out.println("\nSearch for active entity domains of 'Biomass':");
             entityActiveDom = new ArrayList();
-            for(OntologyClass c : annotationManager.getActiveEntities(chars, null)) {
+            for(OntologyClass c : annotationManager.getActiveEntities(chars, null, null)) {
                 if(!entityActiveDom.contains(c))
                     entityActiveDom.add(c);
                 for(OntologyClass s : ontologyManager.getNamedSuperclasses(c))

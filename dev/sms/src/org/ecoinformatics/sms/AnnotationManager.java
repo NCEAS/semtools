@@ -209,7 +209,7 @@ public interface AnnotationManager {
     * @return list of matching entities
     */
    public List<OntologyClass> getActiveEntities(List<OntologyClass> characteristics,
-           List<OntologyClass> standards);
+           List<OntologyClass> standards, List<OntologyClass> protocols);
 
    /**
     * Get entities used in managed annotations having a measurement with a 
@@ -267,7 +267,7 @@ public interface AnnotationManager {
     * @return list of matching characteristics
     */
    public List<OntologyClass> getActiveCharacteristics(
-           List<OntologyClass> entities, List<OntologyClass> standards);
+           List<OntologyClass> entities, List<OntologyClass> standards, List<OntologyClass> protocols);
 
    /**
     * Get characteristics used in managed annotations having a measurement 
@@ -328,7 +328,7 @@ public interface AnnotationManager {
     * @return list of matching standards
     */
    public List<OntologyClass> getActiveStandards(
-           List<OntologyClass> entities, List<OntologyClass> characteristics);
+           List<OntologyClass> entities, List<OntologyClass> characteristics, List<OntologyClass> protocols);
 
    /**
     * Get standards used in managed annotations having a measurement 
@@ -382,7 +382,7 @@ public interface AnnotationManager {
     * @return list of matching protocols
     */
    public List<OntologyClass> getActiveProtocols(
-           List<OntologyClass> entities, List<OntologyClass> characteristics);
+           List<OntologyClass> entities, List<OntologyClass> characteristics, List<OntologyClass> standards);
 
    
    /**
