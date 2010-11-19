@@ -421,7 +421,14 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			String sessionId) throws HandlerException {
 		
 		// which domain are we looking up
-		String domainClass = params.get("class")[0];
+		String domainClassString = params.get("class")[0];
+		OntologyClass domainClass = null;
+		try {
+			domainClass = Annotation.OBOE_CLASSES.get(Class.forName(domainClassString));
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		// harvest parameters
 		String[] entityParam = params.get("entity");
@@ -489,98 +496,36 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		// TODO: implement measurement expansion
 		
 		String returnString = "";
-		
-		if (domainClass.equals(Entity.class.getName())) {
-			// construct the selection fields for existing annotations
-			// Entity
-			StringBuffer entityOptions = new StringBuffer();
-			List<OntologyClass> entities = SMS.getInstance().getAnnotationManager().getActiveEntities(activeCharacteristics, activeStandards, activeProtocols);
-			for (OntologyClass oc: entities) {
-				entityOptions.append("<option ");
-				entityOptions.append("title='");
-				entityOptions.append(oc.getURI());
-				entityOptions.append("' ");
-				entityOptions.append("value='");
-				entityOptions.append(oc.getURI());
-				entityOptions.append("'");
-				entityOptions.append(">");
-				entityOptions.append(oc.getName());
-				entityOptions.append("</option>");
-			}
-			returnString = entityOptions.toString();
+		List<OntologyClass> classes = null;
+
+		if (domainClassString.equals(Entity.class.getName())) {
+			classes = SMS.getInstance().getAnnotationManager().getActiveEntities(activeCharacteristics, activeStandards, activeProtocols);
 		}
-		if (domainClass.equals(Characteristic.class.getName())) {
+		if (domainClassString.equals(Characteristic.class.getName())) {
 			// Characteristic
-			StringBuffer characteristicOptions = new StringBuffer();
-			List<OntologyClass> characteristics = SMS.getInstance().getAnnotationManager().getActiveCharacteristics(activeEntities, activeStandards, activeProtocols);
-			for (OntologyClass oc: characteristics) {
-				characteristicOptions.append("<option ");
-				characteristicOptions.append("title='");
-				characteristicOptions.append(oc.getURI());
-				characteristicOptions.append("' ");
-				characteristicOptions.append("value='");
-				characteristicOptions.append(oc.getURI());
-				characteristicOptions.append("'");
-				characteristicOptions.append(">");
-				characteristicOptions.append(oc.getName());
-				characteristicOptions.append("</option>");
-			}
-			returnString = characteristicOptions.toString();
+			classes = SMS.getInstance().getAnnotationManager().getActiveCharacteristics(activeEntities, activeStandards, activeProtocols);
 		}
-		if (domainClass.equals(Standard.class.getName())) {
-			// Standard
-			StringBuffer standardOptions = new StringBuffer();
-			List<OntologyClass> standards = SMS.getInstance().getAnnotationManager().getActiveStandards(activeEntities, activeCharacteristics, activeProtocols);
-			for (OntologyClass oc: standards) {
-				standardOptions.append("<option ");
-				standardOptions.append("title='");
-				standardOptions.append(oc.getURI());
-				standardOptions.append("' ");
-				standardOptions.append("value='");
-				standardOptions.append(oc.getURI());
-				standardOptions.append("'");
-				standardOptions.append(">");
-				standardOptions.append(oc.getName());
-				standardOptions.append("</option>");
-			}
-			returnString = standardOptions.toString();
+		if (domainClassString.equals(Standard.class.getName())) {
+			classes = SMS.getInstance().getAnnotationManager().getActiveStandards(activeEntities, activeCharacteristics, activeProtocols);
 		}
-		if (domainClass.equals(Protocol.class.getName())) {
-			// Protocol TODO: filtering
-			StringBuffer protocolOptions = new StringBuffer();
-			List<OntologyClass> protocols = SMS.getInstance().getAnnotationManager().getActiveProtocols(activeEntities, activeCharacteristics, activeStandards);
-			for (OntologyClass oc: protocols) {
-				protocolOptions.append("<option ");
-				protocolOptions.append("title='");
-				protocolOptions.append(oc.getURI());
-				protocolOptions.append("' ");
-				protocolOptions.append("value='");
-				protocolOptions.append(oc.getURI());
-				protocolOptions.append("'");
-				protocolOptions.append(">");
-				protocolOptions.append(oc.getName());
-				protocolOptions.append("</option>");
-			}
-			returnString = protocolOptions.toString();
+		if (domainClassString.equals(Protocol.class.getName())) {
+			// Protocol
+			classes = SMS.getInstance().getAnnotationManager().getActiveProtocols(activeEntities, activeCharacteristics, activeStandards);
 		}
-		if (domainClass.equals(Measurement.class.getName())) {
+		if (domainClassString.equals(Measurement.class.getName())) {
 			// Measurement TODO: filtering
-			StringBuffer measurementOptions = new StringBuffer();
-			List<OntologyClass> measurements = SMS.getInstance().getAnnotationManager().getActiveMeasurements();
-			for (OntologyClass oc: measurements) {
-				measurementOptions.append("<option ");
-				measurementOptions.append("title='");
-				measurementOptions.append(oc.getURI());
-				measurementOptions.append("' ");
-				measurementOptions.append("value='");
-				measurementOptions.append(oc.getURI());
-				measurementOptions.append("'");
-				measurementOptions.append(">");
-				measurementOptions.append(oc.getName());
-				measurementOptions.append("</option>");
-			}
-			returnString = measurementOptions.toString();
+			classes = SMS.getInstance().getAnnotationManager().getActiveMeasurements();
 		}
+		
+		// construct the selection fields for existing annotations
+		StringBuffer options = new StringBuffer();		
+		options.append("<ul>");
+		options.append(
+				buildTree(
+						domainClass, 
+						classes));
+		options.append("</ul>");
+		returnString = options.toString();
 		
 		response.setContentType("text/html");
         PrintWriter out = null;
@@ -593,6 +538,37 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
         out.print(returnString);
         out.close();
 		
+	}
+	
+	private String buildTree(OntologyClass node, List<OntologyClass> activeClasses) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<li ");
+		sb.append("id='");
+		sb.append(node.getName());
+		sb.append("'");
+		sb.append(">");
+		sb.append("<a href='javascript:donothing()' ");
+		sb.append("onclick='select(this)' ");
+		sb.append("title='");
+		sb.append(node.getURI());
+		sb.append("'" );
+		if (activeClasses.contains(node)) {
+			sb.append("class='bold' ");
+		}
+		sb.append(">");
+		sb.append(node.getName());
+		sb.append("</a>");
+		List<OntologyClass> children = SMS.getInstance().getOntologyManager().getNamedSubclasses(node, false);
+		if (!children.isEmpty()) {
+			sb.append("<ul>");
+			for (OntologyClass oc: children) {
+				sb.append(buildTree(oc, activeClasses));
+			}
+			sb.append("</ul>");
+		}
+		sb.append("</li>");
+
+		return sb.toString();
 	}
 
 	private String augmentQuery(List<Annotation> matches, StringBuffer results) throws Exception {
