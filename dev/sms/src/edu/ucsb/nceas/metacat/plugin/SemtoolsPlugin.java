@@ -499,18 +499,18 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		List<OntologyClass> classes = null;
 
 		if (domainClassString.equals(Entity.class.getName())) {
-			classes = SMS.getInstance().getAnnotationManager().getActiveEntities(activeCharacteristics, activeStandards, activeProtocols);
+			classes = SMS.getInstance().getAnnotationManager().getActiveEntities(activeCharacteristics, activeStandards, activeProtocols, true, false);
 		}
 		if (domainClassString.equals(Characteristic.class.getName())) {
 			// Characteristic
-			classes = SMS.getInstance().getAnnotationManager().getActiveCharacteristics(activeEntities, activeStandards, activeProtocols);
+			classes = SMS.getInstance().getAnnotationManager().getActiveCharacteristics(activeEntities, activeStandards, activeProtocols, true, false);
 		}
 		if (domainClassString.equals(Standard.class.getName())) {
-			classes = SMS.getInstance().getAnnotationManager().getActiveStandards(activeEntities, activeCharacteristics, activeProtocols);
+			classes = SMS.getInstance().getAnnotationManager().getActiveStandards(activeEntities, activeCharacteristics, activeProtocols, true, false);
 		}
 		if (domainClassString.equals(Protocol.class.getName())) {
 			// Protocol
-			classes = SMS.getInstance().getAnnotationManager().getActiveProtocols(activeEntities, activeCharacteristics, activeStandards);
+			classes = SMS.getInstance().getAnnotationManager().getActiveProtocols(activeEntities, activeCharacteristics, activeStandards, true, false);
 		}
 		if (domainClassString.equals(Measurement.class.getName())) {
 			// Measurement TODO: filtering

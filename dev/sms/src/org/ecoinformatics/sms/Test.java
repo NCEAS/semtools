@@ -140,7 +140,7 @@ public class Test {
             // get the results
             System.out.println("\nSearch for active entity domains of 'Biomass':");
             entityActiveDom = new ArrayList();
-            for(OntologyClass c : annotationManager.getActiveEntities(chars, null, null)) {
+            for(OntologyClass c : annotationManager.getActiveEntities(chars, null, null, false, false)) {
                 if(!entityActiveDom.contains(c))
                     entityActiveDom.add(c);
                 for(OntologyClass s : ontologyManager.getNamedSuperclasses(c))
@@ -162,7 +162,7 @@ public class Test {
             chars.add(characteristic);
             System.out.println("\nSearch for active standards of entity: " + entity + " and characteristic: " + characteristic);
             List<OntologyClass> standardActiveDom = new ArrayList();
-            for(OntologyClass c : annotationManager.getActiveStandards(entities, chars, true, false)) {
+            for(OntologyClass c : annotationManager.getActiveStandards(entities, chars, null, true, false)) {
                 if(!standardActiveDom.contains(c))
                     standardActiveDom.add(c);
                 for(OntologyClass s : ontologyManager.getNamedSuperclasses(c))

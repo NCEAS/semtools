@@ -618,12 +618,21 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
    public List<OntologyClass> getActiveProtocols(
            List<OntologyClass> entities, 
            List<OntologyClass> characteristics,
-           List<OntologyClass> standards) {
+           List<OntologyClass> standards,
+           boolean searchSubclasses,
+           boolean addSuperclasses) {
       // check if both args are missing
       if((entities == null || entities.isEmpty()) &&
               (characteristics == null || characteristics.isEmpty()) &&
               (standards == null || standards.isEmpty()))
          return getActiveProtocols();
+      
+      if (searchSubclasses) {
+    	  addSubclasses(entities);
+    	  addSubclasses(characteristics);
+    	  addSubclasses(standards);
+      }
+      
       List<OntologyClass> results = new ArrayList<OntologyClass>();
       
       Expression entityExpression = null;
@@ -669,6 +678,11 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     		  }
     	  }
       }
+      
+      if (addSuperclasses) {
+    	  addSuperclasses(results);
+      }
+      
       return results;
    }
    
@@ -710,12 +724,22 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
    public List<OntologyClass> getActiveEntities(
            List<OntologyClass> characteristics, 
            List<OntologyClass> standards,
-           List<OntologyClass> protocols) {
+           List<OntologyClass> protocols,
+           boolean searchSubclasses,
+           boolean addSuperclasses) {
       // check if both args are missing
       if((characteristics == null || characteristics.isEmpty()) &&
               (standards == null || standards.isEmpty()) &&
-              (protocols == null || protocols.isEmpty()))
+              (protocols == null || protocols.isEmpty())) {
          return getActiveEntities();
+      }
+      
+      // include subclasses?
+      if (searchSubclasses) {
+    	  addSubclasses(characteristics);
+    	  addSubclasses(standards);
+    	  addSubclasses(protocols);
+      }
       
       List<OntologyClass> results = new ArrayList<OntologyClass>();
       
@@ -763,6 +787,11 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     	  }
       }
       
+      // should we augment the list with the superclasses?
+      if (addSuperclasses) {
+    	  addSuperclasses(results);
+      }
+      
       return results;
    }
 
@@ -776,13 +805,20 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
    public List<OntologyClass> getActiveCharacteristics(
            List<OntologyClass> entities, 
            List<OntologyClass> standards,
-           List<OntologyClass> protocols) {
+           List<OntologyClass> protocols,
+           boolean searchSubclasses,
+           boolean addSuperclasses) {
       // check if both args are missing
       if((entities == null || entities.isEmpty()) &&
               (standards == null || standards.isEmpty()) && 
               (protocols == null || protocols.isEmpty()))
          return getActiveCharacteristics();
       
+      if (searchSubclasses) {
+    	  addSubclasses(entities);
+    	  addSubclasses(standards);
+    	  addSubclasses(protocols);
+      }
       List<OntologyClass> results = new ArrayList<OntologyClass>();
       Expression expression = null;
 	  Expression entityExpression = null;
@@ -827,7 +863,9 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     		  }
     	  }
       }
-      
+      if (addSuperclasses) {
+    	  addSuperclasses(results);
+      }
       return results;
    }
 
@@ -842,12 +880,19 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
    public List<OntologyClass> getActiveStandards(
            List<OntologyClass> entities, 
            List<OntologyClass> characteristics,
-           List<OntologyClass> protocols) {
+           List<OntologyClass> protocols,
+           boolean searchSubclasses,
+           boolean addSuperclasses) {
       // check if both args are missing
       if((entities == null || entities.isEmpty()) &&
               (characteristics == null || characteristics.isEmpty()) &&
               (protocols == null || protocols.isEmpty()))
          return getActiveStandards();
+      if (searchSubclasses) {
+    	  addSubclasses(entities);
+    	  addSubclasses(characteristics);
+    	  addSubclasses(protocols);
+      }
       List<OntologyClass> results = new ArrayList<OntologyClass>();
       
       Expression entityExpression = null;
@@ -893,6 +938,9 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     			  results.add(c);
     		  }
     	  }
+      }
+      if (addSuperclasses) {
+    	  addSuperclasses(results);
       }
       return results;
    }
