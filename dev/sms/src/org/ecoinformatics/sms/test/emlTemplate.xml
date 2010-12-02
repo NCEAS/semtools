@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.0"
+	packageId="_PACKAGEID_" system="knb"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.0 eml.xsd">
+	<access authSystem="knb" order="allowFirst">
+		<allow>
+			<principal>public</principal>
+			<permission>read</permission>
+		</allow>
+	</access>
+	<dataset>
+		<title>_TITLE_</title>
+		<creator>
+			<individualName>
+				<givenName>Joe</givenName>
+				<surName>Scientist</surName>
+			</individualName>
+			<address>
+				<deliveryPoint>Marine Science Institute</deliveryPoint>
+				<city>Santa Barbara</city>
+				<administrativeArea>CA</administrativeArea>
+				<postalCode>90024</postalCode>
+				<country>USA</country>
+			</address>
+			<phone>(310) 206-1984</phone>
+			<electronicMailAddress>jsci@msi.ucsb.edu</electronicMailAddress>
+		</creator>
+		<associatedParty>
+			<individualName>
+				<givenName>Joe</givenName>
+				<surName>Scientist</surName>
+			</individualName>
+			<address>
+				<deliveryPoint>Marine Science Institute</deliveryPoint>
+				<city>Santa Barbara</city>
+				<administrativeArea>CA</administrativeArea>
+				<postalCode>90024</postalCode>
+				<country>USA</country>
+			</address>
+			<phone>(310) 206-1984</phone>
+			<electronicMailAddress>jsci@msi.ucsb.edu</electronicMailAddress>
+			<role>owner</role>
+		</associatedParty>
+		<abstract>
+			<para>OBOE testing</para>
+		</abstract>
+		<keywordSet>
+			<keyword keywordType="theme">OBOE</keyword>
+		</keywordSet>
+		<contact>
+			<individualName>
+				<givenName>Joe</givenName>
+				<surName>Scientist</surName>
+			</individualName>
+			<address>
+				<deliveryPoint>Marine Science Institute</deliveryPoint>
+				<city>Santa Barbara</city>
+				<administrativeArea>CA</administrativeArea>
+				<postalCode>90024</postalCode>
+				<country>USA</country>
+			</address>
+			<phone>(310) 206-1984</phone>
+			<electronicMailAddress>jsci@msi.ucsb.edu</electronicMailAddress>
+		</contact>
+		<dataTable>
+			<entityName>fake_data.txt</entityName>
+			<physical>
+				<objectName>fake data</objectName>
+				<size unit="bytes">0</size>
+				<dataFormat>
+					<textFormat>
+						<numHeaderLines>1</numHeaderLines>
+						<recordDelimiter>#x0A</recordDelimiter>
+						<attributeOrientation>column</attributeOrientation>
+						<simpleDelimited>
+							<fieldDelimiter>,</fieldDelimiter>
+						</simpleDelimited>
+					</textFormat>
+				</dataFormat>
+				<distribution>
+					<offline>
+						<mediumName>CD</mediumName>
+					</offline>
+				</distribution>
+			</physical>
+			<attributeList>
+				<attribute id="123456">
+					<attributeName>test</attributeName>
+					<attributeLabel>test</attributeLabel>
+					<attributeDefinition>Test</attributeDefinition>
+					<storageType>Text</storageType>
+					<measurementScale>
+						<nominal>
+							<nonNumericDomain>
+								<textDomain>
+									<definition>*</definition>
+								</textDomain>
+							</nonNumericDomain>
+						</nominal>
+					</measurementScale>
+				</attribute>
+			</attributeList>
+			<caseSensitive>no</caseSensitive>
+			<numberOfRecords>0</numberOfRecords>
+		</dataTable>
+	</dataset>
+</eml:eml>
