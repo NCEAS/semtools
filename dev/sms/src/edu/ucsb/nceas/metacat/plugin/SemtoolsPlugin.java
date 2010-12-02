@@ -452,7 +452,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 					c = new OntologyClass(classString);
 					activeEntities.add(c);
 				} catch (Exception e) {
-					log.error("Problem parsing parameter", e);
+					log.warn("Problem parsing parameter", e);
 				}
 			}
 		}
@@ -464,7 +464,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 					c = new OntologyClass(classString);
 					activeCharacteristics.add(c);
 				} catch (Exception e) {
-					log.error("Problem parsing parameter", e);
+					log.warn("Problem parsing parameter", e);
 				}
 			}
 		}
@@ -476,7 +476,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 					c = new OntologyClass(classString);
 					activeStandards.add(c);
 				} catch (Exception e) {
-					log.error("Problem parsing parameter", e);
+					log.warn("Problem parsing parameter", e);
 				}
 			}
 		}
@@ -488,7 +488,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 					c = new OntologyClass(classString);
 					activeProtocols.add(c);
 				} catch (Exception e) {
-					log.error("Problem parsing parameter", e);
+					log.warn("Problem parsing parameter", e);
 				}
 			}
 		}
