@@ -1,7 +1,6 @@
 package org.ecoinformatics.sms.test;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
@@ -25,7 +24,8 @@ import edu.ucsb.nceas.metacat.client.MetacatFactory;
 public class AnnotationFactory {
 
 	private static String EML_TEMPLATE = "emlTemplate.xml";
-	private static String METACAT_URL = "http://fred.msi.ucsb.edu:8080/knb/metacat";
+	//private static String METACAT_URL = "http://fred.msi.ucsb.edu:8080/knb/metacat";
+	private static String METACAT_URL = "http://localhost:8080/knb/metacat";
 	private static String METACAT_USERNAME = "uid=kepler,o=unaffiliated,dc=ecoinformatics,dc=org";
 	private static String METACAT_PASSWORD = "kepler";
 	private static String DEFAULT_ONTOLOGY = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl";
@@ -51,7 +51,12 @@ public class AnnotationFactory {
 		List<OntologyClass> characteristics = SMS.getInstance().getOntologyManager().getNamedSubclasses(Annotation.OBOE_CLASSES.get(Characteristic.class), true);
 		List<OntologyClass> standards = SMS.getInstance().getOntologyManager().getNamedSubclasses(Annotation.OBOE_CLASSES.get(Standard.class), true);
 		List<OntologyClass> protocols = SMS.getInstance().getOntologyManager().getNamedSubclasses(Annotation.OBOE_CLASSES.get(Protocol.class), true);
+
 		OntologyClass randomClass = null;
+		Entity entity = null;
+		Characteristic characteristic = null;
+		Standard standard = null;
+		Protocol protocol = null;
 		
 		// the id seeds
 		String scope = String.valueOf(System.currentTimeMillis());
@@ -70,26 +75,78 @@ public class AnnotationFactory {
 			// loop attributes - one observation per column
 			// TODO: randomize the grouping of multiple measurements in single observation
 			for (int j = 0; j < attributes.length; j++) {
+				
+				// handle this attribute
 				String attribute = attributes[j];
-				// entity
-				randomClass = entities.get((int)Math.floor(Math.random() * entities.size()));
-				Entity entity = new Entity(randomClass.getURI());
+				
+				// select an entity using some tree traversal
+				randomClass = null;
+				if (entity != null) {
+					// select a random subclass if they exist
+					List<OntologyClass> subclasses = SMS.getInstance().getOntologyManager().getNamedSubclasses(entity, false);
+					if (subclasses != null && !subclasses.isEmpty()) {
+						randomClass = subclasses.get((int)Math.floor(Math.random() * subclasses.size()));
+					}
+				}
+				if (randomClass == null) {
+					// just get a random class
+					randomClass = entities.get((int)Math.floor(Math.random() * entities.size()));
+				}
+				entity = new Entity(randomClass.getURI());
+
+				// observation for the entity
 				Observation o = new Observation();
 				o.setEntity(entity );
 				o.setLabel("o" + j);
 				
-				// measurement
+				// measurement for the attribute
 				Measurement measurement = new Measurement();
 				measurement.setLabel("m" + j);
+				
 				// characteristic
-				randomClass = characteristics.get((int)Math.floor(Math.random() * characteristics.size()));
-				Characteristic characteristic = new Characteristic(randomClass.getURI());
+				randomClass = null;
+				if (characteristic != null) {
+					// select a random subclass if they exist
+					List<OntologyClass> subclasses = SMS.getInstance().getOntologyManager().getNamedSubclasses(characteristic, false);
+					if (subclasses != null && !subclasses.isEmpty()) {
+						randomClass = subclasses.get((int)Math.floor(Math.random() * subclasses.size()));
+					}
+				}
+				if (randomClass == null) {
+					// just get a random class
+					randomClass = characteristics.get((int)Math.floor(Math.random() * characteristics.size()));
+				}
+				characteristic = new Characteristic(randomClass.getURI());
+				
 				// standard
-				randomClass = standards.get((int)Math.floor(Math.random() * standards.size()));
-				Standard standard = new Standard(randomClass.getURI());
+				randomClass = null;
+				if (standard != null) {
+					// select a random subclass if they exist
+					List<OntologyClass> subclasses = SMS.getInstance().getOntologyManager().getNamedSubclasses(standard, false);
+					if (subclasses != null && !subclasses.isEmpty()) {
+						randomClass = subclasses.get((int)Math.floor(Math.random() * subclasses.size()));
+					}
+				}
+				if (randomClass == null) {
+					// just get a random class
+					randomClass = standards.get((int)Math.floor(Math.random() * standards.size()));
+				}
+				standard = new Standard(randomClass.getURI());
+				
 				// protocol
-				randomClass = protocols.get((int)Math.floor(Math.random() * protocols.size()));
-				Protocol protocol = new Protocol(randomClass.getURI());
+				randomClass = null;
+				if (protocol != null) {
+					// select a random subclass if they exist
+					List<OntologyClass> subclasses = SMS.getInstance().getOntologyManager().getNamedSubclasses(protocol, false);
+					if (subclasses != null && !subclasses.isEmpty()) {
+						randomClass = subclasses.get((int)Math.floor(Math.random() * subclasses.size()));
+					}
+				}
+				if (randomClass == null) {
+					// just get a random class
+					randomClass = protocols.get((int)Math.floor(Math.random() * protocols.size()));
+				}
+				protocol = new Protocol(randomClass.getURI());
 				
 				measurement.addCharacteristic(characteristic);
 				measurement.setStandard(standard);
@@ -163,7 +220,7 @@ public class AnnotationFactory {
 			if (false) // for testing
 				continue;
 			
-			// upload
+			// upload the eml
 			xmlReader = new StringReader(emlContent);
 			metacat.insert(docid, xmlReader, null);
 			metacat.setAccess(docid, "public", "4", "allow", "allowFirst");
