@@ -492,8 +492,24 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 				}
 			}
 		}
-		// Measurement
-		// TODO: implement measurement expansion
+		// Measurement (expansion
+		if (measurementParam != null) {
+			for (String classString: measurementParam) {
+				OntologyClass c = null;
+				try {
+					c = new OntologyClass(classString);
+					// use the ontology to expand the Measurement
+					activeEntities.addAll(Measurement.lookupRestrictionClasses(c, Entity.class));
+					activeCharacteristics.addAll(Measurement.lookupRestrictionClasses(c, Characteristic.class));
+					activeStandards.addAll(Measurement.lookupRestrictionClasses(c, Standard.class));
+					activeProtocols.addAll(Measurement.lookupRestrictionClasses(c, Protocol.class));
+					// also include the template measurement
+					activeMeasurements.add(c);
+				} catch (Exception e) {
+					log.warn("Problem parsing parameter", e);
+				}
+			}
+		}		
 		
 		String returnString = "";
 		List<OntologyClass> classes = null;
