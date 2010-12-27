@@ -4,8 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
 import java.io.StringReader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -41,6 +42,7 @@ import edu.ucsb.nceas.metacat.DBTransform;
 import edu.ucsb.nceas.metacat.DBUtil;
 import edu.ucsb.nceas.metacat.DocumentIdQuery;
 import edu.ucsb.nceas.metacat.DocumentImpl;
+import edu.ucsb.nceas.metacat.MetaCatServlet;
 import edu.ucsb.nceas.metacat.QuerySpecification;
 import edu.ucsb.nceas.metacat.client.InsufficientKarmaException;
 import edu.ucsb.nceas.metacat.client.Metacat;
@@ -236,8 +238,8 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
         
         try {
         	response.setContentType("text/xml");
-            PrintWriter out = response.getWriter();
-            out.println(sb.toString());
+            Writer out = new OutputStreamWriter(response.getOutputStream(), MetaCatServlet.DEFAULT_ENCODING);
+            out.write(sb.toString());
             out.close();
         } catch (Exception e) {
         	log.error(e.getMessage(), e);
@@ -276,8 +278,8 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
         
         try {
         	response.setContentType("text/xml");
-            PrintWriter out = response.getWriter();
-            out.println(sb.toString());
+            Writer out = new OutputStreamWriter(response.getOutputStream(), MetaCatServlet.DEFAULT_ENCODING);
+            out.write(sb.toString());
             out.close();
         } catch (Exception e) {
         	log.error(e.getMessage(), e);
@@ -315,8 +317,8 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
         
         try {
         	response.setContentType("text/xml");
-            PrintWriter out = response.getWriter();
-            out.println(sb.toString());
+            Writer out = new OutputStreamWriter(response.getOutputStream(), MetaCatServlet.DEFAULT_ENCODING);
+            out.write(sb.toString());
             out.close();
         } catch (Exception e) {
         	log.error(e.getMessage(), e);
@@ -385,12 +387,12 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 	        String modifiedResults = augmentQuery(matches, results);
 	        
 	        // style the results
-	        PrintWriter out = null;
+	        Writer out = null;
 	        String qformat = params.get("qformat")[0];
 	        if (!qformat.equals(MetacatUtil.XMLFORMAT)) {
 	        	// html
 	        	response.setContentType("text/html");
-		        out = response.getWriter();
+		        out = new OutputStreamWriter(response.getOutputStream(), MetaCatServlet.DEFAULT_ENCODING);
 		        // transform via stylesheet
 		        DBTransform transform = new DBTransform();
 		        transform.transformXMLDocument(
@@ -404,9 +406,9 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 	        } else {
 	        	// xml
 	        	response.setContentType("text/xml");
-		        out = response.getWriter();
+		        out = new OutputStreamWriter(response.getOutputStream(), MetaCatServlet.DEFAULT_ENCODING);
 		        // send to output as plain xml
-	        	out.print(modifiedResults);
+	        	out.write(modifiedResults);
 	        }
 	        // done
 	        out.close();
@@ -544,16 +546,15 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		returnString = options.toString();
 		
 		response.setContentType("text/html");
-        PrintWriter out = null;
+        Writer out = null;
 		try {
-			out = response.getWriter();
+            out = new OutputStreamWriter(response.getOutputStream(), MetaCatServlet.DEFAULT_ENCODING);
+            out.write(returnString);
+            out.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        out.print(returnString);
-        out.close();
-		
 	}
 	
 	private String buildTree(OntologyClass node, List<OntologyClass> activeClasses) {
