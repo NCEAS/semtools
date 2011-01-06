@@ -48,6 +48,7 @@ import edu.ucsb.nceas.metacat.client.InsufficientKarmaException;
 import edu.ucsb.nceas.metacat.client.Metacat;
 import edu.ucsb.nceas.metacat.client.MetacatFactory;
 import edu.ucsb.nceas.metacat.properties.PropertyService;
+import edu.ucsb.nceas.metacat.service.SessionService;
 import edu.ucsb.nceas.metacat.shared.HandlerException;
 import edu.ucsb.nceas.metacat.util.MetacatUtil;
 import edu.ucsb.nceas.metacat.util.SystemUtil;
@@ -70,6 +71,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		supportedActions.add("unregisterontology");
 		supportedActions.add("ontologies");
 		supportedActions.add("getactivedomain");
+		supportedActions.add("getcart");
 
 		initializeOntologies();
 		initializeAnnotations();
@@ -191,6 +193,9 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		case 5:
 			getActiveDomain(params, request, response, username, groups, sessionId);
 			break;	
+		case 6:
+			getCart(params, request, response, username, groups, sessionId);
+			break;		
 		default:
 			break;
 		}
@@ -325,6 +330,34 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		}
 	}
 	
+	private void getCart(Hashtable<String, String[]> params, HttpServletRequest request,
+			HttpServletResponse response, String username, String[] groups,
+			String sessionId) throws HandlerException {
+		try {
+
+			// annotation matches - may be empty after processing
+			List<Annotation> matches = new ArrayList<Annotation>();
+
+			// get the packages in the cart if the user is logged in
+			boolean loggedIn = SessionService.getInstance().isSessionRegistered(sessionId);
+			if (loggedIn) {
+				String[] docids = SessionService.getInstance().getRegisteredSession(sessionId).getDocumentCart().getDocids();
+				if (docids != null) {
+					for (String emlPackage: docids) {
+						List<Annotation> m = SMS.getInstance().getAnnotationManager().getAnnotations(emlPackage, null);
+						matches.addAll(m);
+					}
+				}
+			}
+			
+			// process matches if we have them
+			handleAnnotationMatches(params, request, response, username, groups, sessionId, matches);
+			
+		} catch (Exception e) {
+			throw new HandlerException(e.getMessage());
+		}
+	}
+	
 	private void semquery(Hashtable<String, String[]> params, HttpServletRequest request,
 			HttpServletResponse response, String username, String[] groups,
 			String sessionId) throws HandlerException {
@@ -336,6 +369,18 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			Criteria criteria = CriteriaReader.read(semquery);
 			
 			List<Annotation> matches = SMS.getInstance().getAnnotationManager().getMatchingAnnotations(criteria);
+			
+			handleAnnotationMatches(params, request, response, username, groups, sessionId, matches);
+			
+		} catch (Exception e) {
+			throw new HandlerException(e.getMessage());
+		}
+	}
+	
+	private void handleAnnotationMatches(Hashtable<String, String[]> params, HttpServletRequest request,
+			HttpServletResponse response, String username, String[] groups,
+			String sessionId, List<Annotation> matches) throws HandlerException {
+		try {
 			
 			// look up annotation matches - for the data package ids
 			Vector<String> docids = new Vector<String>();
