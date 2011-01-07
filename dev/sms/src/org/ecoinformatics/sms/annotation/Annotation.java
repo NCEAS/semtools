@@ -383,7 +383,8 @@ public class Annotation {
     * @return an annotation
     */
    public static Annotation read(InputStream s) throws AnnotationException {
-      return AnnotationReader.read(s);
+	   AnnotationReader ar = new AnnotationReader();
+	   return ar.read(s);
    }
 
    public static String getNextMeasurementLabel(Annotation annotation, String prefix) {

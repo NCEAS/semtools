@@ -51,14 +51,14 @@ import org.ecoinformatics.sms.ontology.OntologyClass;
 public class AnnotationReader {
 
    /* the annotation */
-   private static Annotation _annotation;
+   private Annotation _annotation;
 
    /**
     * Read in a new annotation from an input stream
     * @param in the input stream
     * @return the parsed annotation
     */
-   public static Annotation read(InputStream in) throws AnnotationException {
+   public Annotation read(InputStream in) throws AnnotationException {
       _annotation = new Annotation();
       try {
          Document doc = _getDocument(in);
@@ -75,7 +75,7 @@ public class AnnotationReader {
     * @param in the input stream
     * @return the XML document object
     */
-   private static Document _getDocument(InputStream in) throws Exception {
+   private Document _getDocument(InputStream in) throws Exception {
       // create the document builder factory
       DocumentBuilderFactory factory =
               DocumentBuilderFactory.newInstance();
@@ -96,7 +96,7 @@ public class AnnotationReader {
     * Parse an annotation element
     * @param doc the document
     */
-   private static void _parseAnnotation(Document doc) throws Exception {
+   private void _parseAnnotation(Document doc) throws Exception {
       Element root = doc.getDocumentElement();
       // parse emlPackage and dataTable
       _parseEMLResource(root);
@@ -114,7 +114,7 @@ public class AnnotationReader {
     * Parse the context of observations
     * @root the document root
     */
-   private static void _parseContext(Element root) throws Exception {
+   private void _parseContext(Element root) throws Exception {
       // create a hashmap of label -> observation
       HashMap<String, Observation> map = new HashMap();
       for(Observation o : _annotation.getObservations()) {
@@ -163,7 +163,7 @@ public class AnnotationReader {
     * Parse the annotation mappings
     * @param e a map element
     */
-   private static void _parseMapping(Element e) throws Exception {
+   private void _parseMapping(Element e) throws Exception {
       // create a hash of label -> measurement
       HashMap<String, Measurement> map = new HashMap();
       for(Observation o : _annotation.getObservations())
@@ -205,7 +205,7 @@ public class AnnotationReader {
     * Parse the emlpackage and dataTable attribues
     * @param e the element
     */
-   private static void _parseEMLResource(Element e) throws Exception {
+   private void _parseEMLResource(Element e) throws Exception {
       // get the emlPackage id
       Attr att1 = _getAttribute(e, "emlPackage");
       if(att1 == null)
@@ -230,7 +230,7 @@ public class AnnotationReader {
     * Parse an observation element
     * @param e the observation element
     */
-   private static void _parseObservation(Element e) throws Exception {
+   private void _parseObservation(Element e) throws Exception {
       // create and add the observation 
       Observation o = new Observation();
       _annotation.addObservation(o);
@@ -264,7 +264,7 @@ public class AnnotationReader {
     * @param elem the measurement elem
     * @param observation the containing observation type
     */
-   private static void _parseMeasurement(Observation o, Element e)
+   private void _parseMeasurement(Observation o, Element e)
            throws Exception {
       Measurement m = new Measurement();
       o.addMeasurement(m);
@@ -326,7 +326,7 @@ public class AnnotationReader {
     * @param o the observation
     * @param e the element
     */
-   private static void _parseEntity(Observation o, Element e) throws Exception {
+   private void _parseEntity(Observation o, Element e) throws Exception {
       Entity entity = new Entity();
       // get the id attribute
       Attr att1 = _getAttribute(e, "id");
@@ -341,7 +341,7 @@ public class AnnotationReader {
     * @param m the measurement
     * @param e the element
     */
-   private static void _parseRelationship(Context c, Element e)
+   private void _parseRelationship(Context c, Element e)
            throws Exception {
 	   OntologyClass relationship = new OntologyClass();
       // get the id attribute
@@ -357,7 +357,7 @@ public class AnnotationReader {
     * @param m the measurement
     * @param e the element
     */
-   private static void _parseStandard(Measurement m, Element e)
+   private void _parseStandard(Measurement m, Element e)
            throws Exception {
       Standard standard = new Standard();
       // get the id attribute
@@ -373,7 +373,7 @@ public class AnnotationReader {
     * @param p the protocol
     * @param e the element
     */
-   private static void _parseProtocol(Measurement m, Element e)
+   private void _parseProtocol(Measurement m, Element e)
            throws Exception {
 	   Protocol protocol = new Protocol();
       // get the id attribute
@@ -389,7 +389,7 @@ public class AnnotationReader {
     * @param m the measurement
     * @param e the element
     */
-   private static void _parseDomain(Measurement m, Element e) throws Exception {
+   private void _parseDomain(Measurement m, Element e) throws Exception {
       for(Element elem : _getElements(e, "entity")) {
          Attr att1 = _getAttribute(elem, "id");
          if(att1 == null)
@@ -405,7 +405,7 @@ public class AnnotationReader {
     * @param m the measurement
     * @param e the element
     */
-   private static void _parseCharacteristic(Measurement m, Element e)
+   private void _parseCharacteristic(Measurement m, Element e)
            throws Exception {
       Characteristic characteristic = new Characteristic();
       // get the id attribute
@@ -421,7 +421,7 @@ public class AnnotationReader {
     * @param cond the condition attribute
     * @param m the containing measurement value type
     */
-   private static List<Condition> _getConditions(String str)
+   private List<Condition> _getConditions(String str)
            throws Exception {
       List<Condition> result = new ArrayList();
       str = str.trim();
@@ -442,7 +442,7 @@ public class AnnotationReader {
     * @param str the current state of the condition string
     * @return the new string with the attribute removed
     */
-   private static String _parseCondAtt(Condition c, String str)
+   private String _parseCondAtt(Condition c, String str)
            throws Exception {
       str = str.trim();
       String attribute = "";
@@ -464,7 +464,7 @@ public class AnnotationReader {
     * @param str the current state of the condition string
     * @return the new string with the operator removed
     */
-   private static String _parseCondOp(Condition c, String str)
+   private String _parseCondOp(Condition c, String str)
            throws Exception {
       str = str.trim();
       String op = "";
@@ -486,7 +486,7 @@ public class AnnotationReader {
     * @param str the current state of the condition string
     * @return the new string with the constant removed
     */
-   private static String _parseCondConst(Condition c, String str)
+   private String _parseCondConst(Condition c, String str)
            throws Exception {
       str = str.trim();
       if(str.startsWith("'"))
@@ -501,7 +501,7 @@ public class AnnotationReader {
     * @param str the current state of the condition string
     * @return the new string with the constant removed
     */
-   private static String _parseStringConst(Condition c, String str)
+   private String _parseStringConst(Condition c, String str)
            throws Exception {
       String constant = "";
       int i = 1;
@@ -531,7 +531,7 @@ public class AnnotationReader {
     * @param str the current state of the condition string
     * @return the new string with the constant removed
     */
-   private static String _parseNumericConst(Condition c, String str)
+   private String _parseNumericConst(Condition c, String str)
            throws Exception {
       String constant = "";
       int i = 0;
@@ -559,7 +559,7 @@ public class AnnotationReader {
     * @param item the ontology item to populate
     * @param str the attribute string
     */
-   private static void _getQName(Element elem, OntologyClass c, String str)
+   private void _getQName(Element elem, OntologyClass c, String str)
            throws Exception {
       // break string into label and name parts
       String[] s = str.split(":");
@@ -578,7 +578,7 @@ public class AnnotationReader {
     * add the ontology to the annotation if it has not been
     * previously added.
     */
-   private static Ontology _getOntology(Element elem, String prefix)
+   private Ontology _getOntology(Element elem, String prefix)
            throws Exception {
       String uri = _getURI(elem, prefix);
       for(Ontology ont : _annotation.getOntologies())
@@ -595,7 +595,7 @@ public class AnnotationReader {
     * @param prefix the prefix string to search for
     * @return the uri or null if no such prefix is used
     */
-   private static String _getURI(Element elem, String prefix)
+   private String _getURI(Element elem, String prefix)
            throws Exception {
       Object parent = elem.getParentNode();
       if(elem.hasAttribute("xmlns:" + prefix))
@@ -612,7 +612,7 @@ public class AnnotationReader {
     * @param elem the element to start searching from
     * @return the namespace uri or null if no namespace
     */
-   private static String _getNamespace(Element elem) throws Exception {
+   private String _getNamespace(Element elem) throws Exception {
       Object parent = elem.getParentNode();
       String tag = elem.getTagName();
       String[] s = tag.split(":");
@@ -632,7 +632,7 @@ public class AnnotationReader {
     * @param elem the element 
     * @return the element name without an appended namespace
     */
-   private static String _getElementTag(Element elem) throws Exception {
+   private String _getElementTag(Element elem) throws Exception {
       String ns = _getNamespace(elem);
       if(ns == null || !ns.equals(Annotation.ANNOTATION_NS))
          _error("element missing '" + Annotation.ANNOTATION_NS +
@@ -650,7 +650,7 @@ public class AnnotationReader {
     * @param t the element tag name to match 
     * @return child elements with matching name
     */
-   private static List<Element> _getElements(Element parent, String tag)
+   private List<Element> _getElements(Element parent, String tag)
            throws Exception {
       ArrayList<Element> elems = new ArrayList();
       if(tag == null)
@@ -711,7 +711,7 @@ public class AnnotationReader {
     * Make sure that the document root is an annotation element (has
     * the tag "annotation")
     */
-   private static void _ensureAnnotationRoot(Document doc) throws Exception {
+   private void _ensureAnnotationRoot(Document doc) throws Exception {
       Element root = doc.getDocumentElement();
       if(root == null || root.getTagName() == null)
          _error("missing document element");
@@ -724,7 +724,7 @@ public class AnnotationReader {
     * Throw an exception with the given message
     * @param msg the message
     */
-   private static void _error(String msg) throws Exception {
+   private void _error(String msg) throws Exception {
       throw new Exception("ERROR: " + msg);
    }
 
