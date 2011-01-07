@@ -50,6 +50,7 @@ import edu.ucsb.nceas.metacat.client.MetacatFactory;
 import edu.ucsb.nceas.metacat.properties.PropertyService;
 import edu.ucsb.nceas.metacat.service.SessionService;
 import edu.ucsb.nceas.metacat.shared.HandlerException;
+import edu.ucsb.nceas.metacat.util.AuthUtil;
 import edu.ucsb.nceas.metacat.util.MetacatUtil;
 import edu.ucsb.nceas.metacat.util.SystemUtil;
 import edu.ucsb.nceas.utilities.FileUtil;
@@ -339,7 +340,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			List<Annotation> matches = new ArrayList<Annotation>();
 
 			// get the packages in the cart if the user is logged in
-			boolean loggedIn = SessionService.getInstance().isSessionRegistered(sessionId);
+			boolean loggedIn = AuthUtil.isUserLoggedIn(request);
 			if (loggedIn) {
 				String[] docids = SessionService.getInstance().getRegisteredSession(sessionId).getDocumentCart().getDocids();
 				if (docids != null) {
