@@ -5,23 +5,7 @@
   id="knb-lter-sbc.project_nitrate_supply1.1">
   <alternateIdentifier system="sbclter_filename">lter-project-sbc_nitrate_supply1.1.xml </alternateIdentifier>
   <title>SBCLTER: Nitrate Supply</title>
-
-  <creator id="mbrzezinski">
-    <individualName>
-      <givenName>Mark</givenName>
-      <surName>Brzezinski</surName>
-    </individualName>
-    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
-      >uid=mbrzezinski,o=LTER,dc=ecoinformatics,dc=org</userId>
-  </creator>
-  <creator id="bgaylord">
-    <individualName>
-      <givenName>Brian</givenName>
-      <surName>Gaylord</surName>
-    </individualName>
-    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
-      >uid=bgaylord,o=LTER,dc=ecoinformatics,dc=org</userId>
-  </creator>
+  
   <creator id="dreed">
     <individualName>
       <givenName>Dan</givenName>
@@ -30,47 +14,258 @@
     <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
       >uid=dreed,o=LTER,dc=ecoinformatics,dc=org</userId>
   </creator>
-  <creator id="swilliams">
+  <associatedParty id="mbrzezinski">
+    <individualName>
+      <givenName>Mark</givenName>
+      <surName>Brzezinski</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=mbrzezinski,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Investigator</role>
+    
+  </associatedParty>
+  <associatedParty id="bgaylord">
+    <individualName>
+      <givenName>Brian</givenName>
+      <surName>Gaylord</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=bgaylord,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Investigator</role>
+    
+  </associatedParty>
+  <associatedParty id="dreed">
+    <individualName>
+      <givenName>Dan</givenName>
+      <surName>Reed</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=dreed,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Investigator</role>
+    
+  </associatedParty>
+  <associatedParty id="swilliams">
     <individualName>
       <givenName>Susan</givenName>
       <surName>Williams</surName>
     </individualName>
     <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
       >uid=swilliams,o=LTER,dc=ecoinformatics,dc=org</userId>
-  </creator>
-  <creator id="smacintyre">
+    <role>Investigator</role>
+    
+  </associatedParty>
+  <associatedParty id="smacintyre">
     <individualName>
       <givenName>Sally</givenName>
       <surName>MacIntyre</surName>
     </individualName>
     <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
       >uid=smacintyre,o=LTER,dc=ecoinformatics,dc=org</userId>
-  </creator>
+    <role>Investigator</role>
+    
+  </associatedParty>
 
-  <creator id="ccarlson">
-    <individualName>
-      <givenName>Craig</givenName>
-      <surName>Carlson</surName>
-    </individualName>
-    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
-      >uid=ccarlson,o=LTER,dc=ecoinformatics,dc=org</userId>
-  </creator>
-  <creator id="jfram">
+
+  <associatedParty id="jfram">
     <individualName>
       <givenName>Jonathan</givenName>
       <surName>Fram</surName>
     </individualName>
     <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
       >uid=jfram,o=LTER,dc=ecoinformatics,dc=org</userId>
-  </creator>
-  <creator id="hstewart">
+    <role>Post Doctoral Associate</role>
+    
+  </associatedParty>
+  <associatedParty id="hstewart">
     <individualName>
       <givenName>Hannah</givenName>
       <surName>Stewart</surName>
     </individualName>
     <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
       >uid=hstewart,o=LTER,dc=ecoinformatics,dc=org</userId>
-  </creator>
+    <role>Post Doctoral Associate</role>
+  </associatedParty>
+  
+  <associatedParty id="emcphee">
+    <individualName>
+      <givenName>Erica</givenName>
+      <surName>McPhee-Shaw</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=emcphee,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Post Doctoral Associate</role>
+  </associatedParty>
+  <associatedParty id="aleydecker">
+    <individualName>
+      <givenName>Al</givenName>
+      <surName>Leydecker</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=aleydecker,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Post Doctoral Associate</role>
+  </associatedParty>
+  
+  
+  
+  <associatedParty id="ccarlson">
+    <individualName>
+      <givenName>Craig</givenName>
+      <surName>Carlson</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=ccarlson,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Investigator</role>
+  </associatedParty>
+  
+  <associatedParty id="lwashburn">
+    <individualName>
+      <givenName>Libe</givenName>
+      <surName>Washburn</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=lwashburn,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Investigator</role>
+  </associatedParty>
+  
+  <associatedParty id="jdugan">
+    <individualName>
+      <givenName>Jenifer</givenName>
+      <surName>Dugan</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=jdugan,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Investigator</role>
+  </associatedParty>
+  
+  <associatedParty id="hpage">
+    <individualName>
+      <givenName>Mark</givenName>
+      <surName>Page</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=hpage,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Investigator</role>
+  </associatedParty>
+  
+  <associatedParty id="ebeighley">
+    <individualName>
+      <givenName>Ed</givenName>
+      <surName>Beighley</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=ebeighley,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Investigator</role>
+  </associatedParty>
+  
+  <associatedParty id="sholbrook">
+    <individualName>
+      <givenName>Sally</givenName>
+      <surName>Holbrook</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=sholbrook,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Investigator</role>
+  </associatedParty>
+  
+
+  <associatedParty id="karkema">
+    <individualName>
+      <givenName>Katie</givenName>
+      <surName>Arkema</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=karkema,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Graduate Student</role>
+  </associatedParty>
+  <associatedParty id="arassweiler">
+    <individualName>
+      <givenName>Andrew</givenName>
+      <surName>Rassweiler</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=arassweiler,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Graduate Student</role>
+  </associatedParty>
+  
+
+  <associatedParty id="jgoodman">
+    <individualName>
+      <givenName>Jo</givenName>
+      <surName>Goodman</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=jgoodman,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Graduate Student</role>  </associatedParty>
+  
+  <associatedParty id="cbassin">
+    <individualName>
+      <givenName>Corinne</givenName>
+      <surName>Bassin</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=cbassin,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Graduate Student</role>  </associatedParty>
+  
+  <associatedParty id="sharrer">
+    <individualName>
+      <givenName>Shannon</givenName>
+      <surName>Harrer</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=sharrer,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Staff</role>
+  </associatedParty>
+ 
+ 
+  <associatedParty id="cnelson1">
+    <individualName>
+      <givenName>Clint</givenName>
+      <surName>Nelson</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=cnelson1,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Staff</role>
+  </associatedParty>
+  
+  <associatedParty id="jjones">
+    <individualName>
+      <givenName>Janice</givenName>
+      <surName>Jones</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=jjones,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Staff</role>
+  </associatedParty>
+  
+  <associatedParty id="bgoodridge">
+    <individualName>
+      <givenName>Blair</givenName>
+      <surName>Goodridge</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=bgoodridge,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Staff</role>
+  </associatedParty>
+  
+  <associatedParty id="cgotschalk">
+    <individualName>
+      <givenName>Chris</givenName>
+      <surName>Gotschalk</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=cgotschalk,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Staff</role>
+  </associatedParty>
+  <associatedParty id="bemery">
+    <individualName>
+      <givenName>Brian</givenName>
+      <surName>Emery</surName>
+    </individualName>
+    <userId directory="ldap:///ldap.ecoinformatics.org/dc=ecoinformatics,dc=org "
+      >uid=bemery,o=LTER,dc=ecoinformatics,dc=org</userId>
+    <role>Staff</role>
+  </associatedParty>
+
   <abstract>
     <para>Goal is to determine the relative importance of different sources of nitrate to the annual
       nitrogen needs of the giant kelp Macrocystis pyrifera by characterizing
@@ -229,6 +424,26 @@
             <parameterDefinition>
               <name>docid</name>
               <definition>knb-lter-sbc.21</definition>
+            </parameterDefinition>
+          </connectionDefinition>
+        </connection>
+      </online>
+    </distribution>
+  </associatedMaterial>
+  <associatedMaterial category="publication" id="sbc-bibliography.532" date="2008">
+    <!-- Fram, J. P., H. L. Stewart, M. A. Brzezinski, B. Gaylord, D. C. Reed, S. L. Williams and S. 
+      MacIntyre. 2008. Physical pathways and utilization of nitrate supply to the giant kelp, Macrocystis 
+      pyrifera. Limnology and Oceanography , 53:4: 1589-1603< -->
+    <distribution>
+      <online>
+        <onlineDescription>Fram, et al, 2008, L&amp;O</onlineDescription>
+        <connection>
+          <connectionDefinition>
+            <schemeName system="sbclter">sbclter-bibliograpy</schemeName>
+            <description>sbclter-bibliography</description>
+            <parameterDefinition>
+              <name>sbc-bibliography</name>
+              <definition>532</definition>
             </parameterDefinition>
           </connectionDefinition>
         </connection>
