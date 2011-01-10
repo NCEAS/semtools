@@ -158,6 +158,12 @@ public class CriteriaReader {
 	   criteria.setSubCriteria(subCriteria);
 	   criteria.setGroup(true);
 	   
+	  // strict
+      Attr strict = _getAttribute(root, "strict");
+      if (strict != null) {
+    	  criteria.setSame(Boolean.valueOf(strict.getValue()));
+      }
+	      
 	   // parse the criteria elements
 		for (Element elem : _getElements(root, "AND")) {
 			Criteria c = _parseCriteria(elem);
