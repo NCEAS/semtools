@@ -6,7 +6,7 @@
 	
 	<!-- override the morpho property -->
    	<property name="morpho.args" value=".semtools"/>
-	<property name="release" value="1.8.1semtools9"/>
+	<property name="release" value="1.10.0semtools"/>
 	
    <!-- set global properties for this build -->
    <property name="src" location="src"/>
@@ -26,7 +26,7 @@
       <!-- Create the time stamp -->
       <tstamp/>
       <!-- Create the build directory structure used by compile -->
-      <mkdir dir="${build}"/>
+      <mkdir dir="${build}" />
       <!-- Create the config sub-directory -->
       <mkdir dir="${build}/config"/>
       <copy todir="${build}/config">
@@ -155,7 +155,7 @@
 	<!-- we need runtime jars in the morpho build somehow -->
 	<target name="install" depends="morpho.install">
 	      <copy todir="${build.lib}" >
-	      	<fileset dir="./lib" includes="*.jar"/>	      	
+	      	<fileset dir="./lib" includes="*.jar" excludes="saxon9he.jar"/>	      	
 	      </copy>
 			<copy todir="${build.lib}" file="${basedir}/sms.jar" overwrite="true">
 	      </copy>
