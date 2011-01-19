@@ -510,8 +510,9 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 				try {
 					c = new Entity(dbo.getEntity());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					// probably a parsing error
+					log.error("Problem creating Entity: " + e.getMessage());
+					//e.printStackTrace();
 				}
 				if(c !=null && !results.contains(c)) {
 					results.add(c);
@@ -540,8 +541,8 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 				try {
 					c = new Characteristic(dbc.getType());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					// probably a parsing error
+					log.warn("Problem creating Characteristic: " + e.getMessage());
 				}
 				if(c !=null && !results.contains(c)) {
 					results.add(c);
@@ -568,8 +569,8 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 				try {
 					c = new Standard(dbm.getStandard());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					// probably a parsing error
+					log.warn("Problem creating Standard: " + e.getMessage());
 				}
 				if(c !=null && !results.contains(c)) {
 					results.add(c);
@@ -596,8 +597,8 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 				try {
 					c = new Protocol(dbm.getProtocol());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					// probably a parsing error
+					log.warn("Problem creating Protocol: " + e.getMessage());
 				}
 				if(c !=null && !results.contains(c)) {
 					results.add(c);
@@ -670,8 +671,8 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     		  try {
     			  c = new Protocol(dbm.getProtocol());
     		  } catch (Exception e) {
-    			  // TODO Auto-generated catch block
-    			  e.printStackTrace();
+    			  // probably a parsing error
+    			  log.warn("Problem creating Protocol: " + e.getMessage());
     		  }
     		  if(c !=null && !results.contains(c)) {
     			  results.add(c);
@@ -703,7 +704,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 				try {
 					c = new OntologyClass(dbm.getTemplate());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+					// parse error?
 					log.warn("Problem parsing measurement template: " + e.getMessage());
 				}
 				if(c !=null && !results.contains(c)) {
@@ -712,6 +713,94 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 			}
 		}
       return results;
+   }
+
+/**
+    * Get measurement protocols used in managed annotations
+    * @return list of measurement protocols
+    */
+   public List<OntologyClass> getActiveMeasurements(
+		   List<OntologyClass> entities,
+		   List<OntologyClass> characteristics, 
+           List<OntologyClass> standards,
+           List<OntologyClass> protocols,
+           boolean searchSubclasses,
+           boolean addSuperclasses) {
+	  // check if both args are missing
+	  if((entities == null || entities.isEmpty()) &&
+	          (characteristics == null || characteristics.isEmpty()) &&
+	          (standards == null || standards.isEmpty()) && 
+	          (protocols == null || protocols.isEmpty()))
+	     return getActiveMeasurements();
+	  
+	  if (searchSubclasses) {
+		  addSubclasses(entities);
+		  addSubclasses(characteristics);
+		  addSubclasses(standards);
+		  addSubclasses(protocols);
+	  }
+	  
+	  List<OntologyClass> results = new ArrayList<OntologyClass>();
+	  
+	  Expression entityExpression = null;
+	  Expression charExpression = null;
+	  Expression stdExpression = null;
+	  Expression protocolExpression = null;
+	  Expression expression = null;
+	  
+	  if (entities != null && !entities.isEmpty()) {
+		  entityExpression = ExpressionFactory.inExp("observation.entity", getURIs(entities));
+		  expression = entityExpression;
+	  }
+	  if (characteristics != null && !characteristics.isEmpty()) {
+		  charExpression = ExpressionFactory.inExp("characteristics.type", getURIs(characteristics));
+		  expression = charExpression;
+	  }
+	  if (entityExpression != null && charExpression != null) {
+		  expression = entityExpression.andExp(charExpression);
+	  }
+	  // add standards
+	  if (standards != null && !standards.isEmpty()) {
+		  stdExpression = ExpressionFactory.inExp("standard", getURIs(standards));
+		  if (expression != null) {
+	    	  expression = expression.andExp(stdExpression);
+		  } else {
+			  expression = stdExpression;
+		  }
+	  }
+	  // add protocols
+	  if (protocols != null && !protocols.isEmpty()) {
+		  protocolExpression = ExpressionFactory.inExp("protocol", getURIs(protocols));
+		  if (expression != null) {
+	    	  expression = expression.andExp(protocolExpression);
+		  } else {
+			  expression = protocolExpression;
+		  }
+	  }
+	  
+	  ObjectContext context = getDataContext();
+	  SelectQuery query = new SelectQuery(DbMeasurement.class, expression);
+	  List<DbMeasurement> values = context.performQuery(query);
+	  if (values != null) {
+		  for (DbMeasurement dbm: values) {
+			  OntologyClass c = null;
+			  try {
+				  c = new OntologyClass(dbm.getTemplate());
+			  } catch (Exception e) {
+				  // probably a parsing error
+    			  log.warn("Problem creating Measurement Template: " + e.getMessage());
+			  }
+			  if(c !=null && !results.contains(c)) {
+				  results.add(c);
+			  }
+		  }
+	  }
+	  
+	  if (addSuperclasses) {
+		  addSuperclasses(results);
+	  }
+	  
+	  return results;
    }
 
    /**
@@ -778,8 +867,8 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     		  try {
     			  c = new Entity(dbo.getEntity());
     		  } catch (Exception e) {
-    			  // TODO Auto-generated catch block
-    			  e.printStackTrace();
+    			  // probably a parsing error
+    			  log.warn("Problem creating Entity: " + e.getMessage());
     		  }
     		  if(c !=null && !results.contains(c)) {
     			  results.add(c);
@@ -855,8 +944,8 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     		  try {
     			  c = new Characteristic(dbc.getType());
     		  } catch (Exception e) {
-    			  // TODO Auto-generated catch block
-    			  e.printStackTrace();
+    			  // probably a parsing error
+    			  log.warn("Problem creating Characteristic: " + e.getMessage());
     		  }
     		  if(c !=null && !results.contains(c)) {
     			  results.add(c);
@@ -931,8 +1020,8 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
     		  try {
     			  c = new Standard(dbm.getStandard());
     		  } catch (Exception e) {
-    			  // TODO Auto-generated catch block
-    			  e.printStackTrace();
+    			  // probably a parsing error
+    			  log.warn("Problem creating Standard: " + e.getMessage());
     		  }
     		  if(c !=null && !results.contains(c)) {
     			  results.add(c);
