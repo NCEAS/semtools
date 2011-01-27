@@ -1,0 +1,97 @@
+annotation: knb-lter-sbc.6
+This is the annotation that Ben mentioned in the notes to the call from Mon Jan 24.
+It should be updated to be more like the one labeled ocean_rosette_sampling.
+
+Description: each row in the data table will represent a group of measurements on 
+a parcel of water in the stream at the same time and place. Protocols differ, 
+and some sample-collection protocols are shared (e.g., all nutrients come from the 
+same bottle, all chn analyzer samples come from the same filter). It may be useful 
+to capture those groupings at some level (eg, for QC). These groupings would probably 
+not be used to aggregate values for analysis.  
+electronic measurements: by dipping an instrument in the water. 
+discrete measurements: using a water sampler (eg, bucket). 
+
+Annotated annotation!
+// water has to be an entity because many of the other observations will need it. 
+// some of the measurements are straightforward. scientific domains directly measure 
+// some characteristics of water, using the same name, although the protocol may vary. 
+// tip: if a measurement has the same name as its
+// characteristic then the entity will be the 'water'. So these are generally intuitive
+obs1 [E=water]
+	meas: [C=temperature U=celsius]
+	meas: [C=conductivity U=siemensPerLiter]
+	meas: [C=salinity U=praticalSalintyUnits]
+	meas: [c=pressure U=decibar]
+	context: obs2
+
+// you took measurements in a sample. It might be a physical sample (like a bottle) or 
+// an abstract sample (e.g., the area the instrument can sample). Even if the lat-log 
+// (station name) is the same, if you came back at a different time you would be sampling 
+// a different parcel. There are 2 samples here, an electronic sample and a bottle sample.
+obs2 [E=Sample]
+	meas: [C=Name, V=electronic-sample]
+	context obs3
+
+// you observed  the time when you took the sample
+obs3 [E=TemporalPoint]
+   	meas: [C=DateTime, V=Jan. 24, 10am, 30min, 10sec]
+	context: obs4
+
+// you observed the name of the place (or the lat-lon) where you took the sample
+// notice that "station" and "time" are arranged from bottom to top by how much they
+// vary. Station name varies the least, so is context for time, which varies more. Sample 
+// varies more that time, because it's possible to take multiple samples at the same time.
+obs4 [E=Station]
+  	meas: [C=Name, V=Station1]
+
+// you observed the concentration of something in the water, in this case, the nitrate 
+// dissolved "in the water" So now the observation of "water" (obs1) becomes the context 
+// for this observation. The measurement is of dissolved nitrate, and its entity is the 
+// substance. 
+obs5 [E=nitrate]
+	measurement: [C=amountOfSubstanceConcentration U=molesPerLiter]
+	context: obs1
+
+// same as for nitrate, but a different substance for the entity.
+obs6 [E=phosphate]
+	measurement: [C=amountOfSubstanceConcentration U=molesPerLiter]
+	context: obs1
+
+
+
+TO DO
+The sample used for context in of water? 
+obs5 and obs6 could have a different sample than the one that in obs2, because it is
+a bottle sample, and the measurements in obs1 are electronic samples.  But we want to imply 
+the same WATER. so is it this? but no observation has obs1a as its context now.
+
+
+obs1a [E=Sample]
+	meas: [C=Name, V=electronic-sample]
+	context obs2
+obs1b [E=Sample]
+	meas: [C=Name, V=bottle-sample]
+	context obs2
+
+obs2 [E=water]
+	meas: [C=temperature U=celsius]
+      meas: [C=conductivity U=siemensPerLiter]
+	meas: [C=salinity U=praticalSalintyUnits]
+	meas: [c=pressure U=decibar]
+	context: obs3
+
+obs3 [E=TemporalPoint]
+   	meas: [C=DateTime, V=Jan. 24, 10am, 30min, 10sec]
+	context: obs4
+
+obs4 [E=Station]
+  	meas: [C=Name, V=Station1]
+
+obs5 [E=nitrate]
+	measurement: [C=amountOfSubstanceConcentration U=molesPerLiter]
+	context: obs1b
+obs6 [E=phosphate]
+	measurement: [C=amountOfSubstanceConcentration U=molesPerLiter]
+	context: obs1b
+
+

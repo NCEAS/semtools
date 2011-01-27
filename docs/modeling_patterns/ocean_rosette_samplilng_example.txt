@@ -1,0 +1,59 @@
+annotation: knb-lter-sbc.10
+
+Description:
+data are from a "rosette" sampler, which has instruments coupled to discrete water samplers (rosette-bottle). Each row is id'd by a nominal station name, nominal depth and time. instruments also collect data on position as data. there is one "sample" for everything collected in the rosette-bottle. If 2 rosettes were fired at a depth, then there should be 2 rosette sample ids, and 2 sample-contexts.
+
+A few types of measurements may be missing still:
+optical: transmission, beam-c, atten, k, backscatter (obs1?, IOPs, but not AOPs?)
+optical: par, irradiance (like obs8? E is light, obs1 is context)
+
+obs1 [E=water]
+	meas: [C=temperature U=celsius P=inst-primary]
+	meas: [C=temperature U=celsius P=inst-secondary]
+       meas: [C=conductivity U=siemensPerLiter]
+	meas: [C=salinity U=praticalSalintyUnits]
+	meas: [c=pressure U=decibar]
+	meas: [C=depth U=meter P=ctd-sampling-protocol]
+	meas: [C=fluorescence U=volt]
+	context: obs3
+
+obs2 [E=Sample]
+	meas: [C=Name, V=sample1]
+	context obs1
+
+
+obs3 [E=TemporalPoint]
+   	meas: [C=DateTime, V=2011-01-24T10:30:10]
+	context: obs4a
+
+obs4 [E=Station]
+  	meas: [C=Name, V=Station1]
+
+obs4a [E=actual-location]
+	meas: [x] 
+	meas: [y]
+	meas: [z]
+	context: obs4
+
+obs5 [E=nitrate]
+	measurement: [C=amountOfSubstanceConcentration U=molesPerLiter P=protocol]
+	context: obs2
+	
+obs6 [E=phosphate]
+	measurement: [C=amountOfSubstanceConcentration U=molesPerLiter]
+	context: obs2
+
+obs7 [E=phytoplankton]
+	measurement: [C=number U=count]
+	context: obs2
+
+// example. use this if fluorescence has been converted to chl. it's not from a rosette bottle, so context is water, not sample. Also applies to oxygen (?) and NAS (nitrate auto sampler). Of course, O2 and nitrate can also be measured from sample.
+obs8 [E=chlorophyll]
+	measurement: [C=massDensity U=mg/L P=fluorometer]
+	context: obs1
+
+
+
+
+
+
