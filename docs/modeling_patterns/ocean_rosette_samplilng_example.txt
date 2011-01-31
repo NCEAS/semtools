@@ -1,4 +1,4 @@
-annotation: knb-lter-sbc.10
+annotation: mob_semtools.11 (in KNB: knb-lter-sbc.100
 
 Description:
 data are from a "rosette" sampler, which has instruments coupled to discrete water samplers (rosette-bottle). Each row is id'd by a nominal station name, nominal depth and time. instruments also collect data on position as data. there is one "sample" for everything collected in the rosette-bottle. If 2 rosettes were fired at a depth, then there should be 2 rosette sample ids, and 2 sample-contexts.

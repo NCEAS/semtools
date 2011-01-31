@@ -1,4 +1,5 @@
-annotation: knb-lter-sbc.6
+annotation: mobrien.50 (KNB: knb-lter-sbc.6)
+
 This is the annotation that Ben mentioned in the notes to the call from Mon Jan 24.
 It should be updated to be more like the one labeled ocean_rosette_sampling.
 
