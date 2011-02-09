@@ -6,7 +6,7 @@
 	
 	<!-- override the morpho property -->
    	<property name="morpho.args" value=".semtools"/>
-	<property name="release" value="1.10.0semtools"/>
+	<property name="release" value="1.10.0semtools2"/>
 	
    <!-- set global properties for this build -->
    <property name="src" location="src"/>
