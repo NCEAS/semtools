@@ -645,8 +645,10 @@ public class AnnotationPlugin
 			e.printStackTrace();
 		}
 		
-		MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
-		mds.setAccess(annotationId, accessXML);
+		if (accessXML != null) {
+			MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
+			mds.setAccess(annotationId, accessXML);
+		}
 		
 	}
 	
