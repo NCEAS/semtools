@@ -426,7 +426,7 @@ public class Annotation {
    public static Map<Class,OntologyClass> OBOE_CLASSES;
 
    public static String ANNOTATION_NS =
-      "http://ecoinformatics.org/sms/annotation.1.0";
+      "http://ecoinformatics.org/sms/annotation.1.0beta1";
 
    public static void main(String[] args) throws Exception {
       System.out.println("args[0] = " + args[0]);
