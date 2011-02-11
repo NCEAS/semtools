@@ -193,8 +193,9 @@ public class ContextPage extends AbstractUIPage {
 	public void handleSelectColumn() {
 		observation = null;
 		String attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
+		String dataObject = AnnotationPlugin.getCurrentSelectedEntity();
 		if (attributeName != null && annotation != null) {
-			Mapping mapping = annotation.getMapping(attributeName);
+			Mapping mapping = annotation.getMapping(attributeName, dataObject);
 			if (mapping != null) {
 				Measurement measurement = mapping.getMeasurement();
 				observation = annotation.getObservation(measurement);

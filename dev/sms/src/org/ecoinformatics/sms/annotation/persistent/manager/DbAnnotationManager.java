@@ -159,8 +159,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 		dbAnnotation = context.newObject(DbAnnotation.class);
 		dbAnnotation.setIdentifier(annotation.getURI());
 		dbAnnotation.setSource(source);
-		dbAnnotation.setEmlPackage(annotation.getEMLPackage());
-		dbAnnotation.setDataTable(annotation.getDataTable());
+		dbAnnotation.setDataPackage(annotation.getDataPackage());
 		// observations
 		for (Observation o: annotation.getObservations()) {
 			DbObservation dbObservation = context.newObject(DbObservation.class);
@@ -396,25 +395,22 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
    /**
     * Get the annotations matching the EML package and optionally the data table
     * Use null for datatable to include all annotations
-    * @param eml package id
+    * @param package id
     * @param the optional data table to match
     * @return the annotations
     */
-   public List<Annotation> getAnnotations(String emlPackage, String dataTable) {
+   public List<Annotation> getAnnotations(String dataPackage) {
 	   // get the working set first
-	   List<Annotation> results = super.getAnnotations(emlPackage, dataTable);
+	   List<Annotation> results = super.getAnnotations(dataPackage);
 	   
 	   ObjectContext context = getDataContext();
 	   
 		// look up the annotations
 		final Expression expression = 
 			Expression.fromString(
-					"emlPackage = $emlPackage and dataTable = $dataTable");
+					"dataPackage = $dataPackage");
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("emlPackage", emlPackage);
-		if (dataTable != null) {
-			params.put("dataTable", dataTable);
-		}
+		params.put("dataPackage", dataPackage);
 		SelectQuery query = new SelectQuery(DbAnnotation.class, expression.expWithParameters(params));
 		List<DbAnnotation> values = context.performQuery(query);
 		if (values != null) {

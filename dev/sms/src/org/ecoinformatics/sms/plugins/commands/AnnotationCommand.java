@@ -46,6 +46,7 @@ import edu.ucsb.nceas.morpho.util.UISettings;
 public class AnnotationCommand implements Command {
 	
 	private String attributeName;
+	private String dataObject;
 	private AnnotationPage annotationPage = null;
 	private Annotation annotation = null;
 
@@ -64,6 +65,8 @@ public class AnnotationCommand implements Command {
 
 		annotation = AnnotationPlugin.getCurrentActiveAnnotation();
 		attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
+		dataObject = AnnotationPlugin.getCurrentSelectedEntity();
+
 				
 		Log.debug(30, "Annotating...\n " 
 				+ "Attribute: " + attributeName
@@ -91,7 +94,7 @@ public class AnnotationCommand implements Command {
 		// set the annotation in the page
 		annotationPage = new AnnotationPage(true);
 		annotationPage.setAnnotation(annotation);
-		annotationPage.editAttribute(attributeName);
+		annotationPage.editAttribute(attributeName, dataObject);
 		
 		// show the dialog
 		ModalDialog dialog = 

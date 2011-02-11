@@ -47,6 +47,8 @@ public class AnnotationTableModel extends AttributiveCellTableModel {
 
 	private Annotation annotation;
 	
+	private String dataObject;
+	
 	private List<String> columnNames;
 	
 	private List<String> columnIds;
@@ -63,10 +65,11 @@ public class AnnotationTableModel extends AttributiveCellTableModel {
 	public static final int PROTOCOL_ROW = 4;
 
 	
-	public AnnotationTableModel(Annotation annotation, List<String> columns) {
+	public AnnotationTableModel(Annotation annotation, String dataObject, List<String> columns) {
 		super(columns.toArray(), ROW_COUNT);
 		this.annotation = annotation;
 		this.columnIds = columns;
+		this.dataObject = dataObject;
 	}
 	
 	public void setAnnotation(Annotation annotation) {
@@ -126,7 +129,7 @@ public class AnnotationTableModel extends AttributiveCellTableModel {
 		String column = columnIds.get(columnIndex);
 		
 		// look up in the annotation
-		Mapping mapping = annotation.getMapping(column);
+		Mapping mapping = annotation.getMapping(column, dataObject);
 		if (mapping != null) {
 			Measurement measurement = mapping.getMeasurement();
 			if (measurement != null) {

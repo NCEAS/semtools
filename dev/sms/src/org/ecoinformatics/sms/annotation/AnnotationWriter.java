@@ -67,10 +67,8 @@ public class AnnotationWriter {
     		  + " " + Annotation.ANNOTATION_NS + "/sms-semannot.xsd\"");
       if(a.getURI() != null)
           s.print(" id=\"" + a.getURI() + "\"");
-      if(a.getEMLPackage() != null)
-         s.print(" emlPackage=\"" + a.getEMLPackage() + "\"");
-      if(a.getDataTable() != null)
-         s.print(" dataTable=\"" + a.getDataTable() + "\"");
+      if(a.getDataPackage() != null)
+         s.print(" dataPackage=\"" + a.getDataPackage() + "\"");
       s.print(">\n");
       for(Observation o : a.getObservations())
          _writeObservation(o, s);
@@ -112,6 +110,8 @@ public class AnnotationWriter {
     */
    private static void _writeMapping(Mapping m, PrintStream s) {
       s.print(_indent1 + "<sms:map");
+      if(m.getDataObject() != null)
+          s.print(" dataObject=\"" + m.getDataObject() + "\"");
       if(m.getAttribute() != null)
          s.print(" attribute=\"" + m.getAttribute() + "\"");
       Measurement r = m.getMeasurement();

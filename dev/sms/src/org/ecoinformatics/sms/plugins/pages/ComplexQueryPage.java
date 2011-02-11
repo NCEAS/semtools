@@ -246,7 +246,7 @@ public class ComplexQueryPage extends AbstractUIPage {
 		// set the docids
 		docids.clear();
 		for (Annotation a: annotations) {
-			docids.add(a.getEMLPackage());
+			docids.add(a.getDataPackage());
 		}
 		
 	}

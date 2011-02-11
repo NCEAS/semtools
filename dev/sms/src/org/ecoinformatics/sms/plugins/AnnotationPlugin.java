@@ -1,16 +1,3 @@
-/**
- * A plugin that imports the design of a Microsoft Access Database.
- * A dataTable node is added for each table found in the database.
- * Imports tables, attributes, attribute descriptions, primary keys and
- * notNullable constraints.
- * 
- * The plugin does not yet import forien keys.
- * 
- * @author Michael Finch
- * @version 1.0
- *
- */
-
 package org.ecoinformatics.sms.plugins;
 
 import java.awt.BorderLayout;
@@ -349,7 +336,7 @@ public class AnnotationPlugin
 				Annotation annotation = Annotation.read(is);
 				// if we are filtering, skip any docs that don't match
 				if (forDocid != null) {
-					String docidFromAnnotation = annotation.getEMLPackage();
+					String docidFromAnnotation = annotation.getDataPackage();
 					if (!forDocid.equals(docidFromAnnotation)) {
 						// not what we are looking for
 						continue;
@@ -370,7 +357,7 @@ public class AnnotationPlugin
 	 */
 	private static void clearAnnotations(String forDocid) {
 		// remove the current existing annotations for EML
-		List<Annotation> existingAnnotations = SMS.getInstance().getAnnotationManager().getAnnotations(forDocid, null);
+		List<Annotation> existingAnnotations = SMS.getInstance().getAnnotationManager().getAnnotations(forDocid);
 		for (Annotation existingAnnotation: existingAnnotations) {
 			Log.debug(30, "removing annotation: " + existingAnnotation.getURI());
 			try {
@@ -425,7 +412,7 @@ public class AnnotationPlugin
 	    searchtext.append("<querytitle>Annotations</querytitle>\n");
 	    //Vector returnDoctypeList = config.get("returndoc");
 	    Vector<String> returnDoctypeList = new Vector<String>();
-	    returnDoctypeList.add("http://ecoinformatics.org/sms/annotation.0.9");
+	    returnDoctypeList.add(Annotation.ANNOTATION_NS);
 	    for (int i=0; i < returnDoctypeList.size(); i++) {
 	      searchtext.append("<returndoctype>");
 	      searchtext.append((String)returnDoctypeList.elementAt(i));
@@ -441,7 +428,7 @@ public class AnnotationPlugin
 	    searchtext.append("<querygroup operator=\"INTERSECT\">\n");
 		    searchtext.append("<queryterm casesensitive=\"true\" ");
 		    searchtext.append("searchmode=\"contains\">\n");
-			searchtext.append("<pathexpr>@emlPackage</pathexpr>\n");
+			searchtext.append("<pathexpr>@dataPackage</pathexpr>\n");
 		    if (forDocid != null) {
 			    searchtext.append("<value>" + forDocid + "</value>\n");
 		    } else {
@@ -460,8 +447,6 @@ public class AnnotationPlugin
 		searchtext.append("<pathquery version=\"1.0\">\n");
 		searchtext.append("<querytitle>Matching documents for Annotation query</querytitle>\n");
 		Vector<String> returnDoctypeList = config.get("returndoc");
-		//Vector<String> returnDoctypeList = new Vector<String>();
-		//returnDoctypeList.add("http://ecoinformatics.org/sms/annotation.0.9");
 		for (int i = 0; i < returnDoctypeList.size(); i++) {
 			searchtext.append("<returndoctype>");
 			searchtext.append(returnDoctypeList.elementAt(i));
@@ -482,7 +467,7 @@ public class AnnotationPlugin
 				searchtext.append("<queryterm casesensitive=\"true\" ");
 				searchtext.append("searchmode=\"contains\">\n");
 				searchtext.append("<value>");
-				searchtext.append(annotation.getEMLPackage());
+				searchtext.append(annotation.getDataPackage());
 				searchtext.append("</value>\n");
 				searchtext.append("<pathexpr>@packageId</pathexpr>\n");
 				searchtext.append("</queryterm>");
@@ -607,7 +592,7 @@ public class AnnotationPlugin
 		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
 		MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
 		
-		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId, null);
+		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId);
 		for (Annotation annotation: annotations) {
 			try {
 				String annotationId = annotation.getURI();
@@ -665,7 +650,7 @@ public class AnnotationPlugin
 		}
 		
 		// get the annotations for this datapackage
-		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId, null);		
+		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId);		
 		for (Annotation annotation: annotations) {	
 			String id = annotation.getURI();
 			String originalId = id;
@@ -801,6 +786,32 @@ public class AnnotationPlugin
 	}
 	
 	/**
+	 * Returns the currently selected data table
+	 * @return currently selected entity (index)
+	 */
+	public static String getCurrentSelectedEntity() {
+
+		String selectedEntity = null;
+
+		//now go on with the current selection
+		MorphoFrame morphoFrame = UIController.getInstance().getCurrentActiveWindow();
+		DataViewContainerPanel resultPane = null;
+		if (morphoFrame != null) {
+			resultPane = morphoFrame.getDataViewContainerPanel();
+		}
+
+		// make sure resultPanel is not null
+		if (resultPane != null) {
+			DataViewer dataView = resultPane.getCurrentDataViewer();
+			if (dataView != null) {
+				int entityIndex = dataView.getEntityIndex();
+				selectedEntity = String.valueOf(entityIndex);
+			}
+		}
+		return selectedEntity;
+	}
+	
+	/**
 	 * Consolidates the annotation retrieval code that has been used in
 	 * most of the annotation editing classes.
 	 * and returns the currently selected attribute
@@ -838,19 +849,17 @@ public class AnnotationPlugin
 				
 				// package and entity
 				String packageId = adp.getAccessionNumber();
-				String dataTable = String.valueOf(entityIndex);
 				
 				// look up the annotation if it exists, or make new one
 				List<Annotation> annotations = 
-					SMS.getInstance().getAnnotationManager().getAnnotations(packageId, dataTable);
+					SMS.getInstance().getAnnotationManager().getAnnotations(packageId);
 				Log.debug(30, "Annotations for doc: " + annotations.size());
 				if (annotations.size() > 0) {
 					annotation = annotations.get(0);
 				} else {
 					// create a new one
 					annotation = new Annotation();
-					annotation.setEMLPackage(packageId);
-					annotation.setDataTable(dataTable);
+					annotation.setDataPackage(packageId);
 				}
 				
 			}
@@ -917,7 +926,7 @@ public class AnnotationPlugin
 		}
 		
 		// get all the annotations for the original docid
-		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(oldId, null);
+		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(oldId);
 		for (Annotation annotation: annotations) {
 			if (duplicate) {
 				// prompt?
@@ -943,7 +952,7 @@ public class AnnotationPlugin
 					AccessionNumber an = new AccessionNumber(Morpho.thisStaticInstance);
 					String annotationId = an.getNextId();
 					// set the data package association and the id
-					annotationCopy.setEMLPackage(newId);
+					annotationCopy.setDataPackage(newId);
 					annotationCopy.setURI(annotationId);
 					// save the copy
 					saveAnnotation(annotationCopy);
@@ -956,7 +965,7 @@ public class AnnotationPlugin
 			}
 			else {
 				// set the updated packageId
-				annotation.setEMLPackage(newId);
+				annotation.setDataPackage(newId);
 				// save the annotation
 				saveAnnotation(annotation);
 				// serialize to disk
@@ -1061,7 +1070,7 @@ public class AnnotationPlugin
 					// package and entity
 					String packageId = adp.getAccessionNumber();
 					int entityIndex = dataViewer.getEntityIndex();
-					String dataTable = String.valueOf(entityIndex);
+					String dataObject = String.valueOf(entityIndex);
 					String location = adp.getLocation();
 					
 					// load annotations from the correct location
@@ -1070,15 +1079,14 @@ public class AnnotationPlugin
 					}
 					
 					// look up the annotation if it exists, or make new one
-					List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId, dataTable);
+					List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId);
 					Annotation annotation = null;
 					if (annotations.size() > 0) {
 						annotation = annotations.get(0);
 					} else {
 						// create a new one
 						annotation = new Annotation();
-						annotation.setEMLPackage(packageId);
-						annotation.setDataTable(dataTable);
+						annotation.setDataPackage(packageId);
 						// remember it
 						saveAnnotation(annotation);
 					}
@@ -1086,7 +1094,7 @@ public class AnnotationPlugin
 					// set up the table model
 					List<String> columns = adp.getAttributeNames(entityIndex);
 					
-					AnnotationTableModel annotationTableModel = new AnnotationTableModel(annotation, columns);
+					AnnotationTableModel annotationTableModel = new AnnotationTableModel(annotation, dataObject, columns);
 					AnnotationTablePanel annotationTablePanel = new AnnotationTablePanel(annotationTableModel);
 					StateChangeMonitor.getInstance().addStateChangeListener(ANNOTATION_CHANGE_EVENT, annotationTablePanel);
 

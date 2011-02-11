@@ -110,10 +110,9 @@ public interface AnnotationManager {
    /**
     * Get the annotations for a given EML package
     * @param the EML package id
-    * @param the [optional] dataTable to match
-    * @return annotations for the eml package
+    * @return annotations for the package
     */
-   public List<Annotation> getAnnotations(String emlPackage, String dataTable);
+   public List<Annotation> getAnnotations(String id);
 
    /**
     * Get all ontology classes used for a specific annotation

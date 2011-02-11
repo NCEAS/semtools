@@ -41,6 +41,22 @@ import java.util.ArrayList;
  */
 public class Mapping {
 
+	   /**
+	    * Set the data table identifier of this annotation
+	    * @param id the table id
+	    */
+	   public void setDataObject(String id) {
+	      _dataObject = id;
+	   }
+
+	   /**
+	    * Get the data table identifier of this annotation
+	    * @return id the table id
+	    */
+	   public String getDataObject() {
+	      return _dataObject;
+	   }
+	   
     /** 
      * Set the dataset attribute being mapped
      * @param attribute the mapped attribute
@@ -122,6 +138,7 @@ public class Mapping {
     	return str;
     }
 
+    private String _dataObject;
     private String _attribute;
     private Measurement _measurement;
     private String _value;

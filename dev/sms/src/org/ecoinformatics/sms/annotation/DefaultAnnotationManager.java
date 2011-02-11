@@ -184,20 +184,18 @@ public class DefaultAnnotationManager implements AnnotationManager {
    /**
     * Get the annotations matching the EML package and optionally the data table
     * Use null for datatable to include all annotations
-    * @param eml package id
+    * @param package id
     * @param the optional data table to match
     * @return the annotations
     */
-   public List<Annotation> getAnnotations(String emlPackage, String dataTable) {
+   public List<Annotation> getAnnotations(String dataPackage) {
       List<Annotation> results = new ArrayList<Annotation>();
       for(String id : _annotations.keySet()) {
          Annotation a = null;
          try {
             a = getAnnotation(id);
-            if (a.getEMLPackage().equals(emlPackage)) {
-            	if (dataTable == null || dataTable.equals(a.getDataTable())) {
-            		results.add(a);
-            	}
+            if (a.getDataPackage().equals(dataPackage)) {
+            	results.add(a);
             }
          }catch(Exception e) {
             e.printStackTrace();

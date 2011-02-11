@@ -81,6 +81,7 @@ public class AnnotationPage extends AbstractUIPage {
 	private SimpleAnnotationPanel simpleAnnotationPanel = null;
 	
 	private String currentAttributeName = null;
+	private String currentDataTable = null;
 	
 	private boolean showAll = true;
 	
@@ -263,8 +264,9 @@ public class AnnotationPage extends AbstractUIPage {
 	
 	}
 
-	public void editAttribute(String attributeName) {
+	public void editAttribute(String attributeName, String dataObject) {
 		this.currentAttributeName = attributeName;
+		this.currentDataTable = dataObject;
 		// initially the panel is not in edit mode
 		//this.setEnabled(currentAttributeName != null);
 		this.setEnabled(false);
@@ -285,7 +287,7 @@ public class AnnotationPage extends AbstractUIPage {
 			}
 
 			// is there a measurement mapping for the attribute?
-			currentMapping = annotation.getMapping(currentAttributeName);
+			currentMapping = annotation.getMapping(currentAttributeName, dataObject);
 			if (currentMapping == null) {
 				return;
 			}
@@ -519,6 +521,7 @@ public class AnnotationPage extends AbstractUIPage {
 			Log.debug(40, "Adding Mapping: " + currentMapping);
 		}
 		currentMapping.setAttribute(currentAttributeName);
+		currentMapping.setDataObject(currentDataTable);
 		currentMapping.setMeasurement(currentMeasurement);
 
 		return annotation;

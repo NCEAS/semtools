@@ -57,6 +57,7 @@ import edu.ucsb.nceas.morpho.util.UISettings;
 public class DirectAnnotationCommand implements Command {
 	
 	private String attributeName;
+	private String dataObject;
 	private OntologyClassSelectionPage ontologyPage = null;
 	private Annotation annotation = null;
 
@@ -108,6 +109,8 @@ public class DirectAnnotationCommand implements Command {
     	
     	annotation = AnnotationPlugin.getCurrentActiveAnnotation();
 		attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
+		dataObject = AnnotationPlugin.getCurrentSelectedEntity();
+
 				
 		Log.debug(30, "Directly Annotating...\n " 
 				+ "Attribute: " + attributeName
@@ -146,6 +149,7 @@ public class DirectAnnotationCommand implements Command {
 		if (currentMapping == null) {
 			currentMapping = new Mapping();
 			currentMapping.setAttribute(attributeName);
+			currentMapping.setDataObject(dataObject);
 			annotation.addMapping(currentMapping);
 		}
 		// most things rely on a measurement
@@ -223,7 +227,7 @@ public class DirectAnnotationCommand implements Command {
 	private boolean showDialog() {
 		
 		// what do we have set already?
-		currentMapping = annotation.getMapping(attributeName);
+		currentMapping = annotation.getMapping(attributeName, dataObject);
 
 		if (currentMapping != null) {
 			currentMeasurement = currentMapping.getMeasurement();

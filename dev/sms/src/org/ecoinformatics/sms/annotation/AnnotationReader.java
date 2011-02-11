@@ -98,7 +98,7 @@ public class AnnotationReader {
     */
    private void _parseAnnotation(Document doc) throws Exception {
       Element root = doc.getDocumentElement();
-      // parse emlPackage and dataTable
+      // parse dataPackage and dataObject
       _parseEMLResource(root);
       // parse the observations
       for(Element elem : _getElements(root, "observation"))
@@ -175,6 +175,11 @@ public class AnnotationReader {
          }
       Mapping m = new Mapping();
       _annotation.addMapping(m);
+      // get the dataObject index
+      Attr dt = _getAttribute(e, "dataObject");
+      if(dt == null)
+         _error("map element missing 'dataObject' attribute");
+      m.setDataObject(dt.getValue().trim());
       // get the attribute name
       Attr att1 = _getAttribute(e, "attribute");
       if(att1 == null)
@@ -202,20 +207,15 @@ public class AnnotationReader {
    }
 
    /**
-    * Parse the emlpackage and dataTable attribues
+    * Parse the dataPackage attributes
     * @param e the element
     */
    private void _parseEMLResource(Element e) throws Exception {
-      // get the emlPackage id
-      Attr att1 = _getAttribute(e, "emlPackage");
+      // get the dataPackage id
+      Attr att1 = _getAttribute(e, "dataPackage");
       if(att1 == null)
-         _error("annotation element missing 'emlPackage' attribute");
-      _annotation.setEMLPackage(att1.getValue().trim());
-      // get the dataTable index
-      Attr att2 = _getAttribute(e, "dataTable");
-      if(att2 == null)
-         _error("annotation element missing 'dataTable' attribute");
-      _annotation.setDataTable(att2.getValue().trim());
+         _error("annotation element missing 'dataPackage' attribute");
+      _annotation.setDataPackage(att1.getValue().trim());
       // get the annotation uri (optional)
       Attr att3 = _getAttribute(e, "id");
       if (att3 == null) {

@@ -138,6 +138,8 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 	private void showAnnotation() {
 		// refresh the annotation column view
 		String attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
+		String dataObject = AnnotationPlugin.getCurrentSelectedEntity();
+
 		// get the latest
 		annotation = AnnotationPlugin.getCurrentActiveAnnotation();
 		
@@ -150,7 +152,7 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 				if (annotation != null) {
 					Log.debug(40, "Showing Annotation: " + annotation.getURI());
 					annotationPage.setAnnotation(annotation);
-					annotationPage.editAttribute(attributeName);
+					annotationPage.editAttribute(attributeName, dataObject);
 				}
 			}
 		}

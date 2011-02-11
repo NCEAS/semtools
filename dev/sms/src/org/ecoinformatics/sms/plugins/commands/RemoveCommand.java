@@ -73,9 +73,11 @@ public class RemoveCommand implements Command {
 		
 		annotation = AnnotationPlugin.getCurrentActiveAnnotation();
 		String attributeName = AnnotationPlugin.getCurrentSelectedAttribute();
+		String dataObject = AnnotationPlugin.getCurrentSelectedEntity();
+
 
 		// get the annotation elements
-		Mapping mapping = annotation.getMapping(attributeName);
+		Mapping mapping = annotation.getMapping(attributeName, dataObject);
 		if (mapping == null) {
 			Log.debug(5, "No mapping exists for this column - cannot remove"); 
 			return;

@@ -344,8 +344,8 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			if (loggedIn) {
 				String[] docids = SessionService.getInstance().getRegisteredSession(sessionId).getDocumentCart().getDocids();
 				if (docids != null) {
-					for (String emlPackage: docids) {
-						List<Annotation> m = SMS.getInstance().getAnnotationManager().getAnnotations(emlPackage, null);
+					for (String dataPackage: docids) {
+						List<Annotation> m = SMS.getInstance().getAnnotationManager().getAnnotations(dataPackage);
 						matches.addAll(m);
 					}
 				}
@@ -386,7 +386,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			// look up annotation matches - for the data package ids
 			Vector<String> docids = new Vector<String>();
 			for (Annotation annotation: matches) {
-				String docid = annotation.getEMLPackage();
+				String docid = annotation.getDataPackage();
 				docid = docid.substring(0, docid.lastIndexOf("."));
 				// check permissions here
 				boolean readAccess = DocumentImpl.hasReadPermission(username, groups, docid);
@@ -640,7 +640,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		// TODO: handle multiple annotations per package
 		Map<String, Annotation> matchMap = new HashMap<String, Annotation>();
 		for (Annotation annotation: matches) {
-			matchMap.put(annotation.getEMLPackage(), annotation);
+			matchMap.put(annotation.getDataPackage(), annotation);
 		}
 		// read existing results into DOM
 		StringReader xmlReader = new StringReader(results.toString());

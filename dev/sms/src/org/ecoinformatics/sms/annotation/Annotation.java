@@ -119,32 +119,16 @@ public class Annotation {
     * Set the eml package identifier of this annotation
     * @param id the package id
     */
-   public void setEMLPackage(String id) {
-      _emlPackage = id;
+   public void setDataPackage(String id) {
+      _dataPackage = id;
    }
 
    /**
-    * Get the eml package identifier of this annotation
+    * Get the package identifier of this annotation
     * @return id the package id
     */
-   public String getEMLPackage() {
-      return _emlPackage;
-   }
-
-   /**
-    * Set the data table identifier of this annotation
-    * @param id the table id
-    */
-   public void setDataTable(String id) {
-      _dataTable = id;
-   }
-
-   /**
-    * Get the data table identifier of this annotation
-    * @return id the table id
-    */
-   public String getDataTable() {
-      return _dataTable;
+   public String getDataPackage() {
+      return _dataPackage;
    }
 
    /** 
@@ -299,10 +283,12 @@ public class Annotation {
     * Get the mapping for the given attribute
     * @return the mapping for the given attribute
     */
-   public Mapping getMapping(String attribute) {
+   public Mapping getMapping(String attribute, String dataObject) {
 	   for (Mapping mapping: _mappings) {
 		   if (mapping.getAttribute().equals(attribute)) {
-			   return mapping;
+			   if (mapping.getDataObject().equals(dataObject)) {
+				   return mapping;
+			   }
 		   }
 	   }
 	   return null;
@@ -429,8 +415,7 @@ public class Annotation {
    }
 
    private String _uri;
-   private String _emlPackage;
-   private String _dataTable;
+   private String _dataPackage;
    private List<Ontology> _ontologies = new ArrayList();
    private List<Observation> _observations = new ArrayList();
    private List<Mapping> _mappings = new ArrayList();
@@ -441,7 +426,7 @@ public class Annotation {
    public static Map<Class,OntologyClass> OBOE_CLASSES;
 
    public static String ANNOTATION_NS =
-      "http://ecoinformatics.org/sms/annotation.0.9";
+      "http://ecoinformatics.org/sms/annotation.1.0";
 
    public static void main(String[] args) throws Exception {
       System.out.println("args[0] = " + args[0]);

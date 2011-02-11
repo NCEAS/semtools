@@ -92,14 +92,13 @@ public class AnnotationSpecifier{
 		
 		int pos = outAnnotFileName.lastIndexOf("/");
 		if(pos<0)
-			m_annotation.setEMLPackage(outAnnotFileName);
+			m_annotation.setDataPackage(outAnnotFileName);
 		else
-			m_annotation.setEMLPackage(outAnnotFileName.substring(pos+1));
+			m_annotation.setDataPackage(outAnnotFileName.substring(pos+1));
 		Ontology o =new Ontology();
 		o.setPrefix(Constant.ANNOTATION_DEFAULT_RELATIONSHIP_URI);
 		o.setURI(null);
 		m_annotation.addOntology(o);
-		m_annotation.setDataTable("0");
 		
 		// Form mapping for each measurement	
 		setDefaultMapping();

@@ -61,16 +61,16 @@ public class AnnotationFactory {
 		// the id seeds
 		String scope = String.valueOf(System.currentTimeMillis());
 		int id = 1;
-		String dataTable = "0";
+		String dataObject = "0";
 		
 		// iterate
 		for (int i = 0; i < count; i++) {
 			Annotation annotation = new Annotation();
-			String emlPackageId = scope + "." + id++ + ".1";
+			String dataPackageId = scope + "." + id++ + ".1";
 			String uri = scope + "." + id++ + ".1";
-			annotation.setEMLPackage(emlPackageId);
+			annotation.setDataPackage(dataPackageId);
 			annotation.setURI(uri);
-			annotation.setDataTable(dataTable);
+			
 	
 			// loop attributes - one observation per column
 			// TODO: randomize the grouping of multiple measurements in single observation
@@ -157,6 +157,7 @@ public class AnnotationFactory {
 				Mapping mapping = new Mapping();
 				mapping.setMeasurement(measurement);
 				mapping.setAttribute(attribute);
+				mapping.setDataObject(dataObject);
 				
 				annotation.addMapping(mapping);				
 				annotation.addObservation(o);
@@ -191,7 +192,7 @@ public class AnnotationFactory {
 		for (Annotation annotation: annotations) {
 			
 			// EML 
-			docid = annotation.getEMLPackage();
+			docid = annotation.getDataPackage();
 			// the title
 			StringBuffer title = new StringBuffer("Data Package for: ");
 			title.append(annotation.getObservations().get(0).getEntity().getName());
