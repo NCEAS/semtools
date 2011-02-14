@@ -3,16 +3,19 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	   targetNamespace="http://ecoinformatics.org/sms/annotation.1.0beta1"
 	   xmlns="http://ecoinformatics.org/sms/annotation.1.0beta1"
+	   xmlns:party="eml://ecoinformatics.org/party-2.1.1"
+	   xmlns:res="eml://ecoinformatics.org/resource-2.1.1"
 	   elementFormDefault="qualified">
-
+<xs:import namespace="eml://ecoinformatics.org/party-2.1.1" schemaLocation="https://code.ecoinformatics.org/code/eml/tags/RELEASE_EML_2_1_1_RC_2/eml-party.xsd"/>
+<xs:import namespace="eml://ecoinformatics.org/resource-2.1.1" schemaLocation="https://code.ecoinformatics.org/code/eml/tags/RELEASE_EML_2_1_1_RC_2/eml-resource.xsd"/>
 
   <!-- annotations -->
   <xs:complexType name="AnnotationType">
-    <xs:sequence minOccurs="0" maxOccurs="unbounded">
-      <xs:choice>
-	<xs:element name="observation" type="ObservationType"/>
-	<xs:element name="map" type="MapType"/>
-      </xs:choice>
+    <xs:sequence minOccurs="0">
+		<xs:element name="observation" type="ObservationType" maxOccurs="unbounded"/>
+		<xs:element name="map" type="MapType" minOccurs="0" maxOccurs="unbounded"/>
+		<xs:element name="creator" type="party:ResponsibleParty" minOccurs="0"/>
+		<xs:element name="createDate" type="res:yearDate" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="required"/>
     <xs:attribute name="dataPackage" type="xs:string" use="required"/>
@@ -24,10 +27,10 @@
     <xs:sequence>
       <xs:element name="entity" type="EntityType" minOccurs="0" maxOccurs="1"/>
       <xs:sequence minOccurs="0" maxOccurs="unbounded">
-	<xs:choice>
-	  <xs:element name="measurement" type="MeasurementType"/>
-	  <xs:element name="context" type="ContextType"/>
-	</xs:choice>
+		<xs:choice>
+		  <xs:element name="measurement" type="MeasurementType"/>
+		  <xs:element name="context" type="ContextType"/>
+		</xs:choice>
       </xs:sequence>
     </xs:sequence>
     <xs:attribute name="label" type="xs:ID" use="optional"/>
