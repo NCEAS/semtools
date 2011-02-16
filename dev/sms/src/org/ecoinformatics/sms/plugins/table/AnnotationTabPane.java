@@ -46,6 +46,8 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 	private ContextPage contextPage;
 	
 	private Component annotationGraph;
+	
+	private AnnotationTablePanel annotationTablePanel;
 
 	
 	public AnnotationTabPane(Annotation a, int tabPlacement) {
@@ -58,7 +60,7 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 		    // This method is called whenever the selected tab changes
 		    public void stateChanged(ChangeEvent e) {
 		    	initHandling();
-		        handleSelectTab();
+		    	showAnnotation();
 		    }
 		});
 	}
@@ -109,7 +111,7 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 		initHandling();
 		
 		if (event.getChangedState().equals(StateChangeEvent.SELECT_DATATABLE_COLUMN)) {
-			handleSelectColumn();
+			showAnnotation();
 		}
 		if (event.getChangedState().equals(AnnotationPlugin.ANNOTATION_CHANGE_EVENT)) {
 			showAnnotation();
@@ -122,17 +124,8 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 			annotationPage = (AnnotationPage) getComponentAt(TAB_NAMES.indexOf(COLUMN_ANNOTATION));
 			contextPage = (ContextPage) getComponentAt(TAB_NAMES.indexOf(CONTEXT_ANNOTATION));
 			annotationGraph = getComponentAt(TAB_NAMES.indexOf(GRAPH_ANNOTATION));
+			annotationTablePanel = (AnnotationTablePanel) getComponentAt(TAB_NAMES.indexOf(FULL_ANNOTATION));
 		}
-	}
-	
-	private void handleSelectColumn() {
-		// show the annotation
-		showAnnotation();
-	}
-	
-	private void handleSelectTab() {
-		// show the latest state in the tabs
-		showAnnotation();
 	}
 	
 	private void showAnnotation() {
@@ -162,6 +155,13 @@ public class AnnotationTabPane extends JTabbedPane implements StateChangeListene
 			if (contextPage != null) {
 				contextPage.setAnnotation(annotation);
 				contextPage.handleSelectColumn();
+			}
+		}
+		
+		// the table view
+		if (getSelectedIndex() == TAB_NAMES.indexOf(FULL_ANNOTATION)) {
+			if (annotationTablePanel != null) {
+				annotationTablePanel.refreshTable();
 			}
 		}
 		

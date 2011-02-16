@@ -1096,7 +1096,6 @@ public class AnnotationPlugin
 					
 					AnnotationTableModel annotationTableModel = new AnnotationTableModel(annotation, dataObject, columns);
 					AnnotationTablePanel annotationTablePanel = new AnnotationTablePanel(annotationTableModel);
-					StateChangeMonitor.getInstance().addStateChangeListener(ANNOTATION_CHANGE_EVENT, annotationTablePanel);
 
 					// swap in the dataviewer's column headers...pretty nifty
 					TableColumnModel columnModel = dataViewer.getDataTable().getColumnModel();

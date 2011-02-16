@@ -67,7 +67,7 @@ import edu.ucsb.nceas.morpho.util.StateChangeMonitor;
  * @author leinfelder
  *
  */
-public class AnnotationTablePanel extends JPanel implements StateChangeListener  {
+public class AnnotationTablePanel extends JPanel {
 
 	public static final Dimension rowHeaderDim = new Dimension(100, 17);
 	private AnnotationTable annotationTable;
@@ -148,43 +148,33 @@ public class AnnotationTablePanel extends JPanel implements StateChangeListener 
 		
 	}
 
-	public void handleStateChange(StateChangeEvent event) {
-		//check that this is an even or our frame
-		MorphoFrame thisAncestor = GUIAction.getMorphoFrameAncestor(this);
-		if (!GUIAction.isLocalEvent(event, thisAncestor)) {
-			return;
+	public void refreshTable() {
+		
+		AnnotationTableModel model = (AnnotationTableModel) annotationTable.getModel();
+		
+		//get the latest annotation
+		Annotation annotation = AnnotationPlugin.getCurrentActiveAnnotation();
+		model.setAnnotation(annotation);
+		
+		// remember the current selection state
+		int viewIndex = annotationTable.getSelectedColumn();
+		
+		model.fireTableRowsUpdated(0, model.getRowCount());
+		model.fireTableStructureChanged();
+		
+		JList rowheaders = new JList(model.getRowHeaders());
+		rowheaders.setCellRenderer(new RowHeaderRenderer());
+		annotationScrollPane.setRowHeaderView(rowheaders);
+		
+		annotationTable.reset();
+		
+		if (annotationTable.isReordered()) {
+			annotationTable.reorder(true);
 		}
 		
-		if (event.getChangedState().equals(AnnotationPlugin.ANNOTATION_CHANGE_EVENT)) {
-			AnnotationTableModel model = (AnnotationTableModel) annotationTable.getModel();
-			
-			//get the latest annotation
-			Annotation annotation = AnnotationPlugin.getCurrentActiveAnnotation();
-			model.setAnnotation(annotation);
-			
-			// remember the current selection state
-			int viewIndex = annotationTable.getSelectedColumn();
-			int modelIndex = -1;
-			if (viewIndex >= 0) {
-				modelIndex = annotationTable.getColumnModel().getColumn(viewIndex).getModelIndex();
-			}
-			
-			model.fireTableRowsUpdated(0, model.getRowCount());
-			model.fireTableStructureChanged();
-			
-			JList rowheaders = new JList(model.getRowHeaders());
-			rowheaders.setCellRenderer(new RowHeaderRenderer());
-			annotationScrollPane.setRowHeaderView(rowheaders);
-			
-			annotationTable.reset();
-			
-			if (annotationTable.isReordered()) {
-				annotationTable.reorder(true);
-			}
-			
-			// set the original selection index
-			annotationTable.setColumnSelectionInterval(viewIndex, viewIndex);
-		}
+		// set the original selection index
+		annotationTable.setColumnSelectionInterval(viewIndex, viewIndex);
+		
 	
 	}
 
