@@ -153,8 +153,10 @@
         <xs:simpleContent>
             <xs:extension base="xs:string">
                 <xs:attribute name="operator" type="query:OperatorType" 
-                    use="required"/>
+                    use="optional"/>
                 <xs:attribute name="concept" type="xs:string" 
+                    use="required"/>
+                <xs:attribute name="type" type="xs:string" 
                     use="required"/>
             </xs:extension>
         </xs:simpleContent>

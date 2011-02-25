@@ -11,9 +11,10 @@ public class Criteria  {
 
 	public static final String ISNOT = "is not";
 
-	private Class subject;
+	private Class type;
+	private OntologyClass subject;
 	private String condition;
-	private OntologyClass value;
+	private Object value;
 	
 	private boolean context = false;
 	private Triple contextTriple;
@@ -24,11 +25,11 @@ public class Criteria  {
 
 	private List<Criteria> subCriteria;
 	
-	public Class getSubject() {
-		return subject;
+	public Class getType() {
+		return type;
 	}
-	public void setSubject(Class subject) {
-		this.subject = subject;
+	public void setType(Class type) {
+		this.type = type;
 	}
 	public String getCondition() {
 		return condition;
@@ -36,13 +37,19 @@ public class Criteria  {
 	public void setCondition(String condition) {
 		this.condition = condition;
 	}
-	public OntologyClass getValue() {
-		return value;
+	public OntologyClass getSubject() {
+		return subject;
 	}
-	public void setValue(OntologyClass value) {
-		this.value = value;
+	public void setSubject(OntologyClass c) {
+		this.subject = c;
 	}
 	
+	public Object getValue() {
+		return value;
+	}
+	public void setValue(Object value) {
+		this.value = value;
+	}
 	public boolean isGroup() {
 		return group;
 	}
@@ -101,7 +108,7 @@ public class Criteria  {
 			sb.append(")");
 		} else {
 			sb.append("(");
-			sb.append(subject + " " + condition + " " + value);
+			sb.append(type + "=" + subject + ":" + condition + " " + value);
 			sb.append(")");
 		}
 		return sb.toString(); 

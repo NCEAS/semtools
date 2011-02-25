@@ -1058,25 +1058,25 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 				}
 			} else {
 				// what criteria were given?
-				Class subject = criteria.getSubject();
-				OntologyClass value = criteria.getValue();
+				Class type = criteria.getType();
+				OntologyClass value = criteria.getSubject();
 				if (value == null) {
 					return null;
 				}
-				if (subject != null && subject.equals(Entity.class)) {
+				if (type != null && type.equals(Entity.class)) {
 					entities.add(value);
 				}
-				if (subject != null && subject.equals(Characteristic.class)) {
+				if (type != null && type.equals(Characteristic.class)) {
 					characteristics.add(value);
 				}
-				if (subject != null && subject.equals(Standard.class)) {
+				if (type != null && type.equals(Standard.class)) {
 					standards.add(value);
 				}
-				if (subject != null && subject.equals(Protocol.class)) {
+				if (type != null && type.equals(Protocol.class)) {
 					protocols.add(value);
 				}
 				// expand the measurement template if given
-				if (subject != null && subject.equals(Measurement.class)) {
+				if (type != null && type.equals(Measurement.class)) {
 					List<OntologyClass> classes = null;
 					// entity
 					classes = Measurement.lookupRestrictionClasses(value, Entity.class);

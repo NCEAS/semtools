@@ -205,9 +205,9 @@ public class CriteriaReader {
 	   Element c = conditions.get(2);
 	   
 	   Triple contextTriple = new Triple();
-	   contextTriple.a = new OntologyClass(a.getTextContent());
-	   contextTriple.b = new OntologyClass(b.getTextContent());
-	   contextTriple.c = new OntologyClass(c.getTextContent());
+	   contextTriple.a = new OntologyClass(_getAttribute(a, "concept").getValue());
+	   contextTriple.b = new OntologyClass(_getAttribute(b, "concept").getValue());
+	   contextTriple.c = new OntologyClass(_getAttribute(c, "concept").getValue());
 
 	   criteria.setContextTriple(contextTriple);
 	   return criteria;
@@ -222,21 +222,27 @@ public class CriteriaReader {
       Criteria criteria = new Criteria();
       criteria.setGroup(false);
       
-      // subject
-      Attr concept = _getAttribute(e, "concept");
-      OntologyClass conceptClass = new OntologyClass(concept.getValue());
+      // type of concept
+      Attr typeAttr = _getAttribute(e, "type");
+      OntologyClass typeClass = new OntologyClass(typeAttr.getValue());
       // look up this mapping
-      Class subject = Annotation.getClassFromOntologyClass(conceptClass);
-      criteria.setSubject(subject);
-
+      Class type = Annotation.getClassFromOntologyClass(typeClass);
+      criteria.setType(type);
+      
+      // the concept
+      Attr conceptAttr = _getAttribute(e, "concept");
+      OntologyClass conceptClass = new OntologyClass(conceptAttr.getValue());
+      criteria.setSubject(conceptClass);
+      
       // condition
-      Attr operator = _getAttribute(e, "operator");
-      criteria.setCondition(operator.getValue());
+      Attr operatorAttr = _getAttribute(e, "operator");
+      if (operatorAttr != null) {
+    	  criteria.setCondition(operatorAttr.getValue());
+      }
       
       // value
       String value = e.getTextContent();
-      OntologyClass valueClass = new OntologyClass(value);
-      criteria.setValue(valueClass);
+      criteria.setValue(value);
       
       return criteria;
    }

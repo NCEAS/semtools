@@ -161,10 +161,10 @@ public class CriteriaPanel extends JPanel {
 		// find the Java class we want for the selected OntologyClass - it is the key in the map
 		OntologyClass selectedSubject = (OntologyClass) subject.getSelectedItem();
 		Class selectedClass = Annotation.getClassFromOntologyClass(selectedSubject);
-		criteria.setSubject(selectedClass);
+		criteria.setType(selectedClass);
 		
 		criteria.setCondition((String) condition.getSelectedItem());
-		criteria.setValue(value.getOntologyClass());
+		criteria.setSubject(value.getOntologyClass());
 		//criteria.setAll(anyAll.isSelected());
 		
 		return criteria;
@@ -178,13 +178,13 @@ public class CriteriaPanel extends JPanel {
 		this.criteria = criteria;
 		
 		// set the values in the UI
-		if (criteria.getSubject() != null) {
-			subject.setSelectedItem(Annotation.OBOE_CLASSES.get(criteria.getSubject()));
+		if (criteria.getType() != null) {
+			subject.setSelectedItem(Annotation.OBOE_CLASSES.get(criteria.getType()));
 		}
 		if (criteria.getCondition() != null) {
 			condition.setSelectedItem(criteria.getCondition());
 		}
-		this.value.setOntologyClass(criteria.getValue());
+		this.value.setOntologyClass(criteria.getSubject());
 		
 		// are there subcriteria to show?
 		if (criteria.isGroup()) {

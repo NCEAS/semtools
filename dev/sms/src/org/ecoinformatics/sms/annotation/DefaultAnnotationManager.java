@@ -757,29 +757,29 @@ public class DefaultAnnotationManager implements AnnotationManager {
 				}
 			} else {
 				// what criteria was given?
-				Class subject = criteria.getSubject();
-				OntologyClass value = criteria.getValue();
+				Class type = criteria.getType();
+				OntologyClass value = criteria.getSubject();
 				if (value == null) {
 					return 0;
 				}
-				if (subject != null && subject.equals(Entity.class)) {
+				if (type != null && type.equals(Entity.class)) {
 					entities.add(value);
 					return hasMatchingEntity(a, entities);
 				}
-				if (subject != null && subject.equals(Characteristic.class)) {
+				if (type != null && type.equals(Characteristic.class)) {
 					characteristics.add(value);
 					return hasMatchingCharacteristic(a, characteristics);
 				}
-				if (subject != null && subject.equals(Standard.class)) {
+				if (type != null && type.equals(Standard.class)) {
 					standards.add(value);
 					return hasMatchingStandard(a, standards);
 				}
-				if (subject != null && subject.equals(Protocol.class)) {
+				if (type != null && type.equals(Protocol.class)) {
 					protocols.add(value);
 					return hasMatchingProtocol(a, protocols);
 				}
 				// expand the measurement template if given
-				if (subject != null && subject.equals(Measurement.class)) {
+				if (type != null && type.equals(Measurement.class)) {
 					List<OntologyClass> classes = null;
 					// entity
 					classes = Measurement.lookupRestrictionClasses(value, Entity.class);

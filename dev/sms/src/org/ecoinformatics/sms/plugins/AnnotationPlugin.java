@@ -537,8 +537,8 @@ public class AnnotationPlugin
 			// expand terms with subclasses
 			List<OntologyClass> subclasses = 
 				SMS.getInstance().getOntologyManager().getNamedSubclasses(
-						criteria.getValue(), true);
-			subclasses.add(criteria.getValue());
+						criteria.getSubject(), true);
+			subclasses.add(criteria.getSubject());
 			// place in a group so that they are always a union for the single criteria class given
 			searchtext.append("<querygroup operator=\"UNION\">\n");
 			for (OntologyClass oc: subclasses) {
