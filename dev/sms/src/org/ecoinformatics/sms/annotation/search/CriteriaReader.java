@@ -47,6 +47,7 @@ import org.xml.sax.InputSource;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 
+import org.ecoinformatics.datamanager.database.ConditionInterface;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.AnnotationException;
 import org.ecoinformatics.sms.annotation.Triple;
@@ -54,6 +55,37 @@ import org.ecoinformatics.sms.ontology.OntologyClass;
 
 public class CriteriaReader {
 
+	
+	public static String convertOperator(String words) {
+			String symbol = null;
+			if (words.equals("EQUALS")) {
+				symbol = ConditionInterface.EQUAL_OPERATOR;
+			}
+			if (words.equals("NOT EQUALS")) {
+				symbol = ConditionInterface.NOT_EQUAL_OPERATOR;
+			}
+			if (words.equals("GREATER THAN OR EQUALS")) {
+				symbol = ConditionInterface.GREATER_THANOR_EQUALS_OPERATOR;
+			}
+			if (words.equals("GREATER THAN")) {
+				symbol = ConditionInterface.GREATER_THAN_OPERATOR;
+			}
+			if (words.equals("LESS THAN OR EQUALS")) {
+				symbol = ConditionInterface.LESS_THAN_OR_EQUALS_OPERATOR;
+			}
+			if (words.equals("LESS THAN")) {
+				symbol = ConditionInterface.LESS_THAN_OPERATOR;
+			}
+			if (words.equals("LIKE")) {
+				symbol = ConditionInterface.LIKE_OPERATOR;
+			}
+			if (words.equals("NOT LIKE")) {
+				symbol = ConditionInterface.NOT_LIKE_OPERATOR;
+			}
+			
+			return symbol;
+	}
+	
    /**
     * Read in a new annotation from an input stream
     * @param in the input stream
@@ -237,7 +269,8 @@ public class CriteriaReader {
       // condition
       Attr operatorAttr = _getAttribute(e, "operator");
       if (operatorAttr != null) {
-    	  criteria.setCondition(operatorAttr.getValue());
+    	  String symbol = CriteriaReader.convertOperator(operatorAttr.getValue());
+    	  criteria.setCondition(symbol);
       }
       
       // value
