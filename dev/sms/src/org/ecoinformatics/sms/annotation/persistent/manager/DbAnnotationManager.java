@@ -1101,7 +1101,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 				}
 			}
 			// now construct the expression from the given class lists
-			String operator = criteria.getCondition();
+			String operator = Criteria.IS;
 
 			// generate the expression for this single criteria (that may include multiple aspects)
 			expression = 
