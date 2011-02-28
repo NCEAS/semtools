@@ -2,7 +2,11 @@ package org.ecoinformatics.sms.annotation.search.data;
 
 import java.io.InputStream;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
+import org.apache.cayenne.exp.Expression;
 import org.ecoinformatics.datamanager.DataManager;
 import org.ecoinformatics.datamanager.database.Condition;
 import org.ecoinformatics.datamanager.database.DatabaseConnectionPoolInterface;
@@ -17,19 +21,36 @@ import org.ecoinformatics.datamanager.parser.DataPackage;
 import org.ecoinformatics.datamanager.parser.Entity;
 import org.ecoinformatics.datamanager.util.DocumentDownloadUtil;
 import org.ecoinformatics.sms.annotation.Annotation;
+import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Measurement;
+import org.ecoinformatics.sms.annotation.Protocol;
+import org.ecoinformatics.sms.annotation.Standard;
+import org.ecoinformatics.sms.annotation.Triple;
+import org.ecoinformatics.sms.annotation.search.Criteria;
+import org.ecoinformatics.sms.ontology.OntologyClass;
 
 public class Materializer {
 
 	private DataManager dataManager;
 	
-	private ConfigurableEcogridEndPoint endPoint = new ConfigurableEcogridEndPoint();
+	private ConfigurableEcogridEndPoint endPoint = null;
 
-	public Materializer() {
+	private static Materializer instance = null;
+	
+	private Materializer() {
 		DatabaseConnectionPoolInterface connectionPool = 
 			DatabaseConnectionPoolFactory.getDatabaseConnectionPoolInterface();
 		String dbAdapterName = connectionPool.getDBAdapterName();
+		endPoint = new ConfigurableEcogridEndPoint();
+		endPoint.setSessionId("usePublic");
 		dataManager = DataManager.getInstance(connectionPool, dbAdapterName);
+	}
+	
+	public static Materializer getInstance() {
+		if (instance == null) {
+			instance = new Materializer();
+		}
+		return instance;
 	}
 
 	public boolean checkData(Annotation annotation, Measurement measurement, String operator, Object value) throws Exception {
@@ -72,6 +93,13 @@ public class Materializer {
 			TableItem tableItem = new TableItem(entity);
 			query.addTableItem(tableItem);
 			/* WHERE clause with condition */
+			// type the value correctly
+			try {
+				value = Double.parseDouble(value.toString());
+			} catch (Exception e) {
+				// not a double
+			}
+			
 			Condition condition = 
 				new Condition(entity, attribute, operator, value);
 			WhereClause whereClause = new WhereClause(condition);
@@ -99,24 +127,93 @@ public class Materializer {
 		// were there any data rows for our criteria?
 		return (rows > 0);
 	}
+	
+	public List<Annotation> filterDataMatches(List<Annotation> annotations, Criteria criteria) {
+		
+		// add matches to the list
+		List<Annotation> matches = new ArrayList<Annotation>(annotations);
+		
+		if (!criteria.isGroup() && !criteria.isContext()) {
+								
+				// what criteria were given?
+				Class type = criteria.getType();
+				OntologyClass subject = criteria.getSubject();
+				String operator = criteria.getCondition();
+				Object value = criteria.getValue();
+				
+				// find the Characteristic we are filtering data values for
+				List<OntologyClass> characteristics = new ArrayList<OntologyClass>();
+				
+				if (type != null && type.equals(Characteristic.class)) {
+					characteristics.add(subject);
+				}
+				// expand the measurement template if given
+				if (type != null && type.equals(Measurement.class)) {
+					List<OntologyClass> classes = null;
+					// characteristic
+					classes = Measurement.lookupRestrictionClasses(subject, Characteristic.class);
+					if (classes != null) {
+						characteristics.addAll(classes);
+					}
+				}
+				
+				// if there's nothing to compare, then we are done
+				if (characteristics.isEmpty() || value == null) {
+					return matches;
+				}	
+				
+				// look for each possible Measurement match to compare data
+				for (Annotation annotation: annotations) {
+					int dataMatchCount = 0;
+					List<Measurement> measurements = annotation.getMeasurements(characteristics);
+					for (Measurement measurement: measurements) {
+						boolean dataMatch = false;
+						try {
+							dataMatch = checkData(annotation, measurement, operator, value);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						if (dataMatch) {
+							dataMatchCount++;
+						}
+					}
+					// HACKALERT, TODO: not true SQL-like conditions on data (i.e. ranges) 
+					// if the data matched, then add the annotation to the result
+					if (dataMatchCount < 1) {
+						matches.remove(annotation);
+					}
+				}
+		   }
+		   else {
+			   // iterate through the subcriteria
+			   if (criteria.getSubCriteria() != null) {
+				   Iterator<Criteria> iter = criteria.getSubCriteria().iterator();
+				   while (iter.hasNext()) {
+					   Criteria subcriteria = iter.next();
+					   matches = filterDataMatches(matches, subcriteria);
+				   }
+			   }
+		   }
+		
+		
+		return matches;
+	}
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		try {
-			Materializer materializer = new Materializer();
 			
 			// get the annotation and measurement to check
 			String annotationId = "benriver.278.3";
 			DocumentDownloadUtil ddu = new DocumentDownloadUtil();
-			materializer.endPoint.setSessionId("usePublic");
-			InputStream annotationInputStream = ddu.downloadDocument(annotationId, materializer.endPoint);
+			InputStream annotationInputStream = ddu.downloadDocument(annotationId, Materializer.getInstance().endPoint);
 			Annotation annotation = Annotation.read(annotationInputStream);
 			Measurement measurement = annotation.getMeasurement("m1");
 			
 			// check for values matching condition
-			materializer.checkData(annotation, measurement, ">", 35);
+			Materializer.getInstance().checkData(annotation, measurement, ">", 35);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
