@@ -29,6 +29,7 @@ import org.ecoinformatics.sms.annotation.Protocol;
 import org.ecoinformatics.sms.annotation.Standard;
 import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.annotation.search.CriteriaReader;
+import org.ecoinformatics.sms.annotation.search.data.Materializer;
 import org.ecoinformatics.sms.ontology.Ontology;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 import org.ecoinformatics.sms.ontology.bioportal.OntologyBean;
@@ -371,6 +372,10 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			
 			List<Annotation> matches = SMS.getInstance().getAnnotationManager().getMatchingAnnotations(criteria);
 			
+			// do the data filtering
+			matches = Materializer.getInstance().filterDataMatches(matches, criteria);
+			
+			// handle the matches for this query
 			handleAnnotationMatches(params, request, response, username, groups, sessionId, matches);
 			
 		} catch (Exception e) {
