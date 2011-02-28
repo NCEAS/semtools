@@ -236,6 +236,30 @@ public class Annotation {
    }
    
    /**
+    * Get the measurement[s] with the given Characteristic[s]
+    * 
+    * TODO: inefficient,
+    * @param characteristic
+    * @return
+    */
+   public List<Measurement> getMeasurements(List<OntologyClass> characteristics)
+   {
+	   List<Measurement> results = new ArrayList<Measurement>();
+	   for (Observation o: _observations) {
+		   List<Measurement> measurements = o.getMeasurements(); 
+		   for (Measurement m: measurements) {
+			   List<Characteristic> measurementCharacteristis = m.getCharacteristics();
+			   for (Characteristic c: measurementCharacteristis) {
+				   if (characteristics.contains(c)) {
+					   results.add(m);
+				   }
+			   }
+		   }
+	   }
+	   return results;	   
+   }
+   
+   /**
     * Get the entity type with the given label
     * 
     * TODO: inefficient, need to discuss with Ben
