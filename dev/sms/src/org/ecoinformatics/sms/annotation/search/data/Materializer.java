@@ -158,7 +158,7 @@ public class Materializer {
 				}
 				
 				// if there's nothing to compare, then we are done
-				if (characteristics.isEmpty() || value == null) {
+				if (characteristics.isEmpty() || value == null || operator == null) {
 					return matches;
 				}	
 				
