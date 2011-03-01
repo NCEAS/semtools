@@ -6,7 +6,7 @@
 	
 	<!-- override the morpho property -->
    	<property name="morpho.args" value=".semtools"/>
-	<property name="release" value="1.10.0semtools2"/>
+	<property name="release" value="1.10.0semtools3"/>
 	
    <!-- set global properties for this build -->
    <property name="src" location="src"/>
@@ -192,7 +192,9 @@
 			<fileset dir="./lib" includes="*.jar"/>	      	
 		</copy>
 		<!-- TODO: metacat.properties to include the plugin -->
-		
+		<copy todir="${metacat.dir}/build/war/WEB-INF/classes">
+			<fileset dir="${emldir}/src" includes="*.properties" excludes="log4j.properties"/>	      	
+		</copy>
 		
 		<echo message="Continuing Metacat build"></echo>
 		<ant dir="${metacat.dir}" target="install" inheritall="false"/>
