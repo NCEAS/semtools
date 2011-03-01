@@ -61,9 +61,11 @@ public class Materializer {
 		String attributeName = measurement.getMapping().getAttribute();
 
 		// First create the DataPackage object that will be used in the query.
+		// TODO: get the metadata directly from metacat store?
 		DocumentDownloadUtil ddu = new DocumentDownloadUtil();
 		InputStream inputStream = ddu.downloadDocument(dataPackageId, endPoint);
 		DataPackage dataPackage = dataManager.parseMetadata(inputStream);
+		// do this conditionally instead of every time?
 		boolean success = dataManager.loadDataToDB(dataPackage, endPoint);
 		Entity entity = dataPackage.getEntityList()[dataObjectIndex];
 		Attribute[] attributes = entity.getAttributeList().getAttributes();
@@ -118,7 +120,8 @@ public class Materializer {
 					resultSet.close();
 				}
 				// clean up
-				dataManager.dropTables(dataPackage);
+				// keep it cached for performance
+				//dataManager.dropTables(dataPackage);
 			}
 		}
 		
