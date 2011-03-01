@@ -338,7 +338,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		try {
 
 			// annotation matches - may be empty after processing
-			List<Annotation> matches = new ArrayList<Annotation>();
+			Map<Annotation, String> matches = new HashMap<Annotation, String>();
 
 			// get the packages in the cart if the user is logged in
 			boolean loggedIn = AuthUtil.isUserLoggedIn(request);
@@ -347,7 +347,9 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 				if (docids != null) {
 					for (String dataPackage: docids) {
 						List<Annotation> m = SMS.getInstance().getAnnotationManager().getAnnotations(dataPackage);
-						matches.addAll(m);
+						for (Annotation a: m) {
+							matches.put(a, null);
+						}
 					}
 				}
 			}
@@ -373,10 +375,14 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			List<Annotation> matches = SMS.getInstance().getAnnotationManager().getMatchingAnnotations(criteria);
 			
 			// do the data filtering
-			matches = Materializer.getInstance().filterDataMatches(matches, criteria);
+			Map<Annotation, String> matchesMap = new HashMap<Annotation, String>();
+			for (Annotation a: matches) {
+				matchesMap.put(a, null);
+			}
+			matchesMap = Materializer.getInstance().filterDataMatches(matchesMap, criteria);
 			
 			// handle the matches for this query
-			handleAnnotationMatches(params, request, response, username, groups, sessionId, matches);
+			handleAnnotationMatches(params, request, response, username, groups, sessionId, matchesMap);
 			
 		} catch (Exception e) {
 			throw new HandlerException(e.getMessage());
@@ -385,12 +391,12 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 	
 	private void handleAnnotationMatches(Hashtable<String, String[]> params, HttpServletRequest request,
 			HttpServletResponse response, String username, String[] groups,
-			String sessionId, List<Annotation> matches) throws HandlerException {
+			String sessionId, Map<Annotation, String> matches) throws HandlerException {
 		try {
 			
 			// look up annotation matches - for the data package ids
 			Vector<String> docids = new Vector<String>();
-			for (Annotation annotation: matches) {
+			for (Annotation annotation: matches.keySet()) {
 				String docid = annotation.getDataPackage();
 				docid = docid.substring(0, docid.lastIndexOf("."));
 				// check permissions here
@@ -639,12 +645,12 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		return sb.toString();
 	}
 
-	private String augmentQuery(List<Annotation> matches, StringBuffer results) throws Exception {
+	private String augmentQuery(Map<Annotation, String> matches, StringBuffer results) throws Exception {
 		
 		//make a map for the annotation matches - easy to reference when augmenting the search results with annotation info
 		// TODO: handle multiple annotations per package
 		Map<String, Annotation> matchMap = new HashMap<String, Annotation>();
-		for (Annotation annotation: matches) {
+		for (Annotation annotation: matches.keySet()) {
 			matchMap.put(annotation.getDataPackage(), annotation);
 		}
 		// read existing results into DOM
@@ -669,6 +675,15 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 				Node annotationNode = XMLUtilities.getXMLReaderAsDOMTreeRootNode(annotatationStringReader);
 				Node importedAnnnotationNode = document.importNode(annotationNode, true);
 				documentNode.appendChild(importedAnnnotationNode);
+				
+				// add the data to the search results
+				String data = matches.get(annotation);
+				if (data != null) {
+					StringReader dataStringReader = new StringReader("<data><![CDATA[" + data + "]]></data>");
+					Node dataNode = XMLUtilities.getXMLReaderAsDOMTreeRootNode(dataStringReader);
+					Node importedDataNode = document.importNode(dataNode, true);
+					documentNode.appendChild(importedDataNode);
+				}
 			}
 		}
 		

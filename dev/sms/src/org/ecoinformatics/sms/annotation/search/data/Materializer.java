@@ -1,10 +1,13 @@
 package org.ecoinformatics.sms.annotation.search.data;
 
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.ecoinformatics.datamanager.DataManager;
 import org.ecoinformatics.datamanager.database.Condition;
@@ -19,13 +22,14 @@ import org.ecoinformatics.datamanager.parser.Attribute;
 import org.ecoinformatics.datamanager.parser.DataPackage;
 import org.ecoinformatics.datamanager.parser.Entity;
 import org.ecoinformatics.datamanager.util.DocumentDownloadUtil;
-import org.ecoinformatics.sms.OntologyManager;
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.ontology.OntologyClass;
+
+import au.com.bytecode.opencsv.CSVWriter;
 
 public class Materializer {
 
@@ -51,7 +55,17 @@ public class Materializer {
 		return instance;
 	}
 
-	public boolean checkData(Annotation annotation, Measurement measurement, String operator, Object value) throws Exception {
+	/**
+	 * Retrieves tabular data that matches the given condition for the Annotation/Measurement provided
+	 * The results are in CSV format or null if no records/data is found to match the condition
+	 * @param annotation
+	 * @param measurement
+	 * @param operator
+	 * @param value
+	 * @return
+	 * @throws Exception
+	 */
+	public String selectData(Annotation annotation, Measurement measurement, String operator, Object value) throws Exception {
 		
 		String dataPackageId = annotation.getDataPackage();
 		
@@ -70,25 +84,35 @@ public class Materializer {
 		Entity entity = dataPackage.getEntityList()[dataObjectIndex];
 		Attribute[] attributes = entity.getAttributeList().getAttributes();
 		// find the index of the attribute based on name (id is not required)
+		List<Attribute> annotatedAttributes = new ArrayList<Attribute>();
 		int attributeIndex = 0;
+		int i = 0;
 		for (Attribute a: attributes) {
+			// the one we are using for the condition?
 			if (a.getName().equals(attributeName)) {
-				break;
+				attributeIndex = i;
 			}
-			attributeIndex++;
+			// otherwise annotated?
+			if (annotation.getMapping(a.getName(), dataObject) != null) {
+				annotatedAttributes.add(a);
+			}
+			i++;
 		}
 		Attribute attribute = attributes[attributeIndex];
-		
+				
 		ResultSet resultSet = null;
-		int rows = 0;
+		String contents = null;
+		boolean hasRows = false;
 		
 		//Now build a query, execute it, and see what we got
 		if (success && dataPackage != null) {
 			DataPackage[] dataPackages = {dataPackage};
 			Query query = new Query();
 			/* SELECT clause */
-			SelectionItem selectionItem = new SelectionItem(entity, attribute);
-			query.addSelectionItem(selectionItem);
+			for (Attribute a: annotatedAttributes) {
+				SelectionItem selectionItem = new SelectionItem(entity, a);
+				query.addSelectionItem(selectionItem);
+			}	
 			/* FROM clause */
 			TableItem tableItem = new TableItem(entity);
 			query.addTableItem(tableItem);
@@ -109,10 +133,20 @@ public class Materializer {
 			try {
 				resultSet = dataManager.selectData(query, dataPackages);
 				if (resultSet != null) {
-					while (resultSet.next()) {
-						Object val = resultSet.getObject(1);
-						System.out.println("resultSet[" + rows + "], value =  " + val);
-						rows++;
+					StringWriter sw = new StringWriter();
+					CSVWriter csvwriter = new CSVWriter(sw);
+					csvwriter.writeAll(resultSet, true);
+					contents = sw.toString();
+					System.out.println(contents);
+					try {
+						hasRows = resultSet.last();
+					} catch (Exception e) {
+						// another way to determine if there are rows
+						hasRows = contents.split(CSVWriter.DEFAULT_LINE_END).length > 1;
+					}
+					// if no rows, return nothing
+					if (!hasRows) {
+						contents = null;
 					}
 				}
 			} finally {
@@ -125,14 +159,22 @@ public class Materializer {
 			}
 		}
 		
-		// were there any data rows for our criteria?
-		return (rows > 0);
+		return contents;
 	}
 	
-	public List<Annotation> filterDataMatches(List<Annotation> annotations, Criteria criteria) {
+	/**
+	 * Filters the Annotations to only include those that match the given [data] criteria.
+	 * Annotations that do match will have [CSV] data as the value in the returned map.
+	 * @see selectData() for more information on the returned data
+	 * @param annotations
+	 * @param criteria
+	 * @return
+	 */
+	public Map<Annotation, String> filterDataMatches(Map<Annotation, String> annotations, Criteria criteria) {
 		
 		// add matches to the list
-		List<Annotation> matches = new ArrayList<Annotation>(annotations);
+		Map<Annotation, String> matches = new HashMap<Annotation, String>(annotations);
+		
 		
 		if (!criteria.isGroup() && !criteria.isContext()) {
 								
@@ -167,23 +209,28 @@ public class Materializer {
 				}	
 				
 				// look for each possible Measurement match to compare data
-				for (Annotation annotation: annotations) {
+				for (Annotation annotation: annotations.keySet()) {
 					int dataMatchCount = 0;
 					List<Measurement> measurements = annotation.getMeasurements(characteristics);
+					StringBuffer annotationData = new StringBuffer();
 					for (Measurement measurement: measurements) {
-						boolean dataMatch = false;
+						String dataContent = null;
 						try {
-							dataMatch = checkData(annotation, measurement, operator, value);
+							dataContent = selectData(annotation, measurement, operator, value);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						if (dataMatch) {
+						if (dataContent != null) {
+							annotationData.append(dataContent);
 							dataMatchCount++;
 						}
 					}
-					// HACKALERT, TODO: not true SQL-like conditions on data (i.e. ranges) 
-					// if the data matched, then add the annotation to the result
-					if (dataMatchCount < 1) {
+					
+					// set the data content for the annotation
+					if (dataMatchCount > 0) {
+						matches.put(annotation, annotationData.toString());
+					} else {
+						// if the data did not match, remove the entry
 						matches.remove(annotation);
 					}
 				}
@@ -217,7 +264,7 @@ public class Materializer {
 			Measurement measurement = annotation.getMeasurement("m1");
 			
 			// check for values matching condition
-			Materializer.getInstance().checkData(annotation, measurement, ">", 35);
+			Materializer.getInstance().selectData(annotation, measurement, ">", 35);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
