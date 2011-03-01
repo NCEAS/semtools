@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.cayenne.exp.Expression;
 import org.ecoinformatics.datamanager.DataManager;
 import org.ecoinformatics.datamanager.database.Condition;
 import org.ecoinformatics.datamanager.database.DatabaseConnectionPoolInterface;
@@ -20,12 +19,11 @@ import org.ecoinformatics.datamanager.parser.Attribute;
 import org.ecoinformatics.datamanager.parser.DataPackage;
 import org.ecoinformatics.datamanager.parser.Entity;
 import org.ecoinformatics.datamanager.util.DocumentDownloadUtil;
+import org.ecoinformatics.sms.OntologyManager;
+import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
 import org.ecoinformatics.sms.annotation.Measurement;
-import org.ecoinformatics.sms.annotation.Protocol;
-import org.ecoinformatics.sms.annotation.Standard;
-import org.ecoinformatics.sms.annotation.Triple;
 import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 
@@ -146,6 +144,9 @@ public class Materializer {
 				
 				if (type != null && type.equals(Characteristic.class)) {
 					characteristics.add(subject);
+					// add subclasses
+					List<OntologyClass> subclasses = SMS.getInstance().getOntologyManager().getNamedSubclasses(subject, true);
+					characteristics.addAll(subclasses);
 				}
 				// expand the measurement template if given
 				if (type != null && type.equals(Measurement.class)) {
