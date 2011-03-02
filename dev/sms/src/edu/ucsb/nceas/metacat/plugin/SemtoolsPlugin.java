@@ -379,7 +379,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			for (Annotation a: matches) {
 				matchesMap.put(a, null);
 			}
-			matchesMap = Materializer.getInstance().filterDataMatches(matchesMap, criteria);
+			matchesMap = Materializer.getInstance(Materializer.METACAT_CONFIGURATION).filterDataMatches(matchesMap, criteria);
 			
 			// handle the matches for this query
 			handleAnnotationMatches(params, request, response, username, groups, sessionId, matchesMap);

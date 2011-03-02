@@ -18,6 +18,7 @@ import org.ecoinformatics.datamanager.database.TableItem;
 import org.ecoinformatics.datamanager.database.WhereClause;
 import org.ecoinformatics.datamanager.database.pooling.DatabaseConnectionPoolFactory;
 import org.ecoinformatics.datamanager.download.ConfigurableEcogridEndPoint;
+import org.ecoinformatics.datamanager.download.EcogridEndPointInterface;
 import org.ecoinformatics.datamanager.parser.Attribute;
 import org.ecoinformatics.datamanager.parser.DataPackage;
 import org.ecoinformatics.datamanager.parser.Entity;
@@ -29,32 +30,53 @@ import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.ontology.OntologyClass;
 
+import edu.ucsb.nceas.metacat.dataquery.MetacatDatabaseConnectionPoolFactory;
+import edu.ucsb.nceas.metacat.dataquery.MetacatEcogridEndPoint;
+
 import au.com.bytecode.opencsv.CSVWriter;
 
 public class Materializer {
 
+	public static int LOCAL_CONFIGURATION = 0;
+	
+	public static int METACAT_CONFIGURATION = 1;
+
 	private DataManager dataManager;
 	
-	private ConfigurableEcogridEndPoint endPoint = null;
-
-	private static Materializer instance = null;
+	private EcogridEndPointInterface endPoint = null;
 	
-	private Materializer() {
-		DatabaseConnectionPoolInterface connectionPool = 
-			DatabaseConnectionPoolFactory.getDatabaseConnectionPoolInterface();
+	private Materializer(DatabaseConnectionPoolInterface connectionPool, EcogridEndPointInterface endPoint) {
+		
+		this.endPoint = endPoint;
 		String dbAdapterName = connectionPool.getDBAdapterName();
-		endPoint = new ConfigurableEcogridEndPoint();
-		endPoint.setSessionId("usePublic");
 		dataManager = DataManager.getInstance(connectionPool, dbAdapterName);
 	}
 	
-	public static Materializer getInstance() {
-		if (instance == null) {
-			instance = new Materializer();
-		}
-		return instance;
+	public static Materializer getInstance(DatabaseConnectionPoolInterface connectionPool, EcogridEndPointInterface endPoint) {
+		return new Materializer(connectionPool, endPoint);
 	}
-
+	
+	public static Materializer getInstance(int configuration) {
+		DatabaseConnectionPoolInterface connectionPool = null;
+		EcogridEndPointInterface endPoint = null;
+		
+		switch (configuration) {
+		case 0:
+			connectionPool = 
+				DatabaseConnectionPoolFactory.getDatabaseConnectionPoolInterface();
+			endPoint = new ConfigurableEcogridEndPoint();
+			((ConfigurableEcogridEndPoint)endPoint).setSessionId("usePublic");
+			break;
+		case 1:
+			connectionPool = MetacatDatabaseConnectionPoolFactory.getDatabaseConnectionPoolInterface();
+			endPoint = new MetacatEcogridEndPoint();
+			break;			
+		default:
+			return null;
+		}
+		return new Materializer(connectionPool, endPoint);
+	}
+	
 	/**
 	 * Retrieves tabular data that matches the given condition for the Annotation/Measurement provided
 	 * The results are in CSV format or null if no records/data is found to match the condition
@@ -155,7 +177,7 @@ public class Materializer {
 				}
 				// clean up
 				// keep it cached for performance
-				//dataManager.dropTables(dataPackage);
+				dataManager.dropTables(dataPackage);
 			}
 		}
 		
@@ -256,19 +278,21 @@ public class Materializer {
 	public static void main(String[] args) {
 		try {
 			
+			ConfigurableEcogridEndPoint endPoint = new ConfigurableEcogridEndPoint();
+			endPoint.setSessionId("usePublic");
+			
 			// get the annotation and measurement to check
-			String annotationId = "benriver.278.3";
+			String annotationId = "benriver.269.6";
 			DocumentDownloadUtil ddu = new DocumentDownloadUtil();
-			InputStream annotationInputStream = ddu.downloadDocument(annotationId, Materializer.getInstance().endPoint);
+			InputStream annotationInputStream = ddu.downloadDocument(annotationId, endPoint);
 			Annotation annotation = Annotation.read(annotationInputStream);
-			Measurement measurement = annotation.getMeasurement("m1");
+			Measurement measurement = annotation.getMeasurement("m4");
 			
 			// check for values matching condition
-			Materializer.getInstance().selectData(annotation, measurement, ">", 35);
+			Materializer.getInstance(LOCAL_CONFIGURATION).selectData(annotation, measurement, "=", 9.4);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
-
 }
