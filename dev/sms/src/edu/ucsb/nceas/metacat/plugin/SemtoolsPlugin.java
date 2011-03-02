@@ -79,11 +79,20 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		initializeAnnotations();
 	}
 	
+	private static void clearAnnotations() throws Exception {
+		for (String annotationId: SMS.getInstance().getAnnotationManager().getAnnotationIds()) {
+			SMS.getInstance().getAnnotationManager().removeAnnotation(annotationId);
+		}
+	}
+	
 	/**
 	 * Look up annotations stored on this Metacat instance
 	 */
 	private static void initializeAnnotations() {
 		try {
+			// clear the existing annotations
+			clearAnnotations();
+			// load them again
 			String metacatURL = SystemUtil.getServletURL();
 			Metacat mc = MetacatFactory.createMetacatConnection(metacatURL);
 			DBUtil dbutil = new DBUtil();
