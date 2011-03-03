@@ -177,7 +177,7 @@ public class Materializer {
 				}
 				// clean up
 				// keep it cached for performance
-				dataManager.dropTables(dataPackage);
+				//dataManager.dropTables(dataPackage);
 			}
 		}
 		
