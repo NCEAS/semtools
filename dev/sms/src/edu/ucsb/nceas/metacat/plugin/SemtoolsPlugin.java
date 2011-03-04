@@ -364,7 +364,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			}
 			
 			// process matches if we have them
-			handleAnnotationMatches(params, request, response, username, groups, sessionId, matches);
+			handleAnnotationMatches(params, request, response, username, groups, sessionId, matches, null);
 			
 		} catch (Exception e) {
 			throw new HandlerException(e.getMessage());
@@ -388,10 +388,10 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 			for (Annotation a: matches) {
 				matchesMap.put(a, null);
 			}
-			matchesMap = Materializer.getInstance(Materializer.METACAT_CONFIGURATION).filterDataMatches(matchesMap, criteria);
+			String allData = Materializer.getInstance(Materializer.METACAT_CONFIGURATION).filterDataMatches(matchesMap, criteria);
 			
 			// handle the matches for this query
-			handleAnnotationMatches(params, request, response, username, groups, sessionId, matchesMap);
+			handleAnnotationMatches(params, request, response, username, groups, sessionId, matchesMap, allData);
 			
 		} catch (Exception e) {
 			throw new HandlerException(e.getMessage());
@@ -400,7 +400,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 	
 	private void handleAnnotationMatches(Hashtable<String, String[]> params, HttpServletRequest request,
 			HttpServletResponse response, String username, String[] groups,
-			String sessionId, Map<Annotation, String> matches) throws HandlerException {
+			String sessionId, Map<Annotation, String> matches, String allData) throws HandlerException {
 		try {
 			
 			// look up annotation matches - for the data package ids
@@ -450,7 +450,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 	        		true);
 	        
 	        // augment the results with annotation information
-	        String modifiedResults = augmentQuery(matches, results);
+	        String modifiedResults = augmentQuery(matches, allData, results);
 	        
 	        // style the results
 	        Writer out = null;
@@ -654,7 +654,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		return sb.toString();
 	}
 
-	private String augmentQuery(Map<Annotation, String> matches, StringBuffer results) throws Exception {
+	private String augmentQuery(Map<Annotation, String> matches, String allData, StringBuffer results) throws Exception {
 		
 		//make a map for the annotation matches - easy to reference when augmenting the search results with annotation info
 		// TODO: handle multiple annotations per package
@@ -693,6 +693,13 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 					Node importedDataNode = document.importNode(dataNode, true);
 					documentNode.appendChild(importedDataNode);
 				}
+			}
+			if (allData != null) {
+				Node resultsNode = XMLUtilities.getNodeWithXPath(document.getDocumentElement(), "//resultset");
+				StringReader dataStringReader = new StringReader("<data><![CDATA[" + allData + "]]></data>");
+				Node dataNode = XMLUtilities.getXMLReaderAsDOMTreeRootNode(dataStringReader);
+				Node importedDataNode = document.importNode(dataNode, true);
+				resultsNode.appendChild(importedDataNode);
 			}
 		}
 		
