@@ -29,6 +29,7 @@ import org.ecoinformatics.datamanager.util.DocumentDownloadUtil;
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
+import org.ecoinformatics.sms.annotation.Mapping;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.search.Criteria;
 import org.ecoinformatics.sms.ontology.OntologyClass;
@@ -90,7 +91,7 @@ public class Materializer {
 	 * @return
 	 * @throws Exception
 	 */
-	public String selectData(Annotation annotation, List<OntologyClass> characteristics, String operator, Object value) throws Exception {
+	private String selectData(Annotation annotation, List<OntologyClass> characteristics, String operator, Object value) throws Exception {
 		
 		String dataPackageId = annotation.getDataPackage();
 		
@@ -272,7 +273,12 @@ public class Materializer {
 				}
 				// integrate what we can for this set of matches
 				List<Annotation> a = new ArrayList<Annotation>(annotations.keySet());
-				data = unionData(a, characteristics, operator, value);
+				try {
+					data = unionData(a, characteristics, operator, value);
+				} catch (Exception e) {
+					// this is bad, but not the end of the world
+					e.printStackTrace();
+				}
 				
 			}
 		}
@@ -290,7 +296,7 @@ public class Materializer {
 	 * @return
 	 * @throws Exception
 	 */
-	public String unionData(
+	private String unionData(
 			List<Annotation> annotations, 
 			List<OntologyClass> characteristics, 
 			String operator, 
@@ -302,6 +308,8 @@ public class Materializer {
 		
 		List<DataPackage> dataPackages = new ArrayList<DataPackage>();
 		Union union = new Union();
+		
+		List<OntologyClass> commonCharacteristics = getCommonCharacteristics(annotations);
 		
 		for (Annotation annotation: annotations) {
 			String dataPackageId = annotation.getDataPackage();
@@ -333,13 +341,23 @@ public class Materializer {
 				if (a.getName().equals(attributeName)) {
 					attributeIndex = i;
 				}
-				// otherwise annotated?
-				if (annotation.getMapping(a.getName(), dataObject) != null) {
-					annotatedAttributes.add(a);
-				}
 				i++;
 			}
 			Attribute attribute = attributes[attributeIndex];
+			
+			// build the commonly annotated attributes
+			for (OntologyClass cc: commonCharacteristics) {
+				List<Measurement> commonMeasurements = annotation.getMeasurements(Arrays.asList(cc));
+				for (Measurement cm: commonMeasurements) {
+					String commonAttributeName = cm.getMapping().getAttribute();
+					for (Attribute a: attributes) {
+						// the one we are using for the condition?
+						if (a.getName().equals(commonAttributeName)) {
+							annotatedAttributes.add(a);
+						}
+					}
+				}
+			}
 			
 			//Now build a query, execute it, and see what we got
 			if (success && dataPackage != null) {
@@ -349,9 +367,11 @@ public class Materializer {
 				// add an item for what datapackage it came from
 				SelectionItem staticItem = new StaticSelectionItem("dataPacakgeId", dataPackageId);
 				query.addSelectionItem(staticItem);
-				// select the attribute that has the condition applied - we know this is shared
-				SelectionItem selectionItem = new SelectionItem(entity, attribute);
-				query.addSelectionItem(selectionItem);
+				// select the common attributes
+				for (Attribute a: annotatedAttributes) {
+					SelectionItem selectionItem = new SelectionItem(entity, a);
+					query.addSelectionItem(selectionItem);
+				}
 				
 				/* FROM clause */
 				TableItem tableItem = new TableItem(entity);
@@ -401,6 +421,59 @@ public class Materializer {
 		return contents;
 	}
 
+	private List<OntologyClass> getCommonCharacteristics(List<Annotation> annotations) {
+		
+		List<OntologyClass> commonCharacteristics = new ArrayList<OntologyClass>();
+
+		// gather every mapped characteristic in the annotations
+		List<OntologyClass> characteristics = new ArrayList<OntologyClass>();
+		for (Annotation annotation: annotations) {
+			List<Mapping> mappings = annotation.getMappings();
+			for (Mapping mapping: mappings) {
+				characteristics.addAll(mapping.getMeasurement().getCharacteristics());				
+			}
+		}
+		
+		// for each characteristic, check that it exists in every annotation
+		for (OntologyClass characteristic: characteristics) {
+			int charCount = 0;
+			for (Annotation annotation: annotations) {
+				boolean containsCharacteristic = false;
+				List<Mapping> mappings = annotation.getMappings();
+				for (Mapping mapping: mappings) {
+					containsCharacteristic = containsCharacteristic || mapping.getMeasurement().getCharacteristics().contains(characteristic);
+					if (containsCharacteristic) {
+						break;
+					} 
+//					else {
+//						// check subclasses
+//						List<OntologyClass> subclasses = SMS.getInstance().getOntologyManager().getNamedSubclasses(characteristic, true);
+//						for (OntologyClass subChar: subclasses) {
+//							containsCharacteristic = mapping.getMeasurement().getCharacteristics().contains(subChar);
+//							if (containsCharacteristic) {
+//								charCount++;
+//								break;
+//							}
+//						}
+//					}
+				}	
+				if (containsCharacteristic) {
+					charCount++;
+				}
+			}
+			// we found it in every annotation
+			if (charCount == annotations.size()) {
+				if (!commonCharacteristics.contains(characteristic)) {
+					commonCharacteristics.add(characteristic);
+				}
+			}
+		}
+		
+		// now we know what characteristics are common across the entire list of Annotations
+		return commonCharacteristics;
+
+	}
+	
 	/**
 	 * @param args
 	 */
