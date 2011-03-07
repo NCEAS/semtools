@@ -21,30 +21,30 @@
 				/>	
 			<condition 
 				type="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Characteristic"  
-				concept="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#Wet_Mass" 
+				concept="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#Wet_Mass" 
 				operator="GREATER THAN OR EQUALS">5</condition>
 			<condition
 				type="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Characteristic"  
-				concept="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#Wet_Mass" 
+				concept="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#Wet_Mass" 
 				operator="LESS THAN OR EQUALS">10</condition>
 		</AND>
 		
 		<!-- Entity = Kelp -->
 		<condition 
 			type="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Entity" 
-			concept="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#Kelp"
+			concept="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#Kelp"
 			/>		
 		<!-- Context: Kelp Within Transect-->
 		<context> 
 			<condition 
 				type="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Entity"
-				concept="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#Kelp" />
+				concept="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#Kelp" />
 			<condition 
 				type="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Relationship"
-				concept="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#Within" />
+				concept="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#Within" />
 			<condition 
 				type="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Entity"
-				concept="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl#Transect" />		
+				concept="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#Transect" />		
 		</context>
 			
 	</AND>
