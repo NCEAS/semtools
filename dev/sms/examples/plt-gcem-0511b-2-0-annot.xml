@@ -3,7 +3,7 @@
    xmlns:sms="http://ecoinformatics.org/sms/annotation.0.9"
    xmlns:oboe="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl"
    xmlns:unit="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl"
-   xmlns:gce="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl"
+   xmlns:gce="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/gce/oboe-gce.owl"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="http://ecoinformatics.org/sms/annotation.0.9 sms-semannot.xsd"
    id="sms.1.1" emlPackage="eml.7.1"

@@ -12,7 +12,7 @@ public class Test2 {
    public static void main(String[] args) {
       try {
 
-//         String gceURI = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-gce.owl";
+//         String gceURI = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/gce/oboe-gce.owl";
 //         String oboeURI = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe.owl";
 //         String unitURI = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-unit.owl";
          String gceURI = "http://linus.nceas.ucsb.edu/sms/metacat/oboegce.3";
