@@ -17,7 +17,7 @@
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-    <owl:Ontology rdf:about="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/sbc.1.0/oboe-sbc.owl">
+    <owl:Ontology rdf:about="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/sbc.1.0/oboe-sbc.owl">
     	<rdfs:label
             >OBOE SBC Domain Extension 1.0</rdfs:label>
         <owl:versionInfo>Version 1.0</owl:versionInfo>
@@ -45,9 +45,9 @@
     
 
 
-    <!-- https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/sbc.1.0/oboe-sbc.owl#ChildOfKelp -->
+    <!-- https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/sbc.1.0/oboe-sbc.owl#ChildOfKelp -->
 
-    <owl:Class rdf:about="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/sbc.1.0/oboe-sbc.owl#ChildOfKelp">
+    <owl:Class rdf:about="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/sbc.1.0/oboe-sbc.owl#ChildOfKelp">
         <rdfs:subClassOf rdf:resource="&oboe-sbc;Kelp"/>
     </owl:Class>
 </rdf:RDF>
