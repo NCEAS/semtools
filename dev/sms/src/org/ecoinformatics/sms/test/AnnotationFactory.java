@@ -28,7 +28,7 @@ public class AnnotationFactory {
 	private static String METACAT_URL = "http://localhost:8080/knb/metacat";
 	private static String METACAT_USERNAME = "uid=kepler,o=unaffiliated,dc=ecoinformatics,dc=org";
 	private static String METACAT_PASSWORD = "kepler";
-	private static String DEFAULT_ONTOLOGY = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe/oboe-sbc.owl";
+	private static String DEFAULT_ONTOLOGY = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl";
 	
 	private static AnnotationFactory instance;
 	
