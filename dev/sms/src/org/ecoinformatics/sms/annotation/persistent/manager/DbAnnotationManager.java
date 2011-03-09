@@ -1303,7 +1303,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 	 	   ObjectContext context = ((DbAnnotationManager)annotationManager).getDataContext();
 	 	   
 	 	   //test
-	 	   DbCharacteristic dbChar = queryChar("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#Macrocystis", context);
+	 	   DbCharacteristic dbChar = queryChar("http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Macrocystis", context);
 	 	   
 	        DbAnnotation dbAnnotation = query(null, context);
 	        
@@ -1344,18 +1344,18 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 		DbAnnotation dbAnnotation = null;
 
 		String queryString = 
-	 		   "(observations.entity = 'https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#Macrocystis')"
+	 		   "(observations.entity = 'http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Macrocystis')"
 	 		   + " and " +
-	 		   "(observations.measurements|characteristics.type = 'https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#DryMass')"
+	 		   "(observations.measurements|characteristics.type = 'http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMass')"
 //	 		   + " and " +
-//	 		   "(observations.measurements.characteristics.type = 'https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#WetMass')"
+//	 		   "(observations.measurements.characteristics.type = 'http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#WetMass')"
 	 		   ;
 		List characteristics = new ArrayList();
-		characteristics.add("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#DryMass");
-		characteristics.add("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#WetMass");
+		characteristics.add("http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMass");
+		characteristics.add("http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#WetMass");
 		
 		// look up the annotation
-		Expression exp = ExpressionFactory.expTrue(); //ExpressionFactory.inExp("observations.entity", "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#Macrocystis");
+		Expression exp = ExpressionFactory.expTrue(); //ExpressionFactory.inExp("observations.entity", "http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Macrocystis");
 		int splitCounter = 0;
 //		exp = exp.andExp(
 //				ExpressionFactory.matchAllExp("observations|measurements.characteristics.type", characteristics)

@@ -15,33 +15,33 @@
 		<!-- Characteristic in (Wet_Mass, Dry_Mass)-->
 		<querygroup operator="UNION">
 			<queryterm casesensitive="false" searchmode="equals">
-				<value>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#Wet_Mass</value>
+				<value>http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Wet_Mass</value>
 				<pathexpr>http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Characteristic</pathexpr>
 			</queryterm>
 			<queryterm casesensitive="false" searchmode="equals">
-				<value>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#Dry_Mass</value>
+				<value>http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Dry_Mass</value>
 				<pathexpr>http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Characteristic</pathexpr>
 			</queryterm>
 		</querygroup>
 		
 		<!-- Entity = Kelp -->
 		<queryterm casesensitive="false" searchmode="equals">
-			<value>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#Kelp</value>
+			<value>http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Kelp</value>
 			<pathexpr>http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Entity</pathexpr>
 		</queryterm>
 		
 		<!-- Context: Kelp Within Transect-->
 		<querycontext>
 			<queryterm casesensitive="false" searchmode="equals">
-				<value>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#Kelp</value>
+				<value>http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Kelp</value>
 				<pathexpr>http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Entity</pathexpr>
 			</queryterm>
 			<queryterm casesensitive="false" searchmode="equals">
-				<value>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#Within</value>
+				<value>http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Within</value>
 				<pathexpr>http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Relationship</pathexpr>
 			</queryterm>
 			<queryterm casesensitive="false" searchmode="equals">
-				<value>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl#Transect</value>
+				<value>http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Transect</value>
 				<pathexpr>http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Entiy</pathexpr>
 			</queryterm>
 		</querycontext>

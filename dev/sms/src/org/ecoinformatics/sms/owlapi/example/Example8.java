@@ -52,7 +52,7 @@ public class Example8 {
     //public static final String DOCUMENT_IRI = "http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl";
     
 //    public static final String DOCUMENT_IRI = "https://code.ecoinformatics.org/code/sonet/trunk/ontologies/oboe-trait.owl";
-    public static final String DOCUMENT_IRI = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl";
+    public static final String DOCUMENT_IRI = "http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl";
 
 
     public static void main(String[] args) {

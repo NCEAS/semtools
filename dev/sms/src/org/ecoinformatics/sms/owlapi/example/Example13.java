@@ -48,7 +48,7 @@ public class Example13 {
 
             // We'll use the pizza ontology as an example.  Load the ontology from the web:
 //            IRI documentIRI = IRI.create("http://www.co-ode.org/ontologies/pizza/pizza.owl");
-            IRI documentIRI = IRI.create("https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl");
+            IRI documentIRI = IRI.create("http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl");
             OWLOntologyManager man = OWLManager.createOWLOntologyManager();
             OWLOntology ont = man.loadOntologyFromOntologyDocument(documentIRI);
 

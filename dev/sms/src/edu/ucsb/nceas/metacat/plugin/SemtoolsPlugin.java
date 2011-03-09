@@ -150,8 +150,8 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 				"http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl", 
 				"http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl");
 		ontologyURIs.put(
-				"https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl", 
-				"https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl");
+				"http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl", 
+				"http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl");
 		
 		// map them first
 		try {

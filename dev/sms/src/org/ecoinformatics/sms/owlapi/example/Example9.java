@@ -42,7 +42,7 @@ import java.util.Set;
  */
 public class Example9 {
 
-//    public static final String DOCUMENT_IRI = "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl";
+//    public static final String DOCUMENT_IRI = "http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl";
     public static final String DOCUMENT_IRI = "http://www.co-ode.org/ontologies/pizza/2007/02/12/pizza.owl";
 //    public static final String DOCUMENT_IRI = "http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl";
 

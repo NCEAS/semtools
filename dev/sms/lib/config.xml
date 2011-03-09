@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <config>
-  <version>1.10.0semtools3</version>
+  <version>1.10.0semtools4</version>
   <dataLocationInlineOnline>online</dataLocationInlineOnline>
   <plugin>edu.ucsb.nceas.morpho.query.QueryPlugin</plugin>
   <plugin>edu.ucsb.nceas.morpho.datapackage.DataPackagePlugin</plugin>
@@ -35,8 +35,8 @@
   <taxonRankSearchPath>taxonomicClassification/taxonRankName</taxonRankSearchPath>
   <taxonValueSearchPath>taxonomicClassification/taxonRankValue</taxonValueSearchPath>
   <ontologies>
-  	<logicalURI>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl</logicalURI>
-  	<physicalURI>https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/sbc/oboe-sbc.owl</physicalURI>
+  	<logicalURI>http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl</logicalURI>
+  	<physicalURI>http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl</physicalURI>
   	<logicalURI>https://code.ecoinformatics.org/code/sonet/trunk/ontologies/oboe-trait.owl</logicalURI>
   	<physicalURI>https://code.ecoinformatics.org/code/sonet/trunk/ontologies/oboe-trait.owl</physicalURI>
   </ontologies>
