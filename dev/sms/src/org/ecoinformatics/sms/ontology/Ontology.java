@@ -42,8 +42,6 @@ public class Ontology {
 
     /* uri of the ontology */
     private String _uri;
-    /* optional prefix */
-    private String _prefix;
 
     /**
      */
@@ -57,17 +55,9 @@ public class Ontology {
      */
     public Ontology(String uri) {
         _uri = uri;
+     
     }
 
-    /**
-     * Create an ontology reference from a prefix and uri
-     * @param prefix the uri of this ontology
-     * @param uri the uri of this ontology
-     */
-    public Ontology(String prefix, String uri) {
-        _prefix = prefix;
-        _uri = uri;
-    }
     
     /**
      * Set the uri of the ontology
@@ -85,26 +75,6 @@ public class Ontology {
         return _uri;
     }
 
-    /**
-     * Set the prefix of for the ontology uri
-     * @param prefix
-     */
-    public void setPrefix(String prefix) {
-        _prefix = prefix;
-    }
-    
-    /**
-     * Get the prefix for the ontology uri
-     * @return the prefix string
-     */
-    public String getPrefix() {
-    	if (_prefix == null) {
-    		//use the last part of the uri
-    		String generatedPrefix = _uri.substring(_uri.lastIndexOf("/")+1);
-    		return generatedPrefix;
-    	}
-        return _prefix;
-    }
     
     /**
      * Get a string representation of the ontology

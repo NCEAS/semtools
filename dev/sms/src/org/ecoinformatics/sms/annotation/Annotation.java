@@ -323,8 +323,10 @@ public class Annotation {
     * @param o the ontology to add
     */
    public void addOntology(Ontology o) {
-      if(o != null && !_ontologies.contains(o))
-         _ontologies.add(o);
+      if (o != null && !_ontologies.containsValue(o)) {
+    	  String prefix = generatePrefix(o);
+          _ontologies.put(prefix, o);
+      }
    }
 
    /**
@@ -339,8 +341,35 @@ public class Annotation {
     * Get the ontologies of this annotation
     * @return the set of ontologies
     */
-   public List<Ontology> getOntologies() {
+   public Map<String, Ontology> getOntologies() {
       return _ontologies;
+   }
+   
+   public String getOntologyPrefix(Ontology ontology) {
+	   if (_ontologies.containsValue(ontology)) {
+		   for (Entry<String, Ontology> entry : _ontologies.entrySet()) {
+			   if (entry.getValue().equals(ontology)) {
+				   return entry.getKey();
+			   }
+		   }
+	   }
+	   return null;
+   }
+   
+   public Ontology getOntology(String prefix) {
+	   return _ontologies.get(prefix);
+   }
+   
+   private String generatePrefix(Ontology ontology) {
+	   String uri = ontology.getURI();
+	   String prefix = uri.substring(uri.lastIndexOf("/") + 1);
+	   String generatedPrefix = prefix;
+	   int counter = 1;
+	   // check if we have this prefix already
+	   while (getOntology(generatedPrefix) != null) {
+		   generatedPrefix = prefix + "." + counter;
+	   }
+	   return generatedPrefix;
    }
 
    /**
@@ -440,7 +469,7 @@ public class Annotation {
 
    private String _uri;
    private String _dataPackage;
-   private List<Ontology> _ontologies = new ArrayList();
+   private Map<String, Ontology> _ontologies = new HashMap<String, Ontology>();
    private List<Observation> _observations = new ArrayList();
    private List<Mapping> _mappings = new ArrayList();
    

@@ -31,7 +31,7 @@ public class AnnotationSpecifier{
 	{
 		m_key2distinctfactor = new TreeMap<String, Float>();
 		m_annotation = new Annotation();
-		m_defaultOnto = new Ontology(Constant.ANNOTATION_DEFAULT_RELATIONSHIP_URI, Constant.ANNOTATION_DEFAULT_ONTOLOGY);
+		m_defaultOnto = new Ontology(Constant.ANNOTATION_DEFAULT_ONTOLOGY);
 	}
 	
 	public Map<String, Float> getKey2distinctfactor() {
@@ -96,7 +96,6 @@ public class AnnotationSpecifier{
 		else
 			m_annotation.setDataPackage(outAnnotFileName.substring(pos+1));
 		Ontology o =new Ontology();
-		o.setPrefix(Constant.ANNOTATION_DEFAULT_RELATIONSHIP_URI);
 		o.setURI(null);
 		m_annotation.addOntology(o);
 		
@@ -265,7 +264,6 @@ public class AnnotationSpecifier{
 		for(int i=0;i<numberOfMeasurements;i++){
 			Measurement m = extractOneMeasurement(measurements[i]);
 			Ontology o = new Ontology();
-			o.setPrefix(Constant.ANNOTATION_DEFAULT_ONTOLOGY);
 			Characteristic cha = new Characteristic();
 			cha.setOntology(o);
 			//cha.setURI("chauri");

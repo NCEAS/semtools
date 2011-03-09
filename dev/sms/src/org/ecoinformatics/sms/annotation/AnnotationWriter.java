@@ -59,8 +59,8 @@ public class AnnotationWriter {
    private static void _writeAnnotation(Annotation a, PrintStream s) {
       s.print("<sms:annotation");
       s.print(" xmlns:sms=\"" + Annotation.ANNOTATION_NS + "\"");
-      for(Ontology o : a.getOntologies())
-         s.print(" xmlns:" + o.getPrefix() + "=\"" + o.getURI() + "\"");
+      for(Ontology o : a.getOntologies().values())
+         s.print(" xmlns:" + a.getOntologyPrefix(o) + "=\"" + o.getURI() + "\"");
       // schema location
       s.print(" xmlns:xsi=\"" + "http://www.w3.org/2001/XMLSchema-instance" + "\"");
       s.print(" xsi:schemaLocation=\"" + Annotation.ANNOTATION_NS  
@@ -71,7 +71,7 @@ public class AnnotationWriter {
          s.print(" dataPackage=\"" + a.getDataPackage() + "\"");
       s.print(">\n");
       for(Observation o : a.getObservations())
-         _writeObservation(o, s);
+         _writeObservation(o, a, s);
       for(Mapping m : a.getMappings())
          _writeMapping(m, s);
       s.print("</sms:annotation>\n");
@@ -82,7 +82,7 @@ public class AnnotationWriter {
     * @param o the observation
     * @param s the output stream
     */
-   private static void _writeObservation(Observation o, PrintStream s) {
+   private static void _writeObservation(Observation o, Annotation a, PrintStream s) {
       s.print(_indent1 + "<sms:observation");
       if(o.getLabel() != null)
          s.print(" label=\"" + o.getLabel() + "\"");
@@ -93,13 +93,13 @@ public class AnnotationWriter {
     
       if(e != null && e.getOntology() != null)
     	  s.print(_indent2 + "<sms:entity id=\"" +
-           e.getOntology().getPrefix() + ":" +
+           a.getOntologyPrefix(e.getOntology()) + ":" +
            e.getName() + "\"/>\n");
            
       for(Measurement m : o.getMeasurements())
-         _writeMeasurement(m, s);
+         _writeMeasurement(m, a, s);
       for(Context c : o.getContexts())
-         _writeContext(c, s);
+         _writeContext(c, a, s);
       s.print(_indent1 + "</sms:observation>\n");
    }
 
@@ -148,11 +148,11 @@ public class AnnotationWriter {
     * @param m the measurement
     * @param s the output stream
     */
-   private static void _writeMeasurement(Measurement m, PrintStream s) {
+   private static void _writeMeasurement(Measurement m, Annotation a, PrintStream s) {
       s.print(_indent2 + "<sms:measurement");
       if(m.getTemplate() != null)
           s.print(" id=\"" 
-        		  + m.getTemplate().getOntology().getPrefix() 
+        		  + a.getOntologyPrefix(m.getTemplate().getOntology()) 
         		  + ":" + m.getTemplate().getName() + "\"");
       if(m.getLabel() != null)
          s.print(" label=\"" + m.getLabel() + "\"");
@@ -165,23 +165,23 @@ public class AnnotationWriter {
       for(Characteristic c : m.getCharacteristics())
           if(c.getOntology() != null)
              s.print(_indent3 + "<sms:characteristic id=\"" +
-                     c.getOntology().getPrefix() + ":" +
+                     a.getOntologyPrefix(c.getOntology()) + ":" +
                      c.getName() + "\"/>\n");
       Standard d = m.getStandard();
       if(d != null && d.getOntology() != null)
          s.print(_indent3 + "<sms:standard id=\"" +
-                 d.getOntology().getPrefix() + ":" +
+                 a.getOntologyPrefix(d.getOntology()) + ":" +
                  d.getName() + "\"/>\n");
       Protocol p = m.getProtocol();
       if(p != null && p.getOntology() != null)
          s.print(_indent3 + "<sms:protocol id=\"" +
-                 p.getOntology().getPrefix() + ":" +
+                 a.getOntologyPrefix(p.getOntology()) + ":" +
                  p.getName() + "\"/>\n");
       if(m.getDomainValues().size() > 1) {
          s.print(_indent3 + "<sms:domain>\n");
          for(Entity v : m.getDomainValues())
             s.print(_indent4 + "<sms:entity id=\"" +
-                    v.getOntology().getPrefix() + ":" +
+                    a.getOntologyPrefix(v.getOntology()) + ":" +
                     v.getName() + "\">\n");
          s.print(_indent3 + "</sms:domain>\n");
       }
@@ -193,7 +193,7 @@ public class AnnotationWriter {
     * @param c the context
     * @param s the output stream
     */
-   private static void _writeContext(Context c, PrintStream s) {
+   private static void _writeContext(Context c, Annotation a, PrintStream s) {
 		Observation o = c.getObservation();
 		if (o == null) {
 			return;
@@ -207,7 +207,7 @@ public class AnnotationWriter {
 		OntologyClass r = c.getRelationship();
 		if (r != null && r.getOntology() != null)
 			s.print(_indent3 + "<sms:relationship id=\""
-					+ r.getOntology().getPrefix() + ":" + r.getName()
+					+ a.getOntologyPrefix(r.getOntology()) + ":" + r.getName()
 					+ "\"/>\n");
 		s.print(_indent2 + "</sms:context>\n");
 	}

@@ -581,10 +581,10 @@ public class AnnotationReader {
    private Ontology _getOntology(Element elem, String prefix)
            throws Exception {
       String uri = _getURI(elem, prefix);
-      for(Ontology ont : _annotation.getOntologies())
+      for(Ontology ont : _annotation.getOntologies().values())
          if(ont.getURI().equals(uri))
             return ont;
-      Ontology ont = new Ontology(prefix, uri);
+      Ontology ont = new Ontology(uri);
       _annotation.addOntology(ont);
       return ont;
    }
