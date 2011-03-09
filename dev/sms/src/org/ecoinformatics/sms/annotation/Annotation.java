@@ -371,6 +371,69 @@ public class Annotation {
 	   }
 	   return generatedPrefix;
    }
+   
+   private void condenseOntologies() {
+	   List<Ontology> activeOntologies = new ArrayList<Ontology>();
+	   Ontology ontology = null;
+	   for (Observation o: getObservations()) {
+		   try {
+			   ontology = o.getEntity().getOntology();
+			   if (ontology != null && !activeOntologies.contains(ontology)) {
+				   activeOntologies.add(ontology);
+			   }
+		   } catch (Exception e) {
+			   ontology = null;
+		   }
+		   for (Measurement m: o.getMeasurements()) {
+			   try {
+				   ontology = m.getTemplate().getOntology();
+				   if (ontology != null && !activeOntologies.contains(ontology)) {
+					   activeOntologies.add(ontology);
+				   }
+			   } catch (Exception e) {
+				   ontology = null;
+			   }
+			   try {
+				   ontology = m.getStandard().getOntology();
+				   if (ontology != null && !activeOntologies.contains(ontology)) {
+					   activeOntologies.add(ontology);
+				   }
+			   } catch (Exception e) {
+				   ontology = null;
+			   }
+			   try {
+				   ontology = m.getProtocol().getOntology();
+				   if (ontology != null && !activeOntologies.contains(ontology)) {
+					   activeOntologies.add(ontology);
+				   }
+			   } catch (Exception e) {
+				   ontology = null;
+			   }			   
+			   for (Characteristic c: m.getCharacteristics()) {
+				   try {
+					   ontology = c.getOntology();
+					   if (ontology != null && !activeOntologies.contains(ontology)) {
+						   activeOntologies.add(ontology);
+					   }
+				   } catch (Exception e) {
+					   ontology = null;
+				   }   
+			   }
+		   }
+		   for (Context c: o.getContexts()) {
+			   try {
+				   ontology = c.getRelationship().getOntology();
+				   if (ontology != null && !activeOntologies.contains(ontology)) {
+					   activeOntologies.add(ontology);
+				   }
+			   } catch (Exception e) {
+				   ontology = null;
+			   }
+		   }
+	   }
+	   // remove any that aren't being used
+	   _ontologies.values().retainAll(activeOntologies);
+   }
 
    /**
     * Get the ontology classes used in this annotation
@@ -413,6 +476,7 @@ public class Annotation {
     * @param s the output stream
     */
    public void write(OutputStream s) {
+	   condenseOntologies();
       AnnotationWriter.write(this, s);
    }
 
