@@ -286,7 +286,6 @@ public class AnnotationPlugin
 					// only clear annotations if we can look them up again
 					String location = adp.getLocation();
 					if (!location.equals("")) {
-						clearAnnotations(docid);
 						initializeAnnotations(docid, location);
 					}
 					removeStateChangeListeners(dataViewContainerPanel);
@@ -300,6 +299,8 @@ public class AnnotationPlugin
 	// load annotations from a given location
 	public static void initializeAnnotations(String forDocid, String location) {
 		Log.debug(30, "initializing annotations for docid: " + forDocid);
+		// clear the old
+		clearAnnotations(forDocid);
 		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
 		MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
 		String querySpec = getAnnotationQuery(forDocid);
@@ -357,7 +358,12 @@ public class AnnotationPlugin
 	 */
 	private static void clearAnnotations(String forDocid) {
 		// remove the current existing annotations for EML
-		List<Annotation> existingAnnotations = SMS.getInstance().getAnnotationManager().getAnnotations(forDocid);
+		List<Annotation> existingAnnotations = null;
+		if (forDocid != null) {
+			existingAnnotations = SMS.getInstance().getAnnotationManager().getAnnotations(forDocid);
+		} else {
+			existingAnnotations = SMS.getInstance().getAnnotationManager().getAnnotations();
+		}
 		for (Annotation existingAnnotation: existingAnnotations) {
 			Log.debug(30, "removing annotation: " + existingAnnotation.getURI());
 			try {
