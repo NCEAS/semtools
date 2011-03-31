@@ -1288,7 +1288,7 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
 		try {
 	
 			//String annot1 = "https://code.ecoinformatics.org/code/semtools/trunk/dev/sms/examples/er-2008-ex1-annot.xml";
-			String annot1 = "http://fred.msi.ucsb.edu:8080/knb/metacat/benriver.216.6";
+			String annot1 = "http://fred.msi.ucsb.edu:8080/knb/metacat/benriver.277.2";
 
 	        URL url = new URL(annot1);
 	

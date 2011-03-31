@@ -4,8 +4,8 @@
 	<map name="SMSDomainMap" location="SMSDomainMap.map.xml"/>
 
 	<node name="SMSDomainNode"
-		 datasource="SMSDomainNode.driver.xml"
-		 factory="org.apache.cayenne.conf.DriverDataSourceFactory"
+		 datasource="dbcp.properties"
+		 factory="org.apache.cayenne.conf.DBCPDataSourceFactory"
 		 schema-update-strategy="org.apache.cayenne.access.dbsync.CreateIfNoSchemaStrategy">
 			<map-ref name="SMSDomainMap"/>
 	 </node>
