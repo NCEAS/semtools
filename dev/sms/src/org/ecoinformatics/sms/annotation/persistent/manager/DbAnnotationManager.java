@@ -86,9 +86,8 @@ public class DbAnnotationManager extends DefaultAnnotationManager {
    public DbAnnotationManager(SMS sms) {
 	   super(sms);
       
-      // configure db mapping
+	   // configure db mapping
 	   DefaultConfiguration conf = new DefaultConfiguration();			
-	   conf.addClassPath("org/ecoinformatics/sms/annotation/persistent/config");
 	   Configuration.initializeSharedConfiguration(conf);
 	   
    }

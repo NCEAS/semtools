@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <domains project-version="3.0.0.1">
 <domain name="SMSDomain">
-	<map name="SMSDomainMap" location="SMSDomainMap.map.xml"/>
+	<map name="SMSDomainMap" location="org/ecoinformatics/sms/annotation/persistent/config/SMSDomainMap.map.xml"/>
 
 	<node name="SMSDomainNode"
-		 datasource="dbcp.properties"
+		 datasource="sms.properties"
 		 factory="org.apache.cayenne.conf.DBCPDataSourceFactory"
 		 schema-update-strategy="org.apache.cayenne.access.dbsync.CreateIfNoSchemaStrategy">
 			<map-ref name="SMSDomainMap"/>
