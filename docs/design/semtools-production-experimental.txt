@@ -1,0 +1,66 @@
+Metacat Plugin:
+----------------
+build structure:
+-SemtoolsPlugin is kept separate from Metacat, then built into the standard Metacat war
+-Semtools skin should be handled like the plugin (move from metacat project to the semtools project)
+-supporting libraries for semtools are added to the Metacat deployment for use at runtime
+
+production features:
+-dataset discovery
+	-concept expansion
+	-"same observation as"
+	-compound query criteria
+	-context-based criteria?
+	-integrate semantic query with other search types: 
+		-keyword
+		-spatial
+		-temporal?
+-annotation management
+	-use persistent data store (postgres) for AnnotationManager
+		-initialization during Metacat restart will be quicker (the backing DB won't need to be recreated [in memory] each time)
+	-test with larger corpus (term expansion - see how the backing DB handles this)
+	-update SMS AnnotationManager entries when CRUD actions take place for documents matching the annotation schema
+		-currently the AnnotationManager needs to be manually reinitialized when an annotation is inserted/updated/deleted
+		-add extension point in Metacat for CRUD events so that registered listeners can be notified of the events and take appropriate actions 
+			-much like the event handling in Kepler or Morpho - allows extension without modifying the core document handling classes
+			-maybe DataONE can also make use of something like this?
+-ontology management
+	-determine ontology registration policy
+		-OBOE, SBC, plant trait, jmx initially?
+		-house ontologies in BioPortal (with versioning)?
+	-allow anyone to register more ontologies with Metacat?
+	-register any ontology that is referenced in Annotations that are saved to Metacat?
+		-ontologies must be managed (and reasoned) in order to query across annotations that reference them.
+
+Morpho Plugin:
+--------------
+Local/dev synchronization and saving
+	-make sure that is less error prone
+		-revisions, docid conflicts
+		-access control permissions
+		-handle multiple annotations per DP
+	-eliminate the independent save option for annotations?
+Query
+	-use the SemtoolsPlugin for Metacat interface for querying data packages (instead of loading all remote annotations locally and then searching across those)
+	-include the hybrid querying we build into Metacat so that semantic, keyword, and spatial criteria can be combined for a fine-grained query
+
+
+
+
+Experimental:
+-------------
+Data query (Metacat)
+	-specify data ranges for Characteristics
+	-specify data values for context (temporal, spatial) - or is this metadata still?
+Data integration (Metacat download)
+	-"smart" integration
+		-select attributes shared across data pacakges
+		-include only rows matching the given data query
+		-perform simple unit conversion (metric<->imperial, SI factors)
+		-perform conversion for composite units (density vs. count/area)
+Sensible summary (Morpho?)
+	-aggregation by context
+	-OLAP-style drilldown interface
+alternative [rdf] annotation storage syntax (rdf)
+	-rather than annotation.xsd, use triples to store the annotation - more aligned with semantic technology, but unclear if it helps us
+	
