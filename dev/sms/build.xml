@@ -195,6 +195,10 @@
 		<copy todir="${metacat.dir}/build/war/WEB-INF/classes">
 			<fileset dir="${emldir}/src" includes="*.properties" excludes="log4j.properties"/>	      	
 		</copy>
+		<!-- move semtools skin to metacat -->
+		<copy todir="${metacat.dir}/build/war/knb/style/skins">
+			<fileset dir="./lib/style/skins" includes="**/*"/>	      	
+		</copy>
 		
 		<echo message="Continuing Metacat build"></echo>
 		<ant dir="${metacat.dir}" target="install" inheritall="false"/>
