@@ -48,20 +48,27 @@ import edu.ucsb.nceas.metacat.QuerySpecification;
 import edu.ucsb.nceas.metacat.client.InsufficientKarmaException;
 import edu.ucsb.nceas.metacat.client.Metacat;
 import edu.ucsb.nceas.metacat.client.MetacatFactory;
+import edu.ucsb.nceas.metacat.event.MetacatDocumentEvent;
+import edu.ucsb.nceas.metacat.event.MetacatEvent;
+import edu.ucsb.nceas.metacat.event.MetacatEventObserver;
+import edu.ucsb.nceas.metacat.event.MetacatEventService;
 import edu.ucsb.nceas.metacat.properties.PropertyService;
 import edu.ucsb.nceas.metacat.service.SessionService;
 import edu.ucsb.nceas.metacat.shared.HandlerException;
 import edu.ucsb.nceas.metacat.util.AuthUtil;
+import edu.ucsb.nceas.metacat.util.DocumentUtil;
 import edu.ucsb.nceas.metacat.util.MetacatUtil;
 import edu.ucsb.nceas.metacat.util.SystemUtil;
 import edu.ucsb.nceas.utilities.FileUtil;
 import edu.ucsb.nceas.utilities.XMLUtilities;
 
-public class SemtoolsPlugin implements MetacatHandlerPlugin {
+public class SemtoolsPlugin implements MetacatHandlerPlugin, MetacatEventObserver {
 
 	private static List<String> supportedActions = new ArrayList<String>();
 	
 	private static boolean readAll = true;
+	private static String metacatURL = null;
+	private static Metacat mc = null;
 	
 	public static Log log = LogFactory.getLog(SemtoolsPlugin.class);
 	
@@ -75,8 +82,20 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		supportedActions.add("getactivedomain");
 		supportedActions.add("getcart");
 
+	}
+	
+	public SemtoolsPlugin() {
+		try {
+			metacatURL = SystemUtil.getServletURL();
+			mc = MetacatFactory.createMetacatConnection(metacatURL);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		initializeOntologies();
 		initializeAnnotations();
+		
+		// register as a listener
+		MetacatEventService.getInstance().addMetacatEventObserver(this);
 	}
 	
 	private static void clearAnnotations() throws Exception {
@@ -92,42 +111,13 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 		try {
 			// clear the existing annotations
 			clearAnnotations();
-			// load them again
-			String metacatURL = SystemUtil.getServletURL();
-			Metacat mc = MetacatFactory.createMetacatConnection(metacatURL);
 			DBUtil dbutil = new DBUtil();
 			Vector<String> annotationDocids = dbutil.getAllDocidsByType(Annotation.ANNOTATION_NS, false);
 			for (String annotationDocid: annotationDocids) {
 				try {
-					InputStream in = null;
-					String documentPath = null;
-					if (readAll) {
-						// circumvents permission checking by reading directly from Metacat
-						DocumentImpl docImpl = new DocumentImpl(annotationDocid);
-						String docString = docImpl.toString();
-						in = new ByteArrayInputStream(docString.getBytes());
-						String documentDir = PropertyService.getProperty("application.documentfilepath");
-						documentPath = documentDir + FileUtil.getFS() + annotationDocid;
-						documentPath = new File(documentPath).toURI().toURL().toString();
-					} else {						
-						try {
-							// uses the client and only allows public read
-							in = mc.read(annotationDocid);
-							documentPath = metacatURL + "/" + annotationDocid;
-						} catch (InsufficientKarmaException ike) {
-							// public read permission is not granted
-							log.warn(ike.getMessage());
-							continue;
-						} 
-					}
-					// get the annotation and import it
-					Annotation annotation = Annotation.read(in);
-					if (!SMS.getInstance().getAnnotationManager().isAnnotation(annotation.getURI())) {
-						SMS.getInstance().getAnnotationManager().importAnnotation(annotation, documentPath);
-					}
+					importAnnotation(annotationDocid);
 				} catch (Exception e) {
 					log.error(e.getMessage(), e);
-					//e.printStackTrace();
 				}
 			}
 		} catch (Exception e) {
@@ -709,6 +699,84 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin {
 
 	public boolean handlesAction(String action) {
 		return supportedActions.contains(action.toLowerCase());
+	}
+	
+	public void handleEvent(MetacatEvent me) {
+		if (me instanceof MetacatDocumentEvent) {
+			MetacatDocumentEvent mde = (MetacatDocumentEvent) me;
+			String doctype = mde.getDoctype();
+			String action = mde.getAction();
+			String docid = mde.getDocid();
+				
+			try {
+
+				// for delete, we don't usually know the doctype
+				if (doctype == null || doctype.contains(Annotation.ANNOTATION_NS)) {
+					if (action.equalsIgnoreCase("insert")) {
+						// add the annotation
+						importAnnotation(docid);
+					}
+					else if (action.equalsIgnoreCase("update")) {						
+						// remove the old annotation, getting the old one is a bit tricky
+						String baseDocid = DocumentUtil.getSmartDocId(docid);
+						Vector<Integer> revisions = DBUtil.getRevListFromRevisionTable(baseDocid);
+						for (Integer rev: revisions) {
+							String oldDocid = baseDocid + "." + rev;
+							if (SMS.getInstance().getAnnotationManager().isAnnotation(oldDocid)) {
+								SMS.getInstance().getAnnotationManager().removeAnnotation(oldDocid);
+							}
+						}
+						// add the new
+						importAnnotation(docid);
+					}
+					else if (action.equalsIgnoreCase("delete")) {
+						// remove the annotation if it is one
+						if (SMS.getInstance().getAnnotationManager().isAnnotation(docid)) {
+							SMS.getInstance().getAnnotationManager().removeAnnotation(docid);
+						}
+					}
+				}
+			} catch (Exception e) {
+				log.error("Problem handling Metacat event: " +
+						"action=" + action + ", docid=" + docid + ", doctype=" + doctype + ", exception: " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+	private static Annotation importAnnotation(String annotationDocid) {
+		Annotation annotation = null;
+		try {
+			InputStream in = null;
+			String documentPath = null;
+			if (readAll) {
+				// circumvents permission checking by reading directly from Metacat
+				DocumentImpl docImpl = new DocumentImpl(annotationDocid);
+				String docString = docImpl.toString();
+				in = new ByteArrayInputStream(docString.getBytes());
+				String documentDir = PropertyService.getProperty("application.documentfilepath");
+				documentPath = documentDir + FileUtil.getFS() + annotationDocid;
+				documentPath = new File(documentPath).toURI().toURL().toString();
+			} else {						
+				try {
+					// uses the client and only allows public read
+					in = mc.read(annotationDocid);
+					documentPath = metacatURL + "/" + annotationDocid;
+				} catch (InsufficientKarmaException ike) {
+					// public read permission is not granted
+					log.warn(ike.getMessage());
+				} 
+			}
+			// get the annotation and import it
+			annotation = Annotation.read(in);
+			if (!SMS.getInstance().getAnnotationManager().isAnnotation(annotation.getURI())) {
+				SMS.getInstance().getAnnotationManager().importAnnotation(annotation, documentPath);
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
+		return annotation;
 	}
 
 }
