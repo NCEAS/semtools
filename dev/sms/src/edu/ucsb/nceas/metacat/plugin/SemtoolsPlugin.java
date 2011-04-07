@@ -60,6 +60,8 @@ import edu.ucsb.nceas.metacat.util.DocumentUtil;
 import edu.ucsb.nceas.metacat.util.MetacatUtil;
 import edu.ucsb.nceas.metacat.util.SystemUtil;
 import edu.ucsb.nceas.utilities.FileUtil;
+import edu.ucsb.nceas.utilities.GeneralPropertyException;
+import edu.ucsb.nceas.utilities.PropertyNotFoundException;
 import edu.ucsb.nceas.utilities.XMLUtilities;
 
 public class SemtoolsPlugin implements MetacatHandlerPlugin, MetacatEventObserver {
@@ -92,10 +94,43 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin, MetacatEventObserve
 			e.printStackTrace();
 		}
 		initializeOntologies();
-		initializeAnnotations();
+		if (!isPluginInitialized()) {
+			initializeAnnotations();
+			setPluginInitialized(true);
+		}
 		
 		// register as a listener
 		MetacatEventService.getInstance().addMetacatEventObserver(this);
+	}
+	
+	private boolean isPluginInitialized() {
+		String propertyName = "semtools.initialized";
+		boolean initialized = false;
+		try {
+			String initString = PropertyService.getProperty(propertyName);
+			initialized = Boolean.parseBoolean(initString);
+		} catch (PropertyNotFoundException e) {
+			// we don't have it in Metacat, so it's not initialized
+			initialized = false;
+		}
+		return initialized;
+	}
+	
+	private boolean setPluginInitialized(boolean initialized) {
+		String propertyName = "semtools.initialized";
+		try {
+			PropertyService.setProperty(propertyName, Boolean.toString(initialized));
+		} catch (GeneralPropertyException e) {
+			// we don't have it in the Metacat properties, so we should add it and set it
+			try {
+				PropertyService.addProperty(propertyName, Boolean.toString(initialized));
+			} catch (GeneralPropertyException e1) {
+				// there was an error setting this property
+				e1.printStackTrace();
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	private static void clearAnnotations() throws Exception {
