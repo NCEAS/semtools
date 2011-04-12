@@ -44,6 +44,7 @@ import edu.ucsb.nceas.metacat.DBUtil;
 import edu.ucsb.nceas.metacat.DocumentIdQuery;
 import edu.ucsb.nceas.metacat.DocumentImpl;
 import edu.ucsb.nceas.metacat.MetaCatServlet;
+import edu.ucsb.nceas.metacat.QueryGroup;
 import edu.ucsb.nceas.metacat.QuerySpecification;
 import edu.ucsb.nceas.metacat.client.InsufficientKarmaException;
 import edu.ucsb.nceas.metacat.client.Metacat;
@@ -55,6 +56,7 @@ import edu.ucsb.nceas.metacat.event.MetacatEventService;
 import edu.ucsb.nceas.metacat.properties.PropertyService;
 import edu.ucsb.nceas.metacat.service.SessionService;
 import edu.ucsb.nceas.metacat.shared.HandlerException;
+import edu.ucsb.nceas.metacat.spatial.SpatialQuery;
 import edu.ucsb.nceas.metacat.util.AuthUtil;
 import edu.ucsb.nceas.metacat.util.DocumentUtil;
 import edu.ucsb.nceas.metacat.util.MetacatUtil;
@@ -68,6 +70,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin, MetacatEventObserve
 
 	private static List<String> supportedActions = new ArrayList<String>();
 	
+	private static boolean useUnion = true;
 	private static boolean readAll = true;
 	private static String metacatURL = null;
 	private static Metacat mc = null;
@@ -398,7 +401,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin, MetacatEventObserve
 			String sessionId) throws HandlerException {
 		try {
 			// get the semantic query xml
-			String semquery = params.get("query")[0];
+			String semquery = params.get("semquery")[0];
 			
 			//parse it 
 			Criteria criteria = CriteriaReader.read(semquery);
@@ -439,31 +442,63 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin, MetacatEventObserve
 				}
 			}
 			
-			// HACKALERT: we don't have any matches, so we fake it out
-			if (docids.isEmpty()) {
-				docids.add("INVALID");
+			// look up the spatial query results if applicable
+			if (params.containsKey("xmax")) {
+				// handle spatial query - get matching docids
+		        try {
+					float _xmax = Float.valueOf( (params.get("xmax"))[0] ).floatValue();
+			        float _ymax = Float.valueOf( (params.get("ymax"))[0] ).floatValue();
+			        float _xmin = Float.valueOf( (params.get("xmin"))[0] ).floatValue();
+			        float _ymin = Float.valueOf( (params.get("ymin"))[0] ).floatValue();
+			        SpatialQuery sq = new SpatialQuery();
+			        Vector<String> spatialDocids = sq.filterByBbox( _xmin, _ymin, _xmax, _ymax );
+			        if (useUnion) {
+			        	docids.addAll(spatialDocids);
+			        } else {
+			        	docids.retainAll(spatialDocids);
+			        }
+		        } catch (Exception e) {
+					log.warn("Not including spatial query - either it did not exist or there was an error");
+				}
 			}
 			
-			// just need a valid pathquery - this is not actually used
-			String squery = DocumentIdQuery.createDocidQuery(docids.toArray(new String[0]));
-			String[] queryArray = new String[1];
-	        queryArray[0] = squery;
-	        params.put("query", queryArray);
+			
+			
+			// if there is not a regular query, we make one
+			String squery = null;
+			if (!params.containsKey("query")) {
+				// since this is a place holder, we don't care about the actual ids we "query for"
+				squery = DocumentIdQuery.createDocidQuery(new String[] {"INVALID"});
+				String[] queryArray = new String[1];
+		        queryArray[0] = squery;
+		        params.put("query", queryArray);
+			} else {
+				squery = params.get("query")[0];
+			}
 	        
 	        // now perform an squery with the given docids
 	        String[] actionArray = new String[1];
 	        actionArray[0] = "squery";
 	        params.put("action", actionArray);
 	        
+	        // HACKALERT: if we don't have any docids we fake it out
+			if (docids.isEmpty()) {
+				docids.add("INVALID");
+			}
 	        DBQuery dbQuery = new DBQuery(docids);
+	        if (useUnion) {
+	        	dbQuery.setOperator(QueryGroup.UNION);
+	        } else {
+	        	dbQuery.setOperator(QueryGroup.INTERSECT);
+	        }
 	        QuerySpecification qspec = 
 	        	new QuerySpecification(
 	        			squery, 
 	        			PropertyService.getProperty("xml.saxparser"), 
 	        			PropertyService.getProperty("document.accNumSeparator"));
 	        // use null out so it does not print response yet
-			//dbQuery.findDocuments(response, out, params, username, groups, sessionId);
-	        StringBuffer results = dbQuery.createResultDocument(
+	        StringBuffer results = 
+	        	dbQuery.createResultDocument(
 	        		qspec.getNormalizedXMLQuery(), 
 	        		qspec, 
 	        		null, 

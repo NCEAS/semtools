@@ -12,7 +12,7 @@ function checkSearch(submitFormObj) {
 	if (submitFormObj.strict.checked) {
 		strict = "true";
 	}
-    submitFormObj.query.value = 
+    submitFormObj.semquery.value = 
     	"<sq:query queryId='query.1' system='semtools' " +
     	"xmlns:sq='http://ecoinformatics.org/semQuery-1.0.0' " +
     	"xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' " +
@@ -30,7 +30,7 @@ function checkSearch(submitFormObj) {
     			var searchClass = submitFormObj.activeEntitiesClass.value;
         	    var searchValue = submitFormObj.activeEntitiesValue.value;
         	    if (searchValue!="") {
-	        	    submitFormObj.query.value += 
+	        	    submitFormObj.semquery.value += 
 	        	    	"<condition " +
 		        		"type='" + searchClass + "' " +
 		        		"concept='" + searchValue + "' " +
@@ -41,7 +41,7 @@ function checkSearch(submitFormObj) {
 	        		var searchClass = submitFormObj.activeEntitiesClass[i].value;
 	        	    var searchValue = submitFormObj.activeEntitiesValue[i].value;
 	        	    if (searchValue!="") {
-	        	    	submitFormObj.query.value += 
+	        	    	submitFormObj.semquery.value += 
 		        	    	"<condition " +
 			        		"type='" + searchClass + "' " +
 			        		"concept='" + searchValue + "' " +
@@ -56,17 +56,17 @@ function checkSearch(submitFormObj) {
         	    var dataValue = submitFormObj.dataValue.value;
         	    var dataOperator = submitFormObj.dataOperator.value;
         	    if (searchValue != "") {
-	        	    submitFormObj.query.value += 
+	        	    submitFormObj.semquery.value += 
 	        	    	"<condition " +
 		        		"type='" + searchClass + "' " +
 		        		"concept='" + searchValue + "' ";
         	    	if (dataValue != "") {
-	        	    	submitFormObj.query.value += 
+	        	    	submitFormObj.semquery.value += 
 	        	    		"operator='" + dataOperator + "'>" +
 	        	    		dataValue +
 	        	    		"</condition>";
 	        	    } else {
-		        	    submitFormObj.query.value += "/>";
+		        	    submitFormObj.semquery.value += "/>";
 	        	    }
         	    }
     		} else {
@@ -76,18 +76,18 @@ function checkSearch(submitFormObj) {
 	        	    var dataValue = submitFormObj.dataValue[i].value;
 	        	    var dataOperator = submitFormObj.dataOperator[i].value;
 	        	    if (searchValue != "") {
-	        	    	submitFormObj.query.value += 
+	        	    	submitFormObj.semquery.value += 
 		        	    	"<condition " +
 			        		"type='" + searchClass + "' " +
 			        		"concept='" + searchValue + "' ";
 	        	    	
 	        	    	if (dataValue != "") {
-		        	    	submitFormObj.query.value += 
+		        	    	submitFormObj.semquery.value += 
 		        	    		"operator='" + dataOperator + "'>" +
 		        	    		dataValue +
 		        	    		"</condition>";
 		        	    } else {
-			        	    submitFormObj.query.value += "/>";
+			        	    submitFormObj.semquery.value += "/>";
 		        	    }
 	        	    }
 	        	}
@@ -97,7 +97,7 @@ function checkSearch(submitFormObj) {
     			var searchClass = submitFormObj.activeProtocolsClass.value;
         	    var searchValue = submitFormObj.activeProtocolsValue.value;
         	    if (searchValue!="") {
-        	    	submitFormObj.query.value += 
+        	    	submitFormObj.semquery.value += 
 	        	    	"<condition " +
 		        		"type='" + searchClass + "' " +
 		        		"concept='" + searchValue + "' " +
@@ -108,7 +108,7 @@ function checkSearch(submitFormObj) {
 	        		var searchClass = submitFormObj.activeProtocolsClass[i].value;
 	        	    var searchValue = submitFormObj.activeProtocolsValue[i].value;
 	        	    if (searchValue!="") {
-	        	    	submitFormObj.query.value += 
+	        	    	submitFormObj.semquery.value += 
 		        	    	"<condition " +
 			        		"type='" + searchClass + "' " +
 			        		"concept='" + searchValue + "' " +
@@ -121,7 +121,7 @@ function checkSearch(submitFormObj) {
     			var searchClass = submitFormObj.activeMeasurementsClass.value;
         	    var searchValue = submitFormObj.activeMeasurementsValue.value;
         	    if (searchValue!="") {
-        	    	submitFormObj.query.value += 
+        	    	submitFormObj.semquery.value += 
 	        	    	"<condition " +
 		        		"type='" + searchClass + "' " +
 		        		"concept='" + searchValue + "' " +
@@ -132,7 +132,7 @@ function checkSearch(submitFormObj) {
 	        		var searchClass = submitFormObj.activeMeasurementsClass[i].value;
 	        	    var searchValue = submitFormObj.activeMeasurementsValue[i].value;
 	        	    if (searchValue!="") {
-	        	    	submitFormObj.query.value += 
+	        	    	submitFormObj.semquery.value += 
 		        	    	"<condition " +
 			        		"type='" + searchClass + "' " +
 			        		"concept='" + searchValue + "' " +
@@ -140,10 +140,10 @@ function checkSearch(submitFormObj) {
 	        	    }
 	        	}
     		}
-        	submitFormObj.query.value += "</" + operator + ">";
-    	submitFormObj.query.value += "</sq:query>";
+        	submitFormObj.semquery.value += "</" + operator + ">";
+    	submitFormObj.semquery.value += "</sq:query>";
 		
-    //alert("query: " + submitFormObj.query.value);
+    //alert("query: " + submitFormObj.semquery.value);
 
     return true;
 }

@@ -540,7 +540,7 @@ function donothing() {}
 		id="searchForm" 
 		name="searchForm" 
 		onSubmit="return doSearch()">
-	<input name="query" type="hidden" />
+	<input name="semquery" type="hidden" />
 	<input name="qformat" value="semtools" type="hidden" />
 	<input name="includeHeader" value="false" type="hidden" />
 	<input name="showAdd" value="<%=AuthUtil.isUserLoggedIn(request)%>" type="hidden" />
