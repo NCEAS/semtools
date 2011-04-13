@@ -144,6 +144,96 @@ function checkSearch(submitFormObj) {
     	submitFormObj.semquery.value += "</sq:query>";
 		
     //alert("query: " + submitFormObj.semquery.value);
+    	
+    constructPathQuery(submitFormObj);
+
+    return true;
+}
+
+function generateQueryString(anyValue, searchFields) {
+	var queryString = ""; 
+	queryString += "<pathquery version='1.2'>";
+	queryString += "<returndoctype>metadata</returndoctype>";
+	queryString += "<returndoctype>eml://ecoinformatics.org/eml-2.1.1</returndoctype>";
+	queryString += "<returndoctype>eml://ecoinformatics.org/eml-2.1.0</returndoctype>";
+	queryString += "<returndoctype>eml://ecoinformatics.org/eml-2.0.1</returndoctype>";
+	queryString += "<returndoctype>eml://ecoinformatics.org/eml-2.0.0</returndoctype>";
+	queryString += "<returndoctype>-//ecoinformatics.org//eml-dataset-2.0.0beta6//EN</returndoctype>";
+	queryString += "<returndoctype>-//ecoinformatics.org//eml-dataset-2.0.0beta4//EN</returndoctype>";
+	queryString += "<returndoctype>-//NCEAS//eml-dataset-2.0//EN</returndoctype>";
+	queryString += "<returndoctype>-//NCEAS//resource//EN</returndoctype>";
+	
+	queryString += "<returnfield>originator/individualName/surName</returnfield>";
+	queryString += "<returnfield>originator/individualName/givenName</returnfield>";
+	queryString += "<returnfield>originator/organizationName</returnfield>";
+	queryString += "<returnfield>creator/individualName/surName</returnfield>";
+	queryString += "<returnfield>creator/individualName/givenName</returnfield>";
+	queryString += "<returnfield>creator/organizationName</returnfield>";
+	queryString += "<returnfield>dataset/title</returnfield>";
+	queryString += "<returnfield>dataset/title/value</returnfield>";
+	queryString += "<returnfield>dataset/pubDate</returnfield>";
+	queryString += "<returnfield>keyword</returnfield>";
+	queryString += "<returnfield>keyword/value</returnfield>";
+	queryString += "<returnfield>idinfo/citation/citeinfo/title</returnfield>";
+	queryString += "<returnfield>idinfo/citation/citeinfo/origin</returnfield>";
+	queryString += "<returnfield>idinfo/keywords/theme/themekey</returnfield>";
+	
+	queryString += "<querygroup operator='UNION'>";
+	
+	//search particular fields, or all?
+	if (searchFields.length > 0) {
+		for (var i = 0; i < searchFields.length; i++) {
+			queryString += "<queryterm casesensitive='false' searchmode='contains'>";
+			queryString += "<value>" + anyValue + "</value>";
+			queryString += "<pathexpr>" + searchFields[i] +"</pathexpr>";
+			queryString += "</queryterm>";
+		}
+	}
+	else {
+		queryString += "<queryterm casesensitive='false' searchmode='contains'>";
+		queryString += "<value>" + anyValue + "</value>";
+		queryString += "</queryterm>";
+	}
+	
+	queryString += "</querygroup>";
+	
+	queryString += "</pathquery>";
+		
+	return queryString;
+}
+
+function constructPathQuery(submitFormObj) {
+
+	var anyValue = submitFormObj.keywordValue.value;
+	var searchAll = false;
+	var searchFieldArray = new Array();
+	if (!searchAll) {
+		var counter = 0;
+		//EML fields
+		searchFieldArray[counter++] = "abstract/para";
+		searchFieldArray[counter++] = "abstract/para/value";
+		searchFieldArray[counter++] = "surName";
+		searchFieldArray[counter++] = "givenName";
+		searchFieldArray[counter++] = "organizationName";		
+		searchFieldArray[counter++] = "title";
+		searchFieldArray[counter++] = "title/value";
+		searchFieldArray[counter++] = "keyword";
+		searchFieldArray[counter++] = "keyword/value";
+		searchFieldArray[counter++] = "para";
+		searchFieldArray[counter++] = "geographicDescription";
+		searchFieldArray[counter++] = "literalLayout";
+		searchFieldArray[counter++] = "@packageId";
+		
+		//FGDC fields
+		searchFieldArray[counter++] = "abstract";
+		searchFieldArray[counter++] = "idinfo/citation/citeinfo/title";
+		searchFieldArray[counter++] = "idinfo/citation/citeinfo/origin";
+		searchFieldArray[counter++] = "idinfo/keywords/theme/themekey";
+		searchFieldArray[counter++] = "placekey";
+	}
+    submitFormObj.query.value = generateQueryString(anyValue, searchFieldArray)
+		
+    //alert("query: " + submitFormObj.query.value);
 
     return true;
 }

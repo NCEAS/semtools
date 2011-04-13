@@ -1,5 +1,6 @@
 <%@ page language="java"%>
 <%@page import="edu.ucsb.nceas.metacat.util.AuthUtil"%>
+<%@page import="edu.ucsb.nceas.metacat.util.GeoserverUtil"%>
 <%
 /**
  * 
@@ -28,7 +29,9 @@
 
 <%@ include file="../../common/common-settings.jsp"%>
 <%@ include file="../../common/configure-check.jsp"%>
-
+<%
+	String GEOSERVER_URL = GeoserverUtil.getGeoserverContextURL();
+%>
 <html>
 <head>
 <title>Semantic search</title>
@@ -530,6 +533,8 @@ function donothing() {}
 		$("#searchTabs").tabs("add", "#ecpTab", "Entity, Characteristic, Protocol");
 		$("#searchTabs").tabs("add", "#measurementTab", "Measurement");
 		$("#searchTabs").tabs("add", "#optionsTab", "Options");
+		$("#searchTabs").tabs("add", "#keywordsTab", "Keywords");
+		$("#searchTabs").tabs("add", "#spatialTab", "Spatial");
 		$("#searchTabs").tabs("add", "#cartTab", "Cart");
 	});
 </script>
@@ -541,6 +546,7 @@ function donothing() {}
 		name="searchForm" 
 		onSubmit="return doSearch()">
 	<input name="semquery" type="hidden" />
+	<input name="query" type="hidden" />
 	<input name="qformat" value="semtools" type="hidden" />
 	<input name="includeHeader" value="false" type="hidden" />
 	<input name="showAdd" value="<%=AuthUtil.isUserLoggedIn(request)%>" type="hidden" />
@@ -715,6 +721,46 @@ function donothing() {}
 					</td>
 				</tr>
 				
+			</table>
+		</div>
+
+		<!-- keywords -->
+		<div id="keywordsTab">
+			<table class="subGroup subGroup_border onehundred_percent">
+				
+				<tr>
+					<th><p>Standard keyword-based searching</p></th>
+				</tr>
+				
+				<tr>
+					<td>
+						Search term: <input type="text" id="keywordValue" name="keywordValue" />
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- spatial -->
+		<div id="spatialTab">
+			<table class="subGroup subGroup_border onehundred_percent">
+				
+				<tr>
+					<th><p>Spatial query</p></th>
+				</tr>
+				
+				<tr>
+					<td>
+						<table width="100%" cellspacing="0" cellpadding="0" border="0" class="subpanel">
+							<tr><td> 
+								<iframe id="mapFrame" name="mapFrame" scrolling="no" frameborder="0" width="780" height="420" src="<%=STYLE_SKINS_URL%>/semtools/spatial/map.jsp"> You need iframe support </iframe>
+							</td></tr>
+						</table>
+						xmax: <input type="text" id="xmax" name="xmax" /><br/>
+						ymax: <input type="text" id="ymax" name="ymax" /><br/>
+						xmin: <input type="text" id="xmin" name="xmin" /><br/>
+						ymin: <input type="text" id="ymin" name="ymin" /><br/>
+					</td>
+				</tr>
 			</table>
 		</div>
 
