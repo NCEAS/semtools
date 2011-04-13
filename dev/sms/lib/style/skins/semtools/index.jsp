@@ -549,6 +549,7 @@ function donothing() {}
 	<input name="query" type="hidden" />
 	<input name="qformat" value="semtools" type="hidden" />
 	<input name="includeHeader" value="false" type="hidden" />
+	<input name="useUnion" value="true" type="hidden" />
 	<input name="showAdd" value="<%=AuthUtil.isUserLoggedIn(request)%>" type="hidden" />
 	<input name="showRemove" value="false" type="hidden" />
 	<input name="action" value="semquery" type="hidden" />

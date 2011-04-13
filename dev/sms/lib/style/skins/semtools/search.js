@@ -5,8 +5,10 @@ function trim(stringToTrim) {
 function checkSearch(submitFormObj) {
 
 	var operator = "OR";
+	submitFormObj.useUnion.value = 'true';
 	if (submitFormObj.matchAll.checked) {
 		operator = "AND";
+		submitFormObj.useUnion.value = 'false';
 	}
 	var strict = "false";
 	if (submitFormObj.strict.checked) {

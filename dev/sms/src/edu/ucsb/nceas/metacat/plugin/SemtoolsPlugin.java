@@ -70,7 +70,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin, MetacatEventObserve
 
 	private static List<String> supportedActions = new ArrayList<String>();
 	
-	private static boolean useUnion = true;
+	private static boolean useUnionDefault = true;
 	private static boolean readAll = true;
 	private static String metacatURL = null;
 	private static Metacat mc = null;
@@ -440,6 +440,12 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin, MetacatEventObserve
 				} else {
 					log.warn("user: " + username + " does not have read permission for docid: " + docid);
 				}
+			}
+			
+			// expand or refine?
+			boolean useUnion = useUnionDefault;
+			if (params.containsKey("useUnion")) {
+				useUnion = Boolean.parseBoolean(params.get("useUnion")[0]);
 			}
 			
 			// look up the spatial query results if applicable
