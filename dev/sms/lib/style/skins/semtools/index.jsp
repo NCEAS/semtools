@@ -37,6 +37,7 @@
 <title>Semantic search</title>
 <link rel="stylesheet" type="text/css" href="<%=STYLE_SKINS_URL%>/semtools/semtools.css">
 <link rel="stylesheet" type="text/css" href="<%=STYLE_COMMON_URL%>/jquery/jqueryui/css/smoothness/jquery-ui-1.8.6.custom.css">
+<link rel="stylesheet" type="text/css" href="<%=STYLE_COMMON_URL%>/spatial/map.css" />
 
 <script language="javascript" type="text/javascript" src="<%=STYLE_COMMON_URL%>/jquery/jquery.js"></script>
 <script language="javascript" type="text/javascript" src="<%=STYLE_COMMON_URL%>/jquery/jsTree/_lib/jquery.cookie.js"></script>
@@ -48,7 +49,18 @@
 <script language="javascript" type="text/javascript" src="<%=STYLE_SKINS_URL%>/semtools/semtools.js"></script>
 <script language="javascript" type="text/javascript" src="<%=STYLE_COMMON_URL%>/branding.js"></script>
 
+<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+<script src="<%=STYLE_SKINS_URL%>/semtools/spatial/map.js"></script>
+
 <script language="Javascript" type="text/JavaScript"><!--
+function initializeSpatial() {
+	// we are only overriding the map.js file to have custom behavior in this UI 
+	var searchFormObj = $("#searchForm").get(0);
+    var bounds = new OpenLayers.Bounds(-180,-90,180,90);
+    // make the map for this skin
+    initMap("<%=GEOSERVER_URL%>", "<%=SERVLET_URL%>", "semtools", bounds, null, searchFormObj);
+}
+
 function populateActiveDomain(divId, class) {
 	// collect the filtering values we have so far
 	// these are hidden input fields in the form for holding the selected values
@@ -501,10 +513,23 @@ function clearCriteria() {
 	// refresh the search results now that they are less restrictive
 	doSearch();
 }
+function initTabs() {
+	$(function() {
+		$("#searchTabs").tabs();
+		$("#searchTabs").tabs("add", "#ecpTab", "Entity, Characteristic, Protocol");
+		$("#searchTabs").tabs("add", "#measurementTab", "Measurement");
+		$("#searchTabs").tabs("add", "#optionsTab", "Options");
+		$("#searchTabs").tabs("add", "#keywordsTab", "Keywords");
+		$("#searchTabs").tabs("add", "#spatialTab", "Spatial");
+		$("#searchTabs").tabs("add", "#cartTab", "Cart");
+	});
+}
 /**
  * Perform this when the page first loads
  */
 function pageLoad() {
+	initializeSpatial();
+	initTabs();
 	initialize();
 	doSearch();
 	loadCart();
@@ -525,19 +550,6 @@ function donothing() {}
 <div id="error">
 	<!-- error messages here -->
 </div>
-
-<!-- set up the tabs -->
-<script>
-	$(function() {
-		$("#searchTabs").tabs();
-		$("#searchTabs").tabs("add", "#ecpTab", "Entity, Characteristic, Protocol");
-		$("#searchTabs").tabs("add", "#measurementTab", "Measurement");
-		$("#searchTabs").tabs("add", "#optionsTab", "Options");
-		$("#searchTabs").tabs("add", "#keywordsTab", "Keywords");
-		$("#searchTabs").tabs("add", "#spatialTab", "Spatial");
-		$("#searchTabs").tabs("add", "#cartTab", "Cart");
-	});
-</script>
 
 <form method="POST" 
 		action="<%=SERVLET_URL%>" 
@@ -753,7 +765,15 @@ function donothing() {}
 					<td>
 						<table width="100%" cellspacing="0" cellpadding="0" border="0" class="subpanel">
 							<tr><td> 
-								<iframe id="mapFrame" name="mapFrame" scrolling="no" frameborder="0" width="780" height="420" src="<%=STYLE_SKINS_URL%>/semtools/spatial/map.jsp"> You need iframe support </iframe>
+								<div id="map"></div>
+								<div id="featureList">
+									<form id="mapForm" name="mapForm">
+										<select id="locations" name="locations" onchange="zoomToLocation(this)">
+											<!-- locations from the common spatial list in Metacat -->
+											<%@ include file="../../common/spatial/locations.jsp"%>
+										</select>
+									</form>
+								</div>							
 							</td></tr>
 						</table>
 						xmax: <input type="text" id="xmax" name="xmax" /><br/>
