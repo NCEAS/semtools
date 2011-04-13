@@ -763,23 +763,28 @@ function donothing() {}
 				
 				<tr>
 					<td>
-						<table width="100%" cellspacing="0" cellpadding="0" border="0" class="subpanel">
-							<tr><td> 
-								<div id="map"></div>
-								<div id="featureList">
-									<form id="mapForm" name="mapForm">
-										<select id="locations" name="locations" onchange="zoomToLocation(this)">
-											<!-- locations from the common spatial list in Metacat -->
-											<%@ include file="../../common/spatial/locations.jsp"%>
-										</select>
-									</form>
-								</div>							
-							</td></tr>
+						<table cellspacing="10" border="0" class="subpanel">
+							<tr>
+								<td> 
+									<div id="map"></div>
+									<div id="featureList">
+										<form id="mapForm" name="mapForm">
+											<select id="locations" name="locations" onchange="zoomToLocation(this)">
+												<!-- locations from the common spatial list in Metacat -->
+												<%@ include file="../../common/spatial/locations.jsp"%>
+											</select>
+										</form>
+									</div>							
+								</td>
+								<td>
+									Left lower corner: <br/>
+									<input type="text" id="xmin" name="xmin" /> <input type="text" id="ymin" name="ymin" /><br/>
+									Right upper corner: <br/>
+									<input type="text" id="xmax" name="xmax" /> <input type="text" id="ymax" name="ymax" /><br/>
+								</td>
+							</tr>
 						</table>
-						xmax: <input type="text" id="xmax" name="xmax" /><br/>
-						ymax: <input type="text" id="ymax" name="ymax" /><br/>
-						xmin: <input type="text" id="xmin" name="xmin" /><br/>
-						ymin: <input type="text" id="ymin" name="ymin" /><br/>
+						
 					</td>
 				</tr>
 			</table>
