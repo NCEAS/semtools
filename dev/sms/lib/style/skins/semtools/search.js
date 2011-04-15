@@ -5,10 +5,8 @@ function trim(stringToTrim) {
 function checkSearch(submitFormObj) {
 
 	var operator = "OR";
-	submitFormObj.useUnion.value = 'true';
 	if (submitFormObj.matchAll.checked) {
 		operator = "AND";
-		submitFormObj.useUnion.value = 'false';
 	}
 	var strict = "false";
 	if (submitFormObj.strict.checked) {
@@ -207,6 +205,18 @@ function generateQueryString(anyValue, searchFields) {
 function constructPathQuery(submitFormObj) {
 
 	var anyValue = submitFormObj.keywordValue.value;
+	
+	if (submitFormObj.matchAll.checked) {
+		submitFormObj.queryMode.value = 'INTERSECT';
+	} else {
+		submitFormObj.queryMode.value = 'UNION';
+	}
+	// don't provide a query if there is no value
+	if (anyValue.length == 0) {
+    	submitFormObj.query.value = "";
+    	submitFormObj.queryMode.value = "";
+    	return true;
+	}
 	var searchAll = false;
 	var searchFieldArray = new Array();
 	if (!searchAll) {
@@ -233,7 +243,7 @@ function constructPathQuery(submitFormObj) {
 		searchFieldArray[counter++] = "idinfo/keywords/theme/themekey";
 		searchFieldArray[counter++] = "placekey";
 	}
-    submitFormObj.query.value = generateQueryString(anyValue, searchFieldArray)
+    submitFormObj.query.value = generateQueryString(anyValue, searchFieldArray);
 		
     //alert("query: " + submitFormObj.query.value);
 

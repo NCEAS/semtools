@@ -442,10 +442,13 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin, MetacatEventObserve
 				}
 			}
 			
-			// expand or refine?
-			boolean useUnion = useUnionDefault;
-			if (params.containsKey("useUnion")) {
-				useUnion = Boolean.parseBoolean(params.get("useUnion")[0]);
+			// expand, refine, or neither?
+			String queryMode = null;
+			if (params.containsKey("queryMode")) {
+				queryMode = params.get("queryMode")[0];
+			}
+			if (queryMode != null && queryMode.length() == 0) {
+				queryMode = null;
 			}
 			
 			// look up the spatial query results if applicable
@@ -458,9 +461,9 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin, MetacatEventObserve
 			        float _ymin = Float.valueOf( (params.get("ymin"))[0] ).floatValue();
 			        SpatialQuery sq = new SpatialQuery();
 			        Vector<String> spatialDocids = sq.filterByBbox( _xmin, _ymin, _xmax, _ymax );
-			        if (useUnion) {
+			        if (queryMode != null && queryMode.equals(QueryGroup.UNION)) {
 			        	docids.addAll(spatialDocids);
-			        } else {
+			        } else if (queryMode != null && queryMode.equals(QueryGroup.INTERSECT)) {
 			        	docids.retainAll(spatialDocids);
 			        }
 		        } catch (Exception e) {
@@ -469,18 +472,21 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin, MetacatEventObserve
 			}
 			
 			
-			
 			// if there is not a regular query, we make one
 			String squery = null;
-			if (!params.containsKey("query")) {
-				// since this is a place holder, we don't care about the actual ids we "query for"
+			if (params.containsKey("query")) {
+				squery = params.get("query")[0];
+				if (squery != null && squery.length() == 0) {
+					squery = null;
+				}
+			}
+	        if (squery == null) {
+	        	// since this is a place holder, we don't care about the actual ids we "query for"
 				squery = DocumentIdQuery.createDocidQuery(new String[] {"INVALID"});
 				String[] queryArray = new String[1];
 		        queryArray[0] = squery;
 		        params.put("query", queryArray);
-			} else {
-				squery = params.get("query")[0];
-			}
+	        }
 	        
 	        // now perform an squery with the given docids
 	        String[] actionArray = new String[1];
@@ -492,11 +498,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin, MetacatEventObserve
 				docids.add("INVALID");
 			}
 	        DBQuery dbQuery = new DBQuery(docids);
-	        if (useUnion) {
-	        	dbQuery.setOperator(QueryGroup.UNION);
-	        } else {
-	        	dbQuery.setOperator(QueryGroup.INTERSECT);
-	        }
+	        dbQuery.setOperator(queryMode);
 	        QuerySpecification qspec = 
 	        	new QuerySpecification(
 	        			squery, 
