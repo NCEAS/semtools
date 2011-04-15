@@ -75,6 +75,9 @@ function initMap(GEOSERVER_URL, SERVLET_URL, qformat, bounds, additionalLayers, 
 			        searchFormObj.ymin.value=min_ll.lat;
 			        searchFormObj.xmax.value=max_ll.lon;
 			        searchFormObj.ymax.value=max_ll.lat;
+			        
+			        // perform the search
+			        doSearch();
 				
 			    }
 	});
