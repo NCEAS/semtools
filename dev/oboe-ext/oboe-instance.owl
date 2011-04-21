@@ -1,0 +1,219 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY dc "http://purl.org/dc/elements/1.1/" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY oboe "http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#" >
+    <!ENTITY oboe-core "http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#" >
+    <!ENTITY oboe-sbclter "http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#" >
+    <!ENTITY oboe-instance "https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/oboe-instance.owl#" >
+]>
+
+
+<rdf:RDF xmlns="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/oboe-instance.owl#"
+     xml:base="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/oboe-instance.owl"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:oboe-core="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#"
+     xmlns:oboe-instance="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/oboe-instance.owl#"
+     xmlns:oboe-sbclter="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:oboe="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#">
+    <owl:Ontology rdf:about="https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/oboe-instance.owl">
+        <rdfs:label>OBOE INSTANCES</rdfs:label>
+        <rdfs:comment>Sample instances for OBOE 1.0.</rdfs:comment>
+        <owl:versionInfo>Version 1.0</owl:versionInfo>
+        <owl:imports rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl"/>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <owl:AnnotationProperty rdf:about="&owl;versionInfo"/>
+    <owl:AnnotationProperty rdf:about="&rdfs;label"/>
+    <owl:AnnotationProperty rdf:about="&rdfs;comment"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#hasValue -->
+
+    <owl:ObjectProperty rdf:about="&oboe-core;hasValue"/>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#measurementFor -->
+
+    <owl:ObjectProperty rdf:about="&oboe-core;measurementFor"/>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic -->
+
+    <owl:ObjectProperty rdf:about="&oboe-core;ofCharacteristic"/>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofEntity -->
+
+    <owl:ObjectProperty rdf:about="&oboe-core;ofEntity"/>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard -->
+
+    <owl:ObjectProperty rdf:about="&oboe-core;usesStandard"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#hasCode -->
+
+    <owl:DatatypeProperty rdf:about="&oboe-core;hasCode"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMass -->
+
+    <owl:Class rdf:about="&oboe-sbclter;DryMass"/>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Kelp -->
+
+    <owl:Class rdf:about="&oboe-sbclter;Kelp"/>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Decimal -->
+
+    <owl:Class rdf:about="&oboe-core;Decimal"/>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement -->
+
+    <owl:Class rdf:about="&oboe-core;Measurement"/>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Observation -->
+
+    <owl:Class rdf:about="&oboe-core;Observation"/>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Gram -->
+
+    <owl:Class rdf:about="&oboe;Gram"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/oboe-instance.owl#kelp1 -->
+
+    <owl:NamedIndividual rdf:about="&oboe-instance;kelp1">
+        <rdf:type rdf:resource="&oboe-sbclter;Kelp"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/oboe-instance.owl#massValue1 -->
+
+    <owl:NamedIndividual rdf:about="&oboe-instance;massValue1">
+        <rdf:type rdf:resource="&oboe-core;Decimal"/>
+        <oboe-core:hasCode rdf:datatype="&xsd;double">12.2</oboe-core:hasCode>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/oboe-instance.owl#measurement1 -->
+
+    <owl:NamedIndividual rdf:about="&oboe-instance;measurement1">
+        <rdf:type rdf:resource="&oboe-core;Measurement"/>
+        <rdf:type>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&oboe-core;ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="&oboe-sbclter;DryMass"/>
+            </owl:Restriction>
+        </rdf:type>
+        <rdf:type>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&oboe-core;usesStandard"/>
+                <owl:someValuesFrom rdf:resource="&oboe;Gram"/>
+            </owl:Restriction>
+        </rdf:type>
+        <oboe-core:hasValue rdf:resource="&oboe-instance;massValue1"/>
+        <oboe-core:measurementFor rdf:resource="&oboe-instance;observation1"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://code.ecoinformatics.org/code/semtools/trunk/dev/oboe-ext/oboe-instance.owl#observation1 -->
+
+    <owl:NamedIndividual rdf:about="&oboe-instance;observation1">
+        <rdf:type rdf:resource="&oboe-core;Observation"/>
+        <oboe-core:ofEntity rdf:resource="&oboe-instance;kelp1"/>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.0.0.1469) http://owlapi.sourceforge.net -->
+
