@@ -539,6 +539,9 @@ public class Materializer {
 		OWLDataFactory dataFactory = manager.getOWLDataFactory();
         OWLOntology ontology = manager.createOntology(IRI.create(base));
 
+        // key tracking
+        Map<String, OWLIndividual> existingEntities = new HashMap<String, OWLIndividual>();
+        
         // import the referenced ontologies into this instance doc
         for (Ontology o: annotation.getOntologies().values()) {
 	        OWLImportsDeclaration importDeclaration = dataFactory.getOWLImportsDeclaration(IRI.create(o.getURI()));
@@ -618,8 +621,15 @@ public class Materializer {
 							OWLClassAssertionAxiom observationAssertion = dataFactory.getOWLClassAssertionAxiom(owlObservation, observationIndividual);
 				            manager.addAxiom(ontology, observationAssertion);
 				            
-							// entity
-							OWLIndividual entityIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#entity_" + observationId));
+							// entity, look for pre-existing instance for the value first
+				            // TODO: verify this - might be sort of a hack
+				            OWLIndividual entityIndividual = null;
+				            String entityKey = observation.getEntity().getURI() + "^^" + valueString;
+				            entityIndividual = existingEntities.get(entityKey);
+							if (entityIndividual == null) {
+								entityIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#entity_" + observationId));
+								existingEntities.put(entityKey, entityIndividual);
+							}
 							OWLClass owlEntity = dataFactory.getOWLClass(IRI.create(observation.getEntity().getURI()));
 							OWLClassAssertionAxiom entityAssertion = dataFactory.getOWLClassAssertionAxiom(owlEntity, entityIndividual);
 				            manager.addAxiom(ontology, entityAssertion);
