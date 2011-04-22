@@ -539,172 +539,179 @@ public class Materializer {
 		OWLDataFactory dataFactory = manager.getOWLDataFactory();
         OWLOntology ontology = manager.createOntology(IRI.create(base));
 
-        // import the referenced ontologies
+        // import the referenced ontologies into this instance doc
         for (Ontology o: annotation.getOntologies().values()) {
 	        OWLImportsDeclaration importDeclaration = dataFactory.getOWLImportsDeclaration(IRI.create(o.getURI()));
 	        OWLOntologyChange importAxiom = new AddImport(ontology, importDeclaration);
 	        manager.applyChange(importAxiom);
         }
         
-		// iterate over observations
-		List<Observation> observations = annotation.getObservations();
-		int obsCount = 0;
-		int measurementCount = 0;
-		for (Observation observation: observations) {
-			// observation
-			OWLIndividual observationIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#observation_" + obsCount));
-			OWLClass owlObservation = dataFactory.getOWLClass(IRI.create(oboeBase + "#Observation"));
-			OWLClassAssertionAxiom observationAssertion = dataFactory.getOWLClassAssertionAxiom(owlObservation, observationIndividual);
-            manager.addAxiom(ontology, observationAssertion);
-            
-			// entity
-			OWLIndividual entityIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#entity_" + obsCount));
-			OWLClass owlEntity = dataFactory.getOWLClass(IRI.create(observation.getEntity().getURI()));
-			OWLClassAssertionAxiom entityAssertion = dataFactory.getOWLClassAssertionAxiom(owlEntity, entityIndividual);
-            manager.addAxiom(ontology, entityAssertion);
-            
-            // connect entity to observation
-            OWLObjectProperty ofEntity = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#ofEntity"));
-            OWLObjectPropertyAssertionAxiom ofEntityAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(ofEntity, observationIndividual, entityIndividual);
-            AddAxiom ofEntityAxiomChange = new AddAxiom(ontology, ofEntityAssertion);
-            manager.applyChange(ofEntityAxiomChange);
-            
-            // TODO: context relationships here
-			
-            // measurements
-			List<Measurement> measurements = observation.getMeasurements();
-			for (Measurement measurement: measurements) {
+        // collect the measurement column mappings and do this data-centric
+		List<Attribute> annotatedAttributes = new ArrayList<Attribute>();
+		// TODO: handle multiple-cross-entity annotation
+		Entity entity = null;
+		String dataObject = null;;
 
-				// for selecting the correct attribute from the correct entity
-				String dataObject = measurement.getMapping().getDataObject();
-				int dataObjectIndex = Integer.parseInt(dataObject);
-				String attributeName = measurement.getMapping().getAttribute();
+        for (Mapping mapping: annotation.getMappings()) {
+        	Measurement measurement = mapping.getMeasurement();
+        	// for selecting the correct attribute from the correct entity
+			dataObject = measurement.getMapping().getDataObject();
+			int dataObjectIndex = Integer.parseInt(dataObject);
+			String attributeName = mapping.getAttribute();
 
-				Entity entity = dataPackage.getEntityList()[dataObjectIndex];
-				Attribute[] attributes = entity.getAttributeList().getAttributes();
-				// find the index of the attribute based on name (id is not required)
-				List<Attribute> annotatedAttributes = new ArrayList<Attribute>();
-				for (Attribute a: attributes) {
-					if (a.getName().equals(attributeName)) {
-						// for this measurement?
-						annotatedAttributes.add(a);
-					}
-				}
-				
-				//Now build a data query, execute it, and see what we got
-				if (success && dataPackage != null) {
-					DataPackage[] dataPackages = {dataPackage};
-					Query query = new Query();
-					/* SELECT clause */
-					for (Attribute a: annotatedAttributes) {
-						SelectionItem selectionItem = new SelectionItem(entity, a);
-						query.addSelectionItem(selectionItem);
-					}	
-					/* FROM clause */
-					TableItem tableItem = new TableItem(entity);
-					query.addTableItem(tableItem);
-					/* WHERE clause with condition could go here */
-					System.out.println("Query SQL = " + query.toSQLString());
-
-					ResultSet resultSet = null;
-					try {
-						resultSet = dataManager.selectData(query, dataPackages);
-						if (resultSet != null) {
-							int columnCount = resultSet.getMetaData().getColumnCount();
-							while (resultSet.next()) {
-								// get the value for this row to make an instance
-								for (int i=0; i < columnCount; i++) {
-									Object value = resultSet.getObject(i+1);
-									String valueString = null;
-									if (value != null) {
-										valueString  = value.toString();
-									}
-									
-									// measurement
-									OWLIndividual measurementIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#measurement_" + obsCount + "_" + measurementCount));
-									OntologyClass template = measurement.getTemplate();
-						            OWLClass owlMeasurement = null;
-						            // TODO: handle templates?
-					    	        owlMeasurement = dataFactory.getOWLClass(IRI.create(Annotation.OBOE_CLASSES.get(Measurement.class).getURI()));
-									OWLClassAssertionAxiom measurementAssertion = dataFactory.getOWLClassAssertionAxiom(owlMeasurement, measurementIndividual);
-						            manager.addAxiom(ontology, measurementAssertion);
-									
-									// measurement value individual
-									OWLIndividual valueIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#value_" + obsCount + "_" + measurementCount));
-									OWLClass owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#PrimitiveValue"));
-									OWLClassAssertionAxiom valueAssertion = dataFactory.getOWLClassAssertionAxiom(owlPrimativeValue, valueIndividual);
-									manager.addAxiom(ontology, valueAssertion);
-
-									// add the hasCode <value> data property
-									// TODO: better object typing
-									if (value != null) {
-							            OWLDataProperty hasCode = dataFactory.getOWLDataProperty(IRI.create(oboeBase + "#hasCode"));
-							            OWLDataPropertyAssertionAxiom hasCodeAssertion = dataFactory.getOWLDataPropertyAssertionAxiom(hasCode, valueIndividual, valueString);
-							            AddAxiom hasCodeAxiomChange = new AddAxiom(ontology, hasCodeAssertion);
-							            manager.applyChange(hasCodeAxiomChange);
-									}
-						            
-						            // add the hasValue <PrimativeValue> object property
-						            OWLObjectProperty hasValue = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#hasValue"));
-						            OWLObjectPropertyAssertionAxiom hasValueAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(hasValue, measurementIndividual, valueIndividual);
-						            AddAxiom hasValueAxiomChange = new AddAxiom(ontology, hasValueAssertion);
-						            manager.applyChange(hasValueAxiomChange);
-						            
-						            // add the measurementFor <Observation> property
-						            // TODO: attach measurement to the correct Observation instance ("is key"/"is identifying")
-						            // TODO: need to inspect the context and the data values to determine if we need another Observation instance for this measurement
-						            OWLObjectProperty measurementFor = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#measurementFor"));
-						            OWLObjectPropertyAssertionAxiom measurementForAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(measurementFor, measurementIndividual, observationIndividual);
-						            AddAxiom measurementForAxiomChange = new AddAxiom(ontology, measurementForAssertion);
-						            manager.applyChange(measurementForAxiomChange);
-						            
-						            // add the Characteristic, Standard and Protocol here
-						            // handle characteristics
-									for (Characteristic characteristic: measurement.getCharacteristics()) {
-							            OWLObjectProperty ofCharacteristic = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#ofCharacteristic"));
-										OWLClass owlCharacteristic = dataFactory.getOWLClass(IRI.create(characteristic.getURI()));
-										OWLObjectSomeValuesFrom someFromCharacteristic = dataFactory.getOWLObjectSomeValuesFrom(ofCharacteristic, owlCharacteristic);
-										OWLClassAssertionAxiom ofCharacteristicAssertion = dataFactory.getOWLClassAssertionAxiom(someFromCharacteristic, measurementIndividual);
-										AddAxiom ofCharacteristicAxiomChange = new AddAxiom(ontology, ofCharacteristicAssertion);
-							            manager.applyChange(ofCharacteristicAxiomChange);
-									}
-									// standard
-									Standard standard = measurement.getStandard();
-									if (standard != null) {
-							            OWLObjectProperty usesStandard = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#usesStandard"));
-										OWLClass owlStandard = dataFactory.getOWLClass(IRI.create(standard.getURI()));
-										OWLObjectSomeValuesFrom someFromStandard = dataFactory.getOWLObjectSomeValuesFrom(usesStandard, owlStandard);
-										OWLClassAssertionAxiom usesStandardAssertion = dataFactory.getOWLClassAssertionAxiom(someFromStandard, measurementIndividual);
-										AddAxiom usesStandardAxiomChange = new AddAxiom(ontology, usesStandardAssertion);
-							            manager.applyChange(usesStandardAxiomChange);
-									}
-						            // protocol
-						            Protocol protocol = measurement.getProtocol();
-						            if (protocol != null) {
-						            	OWLObjectProperty usesProtocol = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#usesProtocol"));
-										OWLClass owlProtocol = dataFactory.getOWLClass(IRI.create(protocol.getURI()));
-										OWLObjectSomeValuesFrom someFromProtocol = dataFactory.getOWLObjectSomeValuesFrom(usesProtocol, owlProtocol);
-										OWLClassAssertionAxiom usesProtocolAssertion = dataFactory.getOWLClassAssertionAxiom(someFromProtocol, measurementIndividual);
-										AddAxiom usesProtocolAxiomChange = new AddAxiom(ontology, usesProtocolAssertion);
-							            manager.applyChange(usesProtocolAxiomChange);
-						            }
-								}
-								measurementCount++;
-								//just one row
-								//break;
-							}
-						}
-					} finally {
-						if (resultSet != null) {
-							resultSet.close();
-						}
-						// clean up
-						// keep it cached for performance
-						//dataManager.dropTables(dataPackage);
-					}
+			entity = dataPackage.getEntityList()[dataObjectIndex];
+			Attribute[] attributes = entity.getAttributeList().getAttributes();
+			// find the index of the attribute based on name (id is not required)
+			for (Attribute a: attributes) {
+				if (a.getName().equals(attributeName)) {
+					// for this measurement?
+					annotatedAttributes.add(a);
 				}
 			}
-			obsCount++;
+        }
+        
+        //Now build a data query, execute it, and see what we got
+		if (success && dataPackage != null) {
+			DataPackage[] dataPackages = {dataPackage};
+			Query query = new Query();
+			/* SELECT clause */
+			for (Attribute a: annotatedAttributes) {
+				SelectionItem selectionItem = new SelectionItem(entity, a);
+				query.addSelectionItem(selectionItem);
+			}	
+			/* FROM clause */
+			TableItem tableItem = new TableItem(entity);
+			query.addTableItem(tableItem);
+			/* WHERE clause with condition could go here */
+			System.out.println("Query SQL = " + query.toSQLString());
+
+			ResultSet resultSet = null;
+			try {
+				resultSet = dataManager.selectData(query, dataPackages);
+				if (resultSet != null) {
+					int columnCount = resultSet.getMetaData().getColumnCount();
+					int obsCount = 0; // each row for starters
+					int measurementCount = 0; // much be unique across the instances
+					while (resultSet.next()) {
+						// get the value for this row to make an instance
+						for (int i=0; i < columnCount; i++) {
+							Object value = resultSet.getObject(i+1);
+							String valueString = null;
+							if (value != null) {
+								valueString  = value.toString();
+							}
+							
+							// attribute we are on
+							Attribute attribute = annotatedAttributes.get(i);
+							Measurement measurement = annotation.getMapping(attribute.getName(), dataObject).getMeasurement();
+							
+							// get the observation for this measurement
+							Observation observation = annotation.getObservation(measurement);
+							String observationId = obsCount + "_" + observation.getLabel();
+							
+							// observation individual
+							// TODO: reduce the number of observations when each row pertains to the same instance
+				            // TODO: we need to attach measurement to the correct Observation instance (using "is key"/"is identifying" considerations)
+				            // TODO: need to inspect the context and the data values to determine if we need another Observation instance for this measurement
+							OWLIndividual observationIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#observation_" + observationId));
+							OWLClass owlObservation = dataFactory.getOWLClass(IRI.create(oboeBase + "#Observation"));
+							OWLClassAssertionAxiom observationAssertion = dataFactory.getOWLClassAssertionAxiom(owlObservation, observationIndividual);
+				            manager.addAxiom(ontology, observationAssertion);
+				            
+							// entity
+							OWLIndividual entityIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#entity_" + observationId));
+							OWLClass owlEntity = dataFactory.getOWLClass(IRI.create(observation.getEntity().getURI()));
+							OWLClassAssertionAxiom entityAssertion = dataFactory.getOWLClassAssertionAxiom(owlEntity, entityIndividual);
+				            manager.addAxiom(ontology, entityAssertion);
+				            
+				            // connect entity to observation
+				            OWLObjectProperty ofEntity = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#ofEntity"));
+				            OWLObjectPropertyAssertionAxiom ofEntityAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(ofEntity, observationIndividual, entityIndividual);
+				            AddAxiom ofEntityAxiomChange = new AddAxiom(ontology, ofEntityAssertion);
+				            manager.applyChange(ofEntityAxiomChange);
+							
+							// measurement
+							OWLIndividual measurementIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#measurement_" + observationId + "_" + measurementCount));
+							OntologyClass template = measurement.getTemplate();
+				            OWLClass owlMeasurement = null;
+				            // TODO: handle template Measurement in annotation as well
+			    	        owlMeasurement = dataFactory.getOWLClass(IRI.create(Annotation.OBOE_CLASSES.get(Measurement.class).getURI()));
+							OWLClassAssertionAxiom measurementAssertion = dataFactory.getOWLClassAssertionAxiom(owlMeasurement, measurementIndividual);
+				            manager.addAxiom(ontology, measurementAssertion);
+							
+				            // add the measurementFor <Observation> property
+				            OWLObjectProperty measurementFor = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#measurementFor"));
+				            OWLObjectPropertyAssertionAxiom measurementForAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(measurementFor, measurementIndividual, observationIndividual);
+				            AddAxiom measurementForAxiomChange = new AddAxiom(ontology, measurementForAssertion);
+				            manager.applyChange(measurementForAxiomChange);
+				            
+							// measurement value individual
+							OWLIndividual valueIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#value_" + observationId + "_" + measurementCount));
+							OWLClass owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#PrimitiveValue"));
+							OWLClassAssertionAxiom valueAssertion = dataFactory.getOWLClassAssertionAxiom(owlPrimativeValue, valueIndividual);
+							manager.addAxiom(ontology, valueAssertion);
+
+							// add the hasCode <value> data property
+							// TODO: better object typing
+							if (value != null) {
+					            OWLDataProperty hasCode = dataFactory.getOWLDataProperty(IRI.create(oboeBase + "#hasCode"));
+					            OWLDataPropertyAssertionAxiom hasCodeAssertion = dataFactory.getOWLDataPropertyAssertionAxiom(hasCode, valueIndividual, valueString);
+					            AddAxiom hasCodeAxiomChange = new AddAxiom(ontology, hasCodeAssertion);
+					            manager.applyChange(hasCodeAxiomChange);
+							}
+				            
+				            // add the hasValue <PrimativeValue> object property
+				            OWLObjectProperty hasValue = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#hasValue"));
+				            OWLObjectPropertyAssertionAxiom hasValueAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(hasValue, measurementIndividual, valueIndividual);
+				            AddAxiom hasValueAxiomChange = new AddAxiom(ontology, hasValueAssertion);
+				            manager.applyChange(hasValueAxiomChange);
+				            
+				            // add the Characteristic, Standard and Protocol here
+				            // handle characteristics
+							for (Characteristic characteristic: measurement.getCharacteristics()) {
+					            OWLObjectProperty ofCharacteristic = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#ofCharacteristic"));
+								OWLClass owlCharacteristic = dataFactory.getOWLClass(IRI.create(characteristic.getURI()));
+								OWLObjectSomeValuesFrom someFromCharacteristic = dataFactory.getOWLObjectSomeValuesFrom(ofCharacteristic, owlCharacteristic);
+								OWLClassAssertionAxiom ofCharacteristicAssertion = dataFactory.getOWLClassAssertionAxiom(someFromCharacteristic, measurementIndividual);
+								AddAxiom ofCharacteristicAxiomChange = new AddAxiom(ontology, ofCharacteristicAssertion);
+					            manager.applyChange(ofCharacteristicAxiomChange);
+							}
+							// standard
+							Standard standard = measurement.getStandard();
+							if (standard != null) {
+					            OWLObjectProperty usesStandard = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#usesStandard"));
+								OWLClass owlStandard = dataFactory.getOWLClass(IRI.create(standard.getURI()));
+								OWLObjectSomeValuesFrom someFromStandard = dataFactory.getOWLObjectSomeValuesFrom(usesStandard, owlStandard);
+								OWLClassAssertionAxiom usesStandardAssertion = dataFactory.getOWLClassAssertionAxiom(someFromStandard, measurementIndividual);
+								AddAxiom usesStandardAxiomChange = new AddAxiom(ontology, usesStandardAssertion);
+					            manager.applyChange(usesStandardAxiomChange);
+							}
+				            // protocol
+				            Protocol protocol = measurement.getProtocol();
+				            if (protocol != null) {
+				            	OWLObjectProperty usesProtocol = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#usesProtocol"));
+								OWLClass owlProtocol = dataFactory.getOWLClass(IRI.create(protocol.getURI()));
+								OWLObjectSomeValuesFrom someFromProtocol = dataFactory.getOWLObjectSomeValuesFrom(usesProtocol, owlProtocol);
+								OWLClassAssertionAxiom usesProtocolAssertion = dataFactory.getOWLClassAssertionAxiom(someFromProtocol, measurementIndividual);
+								AddAxiom usesProtocolAxiomChange = new AddAxiom(ontology, usesProtocolAssertion);
+					            manager.applyChange(usesProtocolAxiomChange);
+				            }
+				            // column iteration
+							measurementCount++;
+						}
+						// row iteration
+						obsCount++;
+						//break;
+					}
+				}
+			} finally {
+				if (resultSet != null) {
+					resultSet.close();
+				}
+				// clean up
+				// keep it cached for performance
+				//dataManager.dropTables(dataPackage);
+			}
 		}
 		File file = new File(annotation.getURI() + "-instances.owl");
 		FileOutputStream fos = new FileOutputStream(file);
