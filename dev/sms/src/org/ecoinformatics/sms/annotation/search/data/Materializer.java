@@ -510,7 +510,7 @@ public class Materializer {
 			endPoint.setSessionId("usePublic");
 			
 			// get the annotation and measurement to check
-			String annotationId = "benriver.302.5";
+			String annotationId = "benriver.302.7";
 			DocumentDownloadUtil ddu = new DocumentDownloadUtil();
 			InputStream annotationInputStream = ddu.downloadDocument(annotationId, endPoint);
 			Annotation annotation = Annotation.read(annotationInputStream);
@@ -540,8 +540,9 @@ public class Materializer {
         OWLOntology ontology = manager.createOntology(IRI.create(base));
 
         // key tracking
+        Map<OWLIndividual, OWLIndividual> existingObservations = new HashMap<OWLIndividual, OWLIndividual>();
         Map<String, OWLIndividual> existingEntities = new HashMap<String, OWLIndividual>();
-        
+
         // import the referenced ontologies into this instance doc
         for (Ontology o: annotation.getOntologies().values()) {
 	        OWLImportsDeclaration importDeclaration = dataFactory.getOWLImportsDeclaration(IRI.create(o.getURI()));
@@ -612,20 +613,15 @@ public class Materializer {
 							Observation observation = annotation.getObservation(measurement);
 							String observationId = obsCount + "_" + observation.getLabel();
 							
-							// observation individual
-							// TODO: reduce the number of observations when each row pertains to the same instance
-				            // TODO: we need to attach measurement to the correct Observation instance (using "is key"/"is identifying" considerations)
-				            // TODO: need to inspect the context and the data values to determine if we need another Observation instance for this measurement
-							OWLIndividual observationIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#observation_" + observationId));
-							OWLClass owlObservation = dataFactory.getOWLClass(IRI.create(oboeBase + "#Observation"));
-							OWLClassAssertionAxiom observationAssertion = dataFactory.getOWLClassAssertionAxiom(owlObservation, observationIndividual);
-				            manager.addAxiom(ontology, observationAssertion);
-				            
-							// entity, look for pre-existing instance for the value first
-				            // TODO: verify this - might be sort of a hack
+							// entity, look for pre-existing instances for the value first
 				            OWLIndividual entityIndividual = null;
-				            String entityKey = observation.getEntity().getURI() + "^^" + valueString;
-				            entityIndividual = existingEntities.get(entityKey);
+			            	String entityKey = measurement.getLabel() + "^^" + valueString;
+
+				            // if the measurement identifies a key Entity, we can reuse it
+				            if (measurement.isKey()) {
+					            entityIndividual = existingEntities.get(entityKey);
+				            }
+				            // make and save the entity for possible future reuse (next row)
 							if (entityIndividual == null) {
 								entityIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#entity_" + observationId));
 								existingEntities.put(entityKey, entityIndividual);
@@ -633,6 +629,20 @@ public class Materializer {
 							OWLClass owlEntity = dataFactory.getOWLClass(IRI.create(observation.getEntity().getURI()));
 							OWLClassAssertionAxiom entityAssertion = dataFactory.getOWLClassAssertionAxiom(owlEntity, entityIndividual);
 				            manager.addAxiom(ontology, entityAssertion);
+				            
+							// observation individual
+							// isDistinct=true means Observations of the same Entity instance are considered a single Observation instance
+							OWLIndividual observationIndividual = null;
+							if (observation.isDistinct()) {
+								observationIndividual = existingObservations.get(entityIndividual);
+							}
+							if (observationIndividual == null) {
+								observationIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#observation_" + observationId));
+								existingObservations.put(entityIndividual, observationIndividual);
+							}
+							OWLClass owlObservation = dataFactory.getOWLClass(IRI.create(oboeBase + "#Observation"));
+							OWLClassAssertionAxiom observationAssertion = dataFactory.getOWLClassAssertionAxiom(owlObservation, observationIndividual);
+				            manager.addAxiom(ontology, observationAssertion);
 				            
 				            // connect entity to observation
 				            OWLObjectProperty ofEntity = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#ofEntity"));
