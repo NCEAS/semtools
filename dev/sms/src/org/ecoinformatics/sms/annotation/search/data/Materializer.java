@@ -31,6 +31,7 @@ import org.ecoinformatics.datamanager.util.DocumentDownloadUtil;
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.Characteristic;
+import org.ecoinformatics.sms.annotation.Context;
 import org.ecoinformatics.sms.annotation.Mapping;
 import org.ecoinformatics.sms.annotation.Measurement;
 import org.ecoinformatics.sms.annotation.Observation;
@@ -510,7 +511,7 @@ public class Materializer {
 			endPoint.setSessionId("usePublic");
 			
 			// get the annotation and measurement to check
-			String annotationId = "benriver.302.7";
+			String annotationId = "benriver.302.10";
 			DocumentDownloadUtil ddu = new DocumentDownloadUtil();
 			InputStream annotationInputStream = ddu.downloadDocument(annotationId, endPoint);
 			Annotation annotation = Annotation.read(annotationInputStream);
@@ -596,6 +597,7 @@ public class Materializer {
 					int columnCount = resultSet.getMetaData().getColumnCount();
 					int obsCount = 0; // each row for starters
 					int measurementCount = 0; // much be unique across the instances
+					Map<Observation, OWLIndividual> observationsForRow = new HashMap<Observation, OWLIndividual>();
 					while (resultSet.next()) {
 						// get the value for this row to make an instance
 						for (int i=0; i < columnCount; i++) {
@@ -649,7 +651,10 @@ public class Materializer {
 				            OWLObjectPropertyAssertionAxiom ofEntityAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(ofEntity, observationIndividual, entityIndividual);
 				            AddAxiom ofEntityAxiomChange = new AddAxiom(ontology, ofEntityAssertion);
 				            manager.applyChange(ofEntityAxiomChange);
-							
+				            
+				            // save the observation for context connection
+				            observationsForRow.put(observation, observationIndividual);
+				            
 							// measurement
 							OWLIndividual measurementIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#measurement_" + observationId + "_" + measurementCount));
 							OntologyClass template = measurement.getTemplate();
@@ -716,13 +721,30 @@ public class Materializer {
 								AddAxiom usesProtocolAxiomChange = new AddAxiom(ontology, usesProtocolAssertion);
 					            manager.applyChange(usesProtocolAxiomChange);
 				            }
-				            // column iteration
 							measurementCount++;
+						} // end column iteration
+						
+						// connect context for the observations
+						for (Observation observation: annotation.getObservations()) {
+							if (observationsForRow.containsKey(observation)) {
+								OWLIndividual observationIndividual = observationsForRow.get(observation);
+								List<Context> contexts = observation.getContexts();
+								if (contexts != null && contexts.size() > 0) {
+									for (Context context:contexts) {
+										// add the context
+										OWLIndividual contextualizingObservationIndividual = observationsForRow.get(context.getObservation());
+							            OWLObjectProperty hasContext = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#hasContext"));
+							            OWLObjectPropertyAssertionAxiom hasContextAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(hasContext, observationIndividual, contextualizingObservationIndividual);
+							            AddAxiom hasContextAxiomChange = new AddAxiom(ontology, hasContextAssertion);
+							            manager.applyChange(hasContextAxiomChange);
+									}
+								}
+							}
 						}
-						// row iteration
+			            // move to next row/observation
 						obsCount++;
 						//break;
-					}
+					} // end row iteration
 				}
 			} finally {
 				if (resultSet != null) {
