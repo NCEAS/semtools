@@ -52,6 +52,7 @@ import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLImportsDeclaration;
 import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
@@ -59,11 +60,18 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.reasoner.ConsoleProgressMonitor;
+import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
+import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
+import org.semanticweb.owlapi.util.InferredOntologyGenerator;
+
+import au.com.bytecode.opencsv.CSVWriter;
+
+import com.clarkparsia.pellet.owlapiv3.PelletReasoner;
+import com.clarkparsia.pellet.owlapiv3.PelletReasonerFactory;
 
 import edu.ucsb.nceas.metacat.dataquery.MetacatDatabaseConnectionPoolFactory;
 import edu.ucsb.nceas.metacat.dataquery.MetacatEcogridEndPoint;
-
-import au.com.bytecode.opencsv.CSVWriter;
 
 public class Materializer {
 
@@ -677,10 +685,22 @@ public class Materializer {
 							manager.addAxiom(ontology, valueAssertion);
 
 							// add the hasCode <value> data property
-							// TODO: better object typing
 							if (value != null) {
+								// handle data types
+					            OWLLiteral valueLiteral = null;
+					            if (value instanceof Integer) {
+					            	valueLiteral = dataFactory.getOWLLiteral(((Integer)value).intValue());
+					            } else if (value instanceof Float) {
+					            	valueLiteral = dataFactory.getOWLLiteral(((Float)value).floatValue());
+					            } else if (value instanceof Double) {
+					            	valueLiteral = dataFactory.getOWLLiteral(((Double)value).doubleValue());
+					            } else if (value instanceof Boolean) {
+					            	valueLiteral = dataFactory.getOWLLiteral(((Boolean)value).booleanValue());
+					            } else {
+					            	valueLiteral = dataFactory.getOWLLiteral(value.toString());
+					            }
 					            OWLDataProperty hasCode = dataFactory.getOWLDataProperty(IRI.create(oboeBase + "#hasCode"));
-					            OWLDataPropertyAssertionAxiom hasCodeAssertion = dataFactory.getOWLDataPropertyAssertionAxiom(hasCode, valueIndividual, valueString);
+					            OWLDataPropertyAssertionAxiom hasCodeAssertion = dataFactory.getOWLDataPropertyAssertionAxiom(hasCode, valueIndividual, valueLiteral);
 					            AddAxiom hasCodeAxiomChange = new AddAxiom(ontology, hasCodeAssertion);
 					            manager.applyChange(hasCodeAxiomChange);
 							}
@@ -755,6 +775,18 @@ public class Materializer {
 				//dataManager.dropTables(dataPackage);
 			}
 		}
+		
+		// reason/infer
+		boolean reason = false;
+		if (reason) {
+			ConsoleProgressMonitor progressMonitor = new ConsoleProgressMonitor();
+	        OWLReasonerConfiguration config = new SimpleConfiguration(progressMonitor);
+	        PelletReasoner newReasoner = PelletReasonerFactory.getInstance().createReasoner(ontology, config);
+	        newReasoner.prepareReasoner();
+	        InferredOntologyGenerator iog = new InferredOntologyGenerator(newReasoner);
+	        iog.fillOntology(manager, ontology);
+		}
+		
 		File file = new File(annotation.getURI() + "-instances.owl");
 		FileOutputStream fos = new FileOutputStream(file);
 		
