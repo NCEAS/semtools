@@ -329,13 +329,6 @@
     <owl:Class rdf:about="&oboe;PhysicalCharacteristic"/>
     
 
-
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Relationship -->
-
-    <owl:Class rdf:about="&oboe;Relationship"/>
-    
-
-
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Type -->
 
     <owl:Class rdf:about="&oboe;Type"/>
@@ -494,7 +487,7 @@
     <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#CompositionRelationship -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#CompositionRelationship">
-        <rdfs:subClassOf rdf:resource="&oboe;Relationship"/>
+        <rdfs:subClassOf rdf:resource="&oboe-core;Relationship"/>
     </owl:Class>
     
 
@@ -2712,7 +2705,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#SpatialRelationship -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#SpatialRelationship">
-        <rdfs:subClassOf rdf:resource="&oboe;Relationship"/>
+        <rdfs:subClassOf rdf:resource="&oboe-core;Relationship"/>
     </owl:Class>
     
 
@@ -2893,7 +2886,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalRelationship -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalRelationship">
-        <rdfs:subClassOf rdf:resource="&oboe;Relationship"/>
+        <rdfs:subClassOf rdf:resource="&oboe-core;Relationship"/>
     </owl:Class>
     
 
