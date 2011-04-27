@@ -53,6 +53,7 @@ import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLImportsDeclaration;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
@@ -519,7 +520,7 @@ public class Materializer {
 			endPoint.setSessionId("usePublic");
 			
 			// get the annotation and measurement to check
-			String annotationId = "benriver.302.10";
+			String annotationId = "benriver.302.11";
 			DocumentDownloadUtil ddu = new DocumentDownloadUtil();
 			InputStream annotationInputStream = ddu.downloadDocument(annotationId, endPoint);
 			Annotation annotation = Annotation.read(annotationInputStream);
@@ -605,7 +606,11 @@ public class Materializer {
 					int columnCount = resultSet.getMetaData().getColumnCount();
 					int obsCount = 0; // each row for starters
 					int measurementCount = 0; // much be unique across the instances
+					int contextCount = 0; // much be unique across the instances
+
 					Map<Observation, OWLIndividual> observationsForRow = new HashMap<Observation, OWLIndividual>();
+					Map<OWLIndividual, OWLIndividual> entitiesForObservation = new HashMap<OWLIndividual, OWLIndividual>();
+
 					while (resultSet.next()) {
 						// get the value for this row to make an instance
 						for (int i=0; i < columnCount; i++) {
@@ -662,6 +667,8 @@ public class Materializer {
 				            
 				            // save the observation for context connection
 				            observationsForRow.put(observation, observationIndividual);
+				            // save the obs->entity mapping we used (for context processing later)
+				            entitiesForObservation.put(observationIndividual, entityIndividual);
 				            
 							// measurement
 							OWLIndividual measurementIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#measurement_" + observationId + "_" + measurementCount));
@@ -751,12 +758,50 @@ public class Materializer {
 								List<Context> contexts = observation.getContexts();
 								if (contexts != null && contexts.size() > 0) {
 									for (Context context:contexts) {
-										// add the context
+										// look up the contextualizing observation
 										OWLIndividual contextualizingObservationIndividual = observationsForRow.get(context.getObservation());
-							            OWLObjectProperty hasContext = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#hasContext"));
-							            OWLObjectPropertyAssertionAxiom hasContextAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(hasContext, observationIndividual, contextualizingObservationIndividual);
-							            AddAxiom hasContextAxiomChange = new AddAxiom(ontology, hasContextAssertion);
-							            manager.applyChange(hasContextAxiomChange);
+
+										// if we have a relationship, we need an actual Context instance to relate them
+										if (context.getRelationship() != null) {
+											String observationId = obsCount + "_" + observation.getLabel();
+											// make the context individual
+											OWLIndividual contextIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#context_" + observationId + "_" + contextCount));
+								            OWLClass owlContext = dataFactory.getOWLClass(IRI.create(Annotation.OBOE_CLASSES.get(Context.class).getURI()));
+											OWLClassAssertionAxiom contextAssertion = dataFactory.getOWLClassAssertionAxiom(owlContext, contextIndividual);
+								            manager.addAxiom(ontology, contextAssertion);
+								            // set the relationship using "ofCharacteristic"
+								            OWLObjectProperty ofCharacteristic = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#ofCharacteristic"));
+											OWLClass owlRelationship = dataFactory.getOWLClass(IRI.create(context.getRelationship().getURI()));
+											OWLObjectAllValuesFrom onlyCharacteristic = dataFactory.getOWLObjectAllValuesFrom(ofCharacteristic, owlRelationship);
+											OWLClassAssertionAxiom ofCharacteristicAssertion = dataFactory.getOWLClassAssertionAxiom(onlyCharacteristic, contextIndividual);
+											AddAxiom ofCharacteristicAxiomChange = new AddAxiom(ontology, ofCharacteristicAssertion);
+								            manager.applyChange(ofCharacteristicAxiomChange);
+								            // add the measurementFor <Observation> property
+								            OWLObjectProperty measurementFor = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#measurementFor"));
+								            OWLObjectPropertyAssertionAxiom measurementForAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(measurementFor, contextIndividual, observationIndividual);
+								            AddAxiom measurementForAxiomChange = new AddAxiom(ontology, measurementForAssertion);
+								            manager.applyChange(measurementForAxiomChange);
+								            // set the contextualizing observation
+								            OWLObjectProperty hasContextObservation = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#hasContextObservation"));
+								            OWLObjectPropertyAssertionAxiom hasContextObservationAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(hasContextObservation, contextIndividual, contextualizingObservationIndividual);
+								            AddAxiom hasContextObservationAxiomChange = new AddAxiom(ontology, hasContextObservationAssertion);
+								            manager.applyChange(hasContextObservationAxiomChange);
+								            // set the value as the observation's entity
+								            OWLIndividual entityIndividual = entitiesForObservation.get(observationIndividual);
+								            OWLObjectProperty hasValue = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#hasValue"));
+								            OWLObjectPropertyAssertionAxiom hasValueAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(hasValue, contextIndividual, entityIndividual);
+								            AddAxiom hasValueAxiomChange = new AddAxiom(ontology, hasValueAssertion);
+								            manager.applyChange(hasValueAxiomChange);
+								            
+								        } else {
+											// just a generic "hasContext"
+											OWLObjectProperty hasContext = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#hasContext"));
+								            OWLObjectPropertyAssertionAxiom hasContextAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(hasContext, observationIndividual, contextualizingObservationIndividual);
+								            AddAxiom hasContextAxiomChange = new AddAxiom(ontology, hasContextAssertion);
+								            manager.applyChange(hasContextAxiomChange);
+										}
+														
+										contextCount++;
 									}
 								}
 							}
