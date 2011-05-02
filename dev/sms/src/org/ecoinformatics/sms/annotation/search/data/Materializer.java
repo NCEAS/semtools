@@ -520,7 +520,7 @@ public class Materializer {
 			endPoint.setSessionId("usePublic");
 			
 			// get the annotation and measurement to check
-			String annotationId = "benriver.302.11";
+			String annotationId = "benriver.302.17";
 			DocumentDownloadUtil ddu = new DocumentDownloadUtil();
 			InputStream annotationInputStream = ddu.downloadDocument(annotationId, endPoint);
 			Annotation annotation = Annotation.read(annotationInputStream);
@@ -688,8 +688,6 @@ public class Materializer {
 							// measurement value individual
 							OWLIndividual valueIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#value_" + observationId + "_" + measurementCount));
 							OWLClass owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#PrimitiveValue"));
-							OWLClassAssertionAxiom valueAssertion = dataFactory.getOWLClassAssertionAxiom(owlPrimativeValue, valueIndividual);
-							manager.addAxiom(ontology, valueAssertion);
 
 							// add the hasCode <value> data property
 							if (value != null) {
@@ -697,20 +695,28 @@ public class Materializer {
 					            OWLLiteral valueLiteral = null;
 					            if (value instanceof Integer) {
 					            	valueLiteral = dataFactory.getOWLLiteral(((Integer)value).intValue());
+					            	owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#Decimal"));
 					            } else if (value instanceof Float) {
 					            	valueLiteral = dataFactory.getOWLLiteral(((Float)value).floatValue());
+					            	owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#Decimal"));
 					            } else if (value instanceof Double) {
 					            	valueLiteral = dataFactory.getOWLLiteral(((Double)value).doubleValue());
+					            	owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#Decimal"));
 					            } else if (value instanceof Boolean) {
 					            	valueLiteral = dataFactory.getOWLLiteral(((Boolean)value).booleanValue());
+					            	owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#Boolean"));
 					            } else {
 					            	valueLiteral = dataFactory.getOWLLiteral(value.toString());
+					            	owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#String"));
 					            }
 					            OWLDataProperty hasCode = dataFactory.getOWLDataProperty(IRI.create(oboeBase + "#hasCode"));
 					            OWLDataPropertyAssertionAxiom hasCodeAssertion = dataFactory.getOWLDataPropertyAssertionAxiom(hasCode, valueIndividual, valueLiteral);
 					            AddAxiom hasCodeAxiomChange = new AddAxiom(ontology, hasCodeAssertion);
 					            manager.applyChange(hasCodeAxiomChange);
 							}
+							// assert the value
+							OWLClassAssertionAxiom valueAssertion = dataFactory.getOWLClassAssertionAxiom(owlPrimativeValue, valueIndividual);
+							manager.addAxiom(ontology, valueAssertion);
 				            
 				            // add the hasValue <PrimativeValue> object property
 				            OWLObjectProperty hasValue = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#hasValue"));
