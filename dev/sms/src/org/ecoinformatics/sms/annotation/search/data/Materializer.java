@@ -552,6 +552,7 @@ public class Materializer {
         // key tracking
         Map<OWLIndividual, OWLIndividual> existingObservations = new HashMap<OWLIndividual, OWLIndividual>();
         Map<String, OWLIndividual> existingEntities = new HashMap<String, OWLIndividual>();
+        Map<String, OWLIndividual> existingValues = new HashMap<String, OWLIndividual>();
 
         // import the referenced ontologies into this instance doc
         for (Ontology o: annotation.getOntologies().values()) {
@@ -609,7 +610,6 @@ public class Materializer {
 					int contextCount = 0; // much be unique across the instances
 
 					Map<Observation, OWLIndividual> observationsForRow = new HashMap<Observation, OWLIndividual>();
-					Map<OWLIndividual, OWLIndividual> entitiesForObservation = new HashMap<OWLIndividual, OWLIndividual>();
 
 					while (resultSet.next()) {
 						// get the value for this row to make an instance
@@ -667,8 +667,6 @@ public class Materializer {
 				            
 				            // save the observation for context connection
 				            observationsForRow.put(observation, observationIndividual);
-				            // save the obs->entity mapping we used (for context processing later)
-				            entitiesForObservation.put(observationIndividual, entityIndividual);
 				            
 							// measurement
 							OWLIndividual measurementIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#measurement_" + observationId + "_" + measurementCount));
@@ -685,39 +683,45 @@ public class Materializer {
 				            AddAxiom measurementForAxiomChange = new AddAxiom(ontology, measurementForAssertion);
 				            manager.applyChange(measurementForAxiomChange);
 				            
-							// measurement value individual
-							OWLIndividual valueIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#value_" + observationId + "_" + measurementCount));
-							OWLClass owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#PrimitiveValue"));
+							// measurement value individual- reuse when the value is the same
+							OWLIndividual valueIndividual = existingValues.get(entityKey);
+							if (valueIndividual == null) {
+								valueIndividual = dataFactory.getOWLNamedIndividual(IRI.create(base + "#value_" + observationId + "_" + measurementCount));
 
-							// add the hasCode <value> data property
-							if (value != null) {
-								// handle data types
-					            OWLLiteral valueLiteral = null;
-					            if (value instanceof Integer) {
-					            	valueLiteral = dataFactory.getOWLLiteral(((Integer)value).intValue());
-					            	owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#Decimal"));
-					            } else if (value instanceof Float) {
-					            	valueLiteral = dataFactory.getOWLLiteral(((Float)value).floatValue());
-					            	owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#Decimal"));
-					            } else if (value instanceof Double) {
-					            	valueLiteral = dataFactory.getOWLLiteral(((Double)value).doubleValue());
-					            	owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#Decimal"));
-					            } else if (value instanceof Boolean) {
-					            	valueLiteral = dataFactory.getOWLLiteral(((Boolean)value).booleanValue());
-					            	owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#Boolean"));
-					            } else {
-					            	valueLiteral = dataFactory.getOWLLiteral(value.toString());
-					            	owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#String"));
-					            }
-					            OWLDataProperty hasCode = dataFactory.getOWLDataProperty(IRI.create(oboeBase + "#hasCode"));
-					            OWLDataPropertyAssertionAxiom hasCodeAssertion = dataFactory.getOWLDataPropertyAssertionAxiom(hasCode, valueIndividual, valueLiteral);
-					            AddAxiom hasCodeAxiomChange = new AddAxiom(ontology, hasCodeAssertion);
-					            manager.applyChange(hasCodeAxiomChange);
+								OWLClass owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#PrimitiveValue"));
+								// add the hasCode <value> data property
+								if (value != null) {
+									// handle data types
+						            OWLLiteral valueLiteral = null;
+						            if (value instanceof Integer) {
+						            	valueLiteral = dataFactory.getOWLLiteral(((Integer)value).intValue());
+						            	owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#Decimal"));
+						            } else if (value instanceof Float) {
+						            	valueLiteral = dataFactory.getOWLLiteral(((Float)value).floatValue());
+						            	owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#Decimal"));
+						            } else if (value instanceof Double) {
+						            	valueLiteral = dataFactory.getOWLLiteral(((Double)value).doubleValue());
+						            	owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#Decimal"));
+						            } else if (value instanceof Boolean) {
+						            	valueLiteral = dataFactory.getOWLLiteral(((Boolean)value).booleanValue());
+						            	owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#Boolean"));
+						            } else {
+						            	valueLiteral = dataFactory.getOWLLiteral(value.toString());
+						            	owlPrimativeValue = dataFactory.getOWLClass(IRI.create(oboeBase + "#String"));
+						            }
+						            OWLDataProperty hasCode = dataFactory.getOWLDataProperty(IRI.create(oboeBase + "#hasCode"));
+						            OWLDataPropertyAssertionAxiom hasCodeAssertion = dataFactory.getOWLDataPropertyAssertionAxiom(hasCode, valueIndividual, valueLiteral);
+						            AddAxiom hasCodeAxiomChange = new AddAxiom(ontology, hasCodeAssertion);
+						            manager.applyChange(hasCodeAxiomChange);
+								}
+								// assert the value
+								OWLClassAssertionAxiom valueAssertion = dataFactory.getOWLClassAssertionAxiom(owlPrimativeValue, valueIndividual);
+								manager.addAxiom(ontology, valueAssertion);
+							
+								// save for later
+								existingValues.put(entityKey, valueIndividual);
 							}
-							// assert the value
-							OWLClassAssertionAxiom valueAssertion = dataFactory.getOWLClassAssertionAxiom(owlPrimativeValue, valueIndividual);
-							manager.addAxiom(ontology, valueAssertion);
-				            
+							
 				            // add the hasValue <PrimativeValue> object property
 				            OWLObjectProperty hasValue = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#hasValue"));
 				            OWLObjectPropertyAssertionAxiom hasValueAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(hasValue, measurementIndividual, valueIndividual);
@@ -782,23 +786,16 @@ public class Materializer {
 											OWLClassAssertionAxiom ofCharacteristicAssertion = dataFactory.getOWLClassAssertionAxiom(onlyCharacteristic, contextIndividual);
 											AddAxiom ofCharacteristicAxiomChange = new AddAxiom(ontology, ofCharacteristicAssertion);
 								            manager.applyChange(ofCharacteristicAxiomChange);
-								            // add the measurementFor <Observation> property
-								            OWLObjectProperty measurementFor = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#measurementFor"));
-								            OWLObjectPropertyAssertionAxiom measurementForAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(measurementFor, contextIndividual, observationIndividual);
-								            AddAxiom measurementForAxiomChange = new AddAxiom(ontology, measurementForAssertion);
-								            manager.applyChange(measurementForAxiomChange);
-								            // set the contextualizing observation
+								            // add the hasObservationContext <Observation> property
 								            OWLObjectProperty hasContextObservation = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#hasContextObservation"));
-								            OWLObjectPropertyAssertionAxiom hasContextObservationAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(hasContextObservation, contextIndividual, contextualizingObservationIndividual);
+								            OWLObjectPropertyAssertionAxiom hasContextObservationAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(hasContextObservation, contextIndividual, observationIndividual);
 								            AddAxiom hasContextObservationAxiomChange = new AddAxiom(ontology, hasContextObservationAssertion);
 								            manager.applyChange(hasContextObservationAxiomChange);
-								            // set the value as the observation's entity
-								            OWLIndividual entityIndividual = entitiesForObservation.get(observationIndividual);
-								            OWLObjectProperty hasValue = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#hasValue"));
-								            OWLObjectPropertyAssertionAxiom hasValueAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(hasValue, contextIndividual, entityIndividual);
-								            AddAxiom hasValueAxiomChange = new AddAxiom(ontology, hasValueAssertion);
-								            manager.applyChange(hasValueAxiomChange);
-								            
+								            // set the contextualizing observation
+								            OWLObjectProperty contextObservationFor = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#contextObservationFor"));
+								            OWLObjectPropertyAssertionAxiom contextObservationForAssertion = dataFactory.getOWLObjectPropertyAssertionAxiom(contextObservationFor, contextualizingObservationIndividual, contextIndividual);
+								            AddAxiom contextObservationForAxiomChange = new AddAxiom(ontology, contextObservationForAssertion);
+								            manager.applyChange(contextObservationForAxiomChange);
 								        } else {
 											// just a generic "hasContext"
 											OWLObjectProperty hasContext = dataFactory.getOWLObjectProperty(IRI.create(oboeBase + "#hasContext"));
