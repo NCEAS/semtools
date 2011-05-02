@@ -282,17 +282,17 @@
     
 
 
-    <!-- test://my.ontology.instances#context_0_o2_0 -->
+    <!-- test://my.ontology.instances#context_0_o3_0 -->
 
-    <owl:NamedIndividual rdf:about="test://my.ontology.instances#context_0_o2_0">
+    <owl:NamedIndividual rdf:about="test://my.ontology.instances#context_0_o3_0">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Context"/>
         <rdf:type>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Within"/>
+                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#During"/>
             </owl:Restriction>
         </rdf:type>
-        <oboe-core:hasContextObservation rdf:resource="test://my.ontology.instances#observation_0_o2"/>
+        <oboe-core:hasContextObservation rdf:resource="test://my.ontology.instances#observation_0_o3"/>
     </owl:NamedIndividual>
     
 
@@ -304,7 +304,7 @@
         <rdf:type>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#During"/>
+                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Within"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:hasContextObservation rdf:resource="test://my.ontology.instances#observation_0_o3"/>
@@ -327,17 +327,17 @@
     
 
 
-    <!-- test://my.ontology.instances#context_1_o2_3 -->
+    <!-- test://my.ontology.instances#context_1_o3_3 -->
 
-    <owl:NamedIndividual rdf:about="test://my.ontology.instances#context_1_o2_3">
+    <owl:NamedIndividual rdf:about="test://my.ontology.instances#context_1_o3_3">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Context"/>
         <rdf:type>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Within"/>
+                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#During"/>
             </owl:Restriction>
         </rdf:type>
-        <oboe-core:hasContextObservation rdf:resource="test://my.ontology.instances#observation_1_o2"/>
+        <oboe-core:hasContextObservation rdf:resource="test://my.ontology.instances#observation_1_o3"/>
     </owl:NamedIndividual>
     
 
@@ -349,7 +349,7 @@
         <rdf:type>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#During"/>
+                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Within"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:hasContextObservation rdf:resource="test://my.ontology.instances#observation_1_o3"/>
@@ -372,17 +372,17 @@
     
 
 
-    <!-- test://my.ontology.instances#context_2_o2_6 -->
+    <!-- test://my.ontology.instances#context_2_o3_6 -->
 
-    <owl:NamedIndividual rdf:about="test://my.ontology.instances#context_2_o2_6">
+    <owl:NamedIndividual rdf:about="test://my.ontology.instances#context_2_o3_6">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Context"/>
         <rdf:type>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Within"/>
+                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#During"/>
             </owl:Restriction>
         </rdf:type>
-        <oboe-core:hasContextObservation rdf:resource="test://my.ontology.instances#observation_2_o2"/>
+        <oboe-core:hasContextObservation rdf:resource="test://my.ontology.instances#observation_2_o3"/>
     </owl:NamedIndividual>
     
 
@@ -394,7 +394,7 @@
         <rdf:type>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#During"/>
+                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Within"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:hasContextObservation rdf:resource="test://my.ontology.instances#observation_2_o3"/>
@@ -417,9 +417,9 @@
     
 
 
-    <!-- test://my.ontology.instances#context_3_o2_9 -->
+    <!-- test://my.ontology.instances#context_3_o3_10 -->
 
-    <owl:NamedIndividual rdf:about="test://my.ontology.instances#context_3_o2_9">
+    <owl:NamedIndividual rdf:about="test://my.ontology.instances#context_3_o3_10">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Context"/>
         <rdf:type>
             <owl:Restriction>
@@ -427,14 +427,14 @@
                 <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Within"/>
             </owl:Restriction>
         </rdf:type>
-        <oboe-core:hasContextObservation rdf:resource="test://my.ontology.instances#observation_3_o2"/>
+        <oboe-core:hasContextObservation rdf:resource="test://my.ontology.instances#observation_3_o3"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- test://my.ontology.instances#context_3_o3_10 -->
+    <!-- test://my.ontology.instances#context_3_o3_9 -->
 
-    <owl:NamedIndividual rdf:about="test://my.ontology.instances#context_3_o3_10">
+    <owl:NamedIndividual rdf:about="test://my.ontology.instances#context_3_o3_9">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Context"/>
         <rdf:type>
             <owl:Restriction>
@@ -462,17 +462,17 @@
     
 
 
-    <!-- test://my.ontology.instances#context_4_o2_12 -->
+    <!-- test://my.ontology.instances#context_4_o3_12 -->
 
-    <owl:NamedIndividual rdf:about="test://my.ontology.instances#context_4_o2_12">
+    <owl:NamedIndividual rdf:about="test://my.ontology.instances#context_4_o3_12">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Context"/>
         <rdf:type>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Within"/>
+                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#During"/>
             </owl:Restriction>
         </rdf:type>
-        <oboe-core:hasContextObservation rdf:resource="test://my.ontology.instances#observation_4_o2"/>
+        <oboe-core:hasContextObservation rdf:resource="test://my.ontology.instances#observation_4_o3"/>
     </owl:NamedIndividual>
     
 
@@ -484,7 +484,7 @@
         <rdf:type>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#During"/>
+                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Within"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:hasContextObservation rdf:resource="test://my.ontology.instances#observation_4_o3"/>
@@ -507,17 +507,17 @@
     
 
 
-    <!-- test://my.ontology.instances#context_5_o2_15 -->
+    <!-- test://my.ontology.instances#context_5_o3_15 -->
 
-    <owl:NamedIndividual rdf:about="test://my.ontology.instances#context_5_o2_15">
+    <owl:NamedIndividual rdf:about="test://my.ontology.instances#context_5_o3_15">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Context"/>
         <rdf:type>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Within"/>
+                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#During"/>
             </owl:Restriction>
         </rdf:type>
-        <oboe-core:hasContextObservation rdf:resource="test://my.ontology.instances#observation_5_o2"/>
+        <oboe-core:hasContextObservation rdf:resource="test://my.ontology.instances#observation_5_o3"/>
     </owl:NamedIndividual>
     
 
@@ -529,7 +529,7 @@
         <rdf:type>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#During"/>
+                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Within"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:hasContextObservation rdf:resource="test://my.ontology.instances#observation_5_o3"/>
@@ -780,14 +780,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Gram"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMass"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMass"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Gram"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_0_o3"/>
@@ -802,14 +802,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Count"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Number"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Number"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Count"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_0_o3"/>
@@ -824,14 +824,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#GramPerGram"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMassPerWetMass"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMassPerWetMass"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#GramPerGram"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_0_o3"/>
@@ -928,14 +928,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PercentNitrogen"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Percent"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Percent"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PercentNitrogen"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_0_o4"/>
@@ -982,14 +982,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#WetMass"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Gram"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Gram"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#WetMass"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_1_o3"/>
@@ -1070,14 +1070,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMass"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Microgram"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Microgram"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMass"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_1_o4"/>
@@ -1114,14 +1114,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Percent"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PercentHydrogen"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PercentHydrogen"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Percent"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_1_o4"/>
@@ -1250,14 +1250,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Number"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Count"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Count"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Number"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_2_o3"/>
@@ -1294,14 +1294,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Microgram"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMass"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMass"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Microgram"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_2_o4"/>
@@ -1316,14 +1316,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PercentCarbon"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Percent"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Percent"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PercentCarbon"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_2_o4"/>
@@ -1338,14 +1338,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PercentHydrogen"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Percent"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Percent"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PercentHydrogen"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_2_o4"/>
@@ -1430,14 +1430,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Gram"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#WetMass"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#WetMass"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Gram"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_3_o3"/>
@@ -1452,14 +1452,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Gram"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMass"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMass"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Gram"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_3_o3"/>
@@ -1474,14 +1474,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Number"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Count"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Count"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Number"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_3_o3"/>
@@ -1496,14 +1496,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMassPerWetMass"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#GramPerGram"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#GramPerGram"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMassPerWetMass"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_3_o3"/>
@@ -1562,14 +1562,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PercentHydrogen"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Percent"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Percent"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PercentHydrogen"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_3_o4"/>
@@ -1764,14 +1764,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Percent"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PercentCarbon"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PercentCarbon"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Percent"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_4_o4"/>
@@ -1922,14 +1922,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Number"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Count"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Count"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Number"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_5_o3"/>
@@ -1944,14 +1944,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#GramPerGram"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMassPerWetMass"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMassPerWetMass"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#GramPerGram"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_5_o3"/>
@@ -1966,14 +1966,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Microgram"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMass"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DryMass"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Microgram"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_5_o4"/>
@@ -1988,14 +1988,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PercentCarbon"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Percent"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Percent"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PercentCarbon"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_5_o4"/>
@@ -2010,14 +2010,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PercentHydrogen"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Percent"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Percent"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PercentHydrogen"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_5_o4"/>
@@ -2032,14 +2032,14 @@
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Measurement"/>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Percent"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PercentNitrogen"/>
             </owl:Restriction>
         </rdf:type>
         <rdf:type>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#ofCharacteristic"/>
-                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PercentNitrogen"/>
+                <owl:onProperty rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#usesStandard"/>
+                <owl:someValuesFrom rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#Percent"/>
             </owl:Restriction>
         </rdf:type>
         <oboe-core:measurementFor rdf:resource="test://my.ontology.instances#observation_5_o4"/>
@@ -2068,7 +2068,7 @@
 
     <owl:NamedIndividual rdf:about="test://my.ontology.instances#observation_0_o1">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Observation"/>
-        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_0_o2_0"/>
+        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_0_o3_1"/>
         <oboe-core:ofEntity rdf:resource="test://my.ontology.instances#entity_0_o1"/>
     </owl:NamedIndividual>
     
@@ -2078,7 +2078,7 @@
 
     <owl:NamedIndividual rdf:about="test://my.ontology.instances#observation_0_o2">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Observation"/>
-        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_0_o3_1"/>
+        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_0_o3_0"/>
         <oboe-core:ofEntity rdf:resource="test://my.ontology.instances#entity_0_o2"/>
     </owl:NamedIndividual>
     
@@ -2107,7 +2107,7 @@
 
     <owl:NamedIndividual rdf:about="test://my.ontology.instances#observation_1_o1">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Observation"/>
-        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_1_o2_3"/>
+        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_1_o3_4"/>
         <oboe-core:ofEntity rdf:resource="test://my.ontology.instances#entity_0_o1"/>
     </owl:NamedIndividual>
     
@@ -2117,7 +2117,7 @@
 
     <owl:NamedIndividual rdf:about="test://my.ontology.instances#observation_1_o2">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Observation"/>
-        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_1_o3_4"/>
+        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_1_o3_3"/>
         <oboe-core:ofEntity rdf:resource="test://my.ontology.instances#entity_1_o2"/>
     </owl:NamedIndividual>
     
@@ -2146,7 +2146,7 @@
 
     <owl:NamedIndividual rdf:about="test://my.ontology.instances#observation_2_o1">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Observation"/>
-        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_2_o2_6"/>
+        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_2_o3_7"/>
         <oboe-core:ofEntity rdf:resource="test://my.ontology.instances#entity_2_o1"/>
     </owl:NamedIndividual>
     
@@ -2156,7 +2156,7 @@
 
     <owl:NamedIndividual rdf:about="test://my.ontology.instances#observation_2_o2">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Observation"/>
-        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_2_o3_7"/>
+        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_2_o3_6"/>
         <oboe-core:ofEntity rdf:resource="test://my.ontology.instances#entity_2_o2"/>
     </owl:NamedIndividual>
     
@@ -2185,7 +2185,7 @@
 
     <owl:NamedIndividual rdf:about="test://my.ontology.instances#observation_3_o1">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Observation"/>
-        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_3_o2_9"/>
+        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_3_o3_10"/>
         <oboe-core:ofEntity rdf:resource="test://my.ontology.instances#entity_2_o1"/>
     </owl:NamedIndividual>
     
@@ -2195,7 +2195,7 @@
 
     <owl:NamedIndividual rdf:about="test://my.ontology.instances#observation_3_o2">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Observation"/>
-        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_3_o3_10"/>
+        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_3_o3_9"/>
         <oboe-core:ofEntity rdf:resource="test://my.ontology.instances#entity_3_o2"/>
     </owl:NamedIndividual>
     
@@ -2224,7 +2224,7 @@
 
     <owl:NamedIndividual rdf:about="test://my.ontology.instances#observation_4_o1">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Observation"/>
-        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_4_o2_12"/>
+        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_4_o3_13"/>
         <oboe-core:ofEntity rdf:resource="test://my.ontology.instances#entity_4_o1"/>
     </owl:NamedIndividual>
     
@@ -2234,7 +2234,7 @@
 
     <owl:NamedIndividual rdf:about="test://my.ontology.instances#observation_4_o2">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Observation"/>
-        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_4_o3_13"/>
+        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_4_o3_12"/>
         <oboe-core:ofEntity rdf:resource="test://my.ontology.instances#entity_4_o2"/>
     </owl:NamedIndividual>
     
@@ -2263,7 +2263,7 @@
 
     <owl:NamedIndividual rdf:about="test://my.ontology.instances#observation_5_o1">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Observation"/>
-        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_5_o2_15"/>
+        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_5_o3_16"/>
         <oboe-core:ofEntity rdf:resource="test://my.ontology.instances#entity_4_o1"/>
     </owl:NamedIndividual>
     
@@ -2273,7 +2273,7 @@
 
     <owl:NamedIndividual rdf:about="test://my.ontology.instances#observation_5_o2">
         <rdf:type rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#Observation"/>
-        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_5_o3_16"/>
+        <oboe-core:contextObservationFor rdf:resource="test://my.ontology.instances#context_5_o3_15"/>
         <oboe-core:ofEntity rdf:resource="test://my.ontology.instances#entity_5_o2"/>
     </owl:NamedIndividual>
     
