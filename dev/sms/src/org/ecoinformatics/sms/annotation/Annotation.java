@@ -61,13 +61,15 @@ public class Annotation {
 		OBOE_CLASSES = new HashMap<Class, OntologyClass>();
 		// initialize the static classes
 		ResourceBundle smsProperties = ResourceBundle.getBundle("sms");
-		Class[] classes = new Class[6];
+		Class[] classes = new Class[7];
 		classes[0] = Entity.class;
 		classes[1] = Characteristic.class;
 		classes[2] = Standard.class;
 		classes[3] = Protocol.class;
 		classes[4] = Relationship.class;
 		classes[5] = Measurement.class;
+		classes[6] = Context.class;
+
 		for (Class objectClass: classes) {
 			String uri = smsProperties.getString(objectClass.getName());
 			try {
