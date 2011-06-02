@@ -33,23 +33,26 @@ uniform access to data by abstracting away the underlying
 representation details that often exists across scientific data sets.
 
 In this paper we describe extensions to the Ecological Metadata
-Language (EML) \cite{} and suppporting tools for enabling improved
-discovery and integration of ecological data sets. Our work is based
-on the Extensible Observations Ontology (OBOE) \cite{}, which
-represents a generic observational model implemented in OWL-DL for
-describing domain-specific observation and measurement types. Our
-approach adds additional metadata in the form of semantic annotations
-that link attributes within datasets to OBOE terms for describing the
-implicit observation and measurement types found within data
-sets. Semantic annotations are executable in the sense that they can
-be used to convert a data set into a collection of observation and
-measurement instances, providing a more uniform representation for
-expressing queries and performing integration.  To support the
-creation of annotations, we have extended the Morpho metadata editor
-with a high-level user interface as well as the Metacat data catalog
-for storing and querying annotations through a new Semantic Mediation
-API. This API can also be used to perform basic data-level integration
-tasks using our prior work on the EML Data Manager Library \cite{}. 
+Language (EML) \cite{Fegraus07} and suppporting tools for enabling
+improved discovery and integration of ecological data sets. Our work
+is based on the Extensible Observations Ontology (OBOE)
+\cite{bowers08,madin07:_ontol_for_descr_and_synth}, which represents a
+generic observational model implemented in OWL-DL for describing
+domain-specific observation and measurement types. Our approach adds
+additional metadata in the form of semantic annotations that link
+attributes within datasets to OBOE terms for describing the implicit
+observation and measurement types found within data sets. Semantic
+annotations are executable in the sense that they can be used to
+convert a data set into a collection of observation and measurement
+instances, providing a more uniform representation for expressing
+queries and performing integration.  To support the creation of
+annotations, we have extended the Morpho metadata editor
+\cite{metacat02:_manag_heter_ecolog_data_using_morph} with a
+high-level user interface as well as the Metacat data catalog
+\cite{berkley01:_metac} for storing and querying annotations through a
+new Semantic Mediation API. This API can also be used to perform basic
+data-level integration tasks using our prior work on the EML Data
+Manager Library \cite{leinfelder10:_metad_driven_approac_to_loadin}.
 
 The rest of this paper is organized as follows. \secref{sec-framework}
 briefly describes the various components used within our
