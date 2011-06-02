@@ -1,31 +1,50 @@
 
 \begin{abstract}
-  The Data Manager paper from the last EIM included semantic
-  foreshadowing in the 'future directions' section and this is a
-  logical continuation of that work. Previously, we saw that the DM
-  library enabled data integration tasks provided we knew exactly
-  which data attributes from exactly which datasets were "compatible"
-  with each other. Here "compatible" means not simply structurally
-  similar (e.g. decimal numbers) but also conceptually similar
-  (e.g. ocean water temperature in C). By including rich semantic
-  annotations we initially show simple integration capabilities where
-  the subject domain of our data corpus is relatively constrained
-  (i.e. SBC-LTER) and the observational models represented are
-  minimally variable (i.e. context excluded). Semantically-enahnced
-  query capabilities facilitate this 'smart integration' in multiple
-  ways. First, the corpus is refined through compound concept-based
-  queries that exercise OBOE-compatible ontological subsumption
-  hierarchies to locate roughly equivalent attributes across
-  datasets. Additional query constraints are defined in relation to
-  the precise observational model formally expressed in OBOE. Finally,
-  the actual data values are interrogated so that only those that fall
-  in the desired range are returned. From this resultant subset of
-  disparate data objects we create a single synthetic data product
-  that represents a 'materialization' of the observations. Technical
-  discussion will include high-level descriptions of the
-  infrastructure and tools employed with focus on our development in
-  the rapidly evolving semantic frontier where scalability and best
-  practices are particularly germane and equally elusive.
+  Effective discovery and integration of ecological data within data
+  management systems requires rich semantic information that can
+  describe and relate the types of information contained within
+  disparate data sets. Within the Semtools project, we have developed
+  approaches for expressing and representing semantic annotations of
+  data sets for supplementing attribute and data-level metadata with
+  terms drawn from domain-specific ontologies. Annotations provide a
+  formal mechansism that can be used together with reasoning systems
+  to enhance existing data discovery and integration approaches.  In
+  this paper we describe extensions to the Ecological Metadata
+  Language (EML) and associated tools for storing and using semantic
+  annotations.  Specifically, we describe new user interface
+  components implemented within the Morpho EML metadata editor for
+  capturing user-supplied semantic annotations, extensions to the
+  Metacata system for storing and accessing annotations and
+  corresponding OWL-DL ontologies, and a new API within Metacat that
+  uses annotation metadata to provide concept-based search and
+  integration of data sets.
+%   The Data Manager paper from the last EIM included semantic
+%   foreshadowing in the 'future directions' section and this is a
+%   logical continuation of that work. Previously, we saw that the DM
+%   library enabled data integration tasks provided we knew exactly
+%   which data attributes from exactly which datasets were "compatible"
+%   with each other. Here "compatible" means not simply structurally
+%   similar (e.g. decimal numbers) but also conceptually similar
+%   (e.g. ocean water temperature in C). By including rich semantic
+%   annotations we initially show simple integration capabilities where
+%   the subject domain of our data corpus is relatively constrained
+%   (i.e. SBC-LTER) and the observational models represented are
+%   minimally variable (i.e. context excluded). Semantically-enahnced
+%   query capabilities facilitate this 'smart integration' in multiple
+%   ways.
+%   First, the corpus is refined through compound concept-based
+%   queries that exercise OBOE-compatible ontological subsumption
+%   hierarchies to locate roughly equivalent attributes across
+%   datasets. Additional query constraints are defined in relation to
+%   the precise observational model formally expressed in OBOE. Finally,
+%   the actual data values are interrogated so that only those that fall
+%   in the desired range are returned. From this resultant subset of
+%   disparate data objects we create a single synthetic data product
+%   that represents a 'materialization' of the observations. Technical
+%   discussion will include high-level descriptions of the
+%   infrastructure and tools employed with focus on our development in
+%   the rapidly evolving semantic frontier where scalability and best
+%   practices are particularly germane and equally elusive.
 \end{abstract}
 
 
