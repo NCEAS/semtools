@@ -1,6 +1,70 @@
 
 \section{Introduction}
-\label{sec-introduction}
+\label{sec-intro}
+
+A major challenge in environmental information management concerns
+providing effective approaches for the discovery and integration of
+heteregenous data sets. For instance, locating and combining relevant
+observational data are often critical and time-consuming steps for
+researchers studying phenomena at broad spatial, temporal, and
+biological scales
+\cite{worm06:_impac_of_biodiv_loss_ocean_ecosy_servic,pennings05:_do,green05:_compl_in_ecolog_and_conser,sorokina09:_detec_inter_variab_inter_obser_ornit_data,jackson01:_histor_overf_and_recen_collap}. The
+underlying data sets used within such studies frequently differ in
+subtle and complex ways, due in part to the protocols used for data
+collection, the types of observations made, and the experimental and
+other contextual information associated with the data set. These
+differences in turn can lead to structural and semantic heterogeneity
+among data sets that make them hard to discover using current data
+management approaches and require considerable manual effort by
+researchers needing to combine data sets.
+
+A number of recent efforts within the earth and environmental
+informatics communities are adopting the notion of an observation as a
+key modeling concept for enabling improved discovery and integration
+of scientific data
+\cite{om,fox09:_ontol,tarboton07:_cuahs_commun_obser_data_model,cushing07:_compon_based_end_user_datab,balhoff10:_phenex,bowers08}. These
+approaches provide higher-level observational data models for
+describing and representing observations and measurements found in
+underlying datasets by defining common ``core'' concepts such as the
+entities or features being observed, measurement units and protocols,
+and context relationships between observations \cite{om,bowers08}.  A
+major goal of these approaches is to enable interoperability and
+uniform access to data by abstracting away the underlying
+representation details that often exists across scientific data sets.
+
+In this paper we describe extensions to the Ecological Metadata
+Language (EML) \cite{} and suppporting tools for enabling improved
+discovery and integration of ecological data sets. Our work is based
+on the Extensible Observations Ontology (OBOE) \cite{}, which
+represents a generic observational model implemented in OWL-DL for
+describing domain-specific observation and measurement types. Our
+approach adds additional metadata in the form of semantic annotations
+that link attributes within datasets to OBOE terms for describing the
+implicit observation and measurement types found within data
+sets. Semantic annotations are executable in the sense that they can
+be used to convert a data set into a collection of observation and
+measurement instances, providing a more uniform representation for
+expressing queries and performing integration.  To support the
+creation of annotations, we have extended the Morpho metadata editor
+with a high-level user interface as well as the Metacat data catalog
+for storing and querying annotations through a new Semantic Mediation
+API. This API can also be used to perform basic data-level integration
+tasks using our prior work on the EML Data Manager Library \cite{}. 
+
+The rest of this paper is organized as follows. \secref{sec-framework}
+briefly describes the various components used within our
+approach. \secref{sec-annotation} describes the extensions we have
+developed for Morpho and Metacat to support semantic
+annotation. \secref{sec-applications} describes the types of data
+discovery queries and integration services supported by our
+framework. \secref{sec-related} briefly describes related work, and we
+summarize our contributions in \secref{sec-summary}. 
+
+
+%\section{Preliminaries}
+
+%Briefly describe EML, Metacat, and Morhpo. Briefly describe oboe and
+%semantic annotations.
 
 
 
