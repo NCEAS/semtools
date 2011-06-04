@@ -2,6 +2,56 @@
 \section{Related Work}
 \label{sec:related}
 
+The need for uniform mechanisms to describe observational data has led
+to many proposals for observational data models (e.g., \cite{om,
+  tarboton07:_cuahs_commun_obser_data_model,netcdf}), and ontologies
+(e.g.,
+\cite{fox09:_ontol,sweet,sheth08:_seman_sensor_web,mungall110:_integ}).
+The work here is complementary to these efforts by providing a
+framework and extensions to popular metadata tools (namely, Metacat
+\cite{} and Morpho \cite{}) for supporting a generic observational
+model through relatively light-weight, formal annotations. Our
+approach also supports the use of domain-specific ontologies for
+describing data as well as high-level query support for discovering
+data sets. Our extensions also support ... integration ... tasks that
+are crucial for determining the relevance of data.
+
+Data management systems are increasingly employing various forms of
+annotations to help improve search (e.g.,
+\cite{DBLP:conf/icde/GeertsKM06,Reeve05SemanticAnnotation,DBLP:conf/vldb/Bhagwat
+  CTV04}). For example, MONDRIAN \cite{DBLP:conf/icde/GeertsKM06}
+employs an annotation model and query operators to manipulate both
+data and annotations.  However, users must be familiar with the
+underlying data structures (schemas) to take advantage of these
+operators, which is generally not feasible for observational data in
+which data sets exhibit a high degree of structural and semantic
+heterogeneity.  Some efforts have also been carried out for leveraging
+annotations, e.g., for the discovery of domain-specific data
+\cite{obsdatasearch09,DBLP:conf/icde/StoyanovichMR10}, however, these
+approaches are largely based on keyword queries, and do not consider
+structured searches. Our work differs in that we consider a highly
+structured and generic model for annotations with the aim of providing
+a uniform approach for issuing structured data-discovery searches. Our
+work is closely aligned to traditional data integration approaches
+(e.g., \cite{HalevyDataIntegration06,kolaitis05}), where a global
+mediated schema is used to (physically or logically) merge the
+structures of heterogeneous data sources using mapping constraints
+among the source and target schemas. As such, the observational model
+we employ in our framqework can be viewed as a (general-purpose)
+mediation schema for observational data sets.  This schema can be
+augmented with logic rules (as target constraints) and uses the
+semantic annotations as mapping constraints. However, instead of users
+specifying logic constraints directly, we provide a high-level
+annotation language that simplifies the specification of mappings and
+more naturally aligns with the observation model. In addition, our
+work focuses on implementing practical approaches for rewriting and
+optimizing queries (that can include aggregation and summarization
+operators) over our annotation approach.  In particular, our goal is
+to create a feasible, scalable, and deployable system for applying
+these approaches for data discovery and exploratory data analysis
+within existing scientific data repositories.
+
+
 
 %%% Local Variables: 
 %%% mode: latex
