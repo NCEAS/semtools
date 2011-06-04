@@ -6,9 +6,9 @@ components: a Java library for accessing and manipulating OBOE
 ontology extensions and semantic annotations, an annotation plugin for
 the Morpho metadata editor, and query extensions for the Metacat data
 catalog. Below we briefly describe these components and give a brief
-overview of the OBOE model (for more in-depth presentation of OBOE see
-\cite{madin07:_ontol_for_descr_and_synth,bowers08}) and the semantic
-annotation approach used in Semtools.
+overview of the OBOE model as well as the semantic
+annotation approach used in Semtools. For a more in-depth presentation of OBOE see
+\cite{madin07:_ontol_for_descr_and_synth,bowers08}.
 
 
 \mypara{The OBOE Observational Model.}  \figref{fig:oboe} shows the
@@ -72,7 +72,7 @@ names). Each measurement associated with a Kelp observation is assumed
 to have occurred within the site and during the given time as
 specified by the context relationships.  Semantic annotations provide
 a formal description of attribute semantics, whereas in many
-commonly-used metadata formats for describing data sets, largely only
+commonly-used metadata formats for describing data sets,  only
 informal text-based descriptions of data attributes are permitted.  In
 the case of EML, there is some overlap between these two
 mechanisms---particularly with respect to measurement
@@ -82,7 +82,7 @@ from domain ontologies to attributes. In the Semtools framework, we
 employ an XML serialization syntax for semantic annotations that is
 compatible with EML but that is stored separately from the EML
 documentation of a data set (allowing, e.g., annotations to be used
-independently of EML if needed). In addition, semantic annotations can
+independently of EML or with other metadata standards if needed). In addition, semantic annotations can
 be used to ``materialize'' a given data set into a set of triples
 conforming to the model configuration given in the annotation.
 Materializing a data set to a set of OBOE triples in this way provides
@@ -118,9 +118,9 @@ integration tasks easier (described further below).
 \centering
 \includegraphics[width=1.0\textwidth]{images/morpho-annotation-widget.png}
 \caption{Morpho metadata editor with Semantic
-  plugin. Fill-in-the-blank style editing interface to encourage
-  natural language descriptions. A searchable hierarchical browser is
-  used to select concepts from an ontology.}
+  plugin. The fill-in-the-blank interface uses
+  natural language descriptions for intuitive editing. A searchable, hierarchical browser is
+  used to select concepts from domain-specific ontologies.}
 \label{fig:morpho-annotation}
 \end{figure*}
 
@@ -128,13 +128,13 @@ integration tasks easier (described further below).
 includes basic ontology management features, annotation manipulation
 capabilities, and simple concept navigation and visualization
 components. The API is intended to be a centralized toolkit for use in
-multiple application contexts (on either the client or server side).
-The Semantic Mediation API uses both the OWL API \cite{} for ontology
+multiple application contexts (on either client or server deployments).
+The Semantic Mediation API uses both the OWL API \cite{owlapi} for ontology
 management services including RDF/OWL parsing, serialization, and
 simple class and property exploration as well as the Pellet
-description-logic reasoner \cite{} for classification and exposing
+description-logic reasoner \cite{pellet} for classification and exposing
 inferred axioms in source ontologies. The inference services exposed
-through the Semantic Mediation API is used in both discovery and
+through the Semantic Mediation API are used in both discovery and
 integration described below.
 % is particularly powerful when utilizing OBOE Measurement 'templates'
 % that express exactly what (Entity and Characteristic) can be
@@ -173,7 +173,7 @@ relationships between attributes (i.e., obserations). The editor
 provides a number of additional features including allowing users to
 view the entire annotation (similar to \figref{fig:kelp-mass-model})
 and to specify additional mapping constraints for observations and
-measurements (not shown in \figref{fig:morpho-annotation}).
+measurements.
 
 \mypara{Metacat Query Extensions.}  The semantic plugin for Metacat
 augements Metacat's existing metadata storage and search by allowing
