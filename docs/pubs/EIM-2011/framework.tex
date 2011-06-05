@@ -1,3 +1,4 @@
+
 \section{Semtools Framework}
 \label{sec:framework}
 
@@ -6,10 +7,18 @@ components: a Java library for accessing and manipulating OBOE
 ontology extensions and semantic annotations, an annotation plugin for
 the Morpho metadata editor, and query extensions for the Metacat data
 catalog. Below we briefly describe these components and give a brief
-overview of the OBOE model as well as the semantic
-annotation approach used in Semtools. For a more in-depth presentation of OBOE see
+overview of the OBOE model as well as the semantic annotation approach
+used in Semtools. For a more in-depth presentation of OBOE see
 \cite{madin07:_ontol_for_descr_and_synth,bowers08}.
 
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=0.49\textwidth]{images/oboe}
+  \caption{The main classes and properties of the extensible
+    observation ontology (OBOE). While shown using UML, the model is
+    defined using OWL-DL.}
+  \label{fig:oboe}
+\end{figure}
 
 \mypara{The OBOE Observational Model.}  \figref{fig:oboe} shows the
 main modeling constructs of OBOE (see:
@@ -45,13 +54,14 @@ ongoing collaborations with other projects, and general extensions
 exist for OBOE that define a number of common entities, measurement
 units, and corresponding physical characteristics.
 
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=0.49\textwidth]{images/oboe}
-  \caption{The main classes and properties of the extensible
-    observation ontology (OBOE). While shown using UML, the model is
-    defined using OWL-DL.}
-  \label{fig:oboe}
+\begin{figure}[!b]
+\centering
+\includegraphics[width=0.5\textwidth]{images/kelp-mass-model.png}
+\caption{Partial OBOE semantic annotation for Kelp sampling
+  data. Shaded nodes represent ontological concepts; rectangular nodes
+  are data table attibutes mapped to OBOE measurement
+  characteristics.}
+\label{fig:kelp-mass-model}
 \end{figure}
 
 \mypara{Semantic Annotations.} A semantic annotation consists of two
@@ -70,24 +80,79 @@ of specific Kelp entities (shown of type ``Macrocystis''), temporal
 points (denoted by date-times), and spatial locations (given as site
 names). Each measurement associated with a Kelp observation is assumed
 to have occurred within the site and during the given time as
-specified by the context relationships.  Semantic annotations provide
-a formal description of attribute semantics, whereas in many
-commonly-used metadata formats for describing data sets,  only
-informal text-based descriptions of data attributes are permitted.  In
-the case of EML, there is some overlap between these two
-mechanisms---particularly with respect to measurement
-standards---however, semantic annotations extend this approach by
-providing a general mechanism to formally associate concepts drawn
-from domain ontologies to attributes. In the Semtools framework, we
-employ an XML serialization syntax for semantic annotations that is
-compatible with EML but that is stored separately from the EML
-documentation of a data set (allowing, e.g., annotations to be used
-independently of EML or with other metadata standards if needed). In addition, semantic annotations can
-be used to ``materialize'' a given data set into a set of triples
-conforming to the model configuration given in the annotation.
-Materializing a data set to a set of OBOE triples in this way provides
-a more uniform structural representation that can make a number of
-integration tasks easier (described further below).
+specified by the context relationships.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=1.0\textwidth]{images/morpho-annotation-widget.png}
+\caption{Morpho metadata editor with Semantic
+  plugin. The fill-in-the-blank interface uses
+  natural language descriptions for intuitive editing. A searchable, hierarchical browser is
+  used to select concepts from domain-specific ontologies.}
+\label{fig:morpho-annotation}
+\end{figure*}
+
+
+Semantic annotations can be used to facilitate discovery and
+integration of heterogeneous data sets. For instance, combining
+semantic annotations with OBOE, it is possible to discover data sets
+based on searches expressed over types of observations and
+measurements of interest. As simple examples, users can pose queries
+such as ``\emph{find all data sets containing observations of Kelp
+  entities}'' and ``\emph{find all data sets containing Mass
+  measurements of Kelp}''.\footnote{Note that queries also can include
+  contextual constraints, e.g., Mass measurements of Kelp within a
+  specific spatial or temporal context.} Both of these queries would
+return the example data set in \figref{fig:kelp-mass-model} since the
+attribute {\tt DRY} is linked to a DryMass measurement of observations
+of Macrocystis (where DryMass is defined as a special kind, or
+\emph{subclass} of Mass, and Macrocystis is defined as a subclass of
+Kelp). Using semantic annotations in this way can help to increase
+both query recall and precision over standard keyword-based approaches
+\cite{berkley09:_improv_data_discov_for_metad}. In particular, by
+defining terms as subclasses of other terms (e.g., Macrocystis as a
+subclass of Kelp), term expansion can be used to increase the number
+(recall) of data sets returned (where subclasses of query terms are
+also searched), and the precision of the result can be improved since
+queries can specify the desired connections between terms (e.g.,
+measurements of Mass for Kelp observations) as opposed to returning
+all data sets that simply mention the terms but without any explicit
+connections (i.e., where Mass was measured, but not for Kelp samples).
+Annotations also help facilitate integration by allowing tools to
+align data-set attributes based on their declared measurement and
+observation types.
+
+
+In general, semantic annotations provide a formal description of
+attribute semantics, whereas in many commonly-used metadata formats
+for describing data sets, only informal text-based descriptions of
+data attributes are permitted.  In the case of EML, there is some
+overlap between these two mechanisms---particularly with respect to
+measurement standards---however, semantic annotations extend this
+approach by providing a general mechanism to formally associate
+concepts drawn from domain ontologies to attributes. In the Semtools
+framework, we employ an XML serialization syntax for semantic
+annotations that is compatible with EML but that is stored separately
+from the EML documentation of a data set (allowing, e.g., annotations
+to be used independently of EML or with other metadata standards if
+needed). In addition, semantic annotations can be used to
+``materialize'' a given data set into a set of triples conforming to
+the model configuration given in the annotation. In other words, a
+tabular data set such as the one shown in \figref{fig:kelp-mass-model}
+can automatically be converted into a corresponding collection of
+observation and measurement instances. This in turn enables a simple
+form of structural integration, where instead of having a large number
+of different tabular data structures, all data is represented using
+the standard set of structures defined by the OBOE model (see
+\figref{fig:oboe}). Thus, materializing a data set in this way
+provides a more uniform structural representation that can make a
+number of discovery and integration tasks easier. For instance,
+materialization can be used to increase query expressivity by allowing
+searches of the form ``\emph{find all data sets containing Mass
+  measurements of Kelp with values less than 1 Kilogram}'', which in
+our example can be answered by generating (i.e., materializing) the
+measurements associated with the {\tt DRY} attribute in the data set
+of \figref{fig:kelp-mass-model}.
 
 % Because the Annotation represents a potentially subjective
 % perspective on the data, they are stored independently as XML; the
@@ -104,38 +169,20 @@ integration tasks easier (described further below).
 % represented in the Annotation.
 
 
-\begin{figure}[!b]
-\centering
-\includegraphics[width=0.5\textwidth]{images/kelp-mass-model.png}
-\caption{Partial OBOE semantic annotation for Kelp sampling
-  data. Shaded nodes represent ontological concepts; rectangular nodes
-  are data table attibutes mapped to OBOE measurement
-  characteristics.}
-\label{fig:kelp-mass-model}
-\end{figure}
 
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=1.0\textwidth]{images/morpho-annotation-widget.png}
-\caption{Morpho metadata editor with Semantic
-  plugin. The fill-in-the-blank interface uses
-  natural language descriptions for intuitive editing. A searchable, hierarchical browser is
-  used to select concepts from domain-specific ontologies.}
-\label{fig:morpho-annotation}
-\end{figure*}
 
 \mypara{The Semantic Mediation API.} The Semantic Mediation API
 includes basic ontology management features, annotation manipulation
 capabilities, and simple concept navigation and visualization
 components. The API is intended to be a centralized toolkit for use in
-multiple application contexts (on either client or server deployments).
-The Semantic Mediation API uses both the OWL API \cite{owlapi} for ontology
-management services including RDF/OWL parsing, serialization, and
-simple class and property exploration as well as the Pellet
-description-logic reasoner \cite{pellet} for classification and exposing
-inferred axioms in source ontologies. The inference services exposed
-through the Semantic Mediation API are used in both discovery and
-integration features described below.
+multiple application contexts (on either client or server
+deployments).  The Semantic Mediation API uses both the OWL API
+\cite{owlapi} for ontology management services including RDF/OWL
+parsing, serialization, and simple class and property exploration as
+well as the Pellet description-logic reasoner \cite{pellet} for
+classification and exposing inferred axioms in source ontologies. The
+inference services exposed through the Semantic Mediation API are used
+in both discovery and integration features described below.
 % is particularly powerful when utilizing OBOE Measurement 'templates'
 % that express exactly what (Entity and Characteristic) can be
 % observed and how (Standard and Protocol).
