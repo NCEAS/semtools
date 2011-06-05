@@ -59,7 +59,7 @@ units, and corresponding physical characteristics.
 \includegraphics[width=0.5\textwidth]{images/kelp-mass-model.png}
 \caption{Partial OBOE semantic annotation for Kelp sampling
   data. Shaded nodes represent ontological concepts; rectangular nodes
-  are data table attibutes mapped to OBOE measurement
+  are data table attributes mapped to OBOE measurement
   characteristics.}
 \label{fig:kelp-mass-model}
 \end{figure}
@@ -205,7 +205,7 @@ prohibitive when large numbers of data sets are managed.
 plugin for Morpho provides a front-end to the Semantic Mediation API
 and allows users to define annotations for existing data package
 descriptions. The editor provides a simple ``fill-in-the-blank'' style
-form-based interface with a searchable hierachical concept selection
+form-based interface with a searchable hierarchical concept selection
 widget (see \figref{fig:morpho-annotation}). The plugin seamlessly
 integrates with a standard Morpho installation and provides semantic
 query capabilities for locating data packages, marking up data
@@ -216,27 +216,27 @@ data set being annotated and fill in (by selecting an appropriate
 ontology term) the characteristic, measurement standard, protocol, and
 associated entity for each data-set attribute. Users can also specify
 whether an observation spans multiple columns, and can provide context
-relationships between attributes (i.e., obserations). The editor
+relationships between attributes (i.e., observations). The editor
 provides a number of additional features including allowing users to
 view the entire annotation (similar to \figref{fig:kelp-mass-model})
 and to specify additional mapping constraints for observations and
 measurements.
 
 \mypara{Metacat Query Extensions.}  The semantic plugin for Metacat
-augements Metacat's existing metadata storage and search by allowing
+augments Metacat's existing metadata storage and search by allowing
 annotations to be saved and queried alongside the metadata and data
 that they annotate. In addition to traditional keyword and spatial
 search criteria, the Metacat plugin allows semantic criteria to be
 included where they may either increase query recall using
 term-expansion (i.e., traversing the class subsumption hierarchy) or
-refine the resultset by limiting matches to datasets that contain the
-specified observational model (e.g., combinations of OBOE-compatible
-entity, characteristic, measurement standard, or protocol
-concepts). The observational model can be leveraged further by
-materializing the annotation and data artifact (via the Data Manager
-Library \cite{leinfelder10:_metad_driven_approac_to_loadin}) into a
-fully instantiated OBOE model and inspecting (and querying over) the
-observational values themselves.
+refine the result set by limiting matches to data sets that contain
+the specified observational model (e.g., combinations of
+OBOE-compatible entity, characteristic, measurement standard, or
+protocol concepts). The observational model can be leveraged further
+by materializing the annotation and data artifact (via the Data
+Manager Library \cite{leinfelder10:_metad_driven_approac_to_loadin})
+into a fully instantiated OBOE model and inspecting (and querying
+over) the observational values themselves.
 
 %%% Local Variables: 
 %%% mode: latex
