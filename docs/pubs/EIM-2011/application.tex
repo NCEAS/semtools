@@ -38,7 +38,7 @@ proxy its constituent parts, namely the characteristics of particular
 entities that can be measured with a set of protocols and
 standards. This short-hand query generation can save users time in
 specifying their queries, and highlights a compelling reason for using
-OBOE extension ontologies and can also be leveraged when creating or
+OBOE extension ontologies. Measurement templates can also be leveraged when creating or
 editing semantic annotations in the Morpho interface.
 
 Using compound semantic query criteria applies a finer-grained filter
@@ -58,7 +58,7 @@ it describes, but for performance reasons a hybrid approach has been
 adopted in which preliminary search results from a structured query
 are collated and only that subset is materialized. Because our corpus
 is described using EML in conjunction with the annotation syntax, the
-Data Manager Library \cite{leinfelder10} is used to load the described
+Data Manager Library \cite{leinfelder10:_metad_driven_approac_to_loadin} is used to load the described
 raw data (into a relational database) while the annotation informs the
 correct use of the Data Manager query and filtering features. For any
 measurements that match the concept query criteria, we verify that
@@ -107,9 +107,9 @@ support automated data integration through the Web application.
 \caption{Data integration query across multiple data packages (A, B).
   Annotations (C, D) are used to determine semantically equivalent
   data attributes contained in the data objects (E, F). Attributes
-  'plot' and 'site' are considered equivalent measurements of the
-  characteristic 'Location'; attributes 'weight' and 'wt' both map to
-  the same characteristic 'Mass'. The Semantic Mediation API utilizes
+  {\tt plot} and {\tt site} are considered equivalent measurements of the
+  characteristic Location; attributes {\tt weight} and {\tt wt} both map to
+  the same characteristic Mass. The Semantic Mediation API utilizes
   the Data Manager Library to load and query the source data informed
   by semantic similarities between the structurally disparate data
   attributes.}

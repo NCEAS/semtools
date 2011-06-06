@@ -6,7 +6,7 @@ The Semtools project has focused development efforts on three main
 components: a Java library for accessing and manipulating OBOE
 ontology extensions and semantic annotations, an annotation plugin for
 the Morpho metadata editor, and query extensions for the Metacat data
-catalog. Below we briefly describe these components and give a brief
+catalog. Below we describe these components and give a brief
 overview of the OBOE model as well as the semantic annotation approach
 used in Semtools. For a more in-depth presentation of OBOE see
 \cite{madin07:_ontol_for_descr_and_synth,bowers08}.
@@ -104,8 +104,8 @@ such as ``\emph{find all data sets containing observations of Kelp
   contextual constraints, e.g., Mass measurements of Kelp within a
   specific spatial or temporal context.} Both of these queries would
 return the example data set in \figref{fig:kelp-mass-model} since the
-attribute {\tt DRY} is linked to a DryMass measurement of observations
-of Macrocystis (where DryMass is defined as a special kind, or
+attribute {\tt WET} is linked to a WetMass measurement for observations
+of Macrocystis (where WetMass is defined as a special kind, or
 \emph{subclass} of Mass, and Macrocystis is defined as a subclass of
 Kelp). Using semantic annotations in this way can help to increase
 both query recall and precision over standard keyword-based approaches
@@ -113,8 +113,8 @@ both query recall and precision over standard keyword-based approaches
 defining terms as subclasses of other terms (e.g., Macrocystis as a
 subclass of Kelp), term expansion can be used to increase the number
 (recall) of data sets returned (where subclasses of query terms are
-also searched), and the precision of the result can be improved since
-queries can specify the desired connections between terms (e.g.,
+also searched). The precision of the result can be improved since
+queries may specify the desired connections between terms (e.g.,
 measurements of Mass for Kelp observations) as opposed to returning
 all data sets that simply mention the terms but without any explicit
 connections (i.e., where Mass was measured, but not for Kelp samples).
@@ -149,9 +149,9 @@ provides a more uniform structural representation that can make a
 number of discovery and integration tasks easier. For instance,
 materialization can be used to increase query expressivity by allowing
 searches of the form ``\emph{find all data sets containing Mass
-  measurements of Kelp with values less than 1 Kilogram}'', which in
+  measurements of Kelp with values less than or equal to 5 grams}'', which in
 our example can be answered by generating (i.e., materializing) the
-measurements associated with the {\tt DRY} attribute in the data set
+measurements associated with the {\tt WET} and {\tt DRY} attributes in the data set
 of \figref{fig:kelp-mass-model}.
 
 % Because the Annotation represents a potentially subjective
@@ -203,7 +203,7 @@ prohibitive when large numbers of data sets are managed.
 
 \mypara{The Morpho Editor Plugin.}  The semantic-annotation editor
 plugin for Morpho provides a front-end to the Semantic Mediation API
-and allows users to define annotations for existing data package
+and allows data owners and curators to define annotations for existing data package
 descriptions. The editor provides a simple ``fill-in-the-blank'' style
 form-based interface with a searchable hierarchical concept selection
 widget (see \figref{fig:morpho-annotation}). The plugin seamlessly
@@ -212,12 +212,12 @@ query capabilities for locating data packages, marking up data
 packages with semantic annotations, and saving annotations locally or
 to a shared repository where they can be discovered and explored by
 other users. The annotation editor in Morpho allows a user to view the
-data set being annotated and fill in (by selecting an appropriate
+data set being annotated as they fill in (by selecting an appropriate
 ontology term) the characteristic, measurement standard, protocol, and
 associated entity for each data-set attribute. Users can also specify
 whether an observation spans multiple columns, and can provide context
 relationships between attributes (i.e., observations). The editor
-provides a number of additional features including allowing users to
+provides a number of additional features including the ability to
 view the entire annotation (similar to \figref{fig:kelp-mass-model})
 and to specify additional mapping constraints for observations and
 measurements.
