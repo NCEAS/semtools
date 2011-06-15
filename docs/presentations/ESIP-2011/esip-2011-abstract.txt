@@ -1,18 +1,6 @@
 Semantic discovery and integration tools for environmental data
 
-Matthew Jones, Ben Leinfelder, Shawn Bowers, Mark Schildhauer, Margaret
+Matthew B. Jones, Ben Leinfelder, Shawn Bowers, Mark Schildhauer, Margaret
 O'Brien, Christopher Jones
 
-Rich semantic information describing the content, structure, and relationships
-of environmental data can be used to build effective tools for data discovery
-and integration.  We have developed such tools within the Semtools project by
-using formal annotations on environmental data to link domain-specific ontology
-terms from the Extensible Observation Ontology (OBOE) to particular facets of
-environmental data sets.  This annotation approach allows us to maintain data in
-traditional scientific formats (e.g., CSV text, NetCDF) while still establishing
-formal semantics for the data.  The annotations can then be used to materialize
-a full knowledge model of the data (e.g., an RDF graph compatible with Linked Open
-Data conventions), which in turn drives discovery and integration tools.
-We demonstrate this through extensions to the Metacat data repository system
-that can be used for semantic search and semantic data subsetting for
-heterogeneous environmental data.
+Rich semantic information describing the content, structure, and relationships of environmental data can be used to build effective tools for data discovery and integration.  We have developed such tools within the Semtools project by using formal annotations on environmental data to link domain-specific ontology terms from the Extensible Observation Ontology (OBOE) to particular facets of environmental data sets.  This annotation approach allows us to maintain data in traditional scientific formats (e.g., CSV text, NetCDF) while still establishing formal semantics for the data.  The annotations can then be used to materialize a full knowledge model of the data (e.g., an RDF graph compatible with Linked Open Data conventions), which in turn drives discovery and integration tools.  We demonstrate this through extensions to the Metacat data repository system that can be used for semantic search and semantic data subsetting for heterogeneous environmental data.
