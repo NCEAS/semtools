@@ -11,7 +11,8 @@ terms from the Extensible Observation Ontology (OBOE) to particular facets of
 environmental data sets.  This annotation approach allows us to maintain data in
 traditional scientific formats (e.g., CSV text, NetCDF) while still establishing
 formal semantics for the data.  The annotations can then be used to materialize
-a full knowledge model of the data, which in turn drives discovery and
-integration tools.  We demonstrate this through extensions to the Metacat data
-repository system that can be used for semantic search and semantic data
-subsetting for heterogeneous environmental data.
+a full knowledge model of the data (e.g., an RDF graph compatible with Linked Open
+Data [LOD] conventions), which in turn drives discovery and integration tools.
+We demonstrate this through extensions to the Metacat data repository system
+that can be used for semantic search and semantic data subsetting for
+heterogeneous environmental data.
