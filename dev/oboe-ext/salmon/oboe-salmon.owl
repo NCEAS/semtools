@@ -219,6 +219,27 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#FenceWeir -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#FenceWeir">
+        <rdfs:label xml:lang="en">Fence Weir</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#FishTrap"/>
+        <dc:description xml:lang="en">A fishing device used to block downstream movement of fish to enable a full census count.</dc:description>
+        <rdfs:seeAlso xml:lang="en">http://www.stateofthesalmon.org/fieldprotocols/downloads/SFPH_p13.pdf</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#FishTrap -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#FishTrap">
+        <rdfs:label xml:lang="en">Fish Trap</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Instrument"/>
+        <dc:description xml:lang="en">A non-lethal device used to collect fish moving down a stream or river.</dc:description>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fork -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fork">
@@ -251,6 +272,27 @@
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Head">
         <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#InclinedPlaneTrap -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#InclinedPlaneTrap">
+        <rdfs:label xml:lang="en">Inclined Plane Trap</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#FishTrap"/>
+        <rdfs:seeAlso xml:lang="en">A non-lethal fish trap used to collect a partial sample of fish moving downstream that directs fish up an inclined screen in the water.</rdfs:seeAlso>
+        <rdfs:seeAlso xml:lang="en">http://www.stateofthesalmon.org/fieldprotocols/downloads/SFPH_p8.pdf</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Instrument -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Instrument">
+        <rdfs:label xml:lang="en">Instrument</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
+        <dc:description xml:lang="en">A device used to take manual or automated measurements of characteritics of a sampled entity.</dc:description>
     </owl:Class>
     
 
@@ -315,6 +357,17 @@
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Trout"/>
         <dc:description xml:lang="en">Fish of the species Oncorhynchus mykiss.</dc:description>
         <rdfs:seeAlso>http://www.fishbase.org/Summary/SpeciesSummary.php?ID=239</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#RotaryScrewTrap -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#RotaryScrewTrap">
+        <rdfs:label xml:lang="en">Rotary Screw Trap</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#FishTrap"/>
+        <dc:description xml:lang="en">A non-lethal fish trap used to collect a partial sample of fish moving downstream that directs fish into a rotating cone.</dc:description>
+        <rdfs:seeAlso xml:lang="en">http://www.stateofthesalmon.org/fieldprotocols/downloads/SFPH_p8.pdf</rdfs:seeAlso>
     </owl:Class>
     
 
