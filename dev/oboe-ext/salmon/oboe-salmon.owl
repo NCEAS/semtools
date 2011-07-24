@@ -236,6 +236,16 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Container -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Container">
+        <rdfs:label xml:lang="en">Container</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
+        <dc:description xml:lang="en">An enclosed space used to contain a substance.</dc:description>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#CutthroatTrout -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#CutthroatTrout">
@@ -442,6 +452,16 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#LiveBox -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#LiveBox">
+        <rdfs:label xml:lang="en">Live Box</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Container"/>
+        <dc:description xml:lang="en">A container within a fish trap used to hold captured fish for counting and measuring.</dc:description>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#ManagementRegion -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#ManagementRegion">
@@ -458,6 +478,16 @@
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Mandible">
         <rdfs:label xml:lang="en">Mandible</rdfs:label>
         <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#MarkingBath -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#MarkingBath">
+        <rdfs:label xml:lang="en">Marking Bath</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Container"/>
+        <dc:description xml:lang="en">A container of water and dye used to mark fish for identification.</dc:description>
     </owl:Class>
     
 
