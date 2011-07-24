@@ -89,7 +89,7 @@
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#AdministrativeFeature">
         <rdfs:label xml:lang="en">Administrative Feature</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboe-taxa;Kingdom"/>
+        <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
         <dc:description xml:lang="en">An administrative feature defined by an organization such as a named boundary or region.</dc:description>
     </owl:Class>
     
