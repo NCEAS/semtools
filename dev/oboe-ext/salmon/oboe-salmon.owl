@@ -235,6 +235,17 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#DistinctPopulationSegment -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#DistinctPopulationSegment">
+        <rdfs:label xml:lang="en">A subset of a species population administratively designated by a US state agency as a distinct and important conservation unit based on the genetic makeup of the individuals and their rearing location.</rdfs:label>
+        <rdfs:label xml:lang="en">Distinct Population Segment</rdfs:label>
+        <owl:equivalentClass rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#EvolutionarilySignificantUnit"/>
+        <rdfs:subClassOf rdf:resource="&oboe-taxa;Species"/>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#DollyVarden -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#DollyVarden">
@@ -252,6 +263,16 @@
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#DorsalFin">
         <rdfs:label xml:lang="en">Dorsal Fin</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fin"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#EvolutionarilySignificantUnit -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#EvolutionarilySignificantUnit">
+        <rdfs:label xml:lang="en">Evolutionarily Significant Unit</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe-taxa;Species"/>
+        <dc:description xml:lang="en">A subset of a species population administratively designated by the US Environmental Protection Agency (EPA) as a distinct and important conservation unit based on the genetic makeup of the individuals and their rearing location.</dc:description>
     </owl:Class>
     
 
