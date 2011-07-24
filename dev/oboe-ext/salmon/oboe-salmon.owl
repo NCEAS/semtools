@@ -9,9 +9,11 @@
     <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
     <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
     <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
-    <!ENTITY oboe "http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#" >
     <!ENTITY sweet-biosphere "http://sweet.jpl.nasa.gov/ontology/biosphere.owl#" >
     <!ENTITY oboe-core "http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#" >
+    <!ENTITY oboe "http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#" >
+    <!ENTITY oboe-taxa "http://ecoinformatics.org/oboe/oboe.1.0/oboe-taxa.owl#" >
+    <!ENTITY oboe-anatomy "http://ecoinformatics.org/oboe/oboe.1.0/oboe-anatomy.owl#" >
 ]>
 
 
@@ -21,11 +23,13 @@
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
      xmlns:sweet-biosphere="http://sweet.jpl.nasa.gov/ontology/biosphere.owl#"
-     xmlns:oboe-core="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:oboe-core="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#"
      xmlns:oboe="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#"
+     xmlns:oboe-taxa="http://ecoinformatics.org/oboe/oboe.1.0/oboe-taxa.owl#"
+     xmlns:oboe-anatomy="http://ecoinformatics.org/oboe/oboe.1.0/oboe-anatomy.owl#"
      xmlns:elements="http://purl.org/dc/elements/1.1#">
     <owl:Ontology rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl">
         <rdfs:label xml:lang="en">oboe-salmon</rdfs:label>
@@ -36,6 +40,7 @@
       </rdfs:comment>
         <owl:versionInfo>Version 1.0 pre-release</owl:versionInfo>
         <owl:imports rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl"/>
+        <owl:imports rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-taxa.owl"/>
     </owl:Ontology>
     
 
@@ -85,6 +90,14 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Body -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Body">
+        <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#BrookTrout -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#BrookTrout">
@@ -93,6 +106,30 @@
         <rdfs:seeAlso>http://www.fishbase.org/Summary/SpeciesSummary.php?ID=246</rdfs:seeAlso>
         <rdfs:seeAlso xml:lang="en">Fish of the species Salvelinus fontinalis.</rdfs:seeAlso>
         <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=162003</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#BrownTrout -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#BrownTrout">
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Trout"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#BullTrout -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#BullTrout">
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Trout"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#CaudalPeduncle -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#CaudalPeduncle">
+        <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
     </owl:Class>
     
 
@@ -152,6 +189,14 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#CutthroatTrout -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#CutthroatTrout">
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Trout"/>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#DollyVarden -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#DollyVarden">
@@ -163,6 +208,22 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fork -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fork">
+        <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#GoldenTrout -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#GoldenTrout">
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Trout"/>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Grayling -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Grayling">
@@ -170,6 +231,22 @@
         <elements:description xml:lang="en">Fish of the genus Thymallus.</elements:description>
         <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=162015</rdfs:seeAlso>
         <rdfs:seeAlso xml:lang="en">http://www.fishbase.org/summary/Thymallus-thymallus.html</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Head -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Head">
+        <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Kokanee -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Kokanee">
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Trout"/>
     </owl:Class>
     
 
@@ -220,7 +297,7 @@
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Salmon -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Salmon">
-        <rdfs:subClassOf rdf:resource="&oboe;RayFinnedFish"/>
+        <rdfs:subClassOf rdf:resource="&oboe-taxa;RayFinnedFish"/>
         <elements:description xml:lang="en">Fish of the order Salmonformes.</elements:description>
         <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161929</rdfs:seeAlso>
         <rdfs:seeAlso xml:lang="en">http://www.fishbase.org/summary/OrdersSummary.php?order=Salmoniformes</rdfs:seeAlso>
@@ -235,6 +312,22 @@
         <elements:description xml:lang="en">Fish of the family Salmonidae.</elements:description>
         <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161931</rdfs:seeAlso>
         <rdfs:seeAlso xml:lang="en">http://www.fishbase.org/summary/FamilySummary.php?ID=76</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SilverTrout -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SilverTrout">
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Trout"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Snout -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Snout">
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Head"/>
     </owl:Class>
     
 
@@ -258,6 +351,14 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Tail -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Tail">
+        <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Trout -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Trout">
@@ -274,14 +375,9 @@
         <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161932</rdfs:seeAlso>
     </owl:Class>
     
-
-
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#RayFinnedFish -->
-
-    <owl:Class rdf:about="&oboe;RayFinnedFish"/>
 </rdf:RDF>
 
 
 
-<!-- Generated by the OWL API (version 3.2.2.1782) http://owlapi.sourceforge.net -->
+<!-- Generated by the OWL API (version 3.2.3.22702) http://owlapi.sourceforge.net -->
 
