@@ -85,6 +85,16 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#AdministrativeFeature -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#AdministrativeFeature">
+        <rdfs:label xml:lang="en">Administrative Feature</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe-taxa;Kingdom"/>
+        <dc:description xml:lang="en">An administrative feature defined by an organization such as a named boundary or region.</dc:description>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#AnalFin -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#AnalFin">
@@ -372,6 +382,16 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#HydrologicUnit -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#HydrologicUnit">
+        <rdfs:label xml:lang="en">Hydrologic Unit</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#AdministrativeFeature"/>
+        <rdfs:seeAlso xml:lang="en">http://water.usgs.gov/GIS/huc.html</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#InclinedPlaneTrap -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#InclinedPlaneTrap">
@@ -418,6 +438,17 @@
         <dc:description xml:lang="en">Fish of the species Salvelinus namaycush.</dc:description>
         <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=162002</rdfs:seeAlso>
         <rdfs:seeAlso xml:lang="en">http://www.fishbase.org/Summary/SpeciesSummary.php?ID=248</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#ManagementRegion -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#ManagementRegion">
+        <rdfs:label xml:lang="en">Management Region</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#AdministrativeFeature"/>
+        <dc:description xml:lang="en">A region of the US Washington State designated by the Washington Department of Fish and Wildlife. The regions include the Eastern (Region 1), North Central (Region 2), South Central (Region 3), North Puget Sound (Region 4), Southwest (Region 5), and Coastal (Region 6).</dc:description>
+        <rdfs:seeAlso xml:lang="en">http://wdfw.wa.gov/about/regions/</rdfs:seeAlso>
     </owl:Class>
     
 
@@ -606,6 +637,18 @@
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#VentraFin">
         <rdfs:label xml:lang="en">Ventra Fin</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fin"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#WaterResourceInventoryArea -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#WaterResourceInventoryArea">
+        <rdfs:label xml:lang="en">Administrative areas designated by the US Washington State legislature under the Water Resources Act of 1971.</rdfs:label>
+        <rdfs:label xml:lang="en">Water Resource Inventory Area</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#AdministrativeFeature"/>
+        <rdfs:seeAlso xml:lang="en">http://apps.leg.wa.gov/WAC/default.aspx?cite=173-500-040</rdfs:seeAlso>
+        <rdfs:seeAlso xml:lang="en">http://www.ecy.wa.gov/services/gis/maps/wria/wria.htm</rdfs:seeAlso>
     </owl:Class>
     
 
