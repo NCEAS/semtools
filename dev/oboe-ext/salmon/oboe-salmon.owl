@@ -76,6 +76,24 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#AdiposeFin -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#AdiposeFin">
+        <rdfs:label xml:lang="en">Adipose Fin</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fin"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#AnalFin -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#AnalFin">
+        <rdfs:label xml:lang="en">Anal Fin</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fin"/>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#AtlanticSalmon -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#AtlanticSalmon">
@@ -130,9 +148,19 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#CaudalFin -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#CaudalFin">
+        <rdfs:label xml:lang="en">Caudal Fin</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fin"/>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#CaudalPeduncle -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#CaudalPeduncle">
+        <rdfs:label xml:lang="en">Caudal Peduncle</rdfs:label>
         <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
     </owl:Class>
     
@@ -219,6 +247,15 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#DorsalFin -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#DorsalFin">
+        <rdfs:label xml:lang="en">Dorsal Fin</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fin"/>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#FenceWeir -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#FenceWeir">
@@ -226,6 +263,33 @@
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#FishTrap"/>
         <dc:description xml:lang="en">A fishing device used to block downstream movement of fish to enable a full census count.</dc:description>
         <rdfs:seeAlso xml:lang="en">http://www.stateofthesalmon.org/fieldprotocols/downloads/SFPH_p13.pdf</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fin -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fin">
+        <rdfs:label xml:lang="en">Fin</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#FinLobe -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#FinLobe">
+        <rdfs:label xml:lang="en">Fin Lobe</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#FinRay -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#FinRay">
+        <rdfs:label xml:lang="en">Fin Ray</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
     </owl:Class>
     
 
@@ -240,9 +304,19 @@
     
 
 
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fork -->
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Gill -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fork">
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Gill">
+        <rdfs:label xml:lang="en">Gill</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#GillPlate -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#GillPlate">
+        <rdfs:label xml:lang="en">Gill Plate</rdfs:label>
         <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
     </owl:Class>
     
@@ -271,6 +345,7 @@
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Head -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Head">
+        <rdfs:label xml:lang="en">Head</rdfs:label>
         <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
     </owl:Class>
     
@@ -326,6 +401,24 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Mandible -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Mandible">
+        <rdfs:label xml:lang="en">Mandible</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Maxillary -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Maxillary">
+        <rdfs:label xml:lang="en">Maxillary</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#PacificSalmon -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#PacificSalmon">
@@ -333,6 +426,25 @@
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Salmonid"/>
         <dc:description xml:lang="en">Fish of the genus Oncorhynchus.</dc:description>
         <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161974</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#PectoralFin -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#PectoralFin">
+        <rdfs:label xml:lang="en">Pectoral Fin</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fin"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#PelvicFin -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#PelvicFin">
+        <rdfs:label xml:lang="en">Pelvic Fin</rdfs:label>
+        <owl:equivalentClass rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#VentraFin"/>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fin"/>
     </owl:Class>
     
 
@@ -394,6 +506,15 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Scale -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Scale">
+        <rdfs:label xml:lang="en">Scale</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SilverTrout -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SilverTrout">
@@ -406,7 +527,8 @@
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Snout -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Snout">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Head"/>
+        <rdfs:label xml:lang="en">Snout</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
     </owl:Class>
     
 
@@ -434,7 +556,18 @@
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Tail -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Tail">
+        <rdfs:label xml:lang="en">Tail</rdfs:label>
         <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#TailFork -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#TailFork">
+        <rdfs:label xml:lang="en">Tail Fork</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe-anatomy;SurfaceStructure"/>
+        <dc:description xml:lang="en">The intersection of the upper and lower lobes of a forked-tail fish.</dc:description>
     </owl:Class>
     
 
@@ -443,6 +576,15 @@
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Trout">
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Salmonid"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#VentraFin -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#VentraFin">
+        <rdfs:label xml:lang="en">Ventra Fin</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fin"/>
     </owl:Class>
     
 
