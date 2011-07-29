@@ -15,7 +15,7 @@ used in Semtools. For a more in-depth presentation of OBOE see
   \centering
   \includegraphics[width=0.49\textwidth]{images/oboe}
   \caption{The main classes and properties of the extensible
-    observation ontology (OBOE). While shown using UML, the model is
+    observation ontology (OBOE). While shown using Unified Modeling Language (UML), the model is
     defined using OWL-DL.}
   \label{fig:oboe}
 \end{figure}
@@ -119,7 +119,7 @@ measurements of Mass for Kelp observations) as opposed to returning
 all data sets that simply mention the terms but without any explicit
 connections (i.e., where Mass was measured, but not for Kelp samples).
 Annotations also help facilitate integration by allowing tools to
-align data-set attributes based on their declared measurement and
+align data set attributes based on their declared measurement and
 observation types.
 
 
@@ -177,7 +177,7 @@ capabilities, and simple concept navigation and visualization
 components. The API is intended to be a centralized toolkit for use in
 multiple application contexts (on either client or server
 deployments).  The Semantic Mediation API uses both the OWL API
-\cite{owlapi} for ontology management services including RDF/OWL
+\cite{owlapi} for ontology management services including ontology 
 parsing, serialization, and simple class and property exploration as
 well as the Pellet description-logic reasoner \cite{pellet} for
 classification and exposing inferred axioms in source ontologies. The
@@ -203,18 +203,18 @@ prohibitive when large numbers of data sets are managed.
 
 \mypara{The Morpho Editor Plugin.}  The semantic-annotation editor
 plugin for Morpho provides a front-end to the Semantic Mediation API
-and allows data owners and curators to define annotations for existing data package
+and allows data owners and curators to define annotations for existing EML data 
 descriptions. The editor provides a simple ``fill-in-the-blank'' style
 form-based interface with a searchable hierarchical concept selection
 widget (see \figref{fig:morpho-annotation}). The plugin seamlessly
 integrates with a standard Morpho installation and provides semantic
-query capabilities for locating data packages, marking up data
-packages with semantic annotations, and saving annotations locally or
+query capabilities for locating data packages, marking up data sets within a 
+package using semantic annotations, and saving annotations locally or
 to a shared repository where they can be discovered and explored by
 other users. The annotation editor in Morpho allows a user to view the
 data set being annotated as they fill in (by selecting an appropriate
 ontology term) the characteristic, measurement standard, protocol, and
-associated entity for each data-set attribute. Users can also specify
+associated entity for each data set attribute. Users can also specify
 whether an observation spans multiple columns, and can provide context
 relationships between attributes (i.e., observations). The editor
 provides a number of additional features including the ability to
