@@ -4,12 +4,11 @@
 
 The need for more semantic mechanisms to describe observational data
 has led to many proposals for observational data models (e.g.,
-\cite{om,
-  tarboton07:_cuahs_commun_obser_data_model,netcdf,cushing07:_compon_based_end_user_datab})
-and ontologies (e.g.,
-\cite{fox09:_ontol,sweet,sheth08:_seman_sensor_web,mungall110:_integ}).
-The work presented here is complementary to these efforts by providing
-a concrete set of software components that have been integrated with
+\cite{om, tarboton07:_cuahs_commun_obser_data_model,netcdf}) and
+ontologies (e.g.,
+\cite{fox09:_ontol,sweet,mungall07:_repres_phenot_in_owl}).  The work
+presented here is complementary to these efforts by providing a
+concrete set of software components that have been integrated with
 popular metadata tools (namely, Metacat
 \cite{metacat02:_manag_heter_ecolog_data_using_morph} and Morpho
 \cite{berkley01:_metac}) to provide a more uniform, semantic view of
@@ -22,7 +21,7 @@ frameworks \cite{jones_new_2006}.
 
 Our work on using semantic annotations for data integration is closely
 aligned to traditional information integration approaches (e.g.,
-\cite{HalevyDataIntegration06,kolaitis05}), where a global mediated
+\cite{kolaitis05}), where a global mediated
 schema is used to (physically or logically) merge the structures of
 heterogeneous data sources using mapping constraints among the source
 and target schemas. As such, the observational model we employ in our
@@ -35,18 +34,16 @@ user-interface components (through Morpho) that can simplify the
 specification of mappings and more naturally aligns with the
 observation model.
 
-Finally, annotations are playing a more prominent role in
-database systems (e.g.,
-\cite{GeertsKM06,Reeve05SemanticAnnotation,BhagwatCTV04}), e.g., the
-MONDRIAN system \cite{GeertsKM06} employs an annotation model and a
-set of query operators to manipulate both data and annotations.
-However, users must be familiar with the underlying data structures
-(schemas) to take advantage of these operators, which is generally not
-feasible for observational data in which data sets exhibit a high
-degree of structural and semantic heterogeneity. Our annotation
-approach used to extend EML is also similar in spirit to a number of
-other high-level mapping languages used for data exchange (e.g.,
-\cite{fagin09:_clio,an06:_build_seman_mappin_datab_ontol}). Our
+Annotations are playing a more prominent role in database systems,
+e.g., the MONDRIAN system \cite{GeertsKM06} employs an annotation
+model and a set of query operators to manipulate both data and
+annotations.  However, users must be familiar with the underlying data
+structures (schemas) to take advantage of these operators, which is
+generally not feasible for observational data in which data sets
+exhibit a high degree of structural and semantic heterogeneity. Our
+annotation approach used to extend EML is also similar in spirit to a
+number of other high-level mapping languages used for data exchange
+(e.g., \cite{fagin09:_clio,an06:_build_seman_mappin_datab_ontol}). Our
 approach differs by being specifically tailored to the OBOE
 observational model, which in turn simplifies the annotation language,
 making it in general easier for users to specify annotations for

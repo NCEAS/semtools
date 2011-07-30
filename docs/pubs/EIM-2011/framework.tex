@@ -13,15 +13,17 @@ used in Semtools. For a more in-depth presentation of OBOE see
 
 \begin{figure}[!t]
   \centering
-  \includegraphics[width=0.49\textwidth]{images/oboe}
-  \caption{The main classes and properties of the extensible
-    observation ontology (OBOE). While shown using Unified Modeling Language (UML), the model is
-    defined using OWL-DL.}
+  \includegraphics[width=0.494\textwidth]{images/oboe}
+  \caption{Main classes and properties of the extensible observation
+    ontology (OBOE). While shown using the Unified Modeling Language (UML),
+    the model is defined as an OWL-DL ontology.}
   \label{fig:oboe}
+  \vspace{-12pt}
 \end{figure}
 
-\mypara{The OBOE Observational Model.}  \figref{fig:oboe} shows the
-main modeling constructs of OBOE (see:
+\subsection{The OBOE Observational Model}  
+
+\figref{fig:oboe} shows the main modeling constructs of OBOE (see:
 \url{http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl}). An {\em
   observation} is made of an {\em entity} (e.g., biological organisms,
 geographic locations, environmental features) and serves to group a
@@ -64,15 +66,17 @@ units, and corresponding physical characteristics.
 \label{fig:kelp-mass-model}
 \end{figure}
 
-\mypara{Semantic Annotations.} A semantic annotation consists of two
-parts: (i) a ``configuration'' of the observation model containing the
-specific entities, characteristics, observations, measurements, and so
-on (drawn from one or more domain ontologies) that appropriately
-capture the semantics of the data set; and (ii) a mapping between the
-attributes in the data set to specific measurements defined in the
-model configuration. \figref{fig:kelp-mass-model} shows a high-level
-example of an annotation defined for a simple Kelp sampling data
-set. Here, the data set consists of five attributes (bottom of
+\subsection{Semantic Annotations} 
+
+A semantic annotation consists of two parts: (i) a ``configuration''
+of the observation model containing the specific entities,
+characteristics, observations, measurements, and so on (drawn from one
+or more domain ontologies) that appropriately capture the semantics of
+the data set; and (ii) a mapping between the attributes in the data
+set to specific measurements defined in the model
+configuration. \figref{fig:kelp-mass-model} shows a high-level example
+of an annotation defined for a simple Kelp sampling data set. Here,
+the data set consists of five attributes (bottom of
 \figref{fig:kelp-mass-model}). Each attribute is mapped to a specific
 measurement type (where only the characteristic of each measurement
 type is shown), and measurement types are organized into observations
@@ -98,17 +102,15 @@ integration of heterogeneous data sets. For instance, combining
 semantic annotations with OBOE, it is possible to discover data sets
 based on searches expressed over types of observations and
 measurements of interest. As simple examples, users can pose queries
-such as ``\emph{find all data sets containing observations of Kelp
-  entities}'' and ``\emph{find all data sets containing Mass
-  measurements of Kelp}''.\footnote{Note that queries also can include
-  contextual constraints, e.g., Mass measurements of Kelp within a
-  specific spatial or temporal context.} Both of these queries would
-return the example data set in \figref{fig:kelp-mass-model} since the
-attribute {\tt WET} is linked to a WetMass measurement for observations
-of Macrocystis (where WetMass is defined as a special kind, or
-\emph{subclass} of Mass, and Macrocystis is defined as a subclass of
-Kelp). Using semantic annotations in this way can help to increase
-both query recall and precision over standard keyword-based approaches
+such as ``\emph{find all data sets containing observations of Kelp}''
+and ``\emph{find all data sets containing Mass measurements of
+  Kelp}''.  Both of these queries would return the example data set in
+\figref{fig:kelp-mass-model} since the attribute {\tt WET} is linked
+to a WetMass measurement for observations of Macrocystis (where
+WetMass is defined as a special kind, or \emph{subclass} of Mass, and
+Macrocystis is defined as a subclass of Kelp). Using semantic
+annotations in this way can help to increase both query recall and
+precision over standard keyword-based approaches
 \cite{berkley09:_improv_data_discov_for_metad}. In particular, by
 defining terms as subclasses of other terms (e.g., Macrocystis as a
 subclass of Kelp), term expansion can be used to increase the number
@@ -118,9 +120,11 @@ queries may specify the desired connections between terms (e.g.,
 measurements of Mass for Kelp observations) as opposed to returning
 all data sets that simply mention the terms but without any explicit
 connections (i.e., where Mass was measured, but not for Kelp samples).
-Annotations also help facilitate integration by allowing tools to
-align data set attributes based on their declared measurement and
-observation types.
+% Queries can additionally include context constraints, e.g., Mass
+% measurements of Kelp within a specific spatial or temporal context.
+Annotations also help facilitate integration by allowing
+tools to align data set attributes based on their declared measurement
+and observation types.
 
 
 In general, semantic annotations provide a formal description of
@@ -171,18 +175,20 @@ of \figref{fig:kelp-mass-model}.
 
 
 
-\mypara{The Semantic Mediation API.} The Semantic Mediation API
-includes basic ontology management features, annotation manipulation
-capabilities, and simple concept navigation and visualization
-components. The API is intended to be a centralized toolkit for use in
-multiple application contexts (on either client or server
-deployments).  The Semantic Mediation API uses both the OWL API
-\cite{owlapi} for ontology management services including ontology 
-parsing, serialization, and simple class and property exploration as
-well as the Pellet description-logic reasoner \cite{pellet} for
-classification and exposing inferred axioms in source ontologies. The
-inference services exposed through the Semantic Mediation API are used
-in both discovery and integration features described below.
+\subsection{The Semantic Mediation API} 
+
+The Semantic Mediation API includes basic ontology management
+features, annotation manipulation capabilities, and simple concept
+navigation and visualization components. The API is intended to be a
+centralized toolkit for use in multiple application contexts (on
+either client or server deployments).  The Semantic Mediation API uses
+both the OWL API \cite{owlapi} for ontology management services
+including ontology parsing, serialization, and simple class and
+property exploration as well as the Pellet description-logic reasoner
+\cite{pellet} for classification and exposing inferred axioms in
+source ontologies. The inference services exposed through the Semantic
+Mediation API are used in both discovery and integration features
+described below.
 % is particularly powerful when utilizing OBOE Measurement 'templates'
 % that express exactly what (Entity and Characteristic) can be
 % observed and how (Standard and Protocol).
@@ -201,14 +207,16 @@ prohibitive when large numbers of data sets are managed.
 
 
 
-\mypara{The Morpho Editor Plugin.}  The semantic-annotation editor
-plugin for Morpho provides a front-end to the Semantic Mediation API
-and allows data owners and curators to define annotations for existing EML data 
-descriptions. The editor provides a simple ``fill-in-the-blank'' style
-form-based interface with a searchable hierarchical concept selection
-widget (see \figref{fig:morpho-annotation}). The plugin seamlessly
-integrates with a standard Morpho installation and provides semantic
-query capabilities for locating data packages, marking up data sets within a 
+\subsection{The Morpho Editor Plugin}
+
+The semantic-annotation editor plugin for Morpho provides a front-end
+to the Semantic Mediation API and allows data owners and curators to
+define annotations for existing EML data descriptions. The editor
+provides a simple ``fill-in-the-blank'' style form-based interface
+with a searchable hierarchical concept selection widget (see
+\figref{fig:morpho-annotation}). The plugin seamlessly integrates with
+a standard Morpho installation and provides semantic query
+capabilities for locating data packages, marking up data sets within a
 package using semantic annotations, and saving annotations locally or
 to a shared repository where they can be discovered and explored by
 other users. The annotation editor in Morpho allows a user to view the
@@ -217,26 +225,28 @@ ontology term) the characteristic, measurement standard, protocol, and
 associated entity for each data set attribute. Users can also specify
 whether an observation spans multiple columns, and can provide context
 relationships between attributes (i.e., observations). The editor
-provides a number of additional features including the ability to
-view the entire annotation (similar to \figref{fig:kelp-mass-model})
-and to specify additional mapping constraints for observations and
+provides a number of additional features including the ability to view
+the entire annotation (similar to \figref{fig:kelp-mass-model}) and to
+specify additional mapping constraints for observations and
 measurements.
 
-\mypara{Metacat Query Extensions.}  The semantic plugin for Metacat
-augments Metacat's existing metadata storage and search by allowing
-annotations to be saved and queried alongside the metadata and data
-that they annotate. In addition to traditional keyword and spatial
-search criteria, the Metacat plugin allows semantic criteria to be
-included where they may either increase query recall using
-term-expansion (i.e., traversing the class subsumption hierarchy) or
-refine the result set by limiting matches to data sets that contain
-the specified observational model (e.g., combinations of
-OBOE-compatible entity, characteristic, measurement standard, or
-protocol concepts). The observational model can be leveraged further
-by materializing the annotation and data artifact (via the Data
-Manager Library \cite{leinfelder10:_metad_driven_approac_to_loadin})
-into a fully instantiated OBOE model and inspecting (and querying
-over) the observational values themselves.
+\subsection{Metacat Query Extensions}  
+
+The semantic plugin for Metacat augments Metacat's existing metadata
+storage and search by allowing annotations to be saved and queried
+alongside the metadata and data that they annotate. In addition to
+traditional keyword and spatial search criteria, the Metacat plugin
+allows semantic criteria to be included where they may either increase
+query recall using term-expansion (i.e., traversing the class
+subsumption hierarchy) or refine the result set by limiting matches to
+data sets that contain the specified observational model (e.g.,
+combinations of OBOE-compatible entity, characteristic, measurement
+standard, or protocol concepts). The observational model can be
+leveraged further by materializing the annotation and data artifact
+(via the Data Manager Library
+\cite{leinfelder10:_metad_driven_approac_to_loadin}) into a fully
+instantiated OBOE model and inspecting (and querying over) the
+observational values themselves.
 
 %%% Local Variables: 
 %%% mode: latex

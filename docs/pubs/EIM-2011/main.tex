@@ -62,7 +62,9 @@
 % should be used if it is desired that the figures are to be displayed in
 % draft mode.
 %
-\documentclass[conference]{IEEEtran}
+\documentclass[10pt,conference]{IEEEtran}
+
+\usepackage{times}
 
 % Add the compsoc option for Computer Society conferences.
 %
@@ -354,17 +356,16 @@ Heterogeneous Ecological Data}
 %      Email: schild@nceas.ucsb.edu
 % }}
 
-\author{Ben Leinfelder$^1$, Shawn Bowers$^2$, Margaret O'Brien$^3$,
-  Matthew B. Jones$^1$, Mark Schildhauer$^1$
+\author{{\large Ben Leinfelder$^1$, Shawn Bowers$^2$, Margaret O'Brien$^3$,
+  Matthew B. Jones$^1$, Mark Schildhauer$^1$}
 % add some space between author names and affils
   \vspace{1.6mm}\\
-  \fontsize{10}{10}\selectfont\itshape
-  $^1$NCEAS, University of California Santa Barbara\\
-  $^2$Dept.\ of Computer Science, Gonzaga University\\
-  $^3$Marine Science Institute, University of California Santa Barbara\\
+  %\fontsize{9}{9}%\selectfont\itshape
+  $^1$ NCEAS, University of California Santa Barbara\\
+  $^2$ Dept.\ of Computer Science, Gonzaga University\\
+  $^3$ Marine Science Institute, University of California Santa Barbara\\
   \{leinfelder, jones, schild\}@nceas.ucsb.edu, bowers@gonzaga.edu,
-  mob@msi.ucsb.edu
-}
+  mob@msi.ucsb.edu }
 
 
 % conference papers do not typically use \thanks and this command
