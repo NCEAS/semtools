@@ -73,31 +73,30 @@ query and return the data packages that contain them (see
 
 \subsection{Data Integration} 
 
-The materialization routine used for semantic data queries laid the
-groundwork for enabling data integration. In addition to inspecting
-the data for values within a range and returning the data sets that
-contain a match, the data integration feature of the Semtools Web
-application goes further by constructing a synthetic data product
-(table) that represents the complete results of the query in terms of
-both the attributes and the values that are returned. Each original
-data set may have very different syntactic structures (e.g. column
-number, naming, order) but could share a subset of attributes that are
-semantically compatible as defined in accompanying annotations. These
-compatible, in-common attributes become the facets and metrics in a
-synthetic data set; their values filtered
-accordingly. \figref{fig:integration} further illustrates the data
-integration support provided in the current implementation of the Web
-application. Consider two data packages, denoted by A and B in
+The materialization routine for semantic data queries can help in
+enabling data integration. In addition to inspecting data for values
+within a range and returning the data sets that contain a match, the
+data integration feature of the Semtools Web application goes further
+by constructing a synthetic data product (table) that represents the
+complete results of the query in terms of both the attributes and the
+values that are returned. Each original data set may have very
+different syntactic structures (e.g., column number, naming, order)
+but could share a subset of attributes that are semantically
+compatible as defined in accompanying annotations. These compatible
+attributes can then become the basis for a synthetic data set.
+\figref{fig:integration} illustrates the data integration support
+provided in the current implementation of the Web
+application. Consider the two data packages (denoted A and B) in
 \figref{fig:integration}.  Annotations (denoted C and D) are used to
 determine semantically equivalent data attributes contained in the
 data sets (denoted by E and F). The attributes {\tt plot} and {\tt
   site} are considered equivalent measurements of the characteristic
 Location; attributes {\tt weight} and {\tt wt} both map to the same
-characteristic Mass. The Semantic Mediation API parses each annotation
-and then computes an equivalence mapping among attributes based on
-their corresponding annotations. The Data Manager Library is then used
-to load the data sets and then query each data set to produce and
-merge the final, synthetic result data set.
+characteristic Mass. The Semantic Mediation API computes an
+equivalence among attributes based on their corresponding
+annotations. The Data Manager Library is then used to load the data
+sets and then query each data set to produce and merge a synthetic
+result data set.
 
 While this approach provides a preliminary form of data-level
 integration, we are currently developing additional algorithms for
@@ -111,14 +110,14 @@ support automated data integration through the Web application.
 \begin{figure}
 \centering
 \includegraphics[width=0.45\textwidth]{images/integration.pdf}
-\caption{Data integration query across multiple data packages (A, B).
-  Annotations (C, D) are used to determine semantically equivalent
-  data attributes contained in the data objects (E, F). Attributes
-  {\tt plot} and {\tt site} are considered equivalent measurements of the
-  characteristic Location; attributes {\tt weight} and {\tt wt} both map to
-  the same characteristic Mass. The Semantic Mediation API utilizes
-  the Data Manager Library to load and query the source data informed
-  by semantic similarities between the structurally disparate data
+\caption{Integration query across multiple data packages (A, B).
+  Annotations (C, D) determine semantically equivalent data attributes
+  contained in the data objects (E, F). Attributes {\tt plot} and {\tt
+    site} are considered equivalent measurements of the characteristic
+  Location; attributes {\tt weight} and {\tt wt} both map to the same
+  characteristic Mass. The Semantic Mediation API utilizes the Data
+  Manager Library to load and query the source data informed by
+  semantic similarities between the structurally disparate data
   attributes.}
 \label{fig:integration}
 \end{figure}
