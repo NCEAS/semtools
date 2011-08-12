@@ -11,10 +11,10 @@
     <!ENTITY sweet-biosphere "http://sweet.jpl.nasa.gov/ontology/biosphere.owl#" >
     <!ENTITY oboe-core "http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#" >
     <!ENTITY oboe-taxa "http://ecoinformatics.org/oboe/oboe.1.0/oboe-taxa.owl#" >
-    <!ENTITY oboe-biology "http://ecoinformatics.org/oboe/oboe.1.0/oboe-biology.owl#" >
     <!ENTITY oboe-ecology "http://ecoinformatics.org/oboe/oboe.1.0/oboe-ecology.owl#" >
     <!ENTITY oboe-anatomy "http://ecoinformatics.org/oboe/oboe.1.0/oboe-anatomy.owl#" >
     <!ENTITY oboe-spatial "http://ecoinformatics.org/oboe/oboe.1.0/oboe-spatial.owl#" >
+    <!ENTITY oboe-biology "http://ecoinformatics.org/oboe/oboe.1.0/oboe-biology.owl#" >
     <!ENTITY oboe-temporal "http://ecoinformatics.org/oboe/oboe.1.0/oboe-temporal.owl#" >
     <!ENTITY oboe-chemistry "http://ecoinformatics.org/oboe/oboe.1.0/oboe-chemistry.owl#" >
     <!ENTITY oboe-standards "http://ecoinformatics.org/oboe/oboe.1.0/oboe-standards.owl#" >
@@ -31,12 +31,12 @@
      xmlns:oboe-characteristics="http://ecoinformatics.org/oboe/oboe.1.0/oboe-characteristics.owl#"
      xmlns:oboe-chemistry="http://ecoinformatics.org/oboe/oboe.1.0/oboe-chemistry.owl#"
      xmlns:oboe-standards="http://ecoinformatics.org/oboe/oboe.1.0/oboe-standards.owl#"
+     xmlns:oboe-biology="http://ecoinformatics.org/oboe/oboe.1.0/oboe-biology.owl#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
-     xmlns:oboe-taxa="http://ecoinformatics.org/oboe/oboe.1.0/oboe-taxa.owl#"
-     xmlns:oboe-biology="http://ecoinformatics.org/oboe/oboe.1.0/oboe-biology.owl#"
      xmlns:oboe-ecology="http://ecoinformatics.org/oboe/oboe.1.0/oboe-ecology.owl#"
      xmlns:oboe-temporal="http://ecoinformatics.org/oboe/oboe.1.0/oboe-temporal.owl#"
+     xmlns:oboe-taxa="http://ecoinformatics.org/oboe/oboe.1.0/oboe-taxa.owl#"
      xmlns:oboe-core="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
@@ -233,6 +233,113 @@
         <rdfs:seeAlso xml:lang="en">http://www.fishbase.org/Summary/SpeciesSummary.php?ID=241</rdfs:seeAlso>
     </owl:Class>
     
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#CohoSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#CohoSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Coho Salmon Population Sample</rdfs:label>
+        <dc:description xml:lang="en">A sample of a Coho salmon population.</dc:description>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&oboe-ecology;PopulationSample"/>
+                    <rdf:Description rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#CohoSalmon"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#ChinookSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#ChinookSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Chinook Salmon Population Sample</rdfs:label>
+        <dc:description xml:lang="en">A sample of a Chinook salmon population.</dc:description>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&oboe-ecology;PopulationSample"/>
+                    <rdf:Description rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#ChinookSalmon"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SockeyeSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SockeyeSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Sockeye Salmon Population Sample</rdfs:label>
+        <dc:description xml:lang="en">A sample of a Sockeye salmon population.</dc:description>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&oboe-ecology;PopulationSample"/>
+                    <rdf:Description rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SockeyeSalmon"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#CherrySalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#CherrySalmonPopulationSample">
+        <rdfs:label xml:lang="en">Cherry Salmon Population Sample</rdfs:label>
+        <dc:description xml:lang="en">A sample of a Cherry salmon population.</dc:description>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&oboe-ecology;PopulationSample"/>
+                    <rdf:Description rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#CherrySalmon"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#ChumSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#ChumSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Chum Salmon Population Sample</rdfs:label>
+        <dc:description xml:lang="en">A sample of a Chum salmon population.</dc:description>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&oboe-ecology;PopulationSample"/>
+                    <rdf:Description rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#ChumSalmon"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#PinkSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#PinkSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Pink Salmon Population Sample</rdfs:label>
+        <dc:description xml:lang="en">A sample of a Pink salmon population.</dc:description>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&oboe-ecology;PopulationSample"/>
+                    <rdf:Description rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#PinkSalmon"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SteelheadPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SteelheadPopulationSample">
+        <rdfs:label xml:lang="en">Steelhead Population Sample</rdfs:label>
+        <dc:description xml:lang="en">A sample of a Steelhead population.</dc:description>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&oboe-ecology;PopulationSample"/>
+                    <rdf:Description rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Steelhead"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
 
 
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#CohoSalmon -->
@@ -576,6 +683,17 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#RayFinnedFish -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#RayFinnedFish">
+        <rdfs:label xml:lang="en">Ray Finned Fish</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fish"/>
+        <dc:description xml:lang="en">Fish of the class Actinoptergii.</dc:description>
+        <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161061</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#RotaryScrewTrap -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#RotaryScrewTrap">
@@ -714,15 +832,9 @@
     
 
 
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#RayFinnedFish -->
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-taxa.owl#Species -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#RayFinnedFish">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fish"/>
-        <dc:description xml:lang="en">Fish of the class Actinoptergii.</dc:description>
-        <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161061</rdfs:seeAlso>
-        <rdfs:label xml:lang="en">Ray Finned Fish</rdfs:label>
-    </owl:Class>
-    
+    <owl:Class rdf:about="&oboe-taxa;Species"/>
 </rdf:RDF>
 
 
