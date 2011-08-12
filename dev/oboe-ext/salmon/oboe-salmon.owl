@@ -10,30 +10,34 @@
     <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
     <!ENTITY sweet-biosphere "http://sweet.jpl.nasa.gov/ontology/biosphere.owl#" >
     <!ENTITY oboe-core "http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#" >
-    <!ENTITY oboe-characteristics "http://ecoinformatics.org/oboe/oboe.1.0/oboe-characteristics.owl#" >
-    <!ENTITY oboe-standards "http://ecoinformatics.org/oboe/oboe.1.0/oboe-standards.owl#" >
+    <!ENTITY oboe-taxa "http://ecoinformatics.org/oboe/oboe.1.0/oboe-taxa.owl#" >
+    <!ENTITY oboe-biology "http://ecoinformatics.org/oboe/oboe.1.0/oboe-biology.owl#" >
+    <!ENTITY oboe-ecology "http://ecoinformatics.org/oboe/oboe.1.0/oboe-ecology.owl#" >
+    <!ENTITY oboe-anatomy "http://ecoinformatics.org/oboe/oboe.1.0/oboe-anatomy.owl#" >
     <!ENTITY oboe-spatial "http://ecoinformatics.org/oboe/oboe.1.0/oboe-spatial.owl#" >
     <!ENTITY oboe-temporal "http://ecoinformatics.org/oboe/oboe.1.0/oboe-temporal.owl#" >
     <!ENTITY oboe-chemistry "http://ecoinformatics.org/oboe/oboe.1.0/oboe-chemistry.owl#" >
-    <!ENTITY oboe-taxa "http://ecoinformatics.org/oboe/oboe.1.0/oboe-taxa.owl#" >
-    <!ENTITY oboe-anatomy "http://ecoinformatics.org/oboe/oboe.1.0/oboe-anatomy.owl#" >
+    <!ENTITY oboe-standards "http://ecoinformatics.org/oboe/oboe.1.0/oboe-standards.owl#" >
+    <!ENTITY oboe-characteristics "http://ecoinformatics.org/oboe/oboe.1.0/oboe-characteristics.owl#" >
 ]>
 
 
 <rdf:RDF xmlns="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#"
      xml:base="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl"
      xmlns:dc="http://purl.org/dc/elements/1.1#"
-     xmlns:sweet-biosphere="http://sweet.jpl.nasa.gov/ontology/biosphere.owl#"
-     xmlns:oboe-core="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#"
-     xmlns:oboe-characteristics="http://ecoinformatics.org/oboe/oboe.1.0/oboe-characteristics.owl#"
-     xmlns:oboe-standards="http://ecoinformatics.org/oboe/oboe.1.0/oboe-standards.owl#"
      xmlns:oboe-spatial="http://ecoinformatics.org/oboe/oboe.1.0/oboe-spatial.owl#"
-     xmlns:oboe-temporal="http://ecoinformatics.org/oboe/oboe.1.0/oboe-temporal.owl#"
-     xmlns:oboe-chemistry="http://ecoinformatics.org/oboe/oboe.1.0/oboe-chemistry.owl#"
-     xmlns:oboe-taxa="http://ecoinformatics.org/oboe/oboe.1.0/oboe-taxa.owl#"
+     xmlns:sweet-biosphere="http://sweet.jpl.nasa.gov/ontology/biosphere.owl#"
      xmlns:oboe-anatomy="http://ecoinformatics.org/oboe/oboe.1.0/oboe-anatomy.owl#"
+     xmlns:oboe-characteristics="http://ecoinformatics.org/oboe/oboe.1.0/oboe-characteristics.owl#"
+     xmlns:oboe-chemistry="http://ecoinformatics.org/oboe/oboe.1.0/oboe-chemistry.owl#"
+     xmlns:oboe-standards="http://ecoinformatics.org/oboe/oboe.1.0/oboe-standards.owl#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:oboe-taxa="http://ecoinformatics.org/oboe/oboe.1.0/oboe-taxa.owl#"
+     xmlns:oboe-biology="http://ecoinformatics.org/oboe/oboe.1.0/oboe-biology.owl#"
+     xmlns:oboe-ecology="http://ecoinformatics.org/oboe/oboe.1.0/oboe-ecology.owl#"
+     xmlns:oboe-temporal="http://ecoinformatics.org/oboe/oboe.1.0/oboe-temporal.owl#"
+     xmlns:oboe-core="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -45,7 +49,6 @@
         domain-specific extension of the OBOE ontology.
       </rdfs:comment>
         <owl:versionInfo>Version 1.0 pre-release</owl:versionInfo>
-        <owl:imports rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-taxa.owl"/>
         <owl:imports rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl"/>
     </owl:Ontology>
     
@@ -343,6 +346,16 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fish -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fish">
+        <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
+        <dc:description xml:lang="en">Aquatic vertebrates that have gills throughout life and limbs, if any, in the shape of fins.</dc:description>
+        <rdfs:comment xml:lang="en">The definition of &#39;Fish&#39; comes from &#39;Fishes of the World, 4th Edition&#39; by Joseph S. Nelson, ISBN 0471250317.</rdfs:comment>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#FishTrap -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#FishTrap">
@@ -577,7 +590,7 @@
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Salmon -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Salmon">
-        <rdfs:subClassOf rdf:resource="&oboe-taxa;RayFinnedFish"/>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#RayFinnedFish"/>
         <dc:description xml:lang="en">Fish of the order Salmonformes.</dc:description>
         <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161929</rdfs:seeAlso>
         <rdfs:seeAlso xml:lang="en">http://www.fishbase.org/summary/OrdersSummary.php?order=Salmoniformes</rdfs:seeAlso>
@@ -698,9 +711,21 @@
         <dc:description xml:lang="en">Fish of the species Coregonus.</dc:description>
         <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161932</rdfs:seeAlso>
     </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#RayFinnedFish -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#RayFinnedFish">
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fish"/>
+        <dc:description xml:lang="en">Fish of the class Actinoptergii.</dc:description>
+        <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161061</rdfs:seeAlso>
+        <rdfs:label xml:lang="en">Ray Finned Fish</rdfs:label>
+    </owl:Class>
+    
 </rdf:RDF>
 
 
 
-<!-- Generated by the OWL API (version 3.2.3.22702) http://owlapi.sourceforge.net -->
+<!-- Generated by the OWL API (version 3.2.3.1824) http://owlapi.sourceforge.net -->
 
