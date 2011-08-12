@@ -499,7 +499,7 @@
     
 
 
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#DeadSmoltCherrySalmonPopulationSample -->
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#a deadSmoltCherrySalmonPopulationSample -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#DeadSmoltCherrySalmonPopulationSample">
         <rdfs:label xml:lang="en">Dead Smolt Cherry Salmon Population Sample</rdfs:label>
@@ -512,7 +512,7 @@
             </owl:Class>
         </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SmoltCherrySalmonPopulationSample"/>
-        <dc:description xml:lang="en">A sample of an dead Cherry salmon smolt population (e.g. mortality count).</dc:description>
+        <dc:description xml:lang="en">A sample of a dead Cherry salmon smolt population (e.g. mortality count).</dc:description>
     </owl:Class>
     
 
@@ -529,7 +529,7 @@
             </owl:Class>
         </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SmoltChinookSalmonPopulationSample"/>
-        <dc:description xml:lang="en">A sample of an dead Chinook salmon smolt population (e.g. mortality count).</dc:description>
+        <dc:description xml:lang="en">A sample of a dead Chinook salmon smolt population (e.g. mortality count).</dc:description>
     </owl:Class>
 
 
@@ -546,7 +546,7 @@
             </owl:Class>
         </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SmoltChumSalmonPopulationSample"/>
-        <dc:description xml:lang="en">A sample of an dead Chum salmon smolt population (e.g. mortality count).</dc:description>
+        <dc:description xml:lang="en">A sample of a dead Chum salmon smolt population (e.g. mortality count).</dc:description>
     </owl:Class>
 
 
@@ -563,7 +563,7 @@
             </owl:Class>
         </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SmoltCohoSalmonPopulationSample"/>
-        <dc:description xml:lang="en">A sample of an dead Coho salmon smolt population (e.g. mortality count).</dc:description>
+        <dc:description xml:lang="en">A sample of a dead Coho salmon smolt population (e.g. mortality count).</dc:description>
     </owl:Class>
 
 
@@ -580,7 +580,7 @@
             </owl:Class>
         </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SmoltPinkSalmonPopulationSample"/>
-        <dc:description xml:lang="en">A sample of an dead Pink salmon smolt population (e.g. mortality count).</dc:description>
+        <dc:description xml:lang="en">A sample of a dead Pink salmon smolt population (e.g. mortality count).</dc:description>
     </owl:Class>
 
 
@@ -597,7 +597,7 @@
             </owl:Class>
         </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SmoltSockeyeSalmonPopulationSample"/>
-        <dc:description xml:lang="en">A sample of an dead Sockeye salmon smolt population (e.g. mortality count).</dc:description>
+        <dc:description xml:lang="en">A sample of a dead Sockeye salmon smolt population (e.g. mortality count).</dc:description>
     </owl:Class>
 
 
@@ -614,7 +614,7 @@
             </owl:Class>
         </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SmoltSteelheadPopulationSample"/>
-        <dc:description xml:lang="en">A sample of an dead Steelhead smolt population (e.g. mortality count).</dc:description>
+        <dc:description xml:lang="en">A sample of a dead Steelhead smolt population (e.g. mortality count).</dc:description>
     </owl:Class>
 
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#DistinctPopulationSegment -->
