@@ -130,8 +130,8 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#Adult">
         <rdfs:label xml:lang="en">Adult</rdfs:label>
-        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#AdultStage"/>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#LifeStage"/>
+        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#AdultStageFish"/>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
     </owl:Class>
     
 
@@ -140,7 +140,16 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#AdultStage">
         <rdfs:label xml:lang="en">Adult Stage</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#LifeStage"/>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#FishLifeStage"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#AdultStageFish -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#AdultStageFish">
+        <rdfs:label xml:lang="en">Adult Stage Fish</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
     </owl:Class>
     
 
@@ -149,8 +158,8 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#Alevin">
         <rdfs:label xml:lang="en">Alevin</rdfs:label>
-        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#AlevinStage"/>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#LifeStage"/>
+        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#Alevin_Stage_Fish"/>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
     </owl:Class>
     
 
@@ -159,7 +168,16 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#AlevinStage">
         <rdfs:label xml:lang="en">Alevin Stage</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#LifeStage"/>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#FishLifeStage"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Alevin_Stage_Fish -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#Alevin_Stage_Fish">
+        <rdfs:label xml:lang="en">Alevin Stage Fish</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
     </owl:Class>
     
 
@@ -658,6 +676,34 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Egg -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#Egg">
+        <rdfs:label xml:lang="en">Egg</rdfs:label>
+        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#EggStageFish"/>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#EggStage -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#EggStage">
+        <rdfs:label xml:lang="en">Egg Stage</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#FishLifeStage"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#EggStageFish -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#EggStageFish">
+        <rdfs:label xml:lang="en">Egg Stage Fish</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#EvolutionarilySignificantUnit -->
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#EvolutionarilySignificantUnit">
@@ -712,6 +758,16 @@
         <rdfs:subClassOf rdf:resource="&oboe;oboe-core.owl#Entity"/>
         <dc:description xml:lang="en">Aquatic vertebrates that have gills throughout life and limbs, if any, in the shape of fins.</dc:description>
         <rdfs:comment xml:lang="en">The definition of &#39;Fish&#39; comes from &#39;Fishes of the World, 4th Edition&#39; by Joseph S. Nelson, ISBN 0471250317.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#FishLifeStage -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#FishLifeStage">
+        <rdfs:label xml:lang="en">Fish Life Stage</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-characteristics.owl#LifeStage"/>
+        <dc:description xml:lang="en">The stage of life of a given fish species.</dc:description>
     </owl:Class>
     
 
@@ -833,16 +889,6 @@
     
 
 
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#LifeStage -->
-
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#LifeStage">
-        <rdfs:label xml:lang="en">Life Stage</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-core.owl#Entity"/>
-        <dc:description xml:lang="en">the stage of life of a given organism.</dc:description>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#LiveBox -->
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#LiveBox">
@@ -907,8 +953,8 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#Parr">
         <rdfs:label xml:lang="en">Parr</rdfs:label>
-        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#ParrStage"/>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#LifeStage"/>
+        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#ParrStageFish"/>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
     </owl:Class>
     
 
@@ -917,7 +963,16 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#ParrStage">
         <rdfs:label xml:lang="en">Parr Stage</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#LifeStage"/>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#FishLifeStage"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#ParrStageFish -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#ParrStageFish">
+        <rdfs:label xml:lang="en">Parr Stage Fish</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
     </owl:Class>
     
 
@@ -1048,8 +1103,8 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#Smolt">
         <rdfs:label xml:lang="en">Smolt</rdfs:label>
-        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#SmoltStage"/>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#LifeStage"/>
+        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#SmoltStageFish"/>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
     </owl:Class>
     
 
@@ -1166,7 +1221,16 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#SmoltStage">
         <rdfs:label xml:lang="en">Smolt Stage</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#LifeStage"/>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#FishLifeStage"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SmoltStageFish -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#SmoltStageFish">
+        <rdfs:label xml:lang="en">Smolt Stage Fish</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
     </owl:Class>
     
 
@@ -1256,8 +1320,8 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#Subadult">
         <rdfs:label xml:lang="en">Subadult</rdfs:label>
-        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#SubadultStage"/>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#LifeStage"/>
+        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#Subadult_Stage_Fish"/>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
     </owl:Class>
     
 
@@ -1266,7 +1330,16 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#SubadultStage">
         <rdfs:label xml:lang="en">Subadult Stage</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#LifeStage"/>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#FishLifeStage"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Subadult_Stage_Fish -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#Subadult_Stage_Fish">
+        <rdfs:label xml:lang="en">Subadult Stage Fish</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
     </owl:Class>
     
 
@@ -1346,11 +1419,11 @@
     <rdf:Description>
         <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="&oboe;oboe-salmon.owl#Adult"/>
-            <rdf:Description rdf:about="&oboe;oboe-salmon.owl#Alevin"/>
-            <rdf:Description rdf:about="&oboe;oboe-salmon.owl#Parr"/>
-            <rdf:Description rdf:about="&oboe;oboe-salmon.owl#Smolt"/>
-            <rdf:Description rdf:about="&oboe;oboe-salmon.owl#Subadult"/>
+            <rdf:Description rdf:about="&oboe;oboe-salmon.owl#AdultStageFish"/>
+            <rdf:Description rdf:about="&oboe;oboe-salmon.owl#Alevin_Stage_Fish"/>
+            <rdf:Description rdf:about="&oboe;oboe-salmon.owl#ParrStageFish"/>
+            <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltStageFish"/>
+            <rdf:Description rdf:about="&oboe;oboe-salmon.owl#Subadult_Stage_Fish"/>
         </owl:members>
     </rdf:Description>
 </rdf:RDF>
