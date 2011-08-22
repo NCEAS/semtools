@@ -590,17 +590,6 @@
     
 
 
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#DistinctPopulationSegment -->
-
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#DistinctPopulationSegment">
-        <rdfs:label xml:lang="en">A subset of a species population administratively designated by a US state agency as a distinct and important conservation unit based on the genetic makeup of the individuals and their rearing location.</rdfs:label>
-        <rdfs:label xml:lang="en">Distinct Population Segment</rdfs:label>
-        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#EvolutionarilySignificantUnit"/>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-taxa.owl#Species"/>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#DollyVarden -->
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#DollyVarden">
@@ -618,16 +607,6 @@
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#DorsalFin">
         <rdfs:label xml:lang="en">Dorsal Fin</rdfs:label>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fin"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#EvolutionarilySignificantUnit -->
-
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#EvolutionarilySignificantUnit">
-        <rdfs:label xml:lang="en">Evolutionarily Significant Unit</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-taxa.owl#Species"/>
-        <dc:description xml:lang="en">A subset of a species population administratively designated by the US Environmental Protection Agency (EPA) as a distinct and important conservation unit based on the genetic makeup of the individuals and their rearing location.</dc:description>
     </owl:Class>
     
 
@@ -1296,12 +1275,6 @@
         <dc:description xml:lang="en">Fish of the species Coregonus.</dc:description>
         <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161932</rdfs:seeAlso>
     </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-taxa.owl#Species -->
-
-    <owl:Class rdf:about="&oboe;oboe-taxa.owl#Species"/>
 </rdf:RDF>
 
 
