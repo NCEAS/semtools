@@ -126,44 +126,6 @@
     
 
 
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Adult -->
-
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#Adult">
-        <rdfs:label xml:lang="en">Adult</rdfs:label>
-        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#AdultStageFish"/>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#AdultStageFish -->
-
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#AdultStageFish">
-        <rdfs:label xml:lang="en">Adult Stage Fish</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Alevin -->
-
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#Alevin">
-        <rdfs:label xml:lang="en">Alevin</rdfs:label>
-        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#Alevin_Stage_Fish"/>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Alevin_Stage_Fish -->
-
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#Alevin_Stage_Fish">
-        <rdfs:label xml:lang="en">Alevin Stage Fish</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#AliveSmoltCherrySalmonPopulationSample -->
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#AliveSmoltCherrySalmonPopulationSample">
@@ -375,9 +337,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#Char">
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Salmonid"/>
-        <dc:description xml:lang="en">Fish of the species Salvelinus fontinalis.</dc:description>
-        <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=162003</rdfs:seeAlso>
-        <rdfs:seeAlso xml:lang="en">http://www.fishbase.org/Summary/SpeciesSummary.php?ID=246</rdfs:seeAlso>
     </owl:Class>
     
 
@@ -386,6 +345,7 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#CherrySalmon">
         <rdfs:label xml:lang="en">Cherry Salmon</rdfs:label>
+        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#OncorhynchusMasou"/>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#PacificSalmon"/>
         <dc:description xml:lang="en">Fish of the species Oncorhynchus masou.</dc:description>
         <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161978</rdfs:seeAlso>
@@ -416,6 +376,7 @@
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#ChinookSalmon">
         <rdfs:label xml:lang="en">Chinook Salmon</rdfs:label>
         <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#KingSalmon"/>
+        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#OncorhynchusTshawytscha"/>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#PacificSalmon"/>
         <dc:description xml:lang="en">Fish of the species Oncorhynchus tshawytscha.</dc:description>
         <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161980</rdfs:seeAlso>
@@ -445,6 +406,7 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#ChumSalmon">
         <rdfs:label xml:lang="en">Chum Salmon</rdfs:label>
+        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#OncorhynchusKeta"/>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#PacificSalmon"/>
         <rdfs:seeAlso xml:lang="en">Fish of the species Oncorhynchus keta.</rdfs:seeAlso>
         <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161976</rdfs:seeAlso>
@@ -474,6 +436,7 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#CohoSalmon">
         <rdfs:label xml:lang="en">Coho Salmon</rdfs:label>
+        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#OncorhynchusKisutch"/>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#PacificSalmon"/>
         <dc:description xml:lang="en">Fish of the species Oncorhynchus kisutch.</dc:description>
         <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161977</rdfs:seeAlso>
@@ -513,6 +476,7 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#CutthroatTrout">
         <rdfs:label xml:lang="en">Cutthroat Trout</rdfs:label>
+        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#OncorhynchusClarkiiClarkii"/>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Trout"/>
     </owl:Class>
     
@@ -658,25 +622,6 @@
     
 
 
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Egg -->
-
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#Egg">
-        <rdfs:label xml:lang="en">Egg</rdfs:label>
-        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#EggStageFish"/>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#EggStageFish -->
-
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#EggStageFish">
-        <rdfs:label xml:lang="en">Egg Stage Fish</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#EvolutionarilySignificantUnit -->
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#EvolutionarilySignificantUnit">
@@ -725,16 +670,6 @@
     
 
 
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Fish -->
-
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#Fish">
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-core.owl#Entity"/>
-        <dc:description xml:lang="en">Aquatic vertebrates that have gills throughout life and limbs, if any, in the shape of fins.</dc:description>
-        <rdfs:comment xml:lang="en">The definition of &#39;Fish&#39; comes from &#39;Fishes of the World, 4th Edition&#39; by Joseph S. Nelson, ISBN 0471250317.</rdfs:comment>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#FishTrap -->
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#FishTrap">
@@ -767,6 +702,7 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#GoldenTrout">
         <rdfs:label xml:lang="en">Golden Trout</rdfs:label>
+        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#OncorhynchusAguabonita"/>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Trout"/>
     </owl:Class>
     
@@ -901,6 +837,99 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Onchorhynchus -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#Onchorhynchus">
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Salmonidae"/>
+        <dc:description xml:lang="en">Fish of the genus Oncorhynchus.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#OncorhynchusAguabonita -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#OncorhynchusAguabonita">
+        <rdfs:label xml:lang="en">Oncorhynchus aguabonita</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Onchorhynchus"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#OncorhynchusClarkiiClarkii -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#OncorhynchusClarkiiClarkii">
+        <rdfs:label xml:lang="en">Oncorhynchus clarkii clarkii</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Onchorhynchus"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#OncorhynchusGorbuscha -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#OncorhynchusGorbuscha">
+        <rdfs:label xml:lang="en">Oncorhynchus gorbuscha</rdfs:label>
+        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#PinkSalmon"/>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Onchorhynchus"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#OncorhynchusKeta -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#OncorhynchusKeta">
+        <rdfs:label xml:lang="en">Oncorhynchus keta</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Onchorhynchus"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#OncorhynchusKisutch -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#OncorhynchusKisutch">
+        <rdfs:label xml:lang="en">Onchorhynchus kisutch</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Onchorhynchus"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#OncorhynchusMasou -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#OncorhynchusMasou">
+        <rdfs:label xml:lang="en">Oncorhynchus masou</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Onchorhynchus"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#OncorhynchusMykiss -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#OncorhynchusMykiss">
+        <rdfs:label xml:lang="en">Oncorhynchus mykiss</rdfs:label>
+        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#Steelhead"/>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Onchorhynchus"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#OncorhynchusNerka -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#OncorhynchusNerka">
+        <rdfs:label xml:lang="en">Oncorhynchus nerka</rdfs:label>
+        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#SockeyeSalmon"/>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Onchorhynchus"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#OncorhynchusTshawytscha -->
+
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#OncorhynchusTshawytscha">
+        <rdfs:label xml:lang="en">Oncorhynchus tshawytscha</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Onchorhynchus"/>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#PacificSalmon -->
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#PacificSalmon">
@@ -908,25 +937,6 @@
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Salmonid"/>
         <dc:description xml:lang="en">Fish of the genus Oncorhynchus.</dc:description>
         <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161974</rdfs:seeAlso>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Parr -->
-
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#Parr">
-        <rdfs:label xml:lang="en">Parr</rdfs:label>
-        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#ParrStageFish"/>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#ParrStageFish -->
-
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#ParrStageFish">
-        <rdfs:label xml:lang="en">Parr Stage Fish</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
     </owl:Class>
     
 
@@ -991,17 +1001,6 @@
     
 
 
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#RayFinnedFish -->
-
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#RayFinnedFish">
-        <rdfs:label xml:lang="en">Ray Finned Fish</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
-        <dc:description xml:lang="en">Fish of the class Actinoptergii.</dc:description>
-        <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161061</rdfs:seeAlso>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#RotaryScrewTrap -->
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#RotaryScrewTrap">
@@ -1013,24 +1012,24 @@
     
 
 
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Salmon -->
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Salmonid -->
 
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#Salmon">
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#RayFinnedFish"/>
-        <dc:description xml:lang="en">Fish of the order Salmonformes.</dc:description>
-        <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161929</rdfs:seeAlso>
-        <rdfs:seeAlso xml:lang="en">http://www.fishbase.org/summary/OrdersSummary.php?order=Salmoniformes</rdfs:seeAlso>
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#Salmonid">
+        <rdfs:label xml:lang="en">Salmonid</rdfs:label>
+        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#Salmonidae"/>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-taxa.owl#Fish"/>
+        <dc:description xml:lang="en">Fish of the family Salmonidae.</dc:description>
+        <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161931</rdfs:seeAlso>
+        <rdfs:seeAlso xml:lang="en">http://www.fishbase.org/summary/FamilySummary.php?ID=76</rdfs:seeAlso>
     </owl:Class>
     
 
 
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Salmonid -->
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Salmonidae -->
 
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#Salmonid">
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Salmon"/>
-        <dc:description xml:lang="en">Fish of the family Salmonidae.</dc:description>
-        <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161931</rdfs:seeAlso>
-        <rdfs:seeAlso xml:lang="en">http://www.fishbase.org/summary/FamilySummary.php?ID=76</rdfs:seeAlso>
+    <owl:Class rdf:about="&oboe;oboe-salmon.owl#Salmonidae">
+        <rdfs:label xml:lang="en">Salmonidae</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-taxa.owl#Fish"/>
     </owl:Class>
     
 
@@ -1053,16 +1052,6 @@
     
 
 
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Smolt -->
-
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#Smolt">
-        <rdfs:label xml:lang="en">Smolt</rdfs:label>
-        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#SmoltStageFish"/>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SmoltCherrySalmonPopulationSample -->
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#SmoltCherrySalmonPopulationSample">
@@ -1070,8 +1059,8 @@
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#Smolt"/>
                     <rdf:Description rdf:about="&oboe;oboe-salmon.owl#CherrySalmonPopulationSample"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#Smolt"/>
                 </owl:intersectionOf>
             </owl:Class>
         </owl:equivalentClass>
@@ -1088,8 +1077,8 @@
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#Smolt"/>
                     <rdf:Description rdf:about="&oboe;oboe-salmon.owl#ChinookSalmonPopulationSample"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#Smolt"/>
                 </owl:intersectionOf>
             </owl:Class>
         </owl:equivalentClass>
@@ -1106,8 +1095,8 @@
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#Smolt"/>
                     <rdf:Description rdf:about="&oboe;oboe-salmon.owl#ChumSalmonPopulationSample"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#Smolt"/>
                 </owl:intersectionOf>
             </owl:Class>
         </owl:equivalentClass>
@@ -1124,8 +1113,8 @@
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#Smolt"/>
                     <rdf:Description rdf:about="&oboe;oboe-salmon.owl#CohoSalmonPopulationSample"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#Smolt"/>
                 </owl:intersectionOf>
             </owl:Class>
         </owl:equivalentClass>
@@ -1142,8 +1131,8 @@
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#Smolt"/>
                     <rdf:Description rdf:about="&oboe;oboe-salmon.owl#PinkSalmonPopulationSample"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#Smolt"/>
                 </owl:intersectionOf>
             </owl:Class>
         </owl:equivalentClass>
@@ -1160,22 +1149,13 @@
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#Smolt"/>
+                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#Smolt"/>
                     <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SockeyeSalmonPopulationSample"/>
                 </owl:intersectionOf>
             </owl:Class>
         </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SockeyeSalmonPopulationSample"/>
         <dc:description xml:lang="en">A sample of a Sockeye salmon smolt population.</dc:description>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#SmoltStageFish -->
-
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#SmoltStageFish">
-        <rdfs:label xml:lang="en">Smolt Stage Fish</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
     </owl:Class>
     
 
@@ -1187,7 +1167,7 @@
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#Smolt"/>
+                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#Smolt"/>
                     <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SteelheadPopulationSample"/>
                 </owl:intersectionOf>
             </owl:Class>
@@ -1261,25 +1241,6 @@
     
 
 
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Subadult -->
-
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#Subadult">
-        <rdfs:label xml:lang="en">Subadult</rdfs:label>
-        <owl:equivalentClass rdf:resource="&oboe;oboe-salmon.owl#Subadult_Stage_Fish"/>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Subadult_Stage_Fish -->
-
-    <owl:Class rdf:about="&oboe;oboe-salmon.owl#Subadult_Stage_Fish">
-        <rdfs:label xml:lang="en">Subadult Stage Fish</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#Fish"/>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-salmon.owl#Tail -->
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#Tail">
@@ -1341,27 +1302,6 @@
     <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe-taxa.owl#Species -->
 
     <owl:Class rdf:about="&oboe;oboe-taxa.owl#Species"/>
-    
-
-
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // General axioms
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
-
-    <rdf:Description>
-        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="&oboe;oboe-salmon.owl#AdultStageFish"/>
-            <rdf:Description rdf:about="&oboe;oboe-salmon.owl#Alevin_Stage_Fish"/>
-            <rdf:Description rdf:about="&oboe;oboe-salmon.owl#ParrStageFish"/>
-            <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltStageFish"/>
-            <rdf:Description rdf:about="&oboe;oboe-salmon.owl#Subadult_Stage_Fish"/>
-        </owl:members>
-    </rdf:Description>
 </rdf:RDF>
 
 
