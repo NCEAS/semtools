@@ -587,7 +587,7 @@ Concentrations also include  the mixtures of suspended particulates or their com
     <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Event -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Event">
-        <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalPoint"/>
     </owl:Class>
     
 
