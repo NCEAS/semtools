@@ -148,14 +148,6 @@
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#BeachHabitat -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#BeachHabitat">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#EcologicalHabitat"/>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Before -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Before">
@@ -501,10 +493,11 @@ Concentrations also include  the mixtures of suspended particulates or their com
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample -->
+    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample_SBC -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Sample"/>
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample_SBC">
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Sample_SBC"/>
+        <rdfs:comment>TO DO MOB: redefine the measurements using DiscreteSample, then remove Sample_SBC and children</rdfs:comment>
         <rdfs:comment>A discrete sample is one where some of the entity is removed. Usually, the sample is processed further in a laboratory. Examples include a bottle of water from a stream or the ocean, or a leaf core or sediment core.</rdfs:comment>
     </owl:Class>
     
@@ -576,15 +569,6 @@ Concentrations also include  the mixtures of suspended particulates or their com
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#During">
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalRelationship"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#EcologicalHabitat -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#EcologicalHabitat">
-        <rdfs:label>Ecological Habitat</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
     </owl:Class>
     
 
@@ -1144,14 +1128,6 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#OrganismTissueSample -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#OrganismTissueSample">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Sample"/>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Overlaps -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Overlaps">
@@ -1164,15 +1140,6 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PartOf">
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#CompositionRelationship"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PassiveSample -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PassiveSample">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Sample"/>
-        <rdfs:comment>A passive sample is one in which the entity is observed without disturbing it (passively). Values are usually recorded by a device.  Examples include data collected by meteorological or oceanographic instruments.</rdfs:comment>
     </owl:Class>
     
 
@@ -1271,15 +1238,6 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Phytoplankton -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Phytoplankton">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#SuspendedSolids"/>
-        <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Phytoplankton_Chlorophyll-aConcentration_FluometricExtraction -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Phytoplankton_Chlorophyll-aConcentration_FluometricExtraction">
@@ -1301,11 +1259,11 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample"/>
+                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample_SBC"/>
                                                     </owl:Restriction>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Phytoplankton"/>
+                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Phytoplankton_sbc"/>
                                                     </owl:Restriction>
                                                 </owl:intersectionOf>
                                             </owl:Class>
@@ -1368,11 +1326,11 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample"/>
+                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample_SBC"/>
                                                     </owl:Restriction>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Phytoplankton"/>
+                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Phytoplankton_sbc"/>
                                                     </owl:Restriction>
                                                 </owl:intersectionOf>
                                             </owl:Class>
@@ -1419,11 +1377,11 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample"/>
+                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample_SBC"/>
                                                     </owl:Restriction>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Phytoplankton"/>
+                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Phytoplankton_sbc"/>
                                                     </owl:Restriction>
                                                 </owl:intersectionOf>
                                             </owl:Class>
@@ -1474,11 +1432,11 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample"/>
+                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample_SBC"/>
                                                     </owl:Restriction>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Phytoplankton"/>
+                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Phytoplankton_sbc"/>
                                                     </owl:Restriction>
                                                 </owl:intersectionOf>
                                             </owl:Class>
@@ -1508,6 +1466,16 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     
 
 
+    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Phytoplankton_sbc -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Phytoplankton_sbc">
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#SuspendedSolids"/>
+        <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
+        <rdfs:comment>TO DO MOB: redefine measurements using this class to use oboe-ecol community/phytoplankton instead.</rdfs:comment>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PigmentConcentrationFluorometric -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PigmentConcentrationFluorometric">
@@ -1523,7 +1491,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                     <owl:Restriction>
                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Phytoplankton"/>
+                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Phytoplankton_sbc"/>
                                     </owl:Restriction>
                                 </owl:intersectionOf>
                             </owl:Class>
@@ -1559,7 +1527,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PopulationSample -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PopulationSample">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample"/>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample_SBC"/>
     </owl:Class>
     
 
@@ -1695,7 +1663,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample"/>
+                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample_SBC"/>
                                                     </owl:Restriction>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
@@ -1758,7 +1726,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample"/>
+                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample_SBC"/>
                                                     </owl:Restriction>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
@@ -1822,7 +1790,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample"/>
+                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample_SBC"/>
                                                     </owl:Restriction>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
@@ -1885,7 +1853,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample"/>
+                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample_SBC"/>
                                                     </owl:Restriction>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
@@ -1948,7 +1916,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample"/>
+                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample_SBC"/>
                                                     </owl:Restriction>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
@@ -2012,7 +1980,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample"/>
+                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample_SBC"/>
                                                     </owl:Restriction>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
@@ -2076,7 +2044,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample"/>
+                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample_SBC"/>
                                                     </owl:Restriction>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
@@ -2139,7 +2107,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample"/>
+                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample_SBC"/>
                                                     </owl:Restriction>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
@@ -2202,7 +2170,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample"/>
+                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#DiscreteSample_SBC"/>
                                                     </owl:Restriction>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
@@ -2326,10 +2294,11 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Sample -->
+    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Sample_SBC -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Sample">
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Sample_SBC">
         <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
+        <rdfs:comment>TO DO MOB: redefine the measurements using DiscreteSample, then remove Sample_SBC and children</rdfs:comment>
     </owl:Class>
     
 
@@ -2516,14 +2485,6 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#StreamHabitat -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#StreamHabitat">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#EcologicalHabitat"/>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#StreamReach -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#StreamReach">
@@ -2590,14 +2551,6 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TaxonType">
         <rdfs:subClassOf rdf:resource="&oboe-core;Type"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemperateReef -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemperateReef">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#EcologicalHabitat"/>
     </owl:Class>
     
 
