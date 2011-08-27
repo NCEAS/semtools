@@ -587,7 +587,7 @@ Concentrations also include  the mixtures of suspended particulates or their com
     <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Event -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Event">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalPoint"/>
+        <rdfs:subClassOf rdf:resource="&oboe;TimePeriod"/>
     </owl:Class>
     
 
@@ -779,10 +779,10 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Location -->
+    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Location_sbc -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Location">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#SpatialLocation"/>
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Location_sbc">
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#SpatialLocation_sbc"/>
     </owl:Class>
     
 
@@ -967,7 +967,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Location"/>
+                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Location_sbc"/>
                                                     </owl:Restriction>
                                                 </owl:intersectionOf>
                                             </owl:Class>
@@ -1456,15 +1456,6 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Plot -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Plot">
-        <rdfs:label>Plot</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#SpatialLocation"/>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PopulationSample -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#PopulationSample">
@@ -1543,24 +1534,6 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#ReedLabProtocols">
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#ProtocolsByLaboratory"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#ReplicatePlot -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#ReplicatePlot">
-        <rdfs:label>Replicate Plot</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Plot"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#ReplicateTransect -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#ReplicateTransect">
-        <rdfs:label>Replicate Transect</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Transect"/>
     </owl:Class>
     
 
@@ -2332,9 +2305,9 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#SpatialLocation -->
+    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#SpatialLocation_sbc -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#SpatialLocation">
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#SpatialLocation_sbc">
         <rdfs:label>Spatial Location</rdfs:label>
         <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
     </owl:Class>
@@ -2409,15 +2382,6 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Subplot -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Subplot">
-        <rdfs:label>Subplot</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#SpatialLocation"/>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#SuspendedParticulateCarbonNitrogen_CHNElementalAnalyzer -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#SuspendedParticulateCarbonNitrogen_CHNElementalAnalyzer">
@@ -2471,19 +2435,12 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalPoint -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalPoint">
-        <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalPointPDT -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalPointPDT">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalPoint"/>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalPoint_SBC"/>
         <rdfs:comment>Dates, date-parts or date-times which are recorded in Pacific Daylight Time (PDT), which is defined as UTC - 7 hours.</rdfs:comment>
+        <rdfs:comment>TO DO MOB: this would be better as a measurement, entity= time instant, std=time zone. characteristic=</rdfs:comment>
     </owl:Class>
     
 
@@ -2491,7 +2448,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalPointPST -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalPointPST">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalPoint"/>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalPoint_SBC"/>
         <rdfs:comment>Dates, date-parts or date-times which are recorded in Pacific Standard Time (PST), which is UTC -8 hours</rdfs:comment>
     </owl:Class>
     
@@ -2500,8 +2457,16 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalPointUTC -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalPointUTC">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalPoint"/>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalPoint_SBC"/>
         <rdfs:comment>Dates, date-parts or date-times which are recorded in Coordinated Universal Time.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalPoint_SBC -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#TemporalPoint_SBC">
+        <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
     </owl:Class>
     
 
@@ -2532,15 +2497,6 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Transect -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Transect">
-        <rdfs:label>Transect</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#SpatialLocation"/>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Troposphere -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Troposphere">
@@ -2566,40 +2522,11 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#WaterColumn -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#WaterColumn">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#SpatialLocation"/>
-        <rdfs:comment>A Water Column extends from the surface of the water to the bottom. It may be designated by an area on the surface (e.g., 1 MeterSquared), or simply by a waypoint (e.g., a site name, or latitude and longitude pair). A water column is often sampled as a &quot;profile&quot;.</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#WaterColumnBin -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#WaterColumnBin">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#WaterColumn"/>
-        <rdfs:comment>A water column that has been sampled in a &quot;profile&quot; may have parts of the profile averaged or integrated into &quot;bins&quot;. Bins will have characteristic length, e.g., 1 meter or 10 centimeter. Bins and are usually labeled (e.g., with the bin-center or nominal depth, e.g., the bin centered nominally at 5 meters depth is the  &quot;5-meter bin&quot;. Protocols should specify how the bin is defined. </rdfs:comment>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Water_sbc -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Water_sbc">
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#HydrospherePhysicalFeature"/>
         <rdfs:comment>Water, naturally occurring. Usually a mixture of H2O and other materials.</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Waypoint -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#Waypoint">
-        <rdfs:label>Waypoint</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl#SpatialLocation"/>
-        <rdfs:comment>waypoint is usually defined by a latitude-longitude pair. It often defines the nominal location of a station or sampling place.</rdfs:comment>
-        <dc:description>waypoint is a place which is defined by a latitude-longitude pair.</dc:description>
     </owl:Class>
     
 
@@ -2635,5 +2562,5 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
 
 
-<!-- Generated by the OWL API (version 3.2.3.22702) http://owlapi.sourceforge.net -->
+<!-- Generated by the OWL API (version 3.2.2.1785) http://owlapi.sourceforge.net -->
 
