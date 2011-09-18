@@ -93,14 +93,6 @@
 
     <owl:Class rdf:about="&oboe;DeadSmoltSpringChinookSalmonPopulationSample">
         <rdfs:label xml:lang="en">Dead Smolt Spring Chinook Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#DeadOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltSpringChinookSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltSpringChinookSalmonPopulationSample"/>
         <dc:description xml:lang="en">A sample of a dead Chinook salmon smolt population (e.g. mortality count).</dc:description>
     </owl:Class>
@@ -130,14 +122,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#AliveSmoltCherrySalmonPopulationSample">
         <rdfs:label xml:lang="en">Alive Smolt Cherry Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#LivingOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltCherrySalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltCherrySalmonPopulationSample"/>
         <dc:description xml:lang="en">A sample of an alive Cherry salmon smolt population (e.g. live count).</dc:description>
     </owl:Class>
@@ -148,14 +132,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#AliveSmoltChumSalmonPopulationSample">
         <rdfs:label xml:lang="en">Alive Smolt Chum Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#LivingOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltChumSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltChumSalmonPopulationSample"/>
         <dc:description xml:lang="en">A sample of an alive Chum salmon smolt population (e.g. live count).</dc:description>
     </owl:Class>
@@ -166,14 +142,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#AliveSmoltCohoSalmonPopulationSample">
         <rdfs:label xml:lang="en">Alive Smolt Coho Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#LivingOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltCohoSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltCohoSalmonPopulationSample"/>
         <dc:description xml:lang="en">A sample of an alive Coho salmon smolt population (e.g. live count).</dc:description>
     </owl:Class>
@@ -184,14 +152,7 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#AliveSmoltFallChinookSalmonPopulationSample">
         <rdfs:label xml:lang="en">Alive Smolt Fall Chinook Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#LivingOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltFallChinookSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltFallChinookSalmonPopulationSample"/>
     </owl:Class>
     
 
@@ -200,14 +161,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#AliveSmoltPinkSalmonPopulationSample">
         <rdfs:label xml:lang="en">Alive Smolt Pink Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#LivingOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltPinkSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltPinkSalmonPopulationSample"/>
         <dc:description xml:lang="en">A sample of an alive Pink salmon smolt population (e.g. live count).</dc:description>
     </owl:Class>
@@ -218,14 +171,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#AliveSmoltSockeyeSalmonPopulationSample">
         <rdfs:label xml:lang="en">Alive Smolt Sockeye Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#LivingOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltSockeyeSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltSockeyeSalmonPopulationSample"/>
         <dc:description xml:lang="en">A sample of an alive Sockeye salmon smolt population (e.g. live count).</dc:description>
     </owl:Class>
@@ -236,14 +181,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#AliveSmoltSpringChinookSalmonPopulationSample">
         <rdfs:label xml:lang="en">Alive Smolt Spring Chinook Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#LivingOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltSpringChinookSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltSpringChinookSalmonPopulationSample"/>
         <dc:description xml:lang="en">A sample of an alive spring Chinook salmon smolt population (e.g. live count).</dc:description>
     </owl:Class>
@@ -254,14 +191,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#AliveSmoltSteelheadPopulationSample">
         <rdfs:label xml:lang="en">Alive Smolt Steelhead Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#LivingOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltSteelheadPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltSteelheadPopulationSample"/>
         <dc:description xml:lang="en">A sample of an alive Steelhead smolt population (e.g. live count).</dc:description>
     </owl:Class>
@@ -272,14 +201,7 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#AliveSmoltSummerChinookSalmonPopulationSample">
         <rdfs:label xml:lang="en">Alive Smolt Fall Chinook Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#LivingOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltSummerChinookSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltSummerChinookSalmonPopulationSample"/>
     </owl:Class>
     
 
@@ -288,14 +210,7 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#AliveSmoltWinterChinookSalmonPopulationSample">
         <rdfs:label xml:lang="en">Alive Smolt Fall Chinook Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#LivingOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltWinterChinookSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltWinterChinookSalmonPopulationSample"/>
     </owl:Class>
     
 
@@ -506,14 +421,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#DeadSmoltCherrySalmonPopulationSample">
         <rdfs:label xml:lang="en">Dead Smolt Cherry Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#DeadOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltCherrySalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltCherrySalmonPopulationSample"/>
         <dc:description xml:lang="en">A sample of a dead Cherry salmon smolt population (e.g. mortality count).</dc:description>
     </owl:Class>
@@ -524,14 +431,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#DeadSmoltChumSalmonPopulationSample">
         <rdfs:label xml:lang="en">Dead Smolt Chum Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#DeadOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltChumSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltChumSalmonPopulationSample"/>
         <dc:description xml:lang="en">A sample of a dead Chum salmon smolt population (e.g. mortality count).</dc:description>
     </owl:Class>
@@ -542,14 +441,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#DeadSmoltCohoSalmonPopulationSample">
         <rdfs:label xml:lang="en">Dead Smolt Coho Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#DeadOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltCohoSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltCohoSalmonPopulationSample"/>
         <dc:description xml:lang="en">A sample of a dead Coho salmon smolt population (e.g. mortality count).</dc:description>
     </owl:Class>
@@ -560,14 +451,7 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#DeadSmoltFallChinookSalmonPopulationSample">
         <rdfs:label xml:lang="en">Dead Smolt Fall Chinook Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#DeadOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltFallChinookSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltFallChinookSalmonPopulationSample"/>
     </owl:Class>
     
 
@@ -576,14 +460,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#DeadSmoltPinkSalmonPopulationSample">
         <rdfs:label xml:lang="en">Dead Smolt Pink Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#DeadOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltPinkSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltPinkSalmonPopulationSample"/>
         <dc:description xml:lang="en">A sample of a dead Pink salmon smolt population (e.g. mortality count).</dc:description>
     </owl:Class>
@@ -594,14 +470,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#DeadSmoltSockeyeSalmonPopulationSample">
         <rdfs:label xml:lang="en">Dead Smolt Sockeye Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#DeadOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltSockeyeSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltSockeyeSalmonPopulationSample"/>
         <dc:description xml:lang="en">A sample of a dead Sockeye salmon smolt population (e.g. mortality count).</dc:description>
     </owl:Class>
@@ -612,14 +480,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#DeadSmoltSteelheadPopulationSample">
         <rdfs:label xml:lang="en">Dead Smolt Steelhead Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#DeadOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltSteelheadPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltSteelheadPopulationSample"/>
         <dc:description xml:lang="en">A sample of a dead Steelhead smolt population (e.g. mortality count).</dc:description>
     </owl:Class>
@@ -630,14 +490,7 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#DeadSmoltSummerChinookSalmonPopulationSample">
         <rdfs:label xml:lang="en">Dead Smolt Summer Chinook Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#DeadOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltSummerChinookSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltSummerChinookSalmonPopulationSample"/>
     </owl:Class>
     
 
@@ -646,14 +499,7 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#DeadSmoltWinterChinookSalmonPopulationSample">
         <rdfs:label xml:lang="en">Dead Smolt Winter Chinook Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#DeadOrganism"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SmoltWinterChinookSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SmoltWinterChinookSalmonPopulationSample"/>
     </owl:Class>
     
 
@@ -1105,14 +951,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#SmoltCherrySalmonPopulationSample">
         <rdfs:label xml:lang="en">Smolt Cherry Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#Smolt"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#CherrySalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#CherrySalmonPopulationSample"/>
         <dc:description xml:lang="en">A sample of a Cherry salmon smolt population.</dc:description>
     </owl:Class>
@@ -1123,14 +961,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#SmoltChumSalmonPopulationSample">
         <rdfs:label xml:lang="en">Smolt Chum Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#Smolt"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#ChumSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#ChumSalmonPopulationSample"/>
         <dc:description xml:lang="en">A sample of a Chum salmon smolt population.</dc:description>
     </owl:Class>
@@ -1141,14 +971,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#SmoltCohoSalmonPopulationSample">
         <rdfs:label xml:lang="en">Smolt Coho Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#Smolt"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#CohoSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#CohoSalmonPopulationSample"/>
         <dc:description xml:lang="en">A sample of a Coho salmon smolt population.</dc:description>
     </owl:Class>
@@ -1168,14 +990,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#SmoltPinkSalmonPopulationSample">
         <rdfs:label xml:lang="en">Smolt Pink Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#Smolt"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#PinkSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#PinkSalmonPopulationSample"/>
         <dc:description xml:lang="en">A sample of a Pink salmon smolt population.</dc:description>
     </owl:Class>
@@ -1186,14 +1000,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#SmoltSockeyeSalmonPopulationSample">
         <rdfs:label xml:lang="en">Smolt Sockeye Salmon Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#Smolt"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SockeyeSalmonPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SockeyeSalmonPopulationSample"/>
         <dc:description xml:lang="en">A sample of a Sockeye salmon smolt population.</dc:description>
     </owl:Class>
@@ -1214,14 +1020,6 @@
 
     <owl:Class rdf:about="&oboe;oboe-salmon.owl#SmoltSteelheadPopulationSample">
         <rdfs:label xml:lang="en">Smolt Steelhead Population Sample</rdfs:label>
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe;oboe-biology.owl#Smolt"/>
-                    <rdf:Description rdf:about="&oboe;oboe-salmon.owl#SteelheadPopulationSample"/>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="&oboe;oboe-salmon.owl#SteelheadPopulationSample"/>
         <dc:description xml:lang="en">A sample of a Steelhead smolt population.</dc:description>
     </owl:Class>
