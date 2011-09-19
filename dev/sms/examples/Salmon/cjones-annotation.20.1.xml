@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<sms:annotation 
+  xmlns:sms="http://ecoinformatics.org/sms/annotation.1.0beta1" 
+  xmlns:oboe-characteristics="http://ecoinformatics.org/oboe/oboe.1.0/oboe-characteristics.owl#" 
+  xmlns:oboe-standards="http://ecoinformatics.org/oboe/oboe.1.0/oboe-standards.owl#" 
+  xmlns:oboe-temporal="http://ecoinformatics.org/oboe/oboe.1.0/oboe-temporal.owl#" 
+  xmlns:oboe-spatial="http://ecoinformatics.org/oboe/oboe.1.0/oboe-spatial.owl#" 
+  xmlns:oboe-salmon="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://ecoinformatics.org/sms/annotation.1.0beta1 http://ecoinformatics.org/sms/annotation.1.0beta1/sms-semannot.xsd" 
+  id="cjones.20.1" 
+  dataPackage="cjones.21.1">
+  
+  <!-- Observation: TimeInstant (trap set)-->
+  <sms:observation label="o1">
+    <sms:entity id="oboe-temporal:TimeInstant"/>
+    <sms:measurement label="m1a">
+      <sms:characteristic id="oboe-characteristics:Time" />
+      <sms:standard id="oboe-standards:Day" />
+    </sms:measurement>
+    <sms:measurement label="m1b">
+      <sms:characteristic id="oboe-characteristics:Time" />
+      <sms:standard id="oboe-standards:Minute" />
+    </sms:measurement>
+  </sms:observation>
+
+  <!-- Observation: TimeInstant (trap check)-->
+  <sms:observation label="o2">
+    <sms:entity id="oboe-temporal:TimeInstant"/>
+    <sms:measurement label="m2a">
+      <sms:characteristic id="oboe-characteristics:Time" />
+      <sms:standard id="oboe-standards:Day" />
+    </sms:measurement>
+    <sms:measurement label="m2b">
+      <sms:characteristic id="oboe-characteristics:Time" />
+      <sms:standard id="oboe-standards:Minute" />
+    </sms:measurement>
+  </sms:observation>
+
+  <!-- Observation: AliveSmoltSteelheadPopulationSample -->
+  <sms:observation label="o3">
+    <sms:entity id="oboe-salmon:AliveSmoltSteelheadPopulationSample"/>
+    <sms:measurement label="m3">
+      <sms:characteristic id="oboe-characteristics:Count" />
+      <sms:standard id="oboe-standards:Number" />
+    </sms:measurement>
+  </sms:observation>
+  
+  <!-- Observation: DeadSmoltSteelheadPopulationSample -->
+  <sms:observation label="o4">
+    <sms:entity id="oboe-salmon:DeadSmoltSteelheadPopulationSample"/>
+    <sms:measurement label="m4">
+      <sms:characteristic id="oboe-characteristics:Count" />
+      <sms:standard id="oboe-standards:Number" />
+    </sms:measurement>
+  </sms:observation>
+  
+  <!-- Observation: AliveParrSteelheadPopulationSample -->
+  <sms:observation label="o5">
+    <sms:entity id="oboe-salmon:AliveSmoltSteelheadPopulationSample"/>
+    <sms:measurement label="m5">
+      <sms:characteristic id="oboe-characteristics:Count" />
+      <sms:standard id="oboe-standards:Number" />
+    </sms:measurement>
+  </sms:observation>
+  
+  <!-- Observation: DeadParrSteelheadPopulationSample -->
+  <sms:observation label="o6">
+    <sms:entity id="oboe-salmon:DeadSmoltSteelheadPopulationSample"/>
+    <sms:measurement label="m6">
+      <sms:characteristic id="oboe-characteristics:Count" />
+      <sms:standard id="oboe-standards:Number" />
+    </sms:measurement>
+  </sms:observation>
+  
+  <!-- Observation: AliveSpringChinookPopulationSample -->
+  <sms:observation label="o7">
+    <sms:entity id="oboe-salmon:AliveSpringChinookPopulationSample"/>
+    <sms:measurement label="m7">
+      <sms:characteristic id="oboe-characteristics:Count" />
+      <sms:standard id="oboe-standards:Number" />
+    </sms:measurement>
+  </sms:observation>
+  
+  <!-- Observation: DeadSpringChinookPopulationSample -->
+  <sms:observation label="o8">
+    <sms:entity id="oboe-salmon:DeadSpringChinookPopulationSample"/>
+    <sms:measurement label="m8">
+      <sms:characteristic id="oboe-characteristics:Count" />
+      <sms:standard id="oboe-standards:Number" />
+    </sms:measurement>
+  </sms:observation>
+  
+  <!-- Mapping: TimeInstant -->
+  <sms:map dataObject="1" attribute="trap_set_date" measurement="m1a" />
+  <sms:map dataObject="1" attribute="trap_set_time" measurement="m1b" />
+  <sms:map dataObject="1" attribute="trap_check_date" measurement="m2a" />
+  <sms:map dataObject="1" attribute="trap_check_time" measurement="m2b" />
+  
+  <!-- Mapping: AliveSmoltSteelheadPopulationSample -->
+  <sms:map dataObject="1" attribute="live_wild_stlhd_smolts" measurement="m3" />
+  
+  <!-- Mapping: DeadSmoltSteelheadPopulationSample -->
+  <sms:map dataObject="1" attribute="dead_wild_stlhd_smolts" measurement="m4" />
+  
+  <!-- Mapping: AliveParrSteelheadPopulationSample -->
+  <sms:map dataObject="1" attribute="live_wild_stlhd_parr" measurement="m5" />
+  
+  <!-- Mapping: DeadParrSteelheadPopulationSample -->
+  <sms:map dataObject="1" attribute="dead_wild_stlhd_parr" measurement="m6" />
+
+  <!-- Mapping: AliveSpringChinookPopulationSample -->
+  <sms:map dataObject="1" attribute="live_wild_spring_chnk" measurement="m7" />
+  
+  <!-- Mapping: DeadSpringChinookPopulationSample -->
+  <sms:map dataObject="1" attribute="dead_wild_spring_chnk" measurement="m8" />
+  
+</sms:annotation>

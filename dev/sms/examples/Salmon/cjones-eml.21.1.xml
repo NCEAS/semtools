@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eml:eml 
+  xmlns:eml="eml://ecoinformatics.org/eml-2.1.1" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  packageId="cjones.21.1" 
+  system="knb" 
+  xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 eml.xsd">
+  <access authSystem="knb" order="allowFirst">
+    <allow>
+      <principal>public</principal>
+      <permission>read</permission>
+    </allow>
+  </access>
+  <dataset>
+    <title>WDFW: Touchet Catch Juvenile Salmon Data: 2009-2010 Season</title>
+    <creator id="1316289877280">
+      <organizationName>WDFW</organizationName>
+    </creator>
+    <contact>
+      <references>1316289877280</references>
+    </contact>
+    <dataTable id="1316384027313">
+      <entityName>0708-TOUCHET-Smolt-Catch.csv</entityName>
+      <entityDescription>Smolt salmon catch data, Touchet River, WA, 2007-2008 Season</entityDescription>
+      <physical id="1316290461263">
+        <objectName>0910-TOUCHET-Smolt-Catch.csv</objectName>
+        <size unit="byte">14115</size>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>5</numHeaderLines>
+            <recordDelimiter>#x0A</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+        <distribution>
+          <online>
+            <url>ecogrid://knb/cjones.19.1</url>
+          </online>
+        </distribution>
+      </physical>
+      <attributeList>
+        <attribute id="1316384027314">
+          <attributeName>trap_set_date</attributeName>
+          <attributeLabel>trap set date</attributeLabel>
+          <attributeDefinition>The date the trap was set to fishing mode (local Pacific time)</attributeDefinition>
+          <measurementScale>
+            <dateTime>
+              <formatString>MM/DD/YY</formatString>
+              <dateTimePrecision>0</dateTimePrecision>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute id="1316384027315">
+          <attributeName>trap_set_time</attributeName>
+          <attributeLabel>trap set time</attributeLabel>
+          <attributeDefinition>The time the trap was set to fishing mode (local Pacific time)</attributeDefinition>
+          <measurementScale>
+            <dateTime>
+              <formatString>hhmm</formatString>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute id="1316384027316">
+          <attributeName>trap_check_date</attributeName>
+          <attributeLabel>trap check date</attributeLabel>
+          <attributeDefinition>The date the trap was set to not fishing mode and either checked or pulled (local Pacific time)</attributeDefinition>
+          <measurementScale>
+            <dateTime>
+              <formatString>MM/DD/YY</formatString>
+              <dateTimePrecision>0</dateTimePrecision>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute id="1316384027317">
+          <attributeName>trap_check_time</attributeName>
+          <attributeLabel>trap check time</attributeLabel>
+          <attributeDefinition>The time the trap was set to not fishing mode and either checked or pulled (local Pacific time)</attributeDefinition>
+          <measurementScale>
+            <dateTime>
+              <formatString>hhmm</formatString>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute id="1316384027318">
+          <attributeName>live_wild_stlhd_smolts</attributeName>
+          <attributeLabel>live wild steelhead smolts</attributeLabel>
+          <attributeDefinition>The count of live, wild steelhead smolts (&gt; 80mm) found in the trap.</attributeDefinition>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute id="1316384027319">
+          <attributeName>dead_wild_stlhd_smolts</attributeName>
+          <attributeLabel>dead wild steelhead smolts</attributeLabel>
+          <attributeDefinition>The count of wild steelhead smolt (&gt; 80mm) mortalities found in the trap.</attributeDefinition>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute id="1316384027320">
+          <attributeName>live_wild_stlhd_parr</attributeName>
+          <attributeLabel>live wild steelhead parr</attributeLabel>
+          <attributeDefinition>The count of live wild steelhead parr (&lt; 80mm)  found in the trap.</attributeDefinition>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute id="1316384027323">
+          <attributeName>dead_wild_stlhd_parr</attributeName>
+          <attributeLabel>dead wild steelhead parr</attributeLabel>
+          <attributeDefinition>The count of wild steelhead parr (&gt; 80mm) mortalities found in the trap.</attributeDefinition>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>mole</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute id="1316384027324">
+          <attributeName>hatchery_stlhd_no_vie</attributeName>
+          <attributeLabel>hatchery-endemic steelhead no VIE</attributeLabel>
+          <attributeDefinition>The count of live juvenile steelhead originating from a hatchery without dye.</attributeDefinition>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute id="1316384027356">
+          <attributeName>hatchery_stlhd_left_red</attributeName>
+          <attributeLabel>hatchery-endemic steelhead left red dye</attributeLabel>
+          <attributeDefinition>The count of live juvenile steelhead originating from a hatchery with red dye on the left.</attributeDefinition>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute id="1316384027325">
+          <attributeName>dead_hatchery_stlhd</attributeName>
+          <attributeLabel>dead hatchery-endemic steelhead</attributeLabel>
+          <attributeDefinition>The mortality count of juvenile steelhead originating from a hatchery.</attributeDefinition>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute id="1316384027326">
+          <attributeName>live_wild_spring_chnk</attributeName>
+          <attributeLabel>wild spring chinook</attributeLabel>
+          <attributeDefinition>The count of live, wild spring chinook smolts found in the trap.</attributeDefinition>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute id="1316384027327">
+          <attributeName>dead_wild_spring_chnk</attributeName>
+          <attributeLabel>dead wild spring chinook</attributeLabel>
+          <attributeDefinition>The count of wild steelhead smolt mortalities found in the trap.</attributeDefinition>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute id="1316384027334">
+          <attributeName>live_brown_trout</attributeName>
+          <attributeLabel>live brown trout</attributeLabel>
+          <attributeDefinition>The count of live brown trout found in the trap.</attributeDefinition>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute id="1316384027335">
+          <attributeName>dead_brown_trout</attributeName>
+          <attributeLabel>dead brown trout</attributeLabel>
+          <attributeDefinition>The count of brown trout mortalities found in the trap.</attributeDefinition>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute id="1316384027328">
+          <attributeName>live_bull_trout</attributeName>
+          <attributeLabel>live bull trout</attributeLabel>
+          <attributeDefinition>The count of live bull trout found in the trap.</attributeDefinition>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute id="1316384027329">
+          <attributeName>dead_bull_trout</attributeName>
+          <attributeLabel>dead bull trout</attributeLabel>
+          <attributeDefinition>The count of bull trout mortalities found in the trap.</attributeDefinition>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute id="1316384027330">
+          <attributeName>brook_lamp_no_eyes</attributeName>
+          <attributeLabel>wild juvenile brook lamprey without eyes</attributeLabel>
+          <attributeDefinition>The count of wild juvenile brook lamprey without eyes present.</attributeDefinition>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute id="1316384027333">
+          <attributeName>brook_lamp_with_eyes</attributeName>
+          <attributeLabel>wild juvenile brook lamprey with eyes</attributeLabel>
+          <attributeDefinition>The count of wild juvenile brook lamprey with eyes present.</attributeDefinition>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+      </attributeList>
+      <numberOfRecords>243</numberOfRecords>
+    </dataTable>
+  </dataset>
+</eml:eml>
