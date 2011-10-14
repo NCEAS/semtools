@@ -118,6 +118,16 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcherySmoltSteelheadPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcherySmoltSteelheadPopulationSample">
+        <rdfs:label xml:lang="en">Alive Hatchery Smolt Steelhead Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltSteelheadPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a live Steelhead smolt population of a hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveParrSteelheadPopulationSample -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveParrSteelheadPopulationSample">
@@ -221,6 +231,16 @@
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveSmoltWinterChinookSalmonPopulationSample">
         <rdfs:label xml:lang="en">Alive Smolt Fall Chinook Salmon Population Sample</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#SmoltWinterChinookSalmonPopulationSample"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildSmoltSteelheadPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildSmoltSteelheadPopulationSample">
+        <rdfs:label xml:lang="en">Alive Wild Smolt Steelhead Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltSteelheadPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a live smolt steelhead population sample of wild origin (non-hatchery raised).</dc:description>
     </owl:Class>
     
 
@@ -427,6 +447,16 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcherySmoltSteelheadPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcherySmoltSteelheadPopulationSample">
+        <rdfs:label xml:lang="en">Dead Hatchery Smolt Steelhead Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltSteelheadPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Steelhead smolt population of a hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadParrSteelheadPopulationSample -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadParrSteelheadPopulationSample">
@@ -530,6 +560,16 @@
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadSmoltWinterChinookSalmonPopulationSample">
         <rdfs:label xml:lang="en">Dead Smolt Winter Chinook Salmon Population Sample</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#SmoltWinterChinookSalmonPopulationSample"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildSmoltSteelheadPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildSmoltSteelheadPopulationSample">
+        <rdfs:label xml:lang="en">Dead Wild Smolt Steelhead Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltSteelheadPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a live smolt steelhead population sample of wild origin (non-hatchery raised).</dc:description>
     </owl:Class>
     
 
@@ -647,6 +687,16 @@
         <dc:description xml:lang="en">Fish of the genus Thymallus.</dc:description>
         <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=162015</rdfs:seeAlso>
         <rdfs:seeAlso xml:lang="en">http://www.fishbase.org/summary/Thymallus-thymallus.html</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltSteelheadPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltSteelheadPopulationSample">
+        <rdfs:label xml:lang="en">Hatchery Smolt Steelhead Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#SmoltSteelheadPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Steelhead smolt population of a hatchery origin.</dc:description>
     </owl:Class>
     
 
@@ -870,6 +920,854 @@
         <dc:description xml:lang="en">Fish of the genus Oncorhynchus.</dc:description>
         <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161974</rdfs:seeAlso>
     </owl:Class>
+ 
+ 
+ 
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltChinookSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltChinookSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Hatchery Smolt Chinook Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#SmoltChinookSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Chinook salmon smolt population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcherySmoltChinookSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcherySmoltChinookSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Hatchery Smolt Chinook Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltChinookSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Chinook salmon smolt population of hatchery origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcherySmoltChinookSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcherySmoltChinookSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Hatchery Smolt Chinook Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltChinookSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Chinook salmon smolt population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildSmoltChinookSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildSmoltChinookSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Wild Smolt Chinook Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltChinookSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Chinook salmon smolt population of wild origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildSmoltChinookSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildSmoltChinookSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Wild Smolt Chinook Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltChinookSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Chinook salmon smolt population of wild origin.</dc:description>
+    </owl:Class>
+    
+    
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltChinookSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltChinookSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Wild Smolt Chinook Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#SmoltChinookSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Chinook salmon smolt population of wild origin.</dc:description>
+    </owl:Class>
+    
+
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrChinookSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrChinookSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Parr Chinook Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ChinookSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Chinook salmon parr population.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrChinookSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrChinookSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Hatchery Parr Chinook Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrChinookSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Chinook salmon parr population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcheryParrChinookSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcheryParrChinookSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Hatchery Parr Chinook Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrChinookSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Chinook salmon parr population of hatchery origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcheryParrChinookSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcheryParrChinookSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Hatchery Parr Chinook Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrChinookSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Chinook salmon parr population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildParrChinookSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildParrChinookSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Wild Parr Chinook Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrChinookSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Chinook salmon parr population of wild origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildParrChinookSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildParrChinookSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Wild Parr Chinook Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrChinookSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Chinook salmon parr population of wild origin.</dc:description>
+    </owl:Class>
+    
+    
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrChinookSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrChinookSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Wild Parr Chinook Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrChinookSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Chinook salmon parr population of wild origin.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveParrChinookSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveParrChinookSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Parr Chinook Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrChinookSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Chinook salmon parr population.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadParrChinookSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadParrChinookSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Parr Chinook Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrChinookSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Chinook salmon parr population.</dc:description>
+    </owl:Class>
+ 
+ 
+ 
+ 
+ 
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltCherrySalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltCherrySalmonPopulationSample">
+        <rdfs:label xml:lang="en">Hatchery Smolt Cherry Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#SmoltCherrySalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Cherry salmon smolt population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcherySmoltCherrySalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcherySmoltCherrySalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Hatchery Smolt Cherry Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltCherrySalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Cherry salmon smolt population of hatchery origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcherySmoltCherrySalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcherySmoltCherrySalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Hatchery Smolt Cherry Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltCherrySalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Cherry salmon smolt population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildSmoltCherrySalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildSmoltCherrySalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Wild Smolt Cherry Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltCherrySalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Cherry salmon smolt population of wild origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildSmoltCherrySalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildSmoltCherrySalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Wild Smolt Cherry Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltCherrySalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Cherry salmon smolt population of wild origin.</dc:description>
+    </owl:Class>
+    
+    
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltCherrySalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltCherrySalmonPopulationSample">
+        <rdfs:label xml:lang="en">Wild Smolt Cherry Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#SmoltCherrySalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Cherry salmon smolt population of wild origin.</dc:description>
+    </owl:Class>
+    
+
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrCherrySalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrCherrySalmonPopulationSample">
+        <rdfs:label xml:lang="en">Parr Cherry Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#CherrySalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Cherry salmon parr population.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrCherrySalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrCherrySalmonPopulationSample">
+        <rdfs:label xml:lang="en">Hatchery Parr Cherry Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrCherrySalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Cherry salmon parr population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcheryParrCherrySalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcheryParrCherrySalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Hatchery Parr Cherry Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrCherrySalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Cherry salmon parr population of hatchery origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcheryParrCherrySalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcheryParrCherrySalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Hatchery Parr Cherry Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrCherrySalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Cherry salmon parr population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildParrCherrySalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildParrCherrySalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Wild Parr Cherry Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrCherrySalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Cherry salmon parr population of wild origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildParrCherrySalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildParrCherrySalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Wild Parr Cherry Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrCherrySalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Cherry salmon parr population of wild origin.</dc:description>
+    </owl:Class>
+    
+    
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrCherrySalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrCherrySalmonPopulationSample">
+        <rdfs:label xml:lang="en">Wild Parr Cherry Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrCherrySalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Cherry salmon parr population of wild origin.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveParrCherrySalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveParrCherrySalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Parr Cherry Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrCherrySalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Cherry salmon parr population.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadParrCherrySalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadParrCherrySalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Parr Cherry Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrCherrySalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Cherry salmon parr population.</dc:description>
+    </owl:Class>
+ 
+ 
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltChumSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltChumSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Hatchery Smolt Chum Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#SmoltChumSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Chum salmon smolt population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcherySmoltChumSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcherySmoltChumSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Hatchery Smolt Chum Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltChumSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Chum salmon smolt population of hatchery origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcherySmoltChumSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcherySmoltChumSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Hatchery Smolt Chum Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltChumSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Chum salmon smolt population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildSmoltChumSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildSmoltChumSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Wild Smolt Chum Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltChumSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Chum salmon smolt population of wild origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildSmoltChumSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildSmoltChumSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Wild Smolt Chum Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltChumSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Chum salmon smolt population of wild origin.</dc:description>
+    </owl:Class>
+    
+    
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltChumSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltChumSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Wild Smolt Chum Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#SmoltChumSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Chum salmon smolt population of wild origin.</dc:description>
+    </owl:Class>
+    
+
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrChumSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrChumSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Parr Chum Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ChumSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Chum salmon parr population.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrChumSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrChumSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Hatchery Parr Chum Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrChumSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Chum salmon parr population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcheryParrChumSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcheryParrChumSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Hatchery Parr Chum Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrChumSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Chum salmon parr population of hatchery origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcheryParrChumSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcheryParrChumSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Hatchery Parr Chum Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrChumSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Chum salmon parr population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildParrChumSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildParrChumSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Wild Parr Chum Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrChumSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Chum salmon parr population of wild origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildParrChumSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildParrChumSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Wild Parr Chum Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrChumSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Chum salmon parr population of wild origin.</dc:description>
+    </owl:Class>
+    
+    
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrChumSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrChumSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Wild Parr Chum Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrChumSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Chum salmon parr population of wild origin.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveParrChumSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveParrChumSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Parr Chum Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrChumSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Chum salmon parr population.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadParrChumSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadParrChumSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Parr Chum Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrChumSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Chum salmon parr population.</dc:description>
+    </owl:Class>
+
+
+
+ 
+ 
+    
+
+
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltCohoSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltCohoSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Hatchery Smolt Coho Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#SmoltCohoSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Coho salmon smolt population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcherySmoltCohoSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcherySmoltCohoSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Hatchery Smolt Coho Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltCohoSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Coho salmon smolt population of hatchery origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcherySmoltCohoSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcherySmoltCohoSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Hatchery Smolt Coho Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltCohoSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Coho salmon smolt population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildSmoltCohoSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildSmoltCohoSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Wild Smolt Coho Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltCohoSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Coho salmon smolt population of wild origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildSmoltCohoSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildSmoltCohoSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Wild Smolt Coho Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltCohoSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Coho salmon smolt population of wild origin.</dc:description>
+    </owl:Class>
+    
+    
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltCohoSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltCohoSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Wild Smolt Coho Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#SmoltCohoSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Coho salmon smolt population of wild origin.</dc:description>
+    </owl:Class>
+    
+
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrCohoSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrCohoSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Parr Coho Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#CohoSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Coho salmon parr population.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrCohoSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrCohoSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Hatchery Parr Coho Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrCohoSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Coho salmon parr population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcheryParrCohoSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcheryParrCohoSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Hatchery Parr Coho Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrCohoSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Coho salmon parr population of hatchery origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcheryParrCohoSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcheryParrCohoSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Hatchery Parr Coho Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrCohoSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Coho salmon parr population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildParrCohoSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildParrCohoSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Wild Parr Coho Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrCohoSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Coho salmon parr population of wild origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildParrCohoSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildParrCohoSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Wild Parr Coho Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrCohoSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Coho salmon parr population of wild origin.</dc:description>
+    </owl:Class>
+    
+    
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrCohoSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrCohoSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Wild Parr Coho Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrCohoSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Coho salmon parr population of wild origin.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveParrCohoSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveParrCohoSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Parr Coho Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrCohoSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Coho salmon parr population.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadParrCohoSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadParrCohoSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Parr Coho Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrCohoSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Coho salmon parr population.</dc:description>
+    </owl:Class>
+
+
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltPinkSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltPinkSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Hatchery Smolt Pink Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#SmoltPinkSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Pink salmon smolt population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcherySmoltPinkSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcherySmoltPinkSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Hatchery Smolt Pink Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltPinkSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Pink salmon smolt population of hatchery origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcherySmoltPinkSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcherySmoltPinkSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Hatchery Smolt Pink Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltPinkSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Pink salmon smolt population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildSmoltPinkSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildSmoltPinkSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Wild Smolt Pink Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltPinkSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Pink salmon smolt population of wild origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildSmoltPinkSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildSmoltPinkSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Wild Smolt Pink Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltPinkSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Pink salmon smolt population of wild origin.</dc:description>
+    </owl:Class>
+    
+    
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltPinkSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltPinkSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Wild Smolt Pink Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#SmoltPinkSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Pink salmon smolt population of wild origin.</dc:description>
+    </owl:Class>
+    
+
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrPinkSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrPinkSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Parr Pink Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#PinkSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Pink salmon parr population.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrPinkSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrPinkSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Hatchery Parr Pink Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrPinkSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Pink salmon parr population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcheryParrPinkSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcheryParrPinkSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Hatchery Parr Pink Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrPinkSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Pink salmon parr population of hatchery origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcheryParrPinkSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcheryParrPinkSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Hatchery Parr Pink Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrPinkSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Pink salmon parr population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildParrPinkSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildParrPinkSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Wild Parr Pink Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrPinkSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Pink salmon parr population of wild origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildParrPinkSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildParrPinkSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Wild Parr Pink Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrPinkSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Pink salmon parr population of wild origin.</dc:description>
+    </owl:Class>
+    
+    
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrPinkSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrPinkSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Wild Parr Pink Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrPinkSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Pink salmon parr population of wild origin.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveParrPinkSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveParrPinkSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Parr Pink Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrPinkSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Pink salmon parr population.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadParrPinkSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadParrPinkSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Parr Pink Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrPinkSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Pink salmon parr population.</dc:description>
+    </owl:Class>
+    
+
+
+
+
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltSockeyeSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltSockeyeSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Hatchery Smolt Sockeye Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#SmoltSockeyeSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Sockeye salmon smolt population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcherySmoltSockeyeSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcherySmoltSockeyeSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Hatchery Smolt Sockeye Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltSockeyeSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Sockeye salmon smolt population of hatchery origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcherySmoltSockeyeSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcherySmoltSockeyeSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Hatchery Smolt Sockeye Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcherySmoltSockeyeSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Sockeye salmon smolt population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildSmoltSockeyeSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildSmoltSockeyeSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Wild Smolt Sockeye Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltSockeyeSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Sockeye salmon smolt population of wild origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildSmoltSockeyeSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildSmoltSockeyeSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Wild Smolt Sockeye Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltSockeyeSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Sockeye salmon smolt population of wild origin.</dc:description>
+    </owl:Class>
+    
+    
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltSockeyeSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltSockeyeSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Wild Smolt Sockeye Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#SmoltSockeyeSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Sockeye salmon smolt population of wild origin.</dc:description>
+    </owl:Class>
+    
+
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrSockeyeSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrSockeyeSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Parr Sockeye Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#SockeyeSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Sockeye salmon parr population.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrSockeyeSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrSockeyeSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Hatchery Parr Sockeye Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrSockeyeSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Sockeye salmon parr population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcheryParrSockeyeSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveHatcheryParrSockeyeSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Hatchery Parr Sockeye Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrSockeyeSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Sockeye salmon parr population of hatchery origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcheryParrSockeyeSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadHatcheryParrSockeyeSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Hatchery Parr Sockeye Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#HatcheryParrSockeyeSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Sockeye salmon parr population of hatchery origin.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildParrSockeyeSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveWildParrSockeyeSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Wild Parr Sockeye Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrSockeyeSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Sockeye salmon parr population of wild origin.</dc:description>
+    </owl:Class>
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildParrSockeyeSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadWildParrSockeyeSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Wild Parr Sockeye Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrSockeyeSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Sockeye salmon parr population of wild origin.</dc:description>
+    </owl:Class>
+    
+    
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrSockeyeSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildParrSockeyeSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Wild Parr Sockeye Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrSockeyeSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Sockeye salmon parr population of wild origin.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveParrSockeyeSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#AliveParrSockeyeSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Alive Parr Sockeye Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrSockeyeSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of an alive Sockeye salmon parr population.</dc:description>
+    </owl:Class>
+    
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadParrSockeyeSalmonPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#DeadParrSockeyeSalmonPopulationSample">
+        <rdfs:label xml:lang="en">Dead Parr Sockeye Salmon Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#ParrSockeyeSalmonPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a dead Sockeye salmon parr population.</dc:description>
+    </owl:Class>
     
 
 
@@ -896,7 +1794,7 @@
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#PelvicFin">
         <rdfs:label xml:lang="en">Pelvic Fin</rdfs:label>
-        <owl:equivalentClass rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#VentraFin"/>
+        <owl:equivalentClass rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#VentralFin"/>
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#Fin"/>
     </owl:Class>
     
@@ -1178,10 +2076,10 @@
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#VentraFin -->
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#VentralFin -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#VentraFin">
-        <rdfs:label xml:lang="en">Ventra Fin</rdfs:label>
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#VentralFin">
+        <rdfs:label xml:lang="en">Ventral Fin</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#Fin"/>
     </owl:Class>
     
@@ -1205,6 +2103,16 @@
         <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#Salmonid"/>
         <dc:description xml:lang="en">Fish of the species Coregonus.</dc:description>
         <rdfs:seeAlso xml:lang="en">http://itis.gbif.net/pls/itisca/taxa_xml.record?p_tsn=161932</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltSteelheadPopulationSample -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#WildSmoltSteelheadPopulationSample">
+        <rdfs:label xml:lang="en">Wild Smolt Steelhead Population Sample</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl#SmoltSteelheadPopulationSample"/>
+        <dc:description xml:lang="en">A sample of a Steelhead smolt population of a wild origin (non-hatchery raised).</dc:description>
     </owl:Class>
     
 
