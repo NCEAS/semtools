@@ -180,6 +180,9 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin, MetacatEventObserve
 		ontologyURIs.put(
 				"http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl", 
 				"http://ecoinformatics.org/oboe-ext/sbclter.1.0/oboe-sbclter.owl");
+		ontologyURIs.put(
+				"http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl", 
+				"http://ecoinformatics.org/oboe-ext/salmon.1.0/oboe-salmon.owl");
 		
 		// map them first
 		try {
