@@ -99,7 +99,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin, MetacatEventObserve
 		initializeOntologies();
 		if (!isPluginInitialized()) {
 			initializeAnnotations();
-			setPluginInitialized(true);
+			//setPluginInitialized(true);
 		}
 		
 		// register as a listener
