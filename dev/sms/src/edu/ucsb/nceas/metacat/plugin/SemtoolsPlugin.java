@@ -150,7 +150,7 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin, MetacatEventObserve
 			// clear the existing annotations
 			clearAnnotations();
 			DBUtil dbutil = new DBUtil();
-			Vector<String> annotationDocids = dbutil.getAllDocidsByType(Annotation.ANNOTATION_NS, false, -1);
+			Vector<String> annotationDocids = dbutil.getAllDocidsByType(Annotation.ANNOTATION_NS, false);
 			for (String annotationDocid: annotationDocids) {
 				try {
 					importAnnotation(annotationDocid);
