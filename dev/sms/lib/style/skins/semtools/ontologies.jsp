@@ -32,16 +32,14 @@
 <%
 	// construct the drop down and the lookup key for the available ontologies
 	StringBuffer dropDown = new StringBuffer();
-	List<OntologyBean> beans = OntologyService.getInstance().getOntologyBeans();
-	for (OntologyBean bean: beans) {
-
-		dropDown.append("<option value='");
-		dropDown.append(bean.getId());
-		dropDown.append("'>");
-		dropDown.append(bean.getDisplayLabel());
-		dropDown.append("</option>");
-		
-	}
+	//List<OntologyBean> beans = OntologyService.getInstance().getOntologyBeans();
+	//for (OntologyBean bean: beans) {
+		//dropDown.append("<option value='");
+		//dropDown.append(bean.getId());
+		//dropDown.append("'>");
+		//dropDown.append(bean.getDisplayLabel());
+		//dropDown.append("</option>");
+	//}
 %>
 <%
 	//show the currently registered ontologies in metacat's plugin
@@ -114,6 +112,7 @@
 	</table>
 </form>
 
+<!--  
 <h3>Available BioPortal Ontologies</h3>
 <form method="POST" action="<%=SERVLET_URL%>" target="_top" id="bioportalRegistrationForm" name="bioportalRegistrationForm" ">
 	<input name="qformat" value="semtools" type="hidden" />
@@ -140,6 +139,7 @@
 		</tr>
 	</table>
 </form>
+-->
 
 <h3>Other Ontologies</h3>
 <form method="POST" action="<%=SERVLET_URL%>" target="_top" id="registrationForm" name="registrationForm" ">
@@ -168,6 +168,7 @@
 	</table>
 </form>
 
+<!--  
 <h2>Ontology search (BioPortal)</h2>
 <p>Not sure which BioPortal ontology to use?</p>
 <p>Explore ontologies in BioPortal before registering them with Metacat. Use this search interface to find appropriate ontologies.</p>
@@ -198,6 +199,8 @@
 		pluginspage="http://www.adobe.com/go/getflashplayer">
 	</embed>
 </object>
+
+-->
 
 <!-- Included default search/login -->
 <% if ( PropertyService.getProperty("spatial.runSpatialOption").equals("true") ) { %>
