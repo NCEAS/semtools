@@ -434,10 +434,15 @@ public class SemtoolsPlugin implements MetacatHandlerPlugin, MetacatEventObserve
 			// look up annotation matches - for the data package ids
 			Vector<String> docids = new Vector<String>();
 			for (Annotation annotation: matches.keySet()) {
+				
 				String docid = annotation.getDataPackage();
-				docid = docid.substring(0, docid.lastIndexOf("."));
-				// check permissions here
+				
+				// check permissions here -- use full scope.docid.rev
 				boolean readAccess = DocumentImpl.hasReadPermission(username, groups, docid);
+
+				// now strip the revision for the rest of it -- metacat handling
+				docid = docid.substring(0, docid.lastIndexOf("."));
+				
 				if (readAccess) {
 					docids.add(docid);
 				} else {
