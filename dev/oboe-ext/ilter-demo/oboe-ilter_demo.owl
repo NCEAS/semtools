@@ -11,8 +11,8 @@
     <!ENTITY oboe "http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#" >
     <!ENTITY oboe-core "http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#" >
     <!ENTITY oboe-taxa "http://ecoinformatics.org/oboe/oboe.1.0/oboe-taxa.owl#" >
-    <!ENTITY oboe-anatomy "http://ecoinformatics.org/oboe/oboe.1.0/oboe-anatomy.owl#" >
     <!ENTITY oboe-ecology "http://ecoinformatics.org/oboe/oboe.1.0/oboe-ecology.owl#" >
+    <!ENTITY oboe-anatomy "http://ecoinformatics.org/oboe/oboe.1.0/oboe-anatomy.owl#" >
     <!ENTITY oboe-spatial "http://ecoinformatics.org/oboe/oboe.1.0/oboe-spatial.owl#" >
     <!ENTITY oboe-biology "http://ecoinformatics.org/oboe/oboe.1.0/oboe-biology.owl#" >
     <!ENTITY oboe-temporal "http://ecoinformatics.org/oboe/oboe.1.0/oboe-temporal.owl#" >
@@ -44,13 +44,13 @@
      xmlns:oboe-temporal="http://ecoinformatics.org/oboe/oboe.1.0/oboe-temporal.owl#"
      xmlns:oboe-core="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
-     xmlns:oboe-ilter_demo="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:oboe-ilter_demo="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
     <owl:Ontology rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl">
-        <rdfs:label>OBOE SBC Domain Extension</rdfs:label>
+        <rdfs:label>OBOE iLTER Domain Extension</rdfs:label>
+        <rdfs:comment>Demonstration Extension for International LTER. OBOE 1.0.</rdfs:comment>
         <owl:versionInfo>Version 1.0</owl:versionInfo>
-        <rdfs:comment>Eemonstration Extension for International LTER. OBOE 1.0.</rdfs:comment>
         <owl:imports rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe-chemistry.owl"/>
         <owl:imports rdf:resource="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl"/>
     </owl:Ontology>
@@ -102,7 +102,7 @@
     <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Daphnia -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Daphnia">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Ostracod"/>
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Crustacean"/>
     </owl:Class>
     
 
@@ -155,41 +155,25 @@
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Ostracod -->
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC_minus10 -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Ostracod">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Crustacean"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC+y -->
-
-    <owl:Class rdf:about="&TemporalPoint_UTC;y">
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC_minus10">
         <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;TemporalPoint_Timezone"/>
     </owl:Class>
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC-10 -->
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC_minus8 -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC-10">
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC_minus8">
         <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;TemporalPoint_Timezone"/>
     </owl:Class>
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC-8 -->
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC_minus9 -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC-8">
-        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;TemporalPoint_Timezone"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC-9 -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC-9">
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC_minus9">
         <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;TemporalPoint_Timezone"/>
     </owl:Class>
     
@@ -219,11 +203,27 @@
     
 
 
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#WaterColumnDepth -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#WaterColumnDepth">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;SpatialLocation_ilter"/>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Zooplankton -->
 
     <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Zooplankton">
         <rdfs:subClassOf rdf:resource="&oboe-ecology;EcologicalCommunity"/>
         <rdfs:comment>Usually small or microscopic free-floating, heterotrophic organisms in aquatic systems. </rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#iLTER_SiteName -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#iLTER_SiteName">
+        <rdfs:subClassOf rdf:resource="&oboe-core;Name"/>
     </owl:Class>
     
 
@@ -734,6 +734,15 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     
 
 
+    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#NorthAmerica_GreatLakes_LakeName -->
+
+    <owl:Class rdf:about="&oboe-ilter_demo;NorthAmerica_GreatLakes_LakeName">
+        <rdfs:subClassOf rdf:resource="&oboe-core;Name"/>
+        <rdfs:comment>One of the Great Lakes in North America, named by the United States and Canada </rdfs:comment>
+    </owl:Class>
+    
+
+
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Ocean -->
 
     <owl:Class rdf:about="&oboe-ilter_demo;Ocean">
@@ -1115,10 +1124,10 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <owl:Class rdf:about="&oboe-ilter_demo;Sampling_Event_Name">
         <rdfs:subClassOf rdf:resource="&oboe-core;Name"/>
-        <rdfs:comment>An sampling event that has been named by SBC. These include 
-1. oceanographic cruises, 
+        <rdfs:comment>An sampling event that has been named by the international LTER. These could include events like 
+1. named oceanographic cruises, 
 2. individual sampling casts, which may be sub-events of a named cruise (implying subsumption), or as part of regular sampling
-3. Ad hoc events, e.g., following a storm</rdfs:comment>
+3. Ad hoc events, e.g., for a specific dataset</rdfs:comment>
     </owl:Class>
     
 
@@ -1290,7 +1299,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <owl:Class rdf:about="&oboe-ilter_demo;TERN_SiteName">
         <rdfs:subClassOf rdf:resource="&oboe-core;Name"/>
-        <rdfs:comment>A site name given by Santa Barbara Coastal LTER.</rdfs:comment>
+        <rdfs:comment>A site name given by Taiwan Ecological Research Network.</rdfs:comment>
     </owl:Class>
     
 
@@ -1299,7 +1308,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <owl:Class rdf:about="&oboe-ilter_demo;Tagged_Organism">
         <rdfs:subClassOf rdf:resource="&oboe-core;Name"/>
-        <rdfs:comment>An individual tagged frond</rdfs:comment>
+        <rdfs:comment>An organism, eg, a bird, which has received a tag which is recorded and with which the organism can be individually tracked.</rdfs:comment>
     </owl:Class>
     
 
@@ -1329,21 +1338,12 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalPoint_UTC+8 -->
+    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalPoint_UTC_plus8 -->
 
-    <owl:Class rdf:about="&oboe-ilter_demo;TemporalPoint_UTC+8">
+    <owl:Class rdf:about="&oboe-ilter_demo;TemporalPoint_UTC_plus8">
         <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;TemporalPoint_Timezone"/>
-        <rdfs:comment>Dates, date-parts or date-times which are recorded in Pacific Daylight Time (PDT), which is defined as UTC - 7 hours.</rdfs:comment>
         <rdfs:comment>TO DO MOB: this would be better as a measurement, entity= time instant, std=time zone. characteristic=</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalPoint_UTC+x -->
-
-    <owl:Class rdf:about="&oboe-ilter_demo;TemporalPoint_UTC+x">
-        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;TemporalPoint_Timezone"/>
-        <rdfs:comment>Dates, date-parts or date-times which are recorded in Pacific Standard Time (PST), which is UTC -8 hours</rdfs:comment>
+        <rdfs:comment>Dates, date-parts or date-times which are recorded in UTC + 8 hours.</rdfs:comment>
     </owl:Class>
     
 
@@ -1361,15 +1361,6 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     <owl:Class rdf:about="&oboe-ilter_demo;Troposphere">
         <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;AtmospherePhsicalFeature"/>
         <rdfs:comment>This term is also in the SWEET ontology, where it is defined in the &quot;EarthRealm&quot; as a subclass of &quot;atmosphere&quot; where elevation is between 0 and 15 km.</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#USGreatLakes_LakeName -->
-
-    <owl:Class rdf:about="&oboe-ilter_demo;USGreatLakes_LakeName">
-        <rdfs:subClassOf rdf:resource="&oboe-core;Name"/>
-        <rdfs:comment>Geographic region of kelp bed. Central refers to central California (Halfmoon Bay to Purisima Point), Southern refers to southern California (Point Arguello to the United States/Mexico border including the Channel Islands) and Baja refers to the Baja California (points south of the United States/Mexico border including several offshore islands).</rdfs:comment>
     </owl:Class>
     
 
