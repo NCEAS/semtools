@@ -12,31 +12,39 @@
     <!ENTITY oboe-core "http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#" >
     <!ENTITY oboe-taxa "http://ecoinformatics.org/oboe/oboe.1.0/oboe-taxa.owl#" >
     <!ENTITY oboe-anatomy "http://ecoinformatics.org/oboe/oboe.1.0/oboe-anatomy.owl#" >
+    <!ENTITY oboe-ecology "http://ecoinformatics.org/oboe/oboe.1.0/oboe-ecology.owl#" >
     <!ENTITY oboe-spatial "http://ecoinformatics.org/oboe/oboe.1.0/oboe-spatial.owl#" >
     <!ENTITY oboe-biology "http://ecoinformatics.org/oboe/oboe.1.0/oboe-biology.owl#" >
     <!ENTITY oboe-temporal "http://ecoinformatics.org/oboe/oboe.1.0/oboe-temporal.owl#" >
     <!ENTITY oboe-chemistry "http://ecoinformatics.org/oboe/oboe.1.0/oboe-chemistry.owl#" >
     <!ENTITY oboe-standards "http://ecoinformatics.org/oboe/oboe.1.0/oboe-standards.owl#" >
     <!ENTITY oboe-characteristics "http://ecoinformatics.org/oboe/oboe.1.0/oboe-characteristics.owl#" >
+    <!ENTITY oboe-ilter_demo "http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#" >
+    <!ENTITY TemporalPoint_UTC2 "http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalPoint_UTC+" >
+    <!ENTITY TemporalPoint_UTC "http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC+" >
 ]>
 
 
 <rdf:RDF xmlns="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#"
-    xml:base="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl"
+     xml:base="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl"
      xmlns:dc="http://purl.org/dc/elements/1.1/"
      xmlns:oboe-spatial="http://ecoinformatics.org/oboe/oboe.1.0/oboe-spatial.owl#"
      xmlns:oboe-anatomy="http://ecoinformatics.org/oboe/oboe.1.0/oboe-anatomy.owl#"
      xmlns:oboe-characteristics="http://ecoinformatics.org/oboe/oboe.1.0/oboe-characteristics.owl#"
+     xmlns:TemporalPoint_UTC2="&oboe-ilter_demo;TemporalPoint_UTC+"
      xmlns:oboe="http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#"
      xmlns:oboe-chemistry="http://ecoinformatics.org/oboe/oboe.1.0/oboe-chemistry.owl#"
      xmlns:oboe-standards="http://ecoinformatics.org/oboe/oboe.1.0/oboe-standards.owl#"
+     xmlns:TemporalPoint_UTC="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC+"
      xmlns:oboe-biology="http://ecoinformatics.org/oboe/oboe.1.0/oboe-biology.owl#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:oboe-ecology="http://ecoinformatics.org/oboe/oboe.1.0/oboe-ecology.owl#"
      xmlns:oboe-taxa="http://ecoinformatics.org/oboe/oboe.1.0/oboe-taxa.owl#"
      xmlns:oboe-temporal="http://ecoinformatics.org/oboe/oboe.1.0/oboe-temporal.owl#"
      xmlns:oboe-core="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:oboe-ilter_demo="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
     <owl:Ontology rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl">
@@ -83,84 +91,186 @@
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#AcousticDopplerCurrentProfileProtocol -->
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Crustacean -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#AcousticDopplerCurrentProfileProtocol">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByInstrumentation"/>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#WashburnLabProtocols"/>
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Crustacean">
+        <rdfs:subClassOf rdf:resource="&oboe-biology;Organism"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Daphnia -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Daphnia">
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Ostracod"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#DaphniaMagma -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#DaphniaMagma">
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Daphnia"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#DaphniaPulex -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#DaphniaPulex">
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Daphnia"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#JaLTER_Daphnia_Protocol -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#JaLTER_Daphnia_Protocol">
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#JaLTER_Protocols"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#JaLTER_Protocols -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#JaLTER_Protocols">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Protocols_By_Country"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#JaLTER_SiteName -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#JaLTER_SiteName">
+        <rdfs:subClassOf rdf:resource="&oboe-core;Name"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Lake_Habitat -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Lake_Habitat">
+        <rdfs:subClassOf rdf:resource="&oboe-ecology;EcologicalHabitat"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Ostracod -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Ostracod">
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Crustacean"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC+y -->
+
+    <owl:Class rdf:about="&TemporalPoint_UTC;y">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;TemporalPoint_Timezone"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC-10 -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC-10">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;TemporalPoint_Timezone"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC-8 -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC-8">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;TemporalPoint_Timezone"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC-9 -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#TemporalPoint_UTC-9">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;TemporalPoint_Timezone"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#US-LTER_Daphnia_Protocol -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#US-LTER_Daphnia_Protocol">
+        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#US-LTER_Protocols"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#US-LTER_Protocols -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#US-LTER_Protocols">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Protocols_By_Country"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#US-LTER_SiteName -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#US-LTER_SiteName">
+        <rdfs:subClassOf rdf:resource="&oboe-core;Name"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Zooplankton -->
+
+    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter-demo/oboe-ilter_demo.owl#Zooplankton">
+        <rdfs:subClassOf rdf:resource="&oboe-ecology;EcologicalCommunity"/>
+        <rdfs:comment>Usually small or microscopic free-floating, heterotrophic organisms in aquatic systems. </rdfs:comment>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Adjacent -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Adjacent">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SpatialRelationship"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;Adjacent">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;SpatialRelationship"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#After -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#After">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalRelationship"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#AmmoniumConcentrationProtocol_MSIAutomated -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#AmmoniumConcentrationProtocol_MSIAutomated">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MSI_AnalyticalLabProtocols"/>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByConstituent"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;After">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;TemporalRelationship"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Aquifer -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Aquifer">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#InterstitialWaterBody"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;Aquifer">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;InterstitialWaterBody"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#AtmospherePhsicalFeature -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#AtmospherePhsicalFeature">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PhysicalFeature"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;AtmospherePhsicalFeature">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;PhysicalFeature"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Before -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Before">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalRelationship"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#BiogenicSilicaProtocol -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#BiogenicSilicaProtocol">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#BrzezinskiLabProtocols"/>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByConstituent"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#BrzezinskiLabProtocols -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#BrzezinskiLabProtocols">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByLaboratory"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;Before">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;TemporalRelationship"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#CarbonNitrogenRatioByAmount -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#CarbonNitrogenRatioByAmount">
+    <owl:Class rdf:about="&oboe-ilter_demo;CarbonNitrogenRatioByAmount">
         <rdfs:subClassOf rdf:resource="&oboe-characteristics;Proportion"/>
     </owl:Class>
     
@@ -168,32 +278,15 @@
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#CarbonNitrogenRatioByMass -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#CarbonNitrogenRatioByMass">
+    <owl:Class rdf:about="&oboe-ilter_demo;CarbonNitrogenRatioByMass">
         <rdfs:subClassOf rdf:resource="&oboe-characteristics;Proportion"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#CarlsonLabProtocols -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#CarlsonLabProtocols">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByLaboratory"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ChlorophyllPhaeopigmentConcentrationProtocol_FluorometricExtraction -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ChlorophyllPhaeopigmentConcentrationProtocol_FluorometricExtraction">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#BrzezinskiLabProtocols"/>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByConstituent"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Chlorophyll_a -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Chlorophyll_a">
+    <owl:Class rdf:about="&oboe-ilter_demo;Chlorophyll_a">
         <rdfs:subClassOf rdf:resource="&oboe-chemistry;Pigment"/>
     </owl:Class>
     
@@ -201,7 +294,7 @@
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#CompositionRelationship -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#CompositionRelationship">
+    <owl:Class rdf:about="&oboe-ilter_demo;CompositionRelationship">
         <rdfs:subClassOf rdf:resource="&oboe-core;Relationship"/>
     </owl:Class>
     
@@ -209,7 +302,7 @@
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Concentration -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Concentration">
+    <owl:Class rdf:about="&oboe-ilter_demo;Concentration">
         <rdfs:subClassOf rdf:resource="&oboe-core;Measurement"/>
         <rdfs:comment>A concentration is a measurement of how much of a given substance (solute) is mixed with another substance (solvent). Concentrations will have 2 dimensions: 
 SOLUTE [mole-amounts, mass, ionic charge, volume] PER SOLUTION [volume, mass]. Other numerators or denominators may also be possible (tbd)
@@ -225,7 +318,7 @@ Concentrations also include  the mixtures of suspended particulates or their com
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfAmmonium -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfAmmonium">
+    <owl:Class rdf:about="&oboe-ilter_demo;ConcentrationOfAmmonium">
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
@@ -259,7 +352,7 @@ Concentrations also include  the mixtures of suspended particulates or their com
                 </owl:intersectionOf>
             </owl:Class>
         </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Concentration"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Concentration"/>
         <rdfs:comment xml:lang="en">Measurement of Ammonium is conducted differently for different types of water media; at SBC, those media are fresh and salt water. If another medium is added requiring another protocol (e.g., anoxic porewater with high concentrations of HS) we may add a child measurement.</rdfs:comment>
     </owl:Class>
     
@@ -267,7 +360,7 @@ Concentrations also include  the mixtures of suspended particulates or their com
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfNitrate -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfNitrate">
+    <owl:Class rdf:about="&oboe-ilter_demo;ConcentrationOfNitrate">
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
@@ -301,14 +394,14 @@ Concentrations also include  the mixtures of suspended particulates or their com
                 </owl:intersectionOf>
             </owl:Class>
         </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Concentration"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Concentration"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfPhosphate -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfPhosphate">
+    <owl:Class rdf:about="&oboe-ilter_demo;ConcentrationOfPhosphate">
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
@@ -342,14 +435,14 @@ Concentrations also include  the mixtures of suspended particulates or their com
                 </owl:intersectionOf>
             </owl:Class>
         </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Concentration"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Concentration"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfSilica -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfSilica">
+    <owl:Class rdf:about="&oboe-ilter_demo;ConcentrationOfSilica">
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
@@ -376,11 +469,11 @@ Concentrations also include  the mixtures of suspended particulates or their com
                                         <owl:unionOf rdf:parseType="Collection">
                                             <owl:Restriction>
                                                 <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SilicaBiogenic"/>
+                                                <owl:allValuesFrom rdf:resource="&oboe-ilter_demo;SilicaBiogenic"/>
                                             </owl:Restriction>
                                             <owl:Restriction>
                                                 <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SilicaLithogenic"/>
+                                                <owl:allValuesFrom rdf:resource="&oboe-ilter_demo;SilicaLithogenic"/>
                                             </owl:Restriction>
                                         </owl:unionOf>
                                     </owl:Class>
@@ -391,7 +484,7 @@ Concentrations also include  the mixtures of suspended particulates or their com
                 </owl:intersectionOf>
             </owl:Class>
         </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Concentration"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Concentration"/>
         <rdfs:subClassOf rdf:resource="&oboe-core;Measurement"/>
     </owl:Class>
     
@@ -399,7 +492,7 @@ Concentrations also include  the mixtures of suspended particulates or their com
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfSilicicAcid -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfSilicicAcid">
+    <owl:Class rdf:about="&oboe-ilter_demo;ConcentrationOfSilicicAcid">
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
@@ -433,14 +526,14 @@ Concentrations also include  the mixtures of suspended particulates or their com
                 </owl:intersectionOf>
             </owl:Class>
         </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Concentration"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Concentration"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Conductivity_Water -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Conductivity_Water">
+    <owl:Class rdf:about="&oboe-ilter_demo;Conductivity_Water">
         <rdfs:subClassOf>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
@@ -453,7 +546,7 @@ Concentrations also include  the mixtures of suspended particulates or their com
                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                     <owl:Restriction>
                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Water_ilter"/>
+                                        <owl:allValuesFrom rdf:resource="&oboe-ilter_demo;Water_ilter"/>
                                     </owl:Restriction>
                                 </owl:intersectionOf>
                             </owl:Class>
@@ -470,57 +563,17 @@ Concentrations also include  the mixtures of suspended particulates or their com
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DiscreteSample_SBC -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DiscreteSample_SBC">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Sample_SBC"/>
-        <rdfs:comment>TO DO MOB: redefine the measurements using DiscreteSample, then remove Sample_SBC and children</rdfs:comment>
-        <rdfs:comment>A discrete sample is one where some of the entity is removed. Usually, the sample is processed further in a laboratory. Examples include a bottle of water from a stream or the ocean, or a leaf core or sediment core.</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DissolvedOrganicCarbonConcentrationProtocol -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DissolvedOrganicCarbonConcentrationProtocol">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#CarlsonLabProtocols"/>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByConstituent"/>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsForElementalAnalysis"/>
-        <rdfs:comment>Dissolved organic carbon reported as amount of substance (moles) of Carbon atoms. The term &#39;organic&#39; refers to the fact that the dissolved Carbor was in compounds with other carbon atoms and probably also to other (unreported) elements (e.g, oxygen, hydrogen).</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DissolvedOrganicNitrogenConcentrationProtocol -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DissolvedOrganicNitrogenConcentrationProtocol">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsForElementalAnalysis"/>
-        <rdfs:comment>Dissolved organic nitrogen reported as amount of substance (moles) of nitrogen atoms. The term &#39;organic&#39; refers to the fact that the dissolved nitrogen was in compounds with carbon atoms and probably also to other (unreported) elements (e.g, oxygen, hydrogen).</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DissolvedOrganicPhosphorusConcentrationProtocol -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DissolvedOrganicPhosphorusConcentrationProtocol">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByConstituent"/>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsForElementalAnalysis"/>
-        <rdfs:comment>Dissolved organic Phosphorus reported as amount of substance (moles) of Phosphorus atoms. The term &#39;organic&#39; refers to the fact that the dissolved Phosphorus was in compounds with carbon atoms and probably also to other (unreported) elements (e.g, oxygen, hydrogen).</rdfs:comment>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DisturbanceEvent -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DisturbanceEvent">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Event"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;DisturbanceEvent">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Event"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DryMass -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DryMass">
+    <owl:Class rdf:about="&oboe-ilter_demo;DryMass">
         <rdfs:subClassOf rdf:resource="&oboe-characteristics;Mass"/>
     </owl:Class>
     
@@ -528,57 +581,49 @@ Concentrations also include  the mixtures of suspended particulates or their com
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DryMassPerWetMass -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DryMassPerWetMass">
+    <owl:Class rdf:about="&oboe-ilter_demo;DryMassPerWetMass">
         <rdfs:subClassOf rdf:resource="&oboe-characteristics;MassPerMass"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DuganLabProtocols -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DuganLabProtocols">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByLaboratory"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#During -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#During">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalRelationship"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;During">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;TemporalRelationship"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#EcosystemProcess -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#EcosystemProcess">
+    <owl:Class rdf:about="&oboe-ilter_demo;EcosystemProcess">
         <rdfs:label>Ecosystem Process</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Process"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Process"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ElectrolyticConductivity_SeaWater -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ElectrolyticConductivity_SeaWater">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Conductivity_Water"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;ElectrolyticConductivity_SeaWater">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Conductivity_Water"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ElectrolyticConductivity_StreamWater -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ElectrolyticConductivity_StreamWater">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Conductivity_Water"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;ElectrolyticConductivity_StreamWater">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Conductivity_Water"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Estuary -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Estuary">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OpenWaterBody"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;Estuary">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;OpenWaterBody"/>
         <rdfs:comment>An Estuary is the part of a stream that meets an ocean, and fresh water and saline water mix.</rdfs:comment>
     </owl:Class>
     
@@ -586,7 +631,7 @@ Concentrations also include  the mixtures of suspended particulates or their com
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Event -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Event">
+    <owl:Class rdf:about="&oboe-ilter_demo;Event">
         <rdfs:subClassOf rdf:resource="&oboe;TimePeriod"/>
     </owl:Class>
     
@@ -594,7 +639,7 @@ Concentrations also include  the mixtures of suspended particulates or their com
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Flow -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Flow">
+    <owl:Class rdf:about="&oboe-ilter_demo;Flow">
         <rdfs:subClassOf rdf:resource="&oboe-core;Measurement"/>
     </owl:Class>
     
@@ -602,7 +647,7 @@ Concentrations also include  the mixtures of suspended particulates or their com
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Fluorescence -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Fluorescence">
+    <owl:Class rdf:about="&oboe-ilter_demo;Fluorescence">
         <rdfs:subClassOf rdf:resource="&oboe-core;PhysicalCharacteristic"/>
         <rdfs:comment>luminescence that is caused by the absorption of radiation at one wavelength followed by nearly immediate reradiation usually at a different wavelength and that ceases almost at once when the incident radiation stops; also : the radiation emitted (from Merriam-Webster)
 </rdfs:comment>
@@ -612,61 +657,51 @@ Concentrations also include  the mixtures of suspended particulates or their com
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#FreshWater_ilter -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#FreshWater_ilter">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Water_ilter"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;FreshWater_ilter">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Water_ilter"/>
         <rdfs:comment>Fresh water is water where the dissolved substances do not typically include significnat quantities of the elements Sodium, Chlorine and Magnesium (check on Mg, or others). Other dissolved solids may be present in significant in significant quantities.</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#GiantKelp -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#GiantKelp">
-        <rdfs:label>GiantKelp</rdfs:label>
-        <owl:equivalentClass rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MacrocystisPyrifera"/>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Kelp"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#GrowthRate -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#GrowthRate">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OrganismProcess"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;GrowthRate">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;OrganismProcess"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#HasPart -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#HasPart">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#CompositionRelationship"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;HasPart">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;CompositionRelationship"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#HydrospherePhysicalFeature -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#HydrospherePhysicalFeature">
+    <owl:Class rdf:about="&oboe-ilter_demo;HydrospherePhysicalFeature">
         <rdfs:label>Hydrosphere Physical Feature</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PhysicalFeature"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;PhysicalFeature"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#HydrospherePhysicalProcess -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#HydrospherePhysicalProcess">
+    <owl:Class rdf:about="&oboe-ilter_demo;HydrospherePhysicalProcess">
         <rdfs:label>Hydrosphere Physical Process</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PhysicalProcess"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;PhysicalProcess"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#InterstitialWaterBody -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#InterstitialWaterBody">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#WaterBody"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;InterstitialWaterBody">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;WaterBody"/>
         <rdfs:comment>Interstitial water is found in spaces between soil or sediment particles, or between rocks or gravel.
 
 might have problems. Are aquifers interstitial? or any underground water?</rdfs:comment>
@@ -674,214 +709,36 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Kelp -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Kelp">
-        <rdfs:subClassOf rdf:resource="&oboe-biology;Algae"/>
-        <rdfs:comment>Common name for large algae from the taxonomic class Phaeophyceae. Some would limit it to Laminariales, others woul say it is synomous with seaweed.</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpBladder -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpBladder">
-        <owl:equivalentClass rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpPnuematocyst"/>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpPart"/>
-        <rdfs:comment>Gas-filled pnuematocysts or bladders are attached to blades at the stipe and keep the kelp floating upward</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpBlade -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpBlade">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpPart"/>
-        <rdfs:comment>One or more kelp blades are attached along the jkelp stipe.</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpFrond -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpFrond">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpPart"/>
-        <rdfs:comment>A kelp frond is composed of a stipe and one or more blades</rdfs:comment>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpFrondLossRate -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpFrondLossRate">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OrganismProcess"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpHoldfast -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpHoldfast">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpPart"/>
-        <rdfs:comment>A Kelp holdfast anchors one or more kelp fronds to the substrate. </rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpPart -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpPart">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OrganismPart"/>
-        <rdfs:comment>A kelp body is technically called the thallus, or sometimes &quot;plant&quot;. It has these parts: stem-like structures (stipes), leaf-like structures (blades). The blades contain gas-filled bladders or pneumatocysts, which float upward. It is fastened to the substrate with a holdfast that might resemble roots. </rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpPercentNitrogen -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpPercentNitrogen">
-        <rdfs:subClassOf rdf:resource="&oboe-core;Measurement"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpPnuematocyst -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpPnuematocyst">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpPart"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpStipe -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpStipe">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#KelpPart"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;KelpFrondLossRate">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;OrganismProcess"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Lake -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Lake">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OpenWaterBody"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;Lake">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;OpenWaterBody"/>
         <rdfs:comment>exposed water in a basin on a continental sfc of the earth</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#LithogenicSilicaProtocol -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#LithogenicSilicaProtocol">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#BrzezinskiLabProtocols"/>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByConstituent"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Location_ilter -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Location_ilter">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SpatialLocation_ilter"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MSI_AnalyticalLabProtocols -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MSI_AnalyticalLabProtocols">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByLaboratory"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MacIntyreLabProtocols -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MacIntyreLabProtocols">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByLaboratory"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Macrocystis -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Macrocystis">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Kelp"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MacrocystisIntegrifolia -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MacrocystisIntegrifolia">
-        <rdfs:subClassOf rdf:resource="&oboe-biology;Algae"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MacrocystisPyrifera -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MacrocystisPyrifera">
-        <rdfs:subClassOf rdf:resource="&oboe-biology;Algae"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MelackLabAmmoniumConcentrationProtocolFreshwaterAutomated -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MelackLabAmmoniumConcentrationProtocolFreshwaterAutomated">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MelackLabProtocols"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MelackLabNitrateNitriteConcentrationProtocolFreshwaterAutomated -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MelackLabNitrateNitriteConcentrationProtocolFreshwaterAutomated">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MelackLabProtocols"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MelackLabPhosphateConcentrationProtocolFreshwaterAutomated -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MelackLabPhosphateConcentrationProtocolFreshwaterAutomated">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MelackLabProtocols"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MelackLabProtocols -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MelackLabProtocols">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByLaboratory"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Nereocystis -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Nereocystis">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Kelp"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#NitrateNitriteConcentrationProtocol_MSIAutomated -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#NitrateNitriteConcentrationProtocol_MSIAutomated">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MSI_AnalyticalLabProtocols"/>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByConstituent"/>
-        <rdfs:comment>The protocol for measuring Nitrate + nitrite concentration using cadmium reduction and colorimetry</rdfs:comment>
+    <owl:Class rdf:about="&oboe-ilter_demo;Location_ilter">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;SpatialLocation_ilter"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Ocean -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Ocean">
+    <owl:Class rdf:about="&oboe-ilter_demo;Ocean">
         <rdfs:label>Ocean</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OpenWaterBody"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;OpenWaterBody"/>
         <rdfs:comment>Water found in basins between continents, and assumed to contain accumulated salts from continental runnoff.</rdfs:comment>
     </owl:Class>
     
@@ -889,8 +746,8 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OceanBight -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OceanBight">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Ocean"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;OceanBight">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Ocean"/>
         <rdfs:comment>A Ocean Bight is a body of water formed by a wide bend or curve of a coastline. A bight has a relatively wide outlet to the sea. An example is the Southern California Bight, formed by the bend near Pt Conception (north) and extending toward Baja California in the South. This meaning is distuingished from the alternate geographic definition: a bend or curve in the line between land and water.</rdfs:comment>
     </owl:Class>
     
@@ -898,24 +755,24 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OceanChannel -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OceanChannel">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Ocean"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;OceanChannel">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Ocean"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OceanCurrentProcess -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OceanCurrentProcess">
+    <owl:Class rdf:about="&oboe-ilter_demo;OceanCurrentProcess">
         <rdfs:label>Ocean Current</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#HydrospherePhysicalProcess"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;HydrospherePhysicalProcess"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OceanCurrentVelocity -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OceanCurrentVelocity">
+    <owl:Class rdf:about="&oboe-ilter_demo;OceanCurrentVelocity">
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
@@ -928,7 +785,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                     <owl:Restriction>
                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Water_ilter"/>
+                                        <owl:allValuesFrom rdf:resource="&oboe-ilter_demo;Water_ilter"/>
                                     </owl:Restriction>
                                 </owl:intersectionOf>
                             </owl:Class>
@@ -941,58 +798,15 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                 </owl:intersectionOf>
             </owl:Class>
         </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Flow"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Flow"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OceanCurrentVelocity_Eulerian -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OceanCurrentVelocity_Eulerian">
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe-core;Measurement"/>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;measurementFor"/>
-                        <owl:allValuesFrom>
-                            <owl:Class>
-                                <owl:intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;hasContext"/>
-                                        <owl:someValuesFrom>
-                                            <owl:Class>
-                                                <owl:intersectionOf rdf:parseType="Collection">
-                                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Location_ilter"/>
-                                                    </owl:Restriction>
-                                                </owl:intersectionOf>
-                                            </owl:Class>
-                                        </owl:someValuesFrom>
-                                    </owl:Restriction>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SalineWater_ilter"/>
-                                    </owl:Restriction>
-                                </owl:intersectionOf>
-                            </owl:Class>
-                        </owl:allValuesFrom>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesProtocol"/>
-                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#AcousticDopplerCurrentProfileProtocol"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesStandard"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-standards;MeterPerSecond"/>
-                    </owl:Restriction>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OceanCurrentVelocity"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;OceanCurrentVelocity_Eulerian">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;OceanCurrentVelocity"/>
         <rdfs:comment xml:lang="en">Eulerian measurements are made at a fixed geographic location.</rdfs:comment>
     </owl:Class>
     
@@ -1000,7 +814,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OceanCurrentVelocity_Lagrangian -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OceanCurrentVelocity_Lagrangian">
+    <owl:Class rdf:about="&oboe-ilter_demo;OceanCurrentVelocity_Lagrangian">
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
@@ -1019,7 +833,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                                     <owl:Restriction>
                                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#WaterBody"/>
+                                                        <owl:allValuesFrom rdf:resource="&oboe-ilter_demo;WaterBody"/>
                                                     </owl:Restriction>
                                                 </owl:intersectionOf>
                                             </owl:Class>
@@ -1027,7 +841,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                     </owl:Restriction>
                                     <owl:Restriction>
                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SalineWater_ilter"/>
+                                        <owl:allValuesFrom rdf:resource="&oboe-ilter_demo;SalineWater_ilter"/>
                                     </owl:Restriction>
                                 </owl:intersectionOf>
                             </owl:Class>
@@ -1040,7 +854,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                 </owl:intersectionOf>
             </owl:Class>
         </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OceanCurrentVelocity"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;OceanCurrentVelocity"/>
         <rdfs:comment xml:lang="en">Lagrangian measurements are made by &quot;tagging&quot; the entity and allowing the sensor to move along with it. In this case, the water is tagged with a float.</rdfs:comment>
     </owl:Class>
     
@@ -1048,8 +862,8 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OceanGulf -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OceanGulf">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Ocean"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;OceanGulf">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Ocean"/>
         <rdfs:comment>An Ocean Gulf is a large bay or area of an ocean partially enclosed by land. It might be nearly landlocked Examples are the Gulf of Mexico. Gulfs may differ from the ajoining sea in water or other properties.</rdfs:comment>
     </owl:Class>
     
@@ -1057,15 +871,15 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OpenWaterBody -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OpenWaterBody">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#WaterBody"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;OpenWaterBody">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;WaterBody"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OrganismPart -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OrganismPart">
+    <owl:Class rdf:about="&oboe-ilter_demo;OrganismPart">
         <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
     </owl:Class>
     
@@ -1073,31 +887,31 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OrganismProcess -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OrganismProcess">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Process"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;OrganismProcess">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Process"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Overlaps -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Overlaps">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SpatialRelationship"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;Overlaps">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;SpatialRelationship"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PartOf -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PartOf">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#CompositionRelationship"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;PartOf">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;CompositionRelationship"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PercentCarbon -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PercentCarbon">
+    <owl:Class rdf:about="&oboe-ilter_demo;PercentCarbon">
         <rdfs:subClassOf rdf:resource="&oboe-characteristics;MassPerMass"/>
     </owl:Class>
     
@@ -1105,7 +919,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PercentGramOfNitrogenPerGramOfSample -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PercentGramOfNitrogenPerGramOfSample">
+    <owl:Class rdf:about="&oboe-ilter_demo;PercentGramOfNitrogenPerGramOfSample">
         <rdfs:subClassOf rdf:resource="&oboe-standards;Percent"/>
     </owl:Class>
     
@@ -1113,7 +927,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PercentGramPerGram -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PercentGramPerGram">
+    <owl:Class rdf:about="&oboe-ilter_demo;PercentGramPerGram">
         <rdfs:subClassOf rdf:resource="&oboe-standards;Percent"/>
     </owl:Class>
     
@@ -1121,7 +935,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PercentHydrogen -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PercentHydrogen">
+    <owl:Class rdf:about="&oboe-ilter_demo;PercentHydrogen">
         <rdfs:subClassOf rdf:resource="&oboe-characteristics;MassPerMass"/>
     </owl:Class>
     
@@ -1129,7 +943,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PercentNitrogen -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PercentNitrogen">
+    <owl:Class rdf:about="&oboe-ilter_demo;PercentNitrogen">
         <rdfs:subClassOf rdf:resource="&oboe-characteristics;MassPerMass"/>
     </owl:Class>
     
@@ -1137,14 +951,14 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PercentNitrogenInSampleMeasurement -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PercentNitrogenInSampleMeasurement">
+    <owl:Class rdf:about="&oboe-ilter_demo;PercentNitrogenInSampleMeasurement">
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
                     <rdf:Description rdf:about="&oboe-core;Measurement"/>
                     <owl:Restriction>
                         <owl:onProperty rdf:resource="&oboe-core;usesStandard"/>
-                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PercentGramOfNitrogenPerGramOfSample"/>
+                        <owl:allValuesFrom rdf:resource="&oboe-ilter_demo;PercentGramOfNitrogenPerGramOfSample"/>
                     </owl:Restriction>
                 </owl:intersectionOf>
             </owl:Class>
@@ -1154,26 +968,9 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Phaeophyceae -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Phaeophyceae">
-        <rdfs:subClassOf rdf:resource="&oboe-biology;Algae"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PhosphateConcentrationProtocol_MSIAutomated -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PhosphateConcentrationProtocol_MSIAutomated">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MSI_AnalyticalLabProtocols"/>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByConstituent"/>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PhysicalFeature -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PhysicalFeature">
+    <owl:Class rdf:about="&oboe-ilter_demo;PhysicalFeature">
         <rdfs:label>Physical Feature</rdfs:label>
         <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
     </owl:Class>
@@ -1182,971 +979,141 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PhysicalProcess -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PhysicalProcess">
+    <owl:Class rdf:about="&oboe-ilter_demo;PhysicalProcess">
         <rdfs:label>Physical Process</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Process"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Process"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Phytoplankton_Chlorophyll-aConcentration_FluometricExtraction -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Phytoplankton_Chlorophyll-aConcentration_FluometricExtraction">
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe-core;Measurement"/>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;measurementFor"/>
-                        <owl:allValuesFrom>
-                            <owl:Class>
-                                <owl:intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;hasContext"/>
-                                        <owl:someValuesFrom>
-                                            <owl:Class>
-                                                <owl:intersectionOf rdf:parseType="Collection">
-                                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DiscreteSample_SBC"/>
-                                                    </owl:Restriction>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Phytoplankton_ilter"/>
-                                                    </owl:Restriction>
-                                                </owl:intersectionOf>
-                                            </owl:Class>
-                                        </owl:someValuesFrom>
-                                    </owl:Restriction>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Chlorophyll_a"/>
-                                    </owl:Restriction>
-                                </owl:intersectionOf>
-                            </owl:Class>
-                        </owl:allValuesFrom>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesProtocol"/>
-                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ChlorophyllPhaeopigmentConcentrationProtocol_FluorometricExtraction"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesStandard"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-standards;MicrogramPerLiter"/>
-                    </owl:Restriction>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PigmentConcentrationFluorometric"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;Phytoplankton_Chlorophyll-aConcentration_FluometricExtraction">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;PigmentConcentrationFluorometric"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Phytoplankton_Chlorophyll-aPhaeopigmentConcentration_FluometricExtraction -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Phytoplankton_Chlorophyll-aPhaeopigmentConcentration_FluometricExtraction">
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe-core;Measurement"/>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;measurementFor"/>
-                        <owl:allValuesFrom>
-                            <owl:Class>
-                                <owl:intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                    <owl:Class>
-                                        <owl:unionOf rdf:parseType="Collection">
-                                            <owl:Restriction>
-                                                <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Chlorophyll_a"/>
-                                            </owl:Restriction>
-                                            <owl:Restriction>
-                                                <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                <owl:allValuesFrom rdf:resource="&oboe-chemistry;Phaeopigment"/>
-                                            </owl:Restriction>
-                                        </owl:unionOf>
-                                    </owl:Class>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;hasContext"/>
-                                        <owl:someValuesFrom>
-                                            <owl:Class>
-                                                <owl:intersectionOf rdf:parseType="Collection">
-                                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DiscreteSample_SBC"/>
-                                                    </owl:Restriction>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Phytoplankton_ilter"/>
-                                                    </owl:Restriction>
-                                                </owl:intersectionOf>
-                                            </owl:Class>
-                                        </owl:someValuesFrom>
-                                    </owl:Restriction>
-                                </owl:intersectionOf>
-                            </owl:Class>
-                        </owl:allValuesFrom>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesProtocol"/>
-                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ChlorophyllPhaeopigmentConcentrationProtocol_FluorometricExtraction"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesStandard"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-standards;MicrogramPerLiter"/>
-                    </owl:Restriction>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PigmentConcentrationFluorometric"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;Phytoplankton_Chlorophyll-aPhaeopigmentConcentration_FluometricExtraction">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;PigmentConcentrationFluorometric"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Phytoplankton_ChlorophyllTotal_Concentration_FluometricExtraction -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Phytoplankton_ChlorophyllTotal_Concentration_FluometricExtraction">
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe-core;Measurement"/>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;measurementFor"/>
-                        <owl:allValuesFrom>
-                            <owl:Class>
-                                <owl:intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;hasContext"/>
-                                        <owl:someValuesFrom>
-                                            <owl:Class>
-                                                <owl:intersectionOf rdf:parseType="Collection">
-                                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DiscreteSample_SBC"/>
-                                                    </owl:Restriction>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Phytoplankton_ilter"/>
-                                                    </owl:Restriction>
-                                                </owl:intersectionOf>
-                                            </owl:Class>
-                                        </owl:someValuesFrom>
-                                    </owl:Restriction>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="&oboe-chemistry;ChlorophyllTotal"/>
-                                    </owl:Restriction>
-                                </owl:intersectionOf>
-                            </owl:Class>
-                        </owl:allValuesFrom>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesProtocol"/>
-                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ChlorophyllPhaeopigmentConcentrationProtocol_FluorometricExtraction"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesStandard"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-standards;MicrogramPerLiter"/>
-                    </owl:Restriction>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PigmentConcentrationFluorometric"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;Phytoplankton_ChlorophyllTotal_Concentration_FluometricExtraction">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;PigmentConcentrationFluorometric"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Phytoplankton_PhaeopigmentConcentration_FluorometricExtraction -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Phytoplankton_PhaeopigmentConcentration_FluorometricExtraction">
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe-core;Measurement"/>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;measurementFor"/>
-                        <owl:allValuesFrom>
-                            <owl:Class>
-                                <owl:intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;hasContext"/>
-                                        <owl:someValuesFrom>
-                                            <owl:Class>
-                                                <owl:intersectionOf rdf:parseType="Collection">
-                                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DiscreteSample_SBC"/>
-                                                    </owl:Restriction>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Phytoplankton_ilter"/>
-                                                    </owl:Restriction>
-                                                </owl:intersectionOf>
-                                            </owl:Class>
-                                        </owl:someValuesFrom>
-                                    </owl:Restriction>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="&oboe-chemistry;Phaeopigment"/>
-                                    </owl:Restriction>
-                                </owl:intersectionOf>
-                            </owl:Class>
-                        </owl:allValuesFrom>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesProtocol"/>
-                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ChlorophyllPhaeopigmentConcentrationProtocol_FluorometricExtraction"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesStandard"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-standards;MicrogramPerLiter"/>
-                    </owl:Restriction>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PigmentConcentrationFluorometric"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Phytoplankton_ilter -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Phytoplankton_ilter">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SuspendedSolids"/>
-        <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
-        <rdfs:comment>TO DO MOB: redefine measurements using this class to use oboe-ecol community/phytoplankton instead.</rdfs:comment>
+    <owl:Class rdf:about="&oboe-ilter_demo;Phytoplankton_PhaeopigmentConcentration_FluorometricExtraction">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;PigmentConcentrationFluorometric"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PigmentConcentrationFluorometric -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PigmentConcentrationFluorometric">
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe-core;Measurement"/>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;measurementFor"/>
-                        <owl:allValuesFrom>
-                            <owl:Class>
-                                <owl:intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Phytoplankton_ilter"/>
-                                    </owl:Restriction>
-                                </owl:intersectionOf>
-                            </owl:Class>
-                        </owl:allValuesFrom>
-                    </owl:Restriction>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
+    <owl:Class rdf:about="&oboe-ilter_demo;PigmentConcentrationFluorometric">
         <rdfs:subClassOf rdf:resource="&oboe-core;Measurement"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PopulationSample -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PopulationSample">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DiscreteSample_SBC"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PrecipicationProcess -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PrecipicationProcess">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#HydrospherePhysicalProcess"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;PrecipicationProcess">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;HydrospherePhysicalProcess"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PrimaryProduction -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PrimaryProduction">
+    <owl:Class rdf:about="&oboe-ilter_demo;PrimaryProduction">
         <rdfs:label>Primary Production</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#EcosystemProcess"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;EcosystemProcess"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Process -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Process">
+    <owl:Class rdf:about="&oboe-ilter_demo;Process">
         <rdfs:label>Process</rdfs:label>
         <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
     </owl:Class>
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByConstituent -->
+    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Protocols_By_Country -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByConstituent">
+    <owl:Class rdf:about="&oboe-ilter_demo;Protocols_By_Country">
         <rdfs:subClassOf rdf:resource="&oboe-core;Protocol"/>
     </owl:Class>
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByInstrumentation -->
+    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Protocols_By_Substance -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByInstrumentation">
+    <owl:Class rdf:about="&oboe-ilter_demo;Protocols_By_Substance">
         <rdfs:subClassOf rdf:resource="&oboe-core;Protocol"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByLaboratory -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByLaboratory">
-        <rdfs:subClassOf rdf:resource="&oboe-core;Protocol"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsForElementalAnalysis -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsForElementalAnalysis">
-        <rdfs:subClassOf rdf:resource="&oboe-core;Protocol"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsForOrganicTissue -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsForOrganicTissue">
-        <rdfs:subClassOf rdf:resource="&oboe-core;Protocol"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ReedLabProtocols -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ReedLabProtocols">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByLaboratory"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Respiration -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Respiration">
+    <owl:Class rdf:about="&oboe-ilter_demo;Respiration">
         <rdfs:label>Respiration</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#EcosystemProcess"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;EcosystemProcess"/>
     </owl:Class>
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_ConcentrationOfAmmonium_FreshWater -->
+    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_Stream -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_ConcentrationOfAmmonium_FreshWater">
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe-core;Measurement"/>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;measurementFor"/>
-                        <owl:allValuesFrom>
-                            <owl:Class>
-                                <owl:intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;hasContext"/>
-                                        <owl:someValuesFrom>
-                                            <owl:Class>
-                                                <owl:intersectionOf rdf:parseType="Collection">
-                                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DiscreteSample_SBC"/>
-                                                    </owl:Restriction>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#FreshWater_ilter"/>
-                                                    </owl:Restriction>
-                                                </owl:intersectionOf>
-                                            </owl:Class>
-                                        </owl:someValuesFrom>
-                                    </owl:Restriction>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="&oboe-chemistry;Ammonium"/>
-                                    </owl:Restriction>
-                                </owl:intersectionOf>
-                            </owl:Class>
-                        </owl:allValuesFrom>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;ofCharacteristic"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-characteristics;AmountOfSubstanceConcentration"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesProtocol"/>
-                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MelackLabAmmoniumConcentrationProtocolFreshwaterAutomated"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesStandard"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-standards;MicromolePerLiter"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;hasPrecision"/>
-                        <owl:hasValue rdf:datatype="&xsd;decimal">.01</owl:hasValue>
-                    </owl:Restriction>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfAmmonium"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;SBC_Stream">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Stream"/>
     </owl:Class>
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_ConcentrationOfAmmonium_SalineWater -->
+    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SalineWater_ilter -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_ConcentrationOfAmmonium_SalineWater">
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe-core;Measurement"/>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;measurementFor"/>
-                        <owl:allValuesFrom>
-                            <owl:Class>
-                                <owl:intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;hasContext"/>
-                                        <owl:someValuesFrom>
-                                            <owl:Class>
-                                                <owl:intersectionOf rdf:parseType="Collection">
-                                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DiscreteSample_SBC"/>
-                                                    </owl:Restriction>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SalineWater_ilter"/>
-                                                    </owl:Restriction>
-                                                </owl:intersectionOf>
-                                            </owl:Class>
-                                        </owl:someValuesFrom>
-                                    </owl:Restriction>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="&oboe-chemistry;Ammonium"/>
-                                    </owl:Restriction>
-                                </owl:intersectionOf>
-                            </owl:Class>
-                        </owl:allValuesFrom>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;ofCharacteristic"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-characteristics;AmountOfSubstanceConcentration"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesProtocol"/>
-                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#AmmoniumConcentrationProtocol_MSIAutomated"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesStandard"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-standards;MicromolePerLiter"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;hasPrecision"/>
-                        <owl:hasValue rdf:datatype="&xsd;decimal">.01</owl:hasValue>
-                    </owl:Restriction>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfAmmonium"/>
-        <rdfs:subClassOf rdf:resource="&oboe-core;Measurement"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;SalineWater_ilter">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Water_ilter"/>
+        <rdfs:comment>Saline water is water on which one might want to measure salinity.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_ConcentrationOfBiogenicSilica -->
+    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Salinity -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_ConcentrationOfBiogenicSilica">
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe-core;Measurement"/>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;measurementFor"/>
-                        <owl:allValuesFrom>
-                            <owl:Class>
-                                <owl:intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;hasContext"/>
-                                        <owl:someValuesFrom>
-                                            <owl:Class>
-                                                <owl:intersectionOf rdf:parseType="Collection">
-                                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DiscreteSample_SBC"/>
-                                                    </owl:Restriction>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SuspendedSolids"/>
-                                                    </owl:Restriction>
-                                                </owl:intersectionOf>
-                                            </owl:Class>
-                                        </owl:someValuesFrom>
-                                    </owl:Restriction>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SilicaBiogenic"/>
-                                    </owl:Restriction>
-                                </owl:intersectionOf>
-                            </owl:Class>
-                        </owl:allValuesFrom>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;ofCharacteristic"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-characteristics;AmountOfSubstanceConcentration"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesProtocol"/>
-                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#BiogenicSilicaProtocol"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesStandard"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-standards;MicromolePerLiter"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;hasPrecision"/>
-                        <owl:hasValue rdf:datatype="&xsd;decimal">.01</owl:hasValue>
-                    </owl:Restriction>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfSilica"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;Salinity">
+        <rdfs:subClassOf rdf:resource="&oboe-core;PhysicalCharacteristic"/>
+        <rdfs:comment>At the simplest level, salinity is the total amount of dissolved material in grams in one kilogram of sea water. Thus salinity is a dimensionless quantity (Texas A&amp;M Univ, Dept of Oceanography online textbook http://oceanworld.tamu.edu). Accuracy and practicality are heavily considered in it measurement, and must be clearly defined. </rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_ConcentrationOfLithogenicSilica -->
+    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SamplingEvent -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_ConcentrationOfLithogenicSilica">
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe-core;Measurement"/>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;measurementFor"/>
-                        <owl:allValuesFrom>
-                            <owl:Class>
-                                <owl:intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;hasContext"/>
-                                        <owl:someValuesFrom>
-                                            <owl:Class>
-                                                <owl:intersectionOf rdf:parseType="Collection">
-                                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DiscreteSample_SBC"/>
-                                                    </owl:Restriction>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SuspendedSolids"/>
-                                                    </owl:Restriction>
-                                                </owl:intersectionOf>
-                                            </owl:Class>
-                                        </owl:someValuesFrom>
-                                    </owl:Restriction>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SilicaLithogenic"/>
-                                    </owl:Restriction>
-                                </owl:intersectionOf>
-                            </owl:Class>
-                        </owl:allValuesFrom>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;ofCharacteristic"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-characteristics;AmountOfSubstanceConcentration"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesProtocol"/>
-                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#LithogenicSilicaProtocol"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesStandard"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-standards;MicromolePerLiter"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;hasPrecision"/>
-                        <owl:hasValue rdf:datatype="&xsd;decimal">.01</owl:hasValue>
-                    </owl:Restriction>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfSilica"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;SamplingEvent">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Event"/>
     </owl:Class>
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_ConcentrationOfNitrate_FreshWater -->
+    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Sampling_Event_Name -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_ConcentrationOfNitrate_FreshWater">
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe-core;Measurement"/>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;measurementFor"/>
-                        <owl:allValuesFrom>
-                            <owl:Class>
-                                <owl:intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;hasContext"/>
-                                        <owl:someValuesFrom>
-                                            <owl:Class>
-                                                <owl:intersectionOf rdf:parseType="Collection">
-                                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DiscreteSample_SBC"/>
-                                                    </owl:Restriction>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#FreshWater_ilter"/>
-                                                    </owl:Restriction>
-                                                </owl:intersectionOf>
-                                            </owl:Class>
-                                        </owl:someValuesFrom>
-                                    </owl:Restriction>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="&oboe-chemistry;Nitrate"/>
-                                    </owl:Restriction>
-                                </owl:intersectionOf>
-                            </owl:Class>
-                        </owl:allValuesFrom>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;ofCharacteristic"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-characteristics;AmountOfSubstanceConcentration"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesProtocol"/>
-                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MelackLabNitrateNitriteConcentrationProtocolFreshwaterAutomated"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesStandard"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-standards;MicromolePerLiter"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;hasPrecision"/>
-                        <owl:hasValue rdf:datatype="&xsd;decimal">.01</owl:hasValue>
-                    </owl:Restriction>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfNitrate"/>
-        <rdfs:subClassOf rdf:resource="&oboe-core;Measurement"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_ConcentrationOfNitrate_SalineWater -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_ConcentrationOfNitrate_SalineWater">
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe-core;Measurement"/>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;measurementFor"/>
-                        <owl:allValuesFrom>
-                            <owl:Class>
-                                <owl:intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;hasContext"/>
-                                        <owl:someValuesFrom>
-                                            <owl:Class>
-                                                <owl:intersectionOf rdf:parseType="Collection">
-                                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DiscreteSample_SBC"/>
-                                                    </owl:Restriction>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SalineWater_ilter"/>
-                                                    </owl:Restriction>
-                                                </owl:intersectionOf>
-                                            </owl:Class>
-                                        </owl:someValuesFrom>
-                                    </owl:Restriction>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="&oboe-chemistry;Nitrate"/>
-                                    </owl:Restriction>
-                                </owl:intersectionOf>
-                            </owl:Class>
-                        </owl:allValuesFrom>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;ofCharacteristic"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-characteristics;AmountOfSubstanceConcentration"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesProtocol"/>
-                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#NitrateNitriteConcentrationProtocol_MSIAutomated"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesStandard"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-standards;MicromolePerLiter"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;hasPrecision"/>
-                        <owl:hasValue rdf:datatype="&xsd;decimal">.01</owl:hasValue>
-                    </owl:Restriction>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfNitrate"/>
-        <rdfs:subClassOf rdf:resource="&oboe-core;Measurement"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_ConcentrationOfPhosphate_FreshWater -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_ConcentrationOfPhosphate_FreshWater">
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe-core;Measurement"/>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;measurementFor"/>
-                        <owl:allValuesFrom>
-                            <owl:Class>
-                                <owl:intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;hasContext"/>
-                                        <owl:someValuesFrom>
-                                            <owl:Class>
-                                                <owl:intersectionOf rdf:parseType="Collection">
-                                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DiscreteSample_SBC"/>
-                                                    </owl:Restriction>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#FreshWater_ilter"/>
-                                                    </owl:Restriction>
-                                                </owl:intersectionOf>
-                                            </owl:Class>
-                                        </owl:someValuesFrom>
-                                    </owl:Restriction>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="&oboe-chemistry;Phosphate"/>
-                                    </owl:Restriction>
-                                </owl:intersectionOf>
-                            </owl:Class>
-                        </owl:allValuesFrom>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;ofCharacteristic"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-characteristics;AmountOfSubstanceConcentration"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesProtocol"/>
-                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MelackLabPhosphateConcentrationProtocolFreshwaterAutomated"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesStandard"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-standards;MicromolePerLiter"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;hasPrecision"/>
-                        <owl:hasValue rdf:datatype="&xsd;decimal">.01</owl:hasValue>
-                    </owl:Restriction>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfPhosphate"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_ConcentrationOfPhosphate_SalineWater -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_ConcentrationOfPhosphate_SalineWater">
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe-core;Measurement"/>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;measurementFor"/>
-                        <owl:allValuesFrom>
-                            <owl:Class>
-                                <owl:intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;hasContext"/>
-                                        <owl:someValuesFrom>
-                                            <owl:Class>
-                                                <owl:intersectionOf rdf:parseType="Collection">
-                                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DiscreteSample_SBC"/>
-                                                    </owl:Restriction>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SalineWater_ilter"/>
-                                                    </owl:Restriction>
-                                                </owl:intersectionOf>
-                                            </owl:Class>
-                                        </owl:someValuesFrom>
-                                    </owl:Restriction>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="&oboe-chemistry;Phosphate"/>
-                                    </owl:Restriction>
-                                </owl:intersectionOf>
-                            </owl:Class>
-                        </owl:allValuesFrom>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;ofCharacteristic"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-characteristics;AmountOfSubstanceConcentration"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesProtocol"/>
-                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PhosphateConcentrationProtocol_MSIAutomated"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesStandard"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-standards;MicromolePerLiter"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;hasPrecision"/>
-                        <owl:hasValue rdf:datatype="&xsd;decimal">.01</owl:hasValue>
-                    </owl:Restriction>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfPhosphate"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_ConcentrationOfSilicicAcid_SalineWater -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_ConcentrationOfSilicicAcid_SalineWater">
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="&oboe-core;Measurement"/>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;measurementFor"/>
-                        <owl:allValuesFrom>
-                            <owl:Class>
-                                <owl:intersectionOf rdf:parseType="Collection">
-                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;hasContext"/>
-                                        <owl:someValuesFrom>
-                                            <owl:Class>
-                                                <owl:intersectionOf rdf:parseType="Collection">
-                                                    <rdf:Description rdf:about="&oboe-core;Observation"/>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#DiscreteSample_SBC"/>
-                                                    </owl:Restriction>
-                                                    <owl:Restriction>
-                                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SalineWater_ilter"/>
-                                                    </owl:Restriction>
-                                                </owl:intersectionOf>
-                                            </owl:Class>
-                                        </owl:someValuesFrom>
-                                    </owl:Restriction>
-                                    <owl:Restriction>
-                                        <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="&oboe-chemistry;SilicicAcid"/>
-                                    </owl:Restriction>
-                                </owl:intersectionOf>
-                            </owl:Class>
-                        </owl:allValuesFrom>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;ofCharacteristic"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-characteristics;AmountOfSubstanceConcentration"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesProtocol"/>
-                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SilicicAcidConcentrationProtocol_MSIAutomated"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;usesStandard"/>
-                        <owl:allValuesFrom rdf:resource="&oboe-standards;MicromolePerLiter"/>
-                    </owl:Restriction>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="&oboe-core;hasPrecision"/>
-                        <owl:hasValue rdf:datatype="&xsd;decimal">.01</owl:hasValue>
-                    </owl:Restriction>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ConcentrationOfSilicicAcid"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_KelpBedName -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_KelpBedName">
-        <rdfs:subClassOf rdf:resource="&oboe-core;Name"/>
-        <rdfs:comment>The common name of the Kelp Bed</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_KelpBedNumber -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_KelpBedNumber">
-        <rdfs:subClassOf rdf:resource="&oboe-core;Name"/>
-        <rdfs:comment>Bed number designations in Central and Southern California are those assigned by the California Department of Fish and Game; bed number designations in Baja California were assigned by ISP Alginates (formerly Kelpco). Bed numbers are distinct only within each region.</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_KelpBedRegionName -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_KelpBedRegionName">
-        <rdfs:subClassOf rdf:resource="&oboe-core;Name"/>
-        <rdfs:comment>Geographic region of kelp bed. Central refers to central California (Halfmoon Bay to Purisima Point), Southern refers to southern California (Point Arguello to the United States/Mexico border including the Channel Islands) and Baja refers to the Baja California (points south of the United States/Mexico border including several offshore islands).</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_SamplingEventName -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_SamplingEventName">
+    <owl:Class rdf:about="&oboe-ilter_demo;Sampling_Event_Name">
         <rdfs:subClassOf rdf:resource="&oboe-core;Name"/>
         <rdfs:comment>An sampling event that has been named by SBC. These include 
 1. oceanographic cruises, 
@@ -2156,87 +1123,9 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_SiteName -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_SiteName">
-        <rdfs:subClassOf rdf:resource="&oboe-core;Name"/>
-        <rdfs:comment>A site name given by Santa Barbara Coastal LTER.</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_Stream -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SBC_Stream">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Stream"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SalineWater_ilter -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SalineWater_ilter">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Water_ilter"/>
-        <rdfs:comment>Saline water is water on which one might want to measure salinity.</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Salinity -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Salinity">
-        <rdfs:subClassOf rdf:resource="&oboe-core;PhysicalCharacteristic"/>
-        <rdfs:comment>At the simplest level, salinity is the total amount of dissolved material in grams in one kilogram of sea water. Thus salinity is a dimensionless quantity (Texas A&amp;M Univ, Dept of Oceanography online textbook http://oceanworld.tamu.edu). Accuracy and practicality are heavily considered in it measurement, and must be clearly defined. </rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Sample_SBC -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Sample_SBC">
-        <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
-        <rdfs:comment>TO DO MOB: redefine the measurements using DiscreteSample, then remove Sample_SBC and children</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SamplingEvent -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SamplingEvent">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Event"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SchimmelLabProtocols -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SchimmelLabProtocols">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByLaboratory"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SeabirdElectronicsCTDProtocols -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SeabirdElectronicsCTDProtocols">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByInstrumentation"/>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#WashburnLabProtocols"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Seaweed -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Seaweed">
-        <rdfs:subClassOf rdf:resource="&oboe-biology;Algae"/>
-        <rdfs:comment>General term for macroscopic algae found in the ocean. Usually a collective noun.</rdfs:comment>
-    </owl:Class>
-    
-
-
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Silica -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Silica">
+    <owl:Class rdf:about="&oboe-ilter_demo;Silica">
         <rdfs:subClassOf rdf:resource="&oboe-chemistry;CompoundSubstance"/>
         <rdfs:comment>Silica is a general term for silicon found in compounds and in &quot;hard parts&quot;. It can be lithogenic, (ie, from a rocky source) or biogenic (created by an organism)</rdfs:comment>
     </owl:Class>
@@ -2245,8 +1134,8 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SilicaBiogenic -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SilicaBiogenic">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Silica"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;SilicaBiogenic">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Silica"/>
         <rdfs:comment>Biogenic Silica is &quot;hard parts&quot; of organism made from silicon  atoms. Other atoms are present in the compounds; e.g., oxgen. Biogenic silica is created  by diatoms, radiolarians and some plants, and deposited in their cell walls.</rdfs:comment>
     </owl:Class>
     
@@ -2254,8 +1143,8 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SilicaLithogenic -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SilicaLithogenic">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Silica"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;SilicaLithogenic">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Silica"/>
         <rdfs:comment>Lithogenic silica is hard silicon compounds originating from rocks. Compare to biogenic silica.</rdfs:comment>
     </owl:Class>
     
@@ -2263,51 +1152,41 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Silicate -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Silicate">
+    <owl:Class rdf:about="&oboe-ilter_demo;Silicate">
         <rdfs:subClassOf rdf:resource="&oboe-chemistry;CompoundSubstance"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SilicicAcidConcentrationProtocol_MSIAutomated -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SilicicAcidConcentrationProtocol_MSIAutomated">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#MSI_AnalyticalLabProtocols"/>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByConstituent"/>
-        <rdfs:comment>Colorimetric method</rdfs:comment>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SolarRadiation -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SolarRadiation">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PhysicalProcess"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;SolarRadiation">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;PhysicalProcess"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SolidEarthPhysicalFeature -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SolidEarthPhysicalFeature">
+    <owl:Class rdf:about="&oboe-ilter_demo;SolidEarthPhysicalFeature">
         <rdfs:label>Solid Earth Physical Feature</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PhysicalFeature"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;PhysicalFeature"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SolidEarthPhysicalProcess -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SolidEarthPhysicalProcess">
+    <owl:Class rdf:about="&oboe-ilter_demo;SolidEarthPhysicalProcess">
         <rdfs:label>Solid Earth Physical Process</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#PhysicalProcess"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;PhysicalProcess"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SpatialLocation_ilter -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SpatialLocation_ilter">
+    <owl:Class rdf:about="&oboe-ilter_demo;SpatialLocation_ilter">
         <rdfs:label>Spatial Location</rdfs:label>
         <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
     </owl:Class>
@@ -2316,7 +1195,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SpatialRelationship -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SpatialRelationship">
+    <owl:Class rdf:about="&oboe-ilter_demo;SpatialRelationship">
         <rdfs:subClassOf rdf:resource="&oboe-core;Relationship"/>
     </owl:Class>
     
@@ -2324,9 +1203,9 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Stream -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Stream">
+    <owl:Class rdf:about="&oboe-ilter_demo;Stream">
         <rdfs:label>Stream</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#OpenWaterBody"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;OpenWaterBody"/>
         <rdfs:comment>water flowing over a continent or land usually in catchments or watersheds. Includes waterways, rivers, creeks; intermittent or continuous.</rdfs:comment>
     </owl:Class>
     
@@ -2334,7 +1213,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#StreamDischargeRate -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#StreamDischargeRate">
+    <owl:Class rdf:about="&oboe-ilter_demo;StreamDischargeRate">
         <owl:equivalentClass>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
@@ -2347,7 +1226,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                                     <rdf:Description rdf:about="&oboe-core;Observation"/>
                                     <owl:Restriction>
                                         <owl:onProperty rdf:resource="&oboe-core;ofEntity"/>
-                                        <owl:allValuesFrom rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Stream"/>
+                                        <owl:allValuesFrom rdf:resource="&oboe-ilter_demo;Stream"/>
                                     </owl:Restriction>
                                 </owl:intersectionOf>
                             </owl:Class>
@@ -2360,67 +1239,65 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
                 </owl:intersectionOf>
             </owl:Class>
         </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Flow"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Flow"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#StreamFlowProcess -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#StreamFlowProcess">
+    <owl:Class rdf:about="&oboe-ilter_demo;StreamFlowProcess">
         <rdfs:label>Stream Flow</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#HydrospherePhysicalProcess"/>
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;HydrospherePhysicalProcess"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#StreamReach -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#StreamReach">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Stream"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SuspendedParticulateCarbonNitrogen_CHNElementalAnalyzer -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SuspendedParticulateCarbonNitrogen_CHNElementalAnalyzer">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsForElementalAnalysis"/>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsForOrganicTissue"/>
-        <rdfs:comment>Particulates suspended  in water are collected on a filter.</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SuspendedParticulatePhosphorus_AcidDigestion -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SuspendedParticulatePhosphorus_AcidDigestion">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsForElementalAnalysis"/>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsForOrganicTissue"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;StreamReach">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Stream"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SuspendedSolids -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SuspendedSolids">
+    <owl:Class rdf:about="&oboe-ilter_demo;SuspendedSolids">
         <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
         <rdfs:comment>Solid material suspended in natural water. Usually, this is a mixture of inorganic and organic material, living and dead. Suspended solids are not dissolved. They are particles of various sizes and buoyancy. Usually, the material is collected from a volume of water, and the collection protocol should specify the size or type of filter used to separate the suspended material from the water and dissolved material.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TaggedFish -->
+    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TERN_Daphnia_Sampling_Protocol -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TaggedFish">
-        <rdfs:subClassOf rdf:resource="&oboe-core;Name"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;TERN_Daphnia_Sampling_Protocol">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;TERN_Protocols"/>
     </owl:Class>
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TaggedKelpFrond -->
+    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TERN_Protocols -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TaggedKelpFrond">
+    <owl:Class rdf:about="&oboe-ilter_demo;TERN_Protocols">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;Protocols_By_Country"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TERN_SiteName -->
+
+    <owl:Class rdf:about="&oboe-ilter_demo;TERN_SiteName">
+        <rdfs:subClassOf rdf:resource="&oboe-core;Name"/>
+        <rdfs:comment>A site name given by Santa Barbara Coastal LTER.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Tagged_Organism -->
+
+    <owl:Class rdf:about="&oboe-ilter_demo;Tagged_Organism">
         <rdfs:subClassOf rdf:resource="&oboe-core;Name"/>
         <rdfs:comment>An individual tagged frond</rdfs:comment>
     </owl:Class>
@@ -2429,103 +1306,86 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TaxonType -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TaxonType">
+    <owl:Class rdf:about="&oboe-ilter_demo;TaxonType">
         <rdfs:subClassOf rdf:resource="&oboe-core;Type"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalPointPDT -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalPointPDT">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalPoint_SBC"/>
-        <rdfs:comment>Dates, date-parts or date-times which are recorded in Pacific Daylight Time (PDT), which is defined as UTC - 7 hours.</rdfs:comment>
-        <rdfs:comment>TO DO MOB: this would be better as a measurement, entity= time instant, std=time zone. characteristic=</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalPointPST -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalPointPST">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalPoint_SBC"/>
-        <rdfs:comment>Dates, date-parts or date-times which are recorded in Pacific Standard Time (PST), which is UTC -8 hours</rdfs:comment>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalPointUTC -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalPointUTC">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalPoint_SBC"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;TemporalPointUTC">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;TemporalPoint_Timezone"/>
         <rdfs:comment>Dates, date-parts or date-times which are recorded in Coordinated Universal Time.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalPoint_SBC -->
+    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalPoint_Timezone -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalPoint_SBC">
+    <owl:Class rdf:about="&oboe-ilter_demo;TemporalPoint_Timezone">
         <rdfs:subClassOf rdf:resource="&oboe-core;Entity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalPoint_UTC+8 -->
+
+    <owl:Class rdf:about="&oboe-ilter_demo;TemporalPoint_UTC+8">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;TemporalPoint_Timezone"/>
+        <rdfs:comment>Dates, date-parts or date-times which are recorded in Pacific Daylight Time (PDT), which is defined as UTC - 7 hours.</rdfs:comment>
+        <rdfs:comment>TO DO MOB: this would be better as a measurement, entity= time instant, std=time zone. characteristic=</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalPoint_UTC+x -->
+
+    <owl:Class rdf:about="&oboe-ilter_demo;TemporalPoint_UTC+x">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;TemporalPoint_Timezone"/>
+        <rdfs:comment>Dates, date-parts or date-times which are recorded in Pacific Standard Time (PST), which is UTC -8 hours</rdfs:comment>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalRelationship -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TemporalRelationship">
+    <owl:Class rdf:about="&oboe-ilter_demo;TemporalRelationship">
         <rdfs:subClassOf rdf:resource="&oboe-core;Relationship"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TissueCarbonNitrogen_CHNElementalAnalyzer -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TissueCarbonNitrogen_CHNElementalAnalyzer">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsForElementalAnalysis"/>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsForOrganicTissue"/>
-    </owl:Class>
-    
-
-
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TissuePhosphorus_AcidDigestion -->
-
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#TissuePhosphorus_AcidDigestion">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsForElementalAnalysis"/>
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsForOrganicTissue"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Troposphere -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Troposphere">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#AtmospherePhsicalFeature"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;Troposphere">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;AtmospherePhsicalFeature"/>
         <rdfs:comment>This term is also in the SWEET ontology, where it is defined in the &quot;EarthRealm&quot; as a subclass of &quot;atmosphere&quot; where elevation is between 0 and 15 km.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#WashburnLabProtocols -->
+    <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#USGreatLakes_LakeName -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#WashburnLabProtocols">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#ProtocolsByLaboratory"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;USGreatLakes_LakeName">
+        <rdfs:subClassOf rdf:resource="&oboe-core;Name"/>
+        <rdfs:comment>Geographic region of kelp bed. Central refers to central California (Halfmoon Bay to Purisima Point), Southern refers to southern California (Point Arguello to the United States/Mexico border including the Channel Islands) and Baja refers to the Baja California (points south of the United States/Mexico border including several offshore islands).</rdfs:comment>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#WaterBody -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#WaterBody">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#HydrospherePhysicalFeature"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;WaterBody">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;HydrospherePhysicalFeature"/>
     </owl:Class>
     
 
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Water_ilter -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Water_ilter">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#HydrospherePhysicalFeature"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;Water_ilter">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;HydrospherePhysicalFeature"/>
         <rdfs:comment>Water, naturally occurring. Usually a mixture of H2O and other materials.</rdfs:comment>
     </owl:Class>
     
@@ -2533,7 +1393,7 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#WetMass -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#WetMass">
+    <owl:Class rdf:about="&oboe-ilter_demo;WetMass">
         <rdfs:subClassOf rdf:resource="&oboe-characteristics;Mass"/>
     </owl:Class>
     
@@ -2541,9 +1401,15 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
     <!-- http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Within -->
 
-    <owl:Class rdf:about="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#Within">
-        <rdfs:subClassOf rdf:resource="http://ecoinformatics.org/oboe-ext/ilter_demo/oboe-ilter_demo.owl#SpatialRelationship"/>
+    <owl:Class rdf:about="&oboe-ilter_demo;Within">
+        <rdfs:subClassOf rdf:resource="&oboe-ilter_demo;SpatialRelationship"/>
     </owl:Class>
+    
+
+
+    <!-- http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl#TimePeriod -->
+
+    <owl:Class rdf:about="&oboe;TimePeriod"/>
     
 
 
@@ -2562,5 +1428,5 @@ might have problems. Are aquifers interstitial? or any underground water?</rdfs:
 
 
 
-<!-- Generated by the OWL API (version 3.2.2.1785) http://owlapi.sourceforge.net -->
+<!-- Generated by the OWL API (version 3.2.3.22702) http://owlapi.sourceforge.net -->
 
