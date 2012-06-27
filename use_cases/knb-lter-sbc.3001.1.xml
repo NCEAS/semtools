@@ -7,7 +7,7 @@
     xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.0    
     http://sbc.lternet.edu/external/InformationManagement/EML_210schema//eml.xsd">
   <access
-    authSystem="knb" order="denyFirst"
+    authSystem="knb" order="allowFirst"
     scope="document">
     <allow>
       <principal>uid=sbc,o=LTER,dc=ecoinformatics,dc=org</principal>

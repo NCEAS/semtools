@@ -5,7 +5,7 @@
   xmlns:ds="eml://ecoinformatics.org/dataset-2.1.0" packageId="knb-lter-sbc.6.4" scope="system"
   system="knb" xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.0 
   http://sbc.lternet.edu/external/InformationManagement/EML_210schema//eml.xsd">
-  <access authSystem="knb" order="denyFirst" scope="document">
+  <access authSystem="knb" order="allowFirest" scope="document">
     <allow>
       <principal>uid=sbc,o=LTER,dc=ecoinformatics,dc=org</principal>
       <permission>all</permission>
