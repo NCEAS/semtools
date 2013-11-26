@@ -60,7 +60,9 @@
             <include name="**/*.jar"/>
          </fileset>
       	<!-- morpho jars -->
-      	<path path="${cpath}" />
+      	<fileset dir="${morpho.basedir}/build">
+            <include name="**/*.jar"/>
+        </fileset>
       	<!-- metacat jars -->
       	<fileset dir="${metacat.dir}/build">
             <include name="*.jar"/>
