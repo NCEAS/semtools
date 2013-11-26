@@ -13,9 +13,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.io.StringReader;
-import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import java.util.Map.Entry;
 
@@ -28,6 +27,8 @@ import javax.swing.UIManager;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumnModel;
 
+import org.dataone.service.types.v1.AccessPolicy;
+import org.dataone.service.types.v1.SystemMetadata;
 import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.annotation.Annotation;
 import org.ecoinformatics.sms.annotation.AnnotationException;
@@ -49,18 +50,19 @@ import org.ecoinformatics.sms.plugins.table.AnnotationTablePanel;
 import org.ecoinformatics.sms.plugins.table.DataTableModelListener;
 import org.ecoinformatics.sms.plugins.table.ScrollBarAdjustmentListener;
 import org.ecoinformatics.sms.renderer.AnnotationGraph;
-import org.w3c.dom.Node;
 
 import edu.ucsb.nceas.morpho.Language;
 import edu.ucsb.nceas.morpho.Morpho;
+import edu.ucsb.nceas.morpho.dataone.AccessPolicyConverter;
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
-import edu.ucsb.nceas.morpho.datapackage.AccessionNumber;
 import edu.ucsb.nceas.morpho.datapackage.DataViewContainerPanel;
 import edu.ucsb.nceas.morpho.datapackage.DataViewer;
-import edu.ucsb.nceas.morpho.datastore.DataStoreInterface;
-import edu.ucsb.nceas.morpho.datastore.FileSystemDataStore;
-import edu.ucsb.nceas.morpho.datastore.MetacatDataStore;
+import edu.ucsb.nceas.morpho.datastore.DataONEDataStoreService;
+import edu.ucsb.nceas.morpho.datastore.DataStoreServiceController;
+import edu.ucsb.nceas.morpho.datastore.DataStoreServiceInterface;
+import edu.ucsb.nceas.morpho.datastore.LocalDataStoreService;
 import edu.ucsb.nceas.morpho.framework.ConfigXML;
+import edu.ucsb.nceas.morpho.framework.DataPackageInterface;
 import edu.ucsb.nceas.morpho.framework.MorphoFrame;
 import edu.ucsb.nceas.morpho.framework.QueryRefreshInterface;
 import edu.ucsb.nceas.morpho.framework.UIController;
@@ -77,7 +79,6 @@ import edu.ucsb.nceas.morpho.util.SaveEvent;
 import edu.ucsb.nceas.morpho.util.StateChangeEvent;
 import edu.ucsb.nceas.morpho.util.StateChangeListener;
 import edu.ucsb.nceas.morpho.util.StateChangeMonitor;
-import edu.ucsb.nceas.utilities.XMLUtilities;
 
 public class AnnotationPlugin
 	implements PluginInterface, ServiceProvider, StateChangeListener {
@@ -97,9 +98,9 @@ public class AnnotationPlugin
 
     public static final String PHYSICAL_URI_TAG_NAME = "physicalURI";
     
-    public static final String ANNOTATION_LOCATION = AbstractDataPackage.LOCAL;
-    //public static final String ANNOTATION_LOCATION = AbstractDataPackage.METACAT;
-    //public static final String ANNOTATION_LOCATION = AbstractDataPackage.BOTH;
+    public static final String ANNOTATION_LOCATION = DataPackageInterface.LOCAL;
+    //public static final String ANNOTATION_LOCATION = DataPackageInterface.METACAT;
+    //public static final String ANNOTATION_LOCATION = DataPackageInterface.BOTH;
     
     private MorphoFrame morphoFrame = null;
 	
@@ -281,7 +282,7 @@ public class AnnotationPlugin
 			final DataViewContainerPanel dataViewContainerPanel = morphoFrame.getDataViewContainerPanel();
 			WindowAdapter windowListener = new WindowAdapter() {
 				public void windowClosed(WindowEvent we) {
-					AbstractDataPackage adp = morphoFrame.getAbstractDataPackage();
+					AbstractDataPackage adp = morphoFrame.getMorphoDataPackage().getAbstractDataPackage();
 					String docid = adp.getAccessionNumber();
 					// only clear annotations if we can look them up again
 					String location = adp.getLocation();
@@ -301,20 +302,20 @@ public class AnnotationPlugin
 		Log.debug(30, "initializing annotations for docid: " + forDocid);
 		// clear the old
 		clearAnnotations(forDocid);
-		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
-		MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
+		LocalDataStoreService fds = new LocalDataStoreService(Morpho.thisStaticInstance);
+		DataONEDataStoreService mds = new DataONEDataStoreService(Morpho.thisStaticInstance);
 		String querySpec = getAnnotationQuery(forDocid);
 		Query query = new Query(querySpec, Morpho.thisStaticInstance);
 		// search BOTH by default
 		query.setSearchLocal(true);
-		query.setSearchMetacat(true);
-		if (location.equals(AbstractDataPackage.LOCAL)) {
+		query.setSearchNetwork(true);
+		if (location.equals(DataPackageInterface.LOCAL)) {
 			query.setSearchLocal(true);
-			query.setSearchMetacat(false);
+			query.setSearchNetwork(false);
 		}
-		if (location.equals(AbstractDataPackage.METACAT)) {
+		if (location.equals(DataPackageInterface.NETWORK)) {
 			query.setSearchLocal(false);
-			query.setSearchMetacat(true);
+			query.setSearchNetwork(true);
 		}
 		ResultSet rs = query.execute();
 		Vector<Vector> resultVector = rs.getResultsVector();
@@ -383,7 +384,7 @@ public class AnnotationPlugin
 			}
 		}
 		// load the configured ontologies
-		Hashtable<String, String> ontologyURIs = Morpho.getConfiguration().getHashtable(ONTOLOGY_TAG_NAME, LOGICAL_URI_TAG_NAME, PHYSICAL_URI_TAG_NAME);
+		Map<String, String> ontologyURIs = Morpho.getConfiguration().getHashtable(ONTOLOGY_TAG_NAME, LOGICAL_URI_TAG_NAME, PHYSICAL_URI_TAG_NAME);
 		// map them first
 		try {
 			SMS.getInstance().getOntologyManager().mapOntologies(ontologyURIs);
@@ -569,10 +570,9 @@ public class AnnotationPlugin
 		try {
 			
 			// about to save
-			AccessionNumber accNum = new AccessionNumber(Morpho.thisStaticInstance);
 			String id = annotation.getURI();
 			if (id == null) {
-				id = accNum.getNextId();
+				id = DataStoreServiceController.getInstance().generateIdentifier(null, DataPackageInterface.LOCAL);
 			} else {
 				// remove the old one if present
 				if (SMS.getInstance().getAnnotationManager().isAnnotation(id)) {
@@ -595,8 +595,8 @@ public class AnnotationPlugin
 	}
 	
 	public static void deleteAnnotations(String packageId, String location) {
-		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
-		MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
+		LocalDataStoreService fds = new LocalDataStoreService(Morpho.thisStaticInstance);
+		DataONEDataStoreService mds = new DataONEDataStoreService(Morpho.thisStaticInstance);
 		
 		List<Annotation> annotations = SMS.getInstance().getAnnotationManager().getAnnotations(packageId);
 		for (Annotation annotation: annotations) {
@@ -605,10 +605,10 @@ public class AnnotationPlugin
 				// remove from manager
 				SMS.getInstance().getAnnotationManager().removeAnnotation(annotationId);
 				// remove from storage
-				if (location.equals(AbstractDataPackage.LOCAL) || location.equals(AbstractDataPackage.BOTH)) {
+				if (location.equals(DataPackageInterface.LOCAL) || location.equals(DataPackageInterface.BOTH)) {
 					fds.deleteFile(annotationId);
 				}
-				if (location.equals(AbstractDataPackage.METACAT) || location.equals(AbstractDataPackage.BOTH)) {
+				if (location.equals(DataPackageInterface.NETWORK) || location.equals(DataPackageInterface.BOTH)) {
 					mds.deleteFile(annotationId);
 				}
 			} catch (Exception e) {
@@ -619,35 +619,26 @@ public class AnnotationPlugin
 		
 	}
 	
-	public static void setAccess(String packageId, String annotationId) {
+	public static void setAccess(String packageId, String annotationId) throws Exception {
 		// TODO: better way to get this dp?
-		AbstractDataPackage adp = UIController.getInstance().getCurrentAbstractDataPackage();
+		AbstractDataPackage adp = UIController.getInstance().getCurrentAbstractDataPackage().getAbstractDataPackage();
 		if (!adp.getAccessionNumber().equals(packageId)) {
 			return;
 		}
-		String accessXML = null;
-		
-		// get the access node
-		Node accessNode = adp.getSubtree("access", 0);
-		try {
-			accessXML = XMLUtilities.getDOMTreeAsString(accessNode);
-			Log.debug(30, "Access XML: \n" + accessXML);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		if (accessXML != null) {
-			MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
-			mds.setAccess(annotationId, accessXML);
+		AccessPolicy ap = AccessPolicyConverter.getAccessPolicy(adp);
+		if (ap != null) {
+			DataONEDataStoreService mds = new DataONEDataStoreService(Morpho.thisStaticInstance);
+			SystemMetadata sysMeta = mds.getSystemMetadataFromDataONE(annotationId);
+			sysMeta.setAccessPolicy(ap);
+			mds.setAccessPolicy(sysMeta);
 		}
 		
 	}
 	
 	// TODO: handle remote locations
 	public static boolean serializeAnnotation(String packageId, String location) {
-		FileSystemDataStore fds = new FileSystemDataStore(Morpho.thisStaticInstance);
-		MetacatDataStore mds = new MetacatDataStore(Morpho.thisStaticInstance);
-		AccessionNumber accNum = new AccessionNumber(Morpho.thisStaticInstance);
+		LocalDataStoreService fds = new LocalDataStoreService(Morpho.thisStaticInstance);
+		DataONEDataStoreService mds = new DataONEDataStoreService(Morpho.thisStaticInstance);
 
 		// we can' save to nowhere
 		if (location == null || location.length() == 0) {
@@ -664,12 +655,12 @@ public class AnnotationPlugin
 			File annotationFile = null;
 			
 			// local save
-			if (location.equals(AbstractDataPackage.LOCAL) || location.equals(AbstractDataPackage.BOTH)) {
+			if (location.equals(DataPackageInterface.LOCAL) || location.equals(DataPackageInterface.BOTH)) {
 				try {
 					
 					// find the next available id
-					while (!fds.status(id).equals(DataStoreInterface.NONEXIST)) {
-						id = accNum.incRev(id);
+					while (!fds.status(id).equals(DataStoreServiceInterface.NONEXIST)) {
+						id = DataStoreServiceController.getInstance().generateIdentifier(null, DataPackageInterface.LOCAL);
 					}
 					// set it in the annotation
 					annotation.setURI(id);
@@ -678,7 +669,7 @@ public class AnnotationPlugin
 					//save in local store
 					baos = new ByteArrayOutputStream();
 					annotation.write(baos);
-					annotationFile = fds.saveFile(id, new StringReader(baos.toString()));
+					annotationFile = fds.saveFile(id, new ByteArrayInputStream(baos.toByteArray()));
 					
 				}
 				catch (Exception e) {
@@ -692,23 +683,23 @@ public class AnnotationPlugin
 			}
 			
 			// network
-			if (location.equals(AbstractDataPackage.METACAT) || location.equals(AbstractDataPackage.BOTH)) {
+			if (location.equals(DataPackageInterface.NETWORK) || location.equals(DataPackageInterface.BOTH)) {
 				try {
-					String metacatStatus = mds.status(id);
-					// resolve id conflict first
-					while (metacatStatus.equals(DataStoreInterface.CONFLICT)) {
-						id = accNum.incRev(id);
-						metacatStatus = mds.status(id);
+					
+					boolean exists = DataStoreServiceController.getInstance().exists(id, DataPackageInterface.NETWORK);
+					if (exists) {
+						id = DataStoreServiceController.getInstance().generateIdentifier(null, DataPackageInterface.NETWORK);
 					}
+					
 					annotation.setURI(id);
 					baos = new ByteArrayOutputStream();
 					annotation.write(baos);
 					// check if we will update or make new file
-					if (metacatStatus.equals(DataStoreInterface.UPDATE)) {
-						annotationFile = mds.saveFile(id, new StringReader(baos.toString()));
+					if (exists) {
+						annotationFile = mds.saveFile(id, new ByteArrayInputStream(baos.toByteArray()));
 					}
-					else if (metacatStatus.equals(DataStoreInterface.NONEXIST)) {
-						annotationFile = mds.newFile(id, new StringReader(baos.toString()));
+					else {
+						annotationFile = mds.newFile(id, new ByteArrayInputStream(baos.toByteArray()));
 					}
 					// set permissions for the annotation file
 					setAccess(packageId, id);
@@ -762,7 +753,7 @@ public class AnnotationPlugin
 
 		AbstractDataPackage adp = null;
 		if (resultPane != null) {
-			adp = resultPane.getAbstractDataPackage();
+			adp = resultPane.getMorphoDataPackage().getAbstractDataPackage();
 		}
 
 		if (adp == null) {
@@ -837,7 +828,7 @@ public class AnnotationPlugin
 
 		AbstractDataPackage adp = null;
 		if (resultPane != null) {
-			adp = resultPane.getAbstractDataPackage();
+			adp = resultPane.getMorphoDataPackage().getAbstractDataPackage();
 		}
 
 		if (adp == null) {
@@ -921,13 +912,13 @@ public class AnnotationPlugin
 		// for synch, look up the annotation from the original source
 		if (syncronize) {
 			// going from METACAT->LOCAL
-			if (location.equals(AbstractDataPackage.LOCAL)) {
+			if (location.equals(DataPackageInterface.LOCAL)) {
 				// load the remote annotations for that package
-				initializeAnnotations(oldId, AbstractDataPackage.METACAT);
+				initializeAnnotations(oldId, DataPackageInterface.NETWORK);
 			}
-			if (location.equals(AbstractDataPackage.METACAT)) {
+			if (location.equals(DataPackageInterface.NETWORK)) {
 				// load the local annotations for that package
-				initializeAnnotations(oldId, AbstractDataPackage.LOCAL);
+				initializeAnnotations(oldId, DataPackageInterface.NETWORK);
 			}
 		}
 		
@@ -955,8 +946,7 @@ public class AnnotationPlugin
 					annotation.write(baos);
 					Annotation annotationCopy = Annotation.read(new ByteArrayInputStream(baos.toByteArray()));
 					// make an id for the annotation
-					AccessionNumber an = new AccessionNumber(Morpho.thisStaticInstance);
-					String annotationId = an.getNextId();
+					String annotationId = DataStoreServiceController.getInstance().generateIdentifier(null, DataPackageInterface.LOCAL);
 					// set the data package association and the id
 					annotationCopy.setDataPackage(newId);
 					annotationCopy.setURI(annotationId);
@@ -1072,7 +1062,7 @@ public class AnnotationPlugin
 			if (dataViewContainerPanel != null) {
 				DataViewer dataViewer = dataViewContainerPanel.getCurrentDataViewer();
 				if (dataViewer != null) {
-					AbstractDataPackage adp = UIController.getInstance().getCurrentAbstractDataPackage();
+					AbstractDataPackage adp = UIController.getInstance().getCurrentAbstractDataPackage().getAbstractDataPackage();
 					// package and entity
 					String packageId = adp.getAccessionNumber();
 					int entityIndex = dataViewer.getEntityIndex();

@@ -241,7 +241,7 @@ public class ComplexQueryPage extends AbstractUIPage {
 		// make it
 		query = new Query(querySpec, Morpho.thisStaticInstance);
 		query.setSearchLocal(local);
-		query.setSearchMetacat(network);
+		query.setSearchNetwork(network);
 		
 		// set the docids
 		docids.clear();
@@ -262,7 +262,7 @@ public class ComplexQueryPage extends AbstractUIPage {
 		// make it
 		query = new Query(querySpec, Morpho.thisStaticInstance);
 		query.setSearchLocal(local);
-		query.setSearchMetacat(network);
+		query.setSearchNetwork(network);
 		
 		// reset the docids
 		docids.clear();
