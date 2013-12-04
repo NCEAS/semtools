@@ -33,6 +33,7 @@ import javax.swing.JOptionPane;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
+import edu.ucsb.nceas.morpho.framework.DataPackageInterface;
 import edu.ucsb.nceas.morpho.framework.UIController;
 import edu.ucsb.nceas.morpho.util.Command;
 
@@ -55,12 +56,12 @@ public class SaveAnnotationCommand implements Command {
 	public void execute(ActionEvent event) {
 		
 		// saving annotations for current packageId 
-		AbstractDataPackage adp = UIController.getInstance().getCurrentAbstractDataPackage();
-		String packageId = adp.getPackageId();
+		AbstractDataPackage adp = UIController.getInstance().getCurrentAbstractDataPackage().getAbstractDataPackage();
+		String packageId = adp.getAccessionNumber();
 		String location = adp.getLocation();
 		// default save to local if there is none given (when eml has been edited and not yet saved, the location will be blank)
 		if (location == null || location.equals("")) {
-			location = AbstractDataPackage.LOCAL;
+			location = DataPackageInterface.LOCAL;
 		}
 		boolean success = AnnotationPlugin.serializeAnnotation(packageId, location);
 		if (success) {

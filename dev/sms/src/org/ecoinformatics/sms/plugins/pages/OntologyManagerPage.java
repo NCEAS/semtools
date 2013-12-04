@@ -29,8 +29,8 @@
 package org.ecoinformatics.sms.plugins.pages;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.BoxLayout;
@@ -38,7 +38,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.ecoinformatics.sms.SMS;
 import org.ecoinformatics.sms.plugins.AnnotationPlugin;
 
 import edu.ucsb.nceas.morpho.Morpho;
@@ -111,7 +110,7 @@ public class OntologyManagerPage extends AbstractUIPage {
 				);
 		
 		//set the existing entries
-		Hashtable<String, String> ontologyURIs = 
+		Map<String, String> ontologyURIs = 
 			Morpho.getConfiguration().getHashtable(
 					AnnotationPlugin.ONTOLOGY_TAG_NAME, 
 					AnnotationPlugin.LOGICAL_URI_TAG_NAME, 

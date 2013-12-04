@@ -51,6 +51,7 @@ import org.ecoinformatics.sms.plugins.search.CriteriaPanelList;
 import edu.ucsb.nceas.morpho.Morpho;
 import edu.ucsb.nceas.morpho.datapackage.AbstractDataPackage;
 import edu.ucsb.nceas.morpho.framework.AbstractUIPage;
+import edu.ucsb.nceas.morpho.framework.DataPackageInterface;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WidgetFactory;
 import edu.ucsb.nceas.morpho.plugins.datapackagewizard.WizardSettings;
 import edu.ucsb.nceas.morpho.query.Query;
@@ -221,13 +222,13 @@ public class ComplexQueryPage extends AbstractUIPage {
 		// TODO: ensure we have local/network annotations loaded before searching
 		String location = "";
 		if (local) {
-			location = AbstractDataPackage.LOCAL;
+			location = DataPackageInterface.LOCAL;
 		}
 		if (network) {
-			location = AbstractDataPackage.METACAT;
+			location = DataPackageInterface.NETWORK;
 		}
 		if (local && network) {
-			location = AbstractDataPackage.BOTH;
+			location = DataPackageInterface.BOTH;
 		}
 		AnnotationPlugin.initializeAnnotations(null, location);
 		
