@@ -14,7 +14,7 @@
 	<key>BackgroundGraphic</key>
 	<dict>
 		<key>Bounds</key>
-		<string>{{0, 0}, {1727.9999198913574, 733}}</string>
+		<string>{{0, 0}, {1728.0000801086426, 1466}}</string>
 		<key>Class</key>
 		<string>SolidGraphic</string>
 		<key>ID</key>
@@ -53,6 +53,368 @@
 	<integer>8</integer>
 	<key>GraphicsList</key>
 	<array>
+		<dict>
+			<key>Bounds</key>
+			<string>{{673.76264185632942, 408.34331473314768}, {131, 24}}</string>
+			<key>Class</key>
+			<string>ShapedGraphic</string>
+			<key>FitText</key>
+			<string>YES</string>
+			<key>Flow</key>
+			<string>Resize</string>
+			<key>FontInfo</key>
+			<dict>
+				<key>Color</key>
+				<dict>
+					<key>w</key>
+					<string>0</string>
+				</dict>
+				<key>Font</key>
+				<string>Helvetica</string>
+				<key>Size</key>
+				<real>12</real>
+			</dict>
+			<key>ID</key>
+			<integer>831</integer>
+			<key>Line</key>
+			<dict>
+				<key>ID</key>
+				<integer>829</integer>
+				<key>Offset</key>
+				<real>1.3333330154418945</real>
+				<key>Position</key>
+				<real>0.49978160858154297</real>
+				<key>RotationType</key>
+				<integer>0</integer>
+			</dict>
+			<key>Shape</key>
+			<string>Rectangle</string>
+			<key>Style</key>
+			<dict>
+				<key>shadow</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+				<key>stroke</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+			</dict>
+			<key>Text</key>
+			<dict>
+				<key>Text</key>
+				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
+
+\f0\fs24 \cf0 ao:annotatesResource}</string>
+			</dict>
+			<key>Wrap</key>
+			<string>NO</string>
+		</dict>
+		<dict>
+			<key>Bounds</key>
+			<string>{{811.77663579728551, 406.78141089529254}, {122, 24}}</string>
+			<key>Class</key>
+			<string>ShapedGraphic</string>
+			<key>FitText</key>
+			<string>YES</string>
+			<key>Flow</key>
+			<string>Resize</string>
+			<key>FontInfo</key>
+			<dict>
+				<key>Color</key>
+				<dict>
+					<key>w</key>
+					<string>0</string>
+				</dict>
+				<key>Font</key>
+				<string>Helvetica</string>
+				<key>Size</key>
+				<real>12</real>
+			</dict>
+			<key>ID</key>
+			<integer>880</integer>
+			<key>Line</key>
+			<dict>
+				<key>ID</key>
+				<integer>879</integer>
+				<key>Offset</key>
+				<real>-1.3333333730697632</real>
+				<key>Position</key>
+				<real>0.50675183534622192</real>
+				<key>RotationType</key>
+				<integer>0</integer>
+			</dict>
+			<key>Shape</key>
+			<string>Rectangle</string>
+			<key>Style</key>
+			<dict>
+				<key>shadow</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+				<key>stroke</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+			</dict>
+			<key>Text</key>
+			<dict>
+				<key>Text</key>
+				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
+
+\f0\fs24 \cf0 ore:isDocumentedBy}</string>
+			</dict>
+			<key>Wrap</key>
+			<string>NO</string>
+		</dict>
+		<dict>
+			<key>Bounds</key>
+			<string>{{762.7122116003485, 446.99916565946245}, {92, 24}}</string>
+			<key>Class</key>
+			<string>ShapedGraphic</string>
+			<key>FitText</key>
+			<string>YES</string>
+			<key>Flow</key>
+			<string>Resize</string>
+			<key>FontInfo</key>
+			<dict>
+				<key>Color</key>
+				<dict>
+					<key>w</key>
+					<string>0</string>
+				</dict>
+				<key>Font</key>
+				<string>Helvetica</string>
+				<key>Size</key>
+				<real>12</real>
+			</dict>
+			<key>ID</key>
+			<integer>917</integer>
+			<key>Line</key>
+			<dict>
+				<key>ID</key>
+				<integer>916</integer>
+				<key>Offset</key>
+				<real>10.666666984558105</real>
+				<key>Position</key>
+				<real>0.55141669511795044</real>
+				<key>RotationType</key>
+				<integer>0</integer>
+			</dict>
+			<key>Shape</key>
+			<string>Rectangle</string>
+			<key>Style</key>
+			<dict>
+				<key>shadow</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+				<key>stroke</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+			</dict>
+			<key>Text</key>
+			<dict>
+				<key>Text</key>
+				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
+
+\f0\fs24 \cf0 ao:onResource}</string>
+			</dict>
+			<key>Wrap</key>
+			<string>NO</string>
+		</dict>
+		<dict>
+			<key>Class</key>
+			<string>LineGraphic</string>
+			<key>Head</key>
+			<dict>
+				<key>ID</key>
+				<integer>15</integer>
+			</dict>
+			<key>ID</key>
+			<integer>920</integer>
+			<key>Points</key>
+			<array>
+				<string>{658.59716196695877, 545.69283240254731}</string>
+				<string>{764.2931569417317, 464}</string>
+				<string>{799.98575410218325, 388.30897710374262}</string>
+			</array>
+			<key>Style</key>
+			<dict>
+				<key>stroke</key>
+				<dict>
+					<key>HeadArrow</key>
+					<string>FilledArrow</string>
+					<key>Legacy</key>
+					<true/>
+					<key>LineType</key>
+					<integer>1</integer>
+					<key>Pattern</key>
+					<integer>1</integer>
+					<key>TailArrow</key>
+					<string>0</string>
+				</dict>
+			</dict>
+			<key>Tail</key>
+			<dict>
+				<key>ID</key>
+				<integer>814</integer>
+			</dict>
+		</dict>
+		<dict>
+			<key>Class</key>
+			<string>LineGraphic</string>
+			<key>Head</key>
+			<dict>
+				<key>ID</key>
+				<integer>15</integer>
+			</dict>
+			<key>ID</key>
+			<integer>918</integer>
+			<key>Points</key>
+			<array>
+				<string>{943.72885358174528, 545.69279171244307}</string>
+				<string>{858.17041668802267, 473.3333333333328}</string>
+				<string>{818.28417704071137, 388.30940204269763}</string>
+			</array>
+			<key>Style</key>
+			<dict>
+				<key>stroke</key>
+				<dict>
+					<key>HeadArrow</key>
+					<string>FilledArrow</string>
+					<key>Legacy</key>
+					<true/>
+					<key>LineType</key>
+					<integer>1</integer>
+					<key>Pattern</key>
+					<integer>1</integer>
+					<key>TailArrow</key>
+					<string>0</string>
+				</dict>
+			</dict>
+			<key>Tail</key>
+			<dict>
+				<key>ID</key>
+				<integer>816</integer>
+			</dict>
+		</dict>
+		<dict>
+			<key>Class</key>
+			<string>LineGraphic</string>
+			<key>Head</key>
+			<dict>
+				<key>ID</key>
+				<integer>15</integer>
+			</dict>
+			<key>ID</key>
+			<integer>916</integer>
+			<key>Points</key>
+			<array>
+				<string>{803.4628922526033, 545.69279171244307}</string>
+				<string>{819.22590827941895, 464}</string>
+				<string>{811.22163059240154, 388.3539608167552}</string>
+			</array>
+			<key>Style</key>
+			<dict>
+				<key>stroke</key>
+				<dict>
+					<key>HeadArrow</key>
+					<string>FilledArrow</string>
+					<key>Legacy</key>
+					<true/>
+					<key>LineType</key>
+					<integer>1</integer>
+					<key>Pattern</key>
+					<integer>1</integer>
+					<key>TailArrow</key>
+					<string>0</string>
+				</dict>
+			</dict>
+			<key>Tail</key>
+			<dict>
+				<key>ID</key>
+				<integer>815</integer>
+			</dict>
+		</dict>
+		<dict>
+			<key>Bounds</key>
+			<string>{{732.03133797540886, 506.4672091114478}, {66, 24}}</string>
+			<key>Class</key>
+			<string>ShapedGraphic</string>
+			<key>FitText</key>
+			<string>YES</string>
+			<key>Flow</key>
+			<string>Resize</string>
+			<key>FontInfo</key>
+			<dict>
+				<key>Color</key>
+				<dict>
+					<key>w</key>
+					<string>0</string>
+				</dict>
+				<key>Font</key>
+				<string>Helvetica</string>
+				<key>Size</key>
+				<real>12</real>
+			</dict>
+			<key>ID</key>
+			<integer>833</integer>
+			<key>Line</key>
+			<dict>
+				<key>ID</key>
+				<integer>823</integer>
+				<key>Offset</key>
+				<real>-4.0000004768371582</real>
+				<key>Position</key>
+				<real>0.66520226001739502</real>
+				<key>RotationType</key>
+				<integer>0</integer>
+			</dict>
+			<key>Shape</key>
+			<string>Rectangle</string>
+			<key>Style</key>
+			<dict>
+				<key>shadow</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+				<key>stroke</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+			</dict>
+			<key>Text</key>
+			<dict>
+				<key>Text</key>
+				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
+
+\f0\fs24 \cf0 ao:context}</string>
+			</dict>
+			<key>Wrap</key>
+			<string>NO</string>
+		</dict>
 		<dict>
 			<key>Bounds</key>
 			<string>{{613.80538177490268, 655.66969807942712}, {90, 23.678899999999999}}</string>
@@ -148,11 +510,11 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{1174.6608257293701, 29.240264892578125}, {407, 618}}</string>
+			<string>{{1177.7120711008708, 49.813863118489394}, {537.62127685546875, 931}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
-			<string>YES</string>
+			<string>Vertical</string>
 			<key>Flow</key>
 			<string>Resize</string>
 			<key>ID</key>
@@ -201,57 +563,83 @@ Original annotation\
 --------------------\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f1\fs22 \cf0 &lt;ann.1.1&gt; createdBy &lt;user.1&gt;\
-&lt;ent.1.1&gt; annotatedBy &lt;ann.1.1&gt;\
-&lt;ent.1.1&gt; describedBy &lt;eml.1.1&gt;\
-&lt;ent.1.1&gt; hasData &lt;data.1.1&gt;\
-&lt;ent.1.1&gt; hasMeasurement &lt;#patient&gt;\
-&lt;ent.1.1&gt; hasMeasurement &lt;#weight&gt;\
-&lt;ent.1.1&gt; hasMeasurement &lt;#height&gt;\
-&lt;#patient&gt; ofCharacteristic &lt;Name&gt;\
-&lt;#weight&gt; ofCharacteristic &lt;Mass&gt;\
-&lt;#height&gt; ofCharacteristic &lt;Length&gt;\
-&lt;#patient&gt; usesStandard &lt;???&gt;\
-&lt;#weight&gt; usesStandard &lt;Gram&gt;\
-&lt;#height&gt; usesStandard &lt;Meter&gt;
-\f0\fs24 \
-More OBOE, etc.\
+\f1\fs22 \cf0 &lt;#data.1.1&gt; ore:isDocumentedBy &lt;#eml.1.1&gt;\
+&lt;#data.1.1&gt; dcterms:identifier &lt;data.1.1&gt;\
+&lt;#ann.1.1&gt; ao:context &lt;#data.1.1&gt;\
+&lt;#data.1.1&gt; rdf:type &lt;ao:XPointerSelector&gt;\
+&lt;#data.1.1&gt; ao:xpointer &lt;eml.1.1#xpointer(/eml/dataset/1)&gt;\
+\
+&lt;#ann.1.1&gt; prov:createdBy &lt;#user.1&gt;\
+&lt;#ann.1.1&gt; ao:annotatesResource &lt;#eml.1.1&gt;\
+&lt;#ann.1.1&gt; rdf:type &lt;ao:Qualifier&gt;\
+\
+&lt;#ann.1.1&gt; ao:hasTopic &lt;Name&gt;\
+&lt;#ann.1.1&gt; ao:context &lt;#patient&gt;\
+&lt;#patient&gt; ao:onResource &lt;#eml.1.1&gt;\
+&lt;#patient&gt; rdf:type &lt;ao:XPointerSelector&gt;\
+&lt;#patient&gt; ao:xpointer &lt;eml.1.1#xpointer(/eml/dataset/1/attributeList/1)&gt;\
+&lt;#patient&gt; rdf:type &lt;oboe-core:Measurement&gt;\
+&lt;#patient&gt; oboe-core:ofCharacteristic &lt;Name&gt;\
+&lt;#patient&gt; oboe-core:usesStandard &lt;???&gt;\
+\
+&lt;#ann.1.1&gt; ao:hasTopic &lt;Mass&gt;\
+&lt;#ann.1.1&gt; ao:context &lt;#weight&gt;\
+&lt;#weight&gt; ao:onResource &lt;#eml.1.1&gt;\
+&lt;#weight&gt; rdf:type &lt;ao:XPointerSelector&gt;\
+&lt;#weight&gt; ao:xpointer &lt;eml.1.1#xpointer(/eml/dataset/1/attributeList/2)&gt;\
+&lt;#weight&gt; rdf:type &lt;oboe-core:Measurement&gt;\
+&lt;#weight&gt; oboe-core:ofCharacteristic &lt;Mass&gt;\
+&lt;#weight&gt; oboe-core:usesStandard &lt;Gram&gt;\
+\
+&lt;#ann.1.1&gt; ao:hasTopic &lt;Length&gt;\
+&lt;#ann.1.1&gt; ao:context &lt;#height&gt;\
+&lt;#height&gt; ao:onResource &lt;#eml.1.1&gt;\
+&lt;#height&gt; rdf:type &lt;ao:XPointerSelector&gt;\
+&lt;#height&gt; ao:xpointer &lt;eml.1.1#xpointer(/eml/dataset/1/attributeList/3)&gt;\
+&lt;#height&gt; rdf:type &lt;oboe-core:Measurement&gt;\
+&lt;#height&gt; oboe-core:ofCharacteristic &lt;Length&gt;\
+&lt;#height&gt; oboe-core:usesStandard &lt;Meter&gt;\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs24 \cf0 \
+More OBOE, etc. as needed\
 \
 Metadata is revised\
---------------------\
-
-\f1\fs22 &lt;eml.1.1&gt; obsoletedBy &lt;eml.1.2&gt;\
+---------------------------\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs24 \cf0 if metadata revision was insignificant*, we leave the entity annotation intact\
+\f1\fs22 \cf0 &lt;#eml.1.1&gt; obsoletedBy &lt;#eml.1.2&gt;\
+&lt;#data.1.1&gt; ore:isDocumentedBy &lt;#eml.1.2&gt;\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f1\fs22 \cf0 	&lt;ent.1.1&gt; describedBy &lt;eml.1.2&gt;\
+\f0\fs24 \cf0 if metadata revision was insignificant*, we leave the annotation intact\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs24 \cf0 otherwise, we create a new entity annotation\
+\f1\fs22 \cf0 	&lt;#ann.1.1&gt; ao:annotatesResource &lt;#eml.1.2&gt;\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f1\fs22 \cf0 	&lt;ent.2.1&gt; describedBy &lt;eml.1.2&gt;\
-	&lt;ent.2.1&gt; annotatedBy &lt;ann.2.1&gt;\
-	&lt;ent.2.1&gt; hasMeasurement etc.
+\f0\fs24 \cf0 otherwise, we create a new annotation on the resource[s]\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f1\fs22 \cf0 	&lt;#ann.2.1&gt; ao:annotatesResource &lt;#eml.1.2&gt;\
+	&lt;#ann.2.1&gt; ao:hasTopic etc.
 \f0\fs24 \
 \
 Alternate annotation (different interpretation of data columns)\
----------------------------------------------------------------\
+---------------------------------------------------------------------------------\
 
-\f1\fs22 &lt;ent.3.1&gt; annotatedBy &lt;ann.3.1&gt;\
-&lt;ent.3.1&gt; describedBy &lt;eml.2.1&gt;\
-&lt;ent.3.1&gt; hasData &lt;data.1.1&gt;\
-&lt;ent.3.1&gt; hasMeasurement etc.
+\f1\fs22 &lt;#ann.3.1&gt; prov:createdBy &lt;#user.2&gt;\
+&lt;#ann.3.1&gt; ao:annotatesResource &lt;#eml.1.2&gt;\
+&lt;#ann.3.1&gt; rdf:type &lt;ao:Qualifier&gt;
+\f0\fs24 \
+
+\f1\fs22 &lt;#ann.3.1&gt; ao:hasTopic etc.
 \f0\fs24 \
 \
 *Not sure how/who determines if the change is significant}</string>
 			</dict>
 			<key>TextPlacement</key>
 			<integer>0</integer>
-			<key>Wrap</key>
-			<string>NO</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
@@ -318,48 +706,7 @@ Alternate annotation (different interpretation of data columns)\
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{822.12640380859375, 68.604706773885027}, {89.999834976197235, 38}}</string>
-			<key>Class</key>
-			<string>ShapedGraphic</string>
-			<key>FontInfo</key>
-			<dict>
-				<key>Font</key>
-				<string>Helvetica</string>
-				<key>Size</key>
-				<real>10</real>
-			</dict>
-			<key>ID</key>
-			<integer>893</integer>
-			<key>Magnets</key>
-			<array>
-				<string>{0, 1}</string>
-				<string>{0, -1}</string>
-				<string>{1, 0}</string>
-				<string>{-1, 0}</string>
-			</array>
-			<key>Shape</key>
-			<string>Rectangle</string>
-			<key>Style</key>
-			<dict/>
-			<key>Text</key>
-			<dict>
-				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc
-
-\f0\fs24 \cf0 Data entity\
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc
-
-\i \cf0 (#ent.2.1)}</string>
-				<key>VerticalPad</key>
-				<integer>0</integer>
-			</dict>
-		</dict>
-		<dict>
-			<key>Bounds</key>
-			<string>{{729.46263304017884, 73.604706773885027}, {78, 24}}</string>
+			<string>{{688.94368229110273, 89.567794185004288}, {131, 24}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -387,7 +734,7 @@ Alternate annotation (different interpretation of data columns)\
 				<key>Offset</key>
 				<real>2</real>
 				<key>Position</key>
-				<real>0.41296866536140442</real>
+				<real>0.51972836256027222</real>
 				<key>RotationType</key>
 				<integer>0</integer>
 			</dict>
@@ -414,7 +761,7 @@ Alternate annotation (different interpretation of data columns)\
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs24 \cf0 annotatedBy}</string>
+\f0\fs24 \cf0 ao:annotatesResource}</string>
 			</dict>
 			<key>Wrap</key>
 			<string>NO</string>
@@ -425,14 +772,14 @@ Alternate annotation (different interpretation of data columns)\
 			<key>Head</key>
 			<dict>
 				<key>ID</key>
-				<integer>902</integer>
+				<integer>887</integer>
 			</dict>
 			<key>ID</key>
 			<integer>905</integer>
 			<key>Points</key>
 			<array>
-				<string>{822.12640380859375, 87.604706773885027}</string>
-				<string>{692.1800537109375, 87.60470422058097}</string>
+				<string>{694.18157958984364, 137.09967899271638}</string>
+				<string>{811.98975306627324, 72.102793505260891}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -451,14 +798,12 @@ Alternate annotation (different interpretation of data columns)\
 			<key>Tail</key>
 			<dict>
 				<key>ID</key>
-				<integer>893</integer>
-				<key>Info</key>
-				<integer>4</integer>
+				<integer>902</integer>
 			</dict>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{627.3854317390261, 119.3105093640165}, {65, 24}}</string>
+			<string>{{616.18156296725294, 189.43125321049092}, {91, 24}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -513,7 +858,7 @@ Alternate annotation (different interpretation of data columns)\
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs24 \cf0 createdBy}</string>
+\f0\fs24 \cf0 prov:createdBy}</string>
 			</dict>
 			<key>Wrap</key>
 			<string>NO</string>
@@ -530,8 +875,8 @@ Alternate annotation (different interpretation of data columns)\
 			<integer>903</integer>
 			<key>Points</key>
 			<array>
-				<string>{656.1800537109375, 104.58079981870671}</string>
-				<string>{657.62810389061735, 159.53457515240271}</string>
+				<string>{658.18157958984364, 154.07577459084212}</string>
+				<string>{659.20681103167169, 251.2121168526343}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -555,7 +900,7 @@ Alternate annotation (different interpretation of data columns)\
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{620.1800537109375, 65.700065930175697}, {72, 43.809276580810547}}</string>
+			<string>{{622.18157958984364, 115.1950407023111}, {72, 43.809276580810547}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -599,102 +944,7 @@ Alternate annotation (different interpretation of data columns)\
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{840.40933168837671, 239.50613403930785}, {55, 24}}</string>
-			<key>Class</key>
-			<string>ShapedGraphic</string>
-			<key>FitText</key>
-			<string>YES</string>
-			<key>Flow</key>
-			<string>Resize</string>
-			<key>FontInfo</key>
-			<dict>
-				<key>Color</key>
-				<dict>
-					<key>w</key>
-					<string>0</string>
-				</dict>
-				<key>Font</key>
-				<string>Helvetica</string>
-				<key>Size</key>
-				<real>12</real>
-			</dict>
-			<key>ID</key>
-			<integer>901</integer>
-			<key>Line</key>
-			<dict>
-				<key>ID</key>
-				<integer>900</integer>
-				<key>Position</key>
-				<real>0.48866528272628784</real>
-				<key>RotationType</key>
-				<integer>0</integer>
-			</dict>
-			<key>Shape</key>
-			<string>Rectangle</string>
-			<key>Style</key>
-			<dict>
-				<key>shadow</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-				<key>stroke</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-			</dict>
-			<key>Text</key>
-			<dict>
-				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
-
-\f0\fs24 \cf0 hasData}</string>
-			</dict>
-			<key>Wrap</key>
-			<string>NO</string>
-		</dict>
-		<dict>
-			<key>Class</key>
-			<string>LineGraphic</string>
-			<key>Head</key>
-			<dict>
-				<key>ID</key>
-				<integer>838</integer>
-			</dict>
-			<key>ID</key>
-			<integer>900</integer>
-			<key>Points</key>
-			<array>
-				<string>{867.12632129669237, 106.60470677388503}</string>
-				<string>{868.72866623833079, 403.12959517987184}</string>
-			</array>
-			<key>Style</key>
-			<dict>
-				<key>stroke</key>
-				<dict>
-					<key>HeadArrow</key>
-					<string>FilledArrow</string>
-					<key>Legacy</key>
-					<true/>
-					<key>LineType</key>
-					<integer>1</integer>
-					<key>TailArrow</key>
-					<string>0</string>
-				</dict>
-			</dict>
-			<key>Tail</key>
-			<dict>
-				<key>ID</key>
-				<integer>893</integer>
-			</dict>
-		</dict>
-		<dict>
-			<key>Bounds</key>
-			<string>{{835.29911644540471, 40.715044907599072}, {71, 24}}</string>
+			<string>{{623.76997036182297, 66.201205843466468}, {66, 24}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -726,7 +976,7 @@ Alternate annotation (different interpretation of data columns)\
 				<key>Offset</key>
 				<real>-1</real>
 				<key>Position</key>
-				<real>0.33580935001373291</real>
+				<real>0.48830685019493103</real>
 				<key>RotationType</key>
 				<integer>0</integer>
 			</dict>
@@ -753,7 +1003,7 @@ Alternate annotation (different interpretation of data columns)\
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs24 \cf0 hasColumn}</string>
+\f0\fs24 \cf0 ao:context}</string>
 			</dict>
 			<key>Wrap</key>
 			<string>NO</string>
@@ -765,8 +1015,8 @@ Alternate annotation (different interpretation of data columns)\
 			<integer>898</integer>
 			<key>Points</key>
 			<array>
-				<string>{867.12632129669237, 68.604706773885027}</string>
-				<string>{847.87443663005251, 24.79572868347168}</string>
+				<string>{658.00563206647939, 114.72702094785313}</string>
+				<string>{632.67185465494788, 47.339267730712876}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -785,7 +1035,7 @@ Alternate annotation (different interpretation of data columns)\
 			<key>Tail</key>
 			<dict>
 				<key>ID</key>
-				<integer>893</integer>
+				<integer>902</integer>
 			</dict>
 		</dict>
 		<dict>
@@ -795,8 +1045,8 @@ Alternate annotation (different interpretation of data columns)\
 			<integer>897</integer>
 			<key>Points</key>
 			<array>
-				<string>{867.12632129669237, 68.604706773885027}</string>
-				<string>{875.12642097473145, 20.79572868347168}</string>
+				<string>{658.18157958984364, 115.19504070231112}</string>
+				<string>{657.33852132161462, 39.412853396859603}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -815,9 +1065,7 @@ Alternate annotation (different interpretation of data columns)\
 			<key>Tail</key>
 			<dict>
 				<key>ID</key>
-				<integer>893</integer>
-				<key>Info</key>
-				<integer>2</integer>
+				<integer>902</integer>
 			</dict>
 		</dict>
 		<dict>
@@ -827,8 +1075,8 @@ Alternate annotation (different interpretation of data columns)\
 			<integer>896</integer>
 			<key>Points</key>
 			<array>
-				<string>{867.12632129669237, 68.604706773885027}</string>
-				<string>{897.87443663005251, 23.79572868347168}</string>
+				<string>{658.36809785109699, 114.73113235401345}</string>
+				<string>{686.26768185763387, 45.339267730712876}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -847,12 +1095,12 @@ Alternate annotation (different interpretation of data columns)\
 			<key>Tail</key>
 			<dict>
 				<key>ID</key>
-				<integer>893</integer>
+				<integer>902</integer>
 			</dict>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{792.37656886641139, 120.60192740259615}, {77, 24}}</string>
+			<string>{{809.17503885469284, 193.20777001703635}, {122, 24}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -877,8 +1125,10 @@ Alternate annotation (different interpretation of data columns)\
 			<dict>
 				<key>ID</key>
 				<integer>894</integer>
+				<key>Offset</key>
+				<real>-10.333333969116211</real>
 				<key>Position</key>
-				<real>0.54856580495834351</real>
+				<real>0.65220808982849121</real>
 				<key>RotationType</key>
 				<integer>0</integer>
 			</dict>
@@ -905,7 +1155,7 @@ Alternate annotation (different interpretation of data columns)\
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs24 \cf0 describedBy}</string>
+\f0\fs24 \cf0 ore:isDocumentedBy}</string>
 			</dict>
 			<key>Wrap</key>
 			<string>NO</string>
@@ -922,8 +1172,8 @@ Alternate annotation (different interpretation of data columns)\
 			<integer>894</integer>
 			<key>Points</key>
 			<array>
-				<string>{866.7200095064486, 106.89610123996667}</string>
-				<string>{801.37973434518688, 153.75616056244215}</string>
+				<string>{934.75840822910902, 447.90218408316588}</string>
+				<string>{851.20121519997929, 72.349323342112001}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -942,12 +1192,12 @@ Alternate annotation (different interpretation of data columns)\
 			<key>Tail</key>
 			<dict>
 				<key>ID</key>
-				<integer>893</integer>
+				<integer>838</integer>
 			</dict>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{1043.5568423792195, 108.94780916331153}, {71, 24}}</string>
+			<string>{{1049.2858561116839, 98.92373282963635}, {66, 24}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -1004,14 +1254,14 @@ Alternate annotation (different interpretation of data columns)\
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs24 \cf0 hasColumn}</string>
+\f0\fs24 \cf0 ao:context}</string>
 			</dict>
 			<key>Wrap</key>
 			<string>NO</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{736.40224869906046, 237.88575340840111}, {77, 24}}</string>
+			<string>{{794.47579895823662, 157.25879491905184}, {77, 24}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -1037,7 +1287,7 @@ Alternate annotation (different interpretation of data columns)\
 				<key>ID</key>
 				<integer>888</integer>
 				<key>Position</key>
-				<real>0.44973129034042358</real>
+				<real>0.65017986297607422</real>
 				<key>RotationType</key>
 				<integer>0</integer>
 			</dict>
@@ -1081,8 +1331,8 @@ Alternate annotation (different interpretation of data columns)\
 			<integer>888</integer>
 			<key>Points</key>
 			<array>
-				<string>{774.90199724337128, 296.99500539372332}</string>
-				<string>{774.9025563676629, 192.24522925592581}</string>
+				<string>{811.48502111249638, 349.36025867848366}</string>
+				<string>{844.53860992616751, 72.357733661711023}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -1109,8 +1359,8 @@ Alternate annotation (different interpretation of data columns)\
 			<integer>886</integer>
 			<key>Points</key>
 			<array>
-				<string>{1080.5893931198125, 154.37558213602699}</string>
-				<string>{1095.9123153686523, 67.604703903198242}</string>
+				<string>{1090.2812525431332, 140.66666666666666}</string>
+				<string>{1086, 71.861256917317732}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -1129,9 +1379,7 @@ Alternate annotation (different interpretation of data columns)\
 			<key>Tail</key>
 			<dict>
 				<key>ID</key>
-				<integer>876</integer>
-				<key>Info</key>
-				<integer>2</integer>
+				<integer>846</integer>
 			</dict>
 		</dict>
 		<dict>
@@ -1141,8 +1389,8 @@ Alternate annotation (different interpretation of data columns)\
 			<integer>885</integer>
 			<key>Points</key>
 			<array>
-				<string>{1079.7633415050648, 153.87569718010135}</string>
-				<string>{1077.9123153686523, 67.604703903198242}</string>
+				<string>{1090.2812525431332, 140.66666666666666}</string>
+				<string>{1069.3333333333333, 62.740252332813384}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -1161,9 +1409,7 @@ Alternate annotation (different interpretation of data columns)\
 			<key>Tail</key>
 			<dict>
 				<key>ID</key>
-				<integer>876</integer>
-				<key>Info</key>
-				<integer>1</integer>
+				<integer>846</integer>
 			</dict>
 		</dict>
 		<dict>
@@ -1173,8 +1419,8 @@ Alternate annotation (different interpretation of data columns)\
 			<integer>883</integer>
 			<key>Points</key>
 			<array>
-				<string>{1080.5893931198125, 154.37558213602699}</string>
-				<string>{1054.2276229858398, 75.604703903198242}</string>
+				<string>{1090.2812525431332, 140.66666666666666}</string>
+				<string>{1056.0938026192443, 68.666666666666671}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -1193,70 +1439,8 @@ Alternate annotation (different interpretation of data columns)\
 			<key>Tail</key>
 			<dict>
 				<key>ID</key>
-				<integer>876</integer>
+				<integer>846</integer>
 			</dict>
-		</dict>
-		<dict>
-			<key>Bounds</key>
-			<string>{{702.53980244820889, 358.37430703906836}, {77, 24}}</string>
-			<key>Class</key>
-			<string>ShapedGraphic</string>
-			<key>FitText</key>
-			<string>YES</string>
-			<key>Flow</key>
-			<string>Resize</string>
-			<key>FontInfo</key>
-			<dict>
-				<key>Color</key>
-				<dict>
-					<key>w</key>
-					<string>0</string>
-				</dict>
-				<key>Font</key>
-				<string>Helvetica</string>
-				<key>Size</key>
-				<real>12</real>
-			</dict>
-			<key>ID</key>
-			<integer>880</integer>
-			<key>Line</key>
-			<dict>
-				<key>ID</key>
-				<integer>879</integer>
-				<key>Offset</key>
-				<real>-2</real>
-				<key>Position</key>
-				<real>0.61360764503479004</real>
-				<key>RotationType</key>
-				<integer>0</integer>
-			</dict>
-			<key>Shape</key>
-			<string>Rectangle</string>
-			<key>Style</key>
-			<dict>
-				<key>shadow</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-				<key>stroke</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-			</dict>
-			<key>Text</key>
-			<dict>
-				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
-
-\f0\fs24 \cf0 describedBy}</string>
-			</dict>
-			<key>Wrap</key>
-			<string>NO</string>
 		</dict>
 		<dict>
 			<key>Class</key>
@@ -1270,8 +1454,8 @@ Alternate annotation (different interpretation of data columns)\
 			<integer>879</integer>
 			<key>Points</key>
 			<array>
-				<string>{703.72827289345139, 422.21481835191759}</string>
-				<string>{761.83131489079972, 335.90977007479927}</string>
+				<string>{913.63655659754704, 448.08816075183586}</string>
+				<string>{834.59519366031418, 388.15898460537358}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -1288,168 +1472,9 @@ Alternate annotation (different interpretation of data columns)\
 				</dict>
 			</dict>
 			<key>Tail</key>
-			<dict>
-				<key>ID</key>
-				<integer>839</integer>
-				<key>Info</key>
-				<integer>3</integer>
-			</dict>
-		</dict>
-		<dict>
-			<key>Bounds</key>
-			<string>{{957.87784374331272, 236.42830997661349}, {55, 24}}</string>
-			<key>Class</key>
-			<string>ShapedGraphic</string>
-			<key>FitText</key>
-			<string>YES</string>
-			<key>Flow</key>
-			<string>Resize</string>
-			<key>FontInfo</key>
-			<dict>
-				<key>Color</key>
-				<dict>
-					<key>b</key>
-					<string>0</string>
-					<key>g</key>
-					<string>0</string>
-					<key>r</key>
-					<string>0</string>
-				</dict>
-				<key>Font</key>
-				<string>Helvetica</string>
-				<key>Size</key>
-				<real>12</real>
-			</dict>
-			<key>ID</key>
-			<integer>878</integer>
-			<key>Line</key>
-			<dict>
-				<key>ID</key>
-				<integer>877</integer>
-				<key>Position</key>
-				<real>0.3265455961227417</real>
-				<key>RotationType</key>
-				<integer>0</integer>
-			</dict>
-			<key>Shape</key>
-			<string>Rectangle</string>
-			<key>Style</key>
-			<dict>
-				<key>shadow</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-				<key>stroke</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-			</dict>
-			<key>Text</key>
-			<dict>
-				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
-
-\f0\fs24 \cf0 hasData}</string>
-			</dict>
-			<key>Wrap</key>
-			<string>NO</string>
-		</dict>
-		<dict>
-			<key>Class</key>
-			<string>LineGraphic</string>
-			<key>Head</key>
 			<dict>
 				<key>ID</key>
 				<integer>838</integer>
-			</dict>
-			<key>ID</key>
-			<integer>877</integer>
-			<key>Points</key>
-			<array>
-				<string>{1035.5894756317139, 173.37558213602699}</string>
-				<string>{881.823409010109, 403.21401429291245}</string>
-			</array>
-			<key>Style</key>
-			<dict>
-				<key>stroke</key>
-				<dict>
-					<key>HeadArrow</key>
-					<string>FilledArrow</string>
-					<key>Legacy</key>
-					<true/>
-					<key>LineType</key>
-					<integer>1</integer>
-					<key>TailArrow</key>
-					<string>0</string>
-				</dict>
-			</dict>
-			<key>Tail</key>
-			<dict>
-				<key>ID</key>
-				<integer>876</integer>
-				<key>Info</key>
-				<integer>4</integer>
-			</dict>
-		</dict>
-		<dict>
-			<key>Bounds</key>
-			<string>{{1035.5894756317139, 154.37558213602699}, {89.999834976197235, 38}}</string>
-			<key>Class</key>
-			<string>ShapedGraphic</string>
-			<key>FontInfo</key>
-			<dict>
-				<key>Color</key>
-				<dict>
-					<key>b</key>
-					<string>0</string>
-					<key>g</key>
-					<string>0</string>
-					<key>r</key>
-					<string>0</string>
-				</dict>
-				<key>Font</key>
-				<string>Helvetica</string>
-				<key>Size</key>
-				<real>10</real>
-			</dict>
-			<key>ID</key>
-			<integer>876</integer>
-			<key>Magnets</key>
-			<array>
-				<string>{0, 1}</string>
-				<string>{0, -1}</string>
-				<string>{1, 0}</string>
-				<string>{-1, 0}</string>
-			</array>
-			<key>Shape</key>
-			<string>Rectangle</string>
-			<key>Style</key>
-			<dict>
-				<key>shadow</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-			</dict>
-			<key>Text</key>
-			<dict>
-				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc
-
-\f0\fs24 \cf0 Data entity\
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc
-
-\i \cf0 (#ent.3.1)}</string>
-				<key>VerticalPad</key>
-				<integer>0</integer>
 			</dict>
 		</dict>
 		<dict>
@@ -1528,7 +1553,7 @@ Alternate annotation (different interpretation of data columns)\
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{1038.5894124803106, 204.49515086847089}, {78, 24}}</string>
+			<string>{{923.17339231798996, 116.24592497544495}, {131, 24}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -1558,9 +1583,9 @@ Alternate annotation (different interpretation of data columns)\
 				<key>ID</key>
 				<integer>858</integer>
 				<key>Offset</key>
-				<real>-3</real>
+				<real>-0.33333328366279602</real>
 				<key>Position</key>
-				<real>0.41331517696380615</real>
+				<real>0.38264214992523193</real>
 				<key>RotationType</key>
 				<integer>0</integer>
 			</dict>
@@ -1587,7 +1612,7 @@ Alternate annotation (different interpretation of data columns)\
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs24 \cf0 annotatedBy}</string>
+\f0\fs24 \cf0 ao:annotatesResource}</string>
 			</dict>
 			<key>Wrap</key>
 			<string>NO</string>
@@ -1598,14 +1623,14 @@ Alternate annotation (different interpretation of data columns)\
 			<key>Head</key>
 			<dict>
 				<key>ID</key>
-				<integer>846</integer>
+				<integer>887</integer>
 			</dict>
 			<key>ID</key>
 			<integer>858</integer>
 			<key>Points</key>
 			<array>
-				<string>{1080.5893935211568, 192.87558214145545}</string>
-				<string>{1080.5894393920898, 250.02220446599324}</string>
+				<string>{1054.281252543133, 162.57130495707193}</string>
+				<string>{883.22846391380585, 72.095037095509184}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -1624,12 +1649,12 @@ Alternate annotation (different interpretation of data columns)\
 			<key>Tail</key>
 			<dict>
 				<key>ID</key>
-				<integer>876</integer>
+				<integer>846</integer>
 			</dict>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{1048.0894245637915, 298.47088219702601}, {65, 24}}</string>
+			<string>{{1044.7812525431332, 185.5521948718353}, {91, 24}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -1686,7 +1711,7 @@ Alternate annotation (different interpretation of data columns)\
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs24 \cf0 createdBy}</string>
+\f0\fs24 \cf0 prov:createdBy}</string>
 			</dict>
 			<key>Wrap</key>
 			<string>NO</string>
@@ -1703,8 +1728,8 @@ Alternate annotation (different interpretation of data columns)\
 			<integer>856</integer>
 			<key>Points</key>
 			<array>
-				<string>{1080.589439048332, 289.40293836457738}</string>
-				<string>{1080.5894023132803, 342.83452665805811}</string>
+				<string>{1090.2812525431332, 179.54740055519767}</string>
+				<string>{1090.2812656148519, 225.21036783854152}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -1745,8 +1770,8 @@ Alternate annotation (different interpretation of data columns)\
 							<integer>849</integer>
 							<key>Points</key>
 							<array>
-								<string>{1092.0272477467856, 366.15855675393902}</string>
-								<string>{1080.5893802642822, 366.15855675393902}</string>
+								<string>{1101.7191422780356, 248.53439793442237}</string>
+								<string>{1090.2812747955322, 248.53439793442237}</string>
 							</array>
 							<key>Style</key>
 							<dict>
@@ -1770,8 +1795,8 @@ Alternate annotation (different interpretation of data columns)\
 							<integer>850</integer>
 							<key>Points</key>
 							<array>
-								<string>{1080.589380264282, 366.15855675393902}</string>
-								<string>{1069.1515127817788, 366.15855675393902}</string>
+								<string>{1090.281274795532, 248.53439793442237}</string>
+								<string>{1078.8434073130288, 248.53439793442237}</string>
 							</array>
 							<key>Style</key>
 							<dict>
@@ -1795,8 +1820,8 @@ Alternate annotation (different interpretation of data columns)\
 							<integer>851</integer>
 							<key>Points</key>
 							<array>
-								<string>{1080.5893802642818, 377.82057180187957}</string>
-								<string>{1086.3083140055339, 395.31359437378995}</string>
+								<string>{1090.2812747955318, 260.19641298236286}</string>
+								<string>{1096.0002085367839, 277.68943555427325}</string>
 							</array>
 							<key>Style</key>
 							<dict>
@@ -1820,8 +1845,8 @@ Alternate annotation (different interpretation of data columns)\
 							<integer>852</integer>
 							<key>Points</key>
 							<array>
-								<string>{1080.5893802642822, 377.82057180187957}</string>
-								<string>{1074.8704465230305, 395.31359437378995}</string>
+								<string>{1090.2812747955322, 260.19641298236286}</string>
+								<string>{1084.5623410542805, 277.68943555427325}</string>
 							</array>
 							<key>Style</key>
 							<dict>
@@ -1849,8 +1874,8 @@ Alternate annotation (different interpretation of data columns)\
 							<integer>853</integer>
 							<key>Points</key>
 							<array>
-								<string>{1080.5893802642818, 360.32754922996884}</string>
-								<string>{1080.5893802642818, 377.82057180187934}</string>
+								<string>{1090.2812747955318, 242.70339041045219}</string>
+								<string>{1090.2812747955318, 260.19641298236269}</string>
 							</array>
 							<key>Style</key>
 							<dict>
@@ -1867,7 +1892,7 @@ Alternate annotation (different interpretation of data columns)\
 						</dict>
 						<dict>
 							<key>Bounds</key>
-							<string>{{1074.8704465230303, 348.66553418202847}, {11.437867482503254, 11.66201504794034}}</string>
+							<string>{{1084.5623410542803, 231.04137536251181}, {11.437867482503254, 11.66201504794034}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>FontInfo</key>
@@ -1901,7 +1926,7 @@ Alternate annotation (different interpretation of data columns)\
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{1063.4325790405273, 342.83452665805817}, {34.313602447509766, 64.141082763671889}}</string>
+					<string>{{1073.1244735717773, 225.21036783854152}, {34.313602447509766, 64.141082763671889}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -1945,7 +1970,7 @@ Alternate annotation (different interpretation of data columns)\
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{1044.5894393920898, 250.02220446599324}, {72, 43.809276580810547}}</string>
+			<string>{{1054.2812525431332, 140.66666666666666}, {72, 43.809276580810547}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -1999,7 +2024,7 @@ Alternate annotation (different interpretation of data columns)\
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{626.30533252235239, 237.09148050500798}, {65, 24}}</string>
+			<string>{{615.26760938422342, 371.40512697581846}, {91, 24}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -2027,7 +2052,7 @@ Alternate annotation (different interpretation of data columns)\
 				<key>Offset</key>
 				<real>1</real>
 				<key>Position</key>
-				<real>0.61406797170639038</real>
+				<real>0.40333470702171326</real>
 				<key>RotationType</key>
 				<integer>0</integer>
 			</dict>
@@ -2054,7 +2079,7 @@ Alternate annotation (different interpretation of data columns)\
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs24 \cf0 createdBy}</string>
+\f0\fs24 \cf0 prov:createdBy}</string>
 			</dict>
 			<key>Wrap</key>
 			<string>NO</string>
@@ -2071,8 +2096,8 @@ Alternate annotation (different interpretation of data columns)\
 			<integer>844</integer>
 			<key>Points</key>
 			<array>
-				<string>{657.8134822845459, 298.01770432739249}</string>
-				<string>{657.8002105480349, 218.34239230343024}</string>
+				<string>{660, 433.01872666625968}</string>
+				<string>{659.42385408223208, 310.02183439123951}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -2113,8 +2138,8 @@ Alternate annotation (different interpretation of data columns)\
 							<integer>5</integer>
 							<key>Points</key>
 							<array>
-								<string>{669.23273595174157, 177.52533771823374}</string>
-								<string>{657.79486846923805, 177.52533771823374}</string>
+								<string>{670.71149571736657, 269.20477980604301}</string>
+								<string>{659.27362823486305, 269.20477980604301}</string>
 							</array>
 							<key>Style</key>
 							<dict>
@@ -2138,8 +2163,8 @@ Alternate annotation (different interpretation of data columns)\
 							<integer>6</integer>
 							<key>Points</key>
 							<array>
-								<string>{657.79486846923805, 177.52533771823374}</string>
-								<string>{646.35700098673487, 177.52533771823374}</string>
+								<string>{659.27362823486305, 269.20477980604301}</string>
+								<string>{647.83576075235987, 269.20477980604301}</string>
 							</array>
 							<key>Style</key>
 							<dict>
@@ -2163,8 +2188,8 @@ Alternate annotation (different interpretation of data columns)\
 							<integer>7</integer>
 							<key>Points</key>
 							<array>
-								<string>{657.79486846923805, 189.18735331400438}</string>
-								<string>{663.51380221048998, 206.68037670766}</string>
+								<string>{659.27362823486305, 280.86679540181359}</string>
+								<string>{664.99256197611498, 298.35981879546921}</string>
 							</array>
 							<key>Style</key>
 							<dict>
@@ -2188,8 +2213,8 @@ Alternate annotation (different interpretation of data columns)\
 							<integer>8</integer>
 							<key>Points</key>
 							<array>
-								<string>{657.79486846923805, 189.18735331400438}</string>
-								<string>{652.07593472798646, 206.68037670766}</string>
+								<string>{659.27362823486305, 280.86679540181359}</string>
+								<string>{653.55469449361146, 298.35981879546921}</string>
 							</array>
 							<key>Style</key>
 							<dict>
@@ -2217,8 +2242,8 @@ Alternate annotation (different interpretation of data columns)\
 							<integer>9</integer>
 							<key>Points</key>
 							<array>
-								<string>{657.79486846923805, 171.69432992034854}</string>
-								<string>{657.79486846923805, 189.18735331400427}</string>
+								<string>{659.27362823486305, 263.3737720081578}</string>
+								<string>{659.27362823486305, 280.86679540181353}</string>
 							</array>
 							<key>Style</key>
 							<dict>
@@ -2235,7 +2260,7 @@ Alternate annotation (different interpretation of data columns)\
 						</dict>
 						<dict>
 							<key>Bounds</key>
-							<string>{{652.07593472798646, 160.03231432457801}, {11.437867482503258, 11.662015595770482}}</string>
+							<string>{{653.55469449361146, 251.71175641238725}, {11.437867482503258, 11.662015595770482}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>ID</key>
@@ -2251,7 +2276,7 @@ Alternate annotation (different interpretation of data columns)\
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{640.6380672454834, 154.20130652669258}, {34.313602447509766, 64.141085776737683}}</string>
+					<string>{{642.11682701110851, 245.88074861450184}, {34.313602447509766, 64.141085776737683}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -2283,143 +2308,7 @@ Alternate annotation (different interpretation of data columns)\
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{736.25642812886736, 410.62958304545077}, {55, 24}}</string>
-			<key>Class</key>
-			<string>ShapedGraphic</string>
-			<key>FitText</key>
-			<string>YES</string>
-			<key>Flow</key>
-			<string>Resize</string>
-			<key>FontInfo</key>
-			<dict>
-				<key>Color</key>
-				<dict>
-					<key>w</key>
-					<string>0</string>
-				</dict>
-				<key>Font</key>
-				<string>Helvetica</string>
-				<key>Size</key>
-				<real>12</real>
-			</dict>
-			<key>ID</key>
-			<integer>841</integer>
-			<key>Line</key>
-			<dict>
-				<key>ID</key>
-				<integer>840</integer>
-				<key>Position</key>
-				<real>0.50247961282730103</real>
-				<key>RotationType</key>
-				<integer>0</integer>
-			</dict>
-			<key>Shape</key>
-			<string>Rectangle</string>
-			<key>Style</key>
-			<dict>
-				<key>shadow</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-				<key>stroke</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-			</dict>
-			<key>Text</key>
-			<dict>
-				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
-
-\f0\fs24 \cf0 hasData}</string>
-			</dict>
-			<key>Wrap</key>
-			<string>NO</string>
-		</dict>
-		<dict>
-			<key>Class</key>
-			<string>LineGraphic</string>
-			<key>Head</key>
-			<dict>
-				<key>ID</key>
-				<integer>838</integer>
-			</dict>
-			<key>ID</key>
-			<integer>840</integer>
-			<key>Points</key>
-			<array>
-				<string>{703.44904136657715, 422.62958304545077}</string>
-				<string>{823.4686107635498, 422.62958304545077}</string>
-			</array>
-			<key>Style</key>
-			<dict>
-				<key>stroke</key>
-				<dict>
-					<key>HeadArrow</key>
-					<string>FilledArrow</string>
-					<key>Legacy</key>
-					<true/>
-					<key>LineType</key>
-					<integer>1</integer>
-					<key>TailArrow</key>
-					<string>0</string>
-				</dict>
-			</dict>
-			<key>Tail</key>
-			<dict>
-				<key>ID</key>
-				<integer>839</integer>
-			</dict>
-		</dict>
-		<dict>
-			<key>Bounds</key>
-			<string>{{613.44920639037991, 403.62958304545077}, {89.999834976197235, 38}}</string>
-			<key>Class</key>
-			<string>ShapedGraphic</string>
-			<key>FontInfo</key>
-			<dict>
-				<key>Font</key>
-				<string>Helvetica</string>
-				<key>Size</key>
-				<real>10</real>
-			</dict>
-			<key>ID</key>
-			<integer>839</integer>
-			<key>Magnets</key>
-			<array>
-				<string>{0, 1}</string>
-				<string>{0, -1}</string>
-				<string>{1, 0}</string>
-				<string>{-1, 0}</string>
-			</array>
-			<key>Shape</key>
-			<string>Rectangle</string>
-			<key>Style</key>
-			<dict/>
-			<key>Text</key>
-			<dict>
-				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc
-
-\f0\fs24 \cf0 Data entity\
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc
-
-\i \cf0 (#ent.1.1)}</string>
-				<key>VerticalPad</key>
-				<integer>0</integer>
-			</dict>
-		</dict>
-		<dict>
-			<key>Bounds</key>
-			<string>{{823.9686107635498, 403.62958790079745}, {89.730856933592804, 38}}</string>
+			<string>{{894.22890218098951, 448.39024979305259}, {89.730856933592804, 38}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
@@ -2491,7 +2380,7 @@ Alternate annotation (different interpretation of data columns)\
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{803.2811978269807, 495.81929869325285}, {133, 24}}</string>
+			<string>{{850.36353189094848, 511.57455410475279}, {66, 24}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -2517,7 +2406,7 @@ Alternate annotation (different interpretation of data columns)\
 				<key>ID</key>
 				<integer>825</integer>
 				<key>Position</key>
-				<real>0.69224357604980469</real>
+				<real>0.75586235523223877</real>
 				<key>RotationType</key>
 				<integer>0</integer>
 			</dict>
@@ -2544,14 +2433,14 @@ Alternate annotation (different interpretation of data columns)\
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs24 \cf0 oboe:hasMeasurement}</string>
+\f0\fs24 \cf0 ao:context}</string>
 			</dict>
 			<key>Wrap</key>
 			<string>NO</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{601.37867131265352, 497.25678879782805}, {133, 24}}</string>
+			<string>{{616.09931528325296, 507.18306028165432}, {66, 24}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -2577,9 +2466,9 @@ Alternate annotation (different interpretation of data columns)\
 				<key>ID</key>
 				<integer>824</integer>
 				<key>Offset</key>
-				<real>9.3333330154418945</real>
+				<real>10</real>
 				<key>Position</key>
-				<real>0.64999395608901978</real>
+				<real>0.64089971780776978</real>
 				<key>RotationType</key>
 				<integer>0</integer>
 			</dict>
@@ -2606,133 +2495,7 @@ Alternate annotation (different interpretation of data columns)\
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs24 \cf0 oboe:hasMeasurement}</string>
-			</dict>
-			<key>Wrap</key>
-			<string>NO</string>
-		</dict>
-		<dict>
-			<key>Bounds</key>
-			<string>{{623.12585098819739, 357.67258670147686}, {78, 24}}</string>
-			<key>Class</key>
-			<string>ShapedGraphic</string>
-			<key>FitText</key>
-			<string>YES</string>
-			<key>Flow</key>
-			<string>Resize</string>
-			<key>FontInfo</key>
-			<dict>
-				<key>Color</key>
-				<dict>
-					<key>w</key>
-					<string>0</string>
-				</dict>
-				<key>Font</key>
-				<string>Helvetica</string>
-				<key>Size</key>
-				<real>12</real>
-			</dict>
-			<key>ID</key>
-			<integer>831</integer>
-			<key>Line</key>
-			<dict>
-				<key>ID</key>
-				<integer>829</integer>
-				<key>Offset</key>
-				<real>4</real>
-				<key>Position</key>
-				<real>0.50829184055328369</real>
-				<key>RotationType</key>
-				<integer>0</integer>
-			</dict>
-			<key>Shape</key>
-			<string>Rectangle</string>
-			<key>Style</key>
-			<dict>
-				<key>shadow</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-				<key>stroke</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-			</dict>
-			<key>Text</key>
-			<dict>
-				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
-
-\f0\fs24 \cf0 annotatedBy}</string>
-			</dict>
-			<key>Wrap</key>
-			<string>NO</string>
-		</dict>
-		<dict>
-			<key>Bounds</key>
-			<string>{{934.72222429936619, 161.22477563215816}, {77, 24}}</string>
-			<key>Class</key>
-			<string>ShapedGraphic</string>
-			<key>FitText</key>
-			<string>YES</string>
-			<key>Flow</key>
-			<string>Resize</string>
-			<key>FontInfo</key>
-			<dict>
-				<key>Color</key>
-				<dict>
-					<key>b</key>
-					<string>0</string>
-					<key>g</key>
-					<string>0</string>
-					<key>r</key>
-					<string>0</string>
-				</dict>
-				<key>Font</key>
-				<string>Helvetica</string>
-				<key>Size</key>
-				<real>12</real>
-			</dict>
-			<key>ID</key>
-			<integer>830</integer>
-			<key>Line</key>
-			<dict>
-				<key>ID</key>
-				<integer>822</integer>
-				<key>Position</key>
-				<real>0.28964629769325256</real>
-				<key>RotationType</key>
-				<integer>0</integer>
-			</dict>
-			<key>Shape</key>
-			<string>Rectangle</string>
-			<key>Style</key>
-			<dict>
-				<key>shadow</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-				<key>stroke</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-			</dict>
-			<key>Text</key>
-			<dict>
-				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
-
-\f0\fs24 \cf0 describedBy}</string>
+\f0\fs24 \cf0 ao:context}</string>
 			</dict>
 			<key>Wrap</key>
 			<string>NO</string>
@@ -2743,14 +2506,14 @@ Alternate annotation (different interpretation of data columns)\
 			<key>Head</key>
 			<dict>
 				<key>ID</key>
-				<integer>827</integer>
+				<integer>15</integer>
 			</dict>
 			<key>ID</key>
 			<integer>829</integer>
 			<key>Points</key>
 			<array>
-				<string>{658.44912387847853, 403.62958304545077}</string>
-				<string>{657.8134822845459, 336.89843821592353}</string>
+				<string>{696.39796907103323, 454.62067599889622}</string>
+				<string>{783.77982230167459, 388.15942559669037}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -2769,12 +2532,12 @@ Alternate annotation (different interpretation of data columns)\
 			<key>Tail</key>
 			<dict>
 				<key>ID</key>
-				<integer>839</integer>
+				<integer>827</integer>
 			</dict>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{621.8134822845459, 298.01770432739249}, {72, 43.809276580810547}}</string>
+			<string>{{624, 433.01872666625968}, {72, 43.809276580810547}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -2830,7 +2593,7 @@ Alternate annotation (different interpretation of data columns)\
 			<integer>825</integer>
 			<key>Points</key>
 			<array>
-				<string>{703.44904136657715, 422.62958304545077}</string>
+				<string>{696.46947763331252, 455.09538454596316}</string>
 				<string>{943.72885358174528, 545.69279171244307}</string>
 			</array>
 			<key>Style</key>
@@ -2850,7 +2613,7 @@ Alternate annotation (different interpretation of data columns)\
 			<key>Tail</key>
 			<dict>
 				<key>ID</key>
-				<integer>839</integer>
+				<integer>827</integer>
 			</dict>
 		</dict>
 		<dict>
@@ -2867,7 +2630,7 @@ Alternate annotation (different interpretation of data columns)\
 			<integer>824</integer>
 			<key>Points</key>
 			<array>
-				<string>{658.44912387847853, 441.62958304545077}</string>
+				<string>{659.99049653994871, 472.39937026987627}</string>
 				<string>{658.59716196695877, 545.69283240254731}</string>
 			</array>
 			<key>Style</key>
@@ -2887,7 +2650,7 @@ Alternate annotation (different interpretation of data columns)\
 			<key>Tail</key>
 			<dict>
 				<key>ID</key>
-				<integer>839</integer>
+				<integer>827</integer>
 			</dict>
 		</dict>
 		<dict>
@@ -2904,7 +2667,7 @@ Alternate annotation (different interpretation of data columns)\
 			<integer>823</integer>
 			<key>Points</key>
 			<array>
-				<string>{703.76438515761777, 423.01760148904515}</string>
+				<string>{696.38197468814315, 455.24600305760572}</string>
 				<string>{803.4628922526033, 545.69279171244307}</string>
 			</array>
 			<key>Style</key>
@@ -2924,47 +2687,12 @@ Alternate annotation (different interpretation of data columns)\
 			<key>Tail</key>
 			<dict>
 				<key>ID</key>
-				<integer>839</integer>
-			</dict>
-		</dict>
-		<dict>
-			<key>Class</key>
-			<string>LineGraphic</string>
-			<key>Head</key>
-			<dict>
-				<key>ID</key>
-				<integer>887</integer>
-			</dict>
-			<key>ID</key>
-			<integer>822</integer>
-			<key>Points</key>
-			<array>
-				<string>{1035.5894756317139, 173.37558213602699}</string>
-				<string>{820.26736784355512, 172.85492468219496}</string>
-			</array>
-			<key>Style</key>
-			<dict>
-				<key>stroke</key>
-				<dict>
-					<key>HeadArrow</key>
-					<string>FilledArrow</string>
-					<key>Legacy</key>
-					<true/>
-					<key>LineType</key>
-					<integer>1</integer>
-					<key>TailArrow</key>
-					<string>0</string>
-				</dict>
-			</dict>
-			<key>Tail</key>
-			<dict>
-				<key>ID</key>
-				<integer>876</integer>
+				<integer>827</integer>
 			</dict>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{730.03646469116211, 297.4950053812662}, {89.730856933592804, 38}}</string>
+			<string>{{764.2931569417317, 349.85673659261067}, {89.730856933592804, 38}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
@@ -3652,7 +3380,7 @@ Alternate annotation (different interpretation of data columns)\
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{1056.0938026192443, 545.69278365570949}, {51, 14}}</string>
+			<string>{{1041.0941580768551, 544.35962752060368}, {81, 14}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -3684,7 +3412,7 @@ Alternate annotation (different interpretation of data columns)\
 				<key>Offset</key>
 				<real>-1</real>
 				<key>Position</key>
-				<real>0.35208123922348022</real>
+				<real>0.38152185082435608</real>
 				<key>RotationType</key>
 				<integer>0</integer>
 			</dict>
@@ -3722,7 +3450,7 @@ Alternate annotation (different interpretation of data columns)\
 {\colortbl;\red255\green255\blue255;\red126\green126\blue126;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs24 \cf2 ofEntity}</string>
+\f0\fs24 \cf2 oboe:ofEntity}</string>
 				<key>VerticalPad</key>
 				<integer>0</integer>
 			</dict>
@@ -3896,7 +3624,7 @@ Alternate annotation (different interpretation of data columns)\
 {\colortbl;\red255\green255\blue255;\red126\green126\blue126;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc
 
-\f0\fs20 \cf2 observation}</string>
+\f0\fs20 \cf2 #observation}</string>
 				<key>VerticalPad</key>
 				<integer>0</integer>
 			</dict>
@@ -5282,7 +5010,7 @@ Alternate annotation (different interpretation of data columns)\
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{1030.5235834197144, 627.7449506677043}, {103, 24}}</string>
+			<string>{{1015.5235834197144, 627.7449506677043}, {133, 24}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -5352,84 +5080,10 @@ Alternate annotation (different interpretation of data columns)\
 {\colortbl;\red255\green255\blue255;\red126\green126\blue126;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs24 \cf2 hasMeasurement}</string>
+\f0\fs24 \cf2 oboe:hasMeasurement}</string>
 			</dict>
 			<key>Wrap</key>
 			<string>NO</string>
-		</dict>
-		<dict>
-			<key>Bounds</key>
-			<string>{{1019.5894178296905, 35.51485599333364}, {122, 375.28924560546875}}</string>
-			<key>Class</key>
-			<string>ShapedGraphic</string>
-			<key>FontInfo</key>
-			<dict>
-				<key>Color</key>
-				<dict>
-					<key>b</key>
-					<string>0.494565</string>
-					<key>g</key>
-					<string>0.494565</string>
-					<key>r</key>
-					<string>0.494565</string>
-				</dict>
-			</dict>
-			<key>ID</key>
-			<integer>907</integer>
-			<key>IsLocked</key>
-			<string>YES</string>
-			<key>Line</key>
-			<dict>
-				<key>ID</key>
-				<integer>858</integer>
-				<key>Position</key>
-				<real>0.52993327379226685</real>
-				<key>RotationType</key>
-				<integer>0</integer>
-			</dict>
-			<key>Shape</key>
-			<string>Rectangle</string>
-			<key>Style</key>
-			<dict>
-				<key>fill</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-				<key>shadow</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-				<key>stroke</key>
-				<dict>
-					<key>Color</key>
-					<dict>
-						<key>b</key>
-						<string>0.494565</string>
-						<key>g</key>
-						<string>0.494565</string>
-						<key>r</key>
-						<string>0.494565</string>
-					</dict>
-					<key>Pattern</key>
-					<integer>2</integer>
-				</dict>
-			</dict>
-			<key>Text</key>
-			<dict>
-				<key>Align</key>
-				<integer>0</integer>
-				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;\red126\green126\blue126;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs24 \cf2 Alternate Annotation}</string>
-			</dict>
-			<key>TextPlacement</key>
-			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>Bounds</key>
@@ -5496,7 +5150,97 @@ Alternate annotation (different interpretation of data columns)\
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{595.00016546634333, 268}, {411.99984741210938, 457}}</string>
+			<string>{{802, 33.861256917317732}, {89.730856933592804, 38}}</string>
+			<key>Class</key>
+			<string>ShapedGraphic</string>
+			<key>ID</key>
+			<integer>887</integer>
+			<key>Shape</key>
+			<string>NoteShape</string>
+			<key>Style</key>
+			<dict/>
+			<key>Text</key>
+			<dict>
+				<key>Text</key>
+				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc
+
+\f0\fs24 \cf0 Metadata\
+(eml.1.2)}</string>
+				<key>VerticalPad</key>
+				<integer>0</integer>
+			</dict>
+		</dict>
+		<dict>
+			<key>Bounds</key>
+			<string>{{592.48747015384333, 12.881595437943758}, {340.84585571289062, 219.02099609375}}</string>
+			<key>Class</key>
+			<string>ShapedGraphic</string>
+			<key>FontInfo</key>
+			<dict>
+				<key>Color</key>
+				<dict>
+					<key>b</key>
+					<string>0.494565</string>
+					<key>g</key>
+					<string>0.494565</string>
+					<key>r</key>
+					<string>0.494565</string>
+				</dict>
+			</dict>
+			<key>ID</key>
+			<integer>908</integer>
+			<key>IsLocked</key>
+			<string>YES</string>
+			<key>Shape</key>
+			<string>Rectangle</string>
+			<key>Style</key>
+			<dict>
+				<key>fill</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+				<key>shadow</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+				<key>stroke</key>
+				<dict>
+					<key>Color</key>
+					<dict>
+						<key>b</key>
+						<string>0.494565</string>
+						<key>g</key>
+						<string>0.494565</string>
+						<key>r</key>
+						<string>0.494565</string>
+					</dict>
+					<key>Pattern</key>
+					<integer>2</integer>
+				</dict>
+			</dict>
+			<key>Text</key>
+			<dict>
+				<key>Align</key>
+				<integer>0</integer>
+				<key>Text</key>
+				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red126\green126\blue126;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs24 \cf2 Revised Annotation}</string>
+			</dict>
+			<key>TextPlacement</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>Bounds</key>
+			<string>{{595.00016546634333, 324}, {411.99984741210938, 401}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -5559,32 +5303,7 @@ Alternate annotation (different interpretation of data columns)\
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{730.03651237487793, 153.74522926839177}, {89.730856933592804, 38}}</string>
-			<key>Class</key>
-			<string>ShapedGraphic</string>
-			<key>ID</key>
-			<integer>887</integer>
-			<key>Shape</key>
-			<string>NoteShape</string>
-			<key>Style</key>
-			<dict/>
-			<key>Text</key>
-			<dict>
-				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc
-
-\f0\fs24 \cf0 Metadata\
-(eml.1.2)}</string>
-				<key>VerticalPad</key>
-				<integer>0</integer>
-			</dict>
-		</dict>
-		<dict>
-			<key>Bounds</key>
-			<string>{{592.48747015384333, 12.881595437943758}, {335.51254272460938, 219.02099609375}}</string>
+			<string>{{952.09923044358027, 42.953595863968246}, {184.89418029785156, 257.79269409179688}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -5600,7 +5319,7 @@ Alternate annotation (different interpretation of data columns)\
 				</dict>
 			</dict>
 			<key>ID</key>
-			<integer>908</integer>
+			<integer>907</integer>
 			<key>Shape</key>
 			<string>Rectangle</string>
 			<key>Style</key>
@@ -5640,72 +5359,10 @@ Alternate annotation (different interpretation of data columns)\
 {\colortbl;\red255\green255\blue255;\red126\green126\blue126;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs24 \cf2 Revised Annotation}</string>
+\f0\fs24 \cf2 Alternate Annotation}</string>
 			</dict>
 			<key>TextPlacement</key>
 			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>Bounds</key>
-			<string>{{683.3308432225391, 474.04289718158702}, {133, 24}}</string>
-			<key>Class</key>
-			<string>ShapedGraphic</string>
-			<key>FitText</key>
-			<string>YES</string>
-			<key>Flow</key>
-			<string>Resize</string>
-			<key>FontInfo</key>
-			<dict>
-				<key>Color</key>
-				<dict>
-					<key>w</key>
-					<string>0</string>
-				</dict>
-				<key>Font</key>
-				<string>Helvetica</string>
-				<key>Size</key>
-				<real>12</real>
-			</dict>
-			<key>ID</key>
-			<integer>833</integer>
-			<key>Line</key>
-			<dict>
-				<key>ID</key>
-				<integer>823</integer>
-				<key>Offset</key>
-				<real>-4.0000004768371582</real>
-				<key>Position</key>
-				<real>0.49319300055503845</real>
-				<key>RotationType</key>
-				<integer>0</integer>
-			</dict>
-			<key>Shape</key>
-			<string>Rectangle</string>
-			<key>Style</key>
-			<dict>
-				<key>shadow</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-				<key>stroke</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-			</dict>
-			<key>Text</key>
-			<dict>
-				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
-
-\f0\fs24 \cf0 oboe:hasMeasurement}</string>
-			</dict>
-			<key>Wrap</key>
-			<string>NO</string>
 		</dict>
 	</array>
 	<key>GridInfo</key>
@@ -7426,7 +7083,7 @@ Alternate annotation (different interpretation of data columns)\
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2013-11-22 00:06:12 +0000</string>
+	<string>2013-12-16 19:56:21 +0000</string>
 	<key>Modifier</key>
 	<string>leinfelder</string>
 	<key>NotesVisible</key>
@@ -7444,6 +7101,11 @@ Alternate annotation (different interpretation of data columns)\
 			<string>float</string>
 			<string>41</string>
 		</array>
+		<key>NSHorizonalPagination</key>
+		<array>
+			<string>coded</string>
+			<string>BAtzdHJlYW10eXBlZIHoA4QBQISEhAhOU051bWJlcgCEhAdOU1ZhbHVlAISECE5TT2JqZWN0AIWEASqEhAFxlwCG</string>
+		</array>
 		<key>NSLeftMargin</key>
 		<array>
 			<string>float</string>
@@ -7452,7 +7114,22 @@ Alternate annotation (different interpretation of data columns)\
 		<key>NSPaperSize</key>
 		<array>
 			<string>size</string>
-			<string>{611.99997329711914, 792}</string>
+			<string>{612.00002670288086, 792}</string>
+		</array>
+		<key>NSPrintReverseOrientation</key>
+		<array>
+			<string>int</string>
+			<string>0</string>
+		</array>
+		<key>NSPrinter</key>
+		<array>
+			<string>coded</string>
+			<string>BAtzdHJlYW10eXBlZIHoA4QBQISEhAlOU1ByaW50ZXIAhIQITlNPYmplY3QAhZKEhIQITlNTdHJpbmcBlIQBKxtDYW5vbiAyNTI1aSBAIEFuZHJlYSdzIGlNYWOGhg==</string>
+		</array>
+		<key>NSPrinterName</key>
+		<array>
+			<string>string</string>
+			<string>Canon 2525i @ Andrea's iMac</string>
 		</array>
 		<key>NSRightMargin</key>
 		<array>
@@ -7484,7 +7161,7 @@ Alternate annotation (different interpretation of data columns)\
 	<key>UseEntirePage</key>
 	<false/>
 	<key>VPages</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>WindowInfo</key>
 	<dict>
 		<key>CurrentSheet</key>
@@ -7496,6 +7173,8 @@ Alternate annotation (different interpretation of data columns)\
 				<string>Canvas 1</string>
 			</dict>
 		</array>
+		<key>Frame</key>
+		<string>{{553, 263}, {2055, 1117}}</string>
 		<key>ListView</key>
 		<true/>
 		<key>OutlineWidth</key>
@@ -7509,7 +7188,7 @@ Alternate annotation (different interpretation of data columns)\
 		<key>SidebarWidth</key>
 		<integer>120</integer>
 		<key>VisibleRegion</key>
-		<string>{{0, -31}, {1394.6666666666667, 796.66666666666663}}</string>
+		<string>{{448, 67.333333333333329}, {1270.6666666666667, 642}}</string>
 		<key>Zoom</key>
 		<real>1.5</real>
 		<key>ZoomValues</key>
