@@ -23,7 +23,7 @@ Example annotations demonstrating more precise search results for observation-ba
 
 Partial OBOE semantic annotation for Kelp sampling data. Shaded nodes represent ontological concepts; rectangular nodes are data table attributes mapped to OBOE measurement characteristics.
 
-![Figure 4](./fig04-oboe-kelp-annotation-sm.png "Kelp Annotation")
+![Figure 4](./fig04-oboe-kelp-annotation.png "Kelp Annotation")
  
 ## Figure 5. Semantics in Morpho.
 
@@ -41,7 +41,7 @@ The first prototype of the semantic data query web interface. Data packages cont
 
 Integration query across multiple data packages (A, B). Annotations (C, D) determine semantically equivalent data attributes contained in the data objects (E, F). Attributes plot and site are considered equivalent measurements of the characteristic Location; attributes weight and wt both map to the same characteristic Mass. The Semantic Mediation API utilizes the Data Manager Library to load and query the source data informed by semantic similarities between the structurally disparate data attributes.
 
-![Figure 7](./fig07-data-integration-sm.png "Data integration workflow")
+![Figure 7](./fig07-data-integration.png "Data integration workflow")
 
 ## Figure 8. Annotation Components.  
 
