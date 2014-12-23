@@ -149,20 +149,28 @@ Finally, we found that it was possible to generate useful semantic annotations b
 
 ### Key outcomes or other achievements
 
-- Search UI passed to DataONE for prodcution incorporation, and will ship with Metacat
+- We produced 13 papers and numerous presentations on the semantics of measurement search, building upon our prior foundational work on the use of ontologies for ecological and environmental science.
 
-- The problem of cascading imports that have far reaching implications for knowledge modeling still is a significant issue for ontologies in general and for OBOE extension ontologies in particular.
+- We created 3 open source software tools meeting our specific project objectives.  These tools are distributed from their source code repositories:
+    - Metacat semantic indexing and search extensions, with MetacatUI semantic search web interface
+	- Morpho semantic annotation extensions
+	- Semi-automated annotation generator
 
-- Papers and presentations
+- We clarified that the problem of cascading imports has far reaching implications for knowledge modeling  and still is a significant issue for ontologies in general and for OBOE extension ontologies in particular. Overcoming this issue is critical to our community's ability to effectively build modular ontologies that can be re-used..
 
-What opportunities for training and professional development has the project provided?
+- We trained nine graduate students during the course of research
+
+- The MetacatUI semantic search system has been incorporated into both the Metacat data repository system, and is being integrated into the DataONE software system.  Thus, it will be in production use in major environmental data repositories in the near future as prodcution releases of these software systems ship.
+
+
+## What opportunities for training and professional development has the project provided?
 Through Semtools, nine students have been supported and worked on the project under the direction of Shawn Bowers at Gonzaga University, in the process gaining valuable training in computer science research: Wesley Saunders, Josie Hunter, and Jay Kudo, along with 6 other student interns during the summer of 2012.
 
-Jay Kudo worked on ObsDB, a system for uniformly storing and querying heterogeneous observational data. Wesley Saunders has been working on a Protege plugin that simplifies the development of OBOE-compatible ontologies by providing a simple forms-based user interface for creating ontology subclasses and more complex measurement types. Josie Hunter is working on analyzing KNB data sets to determine and apply attribute similarity measures to assist in semi-automating dataset semantic annotations for datasets. This work will help efficiently provide partial annotations of existing datasets, which is a time-consuming aspect of the semantic software stack we have developed.
+Jay Kudo worked on ObsDB, a system for uniformly storing and querying heterogeneous observational data. Wesley Saunders worked on a Protege plugin that simplifies the development of OBOE-compatible ontologies by providing a simple forms-based user interface for creating ontology subclasses and more complex measurement types. Josie Hunter is working on analyzing KNB data sets to determine and apply attribute similarity measures to assist in semi-automating dataset semantic annotations for datasets. This work helped efficiently provide partial annotations of existing datasets, which is a time-consuming aspect of the semantic software stack we developed.
 
 
 ## How have the results been disseminated to communities of interest?
-Outreach activities for the project have principally been through talks at scientific conferences and workshops where we have discussed our approaches to semantically modeling scientific observations and the benefits of doing so, and common use cases. O’Brien is consulting with SBC LTER ecologists and oceanographers in the development of the domain-specific ontology. 
+Outreach activities for the project have principally been through our 13 publications, and through talks at scientific conferences and workshops where we have discussed our approaches to semantically modeling scientific observations and the benefits of doing so, and common use cases. O’Brien is consulting with SBC LTER ecologists and oceanographers in the development of the domain-specific ontology. We also have distributed our software products to the community through our source code repositories for our open source products, including Metacat, MetacatUI, Morpho, and DataONE repositories.
 
 O'Brien introduced OBOE concepts and the Santa Barbara Coastal LTER OBOE extension to the LTER Network community through several venues: the Information Managers' Committee meetings, the Network Newsletter, "Databits", and the working group tasked with developing the Network controlled vocabulary. Her activities included a demonstration of semantics tools in development and an introduction to the mapping of OBOE concepts to attribute definitions in Ecological Metadata Language (EML). She is also involved in an LTER working groups of information managers and scientists tasked with developing a controlled vocabulary for datasets. Early phases of this effort are focused on simple term taxonomies, but considering ontological concepts at this stage will greatly enhance an extension of the LTER vocabulary into a full ontology in the future.
 
@@ -242,24 +250,30 @@ Semtools participants (Jones, Schildhauer, Bowers) have created the Joint Workin
 # Impact
 
 ## What is the impact on the development of the principal discipline(s) of the project?
-Through our work on Semtools, we have demonstrated improvements in the effectiveness of data discovery for large, heterogeneous data collections such as the Knowledge Network for Biocomplexity (KNB).  These advances have been possible through the use of a semantic model of scientific observations (Extensible Observation Ontology) and an annotation language that is used to map relational data sources to the concepts in OBOE.  The prototype system that we developed will form the basis for future work this year on a production system that will have broad applicability in the ecological and environmental sciences.
+Through our work on Semtools, we have demonstrated improvements in the effectiveness of data discovery for large, heterogeneous data collections such as the Knowledge Network for Biocomplexity (KNB) and DataONE, an NSF-funded DataNet partner.  These advances have been possible through the use of a semantic model of scientific observations (Extensible Observation Ontology) and an annotation language that is used to map relational data sources to the concepts in OBOE.  The system that we developed will form the basis for a production semantic search and annotation system that will be deployed wihtin DataONE and will have broad applicability in the ecological and environmental sciences.
 
-The current movement within the ecological sciences to develop ontologies for organizing and formalizing what was observed and how provides the semtools team with a good opportunity to exchange ideas about creating these ontologies. Our initial work with OBOE and the Morpho Annotation Plugin has illuminated questions about how disparate ontologies can be unified without having to conform to any one approach. As the annotation plugin matures and existing EML metadata is augmented with formal observational descriptions, locating and synthesizing heterogeneous data sources will be more efficient, and downstream analysis more accurate.
+The other major impact was on ontology development within the environmental sciences.  Our development of the OBOE model, and our prototype work on using ontologies for data annotation, demonstrated how difficult it is to reach semantic clarity about envirnmental measurements.  The effort resulted in changes to other standards such as the Observations and Measurements standard, and had a large impact on the development of the Semantic Sensor Netork (SSN) ontology that was initially developed by the W3C.  The current movement within the ecological sciences to develop ontologies for organizing and formalizing what was observed and how provides the semtools team with a good opportunity to exchange ideas about creating these ontologies. Our initial work with OBOE and the Morpho Annotation Plugin has illuminated questions about how disparate ontologies must be unified without having to accept the axioms from any particular model, which is still a challenge in ontology engineering. 
+
+Ultimately, as our annotation system is put into prodcution in the KNB and DataONE, we will have a large impact on the accessibility and utility of environmental data through as locating and synthesizing heterogeneous data sources will be more efficient, and downstream analysis more accurate.
 
 ## What is the impact on other disciplines?
 The relative newness of knowledge representation and the use of ontologies to express and formalize information in a way that machines can ‘understand’ puts our real-life use of the technology at the forefront of the art. We are involved in the OWL API user community – a forum for both providing and soliciting support for the rapidly evolving software. Similarly, our extensive use of Protégé increases the user base directly and indirectly as we encourage collaborators to view and author domain ontologies within this application.  Our work on materializing scientific data sets as large OWL graphs using conventions from the Linked Open Data community also contributes to an understanding of the scalability of linked data approaches that transcends disciplines.
 
+## What is the impact on the development of human resources?
+
 ## What is the impact on physical resources that form infrastructure?
+Although the Semtools project itself will not produce physical infrastruture per se, its software will be deployed on the KNB Data Repository and the DataONE federation data servers, thereby having a large impact on the data search facilities that are available in the US and globally.
 
 ## What is the impact on institutional resources that form infrastructure?
+Semtools semantic search technologies will have a major impact on the utility of environmental data repositories, and we expect it will help significantly improve the ability of non-profit operations like the KNB and DataONE to transition into useful, sustainable, and effective virtual organizations.  The utility of effective data management is growing in the environmental sciences, and Semtools software will enable data repositories to meet the needs of these virtual orgnaizations.  In addition, government agencies, including NSF, NOAA, NASA, and are increasingly under pressure to provide effective access to open data.  For NSF in particular, data heterogeneity is a huge barrier to distribution of open data resulting from NSF research. The semantic annotation and search systems that we have produced will be able to help NSF and other agencies to meet open data mandates.
 
 ## What is the impact on information resources that form infrastructure?
-The project is helping to build the extensive Knowledge Network for Biocomplexity (KNB) repository, which provides thousands of data sets for use in research and educational contexts.  Data from the KNB will become more accessible as the semantic search facilities that we have developed become incorporated into the production Metacat software used by the KNB.  This will enable educators and researchers to more readily access KNB data and therefore facilitate science and education advances in many disciplines.
-
-In addition, we have begun discussions with DataONE and the Data Conservancy, two major NSF projects for data preservation, about the incorporation of semantic observational data approaches into those networks.  Over the next year, we expect to develop a tight collaboration with DataONE on co-development of semantic search tools that can be used in the DataONE system.
+The project is helping to build the extensive Knowledge Network for Biocomplexity (KNB) repository, which provides tens of thousands of data sets for use in research and educational contexts.  Data from the KNB will become more accessible as the semantic search facilities that we have developed become incorporated into the production Metacat software used by the KNB.  This will enable educators and researchers to more readily access KNB data and therefore facilitate science and education advances in many disciplines. In addition, DataONE has also decided to incoporate Semtools semantic search software into the DataONE data search systems.  DataONE is a major information integrator for the whole NSF DataNet program, as it has provided a common discovery service across all 4 of the active DataNet partners (Minnesota Population Center (MPC), DataNet Federation Consorium( DFC), SEAD, and DataONE), and a total of 25 disctinct data partners and networks (including other data providers such as LTER, Dryad, the ORNL DAAC repository, the Alaska Ocean Observing System, and others).  As a consequence, Semtools software will have a large network effect as it gets applied to the hundreds of thousands of data sets available through the DataONE federation. 
 
 ## What is the impact on technology transfer?
-What is the impact on society beyond science and technology?
+- None
+
+## What is the impact on society beyond science and technology?
 Knowledge about science and the progress of science is critical to an effective society.  Advances in the Semtools project are producing new techniques for clarifying the content and meaning of scientific observations data to make it useful for tackling cross-cutting issues that are important to society.  The data that are exposed in this way become useful to many communities, including local governments and resource management agencies, non-profit organizations focused on conservation issues, and educators interested in exposing students to science approaches to societal issues.
 
 
